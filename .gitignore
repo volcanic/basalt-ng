@@ -4,6 +4,9 @@
 /dist
 /tmp
 
+# releases
+/release
+
 # dependencies
 /node_modules
 

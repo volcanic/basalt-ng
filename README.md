@@ -29,3 +29,15 @@ as well as frameworks to enable multi-platform support
 ## Project structure
 
 tbd
+
+## Building
+
+For each supported platform there is a script that can be used to bundle the application.
+
+### Web
+
+* run the following command to create a release bundle for web
+```
+npm run release-web
+```
+* release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in releases directory where
