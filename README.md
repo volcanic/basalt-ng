@@ -64,4 +64,12 @@ For each supported platform there is a script that can be used to bundle the app
 ```
 npm run release-web
 ```
-* release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in releases directory where
+* release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in releases directory
+
+### Windows
+
+* run the following command to create a release bundle for Windows (64-bit)
+```
+npm run release-windows
+```
+* release bundle for Windows named ```%npm_package_name%-win32-x64-%npm_package_version%.zip``` will be created in releases directory

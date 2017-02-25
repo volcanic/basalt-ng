@@ -15,7 +15,8 @@
     "electron-start": "npm run electron-build && electron ./dist/.",
     "electron-windows": "npm run electron-build && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=win32 --out=out --overwrite",
     "electron-windows-prod": "npm run electron-build-prod && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=win32 --out=out --overwrite",
-    "release-web": "mkdirp ./release && ng build --prod && cd dist && bestzip ./../release/%npm_package_name%-web-%npm_package_version%.zip  ./*"
+    "release-web": "mkdirp ./release && ng build --prod && cd dist && bestzip ./../release/%npm_package_name%-web-%npm_package_version%.zip  ./*",
+    "release-windows": "mkdirp ./release && npm run electron-windows-prod && cd out && bestzip ./../release/%npm_package_name%-win32-x64-%npm_package_version%.zip ./%npm_package_name%-win32-x64/*"
   },
   "private": true,
   "dependencies": {
