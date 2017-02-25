@@ -66,6 +66,14 @@ npm run release-web
 ```
 * release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in releases directory
 
+### Linux
+
+* run the following command to create a release bundle for Linux (64-bit)
+```
+npm run release-linux
+```
+* release bundle for Linux named ```%npm_package_name%-linux-x64-%npm_package_version%.zip``` will be created in releases directory
+
 ### MacOS
 
 * run the following command to create a release bundle for MacOS (64-bit)
