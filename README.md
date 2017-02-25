@@ -30,6 +30,30 @@ as well as frameworks to enable multi-platform support
 
 tbd
 
+## Development
+
+For some supported platforms there is a script that can be used to run the application locally.
+
+### Web
+
+* run the following command to start the web version of the application
+
+```
+npm start
+```
+
+* call ```http://localhost:4200``` in a browser to start the app
+
+### Desktop
+
+* run the following command to start the desktop version of the application
+
+```
+npm electron-start
+```
+
+* the application will be started in separate window automatically
+
 ## Building
 
 For each supported platform there is a script that can be used to bundle the application.
