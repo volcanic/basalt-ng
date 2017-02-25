@@ -39,3 +39,13 @@ import { MaterialModule } from '@angular/material';
 })
 export class PizzaPartyAppModule { }
 ```
+* add theme file src/theme.scss
+``` 
+@import '~@angular/material/core/theming/all-theme';
+
+@include mat-core();
+$app-primary: mat-palette($mat-cyan);
+$app-accent:  mat-palette($mat-amber, A200, A100, A400);
+$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+@include angular-material-theme($app-theme);
+```
