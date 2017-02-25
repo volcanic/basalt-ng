@@ -49,3 +49,46 @@ $app-accent:  mat-palette($mat-amber, A200, A100, A400);
 $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
 @include angular-material-theme($app-theme);
 ```
+
+## Electron
+
+* install Electron
+```
+npm install --save-dev electron
+```
+* add file src/electron/electron.js
+```
+const {app, BrowserWindow} = require('electron');
+const path = require('path');
+const url = require('url');
+
+let win;
+
+function createWindow () {
+  win = new BrowserWindow({width: 1080, height: 800});
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
+  win.on('closed', () => { win = null })
+}
+
+app.on('ready', createWindow);
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') { app.quit() }
+});
+
+app.on('activate', () => {
+  if (win === null) { createWindow() }
+});
+```
+* add file src/electron/package.json
+```
+{
+  "name"    : "amphibian",
+  "version" : "0.0.0",
+  "main"    : "electron.ts"
+}
+```
