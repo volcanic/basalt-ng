@@ -13,9 +13,12 @@
     "electron-build": "ng build && cd ./src/electron && copyfiles ./* ./../../dist/",
     "electron-build-prod": "ng build --prod && cd ./src/electron && copyfiles ./* ./../../dist/",
     "electron-start": "npm run electron-build && electron ./dist/.",
+    "electron-macos": "npm run electron-build && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=darwin --out=out --overwrite",
+    "electron-macos-prod": "npm run electron-build-prod && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=darwin --out=out --overwrite",
     "electron-windows": "npm run electron-build && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=win32 --out=out --overwrite",
     "electron-windows-prod": "npm run electron-build-prod && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=win32 --out=out --overwrite",
     "release-web": "mkdirp ./release && ng build --prod && cd dist && bestzip ./../release/%npm_package_name%-web-%npm_package_version%.zip  ./*",
+    "release-macos": "mkdirp ./release && npm run electron-macos-prod && cd out && bestzip ./../release/%npm_package_name%-macos-x64-%npm_package_version%.zip ./%npm_package_name%-darwin-x64/*",
     "release-windows": "mkdirp ./release && npm run electron-windows-prod && cd out && bestzip ./../release/%npm_package_name%-win32-x64-%npm_package_version%.zip ./%npm_package_name%-win32-x64/*"
   },
   "private": true,

@@ -66,6 +66,15 @@ npm run release-web
 ```
 * release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in releases directory
 
+### MacOS
+
+* run the following command to create a release bundle for MacOS (64-bit)
+* note: to build for MacOS NodeJS command prompt must be run as administrator
+```
+npm run release-macos
+```
+* release bundle for MacOS named ```%npm_package_name%-macos-x64-%npm_package_version%.zip``` will be created in releases directory
+
 ### Windows
 
 * run the following command to create a release bundle for Windows (64-bit)
