@@ -25,7 +25,8 @@
     "release-web": "mkdirp ./release && ng build --prod && cd dist && bestzip ./../release/%npm_package_name%-web-%npm_package_version%.zip  ./*",
     "release-linux": "mkdirp ./release && npm run electron-linux-prod && cd ./out && bestzip ./../release/%npm_package_name%-linux-x64-%npm_package_version%.zip ./%npm_package_name%-linux-x64/*",
     "release-macos": "mkdirp ./release && npm run electron-macos-prod && cd ./out && bestzip ./../release/%npm_package_name%-macos-x64-%npm_package_version%.zip ./%npm_package_name%-darwin-x64/*",
-    "release-windows": "mkdirp ./release && npm run electron-windows-prod && cd ./out && bestzip ./../release/%npm_package_name%-win32-x64-%npm_package_version%.zip ./%npm_package_name%-win32-x64/*"
+    "release-windows": "mkdirp ./release && npm run electron-windows-prod && cd ./out && bestzip ./../release/%npm_package_name%-win32-x64-%npm_package_version%.zip ./%npm_package_name%-win32-x64/*",
+    "release-android": "mkdirp ./release && npm run cordova-android-prod && cd ./cordova/platforms/android/build/outputs/apk && bestzip ./../../../../../../release/%npm_package_name%-android-%npm_package_version%.zip ./android-release-unsigned.apk"
   },
   "private": true,
   "dependencies": {

@@ -98,3 +98,11 @@ npm run release-macos
 npm run release-windows
 ```
 * a release bundle for Windows named ```%npm_package_name%-win32-x64-%npm_package_version%.zip``` will be created in directory ```release```
+
+### Android
+
+* run the following command to create a release bundle for Android
+```
+npm run release-android
+```
+* a release bundle for Android named ```%npm_package_name%-android-%npm_package_version%.zip``` will be created in directory ```release```
