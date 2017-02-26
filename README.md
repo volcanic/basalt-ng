@@ -52,7 +52,15 @@ npm start
 npm electron-start
 ```
 
-* the application will be started in separate window automatically
+* the application will be started in a separate window automatically
+
+### Android
+
+* run the following command to start the Android version of the application
+
+```
+npm cordova-android-start
+```
 
 ## Building
 
@@ -64,7 +72,7 @@ For each supported platform there is a script that can be used to bundle the app
 ```
 npm run release-web
 ```
-* release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in releases directory
+* a release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in directory ```release```
 
 ### Linux
 
@@ -72,7 +80,7 @@ npm run release-web
 ```
 npm run release-linux
 ```
-* release bundle for Linux named ```%npm_package_name%-linux-x64-%npm_package_version%.zip``` will be created in releases directory
+* a release bundle for Linux named ```%npm_package_name%-linux-x64-%npm_package_version%.zip``` will be created in directory ```release```
 
 ### MacOS
 
@@ -81,7 +89,7 @@ npm run release-linux
 ```
 npm run release-macos
 ```
-* release bundle for MacOS named ```%npm_package_name%-macos-x64-%npm_package_version%.zip``` will be created in releases directory
+* a release bundle for MacOS named ```%npm_package_name%-macos-x64-%npm_package_version%.zip``` will be created in directory ```release```
 
 ### Windows
 
@@ -89,4 +97,4 @@ npm run release-macos
 ```
 npm run release-windows
 ```
-* release bundle for Windows named ```%npm_package_name%-win32-x64-%npm_package_version%.zip``` will be created in releases directory
+* a release bundle for Windows named ```%npm_package_name%-win32-x64-%npm_package_version%.zip``` will be created in directory ```release```

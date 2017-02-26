@@ -92,3 +92,88 @@ app.on('activate', () => {
   "main"    : "electron.ts"
 }
 ```
+
+## Cordova
+
+* install Cordova
+```
+npm install -g cordova
+```
+* create cordova directories
+```
+mkdir cordova/scripts
+mkdir cordova/www
+```
+* create file cordova/config.xml
+```
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="de.interoberlin.amphibian" version="1.0.0" android-versionCode="1">
+  <name>Amphibian</name>
+  <description>
+    A sample Apache Cordova application
+  </description>
+  <author email="florian.schwanz@interoberlin.de" href="https://interoberlin.de">
+    Interoberlin
+  </author>
+  <content src="index.html"/>
+  <plugin name="cordova-plugin-whitelist" spec="~1.3.0"/>
+  <plugin name="cordova-plugin-splashscreen" spec="~4.0.0"/>
+  <access origin="*"/>
+  <allow-intent href="http://*/*"/>
+  <allow-intent href="https://*/*"/>
+  <allow-intent href="tel:*"/>
+  <allow-intent href="sms:*"/>
+  <allow-intent href="mailto:*"/>
+  <allow-intent href="geo:*"/>
+
+  <!-- Build and prepare the Angular 2 application. -->
+  <hook type="before_prepare" src="scripts/prepare-app.js"/>
+
+  <!-- Configure the splashscreen. -->
+  <preference name="SplashShowOnlyFirstTime" value="false"/>
+  <preference name="ShowSplashScreenSpinner" value="false"/>
+
+  <platform name="android">
+    <allow-intent href="market:*"/>
+  </platform>
+  <platform name="ios">
+    <allow-intent href="itms:*"/>
+    <allow-intent href="itms-apps:*"/>
+  </platform>
+  <engine name="android" spec="~5.2.2"/>
+</widget>
+```
+* create file cordova/scripts/prepare-app.js
+```
+const fs = require('fs');
+const execSync = require('child_process').execSync;
+
+module.exports = function(context) {
+    console.log('Building Angular 2 application into "./www" directory.');
+    const basePath = context.opts.projectRoot;
+    const baseWWW = basePath + '/www';
+
+    console.log(execSync(
+      "ng build --target=production --environment=prod --output-path cordova/www/ --base-href .",
+      {
+        maxBuffer: 1024*1024,
+        cwd: basePath + '/..'
+      }).toString('utf8')
+    );
+    var files = fs.readdirSync(baseWWW);
+    for (var i = 0; i < files.length; i++) {
+      if (files[i].endsWith('.gz')) {
+        fs.unlinkSync(baseWWW + '/' + files[i]);
+      }
+    }
+    fs.writeFileSync(baseWWW + '/.gitignore', `# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
+`);
+};
+```
+* add Android platform
+```
+cordova platform add android
+```

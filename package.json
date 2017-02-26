@@ -19,10 +19,13 @@
     "electron-macos-prod": "npm run electron-build-prod && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=darwin --out=out --overwrite",
     "electron-windows": "npm run electron-build && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=win32 --out=out --overwrite",
     "electron-windows-prod": "npm run electron-build-prod && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=win32 --out=out --overwrite",
+    "cordova-android": "cd ./cordova && cordova build android --debug",
+    "cordova-android-prod": "cd ./cordova && cordova build android --release",
+    "cordova-android-start": "npm run cordova-android && cd ./cordova && cordova emulate android",
     "release-web": "mkdirp ./release && ng build --prod && cd dist && bestzip ./../release/%npm_package_name%-web-%npm_package_version%.zip  ./*",
-    "release-linux": "mkdirp ./release && npm run electron-linux-prod && cd out && bestzip ./../release/%npm_package_name%-linux-x64-%npm_package_version%.zip ./%npm_package_name%-linux-x64/*",
-    "release-macos": "mkdirp ./release && npm run electron-macos-prod && cd out && bestzip ./../release/%npm_package_name%-macos-x64-%npm_package_version%.zip ./%npm_package_name%-darwin-x64/*",
-    "release-windows": "mkdirp ./release && npm run electron-windows-prod && cd out && bestzip ./../release/%npm_package_name%-win32-x64-%npm_package_version%.zip ./%npm_package_name%-win32-x64/*"
+    "release-linux": "mkdirp ./release && npm run electron-linux-prod && cd ./out && bestzip ./../release/%npm_package_name%-linux-x64-%npm_package_version%.zip ./%npm_package_name%-linux-x64/*",
+    "release-macos": "mkdirp ./release && npm run electron-macos-prod && cd ./out && bestzip ./../release/%npm_package_name%-macos-x64-%npm_package_version%.zip ./%npm_package_name%-darwin-x64/*",
+    "release-windows": "mkdirp ./release && npm run electron-windows-prod && cd ./out && bestzip ./../release/%npm_package_name%-win32-x64-%npm_package_version%.zip ./%npm_package_name%-win32-x64/*"
   },
   "private": true,
   "dependencies": {
