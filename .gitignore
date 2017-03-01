@@ -20,6 +20,7 @@
 .c9/
 *.launch
 .settings/
+.gradle
 
 # IDE - VSCode
 .vscode/*

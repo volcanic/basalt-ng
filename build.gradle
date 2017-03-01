@@ -1,0 +1,53 @@
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.moowork.gradle:gradle-node-plugin:0.12'
+  }
+}
+
+apply plugin: "com.moowork.node"
+
+node {
+  version = '6.10.0'
+  npmVersion = '3.8.0'
+  download = true
+}
+
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  providedRuntime
+}
+
+task start(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'start'] }
+task lint(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'lint'] }
+task test(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'test'] }
+task pree2e(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'pree2e'] }
+task e2e(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'e2e'] }
+task electronBuild(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-build'] }
+task electronBuildProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-build-prod'] }
+task electronStart(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-start'] }
+task electronLinux(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-linux'] }
+task electronLinuxProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-linux-prod'] }
+task electronMacos(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-macos'] }
+task electronMacosProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-macos-prod'] }
+task electronWindows(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-windows'] }
+task electronWindowsProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-windows-prod'] }
+task cordovaAndroid(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'cordova-android'] }
+task cordovaAndroidProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'cordova-android-prod'] }
+task cordovaAndroidStart(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'cordova-android-start'] }
+task releaseWeb(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-web'] }
+task releaseLinux(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-linux'] }
+task releaseMacos(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-macos'] }
+task releaseWindows(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-windows'] }
+task releaseAndroid(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-android'] }
+task releaseNotes(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-notes'] }
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.12'
+}

@@ -177,3 +177,54 @@ module.exports = function(context) {
 ```
 cordova platform add android
 ```
+
+## Gradle
+
+* copy gradle files and directory from a gradle project
+  * .gradle
+  * gradlew
+  * gradlew.bat
+  
+* add build.gradle
+```
+buildscript {
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.moowork.gradle:gradle-node-plugin:0.12'
+  }
+}
+
+apply plugin: "com.moowork.node"
+
+node {
+  version = '5.8.0'
+  npmVersion = '3.8.0'
+  download = true
+  // distBaseUrl = Custom artifactory location here for node/npm.
+}
+
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  providedRuntime
+}
+
+task start(type: Exec) {
+  executable = 'npm'
+  args = ['run', 'start']
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.12'
+}
+```
+* initialize npm with gradle
+```
+gradlew npmInstall
+gradlew npm_update
+```
