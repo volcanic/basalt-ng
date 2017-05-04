@@ -29,24 +29,43 @@ task lint(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'lint'] }
 task test(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'test'] }
 task pree2e(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'pree2e'] }
 task e2e(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'e2e'] }
+
+task precache(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'precache'] }
+task staticServe(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'static-serve'] }
+
+task webBuild(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'web-build'] }
+task webBuildProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'web-build-prod'] }
+task webStart(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'web-start'] }
+task webRelease(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'web-release'] }
+
+task progressiveBuild(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'progressive-build'] }
+task progressiveBuildProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'progressive-build-prod'] }
+task progressiveStart(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'progressive-start'] }
+task progressiveRelease(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'progressive-release'] }
+
 task electronBuild(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-build'] }
 task electronBuildProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-build-prod'] }
 task electronStart(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-start'] }
+
 task electronLinux(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-linux'] }
 task electronLinuxProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-linux-prod'] }
+task electronLinuxRelease(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-linux-release'] }
+
 task electronMacos(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-macos'] }
 task electronMacosProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-macos-prod'] }
+task electronMacosRelease(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-macos-release'] }
+
 task electronWindows(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-windows'] }
 task electronWindowsProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-windows-prod'] }
+task electronWindowsRelease(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'electron-windows-release'] }
+
 task cordovaAndroid(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'cordova-android'] }
 task cordovaAndroidProd(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'cordova-android-prod'] }
 task cordovaAndroidStart(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'cordova-android-start'] }
-task releaseWeb(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-web'] }
-task releaseLinux(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-linux'] }
-task releaseMacos(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-macos'] }
-task releaseWindows(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-windows'] }
-task releaseAndroid(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-android'] }
+task cordovaAndroidRelease(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'cordova-android-release'] }
+
 task releaseNotes(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-notes'] }
+task releaseAll(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-all'] }
 
 task wrapper(type: Wrapper) {
   gradleVersion = '2.12'

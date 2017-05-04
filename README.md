@@ -4,7 +4,8 @@
 
 This project can be used as an app template to target multiple platforms such as
 
-* Web servers
+* Web browsers
+  * incl. progressive web app enhancement
 * Desktop operating systems
   * Linux
   * MacOS
@@ -21,10 +22,11 @@ This template uses frameworks and guidelines to allow for a quick development su
 * [Typescript](https://www.typescriptlang.org/)
 * [Sass](http://sass-lang.com/)
 
-as well as frameworks to enable multi-platform support
+as well as frameworks and guidelines to enable multi-platform support
 
 * [Electron](https://electron.atom.io/)
 * [Cordova](https://cordova.apache.org/)
+* [PWA](https://developers.google.com/web/progressive-web-apps/)
 
 ## Project structure
 
@@ -38,29 +40,39 @@ as well as frameworks to enable multi-platform support
 
 * you can run/build this template using either
   * [NodeJS](https://nodejs.org/en/) or
-  * [Gradle](https://gradle.org/) which wraps NodejJS 
+  * [Gradle](https://gradle.org/) which wraps NodeJS 
 
-## Development
+## Developing
 
 For some supported platforms there is a script that can be used to run the application locally.
 
 ### Web
 
-* run the following command to start the web version of the application
+* run the following command and call ```http://localhost:4200``` in a browser to start the web version of the application
 
 ```
-npm start
+npm web-start
 ```
 or
 ```
-gradlew start
+gradlew webStart
 ```
 
-* call ```http://localhost:4200``` in a browser to start the app
+### Web (Progressive Web App)
+
+* run the following command and call ```http://localhost:4200``` in a browser to start the progressive web app version of the application
+
+```
+npm progressive-start
+```
+or
+```
+gradlew progressiveStart
+```
 
 ### Desktop
 
-* run the following command to start the desktop version of the application
+* run the following command to start the desktop version of the application in a separate window automatically
 
 ```
 npm electron-start
@@ -69,8 +81,6 @@ or
 ```
 gradlew electronStart
 ```
-
-* the application will be started in a separate window automatically
 
 ### Android
 
@@ -85,77 +95,112 @@ or
 gradlew cordovaAndroidStart
 ```
 
+## Testing
+
+tbd
+
 ## Building
 
 For each supported platform there is a script that can be used to bundle the application.
+Call the following command to build release bundles for all supported platforms as well as release notes
+
+```
+npm run release-all
+```
+or
+```
+gradlew releaseAll
+```
 
 ### Web
 
 * run the following command to create a release bundle for web
+* a release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in directory ```release```
 
 ```
-npm run release-web
+npm run web-release
 ```
 or
 ```
-gradlew releaseWeb
+gradlew webRelease
 ```
 
-* a release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in directory ```release```
+### Web (Progressive Web App)
+
+* run the following command to create a release bundle for a progressive web app
+* a release bundle for web named ```%npm_package_name%-progressive-%npm_package_version%.zip``` will be created in directory ```release```
+
+```
+npm run progressive-release
+```
+or
+```
+gradlew progressiveRelease
+```
 
 ### Linux
 
 * run the following command to create a release bundle for Linux (64-bit)
+* a release bundle for Linux named ```%npm_package_name%-linux-x64-%npm_package_version%.zip``` will be created in directory ```release```
 
 ```
-npm run release-linux
+npm run linux-release
 ```
 or
 ```
-gradlew releaseLinux
+gradlew linuxRelease
 ```
-
-* a release bundle for Linux named ```%npm_package_name%-linux-x64-%npm_package_version%.zip``` will be created in directory ```release```
 
 ### MacOS
 
 * run the following command to create a release bundle for MacOS (64-bit)
 * note: to build for MacOS NodeJS command prompt must be run as administrator
+* a release bundle for MacOS named ```%npm_package_name%-macos-x64-%npm_package_version%.zip``` will be created in directory ```release```
 
 ```
-npm run release-macos
+npm run macos-release
 ```
 or
 ```
-gradlew releaseMacos
+gradlew macosRelease
 ```
-
-* a release bundle for MacOS named ```%npm_package_name%-macos-x64-%npm_package_version%.zip``` will be created in directory ```release```
 
 ### Windows
 
 * run the following command to create a release bundle for Windows (64-bit)
+* a release bundle for Windows named ```%npm_package_name%-win32-x64-%npm_package_version%.zip``` will be created in directory ```release```
 
 ```
-npm run release-windows
+npm run windows-release
 ```
 or
 ```
-gradlew releaseWindows
+gradlew windowsRelease
 ```
-
-* a release bundle for Windows named ```%npm_package_name%-win32-x64-%npm_package_version%.zip``` will be created in directory ```release```
 
 ### Android
 
 * run the following command to create a release bundle for Android
+* a release bundle for Android named ```%npm_package_name%-android-%npm_package_version%.zip``` will be created in directory ```release```
 
 ```
-npm run release-android
+npm run android-release
 ```
 or
 ```
-gradlew releaseAndroid
+gradlew androidRelease
 ```
 
-* a release bundle for Android named ```%npm_package_name%-android-%npm_package_version%.zip``` will be created in directory ```release```
+### Release Notes
+
+* run the following command to create release notes as html file
+* note: you can add information by editing```release-notes-<version>.md``` where <_version_> must match the version attribute in ```package.json``` 
+* a release notes html file named ```%npm_package_name%-release-notes-%npm_package_version%.html``` will be created in directory ```release```
+
+```
+npm run release-notes
+```
+or
+```
+gradlew releaseNotes
+```
