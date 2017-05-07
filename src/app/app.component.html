@@ -1,6 +1,4 @@
-<md-toolbar color="primary">
-  {{ title | uppercase }}
-</md-toolbar>
+<app-toolbar [title]="title"></app-toolbar>
 <p>
   with {{operatingSystem}}
   <span *isSmartTv>on a smart TV</span>

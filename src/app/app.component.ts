@@ -8,7 +8,7 @@ import {OperatingSystem} from "./model/operating-system";
   styles: [require('./app.component.scss')],
 })
 export class AppComponent {
-  title = 'app works!';
+  title = 'Amphibian';
   operatingSystem = '';
 
   constructor(platformService: PlatformService) {

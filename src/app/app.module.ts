@@ -6,10 +6,12 @@ import {AppComponent} from "./app.component";
 import {MaterialModule} from "@angular/material";
 import {PlatformService} from "./services/platform.service";
 import {ResponsiveModule} from "ng2-responsive";
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
