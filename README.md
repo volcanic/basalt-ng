@@ -71,6 +71,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.37 | Today / later |
 | 0.38 | Tag inheritance |
 | 0.39 | Definition of done |
+| 0.40 | Checklist tasklets |
 
 ### Planned features
 
