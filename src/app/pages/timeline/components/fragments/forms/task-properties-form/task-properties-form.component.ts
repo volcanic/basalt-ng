@@ -122,7 +122,7 @@ export class TaskPropertiesFormComponent implements OnInit {
   private initializeAcceptanceCriteria() {
     if (this.task.acceptanceCriteria != null) {
       this.completedAcceptanceCriteria = this.task.acceptanceCriteria.filter(c => {
-        return c.completed;
+        return c.selected;
       }).length;
     }
   }

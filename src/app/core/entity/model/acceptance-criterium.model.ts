@@ -8,13 +8,13 @@ export class AcceptanceCriterium implements SelectableItem {
   /** Text */
   text: string;
   /** Completed */
-  completed: boolean;
+  selected: boolean;
 
   /**
    * Constructor
    */
   constructor() {
     this.text = '';
-    this.completed = false;
+    this.selected = false;
   }
 }
