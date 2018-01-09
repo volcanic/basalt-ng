@@ -68,5 +68,5 @@ task releaseNotes(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'rele
 task releaseAll(type: NpmTask, dependsOn: 'npmInstall') { args = ['run', 'release-all'] }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '2.12'
+  gradleVersion = '3.3'
 }

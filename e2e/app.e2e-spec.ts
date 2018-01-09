@@ -1,10 +1,10 @@
-import { AmphibianPage } from './app.po';
+import { BasaltPage } from './app.po';
 
-describe('amphibian App', function() {
-  let page: AmphibianPage;
+describe('basalt App', function() {
+  let page: BasaltPage;
 
   beforeEach(() => {
-    page = new AmphibianPage();
+    page = new BasaltPage();
   });
 
   it('should display message saying app works', () => {
