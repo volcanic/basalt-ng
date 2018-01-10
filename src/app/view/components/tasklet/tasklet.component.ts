@@ -6,6 +6,7 @@ import {Tasklet} from '../../../model/tasklet.model';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
+import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 
 @Component({
   selector: 'app-tasklet',
@@ -15,6 +16,8 @@ import {ConfirmationDialogComponent} from '../../dialogs/confirmation-dialog/con
 export class TaskletComponent implements OnInit {
   @Input() tasklet;
 
+  taskletTypes = TASKLET_TYPE;
+
   constructor(private taskletsService: TaskletsService,
               private snackbarService: SnackbarService,
               public dialog: MatDialog,
@@ -23,6 +26,12 @@ export class TaskletComponent implements OnInit {
     iconRegistry.addSvgIcon('more_black', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_more_vert_black_18px.svg'));
     iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_edit_black_18px.svg'));
     iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_delete_black_18px.svg'));
+
+    iconRegistry.addSvgIcon('bug', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_bug_report_black_24px.svg'));
+    iconRegistry.addSvgIcon('call', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_call_black_24px.svg'));
+    iconRegistry.addSvgIcon('code', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_black_24px.svg'));
+    iconRegistry.addSvgIcon('mail', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_mail_outline_black_24px.svg'));
+    iconRegistry.addSvgIcon('people', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_people_black_24px.svg'));
   }
 
   ngOnInit() {

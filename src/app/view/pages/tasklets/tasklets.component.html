@@ -10,7 +10,7 @@
 
   <div class="content">
 
-    <app-tasklet *ngFor="let t of tasklets" [tasklet]="t">
+    <app-tasklet *ngFor="let t of tasklets.reverse()" [tasklet]="t">
     </app-tasklet>
 
     <button mat-fab class="fab" (click)="onMenuItemClicked('add')">
