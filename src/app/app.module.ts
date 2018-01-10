@@ -7,6 +7,7 @@ import {ResponsiveModule} from 'ng2-responsive';
 import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {MatToolbarModule} from '@angular/material';
 import {PouchDBService} from './services/pouchdb.service';
+import {TaskletsService} from './services/tasklets.service';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {PouchDBService} from './services/pouchdb.service';
     ResponsiveModule
   ],
   providers: [
-    PouchDBService
+    PouchDBService,
+    TaskletsService
   ],
   bootstrap: [AppComponent]
 })
