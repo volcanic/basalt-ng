@@ -1,6 +1,4 @@
-import {Component} from "@angular/core";
-import {PlatformService} from "./services/platform.service";
-import {OperatingSystem} from "./model/operating-system";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +7,4 @@ import {OperatingSystem} from "./model/operating-system";
 })
 export class AppComponent {
   title = 'Basalt';
-  operatingSystem = '';
-
-  constructor(platformService: PlatformService) {
-    this.operatingSystem = `${OperatingSystem[platformService.operatingSystem]}`;
-  }
 }
