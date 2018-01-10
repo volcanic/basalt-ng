@@ -1,8 +1,7 @@
 @import '../../../../theme';
 
 mat-card {
-  float: left;
-  margin-top: 10px;
+  margin: 10px auto;
 
   @media #{$mat-small} {
     width: 100%;
@@ -12,11 +11,9 @@ mat-card {
   }
   @media #{$mat-medium} {
     width: 300px;
-    margin-right: 10px;
   }
   @media #{$mat-large} {
     width: 300px;
-    margin-right: 10px;
   }
 }
 

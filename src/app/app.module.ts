@@ -8,8 +8,13 @@ import {ToolbarComponent} from './view/toolbars/toolbar/toolbar.component';
 import {
   MatButtonModule,
   MatCardModule,
-  MatDialogModule, MatIconModule, MatIconRegistry, MatInputModule, MatListModule,
-  MatMenuModule, MatSelectModule,
+  MatDialogModule,
+  MatIconModule,
+  MatIconRegistry,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
   MatToolbarModule
@@ -19,7 +24,7 @@ import {TaskletsService} from './services/tasklets.service';
 import {ConfirmationDialogComponent} from './view/dialogs/confirmation-dialog/confirmation-dialog.component';
 import {TaskletDialogComponent} from './view/dialogs/tasklet-dialog/tasklet-dialog.component';
 import {AppRoutingModule} from './app-routing.module';
-import {TaskletsComponent} from './view/pages/stacks/tasklets.component';
+import {TaskletsComponent} from './view/pages/tasklets/tasklets.component';
 import {TaskletComponent} from './view/components/tasklet/tasklet.component';
 import {SideMenuComponent} from './view/components/side-menu/side-menu.component';
 import {SnackbarService} from './services/snackbar.service';

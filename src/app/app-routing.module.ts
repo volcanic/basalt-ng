@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {TaskletsComponent} from './view/pages/stacks/tasklets.component';
+import {TaskletsComponent} from './view/pages/tasklets/tasklets.component';
 
 const routes: Routes = [
     {path: '', redirectTo: 'tasklets', pathMatch: 'full'},
