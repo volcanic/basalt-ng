@@ -1,0 +1,16 @@
+@import '../../../../theme';
+
+.label {
+  color: rgba(0, 0, 0, .54);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 12px;
+  top: 1.28125em;
+  font-weight: 400;
+  line-height: 1.125;
+  left: 0;
+  text-align: left;
+}
+
+.tag-input {
+  margin-left: 9px;
+}

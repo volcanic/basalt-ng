@@ -1,0 +1,69 @@
+@import '../../../../theme';
+
+.fixed {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  background: transparent;
+  width: 232px;
+}
+
+.content {
+  @media #{$mat-small} {
+    padding-top: 88px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  @media #{$mat-medium} {
+    padding-top: 88px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  @media #{$mat-large} {
+    padding-top: 88px;
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+}
+
+.sidenav {
+  @media #{$mat-small} {
+    padding-top: 88px;
+    margin-right: 10px;
+  }
+  @media #{$mat-medium} {
+    padding-top: 88px;
+    margin-right: 20px;
+  }
+  @media #{$mat-large} {
+    padding-top: 88px;
+    margin-right: 40px;
+  }
+}
+
+.fab {
+  top: auto !important;
+  @media #{$mat-small} {
+    right: 20px !important;
+    bottom: 10px !important;
+  }
+  @media #{$mat-medium} {
+    right: 40px !important;
+    bottom: 20px !important;
+  }
+  @media #{$mat-large} {
+    right: 40px !important;
+    bottom: 20px !important;
+  }
+  left: auto !important;
+  position: fixed !important;
+}
+

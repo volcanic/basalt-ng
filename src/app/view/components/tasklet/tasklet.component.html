@@ -1,0 +1,12 @@
+<mat-card (click)="updateTasklet()">
+  <mat-card-header>
+    <mat-card-subtitle>{{ tasklet.type }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}</mat-list-item>
+    </mat-list>
+  </mat-card-content>
+  <mat-card-actions align="right">
+  </mat-card-actions>
+</mat-card>

@@ -1,7 +1,7 @@
-import {TaskletType} from "./tasklet-type.enum";
+import {TASKLET_TYPE} from './tasklet-type.enum';
 
 export class Tasklet {
   id = '';
-  type =  TaskletType.UNSPECIFIED;
+  type = TASKLET_TYPE.UNSPECIFIED;
   text = '';
 }

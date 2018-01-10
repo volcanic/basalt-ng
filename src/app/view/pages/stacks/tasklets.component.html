@@ -1,0 +1,20 @@
+<app-toolbar
+  class="fixed"
+  [title]="title"
+  (onMenuItemClicked)="onMenuItemClicked($event)"></app-toolbar>
+
+<mat-sidenav-container class="sidenav-container" layout="column">
+  <mat-sidenav #sidenav mode="side" class="sidenav">
+    <app-side-menu (onMenuItemClicked)="onSideMenuItemClicked($event)"></app-side-menu>
+  </mat-sidenav>
+
+  <div class="content">
+    <app-tasklet *ngFor="let t of tasklets" [tasklet]="t">
+    </app-tasklet>
+
+    <button mat-fab class="fab" (click)="onMenuItemClicked('add')">
+      <mat-icon svgIcon="add"></mat-icon>
+    </button>
+  </div>
+
+</mat-sidenav-container>

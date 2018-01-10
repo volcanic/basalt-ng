@@ -1,8 +1,8 @@
-export enum TaskletType {
-  UNSPECIFIED,
-  ACTION,
-  CALL,
-  MEETING,
-  DEBUGGING,
-  DEVELOPMENT,
+export enum TASKLET_TYPE {
+  UNSPECIFIED = '???',
+  ACTION = 'Action',
+  CALL = 'Call',
+  MEETING = 'Meeting',
+  DEBUGGING = 'Debugging',
+  DEVELOPMENT = 'Development',
 }
