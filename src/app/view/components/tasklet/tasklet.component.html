@@ -2,11 +2,14 @@
 
   <mat-card-header>
     <div [ngSwitch]="tasklet.type" style="float: left;">
-      <mat-icon *ngSwitchCase="'Debugging'" svgIcon="bug"></mat-icon>
+      <mat-icon *ngSwitchCase="'Action'" svgIcon="assistant"></mat-icon>
+      <mat-icon *ngSwitchCase="'Meeting'" svgIcon="people"></mat-icon>
       <mat-icon *ngSwitchCase="'Call'" svgIcon="call"></mat-icon>
       <mat-icon *ngSwitchCase="'Mail'" svgIcon="mail"></mat-icon>
+      <mat-icon *ngSwitchCase="'Chat'" svgIcon="chat"></mat-icon>
       <mat-icon *ngSwitchCase="'Development'" svgIcon="code"></mat-icon>
-      <mat-icon *ngSwitchCase="'Meeting'" svgIcon="people"></mat-icon>
+      <mat-icon *ngSwitchCase="'Debugging'" svgIcon="bug"></mat-icon>
+      <mat-icon *ngSwitchCase="'TODO'" svgIcon="timer"></mat-icon>
     </div>
   </mat-card-header>
   <mat-card-content>

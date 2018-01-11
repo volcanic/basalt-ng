@@ -7,7 +7,7 @@ import {PouchDBService} from './pouchdb.service';
 export class TaskletsService {
   tasklets = new Map<String, Tasklet>();
   taskletsSubject = new Subject<Tasklet[]>();
-  filteredTasklets: Tasklet[] = [];
+  filteredTasklets = [];
 
   constructor(private pouchDBService: PouchDBService) {
     this.pouchDBService.getChangeListener().subscribe(
@@ -61,8 +61,15 @@ export class TaskletsService {
     );
   }
 
-  public getFilteredTasklets() {
-    return this.filteredTasklets = Array.from(this.tasklets.values());
+  public getFilteredTasklets(): Tasklet[] {
+    this.filteredTasklets = Array.from(this.tasklets.values()).sort((t1: Tasklet, t2: Tasklet) => {
+      let date1 = new Date(t1.creationDate).getTime();
+      let date2 = new Date(t2.creationDate).getTime();
+
+      return date1 - date2;
+    });
+
+    return this.filteredTasklets;
   }
 
   public update() {

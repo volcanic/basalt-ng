@@ -1,8 +1,11 @@
 export enum TASKLET_TYPE {
   UNSPECIFIED = '???',
   ACTION = 'Action',
-  CALL = 'Call',
   MEETING = 'Meeting',
-  DEBUGGING = 'Debugging',
+  CALL = 'Call',
+  MAIL = 'Mail',
+  CHAT = 'Chat',
   DEVELOPMENT = 'Development',
+  DEBUGGING = 'Debugging',
+  TODO = 'TODO',
 }
