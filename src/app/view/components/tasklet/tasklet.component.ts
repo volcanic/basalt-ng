@@ -15,7 +15,9 @@ import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 })
 export class TaskletComponent implements OnInit {
   @Input() tasklet: Tasklet;
+  icon = '';
   time = '';
+  date = '';
 
   taskletTypes = TASKLET_TYPE;
 
@@ -40,7 +42,52 @@ export class TaskletComponent implements OnInit {
   }
 
   ngOnInit() {
+    switch (this.tasklet.type) {
+      case TASKLET_TYPE.ACTION: {
+        this.icon = 'assistant';
+        break;
+      }
+      case TASKLET_TYPE.MEETING: {
+        this.icon = 'people';
+        break;
+      }
+      case TASKLET_TYPE.CALL: {
+        this.icon = 'call';
+        break;
+      }
+      case TASKLET_TYPE.MAIL: {
+        this.icon = 'mail';
+        break;
+      }
+      case TASKLET_TYPE.CHAT: {
+        this.icon = 'chat';
+        break;
+      }
+      case TASKLET_TYPE.DEVELOPMENT: {
+        this.icon = 'code';
+        break;
+      }
+      case TASKLET_TYPE.DEBUGGING: {
+        this.icon = 'bug';
+        break;
+      }
+      case TASKLET_TYPE.TODO: {
+        this.icon = 'timer';
+        break;
+      }
+      case TASKLET_TYPE.FINISHING_TIME: {
+        this.icon = 'run';
+        break;
+      }
+    }
+
+    console.log(this.icon);
     this.time = this.getTime();
+    this.date = this.getDate();
+
+    if (this.tasklet.type == 'Finishing Time') {
+      console.log('FOO');
+    }
   }
 
   public updateTasklet() {
@@ -72,8 +119,6 @@ export class TaskletComponent implements OnInit {
   }
 
   getTime(): string {
-    console.log(`DEBUG creationDate ${this.tasklet.creationDate}`);
-
     if (this.tasklet.creationDate != null) {
       let MINUTES_INTERVAL = 5;
 
@@ -95,5 +140,96 @@ export class TaskletComponent implements OnInit {
     } else {
       return '';
     }
+  }
+
+  getDate(): string {
+    let weekday = '';
+    let day = new Date(this.tasklet.creationDate).getDate();
+    let month = '';
+    let year = new Date(this.tasklet.creationDate).getFullYear();
+
+    switch (new Date(this.tasklet.creationDate).getDay()) {
+      case 0: {
+        weekday = 'Sunday';
+        break;
+      }
+      case 1: {
+        weekday = 'Monday';
+        break;
+      }
+      case 2: {
+        weekday = 'Tuesday';
+        break;
+      }
+      case 3: {
+        weekday = 'Wednesday';
+        break;
+      }
+      case 4: {
+        weekday = 'Thursday';
+        break;
+      }
+      case 5: {
+        weekday = 'Friday';
+        break;
+      }
+      case 6: {
+        weekday = 'Saturday';
+        break;
+      }
+    }
+
+    switch (new Date(this.tasklet.creationDate).getMonth()) {
+      case 0: {
+        month = 'January';
+        break;
+      }
+      case 1: {
+        month = 'February';
+        break;
+      }
+      case 2: {
+        month = 'March';
+        break;
+      }
+      case 3: {
+        month = 'April';
+        break;
+      }
+      case 4: {
+        month = 'May';
+        break;
+      }
+      case 5: {
+        month = 'June';
+        break;
+      }
+      case 6: {
+        month = 'July';
+        break;
+      }
+      case 7: {
+        month = 'August';
+        break;
+      }
+      case 8: {
+        month = 'September';
+        break;
+      }
+      case 9: {
+        month = 'October';
+        break;
+      }
+      case 10: {
+        month = 'November';
+        break;
+      }
+      case 11: {
+        month = 'December';
+        break;
+      }
+    }
+
+    return `${weekday}, ${day} ${month} ${year}`;
   }
 }

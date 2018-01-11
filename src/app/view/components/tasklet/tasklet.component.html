@@ -1,16 +1,12 @@
+<div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
+  {{ date }}
+  <div class="top-connection-line"></div>
+</div>
 <mat-card (click)="updateTasklet()">
-
   <mat-card-header>
+    <mat-icon [svgIcon]=icon class="tasklet-type"></mat-icon>
     <div [ngSwitch]="tasklet.type" style="float: left;">
-      <mat-icon *ngSwitchCase="'Action'" svgIcon="assistant"></mat-icon>
-      <mat-icon *ngSwitchCase="'Meeting'" svgIcon="people"></mat-icon>
-      <mat-icon *ngSwitchCase="'Call'" svgIcon="call"></mat-icon>
-      <mat-icon *ngSwitchCase="'Mail'" svgIcon="mail"></mat-icon>
-      <mat-icon *ngSwitchCase="'Chat'" svgIcon="chat"></mat-icon>
-      <mat-icon *ngSwitchCase="'Development'" svgIcon="code"></mat-icon>
-      <mat-icon *ngSwitchCase="'Debugging'" svgIcon="bug"></mat-icon>
-      <mat-icon *ngSwitchCase="'TODO'" svgIcon="timer"></mat-icon>
-      <mat-icon *ngSwitchCase="'Finishing time'" svgIcon="run"></mat-icon>
+      <mat-card-title *ngSwitchCase="'Finishing Time'">Finishing Time</mat-card-title>
     </div>
   </mat-card-header>
   <mat-card-content>
@@ -20,5 +16,7 @@
   </mat-card-content>
   <mat-card-actions align="right">
   </mat-card-actions>
-  <div *ngIf="tasklet.creationDate != null" class="left-attached">{{ time }}</div>
+  <mat-card-footer>
+    <div *ngIf="tasklet.creationDate != null" class="left-attached">{{ time }}</div>
+  </mat-card-footer>
 </mat-card>
