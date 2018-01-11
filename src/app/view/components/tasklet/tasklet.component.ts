@@ -14,7 +14,8 @@ import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
   styles: [require('./tasklet.component.scss')]
 })
 export class TaskletComponent implements OnInit {
-  @Input() tasklet;
+  @Input() tasklet: Tasklet;
+  time = '';
 
   taskletTypes = TASKLET_TYPE;
 
@@ -35,6 +36,7 @@ export class TaskletComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.time = this.getTime();
   }
 
   public updateTasklet() {
@@ -65,4 +67,29 @@ export class TaskletComponent implements OnInit {
     });
   }
 
+  getTime(): string {
+    console.log(`DEBUG creationDate ${this.tasklet.creationDate}`);
+
+    if (this.tasklet.creationDate != null) {
+      let MINUTES_INTERVAL = 5;
+
+      let hours = new Date(this.tasklet.creationDate).getHours();
+      let minutes = Math.ceil(new Date(this.tasklet.creationDate).getMinutes() / MINUTES_INTERVAL) * MINUTES_INTERVAL;
+
+      let hoursString = hours.toString();
+      let minutesString = minutes.toString();
+
+      if (hours < 10) {
+        hoursString = `0${hours}`;
+      }
+
+      if (minutes < 10) {
+        minutesString = `0${minutes}`;
+      }
+
+      return `${hoursString}:${minutesString}`;
+    } else {
+      return '';
+    }
+  }
 }

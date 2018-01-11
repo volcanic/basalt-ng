@@ -49,6 +49,7 @@ export class TaskletDialogComponent implements OnInit {
 
   addTasklet() {
     this.tasklet.id = new UUID().toString();
+    this.tasklet.creationDate = new Date();
     this.dialogRef.close(this.tasklet);
   }
 

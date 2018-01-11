@@ -6,8 +6,8 @@ mat-card {
   @media #{$mat-small} {
     width: 100%;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-    box-sizing: border-box;         /* Opera/IE 8+ */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
   }
   @media #{$mat-medium} {
     width: 300px;
@@ -15,6 +15,24 @@ mat-card {
   @media #{$mat-large} {
     width: 300px;
   }
+}
+
+.left-attached {
+  color: #9e9e9e;
+  width: 100px;
+  margin-left: -175px;
+  text-align: right;
+  vertical-align: bottom;
+}
+
+.left-attached::after {
+  position: absolute;
+  content: '\00a0';
+  width: 45px;
+  margin-top: -10px;
+  margin-left: 5px;
+  border-bottom: 2px solid #9e9e9e;
+  z-index: 0;
 }
 
 .tag {
@@ -64,11 +82,6 @@ mat-card-actions {
 .card-header-content {
   padding: 5px;
   width: 100%;
-}
-
-hr {
-  clear: left;
-  border: solid #444 1px;
 }
 
 .label {
