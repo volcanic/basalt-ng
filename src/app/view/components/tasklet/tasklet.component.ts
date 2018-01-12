@@ -38,6 +38,7 @@ export class TaskletComponent implements OnInit {
     iconRegistry.addSvgIcon('code', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_black_24px.svg'));
     iconRegistry.addSvgIcon('bug', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_bug_report_black_24px.svg'));
     iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
+    iconRegistry.addSvgIcon('dining', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_local_dining_black_24px.svg'));
     iconRegistry.addSvgIcon('run', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_directions_run_black_24px.svg'));
   }
 
@@ -73,6 +74,10 @@ export class TaskletComponent implements OnInit {
       }
       case TASKLET_TYPE.TODO: {
         this.icon = 'timer';
+        break;
+      }
+      case TASKLET_TYPE.LUNCH_BREAK: {
+        this.icon = 'dining';
         break;
       }
       case TASKLET_TYPE.FINISHING_TIME: {
@@ -125,12 +130,22 @@ export class TaskletComponent implements OnInit {
       let hours = new Date(this.tasklet.creationDate).getHours();
       let minutes = Math.ceil(new Date(this.tasklet.creationDate).getMinutes() / MINUTES_INTERVAL) * MINUTES_INTERVAL;
 
+      if (minutes == 60) {
+        minutes = 0;
+        hours++;
+      }
+      if (hours == 24) {
+        hours = 0;
+      }
+
       let hoursString = hours.toString();
       let minutesString = minutes.toString();
+
 
       if (hours < 10) {
         hoursString = `0${hours}`;
       }
+
 
       if (minutes < 10) {
         minutesString = `0${minutes}`;

@@ -8,5 +8,6 @@ export enum TASKLET_TYPE {
   DEVELOPMENT = 'Development',
   DEBUGGING = 'Debugging',
   TODO = 'TODO',
+  LUNCH_BREAK = 'Lunch Break',
   FINISHING_TIME = 'Finishing Time',
 }
