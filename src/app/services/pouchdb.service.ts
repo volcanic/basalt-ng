@@ -1,5 +1,5 @@
 import {EventEmitter, Injectable, isDevMode} from '@angular/core';
-let PouchDB = require('pouchdb');
+import PouchDB from 'pouchdb';
 
 @Injectable()
 export class PouchDBService {

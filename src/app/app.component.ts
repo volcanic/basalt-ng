@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SnackbarService} from './services/snackbar.service';
 import {PouchDBService} from './services/pouchdb.service';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
    * @param action
    */
   private openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
+    this.snackBar.open(message, action, <MatSnackBarConfig>{
       duration: 5000,
     });
   }

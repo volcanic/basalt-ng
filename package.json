@@ -57,7 +57,7 @@
     "ng2-file-upload": "^1.2.1",
     "ng2-responsive": "^0.8.3",
     "node-sass": "^4.7.2",
-    "pouchdb": "^6.1.0",
+    "pouchdb": "^6.4.1",
     "rxjs": "^5.1.0",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.8.4"
