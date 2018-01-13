@@ -1,6 +1,4 @@
-@import '~https://fonts.googleapis.com/icon?family=Material+Icons';
-@import '~https://fonts.googleapis.com/css?family=Roboto+Condensed';
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 html {
   height: 100%;
@@ -10,7 +8,6 @@ body {
   height: 100%;
   background: #f7f7f7;
   color: #808080;
-  display: block;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 0;
 
@@ -47,6 +44,10 @@ mat-icon {
   direction: ltr;
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
+}
+
+mat-list-item.text > .mat-list-item-content {
+  height: inherit !important;
 }
 
 @media (max-width: 600px) {

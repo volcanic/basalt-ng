@@ -13,7 +13,7 @@ mat-card {
     width: 300px;
   }
   @media #{$mat-large} {
-    width: 300px;
+    width: 450px;
   }
 }
 
@@ -24,10 +24,10 @@ mat-card {
 .top-attached {
   margin: 0 auto;
   text-align: center;
+  padding-top: 40px;
 
   font-size: 25px;
   font-weight: 400;
-  padding: 0;
 }
 
 .top-connection-line {

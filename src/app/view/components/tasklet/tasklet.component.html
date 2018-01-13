@@ -5,10 +5,11 @@
 <mat-card (click)="updateTasklet()">
   <mat-card-header>
     <mat-icon [svgIcon]=icon class="tasklet-type"></mat-icon>
-    <div [ngSwitch]="tasklet.type" style="float: left;">
-      <mat-card-title *ngSwitchCase="'Finishing Time'">Finishing Time</mat-card-title>
-    </div>
   </mat-card-header>
+  <div [ngSwitch]="tasklet.type" style="float: left;">
+    <mat-card-title *ngSwitchCase="'Finishing Time'">Finishing Time</mat-card-title>
+    <mat-card-title *ngSwitchCase="'Lunch Break'">Lunch Break</mat-card-title>
+  </div>
   <mat-card-content>
     <mat-list>
       <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}</mat-list-item>
