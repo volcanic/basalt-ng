@@ -28,14 +28,14 @@ export class TaskletsService {
   }
 
   public updateTasklet(tasklet: Tasklet) {
-    console.log(`DEBUG updateCard ${tasklet.id}`);
+    console.log(`DEBUG updateTasklet ${tasklet.id}`);
     this.tasklets.set(tasklet.id, tasklet);
     this.pouchDBService.put(tasklet.id, tasklet);
     this.notify();
   }
 
   public deleteTasklet(tasklet: Tasklet) {
-    console.log(`DEBUG deleteCard ${tasklet.id}`);
+    console.log(`DEBUG deleteTasklet ${tasklet.id}`);
     this.tasklets.delete(tasklet.id);
     this.pouchDBService.remove(tasklet.id, tasklet);
     this.notify();

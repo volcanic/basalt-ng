@@ -2,23 +2,16 @@
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
     <form #formCtrl="ngForm">
-      <div>
-        <mat-form-field>
-          <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type" (change)="typeSelected($event)">
-            <mat-option *ngFor="let item of taskletTypes" [value]="item">
-              {{ item }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field class="wide-box">
-       <textarea matInput required name="text" placeholder="Text" matTextareaAutosize matAutosizeMinRows="5"
-                 matAutosizeMaxRows="5" [(ngModel)]="tasklet.text"></textarea>
-          <button mat-button *ngIf="tasklet.text" matSuffix mat-icon-button aria-label="Clear" (click)="title=''">
-            <mat-icon svgIcon="close"></mat-icon>
-          </button>
-        </mat-form-field>
+      <mat-form-field>
+        <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type" (change)="typeSelected($event)">
+          <mat-option *ngFor="let item of taskletTypes" [value]="item">
+            {{ item }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div [ngSwitch]="tasklet.type">
+        <app-tasklet-dialog-todo [tasklet]="tasklet" *ngSwitchCase="'TODO'"></app-tasklet-dialog-todo>
+        <app-tasklet-dialog-default [tasklet]="tasklet" *ngSwitchDefault=""></app-tasklet-dialog-default>
       </div>
     </form>
   </mat-dialog-content>

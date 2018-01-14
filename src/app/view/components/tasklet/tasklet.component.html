@@ -2,21 +2,13 @@
   {{ date }}
   <div class="top-connection-line"></div>
 </div>
-<mat-card (click)="updateTasklet()">
-  <mat-card-header>
-    <mat-icon [svgIcon]=icon class="tasklet-type"></mat-icon>
-  </mat-card-header>
-  <div [ngSwitch]="tasklet.type" style="float: left;">
-    <mat-card-title *ngSwitchCase="'Finishing Time'">Finishing Time</mat-card-title>
-    <mat-card-title *ngSwitchCase="'Lunch Break'">Lunch Break</mat-card-title>
+<mat-card>
+  <div [ngSwitch]="tasklet.type">
+    <app-tasklet-todo [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+                      *ngSwitchCase="'TODO'"></app-tasklet-todo>
+    <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+                         *ngSwitchDefault=""></app-tasklet-default>
   </div>
-  <mat-card-content>
-    <mat-list>
-      <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}</mat-list-item>
-    </mat-list>
-  </mat-card-content>
-  <mat-card-actions align="right">
-  </mat-card-actions>
   <mat-card-footer>
     <div *ngIf="tasklet.creationDate != null" class="left-attached">{{ time }}</div>
   </mat-card-footer>

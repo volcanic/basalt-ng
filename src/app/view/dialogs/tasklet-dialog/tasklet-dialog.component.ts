@@ -6,6 +6,7 @@ import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {TaskletTodo} from '../../../model/tasklet-todo.model';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -50,10 +51,31 @@ export class TaskletDialogComponent implements OnInit {
   addTasklet() {
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
-    this.dialogRef.close(this.tasklet);
+
+    switch (this.tasklet.type) {
+      case TASKLET_TYPE.TODO: {
+        let taskletTodo = this.tasklet as TaskletTodo;
+        taskletTodo.done = false;
+        this.dialogRef.close(taskletTodo);
+        break;
+      }
+      default: {
+        this.dialogRef.close(this.tasklet);
+      }
+    }
+
   }
 
   updateTasklet() {
-    this.dialogRef.close(this.tasklet);
+    switch (this.tasklet.type) {
+      case TASKLET_TYPE.TODO: {
+        this.dialogRef.close(this.tasklet as TaskletTodo);
+        break;
+      }
+      default: {
+        this.dialogRef.close(this.tasklet as Tasklet);
+        break;
+      }
+    }
   }
 }
