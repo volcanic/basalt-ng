@@ -1,12 +1,16 @@
 <mat-card-header (click)="onActionFired.next('update')">
-  <mat-icon [svgIcon]=icon class="tasklet-type" style="float: left"></mat-icon>
-  <div class="title">
-    <label>Due date</label>
-    <div>{{ dueDate }}</div>
+  <div>
+    <mat-icon [svgIcon]=icon class="tasklet-type" style="float: left"></mat-icon>
+    {{ tasklet.taskName }}
   </div>
 </mat-card-header>
 <hr class="delimiter"/>
 <mat-card-content (click)="onActionFired.next('update')">
+  <div>
+    <label>Due date</label>
+    <div>{{ dueDate }}</div>
+  </div>
+  <hr class="delimiter"/>
   <mat-list>
     <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}</mat-list-item>
   </mat-list>

@@ -7,6 +7,7 @@ import {TaskletsService} from '../../../services/tasklets.service';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {TaskletTodo} from '../../../model/tasklet-todo.model';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -19,6 +20,9 @@ export class TaskletDialogComponent implements OnInit {
   dialogTitle = '';
   tasklet: Tasklet;
 
+  formControl: FormControl = new FormControl();
+  options = [];
+
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
   constructor(private taskletsService: TaskletsService,
@@ -26,9 +30,7 @@ export class TaskletDialogComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon(
-      'close',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
+    iconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
 
     // Create basic tasklet
     this.tasklet = new Tasklet();
@@ -43,6 +45,8 @@ export class TaskletDialogComponent implements OnInit {
       this.dialogTitle = 'Update tasklet';
       this.tasklet = this.data.tasklet as Tasklet;
     }
+
+    this.options = this.taskletsService.getTasks();
   }
 
   typeSelected(type: string) {

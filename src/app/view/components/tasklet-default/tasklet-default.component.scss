@@ -1,5 +1,10 @@
 @import '../../../../theme';
 
+mat-card-header {
+  font-weight: 700;
+}
+
 .tasklet-type {
   margin-left: -25px;
+  margin-right: 15px;
 }

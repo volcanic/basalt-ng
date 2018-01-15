@@ -1,12 +1,12 @@
 @import '../../../../theme';
 
-.tasklet-type {
-  margin-left: -25px;
+mat-card-header {
+  font-weight: 700;
 }
 
-.title {
-  margin-left: 15px;
-  float: left;
+.tasklet-type {
+  margin-left: -25px;
+  margin-right: 15px;
 }
 
 label {

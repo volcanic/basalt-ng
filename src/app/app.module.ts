@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {ResponsiveModule} from 'ng2-responsive';
 import {ToolbarComponent} from './view/toolbars/toolbar/toolbar.component';
 import {
+  MatAutocompleteModule,
   MatButtonModule,
   MatCardModule, MatDatepickerModule,
   MatDialogModule,
@@ -55,6 +56,7 @@ import {DateService} from './services/date.service';
     BrowserModule,
     FormsModule,
     HttpModule,
+    MatAutocompleteModule,
     MatCardModule,
     MatDatepickerModule,
     MatButtonModule,

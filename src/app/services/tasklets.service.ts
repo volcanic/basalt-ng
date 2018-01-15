@@ -84,4 +84,16 @@ export class TaskletsService {
     this.filteredTasklets = this.getFilteredTasklets();
     this.taskletsSubject.next(this.filteredTasklets);
   }
+
+  public getTasks(): string[] {
+    let tasks = new Map<string, string>();
+
+    this.getFilteredTasklets().forEach(t => {
+      if (t.taskName != null) {
+        tasks.set(t.taskName, t.taskName);
+      }
+    });
+
+    return Array.from(tasks.values()).sort();
+  }
 }
