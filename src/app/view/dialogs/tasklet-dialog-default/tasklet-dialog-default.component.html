@@ -1,6 +1,6 @@
 <mat-form-field class="wide-box">
-          <textarea matInput required name="text" placeholder="Text" matTextareaAutosize matAutosizeMinRows="10"
-                    matAutosizeMaxRows="10" [(ngModel)]="tasklet.text"></textarea>
+          <textarea matInput required name="text" placeholder="Text" matTextareaAutosize matAutosizeMinRows="5"
+                    matAutosizeMaxRows="5" [(ngModel)]="tasklet.text"></textarea>
   <button mat-button *ngIf="tasklet.text" matSuffix mat-icon-button aria-label="Clear" (click)="title=''">
     <mat-icon svgIcon="close"></mat-icon>
   </button>

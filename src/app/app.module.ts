@@ -8,7 +8,7 @@ import {ToolbarComponent} from './view/toolbars/toolbar/toolbar.component';
 import {
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatCheckboxModule,
   MatDatepickerModule,
   MatDialogModule,
   MatIconModule,
@@ -60,6 +60,7 @@ import {DateService} from './services/date.service';
     HttpModule,
     MatAutocompleteModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatButtonModule,
     MatDialogModule,

@@ -10,6 +10,7 @@ import {TaskletTodo} from '../../../model/tasklet-todo.model';
 import {Observable} from 'rxjs/Observable';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
+import {Tag} from '../../../model/tag.model';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -28,6 +29,9 @@ export class TaskletDialogComponent implements OnInit {
   myControl: FormControl = new FormControl();
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
+
+  existingTags: Tag[] = [];
+  newTags: Tag[] = [];
 
   constructor(private taskletsService: TaskletsService,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
@@ -56,6 +60,20 @@ export class TaskletDialogComponent implements OnInit {
         startWith(''),
         map(value => this.filterTasks(value))
       );
+
+    this.taskletsService.getAllTags().forEach(t => {
+      this.existingTags.push(new Tag(t.value, false));
+    });
+
+    // Get existing tags and add empty tag to new tags
+    this.existingTags.forEach(et => {
+      this.tasklet.tags.forEach(t => {
+        if (et.value === t.value) {
+          et.checked = true;
+        }
+      });
+    });
+    this.newTags.push(new Tag('', false));
   }
 
   typeSelected(type: string) {
@@ -64,6 +82,11 @@ export class TaskletDialogComponent implements OnInit {
   addTasklet() {
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
+    this.tasklet.tags = [];
+    this.existingTags.concat(this.newTags).filter(t => t.checked).forEach(t => {
+        this.tasklet.tags.push(t);
+      }
+    );
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.TODO: {
@@ -76,10 +99,15 @@ export class TaskletDialogComponent implements OnInit {
         this.dialogRef.close(this.tasklet);
       }
     }
-
   }
 
   updateTasklet() {
+    this.tasklet.tags = [];
+    this.existingTags.concat(this.newTags).filter(t => t.checked).forEach(t => {
+        this.tasklet.tags.push(t);
+      }
+    );
+
     switch (this.tasklet.type) {
       case TASKLET_TYPE.TODO: {
         this.dialogRef.close(this.tasklet as TaskletTodo);
@@ -95,5 +123,20 @@ export class TaskletDialogComponent implements OnInit {
   filterTasks(val: string): string[] {
     return this.taskOptions.filter(option =>
       option.toLowerCase().includes(val.toLowerCase()));
+  }
+
+  tagChanged(value: string) {
+    let noEmptyTag = true;
+
+    this.newTags.forEach((t: Tag) => {
+        if (t.value.trim().length === 0) {
+          noEmptyTag = false;
+        }
+      }
+    );
+
+    if (noEmptyTag) {
+      this.newTags.push(new Tag('', false));
+    }
   }
 }

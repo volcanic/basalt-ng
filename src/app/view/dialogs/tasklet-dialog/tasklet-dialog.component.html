@@ -10,7 +10,8 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field class="wide-box">
-        <input matInput name="task" type="text" placeholder="Task" [formControl]="myControl" [(ngModel)]="tasklet.taskName"
+        <input matInput name="task" type="text" placeholder="Task" [formControl]="myControl"
+               [(ngModel)]="tasklet.taskName"
                [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let option of filteredTaskOptions | async" [value]="option">
@@ -23,6 +24,16 @@
         <app-tasklet-dialog-default [tasklet]="tasklet" *ngSwitchDefault=""></app-tasklet-dialog-default>
       </div>
     </form>
+    <div class="label">Tags</div>
+    <div *ngFor="let t of existingTags">
+      <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
+    </div>
+    <div *ngFor="let n of newTags">
+      <mat-checkbox [(ngModel)]=n.checked>
+        <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.value"
+               (ngModelChange)="tagChanged($event)"/>
+      </mat-checkbox>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button [mat-dialog-close]=null>
