@@ -55,3 +55,11 @@ mat-list-item.text > .mat-list-item-content {
     min-width: 0 !important;
   }
 }
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: rgb(84, 110, 122) !important;
+}
+
+.mat-ripple-element {
+  background-color: rgba(84, 110, 122, .4) !important;
+}
