@@ -41,8 +41,6 @@ export class DateService {
   }
 
   getDate(date: Date): string {
-    console.log(`DEBUG getDate ${date}`);
-
     let weekday = this.getWeekDayString(new Date(date).getDay());
     let day = new Date(date).getDate();
     let month = this.getMonthString(new Date(date).getMonth());
@@ -51,8 +49,6 @@ export class DateService {
   }
 
   getWeekDayString(weekday: number) {
-    console.log(`DEBUG getWeekDayString ${weekday}`);
-
     switch (weekday) {
       case 0: {
         return 'Sunday';
