@@ -37,12 +37,14 @@ import {TaskletDialogTodoComponent} from './view/dialogs/tasklet-dialog-todo/tas
 import {TaskletDialogDefaultComponent} from './view/dialogs/tasklet-dialog-default/tasklet-dialog-default.component';
 import {TaskletDefaultComponent} from './view/components/tasklet-default/tasklet-default.component';
 import {DateService} from './services/date.service';
+import {TagDialogComponent} from './view/dialogs/tag-dialog/tag-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfirmationDialogComponent,
     SideMenuComponent,
+    TagDialogComponent,
     TaskletComponent,
     TaskletDialogComponent,
     TaskletsComponent,
@@ -78,6 +80,7 @@ import {DateService} from './services/date.service';
   ],
   entryComponents: [
     ConfirmationDialogComponent,
+    TagDialogComponent,
     TaskletDialogComponent
   ],
   providers: [

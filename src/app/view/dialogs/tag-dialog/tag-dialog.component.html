@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content>
+  <div *ngFor="let t of tags">
+    <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]=null>
+    Cancel
+  </button>
+  <button mat-button (click)="applyTags()">
+    Apply tags
+  </button>
+</mat-dialog-actions>

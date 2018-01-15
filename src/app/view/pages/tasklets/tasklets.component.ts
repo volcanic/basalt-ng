@@ -7,6 +7,7 @@ import {Http} from '@angular/http';
 import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
+import {TagDialogComponent} from '../../dialogs/tag-dialog/tag-dialog.component';
 
 @Component({
   selector: 'app-tasklets',
@@ -88,6 +89,23 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         });
         break;
       }
+      case 'tags': {
+        let dialogRef = this.dialog.open(TagDialogComponent, {
+          disableClose: true,
+          data: {
+            dialogTitle: 'Select tags',
+            tags: this.taskletsService.getAllTags()
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            this.taskletsService.update();
+            this.snackbarService.showSnackbar('Tags selected', '');
+          }
+        });
+        break;
+      }
+
       default: {
         break;
       }

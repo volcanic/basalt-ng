@@ -71,6 +71,23 @@ export class TaskletsService {
       let date2 = new Date(t2.creationDate).getTime();
 
       return date1 - date2;
+    }).filter(c => {
+      // Filter cards that match selected tags
+      let match = false;
+
+      if (c.tags.length === 0) {
+        return true;
+      } else {
+        c.tags.forEach(ct => {
+          this.tags.forEach(t => {
+            if (ct.value === t.value && t.checked) {
+              match = true;
+            }
+          });
+        });
+
+        return match;
+      }
     });
 
     return this.filteredTasklets;
