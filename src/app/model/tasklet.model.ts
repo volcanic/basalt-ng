@@ -1,4 +1,5 @@
 import {TASKLET_TYPE} from './tasklet-type.enum';
+import {Tag} from './tag.model';
 
 export class Tasklet {
   id = '';
@@ -6,4 +7,5 @@ export class Tasklet {
   taskName = '';
   text = '';
   creationDate: Date;
+  tags: Tag[] = [];
 }
