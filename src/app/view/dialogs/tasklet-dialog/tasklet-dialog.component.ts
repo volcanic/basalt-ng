@@ -7,6 +7,8 @@ import {TaskletsService} from '../../../services/tasklets.service';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {TaskletTodo} from '../../../model/tasklet-todo.model';
+import {Observable} from 'rxjs/Observable';
+import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 
 @Component({
@@ -20,8 +22,10 @@ export class TaskletDialogComponent implements OnInit {
   dialogTitle = '';
   tasklet: Tasklet;
 
-  formControl: FormControl = new FormControl();
-  options = [];
+  taskOptions = [];
+  filteredTaskOptions: Observable<string[]>;
+
+  myControl: FormControl = new FormControl();
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
@@ -46,7 +50,12 @@ export class TaskletDialogComponent implements OnInit {
       this.tasklet = this.data.tasklet as Tasklet;
     }
 
-    this.options = this.taskletsService.getTasks();
+    this.taskOptions = this.taskletsService.getTasks();
+    this.filteredTaskOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.filterTasks(value))
+      );
   }
 
   typeSelected(type: string) {
@@ -81,5 +90,10 @@ export class TaskletDialogComponent implements OnInit {
         break;
       }
     }
+  }
+
+  filterTasks(val: string): string[] {
+    return this.taskOptions.filter(option =>
+      option.toLowerCase().includes(val.toLowerCase()));
   }
 }

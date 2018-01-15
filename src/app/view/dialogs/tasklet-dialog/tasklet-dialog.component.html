@@ -10,10 +10,10 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field class="wide-box">
-        <input matInput name="task" type="text" placeholder="Task" [(ngModel)]="tasklet.taskName"
+        <input matInput name="task" type="text" placeholder="Task" [formControl]="myControl" [(ngModel)]="tasklet.taskName"
                [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of options" [value]="option">
+          <mat-option *ngFor="let option of filteredTaskOptions | async" [value]="option">
             {{ option }}
           </mat-option>
         </mat-autocomplete>

@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {ResponsiveModule} from 'ng2-responsive';
@@ -8,13 +8,15 @@ import {ToolbarComponent} from './view/toolbars/toolbar/toolbar.component';
 import {
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule, MatDatepickerModule,
+  MatCardModule,
+  MatDatepickerModule,
   MatDialogModule,
   MatIconModule,
   MatIconRegistry,
   MatInputModule,
   MatListModule,
-  MatMenuModule, MatNativeDateModule,
+  MatMenuModule,
+  MatNativeDateModule,
   MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
@@ -30,10 +32,10 @@ import {TaskletComponent} from './view/components/tasklet/tasklet.component';
 import {SideMenuComponent} from './view/components/side-menu/side-menu.component';
 import {SnackbarService} from './services/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { TaskletTodoComponent } from './view/components/tasklet-todo/tasklet-todo.component';
-import { TaskletDialogTodoComponent } from './view/dialogs/tasklet-dialog-todo/tasklet-dialog-todo.component';
-import { TaskletDialogDefaultComponent } from './view/dialogs/tasklet-dialog-default/tasklet-dialog-default.component';
-import { TaskletDefaultComponent } from './view/components/tasklet-default/tasklet-default.component';
+import {TaskletTodoComponent} from './view/components/tasklet-todo/tasklet-todo.component';
+import {TaskletDialogTodoComponent} from './view/dialogs/tasklet-dialog-todo/tasklet-dialog-todo.component';
+import {TaskletDialogDefaultComponent} from './view/dialogs/tasklet-dialog-default/tasklet-dialog-default.component';
+import {TaskletDefaultComponent} from './view/components/tasklet-default/tasklet-default.component';
 import {DateService} from './services/date.service';
 
 @NgModule({
@@ -70,6 +72,7 @@ import {DateService} from './services/date.service';
     MatSidenavModule,
     MatSnackBarModule,
     MatToolbarModule,
+    ReactiveFormsModule,
     ResponsiveModule
   ],
   entryComponents: [
