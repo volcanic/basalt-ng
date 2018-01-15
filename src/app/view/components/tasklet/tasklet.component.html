@@ -9,6 +9,9 @@
     <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
                          *ngSwitchDefault=""></app-tasklet-default>
   </div>
+  <span class="tag" *ngFor="let t of tasklet.tags">
+    <label class="tag-label">{{ t.value }}</label>
+  </span>
   <mat-card-footer>
     <div *ngIf="tasklet.creationDate != null" class="left-attached">{{ time }}</div>
   </mat-card-footer>
