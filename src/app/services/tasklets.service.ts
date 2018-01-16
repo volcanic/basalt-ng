@@ -73,20 +73,24 @@ export class TaskletsService {
       return date1 - date2;
     }).filter(c => {
       // Filter cards that match selected tags
-      let match = false;
+      if (c.tags != null) {
+        let match = false;
 
-      if (c.tags.length === 0) {
-        return true;
-      } else {
-        c.tags.forEach(ct => {
-          this.tags.forEach(t => {
-            if (ct.value === t.value && t.checked) {
-              match = true;
-            }
+        if (c.tags.length === 0) {
+          return true;
+        } else {
+          c.tags.forEach(ct => {
+            this.tags.forEach(t => {
+              if (ct.value === t.value && t.checked) {
+                match = true;
+              }
+            });
           });
-        });
 
-        return match;
+          return match;
+        }
+      } else {
+        return true;
       }
     });
 
@@ -103,19 +107,21 @@ export class TaskletsService {
     let ts = [];
 
     this.tasklets.forEach(tasklet => {
-      tasklet.tags.forEach(tag => {
-          let unique = true;
-          ts.forEach(t => {
-            if (tag.value === t.value) {
-              unique = false;
-            }
-          });
+      if (tasklet.tags != null) {
+        tasklet.tags.forEach(tag => {
+            let unique = true;
+            ts.forEach(t => {
+              if (tag.value === t.value) {
+                unique = false;
+              }
+            });
 
-          if (unique) {
-            ts.push(tag);
+            if (unique) {
+              ts.push(tag);
+            }
           }
-        }
-      );
+        );
+      }
     });
 
     this.tags = ts.sort((t1, t2) => {
