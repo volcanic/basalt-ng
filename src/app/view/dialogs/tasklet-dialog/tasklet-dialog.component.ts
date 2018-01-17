@@ -67,11 +67,13 @@ export class TaskletDialogComponent implements OnInit {
 
     // Get existing tags and add empty tag to new tags
     this.existingTags.forEach(et => {
-      this.tasklet.tags.forEach(t => {
-        if (et.value === t.value) {
-          et.checked = true;
-        }
-      });
+      if (this.tasklet.tags != null) {
+        this.tasklet.tags.forEach(t => {
+          if (et.value === t.value) {
+            et.checked = true;
+          }
+        });
+      }
     });
     this.newTags.push(new Tag('', false));
   }
