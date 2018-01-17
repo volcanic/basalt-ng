@@ -26,7 +26,7 @@ export class TaskletDialogComponent implements OnInit {
   taskOptions = [];
   filteredTaskOptions: Observable<string[]>;
 
-  myControl: FormControl = new FormControl();
+  formControl: FormControl = new FormControl();
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
@@ -55,7 +55,7 @@ export class TaskletDialogComponent implements OnInit {
     }
 
     this.taskOptions = this.taskletsService.getTasks();
-    this.filteredTaskOptions = this.myControl.valueChanges
+    this.filteredTaskOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),
         map(value => this.filterTasks(value))

@@ -1,6 +1,7 @@
 <app-toolbar
   class="fixed"
   [title]="title"
+  (onSearchItemChanged)="onSearchItemChanged($event)"
   (onMenuItemClicked)="onMenuItemClicked($event)"></app-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">

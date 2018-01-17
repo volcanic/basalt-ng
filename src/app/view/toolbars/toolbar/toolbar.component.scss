@@ -18,3 +18,26 @@ mat-toolbar {
 .flexbox {
   flex-grow: 1;
 }
+
+.searchbox {
+  background: rgba(255, 255, 255, .15);
+  width: 50%;
+
+  &:hover {
+    background: rgba(255, 255, 255, .25);
+  }
+
+  .search-input {
+    background-color: transparent;
+    border: 0;
+    border-radius: 2px;
+    color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100%;
+
+    &:focus {
+      outline-width: 0;
+    }
+  }
+}

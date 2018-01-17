@@ -2,15 +2,15 @@
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
     <form #formCtrl="ngForm">
-      <mat-form-field>
+      <mat-form-field color="primary">
         <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type" (change)="typeSelected($event)">
           <mat-option *ngFor="let item of taskletTypes" [value]="item">
             {{ item }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="wide-box">
-        <input matInput name="task" type="text" placeholder="Task" [formControl]="myControl"
+      <mat-form-field class="wide-box" color="primary">
+        <input matInput name="task" type="text" placeholder="Task" [formControl]="formControl"
                [(ngModel)]="tasklet.taskName"
                [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete">

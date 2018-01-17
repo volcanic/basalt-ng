@@ -65,6 +65,14 @@ export class TaskletsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Reacts on search item typed into the search box
+   * @param searchItem
+   */
+  onSearchItemChanged(searchItem: string) {
+    this.taskletsService.setSearchItem(searchItem.trim());
+  }
+
+  /**
    * Handles click on menu items
    * @param menuItem
    */

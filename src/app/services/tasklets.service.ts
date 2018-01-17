@@ -7,10 +7,15 @@ import {Tag} from '../model/tag.model';
 @Injectable()
 export class TaskletsService {
   tasklets = new Map<String, Tasklet>();
-  taskletsSubject = new Subject<Tasklet[]>();
   filteredTasklets = [];
 
+  taskletsSubject = new Subject<Tasklet[]>();
+  searchItemSubject = new Subject<string>();
+
   tags: Tag[] = [];
+
+  searchItems = [];
+  searchItem = '';
 
   constructor(private pouchDBService: PouchDBService) {
     this.pouchDBService.getChangeListener().subscribe(
@@ -48,13 +53,11 @@ export class TaskletsService {
    * Retrieves data from PouchDB
    */
   public fetch() {
-    console.log(`DEBUG fetch`);
     this.pouchDBService.fetch().then(result => {
         result.rows.forEach(r => {
           let tasklet = r.doc as Tasklet;
           console.log(`DEBUG fetch tasklet ${tasklet.id}`);
           this.tasklets.set(tasklet.id, tasklet);
-          console.log(`DEBUG ${this.tasklets.size}`);
         });
         this.notify();
       }, error => {
@@ -65,23 +68,28 @@ export class TaskletsService {
     );
   }
 
+  setSearchItem(searchItem: string) {
+    this.searchItemSubject.next(searchItem);
+    this.notify();
+  }
+
   public getFilteredTasklets(): Tasklet[] {
     this.filteredTasklets = Array.from(this.tasklets.values()).sort((t1: Tasklet, t2: Tasklet) => {
       let date1 = new Date(t1.creationDate).getTime();
       let date2 = new Date(t2.creationDate).getTime();
 
       return date1 - date2;
-    }).filter(c => {
-      // Filter cards that match selected tags
-      if (c.tags != null) {
+    }).filter(tasklet => {
+      // Filter tasklets that match selected tags
+      if (tasklet.tags != null) {
         let match = false;
 
-        if (c.tags.length === 0) {
+        if (tasklet.tags.length === 0) {
           return true;
         } else {
-          c.tags.forEach(ct => {
-            this.tags.forEach(t => {
-              if (ct.value === t.value && t.checked) {
+          tasklet.tags.forEach(taskletTag => {
+            this.tags.forEach(tag => {
+              if (taskletTag.value === tag.value && tag.checked) {
                 match = true;
               }
             });
@@ -92,9 +100,27 @@ export class TaskletsService {
       } else {
         return true;
       }
+    }).filter(t => {
+      if (this.searchItem !== '') {
+        return t.text.toLowerCase().includes(this.searchItem.toLowerCase());
+      } else {
+        return true;
+      }
     });
 
     return this.filteredTasklets;
+  }
+
+  getSearchItems(): string[] {
+    this.searchItems = [];
+
+    this.tasklets.forEach(t => {
+      t.text.split('\n').forEach(v => {
+        this.searchItems.push(v);
+      });
+    });
+
+    return this.searchItems;
   }
 
   /**
@@ -102,8 +128,6 @@ export class TaskletsService {
    * @returns {Tag[]}
    */
   getAllTags(): Tag[] {
-    console.log(`getAllTags`);
-    console.log(`DEBUG ${this.tasklets.size}`);
     let ts = [];
 
     this.tasklets.forEach(tasklet => {
@@ -139,10 +163,10 @@ export class TaskletsService {
    * Informs subscribers that something has changed
    */
   private notify() {
-    console.log(`DEBUG notify`);
     this.tags = this.getAllTags();
     this.filteredTasklets = this.getFilteredTasklets();
     this.taskletsSubject.next(this.filteredTasklets);
+    this.searchItems = this.getSearchItems();
   }
 
   public getTasks(): string[] {
