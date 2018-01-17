@@ -20,8 +20,6 @@ export class TaskletTodoComponent implements OnInit {
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
-    iconRegistry.addSvgIcon('done', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_done_grey_24px.svg'));
-    iconRegistry.addSvgIcon('undone', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_undone_grey_24px.svg'));
   }
 
   ngOnInit() {
@@ -30,9 +28,7 @@ export class TaskletTodoComponent implements OnInit {
     this.dueDate = this.dateService.getDate(this.tasklet.dueDate);
   }
 
-  toggleDone() {
-    this.tasklet.done = !this.tasklet.done;
-    this.iconDone = this.tasklet.done ? 'done' : 'undone';
+  onToggledDone() {
     this.onActionFired.next('save');
   }
 }
