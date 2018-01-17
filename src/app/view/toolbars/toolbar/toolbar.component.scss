@@ -36,6 +36,9 @@ mat-toolbar {
     margin-right: 10px;
     width: 100%;
 
+    font-size: 90%;
+    font-weight: 400;
+
     &:focus {
       outline-width: 0;
     }
