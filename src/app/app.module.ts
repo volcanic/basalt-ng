@@ -8,7 +8,8 @@ import {ToolbarComponent} from './view/toolbars/toolbar/toolbar.component';
 import {
   MatAutocompleteModule,
   MatButtonModule,
-  MatCardModule, MatCheckboxModule,
+  MatCardModule,
+  MatCheckboxModule,
   MatDatepickerModule,
   MatDialogModule,
   MatIconModule,
@@ -38,6 +39,7 @@ import {TaskletDialogDefaultComponent} from './view/dialogs/tasklet-dialog-defau
 import {TaskletDefaultComponent} from './view/components/tasklet-default/tasklet-default.component';
 import {DateService} from './services/date.service';
 import {TagDialogComponent} from './view/dialogs/tag-dialog/tag-dialog.component';
+import {MatchService} from './services/match.service';
 
 @NgModule({
   declarations: [
@@ -86,6 +88,7 @@ import {TagDialogComponent} from './view/dialogs/tag-dialog/tag-dialog.component
   providers: [
     MatIconRegistry,
     DateService,
+    MatchService,
     PouchDBService,
     SnackbarService,
     TaskletsService

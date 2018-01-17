@@ -3,6 +3,7 @@ import {Tasklet} from '../model/tasklet.model';
 import {Subject} from 'rxjs/Subject';
 import {PouchDBService} from './pouchdb.service';
 import {Tag} from '../model/tag.model';
+import {MatchService} from './match.service';
 
 @Injectable()
 export class TaskletsService {
@@ -17,7 +18,8 @@ export class TaskletsService {
   searchItems = [];
   searchItem = '';
 
-  constructor(private pouchDBService: PouchDBService) {
+  constructor(private pouchDBService: PouchDBService,
+              private matchService: MatchService) {
     this.pouchDBService.getChangeListener().subscribe(
       item => {
         console.log(`DEBUG pouchDBService item`);
@@ -102,7 +104,9 @@ export class TaskletsService {
       }
     }).filter(t => {
       if (this.searchItem !== '') {
-        return t.text.toLowerCase().includes(this.searchItem.toLowerCase());
+        return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
+
+        // return t.text.toLowerCase().includes(this.searchItem.toLowerCase());
       } else {
         return true;
       }
