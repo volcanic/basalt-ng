@@ -1,0 +1,22 @@
+<app-todos-toolbar
+  class="fixed"
+  [title]="title"
+  (onSearchItemChanged)="onSearchItemChanged($event)"
+  (onMenuItemClicked)="onMenuItemClicked($event)"></app-todos-toolbar>
+
+<mat-sidenav-container class="sidenav-container" layout="column">
+  <mat-sidenav #sidenav mode="side" class="sidenav">
+    <app-side-menu (onMenuItemClicked)="onSideMenuItemClicked($event)"></app-side-menu>
+  </mat-sidenav>
+
+  <div class="content">
+
+    <app-tasklet *ngFor="let t of tasklets.reverse()" [tasklet]="t">
+    </app-tasklet>
+
+    <button mat-fab class="fab" (click)="onMenuItemClicked('add')">
+      <mat-icon svgIcon="add"></mat-icon>
+    </button>
+  </div>
+
+</mat-sidenav-container>

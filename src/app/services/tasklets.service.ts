@@ -4,6 +4,7 @@ import {Subject} from 'rxjs/Subject';
 import {PouchDBService} from './pouchdb.service';
 import {Tag} from '../model/tag.model';
 import {MatchService} from './match.service';
+import {TASKLET_TYPE} from '../model/tasklet-type.enum';
 
 @Injectable()
 export class TaskletsService {
@@ -55,11 +56,34 @@ export class TaskletsService {
    * Retrieves data from PouchDB
    */
   public fetch() {
+    this.tasklets.clear();
     this.pouchDBService.fetch().then(result => {
         result.rows.forEach(r => {
           let tasklet = r.doc as Tasklet;
           console.log(`DEBUG fetch tasklet ${tasklet.id}`);
           this.tasklets.set(tasklet.id, tasklet);
+        });
+        this.notify();
+      }, error => {
+        if (isDevMode()) {
+          console.error(error);
+        }
+      }
+    );
+  }
+
+  /**
+   * Retrieves data from PouchDB
+   */
+  public fetchByType(type: TASKLET_TYPE) {
+    this.tasklets.clear();
+    this.pouchDBService.fetch().then(result => {
+        result.rows.forEach(r => {
+          let tasklet = r.doc as Tasklet;
+          if (tasklet.type === type) {
+            console.log(`DEBUG fetch tasklet ${tasklet.id}`);
+            this.tasklets.set(tasklet.id, tasklet);
+          }
         });
         this.notify();
       }, error => {
@@ -105,8 +129,6 @@ export class TaskletsService {
     }).filter(t => {
       if (this.searchItem !== '') {
         return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
-
-        // return t.text.toLowerCase().includes(this.searchItem.toLowerCase());
       } else {
         return true;
       }

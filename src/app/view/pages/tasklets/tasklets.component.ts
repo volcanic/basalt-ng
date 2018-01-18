@@ -17,7 +17,6 @@ import {TagDialogComponent} from '../../dialogs/tag-dialog/tag-dialog.component'
 export class TaskletsComponent implements OnInit, OnDestroy {
   title = 'Basalt';
   tasklets: Tasklet[] = [];
-  dropContent: Subject<Tasklet> = new Subject();
   private taskletsUnsubscribeSubject = new Subject();
 
   @ViewChild('sidenav') sidenav: MatSidenav;
@@ -43,10 +42,6 @@ export class TaskletsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.tasklets = [];
     this.taskletsService.fetch();
-
-    this.dropContent.asObservable().subscribe((result) => {
-      this.taskletsService.createTasklet(result);
-    });
 
     this.taskletsService.taskletsSubject
       .takeUntil(this.taskletsUnsubscribeSubject)

@@ -4,7 +4,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {ResponsiveModule} from 'ng2-responsive';
-import {ToolbarComponent} from './view/toolbars/toolbar/toolbar.component';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -40,6 +39,9 @@ import {TaskletDefaultComponent} from './view/components/tasklet-default/tasklet
 import {DateService} from './services/date.service';
 import {TagDialogComponent} from './view/dialogs/tag-dialog/tag-dialog.component';
 import {MatchService} from './services/match.service';
+import {TodosComponent} from './view/pages/todos/todos.component';
+import {TodosToolbarComponent} from './view/toolbars/todos-toolbar/todos-toolbar.component';
+import {TaskletsToolbarComponent} from './view/toolbars/tasklet-toolbar/tasklets-toolbar.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import {MatchService} from './services/match.service';
     TaskletComponent,
     TaskletDialogComponent,
     TaskletsComponent,
-    ToolbarComponent,
+    TaskletsToolbarComponent,
+    TodosComponent,
+    TodosToolbarComponent,
     TaskletTodoComponent,
     TaskletDialogTodoComponent,
     TaskletDialogDefaultComponent,
