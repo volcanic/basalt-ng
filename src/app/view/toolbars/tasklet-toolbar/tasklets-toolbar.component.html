@@ -3,7 +3,7 @@
     <span class="toolbar-title">{{ title }}</span>
   </div>
   <div class="flexbox"></div>
-  <div class="toolbar-block searchbox">
+  <div class="searchbox">
     <input class="search-input" matInput #search name="search" type="text" placeholder="Search"
            [formControl]="formControl"
            [(ngModel)]="taskletsService.searchItem"
@@ -17,10 +17,12 @@
     </mat-autocomplete>
   </div>
   <div class="flexbox"></div>
-  <button mat-button class="toolbar-menu-item" (click)="onClickMenuItem('tags')">
-    <mat-icon svgIcon="label"></mat-icon>
-  </button>
-  <button mat-button class="toolbar-menu-item" [routerLink]="['/todos']">
-    <mat-icon svgIcon="timer"></mat-icon>
-  </button>
+  <div class="toolbar-block">
+    <button mat-button class="toolbar-menu-item" (click)="onClickMenuItem('tags')">
+      <mat-icon svgIcon="label"></mat-icon>
+    </button>
+    <button mat-button class="toolbar-menu-item" [routerLink]="['/todos']">
+      <mat-icon svgIcon="timer"></mat-icon>
+    </button>
+  </div>
 </mat-toolbar>
