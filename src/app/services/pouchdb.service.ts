@@ -97,7 +97,7 @@ export class PouchDBService {
    */
   public sync(remote: string) {
     console.log(`DEBUG sync ${remote}`);
-    let remoteDatabase = new PouchDB(remote);
+    const remoteDatabase = new PouchDB(remote);
     this.database.sync(remoteDatabase, {
       live: true
     }).on('change', change => {
@@ -108,7 +108,7 @@ export class PouchDBService {
   }
 
   public syncWithUser(remote: string, username: string, password: string) {
-    let remoteDatabase = new PouchDB(remote);
+    const remoteDatabase = new PouchDB(remote);
     this.database.sync(remoteDatabase, {
       live: true,
       auth: {

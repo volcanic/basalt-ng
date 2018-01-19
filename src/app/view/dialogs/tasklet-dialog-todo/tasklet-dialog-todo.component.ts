@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletTodo} from '../../../model/tasklet-todo.model';
 
 @Component({

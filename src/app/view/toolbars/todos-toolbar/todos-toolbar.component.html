@@ -6,7 +6,7 @@
   <div class="searchbox">
     <input class="search-input" matInput #search name="search" type="text" placeholder="Search"
            [formControl]="formControl"
-           [(ngModel)]="taskletsService.searchItem"
+           [(ngModel)]="searchItem"
            [matAutocomplete]="auto"
            (keyup)="onChangeSearchItem(search.value)"
            (click)="onClickInput()">
@@ -19,10 +19,10 @@
   <div class="flexbox"></div>
   <div class="toolbar-block">
     <button mat-button class="toolbar-menu-item" (click)="onClickMenuItem('tags')">
-      <mat-icon svgIcon="label"></mat-icon>
+      <mat-icon svgIcon="label_white"></mat-icon>
     </button>
     <button mat-button class="toolbar-menu-item" [routerLink]="['/tasklets']">
-      <mat-icon svgIcon="list"></mat-icon>
+      <mat-icon svgIcon="list_white"></mat-icon>
     </button>
   </div>
 </mat-toolbar>

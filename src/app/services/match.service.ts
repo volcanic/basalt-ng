@@ -132,7 +132,7 @@ export class MatchService {
       return [];
     }
 
-    let itemArray = this.normalize(items).match(/\w+|"[^"]+"/g);
+    const itemArray = this.normalize(items).match(/\w+|"[^"]+"/g);
 
     if (itemArray == null) {
       return [];

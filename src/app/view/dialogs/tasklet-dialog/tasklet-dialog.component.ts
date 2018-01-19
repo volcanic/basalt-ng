@@ -78,9 +78,6 @@ export class TaskletDialogComponent implements OnInit {
     this.newTags.push(new Tag('', false));
   }
 
-  typeSelected(type: string) {
-  }
-
   addTasklet() {
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
@@ -92,7 +89,7 @@ export class TaskletDialogComponent implements OnInit {
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.TODO: {
-        let taskletTodo = this.tasklet as TaskletTodo;
+        const taskletTodo = this.tasklet as TaskletTodo;
         taskletTodo.done = false;
         this.dialogRef.close(taskletTodo);
         break;
@@ -127,7 +124,7 @@ export class TaskletDialogComponent implements OnInit {
       option.toLowerCase().includes(val.toLowerCase()));
   }
 
-  tagChanged(value: string) {
+  tagChanged() {
     let noEmptyTag = true;
 
     this.newTags.forEach((t: Tag) => {

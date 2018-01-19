@@ -3,7 +3,7 @@
   <mat-dialog-content>
     <form #formCtrl="ngForm">
       <mat-form-field color="primary">
-        <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type" (change)="typeSelected($event)">
+        <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type">
           <mat-option *ngFor="let item of taskletTypes" [value]="item">
             {{ item }}
           </mat-option>
@@ -31,7 +31,7 @@
     <div *ngFor="let n of newTags">
       <mat-checkbox [(ngModel)]=n.checked>
         <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.value"
-               (ngModelChange)="tagChanged($event)"/>
+               (ngModelChange)="tagChanged()"/>
       </mat-checkbox>
     </div>
   </mat-dialog-content>

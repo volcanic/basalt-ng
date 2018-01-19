@@ -9,7 +9,8 @@ import {Tasklet} from '../../../model/tasklet.model';
 export class TaskletDialogDefaultComponent implements OnInit {
   @Input() tasklet: Tasklet;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

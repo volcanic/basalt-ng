@@ -1,9 +1,10 @@
-import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/debounceTime';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatIconRegistry, MatSidenav} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Http} from '@angular/http';
 import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
@@ -21,37 +22,41 @@ export class TaskletsComponent implements OnInit, OnDestroy {
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
-  private windowHeight = 0;
-  private windowWidth = 0;
+  // private windowHeight = 0;
+  // private windowWidth = 0;
 
   constructor(private taskletsService: TaskletsService,
               private snackbarService: SnackbarService,
-              private http: Http,
               public dialog: MatDialog,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_white_24px.svg'));
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.windowHeight = event.target.innerHeight;
-    this.windowWidth = event.target.innerWidth;
-  }
+  /*
+   @HostListener('window:resize', ['$event'])
+   onResize(event) {
+   this.windowHeight = event.target.innerHeight;
+   this.windowWidth = event.target.innerWidth;
+   }
+   */
 
   ngOnInit() {
-    this.tasklets = [];
-    this.taskletsService.fetch();
-
     this.taskletsService.taskletsSubject
       .takeUntil(this.taskletsUnsubscribeSubject)
       .subscribe((value) => {
         if (value != null) {
-          this.tasklets = value;
+          this.tasklets = value.sort((t1: Tasklet, t2: Tasklet) => {
+            const date1 = new Date(t1.creationDate).getTime();
+            const date2 = new Date(t2.creationDate).getTime();
+
+            return date2 - date1;
+          });
         } else {
           this.tasklets = [];
         }
       });
+    this.taskletsService.taskletsSubject.next(this.taskletsService.filteredTasklets);
   }
 
   ngOnDestroy(): void {
@@ -82,7 +87,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         break;
       }
       case 'add': {
-        let dialogRef = this.dialog.open(TaskletDialogComponent, {disableClose: false});
+        const dialogRef = this.dialog.open(TaskletDialogComponent, {disableClose: false});
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             console.log(`DEBUG ${JSON.stringify(result as Tasklet)}`);
@@ -93,7 +98,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         break;
       }
       case 'tags': {
-        let dialogRef = this.dialog.open(TagDialogComponent, {
+        const dialogRef = this.dialog.open(TagDialogComponent, {
           disableClose: true,
           data: {
             dialogTitle: 'Select tags',

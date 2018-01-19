@@ -8,7 +8,7 @@ export class DateService {
 
   getTime(date: Date): string {
     if (date != null) {
-      let MINUTES_INTERVAL = 5;
+      const MINUTES_INTERVAL = 5;
 
       let hours = new Date(date).getHours();
       let minutes = Math.ceil(new Date(date).getMinutes() / MINUTES_INTERVAL) * MINUTES_INTERVAL;
@@ -41,10 +41,10 @@ export class DateService {
   }
 
   getDate(date: Date): string {
-    let weekday = this.getWeekDayString(new Date(date).getDay());
-    let day = new Date(date).getDate();
-    let month = this.getMonthString(new Date(date).getMonth());
-    let year = new Date(date).getFullYear();
+    const weekday = this.getWeekDayString(new Date(date).getDay());
+    const day = new Date(date).getDate();
+    const month = this.getMonthString(new Date(date).getMonth());
+    const year = new Date(date).getFullYear();
     return `${weekday}, ${day} ${month} ${year}`;
   }
 
@@ -119,15 +119,19 @@ export class DateService {
     return new Date(d1).setHours(0, 0, 0, 0) < new Date(d2).setHours(0, 0, 0, 0);
   }
 
+  isAfter(d1: Date, d2: Date) {
+    return new Date(d1).setHours(0, 0, 0, 0) > new Date(d2).setHours(0, 0, 0, 0);
+  }
+
   isToday(date: Date, now: Date) {
     return new Date(date).setHours(0, 0, 0, 0) === new Date(now).setHours(0, 0, 0, 0);
   }
 
   getBeginningOfTheWeek(date: Date): Date {
-    let beginningOfTheWeek = new Date();
+    const beginningOfTheWeek = new Date();
 
-    let currentWeekDay = new Date(date).getDay();
-    let daysFromMonday = currentWeekDay === 0 ? 6 : currentWeekDay - 1;
+    const currentWeekDay = new Date(date).getDay();
+    const daysFromMonday = currentWeekDay === 0 ? 6 : currentWeekDay - 1;
 
     beginningOfTheWeek.setHours(0, 0, 0, 0);
     beginningOfTheWeek.setDate(date.getDate() - daysFromMonday);
@@ -136,10 +140,10 @@ export class DateService {
   }
 
   getEndOfTheWeek(date: Date): Date {
-    let endOfTheWeek = new Date();
+    const endOfTheWeek = new Date();
 
-    let currentWeekDay = new Date(date).getDay();
-    let daysTillSunday = currentWeekDay === 0 ? 0 : 7 - currentWeekDay;
+    const currentWeekDay = new Date(date).getDay();
+    const daysTillSunday = currentWeekDay === 0 ? 0 : 7 - currentWeekDay;
 
     endOfTheWeek.setHours(23, 59, 59, 0);
     endOfTheWeek.setDate(date.getDate() + daysTillSunday);

@@ -42,6 +42,7 @@ import {MatchService} from './services/match.service';
 import {TodosComponent} from './view/pages/todos/todos.component';
 import {TodosToolbarComponent} from './view/toolbars/todos-toolbar/todos-toolbar.component';
 import {TaskletsToolbarComponent} from './view/toolbars/tasklet-toolbar/tasklets-toolbar.component';
+import { TodoComponent } from './view/components/todo/todo.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {TaskletsToolbarComponent} from './view/toolbars/tasklet-toolbar/tasklets
     TaskletTodoComponent,
     TaskletDialogTodoComponent,
     TaskletDialogDefaultComponent,
-    TaskletDefaultComponent
+    TaskletDefaultComponent,
+    TodoComponent
   ],
   imports: [
     AppRoutingModule,

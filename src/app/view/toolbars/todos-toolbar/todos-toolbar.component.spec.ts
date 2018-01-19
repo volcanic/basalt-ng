@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {TodotToolbarComponent} from './todos-toolbar.component';
+import {TodosToolbarComponent} from './todos-toolbar.component';
 
-describe('TodotToolbarComponent', () => {
-  let component: TodotToolbarComponent;
-  let fixture: ComponentFixture<TodotToolbarComponent>;
+describe('TodosToolbarComponent', () => {
+  let component: TodosToolbarComponent;
+  let fixture: ComponentFixture<TodosToolbarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TodotToolbarComponent]
+      declarations: [TodosToolbarComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TodotToolbarComponent);
+    fixture = TestBed.createComponent(TodosToolbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

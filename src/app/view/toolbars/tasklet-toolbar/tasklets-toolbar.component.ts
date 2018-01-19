@@ -17,6 +17,7 @@ export class TaskletsToolbarComponent  implements OnInit {
   @Output() onSearchItemChanged = new EventEmitter<string>();
   @Output() onMenuItemClicked = new EventEmitter<string>();
 
+  searchItem = '';
   searchOptions = [];
   filteredSearchOptions: Observable<string[]>;
 
@@ -27,11 +28,12 @@ export class TaskletsToolbarComponent  implements OnInit {
   constructor(private taskletsService: TaskletsService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('label', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_label_outline_white_24px.svg'));
-    iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_white_24px.svg'));
+    iconRegistry.addSvgIcon('label_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_label_outline_white_24px.svg'));
+    iconRegistry.addSvgIcon('timer_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_white_24px.svg'));
   }
 
   ngOnInit() {
+    this.searchItem = this.taskletsService.searchItem;
     this.searchOptions = this.taskletsService.searchItems;
 
     this.filteredSearchOptions = this.formControl.valueChanges

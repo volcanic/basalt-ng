@@ -1,23 +1,25 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
-import {TaskletsService} from '../../../services/tasklets.service';
 import {Tasklet} from '../../../model/tasklet.model';
+import {TaskletTodo} from '../../../model/tasklet-todo.model';
+import {TaskletsService} from '../../../services/tasklets.service';
 import {SnackbarService} from '../../../services/snackbar.service';
+import {DateService} from '../../../services/date.service';
+import {DomSanitizer} from '@angular/platform-browser';
 import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
-import {DateService} from '../../../services/date.service';
 
 @Component({
-  selector: 'app-tasklet',
-  templateUrl: './tasklet.component.html',
-  styles: [require('./tasklet.component.scss')]
+  selector: 'app-todo',
+  templateUrl: './todo.component.html',
+  styleUrls: ['./todo.component.scss']
 })
-export class TaskletComponent implements OnInit {
-  @Input() tasklet: Tasklet;
+export class TodoComponent implements OnInit {
+  @Input() tasklet: TaskletTodo;
 
   time = '';
   date = '';
+  dueDate = '';
 
   constructor(private taskletsService: TaskletsService,
               private snackbarService: SnackbarService,
@@ -33,6 +35,7 @@ export class TaskletComponent implements OnInit {
   ngOnInit() {
     this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
+    this.dueDate = this.dateService.getDate(new Date(this.tasklet.dueDate));
   }
 
   onActionFired(action: string) {
@@ -77,5 +80,9 @@ export class TaskletComponent implements OnInit {
         this.snackbarService.showSnackbar('Deleted tasklet', '');
       }
     });
+  }
+
+  onToggledDone() {
+    this.taskletsService.updateTasklet(this.tasklet);
   }
 }

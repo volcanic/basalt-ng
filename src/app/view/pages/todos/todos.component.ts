@@ -1,14 +1,17 @@
-import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/debounceTime';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatIconRegistry, MatSidenav} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Http} from '@angular/http';
 import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
 import {TagDialogComponent} from '../../dialogs/tag-dialog/tag-dialog.component';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {TaskletTodo} from '../../../model/tasklet-todo.model';
+import {DateService} from '../../../services/date.service';
 
 @Component({
   selector: 'app-tasklets',
@@ -17,42 +20,70 @@ import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 })
 export class TodosComponent implements OnInit, OnDestroy {
   title = 'Basalt > TODO';
-  tasklets: Tasklet[] = [];
+  tasklets: TaskletTodo[] = [];
+  taskletsOverdue: TaskletTodo[] = [];
+  taskletsToday: TaskletTodo[] = [];
+  taskletsThisWeek: TaskletTodo[] = [];
+  taskletsNextWeek: TaskletTodo[] = [];
+
   private taskletsUnsubscribeSubject = new Subject();
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
-  private windowHeight = 0;
-  private windowWidth = 0;
+  // private windowHeight = 0;
+  // private windowWidth = 0;
 
   constructor(private taskletsService: TaskletsService,
+              private dateService: DateService,
               private snackbarService: SnackbarService,
-              private http: Http,
               public dialog: MatDialog,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_white_24px.svg'));
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.windowHeight = event.target.innerHeight;
-    this.windowWidth = event.target.innerWidth;
-  }
+  /*
+   @HostListener('window:resize', ['$event'])
+   onResize(event) {
+   this.windowHeight = event.target.innerHeight;
+   this.windowWidth = event.target.innerWidth;
+   }
+   */
 
   ngOnInit() {
-    this.tasklets = [];
-    this.taskletsService.fetchByType(TASKLET_TYPE.TODO);
-
     this.taskletsService.taskletsSubject
       .takeUntil(this.taskletsUnsubscribeSubject)
       .subscribe((value) => {
         if (value != null) {
-          this.tasklets = value;
+          this.tasklets = (value as TaskletTodo[]).filter(tasklet => {
+            return tasklet.type === TASKLET_TYPE.TODO;
+          }).filter(tasklet => {
+            return !(tasklet as TaskletTodo).done;
+          }).sort((t1: TaskletTodo, t2: TaskletTodo) => {
+            const date1 = new Date(t1.dueDate).getTime();
+            const date2 = new Date(t2.dueDate).getTime();
+
+            return date2 - date1;
+          });
         } else {
           this.tasklets = [];
         }
+
+        const now = new Date();
+
+        this.taskletsOverdue = this.tasklets.filter(tasklet => {
+          return this.dateService.isBefore(tasklet.dueDate, now);
+        });
+        this.taskletsToday = this.tasklets.filter(tasklet => {
+          return this.dateService.isToday(tasklet.dueDate, now);
+        });
+        this.taskletsThisWeek = this.tasklets.filter(tasklet => {
+          return this.dateService.isThisWeek(tasklet.dueDate, now) && this.dateService.isAfter(tasklet.dueDate, now);
+        });
       });
+
+
+    this.taskletsService.taskletsSubject.next(this.taskletsService.filteredTasklets);
   }
 
   ngOnDestroy(): void {
@@ -83,7 +114,7 @@ export class TodosComponent implements OnInit, OnDestroy {
         break;
       }
       case 'add': {
-        let dialogRef = this.dialog.open(TaskletDialogComponent, {disableClose: false});
+        const dialogRef = this.dialog.open(TaskletDialogComponent, {disableClose: false});
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             console.log(`DEBUG ${JSON.stringify(result as Tasklet)}`);
@@ -94,7 +125,7 @@ export class TodosComponent implements OnInit, OnDestroy {
         break;
       }
       case 'tags': {
-        let dialogRef = this.dialog.open(TagDialogComponent, {
+        const dialogRef = this.dialog.open(TagDialogComponent, {
           disableClose: true,
           data: {
             dialogTitle: 'Select tags',

@@ -4,7 +4,6 @@ import {Subject} from 'rxjs/Subject';
 import {PouchDBService} from './pouchdb.service';
 import {Tag} from '../model/tag.model';
 import {MatchService} from './match.service';
-import {TASKLET_TYPE} from '../model/tasklet-type.enum';
 
 @Injectable()
 export class TaskletsService {
@@ -25,7 +24,7 @@ export class TaskletsService {
       item => {
         console.log(`DEBUG pouchDBService item`);
         (item['change']['docs']).forEach(d => {
-          let tasklet = d as Tasklet;
+          const tasklet = d as Tasklet;
           this.tasklets.set(tasklet.id, tasklet);
           this.notify();
         });
@@ -59,31 +58,9 @@ export class TaskletsService {
     this.tasklets.clear();
     this.pouchDBService.fetch().then(result => {
         result.rows.forEach(r => {
-          let tasklet = r.doc as Tasklet;
+          const tasklet = r.doc as Tasklet;
           console.log(`DEBUG fetch tasklet ${tasklet.id}`);
           this.tasklets.set(tasklet.id, tasklet);
-        });
-        this.notify();
-      }, error => {
-        if (isDevMode()) {
-          console.error(error);
-        }
-      }
-    );
-  }
-
-  /**
-   * Retrieves data from PouchDB
-   */
-  public fetchByType(type: TASKLET_TYPE) {
-    this.tasklets.clear();
-    this.pouchDBService.fetch().then(result => {
-        result.rows.forEach(r => {
-          let tasklet = r.doc as Tasklet;
-          if (tasklet.type === type) {
-            console.log(`DEBUG fetch tasklet ${tasklet.id}`);
-            this.tasklets.set(tasklet.id, tasklet);
-          }
         });
         this.notify();
       }, error => {
@@ -100,12 +77,7 @@ export class TaskletsService {
   }
 
   public getFilteredTasklets(): Tasklet[] {
-    this.filteredTasklets = Array.from(this.tasklets.values()).sort((t1: Tasklet, t2: Tasklet) => {
-      let date1 = new Date(t1.creationDate).getTime();
-      let date2 = new Date(t2.creationDate).getTime();
-
-      return date1 - date2;
-    }).filter(tasklet => {
+    this.filteredTasklets = Array.from(this.tasklets.values()).filter(tasklet => {
       // Filter tasklets that match selected tags
       if (tasklet.tags != null) {
         let match = false;
@@ -132,6 +104,11 @@ export class TaskletsService {
       } else {
         return true;
       }
+    }).sort((t1: Tasklet, t2: Tasklet) => {
+      const date1 = new Date(t1.creationDate).getTime();
+      const date2 = new Date(t2.creationDate).getTime();
+
+      return date1 - date2;
     });
 
     return this.filteredTasklets;
@@ -154,7 +131,7 @@ export class TaskletsService {
    * @returns {Tag[]}
    */
   getAllTags(): Tag[] {
-    let ts = [];
+    const ts = [];
 
     this.tasklets.forEach(tasklet => {
       if (tasklet.tags != null) {
@@ -196,7 +173,7 @@ export class TaskletsService {
   }
 
   public getTasks(): string[] {
-    let tasks = new Map<string, string>();
+    const tasks = new Map<string, string>();
 
     this.getFilteredTasklets().forEach(t => {
       if (t.taskName != null) {

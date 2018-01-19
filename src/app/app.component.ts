@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SnackbarService} from './services/snackbar.service';
 import {PouchDBService} from './services/pouchdb.service';
 import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {TaskletsService} from './services/tasklets.service';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +12,14 @@ import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 export class AppComponent implements OnInit {
   title = 'Basalt';
 
-  constructor(private snackbarService: SnackbarService,
+  constructor(private taskletsService: TaskletsService,
+              private snackbarService: SnackbarService,
               private pouchDBService: PouchDBService,
               public snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
+    this.taskletsService.fetch();
     this.snackbarService.messageSubject.subscribe(
       (snack) => {
         this.openSnackBar(snack[0], snack[1]);
