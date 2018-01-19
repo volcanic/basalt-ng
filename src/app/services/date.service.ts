@@ -114,4 +114,43 @@ export class DateService {
       }
     }
   }
+
+  isBefore(d1: Date, d2: Date) {
+    return new Date(d1).setHours(0, 0, 0, 0) < new Date(d2).setHours(0, 0, 0, 0);
+  }
+
+  isToday(date: Date, now: Date) {
+    return new Date(date).setHours(0, 0, 0, 0) === new Date(now).setHours(0, 0, 0, 0);
+  }
+
+  getBeginningOfTheWeek(date: Date): Date {
+    let beginningOfTheWeek = new Date();
+
+    let currentWeekDay = new Date(date).getDay();
+    let daysFromMonday = currentWeekDay === 0 ? 6 : currentWeekDay - 1;
+
+    beginningOfTheWeek.setHours(0, 0, 0, 0);
+    beginningOfTheWeek.setDate(date.getDate() - daysFromMonday);
+
+    return beginningOfTheWeek;
+  }
+
+  getEndOfTheWeek(date: Date): Date {
+    let endOfTheWeek = new Date();
+
+    let currentWeekDay = new Date(date).getDay();
+    let daysTillSunday = currentWeekDay === 0 ? 0 : 7 - currentWeekDay;
+
+    endOfTheWeek.setHours(23, 59, 59, 0);
+    endOfTheWeek.setDate(date.getDate() + daysTillSunday);
+
+    return endOfTheWeek;
+  }
+
+  isThisWeek(date: Date, now: Date) {
+    let endOfTheWeek = this.getEndOfTheWeek(new Date(now));
+    let beginningOfTheWeek = this.getBeginningOfTheWeek(new Date(now));
+
+    return new Date(date) >= beginningOfTheWeek && new Date(date) <= endOfTheWeek;
+  }
 }
