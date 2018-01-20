@@ -69,6 +69,9 @@ export class TaskletsService {
         }
       }
     );
+    this.searchItemSubject.subscribe(searchItem => {
+      this.searchItem = searchItem;
+    });
   }
 
   setSearchItem(searchItem: string) {
@@ -99,6 +102,7 @@ export class TaskletsService {
         return true;
       }
     }).filter(t => {
+      console.log(`DEBUG searchItem ${this.searchItem}`);
       if (this.searchItem !== '') {
         return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
       } else {
@@ -119,7 +123,9 @@ export class TaskletsService {
 
     this.tasklets.forEach(t => {
       t.text.split('\n').forEach(v => {
-        this.searchItems.push(v);
+        if (v.trim() !== '') {
+          this.searchItems.push(v.trim().replace(/(^-)/g, ''));
+        }
       });
     });
 
