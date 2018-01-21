@@ -1,0 +1,32 @@
+@import '../../../../theme';
+
+#logo {
+  position: absolute;
+  height: 175px;
+  width: 175px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transition: all 3.5s ease;
+
+  &:hover {
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    filter: grayscale(0%);
+    transition: all 1.5s ease;
+  }
+}
+
+#vendor {
+  position: absolute;
+  bottom: 20px;
+  text-align: center;
+  width: 100%;
+  font-size: 1.6em;
+  color: #CDCDCD;
+  font-weight: 500;
+}

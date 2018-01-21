@@ -43,11 +43,13 @@ import {TodosToolbarComponent} from './view/toolbars/todos-toolbar/todos-toolbar
 import {TaskletsToolbarComponent} from './view/toolbars/tasklet-toolbar/tasklets-toolbar.component';
 import {TodoComponent} from './view/components/todo/todo.component';
 import {TodosSideMenuStartComponent} from './view/sidemenus/todos-side-menu-start/todos-side-menu-start.component';
+import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfirmationDialogComponent,
+    SplashScreenComponent,
     TagDialogComponent,
     TaskletComponent,
     TaskletsComponent,

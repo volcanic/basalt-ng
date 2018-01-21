@@ -6,19 +6,20 @@
   <base href="./">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#00bcd4">
+  <meta name="theme-color" content="#607d8b">
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <app-root>Loading...</app-root>
+  <app-root>
+  </app-root>
 </body>
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+    navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
       // Registration was successful
       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }).catch(function(err) {
+    }).catch(function (err) {
       // registration failed :(
       console.log('ServiceWorker registration failed: ', err);
     });
