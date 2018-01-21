@@ -14,6 +14,19 @@
 .sidenav {
   background: transparent;
   width: 232px;
+
+  @media #{$mat-small} {
+    padding-top: 88px;
+    margin-right: 10px;
+  }
+  @media #{$mat-medium} {
+    padding-top: 88px;
+    margin-right: 20px;
+  }
+  @media #{$mat-large} {
+    padding-top: 88px;
+    margin-right: 40px;
+  }
 }
 
 .content {
@@ -48,21 +61,6 @@
     @media #{$mat-large} {
       width: 450px;
     }
-  }
-}
-
-.sidenav {
-  @media #{$mat-small} {
-    padding-top: 88px;
-    margin-right: 10px;
-  }
-  @media #{$mat-medium} {
-    padding-top: 88px;
-    margin-right: 20px;
-  }
-  @media #{$mat-large} {
-    padding-top: 88px;
-    margin-right: 40px;
   }
 }
 

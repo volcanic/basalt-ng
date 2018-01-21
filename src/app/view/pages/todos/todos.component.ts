@@ -27,9 +27,12 @@ export class TodosComponent implements OnInit, OnDestroy {
   taskletsNextWeek: TaskletTodo[] = [];
   taskletsLater: TaskletTodo[] = [];
 
+  tags = [];
+
   private taskletsUnsubscribeSubject = new Subject();
 
-  @ViewChild('sidenav') sidenav: MatSidenav;
+  @ViewChild('sidenavStart') sidenavStart: MatSidenav;
+  @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
 
   // private windowHeight = 0;
   // private windowWidth = 0;
@@ -87,6 +90,8 @@ export class TodosComponent implements OnInit, OnDestroy {
         this.taskletsLater = this.tasklets.filter(tasklet => {
           return this.dateService.isAfterNextWeek(tasklet.dueDate, now);
         });
+
+        this.tags = this.taskletsService.getAllTags();
       });
 
 
@@ -113,7 +118,8 @@ export class TodosComponent implements OnInit, OnDestroy {
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
       case 'menu': {
-        this.sidenav.toggle();
+        this.sidenavStart.toggle();
+        this.sidenavEnd.toggle();
         break;
       }
       case 'settings': {
@@ -155,10 +161,9 @@ export class TodosComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles click on side menu items
-   * @param menuItem
+   * Handles tag selection
    */
-  onSideMenuItemClicked(menuItem: string) {
-    this.snackbarService.showSnackbar(`Clicked on side menu item ${menuItem}`, '');
+  onTagChanged(value: string) {
+    this.taskletsService.update();
   }
 }

@@ -1,5 +1,8 @@
 <mat-toolbar color="primary">
   <div class="toolbar-block">
+    <button mat-button class="toolbar-menu-item" (click)="onClickMenuItem('menu')">
+      <mat-icon svgIcon="menu"></mat-icon>
+    </button>
     <span class="toolbar-title">{{ title }}</span>
   </div>
   <div class="flexbox"></div>

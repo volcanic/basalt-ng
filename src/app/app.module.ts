@@ -29,7 +29,6 @@ import {TaskletDialogComponent} from './view/dialogs/tasklet-dialog/tasklet-dial
 import {AppRoutingModule} from './app-routing.module';
 import {TaskletsComponent} from './view/pages/tasklets/tasklets.component';
 import {TaskletComponent} from './view/components/tasklet/tasklet.component';
-import {SideMenuComponent} from './view/components/side-menu/side-menu.component';
 import {SnackbarService} from './services/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TaskletTodoComponent} from './view/components/tasklet-todo/tasklet-todo.component';
@@ -42,25 +41,26 @@ import {MatchService} from './services/match.service';
 import {TodosComponent} from './view/pages/todos/todos.component';
 import {TodosToolbarComponent} from './view/toolbars/todos-toolbar/todos-toolbar.component';
 import {TaskletsToolbarComponent} from './view/toolbars/tasklet-toolbar/tasklets-toolbar.component';
-import { TodoComponent } from './view/components/todo/todo.component';
+import {TodoComponent} from './view/components/todo/todo.component';
+import {TodosSideMenuStartComponent} from './view/sidemenus/todos-side-menu-start/todos-side-menu-start.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfirmationDialogComponent,
-    SideMenuComponent,
     TagDialogComponent,
     TaskletComponent,
-    TaskletDialogComponent,
     TaskletsComponent,
+    TaskletDialogComponent,
     TaskletsToolbarComponent,
-    TodosComponent,
-    TodosToolbarComponent,
     TaskletTodoComponent,
     TaskletDialogTodoComponent,
     TaskletDialogDefaultComponent,
     TaskletDefaultComponent,
-    TodoComponent
+    TodoComponent,
+    TodosComponent,
+    TodosSideMenuStartComponent,
+    TodosToolbarComponent
   ],
   imports: [
     AppRoutingModule,

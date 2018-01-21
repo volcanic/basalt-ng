@@ -5,8 +5,9 @@
   (onMenuItemClicked)="onMenuItemClicked($event)"></app-tasklets-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">
-  <mat-sidenav #sidenav mode="side" class="sidenav">
-    <app-side-menu (onMenuItemClicked)="onSideMenuItemClicked($event)"></app-side-menu>
+  <mat-sidenav #sidenavStart mode="side" position="start" opened="false" class="sidenav">
+  </mat-sidenav>
+  <mat-sidenav #sidenavEnd mode="side" position="end" opened="false" class="sidenav">
   </mat-sidenav>
 
   <div class="content">

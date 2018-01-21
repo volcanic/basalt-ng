@@ -1,15 +1,7 @@
 @import '../../../../theme';
 
-.dialog {
-  @media #{$mat-small} {
-    width: 100%;
-  }
-  @media #{$mat-medium} {
-    width: 600px;
-  }
-  @media #{$mat-large} {
-    width: 600px;
-  }
+.side-menu {
+  padding: 20px;
 }
 
 .label {
@@ -22,13 +14,4 @@
   left: 0;
   text-align: left;
   margin-bottom: 10px;
-}
-
-.tag-input {
-  margin-left: 9px;
-}
-
-.wide-box {
-  display: block !important;
-  width: 100%;
 }
