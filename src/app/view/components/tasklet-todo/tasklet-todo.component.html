@@ -7,6 +7,11 @@
 <hr class="delimiter"/>
 <mat-card-content (click)="onActionFired.next('update')">
   <div>
+    <div class="label">Priority</div>
+    <mat-icon [svgIcon]=iconPriority *ngFor="let n of iconPriorityCount"></mat-icon>
+  </div>
+  <hr class="delimiter"/>
+  <div>
     <div class="label">Due date</div>
     <div>{{ dueDate }}</div>
   </div>

@@ -19,6 +19,8 @@ export class TaskletComponent implements OnInit {
   time = '';
   date = '';
 
+  iconPriority = 'assistant';
+
   constructor(private taskletsService: TaskletsService,
               private snackbarService: SnackbarService,
               private dateService: DateService,

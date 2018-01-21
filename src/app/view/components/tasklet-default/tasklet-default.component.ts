@@ -16,7 +16,7 @@ export class TaskletDefaultComponent implements OnInit {
 
   constructor(iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('assistant', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_assistant_photo_black_24px.svg'));
+    iconRegistry.addSvgIcon('turned', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_turned_in_not_black_24px.svg'));
     iconRegistry.addSvgIcon('people', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_people_black_24px.svg'));
     iconRegistry.addSvgIcon('call', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_call_black_24px.svg'));
     iconRegistry.addSvgIcon('mail', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_mail_outline_black_24px.svg'));
@@ -30,7 +30,7 @@ export class TaskletDefaultComponent implements OnInit {
   ngOnInit() {
     switch (this.tasklet.type) {
       case TASKLET_TYPE.ACTION: {
-        this.icon = 'assistant';
+        this.icon = 'turned';
         break;
       }
       case TASKLET_TYPE.MEETING: {

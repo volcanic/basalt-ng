@@ -5,6 +5,11 @@
       {{ tasklet.taskName }}
     </div>
   </mat-card-header>
+  <div>
+    <div class="label">Priority</div>
+    <mat-icon [svgIcon]=iconPriority *ngFor="let n of iconPriorityCount"></mat-icon>
+  </div>
+  <hr class="delimiter"/>
   <mat-card-content (click)="onActionFired('update')">
     <mat-list>
       <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}</mat-list-item>
