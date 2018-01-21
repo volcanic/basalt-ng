@@ -25,6 +25,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   taskletsToday: TaskletTodo[] = [];
   taskletsThisWeek: TaskletTodo[] = [];
   taskletsNextWeek: TaskletTodo[] = [];
+  taskletsLater: TaskletTodo[] = [];
 
   private taskletsUnsubscribeSubject = new Subject();
 
@@ -79,6 +80,12 @@ export class TodosComponent implements OnInit, OnDestroy {
         });
         this.taskletsThisWeek = this.tasklets.filter(tasklet => {
           return this.dateService.isThisWeek(tasklet.dueDate, now) && this.dateService.isAfter(tasklet.dueDate, now);
+        });
+        this.taskletsNextWeek = this.tasklets.filter(tasklet => {
+          return this.dateService.isNextWeek(tasklet.dueDate, now);
+        });
+        this.taskletsLater = this.tasklets.filter(tasklet => {
+          return this.dateService.isAfterNextWeek(tasklet.dueDate, now);
         });
       });
 

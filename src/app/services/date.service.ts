@@ -140,7 +140,7 @@ export class DateService {
   }
 
   getEndOfTheWeek(date: Date): Date {
-    const endOfTheWeek = new Date();
+    const endOfTheWeek = new Date(date);
 
     const currentWeekDay = new Date(date).getDay();
     const daysTillSunday = currentWeekDay === 0 ? 0 : 7 - currentWeekDay;
@@ -152,9 +152,24 @@ export class DateService {
   }
 
   isThisWeek(date: Date, now: Date) {
-    let endOfTheWeek = this.getEndOfTheWeek(new Date(now));
-    let beginningOfTheWeek = this.getBeginningOfTheWeek(new Date(now));
+    const beginningOfTheWeek = this.getBeginningOfTheWeek(new Date(now));
+    const endOfTheWeek = this.getEndOfTheWeek(new Date(now));
 
     return new Date(date) >= beginningOfTheWeek && new Date(date) <= endOfTheWeek;
+  }
+
+  isNextWeek(date: Date, now: Date) {
+    const oneWeekLater = new Date(now).setDate(new Date(now).getDate() + 7);
+    const beginningOfTheWeek = this.getBeginningOfTheWeek(new Date(oneWeekLater));
+    const endOfTheWeek = this.getEndOfTheWeek(new Date(oneWeekLater));
+
+    return new Date(date) >= beginningOfTheWeek && new Date(date) <= endOfTheWeek;
+  }
+
+  isAfterNextWeek(date: Date, now: Date) {
+    const oneWeekLater = now.setDate(new Date(now).getDate() + 7);
+    const endOfTheWeek = this.getEndOfTheWeek(new Date(oneWeekLater));
+
+    return new Date(date) > endOfTheWeek;
   }
 }

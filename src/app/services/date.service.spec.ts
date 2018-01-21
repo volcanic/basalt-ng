@@ -53,6 +53,11 @@ describe('DateService', () => {
     expect(service.getEndOfTheWeek(d1).getDate() === 7).toBeTruthy();
   }));
 
+  fit('should determine end of the week if it is in another month', inject([DateService], (service: DateService) => {
+    const d1 = new Date('2018-02-04');
+    expect(service.getEndOfTheWeek(d1).getDate() === 4 && service.getEndOfTheWeek(d1).getMonth() === 2).toBeTruthy();
+  }));
+
   fit('should determine given day is its own week', inject([DateService], (service: DateService) => {
     const d1 = new Date('2018-01-07');
 
