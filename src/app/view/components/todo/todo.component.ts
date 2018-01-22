@@ -45,26 +45,28 @@ export class TodoComponent implements OnInit {
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
     this.dueDate = this.dateService.getDate(new Date(this.tasklet.dueDate));
 
-    switch (this.tasklet.priority) {
-      case TASKLET_PRIORITY.ONE: {
-        this.iconPriority = 'prio1';
-        this.iconPriorityCount = [''];
-        break;
-      }
-      case TASKLET_PRIORITY.TWO: {
-        this.iconPriority = 'prio2';
-        this.iconPriorityCount = ['', ''];
-        break;
-      }
-      case TASKLET_PRIORITY.THREE: {
-        this.iconPriority = 'prio3';
-        this.iconPriorityCount = ['', '', ''];
-        break;
-      }
-      case TASKLET_PRIORITY.FOUR: {
-        this.iconPriority = 'prio4';
-        this.iconPriorityCount = ['', '', '', ''];
-        break;
+    if (this.tasklet.priority != null) {
+      switch (this.tasklet.priority) {
+        case TASKLET_PRIORITY.ONE: {
+          this.iconPriority = 'prio1';
+          this.iconPriorityCount = [''];
+          break;
+        }
+        case TASKLET_PRIORITY.TWO: {
+          this.iconPriority = 'prio2';
+          this.iconPriorityCount = ['', ''];
+          break;
+        }
+        case TASKLET_PRIORITY.THREE: {
+          this.iconPriority = 'prio3';
+          this.iconPriorityCount = ['', '', ''];
+          break;
+        }
+        case TASKLET_PRIORITY.FOUR: {
+          this.iconPriority = 'prio4';
+          this.iconPriorityCount = ['', '', '', ''];
+          break;
+        }
       }
     }
   }
