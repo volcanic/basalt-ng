@@ -6,6 +6,6 @@ export class TaskletTodo extends Tasklet {
   type = TASKLET_TYPE.TODO;
   dueDate: Date;
   completionDate: Date;
-  priority: TASKLET_PRIORITY.UNSPECIFIED;
+  priority = TASKLET_PRIORITY.UNSPECIFIED;
   done = false;
 }
