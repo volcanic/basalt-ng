@@ -102,7 +102,6 @@ export class TaskletsService {
         return true;
       }
     }).filter(t => {
-      console.log(`DEBUG searchItem ${this.searchItem}`);
       if (this.searchItem !== '') {
         return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
       } else {
