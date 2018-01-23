@@ -12,6 +12,7 @@ import {TagDialogComponent} from '../../dialogs/tag-dialog/tag-dialog.component'
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {TaskletTodo} from '../../../model/tasklet-todo.model';
 import {DateService} from '../../../services/date.service';
+import {TASKLET_PRIORITY} from '../../../model/tasklet-priority.enum';
 
 @Component({
   selector: 'app-tasklets',
@@ -27,12 +28,16 @@ export class TodosComponent implements OnInit, OnDestroy {
   taskletsNextWeek: TaskletTodo[] = [];
   taskletsLater: TaskletTodo[] = [];
 
-  tags = [];
-
   private taskletsUnsubscribeSubject = new Subject();
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
+
+  // Page specific filters
+  taskletType = TASKLET_TYPE.TODO;
+  tags = [];
+  priorities = [];
+  priority = '';
 
   // private windowHeight = 0;
   // private windowWidth = 0;
@@ -60,7 +65,9 @@ export class TodosComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value != null) {
           this.tasklets = (value as TaskletTodo[]).filter(tasklet => {
-            return tasklet.type === TASKLET_TYPE.TODO;
+            return tasklet.type === this.taskletType;
+          }).filter(tasklet => {
+            return this.priority === '' || (tasklet as TaskletTodo).priority === this.priority;
           }).filter(tasklet => {
             return !(tasklet as TaskletTodo).done;
           }).sort((t1: TaskletTodo, t2: TaskletTodo) => {
@@ -94,6 +101,11 @@ export class TodosComponent implements OnInit, OnDestroy {
         this.tags = this.taskletsService.getAllTags();
       });
 
+    this.priorities = Array.from(Object.keys(TASKLET_PRIORITY).map(key => {
+      return TASKLET_PRIORITY[key];
+    }).filter(value => {
+      return value !== '?';
+    }));
 
     this.taskletsService.taskletsSubject.next(this.taskletsService.filteredTasklets);
   }
@@ -164,6 +176,11 @@ export class TodosComponent implements OnInit, OnDestroy {
    * Handles tag selection
    */
   onTagChanged(value: string) {
+    this.taskletsService.update();
+  }
+
+  onPrioritySelected(value: string) {
+    this.priority = value;
     this.taskletsService.update();
   }
 }

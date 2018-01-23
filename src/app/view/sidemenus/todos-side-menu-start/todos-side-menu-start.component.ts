@@ -7,7 +7,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class TodosSideMenuStartComponent implements OnInit {
   @Input() tags = [];
+  @Input() priorities = [];
   @Output() onTagChangedEmitter = new EventEmitter<string>();
+  @Output() onPrioritySelectedEmitter = new EventEmitter<string>();
 
   constructor() {
   }
@@ -17,5 +19,9 @@ export class TodosSideMenuStartComponent implements OnInit {
 
   onTagChanged() {
     this.onTagChangedEmitter.next();
+  }
+
+  onPrioritySelect(priority: string) {
+    this.onPrioritySelectedEmitter.next(priority);
   }
 }

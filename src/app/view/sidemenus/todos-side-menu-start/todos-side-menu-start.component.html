@@ -3,4 +3,14 @@
   <div *ngFor="let t of tags">
     <mat-checkbox [(ngModel)]=t.checked (change)="onTagChanged()">{{ t.value}}</mat-checkbox>
   </div>
+  <hr class="delimiter"/>
+  <div class="label">Priorities</div>
+  <button mat-button (click)="onPrioritySelect('')">
+    All priorities
+  </button>
+  <div *ngFor="let p of priorities">
+    <button mat-button (click)="onPrioritySelect(p)">
+      Priority {{ p }}
+    </button>
+  </div>
 </div>
