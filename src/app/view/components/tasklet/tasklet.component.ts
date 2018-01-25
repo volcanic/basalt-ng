@@ -7,6 +7,8 @@ import {SnackbarService} from '../../../services/snackbar.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import {DateService} from '../../../services/date.service';
+import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
+import {Tag} from '../../../model/tag.model';
 
 @Component({
   selector: 'app-tasklet',
@@ -15,11 +17,10 @@ import {DateService} from '../../../services/date.service';
 })
 export class TaskletComponent implements OnInit {
   @Input() tasklet: Tasklet;
+  @Input() tags: Tag[];
 
   time = '';
   date = '';
-
-  iconPriority = 'assistant';
 
   constructor(private taskletsService: TaskletsService,
               private snackbarService: SnackbarService,
@@ -53,8 +54,24 @@ export class TaskletComponent implements OnInit {
   private updateTasklet() {
     const dialogRef = this.dialog.open(TaskletDialogComponent, <MatDialogConfig>{
       disableClose: true,
-      data: {tasklet: this.tasklet}
+      data: {
+        mode: DIALOG_MODE.UPDATE,
+        dialogTitle: 'Update tasklet',
+        tasklet: this.tasklet,
+        tags: this.tags.map(tag => {
+          if (this.tasklet.tags != null) {
+            this.tasklet.tags.forEach(t => {
+              if (tag.value === t.value) {
+                return (new Tag(tag.value, true));
+              }
+            });
+
+            return (new Tag(tag.value, false));
+          }
+        })
+      }
     });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskletsService.updateTasklet(result as Tasklet);

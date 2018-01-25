@@ -14,10 +14,9 @@ import {Subject} from 'rxjs/Subject';
 })
 export class TaskletsToolbarComponent  implements OnInit {
   @Input() title;
-  @Output() onSearchItemChanged = new EventEmitter<string>();
-  @Output() onMenuItemClicked = new EventEmitter<string>();
+  @Output() onSearchItemChangedEmitter = new EventEmitter<string>();
+  @Output() onMenuItemClickedEmitter = new EventEmitter<string>();
 
-  searchItem = '';
   searchOptions = [];
   filteredSearchOptions: Observable<string[]>;
 
@@ -34,8 +33,7 @@ export class TaskletsToolbarComponent  implements OnInit {
   }
 
   ngOnInit() {
-    this.searchItem = this.taskletsService.searchItem;
-    this.searchOptions = this.taskletsService.searchItems;
+    this.searchOptions = this.taskletsService.suggestedSearchItems;
 
     this.filteredSearchOptions = this.formControl.valueChanges
       .pipe(
@@ -45,15 +43,15 @@ export class TaskletsToolbarComponent  implements OnInit {
 
     this.debouncer
       .debounceTime(300)
-      .subscribe((value) => this.onSearchItemChanged.emit(value.toString()));
+      .subscribe((value) => this.onSearchItemChangedEmitter.emit(value.toString()));
   }
 
   onClickMenuItem(menuItem: string): void {
-    this.onMenuItemClicked.emit(menuItem);
+    this.onMenuItemClickedEmitter.emit(menuItem);
   }
 
   onClickInput() {
-    this.searchOptions = this.taskletsService.searchItems;
+    this.searchOptions = this.taskletsService.suggestedSearchItems;
   }
 
   onChangeSearchItem(searchItem: string): void {

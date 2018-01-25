@@ -21,6 +21,8 @@ export class TaskletDialogComponent implements OnInit {
   DIALOG_MODE: typeof DIALOG_MODE = DIALOG_MODE;
   mode = DIALOG_MODE.NONE;
   dialogTitle = '';
+  tags = [];
+
   tasklet: Tasklet;
 
   taskOptions = [];
@@ -40,19 +42,13 @@ export class TaskletDialogComponent implements OnInit {
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
 
-    // Create basic tasklet
-    this.tasklet = new Tasklet();
   }
 
   ngOnInit() {
-    if (this.data == null) {
-      this.mode = DIALOG_MODE.ADD;
-      this.dialogTitle = 'Add tasklet';
-    } else {
-      this.mode = DIALOG_MODE.UPDATE;
-      this.dialogTitle = 'Update tasklet';
-      this.tasklet = this.data.tasklet as Tasklet;
-    }
+    this.mode = this.data.mode;
+    this.dialogTitle = this.data.dialogTitle;
+    this.tasklet = this.data.tasklet;
+    this.tags = this.data.tags;
 
     this.taskOptions = this.taskletsService.getTasks();
     this.filteredTaskOptions = this.formControl.valueChanges
@@ -61,11 +57,11 @@ export class TaskletDialogComponent implements OnInit {
         map(value => this.filterTasks(value))
       );
 
-    this.taskletsService.getAllTags().forEach(t => {
+    this.tags.forEach(t => {
       this.existingTags.push(new Tag(t.value, false));
     });
 
-    // Get existing tags and add empty tag to new tags
+    // Get existing suggestedTags and add empty tag to new suggestedTags
     this.existingTags.forEach(et => {
       if (this.tasklet.tags != null) {
         this.tasklet.tags.forEach(t => {

@@ -25,6 +25,6 @@ export class TagDialogComponent implements OnInit {
   }
 
   applyTags() {
-    this.dialogRef.close('');
+    this.dialogRef.close(this.tags);
   }
 }

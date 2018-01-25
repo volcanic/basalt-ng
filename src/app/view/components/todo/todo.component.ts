@@ -9,6 +9,8 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import {TASKLET_PRIORITY} from '../../../model/tasklet-priority.enum';
+import {Tag} from '../../../model/tag.model';
+import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 
 @Component({
   selector: 'app-todo',
@@ -17,6 +19,7 @@ import {TASKLET_PRIORITY} from '../../../model/tasklet-priority.enum';
 })
 export class TodoComponent implements OnInit {
   @Input() tasklet: TaskletTodo;
+  @Input() tags: Tag[];
 
   time = '';
   date = '';
@@ -87,7 +90,22 @@ export class TodoComponent implements OnInit {
   private updateTasklet() {
     const dialogRef = this.dialog.open(TaskletDialogComponent, <MatDialogConfig>{
       disableClose: true,
-      data: {tasklet: this.tasklet}
+      data: {
+        mode: DIALOG_MODE.UPDATE,
+        dialogTitle: 'Update tasklet',
+        tasklet: this.tasklet,
+        tags: this.tags.map(tag => {
+          if (this.tasklet.tags != null) {
+            this.tasklet.tags.forEach(t => {
+              if (tag.value === t.value) {
+                return (new Tag(tag.value, true));
+              }
+            });
+
+            return (new Tag(tag.value, false));
+          }
+        })
+      }
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {

@@ -1,8 +1,8 @@
 <app-tasklets-toolbar
   class="fixed"
   [title]="title"
-  (onSearchItemChanged)="onSearchItemChanged($event)"
-  (onMenuItemClicked)="onMenuItemClicked($event)"></app-tasklets-toolbar>
+  (onSearchItemChangedEmitter)="onSearchItemChanged($event)"
+  (onMenuItemClickedEmitter)="onMenuItemClicked($event)"></app-tasklets-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">
   <mat-sidenav #sidenavStart mode="side" position="start" opened="false" class="sidenav">
@@ -12,7 +12,7 @@
 
   <div class="content">
 
-    <app-tasklet *ngFor="let t of tasklets" [tasklet]="t">
+    <app-tasklet *ngFor="let t of tasklets" [tasklet]="t" [tags]="tags">
     </app-tasklet>
 
     <button mat-fab class="fab" (click)="onMenuItemClicked('add')">

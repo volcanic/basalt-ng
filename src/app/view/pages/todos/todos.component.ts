@@ -13,6 +13,9 @@ import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {TaskletTodo} from '../../../model/tasklet-todo.model';
 import {DateService} from '../../../services/date.service';
 import {TASKLET_PRIORITY} from '../../../model/tasklet-priority.enum';
+import {MatchService} from '../../../services/match.service';
+import {Tag} from '../../../model/tag.model';
+import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 
 @Component({
   selector: 'app-tasklets',
@@ -33,10 +36,12 @@ export class TodosComponent implements OnInit, OnDestroy {
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
 
+  priorities = [];
+
   // Page specific filters
   taskletType = TASKLET_TYPE.TODO;
+  searchItem = '';
   tags = [];
-  priorities = [];
   priority = '';
 
   // private windowHeight = 0;
@@ -45,6 +50,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   constructor(private taskletsService: TaskletsService,
               private dateService: DateService,
               private snackbarService: SnackbarService,
+              private matchService: MatchService,
               public dialog: MatDialog,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
@@ -64,8 +70,41 @@ export class TodosComponent implements OnInit, OnDestroy {
       .takeUntil(this.taskletsUnsubscribeSubject)
       .subscribe((value) => {
         if (value != null) {
+          if (this.tags.length === 0) {
+            this.tags = this.getAllTags((value as Tasklet[]).filter(tasklet => {
+              return tasklet.type === this.taskletType;
+            }));
+          }
+
           this.tasklets = (value as TaskletTodo[]).filter(tasklet => {
             return tasklet.type === this.taskletType;
+          }).filter(t => {
+            if (this.searchItem !== '') {
+              return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
+            } else {
+              return true;
+            }
+          }).filter(tasklet => {
+            // Filter tasklets that match selected tags
+            if (tasklet.tags != null) {
+              let match = false;
+
+              if (tasklet.tags.length === 0) {
+                return true;
+              } else {
+                tasklet.tags.forEach(taskletTag => {
+                  this.tags.forEach(tag => {
+                    if (taskletTag.value === tag.value && tag.checked) {
+                      match = true;
+                    }
+                  });
+                });
+
+                return match;
+              }
+            } else {
+              return true;
+            }
           }).filter(tasklet => {
             return this.priority === '' || (tasklet as TaskletTodo).priority === this.priority;
           }).filter(tasklet => {
@@ -97,8 +136,6 @@ export class TodosComponent implements OnInit, OnDestroy {
         this.taskletsLater = this.tasklets.filter(tasklet => {
           return this.dateService.isAfterNextWeek(tasklet.dueDate, now);
         });
-
-        this.tags = this.taskletsService.getAllTags();
       });
 
     this.priorities = Array.from(Object.keys(TASKLET_PRIORITY).map(key => {
@@ -107,20 +144,12 @@ export class TodosComponent implements OnInit, OnDestroy {
       return value !== '?';
     }));
 
-    this.taskletsService.taskletsSubject.next(this.taskletsService.filteredTasklets);
+    this.taskletsService.update();
   }
 
   ngOnDestroy(): void {
     this.taskletsUnsubscribeSubject.next();
     this.taskletsUnsubscribeSubject.complete();
-  }
-
-  /**
-   * Reacts on search item typed into the search box
-   * @param searchItem
-   */
-  onSearchItemChanged(searchItem: string) {
-    this.taskletsService.setSearchItem(searchItem.trim());
   }
 
   /**
@@ -139,10 +168,19 @@ export class TodosComponent implements OnInit, OnDestroy {
         break;
       }
       case 'add': {
-        const dialogRef = this.dialog.open(TaskletDialogComponent, {disableClose: false});
+        const dialogRef = this.dialog.open(TaskletDialogComponent, {
+          disableClose: false,
+          data: {
+            mode: DIALOG_MODE.ADD,
+            dialogTitle: 'Add tasklet',
+            tasklet: new Tasklet(),
+            tags: this.tags.map(t => {
+              return new Tag(t.value, false);
+            })
+          }
+        });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            console.log(`DEBUG ${JSON.stringify(result as Tasklet)}`);
             this.taskletsService.createTasklet(result as Tasklet);
             this.snackbarService.showSnackbar('Added tasklet', '');
           }
@@ -154,11 +192,13 @@ export class TodosComponent implements OnInit, OnDestroy {
           disableClose: true,
           data: {
             dialogTitle: 'Select tags',
-            tags: this.taskletsService.getAllTags()
+            tags: this.tags
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
+            console.log(`DEBUG ${JSON.stringify(result)}`);
+            this.tags = result;
             this.taskletsService.update();
             this.snackbarService.showSnackbar('Tags selected', '');
           }
@@ -173,14 +213,57 @@ export class TodosComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Handles search item change
+   * @param searchItem
+   */
+  onSearchItemChanged(searchItem: string) {
+    this.searchItem = searchItem;
+    this.taskletsService.update();
+  }
+
+  /**
    * Handles tag selection
    */
   onTagChanged(value: string) {
     this.taskletsService.update();
   }
 
+  /**
+   * Handles priority selection
+   * @param value
+   */
   onPrioritySelected(value: string) {
     this.priority = value;
     this.taskletsService.update();
+  }
+
+  /**
+   * Returns an array of unique tags
+   * @returns {Tag[]}
+   */
+  getAllTags(tasklets: Tasklet[]): Tag[] {
+    const ts = [];
+
+    tasklets.forEach(tasklet => {
+      if (tasklet.tags != null) {
+        tasklet.tags.forEach(tag => {
+            let unique = true;
+            ts.forEach(t => {
+              if (tag.value === t.value) {
+                unique = false;
+              }
+            });
+
+            if (unique) {
+              ts.push(tag);
+            }
+          }
+        );
+      }
+    });
+
+    return ts.sort((t1, t2) => {
+      return (t1.value > t2.value) ? 1 : -1;
+    });
   }
 }

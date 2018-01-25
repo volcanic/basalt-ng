@@ -17,7 +17,6 @@ export class TodosToolbarComponent implements OnInit {
   @Output() onSearchItemChanged = new EventEmitter<string>();
   @Output() onMenuItemClicked = new EventEmitter<string>();
 
-  searchItem = '';
   searchOptions = [];
   filteredSearchOptions: Observable<string[]>;
 
@@ -34,8 +33,7 @@ export class TodosToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchItem = this.taskletsService.searchItem;
-    this.searchOptions = this.taskletsService.searchItems;
+    this.searchOptions = this.taskletsService.suggestedSearchItems;
 
     this.filteredSearchOptions = this.formControl.valueChanges
       .pipe(
@@ -53,7 +51,7 @@ export class TodosToolbarComponent implements OnInit {
   }
 
   onClickInput() {
-    this.searchOptions = this.taskletsService.searchItems;
+    this.searchOptions = this.taskletsService.suggestedSearchItems;
   }
 
   onChangeSearchItem(searchItem: string): void {

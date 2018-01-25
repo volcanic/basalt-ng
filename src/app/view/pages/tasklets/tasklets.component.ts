@@ -9,6 +9,9 @@ import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
 import {TagDialogComponent} from '../../dialogs/tag-dialog/tag-dialog.component';
+import {MatchService} from '../../../services/match.service';
+import {Tag} from '../../../model/tag.model';
+import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 
 @Component({
   selector: 'app-tasklets',
@@ -23,11 +26,16 @@ export class TaskletsComponent implements OnInit, OnDestroy {
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
 
+  // Page specific filters
+  searchItem = '';
+  tags = [];
+
   // private windowHeight = 0;
   // private windowWidth = 0;
 
   constructor(private taskletsService: TaskletsService,
               private snackbarService: SnackbarService,
+              private matchService: MatchService,
               public dialog: MatDialog,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
@@ -47,7 +55,38 @@ export class TaskletsComponent implements OnInit, OnDestroy {
       .takeUntil(this.taskletsUnsubscribeSubject)
       .subscribe((value) => {
         if (value != null) {
-          this.tasklets = value.sort((t1: Tasklet, t2: Tasklet) => {
+          if (this.tags.length === 0) {
+            this.tags = this.getAllTags(value as Tasklet[]);
+          }
+
+          this.tasklets = value.filter(t => {
+            if (this.searchItem !== '') {
+              return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
+            } else {
+              return true;
+            }
+          }).filter(tasklet => {
+            // Filter tasklets that match selected tags
+            if (tasklet.tags != null) {
+              let match = false;
+
+              if (this.tasklets.length === 0 || tasklet.tags.length === 0) {
+                return true;
+              } else {
+                tasklet.tags.forEach(taskletTag => {
+                  this.tags.forEach(tag => {
+                    if (taskletTag.value === tag.value && tag.checked) {
+                      match = true;
+                    }
+                  });
+                });
+
+                return match;
+              }
+            } else {
+              return true;
+            }
+          }).sort((t1: Tasklet, t2: Tasklet) => {
             const date1 = new Date(t1.creationDate).getTime();
             const date2 = new Date(t2.creationDate).getTime();
 
@@ -57,20 +96,13 @@ export class TaskletsComponent implements OnInit, OnDestroy {
           this.tasklets = [];
         }
       });
-    this.taskletsService.taskletsSubject.next(this.taskletsService.filteredTasklets);
+
+    this.taskletsService.update();
   }
 
   ngOnDestroy(): void {
     this.taskletsUnsubscribeSubject.next();
     this.taskletsUnsubscribeSubject.complete();
-  }
-
-  /**
-   * Reacts on search item typed into the search box
-   * @param searchItem
-   */
-  onSearchItemChanged(searchItem: string) {
-    this.taskletsService.setSearchItem(searchItem.trim());
   }
 
   /**
@@ -89,10 +121,19 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         break;
       }
       case 'add': {
-        const dialogRef = this.dialog.open(TaskletDialogComponent, {disableClose: false});
+        const dialogRef = this.dialog.open(TaskletDialogComponent, {
+          disableClose: false,
+          data: {
+            mode: DIALOG_MODE.ADD,
+            dialogTitle: 'Add tasklet',
+            tasklet: new Tasklet(),
+            tags: this.tags.map(t => {
+              return new Tag(t.value, false);
+            })
+          }
+        });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            console.log(`DEBUG ${JSON.stringify(result as Tasklet)}`);
             this.taskletsService.createTasklet(result as Tasklet);
             this.snackbarService.showSnackbar('Added tasklet', '');
           }
@@ -104,11 +145,12 @@ export class TaskletsComponent implements OnInit, OnDestroy {
           disableClose: true,
           data: {
             dialogTitle: 'Select tags',
-            tags: this.taskletsService.getAllTags()
+            tags: this.tags
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
+            this.tags = result;
             this.taskletsService.update();
             this.snackbarService.showSnackbar('Tags selected', '');
           }
@@ -123,10 +165,49 @@ export class TaskletsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Reacts on search item typed into the search box
+   * @param searchItem
+   */
+  onSearchItemChanged(searchItem: string) {
+    this.searchItem = searchItem;
+    this.taskletsService.update();
+  }
+
+  /**
    * Handles click on side menu items
    * @param menuItem
    */
   onSideMenuItemClicked(menuItem: string) {
     this.snackbarService.showSnackbar(`Clicked on side menu item ${menuItem}`, '');
+  }
+
+  /**
+   * Returns an array of unique tags
+   * @returns {Tag[]}
+   */
+  getAllTags(tasklets: Tasklet[]): Tag[] {
+    const ts = [];
+
+    tasklets.forEach(tasklet => {
+      if (tasklet.tags != null) {
+        tasklet.tags.forEach(tag => {
+            let unique = true;
+            ts.forEach(t => {
+              if (tag.value === t.value) {
+                unique = false;
+              }
+            });
+
+            if (unique) {
+              ts.push(tag);
+            }
+          }
+        );
+      }
+    });
+
+    return ts.sort((t1, t2) => {
+      return (t1.value > t2.value) ? 1 : -1;
+    });
   }
 }

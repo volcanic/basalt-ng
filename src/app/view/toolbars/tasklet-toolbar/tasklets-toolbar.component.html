@@ -9,7 +9,6 @@
   <div class="searchbox">
     <input class="search-input" matInput #search name="search" type="text" placeholder="Search"
            [formControl]="formControl"
-           [(ngModel)]="searchItem"
            [matAutocomplete]="auto"
            (keyup)="onChangeSearchItem(search.value)"
            (click)="onClickInput()">
