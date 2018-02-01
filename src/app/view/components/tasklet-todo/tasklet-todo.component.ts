@@ -18,6 +18,7 @@ export class TaskletTodoComponent implements OnInit {
   iconPriority = '';
   iconPriorityCount = [];
   dueDate = '';
+  dueTime = '';
 
   constructor(private dateService: DateService,
               iconRegistry: MatIconRegistry,
@@ -34,6 +35,7 @@ export class TaskletTodoComponent implements OnInit {
     this.icon = 'timer';
     this.iconDone = this.tasklet.done ? 'done' : 'undone';
     this.dueDate = this.dateService.getDate(this.tasklet.dueDate);
+    this.dueTime = this.dateService.getTime(this.tasklet.dueDate);
 
     if (this.tasklet.priority != null) {
       switch (this.tasklet.priority) {

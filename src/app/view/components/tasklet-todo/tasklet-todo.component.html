@@ -13,7 +13,7 @@
   <hr class="delimiter"/>
   <div>
     <div class="label">Due date</div>
-    <div>{{ dueDate }}</div>
+    <div>{{ dueDate }} {{ dueTime }}</div>
   </div>
   <hr class="delimiter"/>
   <mat-list>
@@ -24,7 +24,3 @@
   <mat-checkbox [(ngModel)]=tasklet.done (change)="onToggledDone()">
   </mat-checkbox>
 </div>
-<!--
-<mat-card-actions align="right">
-</mat-card-actions>
--->

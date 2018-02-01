@@ -19,11 +19,11 @@ import {Tag} from '../../../model/tag.model';
 })
 export class TaskletDialogComponent implements OnInit {
   DIALOG_MODE: typeof DIALOG_MODE = DIALOG_MODE;
+
   mode = DIALOG_MODE.NONE;
   dialogTitle = '';
-  tags = [];
-
   tasklet: Tasklet;
+  tags = [];
 
   taskOptions = [];
   filteredTaskOptions: Observable<string[]>;
@@ -72,6 +72,20 @@ export class TaskletDialogComponent implements OnInit {
       }
     });
     this.newTags.push(new Tag('', false));
+  }
+
+  onDueHourSelected(value: number) {
+    const taskletTodo = this.tasklet as TaskletTodo;
+    const dueDate = new Date(taskletTodo.dueDate);
+
+    taskletTodo.dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate(), value, dueDate.getMinutes());
+  }
+
+  onDueMinuteSelected(value: number) {
+    const taskletTodo = this.tasklet as TaskletTodo;
+    const dueDate = new Date(taskletTodo.dueDate);
+
+    taskletTodo.dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate(), dueDate.getHours(), value);
   }
 
   addTasklet() {

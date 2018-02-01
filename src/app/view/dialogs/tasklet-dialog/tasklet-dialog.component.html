@@ -20,8 +20,12 @@
         </mat-autocomplete>
       </mat-form-field>
       <div [ngSwitch]="tasklet.type">
-        <app-tasklet-dialog-todo [tasklet]="tasklet" *ngSwitchCase="'TODO'"></app-tasklet-dialog-todo>
-        <app-tasklet-dialog-default [tasklet]="tasklet" *ngSwitchDefault=""></app-tasklet-dialog-default>
+        <app-tasklet-dialog-todo [tasklet]="tasklet" *ngSwitchCase="'TODO'"
+                                 (onHourSelectedEmitter)="onDueHourSelected($event)"
+                                 (onMinuteSelectedEmitter)="onDueMinuteSelected($event)">
+        </app-tasklet-dialog-todo>
+        <app-tasklet-dialog-default [tasklet]=" tasklet
+        " *ngSwitchDefault=""></app-tasklet-dialog-default>
       </div>
     </form>
     <div class="label">Tags</div>
@@ -34,7 +38,7 @@
     <div class="double-column" *ngFor="let t of existingTags.slice(existingTags.length / 2, existingTags.length)">
       <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
     </div>
-    <div  *ngFor="let n of newTags">
+    <div *ngFor="let n of newTags">
       <mat-checkbox [(ngModel)]=n.checked>
         <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.value"
                (ngModelChange)="tagChanged()"/>
