@@ -9,6 +9,7 @@ import {ConfirmationDialogComponent} from '../../dialogs/confirmation-dialog/con
 import {DateService} from '../../../services/date.service';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {Tag} from '../../../model/tag.model';
+import {TimePickerDialogComponent} from '../../dialogs/time-picker-dialog/time-picker-dialog.component';
 
 @Component({
   selector: 'app-tasklet',
@@ -44,6 +45,10 @@ export class TaskletComponent implements OnInit {
         this.updateTasklet();
         break;
       }
+      case 'updateTime': {
+        this.updateTaskletTime();
+        break;
+      }
       case 'save': {
         this.taskletsService.updateTasklet(this.tasklet);
         break;
@@ -76,6 +81,23 @@ export class TaskletComponent implements OnInit {
       if (result != null) {
         this.taskletsService.updateTasklet(result as Tasklet);
         this.snackbarService.showSnackbar('Updated tasklet', '');
+      }
+    });
+  }
+
+  private updateTaskletTime() {
+    const dialogRef = this.dialog.open(TimePickerDialogComponent, <MatDialogConfig>{
+      disableClose: true,
+      data: {
+        dialogTitle: 'Set creation time',
+        tasklet: this.tasklet
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.taskletsService.updateTasklet(result as Tasklet);
+        this.snackbarService.showSnackbar('Updated tasklet creation time', '');
       }
     });
   }

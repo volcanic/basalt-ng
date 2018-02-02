@@ -13,6 +13,6 @@
     <label class="tag-label">{{ t.value }}</label>
   </span>
   <mat-card-footer>
-    <div *ngIf="tasklet.creationDate != null" class="left-attached">{{ time }}</div>
+    <div *ngIf="tasklet.creationDate != null" class="left-attached" (click)="onActionFired('updateTime')">{{ time }}</div>
   </mat-card-footer>
 </mat-card>

@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content>
+  <mat-form-field color="primary" class="time-select">
+    <mat-select name="type" placeholder="Time" [(ngModel)]="hour">
+      <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
+        {{ addTrailingZero(item) }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  :
+  <mat-form-field color="primary" class="time-select">
+    <mat-select name="type" [(ngModel)]="minute">
+      <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
+        {{ addTrailingZero(item) }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]=null>
+    Cancel
+  </button>
+  <button mat-button (click)="updateCreationTime()">
+    Update creation time
+  </button>
+</mat-dialog-actions>

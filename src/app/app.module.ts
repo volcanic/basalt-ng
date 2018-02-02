@@ -44,6 +44,7 @@ import {TaskletsToolbarComponent} from './view/toolbars/tasklet-toolbar/tasklets
 import {TodoComponent} from './view/components/todo/todo.component';
 import {TodosSideMenuStartComponent} from './view/sidemenus/todos-side-menu-start/todos-side-menu-start.component';
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
+import {TimePickerDialogComponent} from './view/dialogs/time-picker-dialog/time-picker-dialog.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.co
     TodoComponent,
     TodosComponent,
     TodosSideMenuStartComponent,
-    TodosToolbarComponent
+    TodosToolbarComponent,
+    TimePickerDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -91,7 +93,8 @@ import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.co
   entryComponents: [
     ConfirmationDialogComponent,
     TagDialogComponent,
-    TaskletDialogComponent
+    TaskletDialogComponent,
+    TimePickerDialogComponent
   ],
   providers: [
     MatIconRegistry,
