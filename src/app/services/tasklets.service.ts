@@ -28,6 +28,7 @@ export class TaskletsService {
   }
 
   public createTasklet(tasklet: Tasklet) {
+    console.log(`DEBUG createTasklet ${JSON.stringify(tasklet)}`);
     this.tasklets.set(tasklet.id, tasklet);
     this.pouchDBService.put(tasklet.id, tasklet);
     this.update();

@@ -47,6 +47,7 @@ import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.co
 import {TimePickerDialogComponent} from './view/dialogs/time-picker-dialog/time-picker-dialog.component';
 import { TaskletDialogCallComponent } from './view/dialogs/tasklet-dialog-call/tasklet-dialog-call.component';
 import { PersonDialogComponent } from './view/dialogs/person-dialog/person-dialog.component';
+import {TaskletCallComponent} from './view/components/tasklet-call/tasklet-call.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { PersonDialogComponent } from './view/dialogs/person-dialog/person-dialo
     TodosToolbarComponent,
     TimePickerDialogComponent,
     TaskletDialogCallComponent,
-    PersonDialogComponent
+    PersonDialogComponent,
+    TaskletCallComponent
   ],
   imports: [
     AppRoutingModule,

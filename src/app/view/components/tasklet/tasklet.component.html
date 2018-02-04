@@ -4,6 +4,8 @@
 </div>
 <mat-card>
   <div [ngSwitch]="tasklet.type">
+    <app-tasklet-call [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+                      *ngSwitchCase="'Call'"></app-tasklet-call>
     <app-tasklet-todo [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
                       *ngSwitchCase="'TODO'"></app-tasklet-todo>
     <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
@@ -13,6 +15,7 @@
     <label class="tag-label">{{ t.value }}</label>
   </span>
   <mat-card-footer>
-    <div *ngIf="tasklet.creationDate != null" class="left-attached" (click)="onActionFired('updateTime')">{{ time }}</div>
+    <div *ngIf="tasklet.creationDate != null" class="left-attached" (click)="onActionFired('updateTime')">{{ time }}
+    </div>
   </mat-card-footer>
 </mat-card>

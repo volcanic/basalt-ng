@@ -18,7 +18,6 @@ export class TaskletDefaultComponent implements OnInit {
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('turned', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_turned_in_not_black_24px.svg'));
     iconRegistry.addSvgIcon('people', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_people_black_24px.svg'));
-    iconRegistry.addSvgIcon('call', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_call_black_24px.svg'));
     iconRegistry.addSvgIcon('mail', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_mail_outline_black_24px.svg'));
     iconRegistry.addSvgIcon('chat', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_chat_bubble_outline_black_24px.svg'));
     iconRegistry.addSvgIcon('code', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_black_24px.svg'));
@@ -36,10 +35,6 @@ export class TaskletDefaultComponent implements OnInit {
       }
       case TASKLET_TYPE.MEETING: {
         this.icon = 'people';
-        break;
-      }
-      case TASKLET_TYPE.CALL: {
-        this.icon = 'call';
         break;
       }
       case TASKLET_TYPE.MAIL: {
