@@ -3,6 +3,8 @@ import {Tasklet} from '../model/tasklet.model';
 import {Subject} from 'rxjs/Subject';
 import {PouchDBService} from './pouchdb.service';
 import {Tag} from '../model/tag.model';
+import {Person} from '../model/person.model';
+import {TaskletCall} from '../model/tasklet-call.model';
 
 @Injectable()
 export class TaskletsService {
@@ -128,5 +130,21 @@ export class TaskletsService {
     });
 
     return Array.from(tasks.values()).sort();
+  }
+
+  public getPersons(): Person[] {
+    const persons = new Map<string, Person>();
+
+    this.tasklets.forEach(t => {
+      console.log(`A ${t.id}`);
+      if ((t as TaskletCall).persons != null) {
+        console.log(`A foo`);
+        (t as TaskletCall).persons.forEach(p => {
+          persons.set(p.name, p);
+        });
+      }
+    });
+
+    return Array.from(persons.values()).sort();
   }
 }
