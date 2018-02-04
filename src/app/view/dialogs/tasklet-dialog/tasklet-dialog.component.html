@@ -24,6 +24,8 @@
                                  (onHourSelectedEmitter)="onDueHourSelected($event)"
                                  (onMinuteSelectedEmitter)="onDueMinuteSelected($event)">
         </app-tasklet-dialog-todo>
+        <app-tasklet-dialog-call [tasklet]="tasklet" *ngSwitchCase="'Call'">
+        </app-tasklet-dialog-call>
         <app-tasklet-dialog-default [tasklet]=" tasklet
         " *ngSwitchDefault=""></app-tasklet-dialog-default>
       </div>

@@ -11,6 +11,7 @@ import {Observable} from 'rxjs/Observable';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Tag} from '../../../model/tag.model';
+import {TaskletCall} from '../../../model/tasklet-call.model';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -98,6 +99,10 @@ export class TaskletDialogComponent implements OnInit {
     );
 
     switch (this.tasklet.type) {
+      case TASKLET_TYPE.CALL: {
+        this.dialogRef.close(this.tasklet as TaskletCall);
+        break;
+      }
       case TASKLET_TYPE.TODO: {
         const taskletTodo = this.tasklet as TaskletTodo;
         taskletTodo.done = false;
@@ -118,6 +123,10 @@ export class TaskletDialogComponent implements OnInit {
     );
 
     switch (this.tasklet.type) {
+      case TASKLET_TYPE.CALL: {
+        this.dialogRef.close(this.tasklet as TaskletCall);
+        break;
+      }
       case TASKLET_TYPE.TODO: {
         this.dialogRef.close(this.tasklet as TaskletTodo);
         break;

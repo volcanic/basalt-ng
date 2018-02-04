@@ -1,0 +1,19 @@
+<div>
+  <mat-form-field class="wide-box">
+          <textarea matInput required name="text" placeholder="Text" matTextareaAutosize matAutosizeMinRows="5"
+                    matAutosizeMaxRows="5" [(ngModel)]="tasklet.text"></textarea>
+    <button mat-button *ngIf="tasklet.text" matSuffix mat-icon-button aria-label="Clear" (click)="title=''">
+      <mat-icon svgIcon="close"></mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div>
+  <mat-form-field color="primary">
+    <mat-select name="type" placeholder="Participant" [(ngModel)]="tasklet.persons[0]">
+      <mat-option *ngFor="let item of existingPersons" [value]="item">
+        {{ item.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-icon [svgIcon]=iconAdd class="tasklet-type" (click)="addPerson()"></mat-icon>
+</div>
