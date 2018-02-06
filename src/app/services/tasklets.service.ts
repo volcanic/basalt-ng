@@ -137,9 +137,7 @@ export class TaskletsService {
     const persons = new Map<string, Person>();
 
     this.tasklets.forEach(t => {
-      console.log(`A ${t.id}`);
       if ((t as TaskletCall).persons != null) {
-        console.log(`A foo`);
         (t as TaskletCall).persons.forEach(p => {
           persons.set(p.name, p);
         });
