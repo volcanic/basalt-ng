@@ -2,7 +2,6 @@ import {Injectable, isDevMode} from '@angular/core';
 import {Tasklet} from '../model/tasklet.model';
 import {Subject} from 'rxjs/Subject';
 import {PouchDBService} from './pouchdb.service';
-import {Tag} from '../model/tag.model';
 import {Person} from '../model/person.model';
 import {TaskletCall} from '../model/tasklet-call.model';
 
@@ -12,7 +11,6 @@ export class TaskletsService {
   taskletsSubject = new Subject<Tasklet[]>();
 
   // Suggestions
-  suggestedTags: Tag[] = [];
   suggestedSearchItems = [];
 
   constructor(private pouchDBService: PouchDBService) {
@@ -77,39 +75,11 @@ export class TaskletsService {
           this.suggestedSearchItems.push(v.trim().replace(/(^-)/g, ''));
         }
       });
+
+      this.suggestedSearchItems.push(t.taskName.trim().replace(/(^-)/g, ''));
     });
 
     return this.suggestedSearchItems;
-  }
-
-  /**
-   * Returns an array of unique suggestedTags
-   * @returns {Tag[]}
-   */
-  getSuggestedTagsByTasklets(tasklets: Tasklet[]): Tag[] {
-    const ts = [];
-
-    tasklets.forEach(tasklet => {
-      if (tasklet.tags != null) {
-        tasklet.tags.forEach(tag => {
-            let unique = true;
-            ts.forEach(t => {
-              if (tag.value === t.value) {
-                unique = false;
-              }
-            });
-
-            if (unique) {
-              ts.push(tag);
-            }
-          }
-        );
-      }
-    });
-
-    return ts.sort((t1, t2) => {
-      return (t1.value > t2.value) ? 1 : -1;
-    });
   }
 
   /**

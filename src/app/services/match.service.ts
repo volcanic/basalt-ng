@@ -49,7 +49,7 @@ export class MatchService {
     // Check for each text if matches item
     if (tasklet.text != null && tasklet.text.split('\n').some(s => {
         return this.textMatchesSingleItem(s, item);
-      })) {
+      }) || (tasklet.taskName != null && this.textMatchesSingleItem(tasklet.taskName, item))) {
       return true;
     }
   }
