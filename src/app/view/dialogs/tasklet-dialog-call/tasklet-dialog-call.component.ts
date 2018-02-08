@@ -32,7 +32,7 @@ export class TaskletDialogCallComponent implements OnInit {
       this.tasklet.persons = [];
     }
 
-    this.existingPersons = this.taskletsService.getPersons();
+    this.existingPersons = this.taskletsService.getPersons().reverse();
     console.log(`DEBUG existingPersons ${JSON.stringify(this.existingPersons)}`);
   }
 
