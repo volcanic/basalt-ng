@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Tasklet} from '../model/tasklet.model';
+import {TaskletCall} from '../model/tasklet-call.model';
 
 @Injectable()
 export class MatchService {
@@ -46,12 +47,34 @@ export class MatchService {
    * @returns {boolean}
    */
   public taskletMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    // Check for each text if matches item
-    if (tasklet.text != null && tasklet.text.split('\n').some(s => {
-        return this.textMatchesSingleItem(s, item);
-      }) || (tasklet.taskName != null && this.textMatchesSingleItem(tasklet.taskName, item))) {
+    if (
+      this.taskletTaskNameMatchesSingleItem(tasklet, item)
+      || this.taskletTextMatchesSingleItem(tasklet, item)
+      // || this.taskletPersonsMatchesSingleItem(tasklet, item)
+    ) {
       return true;
     }
+  }
+
+  private taskletTextMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
+    return tasklet.text != null && tasklet.text.split('\n').some(s => {
+        return this.textMatchesSingleItem(s, item);
+      });
+  }
+
+  private taskletTaskNameMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
+    return tasklet.taskName != null && this.textMatchesSingleItem(tasklet.taskName, item)
+  }
+
+  private taskletPersonsMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
+    if (tasklet instanceof TaskletCall) {
+      console.log(`DEBUG ${tasklet.id}`);
+      (tasklet as TaskletCall).persons.some(p => {
+        return this.textMatchesSingleItem(p.name, item);
+      });
+    }
+
+    return false;
   }
 
   public textMatchesAnyItem(text: string, items: string): boolean {
