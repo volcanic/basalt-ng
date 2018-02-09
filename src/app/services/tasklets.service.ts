@@ -76,7 +76,9 @@ export class TaskletsService {
         }
       });
 
-      this.suggestedSearchItems.push(t.taskName.trim().replace(/(^-)/g, ''));
+      if (t.taskName != null) {
+        this.suggestedSearchItems.push(t.taskName.trim().replace(/(^-)/g, ''));
+      }
     });
 
     return this.suggestedSearchItems;
