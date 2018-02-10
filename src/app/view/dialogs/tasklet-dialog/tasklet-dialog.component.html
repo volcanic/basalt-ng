@@ -19,16 +19,16 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <div [ngSwitch]="tasklet.type">
-        <app-tasklet-dialog-todo [tasklet]="tasklet" *ngSwitchCase="'TODO'"
-                                 (onHourSelectedEmitter)="onDueHourSelected($event)"
-                                 (onMinuteSelectedEmitter)="onDueMinuteSelected($event)">
-        </app-tasklet-dialog-todo>
-        <app-tasklet-dialog-call [tasklet]="tasklet" *ngSwitchCase="'Call'">
-        </app-tasklet-dialog-call>
-        <app-tasklet-dialog-default [tasklet]=" tasklet
-        " *ngSwitchDefault=""></app-tasklet-dialog-default>
-      </div>
+      <app-tasklet-dialog-default [tasklet]="tasklet"></app-tasklet-dialog-default>
+      <app-tasklet-dialog-todo [tasklet]="tasklet" *ngIf="tasklet.type == 'TODO'"
+                               (onHourSelectedEmitter)="onDueHourSelected($event)"
+                               (onMinuteSelectedEmitter)="onDueMinuteSelected($event)"></app-tasklet-dialog-todo>
+      <app-tasklet-dialog-participants [tasklet]="tasklet"
+                                       *ngIf="tasklet.type == 'Meeting'
+                                       || tasklet.type == 'Call'
+                                       || tasklet.type == 'Mail'
+                                       || tasklet.type == 'Chat'">
+      </app-tasklet-dialog-participants>
     </form>
     <div class="label">Tags</div>
     <div class="single-column" *ngFor="let t of existingTags">

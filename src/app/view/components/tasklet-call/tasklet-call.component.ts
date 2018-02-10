@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TaskletCall} from '../../../model/tasklet-call.model';
-import {DateService} from '../../../services/date.service';
+import {Tasklet} from '../../../model/tasklet.model';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
 
@@ -10,21 +9,16 @@ import {MatIconRegistry} from '@angular/material';
   styleUrls: ['./tasklet-call.component.scss']
 })
 export class TaskletCallComponent implements OnInit {
-  @Input() tasklet: TaskletCall;
+  @Input() tasklet: Tasklet;
   @Output() onActionFired = new EventEmitter<string>();
   icon = '';
 
-  constructor(private dateService: DateService,
-              iconRegistry: MatIconRegistry,
+  constructor(iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('call', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_call_black_24px.svg'));
   }
 
   ngOnInit() {
     this.icon = 'call';
-  }
-
-  onToggledDone() {
-    this.onActionFired.next('save');
   }
 }

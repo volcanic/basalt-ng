@@ -1,19 +1,19 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {TaskletsService} from '../../../services/tasklets.service';
-import {TaskletCall} from '../../../model/tasklet-call.model';
 import {Person} from '../../../model/person.model';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MAT_DIALOG_DATA, MatDialog, MatIconRegistry} from '@angular/material';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {PersonDialogComponent} from '../person-dialog/person-dialog.component';
+import {Tasklet} from '../../../model/tasklet.model';
 
 @Component({
-  selector: 'app-tasklet-dialog-call',
-  templateUrl: './tasklet-dialog-call.component.html',
-  styleUrls: ['./tasklet-dialog-call.component.scss']
+  selector: 'app-tasklet-dialog-participants',
+  templateUrl: './tasklet-dialog-participants.component.html',
+  styleUrls: ['./tasklet-dialog-participants.component.scss']
 })
-export class TaskletDialogCallComponent implements OnInit {
-  @Input() tasklet: TaskletCall;
+export class TaskletDialogParticipantsComponent implements OnInit {
+  @Input() tasklet: Tasklet;
 
   existingPersons: Person[] = [];
 

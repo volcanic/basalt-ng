@@ -3,7 +3,6 @@ import {Tasklet} from '../model/tasklet.model';
 import {Subject} from 'rxjs/Subject';
 import {PouchDBService} from './pouchdb.service';
 import {Person} from '../model/person.model';
-import {TaskletCall} from '../model/tasklet-call.model';
 
 @Injectable()
 export class TaskletsService {
@@ -109,8 +108,8 @@ export class TaskletsService {
     const persons = new Map<string, Person>();
 
     this.tasklets.forEach(t => {
-      if ((t as TaskletCall).persons != null) {
-        (t as TaskletCall).persons.forEach(p => {
+      if (t.persons != null) {
+        t.persons.forEach(p => {
           persons.set(p.name, p);
         });
       }

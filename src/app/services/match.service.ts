@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Tasklet} from '../model/tasklet.model';
-import {TaskletCall} from '../model/tasklet-call.model';
 
 @Injectable()
 export class MatchService {
@@ -50,7 +49,7 @@ export class MatchService {
     if (
       this.taskletTaskNameMatchesSingleItem(tasklet, item)
       || this.taskletTextMatchesSingleItem(tasklet, item)
-      // || this.taskletPersonsMatchesSingleItem(tasklet, item)
+      || this.taskletPersonsMatchesSingleItem(tasklet, item)
     ) {
       return true;
     }
@@ -67,12 +66,9 @@ export class MatchService {
   }
 
   private taskletPersonsMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    if (tasklet instanceof TaskletCall) {
-      console.log(`DEBUG ${tasklet.id}`);
-      (tasklet as TaskletCall).persons.some(p => {
-        return this.textMatchesSingleItem(p.name, item);
-      });
-    }
+    tasklet.persons.some(p => {
+      return this.textMatchesSingleItem(p.name, item);
+    });
 
     return false;
   }
