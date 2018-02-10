@@ -110,6 +110,11 @@ mat-card-actions {
   width: 100%;
 }
 
+.delimiter {
+  border: solid 0.25px transparent;
+  clear: both;
+}
+
 .label {
   display: block;
   color: rgba(0, 0, 0, .38);

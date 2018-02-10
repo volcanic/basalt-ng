@@ -11,6 +11,7 @@
     <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
                          *ngSwitchDefault=""></app-tasklet-default>
   </div>
+  <hr class="delimiter"/>
   <span class="tag" *ngFor="let t of tasklet.tags">
     <label class="tag-label">{{ t.value }}</label>
   </span>
