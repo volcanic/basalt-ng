@@ -46,8 +46,8 @@ import {TodosSideMenuStartComponent} from './view/sidemenus/todos-side-menu-star
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
 import {TimePickerDialogComponent} from './view/dialogs/time-picker-dialog/time-picker-dialog.component';
 import {PersonDialogComponent} from './view/dialogs/person-dialog/person-dialog.component';
-import {TaskletCallComponent} from './view/components/tasklet-call/tasklet-call.component';
 import {TaskletDialogParticipantsComponent} from './view/dialogs/tasklet-dialog-participants/tasklet-dialog-participants.component';
+import {TaskletParticipantsComponent} from './view/components/tasklet-participants/tasklet-participants.component';
 
 @NgModule({
   declarations: [
@@ -56,21 +56,21 @@ import {TaskletDialogParticipantsComponent} from './view/dialogs/tasklet-dialog-
     SplashScreenComponent,
     TagDialogComponent,
     TaskletComponent,
+    TaskletDefaultComponent,
     TaskletDialogComponent,
     TaskletDialogDefaultComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTodoComponent,
+    TaskletParticipantsComponent,
     TaskletsComponent,
     TaskletsToolbarComponent,
     TaskletTodoComponent,
-    TaskletDefaultComponent,
     TodoComponent,
     TodosComponent,
     TodosSideMenuStartComponent,
     TodosToolbarComponent,
     TimePickerDialogComponent,
     PersonDialogComponent,
-    TaskletCallComponent
   ],
   imports: [
     AppRoutingModule,

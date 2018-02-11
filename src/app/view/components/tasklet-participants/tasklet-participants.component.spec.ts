@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {TaskletCallComponent} from './tasklet-call.component';
+import {TaskletParticipantsComponent} from './tasklet-participants.component';
 
-describe('TaskletCallComponent', () => {
-  let component: TaskletCallComponent;
-  let fixture: ComponentFixture<TaskletCallComponent>;
+describe('TaskletParticipantsComponent', () => {
+  let component: TaskletParticipantsComponent;
+  let fixture: ComponentFixture<TaskletParticipantsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletCallComponent]
+      declarations: [TaskletParticipantsComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskletCallComponent);
+    fixture = TestBed.createComponent(TaskletParticipantsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

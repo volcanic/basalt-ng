@@ -1,25 +1,16 @@
-<mat-card-header (click)="onActionFired.next('update')">
-  <div>
-    <mat-icon [svgIcon]=icon class="tasklet-type" style="float: left"></mat-icon>
-    {{ tasklet.taskName }}
-  </div>
-</mat-card-header>
+<div>
+  <div class="label">Priority</div>
+  <mat-icon [svgIcon]=iconPriority *ngFor="let n of iconPriorityCount"></mat-icon>
+</div>
 <hr class="delimiter"/>
-<mat-card-content (click)="onActionFired.next('update')">
-  <div>
-    <div class="label">Priority</div>
-    <mat-icon [svgIcon]=iconPriority *ngFor="let n of iconPriorityCount"></mat-icon>
-  </div>
-  <hr class="delimiter"/>
-  <div>
-    <div class="label">Due date</div>
-    <div>{{ dueDate }} {{ dueTime }}</div>
-  </div>
-  <hr class="delimiter"/>
-  <mat-list>
-    <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}</mat-list-item>
-  </mat-list>
-</mat-card-content>
+<div>
+  <div class="label">Due date</div>
+  <div>{{ dueDate }} {{ dueTime }}</div>
+</div>
+<hr class="delimiter"/>
+<mat-list>
+  <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}</mat-list-item>
+</mat-list>
 <div *ngIf="tasklet.done != null" class="right-attached">
   <mat-checkbox [(ngModel)]=tasklet.done (change)="onToggledDone()">
   </mat-checkbox>

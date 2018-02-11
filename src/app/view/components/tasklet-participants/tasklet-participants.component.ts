@@ -4,11 +4,11 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
 
 @Component({
-  selector: 'app-tasklet-call',
-  templateUrl: './tasklet-call.component.html',
-  styleUrls: ['./tasklet-call.component.scss']
+  selector: 'app-tasklet-participants',
+  templateUrl: './tasklet-participants.component.html',
+  styleUrls: ['./tasklet-participants.component.scss']
 })
-export class TaskletCallComponent implements OnInit {
+export class TaskletParticipantsComponent implements OnInit {
   @Input() tasklet: Tasklet;
   @Output() onActionFired = new EventEmitter<string>();
   icon = '';
