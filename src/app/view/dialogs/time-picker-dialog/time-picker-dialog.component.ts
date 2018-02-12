@@ -1,6 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Tasklet} from '../../../model/tasklet.model';
+import {DateService} from '../../../services/date.service';
 
 @Component({
   selector: 'app-time-picker',
@@ -26,7 +27,7 @@ export class TimePickerDialogComponent implements OnInit {
     for (let h = 0; h < 24; h++) {
       this.hours.push(h);
     }
-    for (let m = 0; m < 60; m++) {
+    for (let m = 0; m < 60; m = m + DateService.MINUTES_INTERVAL) {
       this.minutes.push(m);
     }
 

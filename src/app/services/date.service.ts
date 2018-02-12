@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class DateService {
+  public static MINUTES_INTERVAL = 5;
 
   constructor() {
   }
 
   getTime(date: Date): string {
     if (date != null) {
-      const MINUTES_INTERVAL = 5;
+      const MINUTES_INTERVAL = DateService.MINUTES_INTERVAL;
 
       let hours = new Date(date).getHours();
       let minutes = Math.ceil(new Date(date).getMinutes() / MINUTES_INTERVAL) * MINUTES_INTERVAL;
