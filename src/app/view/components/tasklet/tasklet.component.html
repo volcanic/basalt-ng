@@ -4,14 +4,14 @@
 </div>
 <mat-card>
   <mat-card-content>
-    <div [ngSwitch]="tasklet.type">
-      <app-tasklet-participants [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
-                        *ngSwitchCase="'Call'"></app-tasklet-participants>
-      <app-tasklet-todo [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
-                        *ngSwitchCase="'TODO'"></app-tasklet-todo>
-      <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
-                           *ngSwitchDefault=""></app-tasklet-default>
-    </div>
+    <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)"></app-tasklet-default>
+    <app-tasklet-todo [tasklet]="tasklet" (onActionFired)="onActionFired($event)" *ngIf="tasklet.type == 'TODO'"></app-tasklet-todo>
+    <app-tasklet-participants [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+                                     *ngIf="tasklet.type == 'Meeting'
+                                       || tasklet.type == 'Call'
+                                       || tasklet.type == 'Mail'
+                                       || tasklet.type == 'Chat'">
+    </app-tasklet-participants>
   </mat-card-content>
   <hr class="delimiter"/>
   <span class="tag" *ngFor="let t of tasklet.tags">
