@@ -1,206 +1,58 @@
 # Basalt
 
-## Aim
 
-This project can be used as an app template to target multiple platforms such as
+[![Basal logo](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)
 
-* Web browsers
-  * incl. progressive web app enhancement
-* Desktop operating systems
-  * Linux
-  * MacOS
-  * Windows
-* Mobile operating systems
-  * Android
-  * iOS
-  * Windows Mobile
+## Purpose
 
-This template uses frameworks and guidelines to allow for a quick development such as
+Basalt is an Angular based web application that helps you structure your work in a multi-tasking environment - you might call it a have-done list.
 
-* [Angular](https://angular.io)
-* [Material Design](http://material.io/)
-* [Typescript](https://www.typescriptlang.org/)
-* [Sass](http://sass-lang.com/)
+[![Screenshot overview](https://github.com/florianschwanz/basalt-ng/blob/master/docs/screenshots/01-overview.png)](https://github.com/florianschwanz/basalt-ng/blob/master/docs/screenshots/01-overview.png)
 
-as well as frameworks and guidelines to enable multi-platform support
+In order to structure your work you can note what you just did as a _tasklet_ which is a small work item belonging to a larger topic. That way you keep track of
+* all your current tasks
+* meeting minutes
+* todos
+* ideas
 
-* [Electron](https://electron.atom.io/)
-* [Cordova](https://cordova.apache.org/)
-* [PWA](https://developers.google.com/web/progressive-web-apps/)
+Don't miss any important information. Be able to report what you spent your time with. Keep your head free to focus on things that matter most.
 
-## Project structure
+### Features
 
-* **cordova** - cordova working dir (do not touch)
-* **doc** - release notes
-* **e2e** - end-to-end tests
-* **gradle** - gradle wrapper (do not touch)
-* **src** - app code
+| Tag       | Feature         |
+| ------------- |-------------|
+| 0.1 | Display tasklets |
+| 0.2 | Specialize tasklets TODO |
+| 0.3 | Tag tasklets |
+| 0.4 | Search tasklets |
+| 0.5 | Display TODOs |
+| 0.6 | Show splash screen |
+| 0.7 | Update time |
 
-## Requirements
+### Planned features
 
-* you can run/build this template using either
-  * [NodeJS](https://nodejs.org/en/) or
-  * [Gradle](https://gradle.org/) which wraps NodeJS 
+* topic summary
+* calender view
+* reporting
+* tasklet type _daily Scrum_ / _daily huddle_
+* multi-device synchronization
+* code snippet formatting
 
-## Developing
+### Based on Amphibian
 
-For some supported platforms there is a script that can be used to run the application locally.
+This app is powered by the [Amphibian app template](https://github.com/florianschwanz/amphibian).
+Therefore it can be built for the following plattforms
 
-### Web
+* web
+* Linux / Windows / MacOS
+* Android / iOS
 
-* run the following command and call ```http://localhost:4200``` in a browser to start the web version of the application
+See the Amphibian manual for further information.
 
+## Development
+
+Call the following commands to build and start the app locally
 ```
-npm web-start
-```
-or
-```
-gradlew webStart
-```
-
-### Web (Progressive Web App)
-
-* run the following command and call ```http://localhost:4200``` in a browser to start the progressive web app version of the application
-
-```
-npm progressive-start
-```
-or
-```
-gradlew progressiveStart
-```
-
-### Desktop
-
-* run the following command to start the desktop version of the application in a separate window automatically
-
-```
-npm electron-start
-```
-or
-```
-gradlew electronStart
-```
-
-### Android
-
-* run the following command to start the Android version of the application
-* note: for the Android version to run you need to have Android SDK installed
-
-```
-npm cordova-android-start
-```
-or
-```
-gradlew cordovaAndroidStart
-```
-
-## Testing
-
-tbd
-
-## Building
-
-For each supported platform there is a script that can be used to bundle the application.
-Call the following command to build release bundles for all supported platforms as well as release notes
-
-```
-npm run release-all
-```
-or
-```
-gradlew releaseAll
-```
-
-### Web
-
-* run the following command to create a release bundle for web
-* a release bundle for web named ```%npm_package_name%-web-%npm_package_version%.zip``` will be created in directory ```release```
-
-```
-npm run web-release
-```
-or
-```
-gradlew webRelease
-```
-
-### Web (Progressive Web App)
-
-* run the following command to create a release bundle for a progressive web app
-* a release bundle for web named ```%npm_package_name%-progressive-%npm_package_version%.zip``` will be created in directory ```release```
-
-```
-npm run progressive-release
-```
-or
-```
-gradlew progressiveRelease
-```
-
-### Linux
-
-* run the following command to create a release bundle for Linux (64-bit)
-* a release bundle for Linux named ```%npm_package_name%-linux-x64-%npm_package_version%.zip``` will be created in directory ```release```
-
-```
-npm run linux-release
-```
-or
-```
-gradlew linuxRelease
-```
-
-### MacOS
-
-* run the following command to create a release bundle for MacOS (64-bit)
-* note: to build for MacOS NodeJS command prompt must be run as administrator
-* a release bundle for MacOS named ```%npm_package_name%-macos-x64-%npm_package_version%.zip``` will be created in directory ```release```
-
-```
-npm run macos-release
-```
-or
-```
-gradlew macosRelease
-```
-
-### Windows
-
-* run the following command to create a release bundle for Windows (64-bit)
-* a release bundle for Windows named ```%npm_package_name%-win32-x64-%npm_package_version%.zip``` will be created in directory ```release```
-
-```
-npm run windows-release
-```
-or
-```
-gradlew windowsRelease
-```
-
-### Android
-
-* run the following command to create a release bundle for Android
-* a release bundle for Android named ```%npm_package_name%-android-%npm_package_version%.zip``` will be created in directory ```release```
-
-```
-npm run android-release
-```
-or
-```
-gradlew androidRelease
-```
-
-### Release Notes
-
-* run the following command to create release notes as html file
-* note: you can add information by editing```release-notes-<version>.md``` where <_version_> must match the version attribute in ```package.json``` 
-* a release notes html file named ```%npm_package_name%-release-notes-%npm_package_version%.html``` will be created in directory ```release```
-
-```
-npm run release-notes
-```
-or
-```
-gradlew releaseNotes
+npm install
+npm run start
 ```
