@@ -8,7 +8,7 @@ Visit [https://basalt.interoberlin.de/](https://basalt.interoberlin.de/) for a l
 
 Basalt is an Angular based web application that helps you structure your work in a multi-tasking environment - you may call it a have-done list.
 
-[![Screenshot overview](https://github.com/florianschwanz/basalt-ng/blob/master/docs/screenshots/01-overview.png)](https://github.com/florianschwanz/basalt-ng/blob/master/docs/screenshots/01-overview.png)
+<img src="https://github.com/florianschwanz/basalt-ng/blob/master/docs/screenshots/01-overview.png" alt="Screenshot overview" height=45% width=45% /> <img src="https://github.com/florianschwanz/basalt-ng/blob/master/docs/screenshots/04-add.png" alt="Screenshot add" height=45% width=45% />
 
 In order to structure your work you can note what you just did as a _tasklet_ which is a small work item belonging to a larger topic. That way you keep track of
 * all your current tasks
