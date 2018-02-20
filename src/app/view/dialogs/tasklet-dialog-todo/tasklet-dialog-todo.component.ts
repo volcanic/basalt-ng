@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TaskletTodo} from '../../../model/tasklet-todo.model';
 import {TASKLET_PRIORITY} from '../../../model/tasklet-priority.enum';
+import {DateService} from '../../../services/date.service';
 
 @Component({
   selector: 'app-tasklet-dialog-todo',
@@ -26,7 +27,7 @@ export class TaskletDialogTodoComponent implements OnInit {
     for (let h = 0; h < 24; h++) {
       this.hours.push(h);
     }
-    for (let m = 0; m < 60; m++) {
+    for (let m = 0; m < 60; m = m + DateService.MINUTES_INTERVAL) {
       this.minutes.push(m);
     }
 
