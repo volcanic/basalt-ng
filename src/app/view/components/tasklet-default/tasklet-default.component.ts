@@ -24,6 +24,7 @@ export class TaskletDefaultComponent implements OnInit {
     iconRegistry.addSvgIcon('code', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_black_24px.svg'));
     iconRegistry.addSvgIcon('bug', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_bug_report_black_24px.svg'));
     iconRegistry.addSvgIcon('lightbulb', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_lightbulb_outline_black_24px.svg'));
+    iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
     iconRegistry.addSvgIcon('dining', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_local_dining_black_24px.svg'));
     iconRegistry.addSvgIcon('run', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_directions_run_black_24px.svg'));
   }
@@ -56,6 +57,10 @@ export class TaskletDefaultComponent implements OnInit {
       }
       case TASKLET_TYPE.DEBUGGING: {
         this.icon = 'bug';
+        break;
+      }
+      case TASKLET_TYPE.TODO: {
+        this.icon = 'timer';
         break;
       }
       case TASKLET_TYPE.IDEA: {

@@ -13,7 +13,6 @@ import {TASKLET_PRIORITY} from '../../../model/tasklet-priority.enum';
 export class TaskletTodoComponent implements OnInit {
   @Input() tasklet: TaskletTodo;
   @Output() onActionFired = new EventEmitter<string>();
-  icon = '';
   iconDone = '';
   iconPriority = '';
   iconPriorityCount = [];
@@ -23,7 +22,6 @@ export class TaskletTodoComponent implements OnInit {
   constructor(private dateService: DateService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
     iconRegistry.addSvgIcon('assistant', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_assistant_photo_black_24px.svg'));
     iconRegistry.addSvgIcon('prio1', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_assistant_photo_prio1_24px.svg'));
     iconRegistry.addSvgIcon('prio2', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_assistant_photo_prio2_24px.svg'));
@@ -32,7 +30,6 @@ export class TaskletTodoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.icon = 'timer';
     this.iconDone = this.tasklet.done ? 'done' : 'undone';
     this.dueDate = this.dateService.getDate(this.tasklet.dueDate);
     this.dueTime = this.dateService.getTime(this.tasklet.dueDate);
