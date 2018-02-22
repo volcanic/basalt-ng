@@ -69,7 +69,7 @@ export class TaskletsService {
     this.suggestedSearchItems = [];
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     }).forEach(t => {
       t.text.split('\n').forEach(v => {
         if (v.trim() !== '') {
@@ -82,7 +82,7 @@ export class TaskletsService {
       }
     });
 
-    return this.suggestedSearchItems;
+    return this.suggestedSearchItems.reverse();
   }
 
   /**
@@ -98,21 +98,21 @@ export class TaskletsService {
     const tasks = new Map<string, string>();
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     }).forEach(t => {
       if (t.taskName != null) {
         tasks.set(t.taskName, t.taskName);
       }
     });
 
-    return Array.from(tasks.values());
+    return Array.from(tasks.values()).reverse();
   }
 
   public getPersons(): Person[] {
     const persons = new Map<string, Person>();
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
     }).forEach(t => {
       if (t.persons != null) {
         t.persons.forEach(p => {
@@ -121,6 +121,6 @@ export class TaskletsService {
       }
     });
 
-    return Array.from(persons.values());
+    return Array.from(persons.values()).reverse();
   }
 }
