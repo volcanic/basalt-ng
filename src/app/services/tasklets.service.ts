@@ -68,7 +68,9 @@ export class TaskletsService {
   getSuggestedSearchItems(): string[] {
     this.suggestedSearchItems = [];
 
-    this.tasklets.forEach(t => {
+    Array.from(this.tasklets.values()).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
+    }).forEach(t => {
       t.text.split('\n').forEach(v => {
         if (v.trim() !== '') {
           this.suggestedSearchItems.push(v.trim().replace(/(^-)/g, ''));
