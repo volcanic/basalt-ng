@@ -107,7 +107,9 @@ export class TaskletsService {
   public getPersons(): Person[] {
     const persons = new Map<string, Person>();
 
-    this.tasklets.forEach(t => {
+    Array.from(this.tasklets.values()).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
+    }).forEach(t => {
       if (t.persons != null) {
         t.persons.forEach(p => {
           persons.set(p.name, p);
@@ -115,6 +117,6 @@ export class TaskletsService {
       }
     });
 
-    return Array.from(persons.values()).sort();
+    return Array.from(persons.values());
   }
 }
