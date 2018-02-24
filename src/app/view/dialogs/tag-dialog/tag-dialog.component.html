@@ -1,14 +1,22 @@
-<h2 mat-dialog-title>{{ dialogTitle }}</h2>
-<mat-dialog-content>
-  <div *ngFor="let t of tags">
-    <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button [mat-dialog-close]=null>
-    Cancel
-  </button>
-  <button mat-button (click)="applyTags()">
-    Apply tags
-  </button>
-</mat-dialog-actions>
+<div class="dialog">
+  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+  <mat-dialog-content>
+    <div class="single-column" *ngFor="let t of tags">
+      <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
+    </div>
+    <div class="double-column" *ngFor="let t of tags.slice(0, tags.length / 2)">
+      <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
+    </div>
+    <div class="double-column" *ngFor="let t of tags.slice(tags.length / 2, tags.length)">
+      <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button [mat-dialog-close]=null>
+      Cancel
+    </button>
+    <button mat-button (click)="applyTags()">
+      Apply tags
+    </button>
+  </mat-dialog-actions>
+</div>
