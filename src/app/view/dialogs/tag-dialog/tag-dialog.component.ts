@@ -24,7 +24,19 @@ export class TagDialogComponent implements OnInit {
   ngOnInit() {
   }
 
-  applyTags() {
+  selectAll() {
+    this.tags.forEach(t => {
+      t.checked = true;
+    });
+  }
+
+  selectNone() {
+    this.tags.forEach(t => {
+      t.checked = false;
+    });
+  }
+
+  apply() {
     this.dialogRef.close(this.tags);
   }
 }

@@ -12,11 +12,19 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button [mat-dialog-close]=null>
-      Cancel
-    </button>
-    <button mat-button (click)="applyTags()">
-      Apply tags
-    </button>
+    <div class="action-buttons">
+      <button mat-button (click)="selectAll()">
+        Select all
+      </button>
+      <button mat-button (click)="selectNone()">
+        Select none
+      </button>
+    </div>
+    <div class="flexbox"></div>
+    <div class="closing-buttons">
+      <button mat-button (click)="apply()">
+        Apply
+      </button>
+    </div>
   </mat-dialog-actions>
 </div>

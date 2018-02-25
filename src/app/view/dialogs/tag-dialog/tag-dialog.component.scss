@@ -40,3 +40,16 @@
     float: left;
   }
 }
+
+.action-buttons {
+  display: inline;
+}
+
+.closing-buttons {
+  display: inline;
+  float: right;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
