@@ -32,6 +32,8 @@ export class TaskletDialogParticipantsComponent implements OnInit {
       this.tasklet.persons = [];
     }
 
+    console.log(`DEBUG ${JSON.stringify(this.tasklet.persons)}`);
+
     this.existingPersons = this.taskletsService.getPersons().reverse();
     console.log(`DEBUG existingPersons ${JSON.stringify(this.existingPersons)}`);
   }
@@ -48,7 +50,7 @@ export class TaskletDialogParticipantsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         console.log(`DEBUG result ${JSON.stringify(result)}`);
-        this.existingPersons.push(result);
+        this.existingPersons.unshift(result);
       }
     });
   }
