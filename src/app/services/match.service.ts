@@ -62,13 +62,15 @@ export class MatchService {
   }
 
   private taskletTaskNameMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    return tasklet.taskName != null && this.textMatchesSingleItem(tasklet.taskName, item)
+    return tasklet.taskName != null && this.textMatchesSingleItem(tasklet.taskName, item);
   }
 
   private taskletPersonsMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    tasklet.persons.some(p => {
-      return this.textMatchesSingleItem(p.name, item);
-    });
+    if (tasklet.persons != null) {
+      tasklet.persons.some(p => {
+        return this.textMatchesSingleItem(p.name, item);
+      });
+    }
 
     return false;
   }

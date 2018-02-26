@@ -33,6 +33,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.5 | Display TODOs |
 | 0.6 | Show splash screen |
 | 0.7 | Update time |
+| 0.8 | Attach participants |
 
 ### Planned features
 
