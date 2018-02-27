@@ -10,6 +10,7 @@ import {DateService} from '../../../services/date.service';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {Tag} from '../../../model/tag.model';
 import {TimePickerDialogComponent} from '../../dialogs/time-picker-dialog/time-picker-dialog.component';
+import {UUID} from '../../../model/util/uuid';
 
 @Component({
   selector: 'app-tasklet',
@@ -51,7 +52,7 @@ export class TaskletComponent implements OnInit {
         break;
       }
       case 'continue': {
-        this.snackbarService.showSnackbar('Continue tasklet', '');
+        this.continueTasklet();
         break;
       }
       case 'save': {
@@ -85,7 +86,33 @@ export class TaskletComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskletsService.updateTasklet(result as Tasklet);
-        this.snackbarService.showSnackbar('Updated tasklet', '');
+        this.snackbarService.showSnackbar('Continued tasklet', '');
+      }
+    });
+  }
+
+  private continueTasklet() {
+    const continueTasklet = JSON.parse(JSON.stringify(this.tasklet));
+    continueTasklet.id = new UUID().toString();
+    continueTasklet.text = '';
+    continueTasklet.creationDate = new Date();
+    continueTasklet.persons = [];
+
+    const dialogRef = this.dialog.open(TaskletDialogComponent, {
+      disableClose: false,
+      data: {
+        mode: DIALOG_MODE.ADD,
+        dialogTitle: 'Continue tasklet',
+        tasklet: continueTasklet,
+        tags: this.tags.map(t => {
+          return new Tag(t.value, false);
+        })
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.taskletsService.createTasklet(result as Tasklet);
+        this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
   }
