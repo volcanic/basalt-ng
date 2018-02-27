@@ -20,7 +20,7 @@ import {
   MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
-  MatToolbarModule
+  MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import {PouchDBService} from './services/pouchdb.service';
 import {TaskletsService} from './services/tasklets.service';
@@ -93,6 +93,7 @@ import {TaskletParticipantsComponent} from './view/components/tasklet-participan
     MatSidenavModule,
     MatSnackBarModule,
     MatToolbarModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     ResponsiveModule
   ],
