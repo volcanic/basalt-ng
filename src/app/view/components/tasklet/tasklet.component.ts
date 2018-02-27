@@ -30,6 +30,7 @@ export class TaskletComponent implements OnInit {
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('more_black', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_more_vert_black_18px.svg'));
+    iconRegistry.addSvgIcon('play_circle_filled', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_play_circle_outline_black_36px.svg'));
     iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_edit_black_18px.svg'));
     iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_delete_black_18px.svg'));
   }
@@ -47,6 +48,10 @@ export class TaskletComponent implements OnInit {
       }
       case 'updateTime': {
         this.updateTaskletTime();
+        break;
+      }
+      case 'continue': {
+        this.snackbarService.showSnackbar('Continue tasklet', '');
         break;
       }
       case 'save': {
