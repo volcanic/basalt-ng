@@ -6,7 +6,11 @@
   <mat-card>
     <mat-card-content>
       <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)"></app-tasklet-default>
-      <div class="continue">
+      <div class="continue" *ngIf="tasklet.type == 'Action'
+                                       || tasklet.type == 'Meeting'
+                                       || tasklet.type == 'Call'
+                                       || tasklet.type == 'Development'
+                                       || tasklet.type == 'Debugging' ">
         <div class="right-attached hidden" (click)="onActionFired('continue')">
           <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
         </div>
