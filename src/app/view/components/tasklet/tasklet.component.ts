@@ -31,7 +31,8 @@ export class TaskletComponent implements OnInit {
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('more_black', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_more_vert_black_18px.svg'));
-    iconRegistry.addSvgIcon('play_circle_filled', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_play_circle_outline_black_36px.svg'));
+    iconRegistry.addSvgIcon('play_circle_filled',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_play_circle_outline_black_36px.svg'));
     iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_edit_black_18px.svg'));
     iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_delete_black_18px.svg'));
   }
@@ -93,6 +94,7 @@ export class TaskletComponent implements OnInit {
 
   private continueTasklet() {
     const continueTasklet = JSON.parse(JSON.stringify(this.tasklet));
+    continueTasklet._rev = null;
     continueTasklet.id = new UUID().toString();
     continueTasklet.text = '';
     continueTasklet.creationDate = new Date();
@@ -101,7 +103,7 @@ export class TaskletComponent implements OnInit {
     const dialogRef = this.dialog.open(TaskletDialogComponent, {
       disableClose: false,
       data: {
-        mode: DIALOG_MODE.ADD,
+        mode: DIALOG_MODE.CONTINUE,
         dialogTitle: 'Continue tasklet',
         tasklet: continueTasklet,
         tags: this.tags.map(t => {

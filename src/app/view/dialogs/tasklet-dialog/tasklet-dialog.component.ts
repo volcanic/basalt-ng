@@ -131,6 +131,18 @@ export class TaskletDialogComponent implements OnInit {
     }
   }
 
+  continueTasklet() {
+    this.tasklet.id = new UUID().toString();
+    this.tasklet.creationDate = new Date();
+    this.tasklet.tags = [];
+    this.existingTags.concat(this.newTags).filter(t => t.checked).forEach(t => {
+        this.tasklet.tags.push(t);
+      }
+    );
+
+    this.dialogRef.close(this.tasklet);
+  }
+
   filterTasks(val: string): string[] {
     return this.taskOptions.filter(option =>
       option.toLowerCase().includes(val.toLowerCase()));
