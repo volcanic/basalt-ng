@@ -11,7 +11,8 @@
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging' ">
-        <div class="right-attached hidden" (click)="onActionFired('continue')">
+        <div class="right-attached hidden" (click)="onActionFired('continue')" matTooltip="Continue with tasklet"
+             matTooltipPosition="above">
           <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
         </div>
       </div>

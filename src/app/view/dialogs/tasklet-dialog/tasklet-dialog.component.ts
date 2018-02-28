@@ -24,6 +24,7 @@ export class TaskletDialogComponent implements OnInit {
   dialogTitle = '';
   tasklet: Tasklet;
   tags = [];
+  previousText = '';
 
   taskOptions = [];
   filteredTaskOptions: Observable<string[]>;
@@ -49,6 +50,7 @@ export class TaskletDialogComponent implements OnInit {
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = this.data.tasklet;
     this.tags = this.data.tags;
+    this.previousText = this.data.previousText;
 
     this.taskOptions = this.taskletsService.getTasks();
     this.filteredTaskOptions = this.formControl.valueChanges

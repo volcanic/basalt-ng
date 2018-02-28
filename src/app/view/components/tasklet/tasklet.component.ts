@@ -106,7 +106,8 @@ export class TaskletComponent implements OnInit {
         tasklet: continueTasklet,
         tags: this.tags.map(t => {
           return new Tag(t.value, false);
-        })
+        }),
+        previousText: this.tasklet.text
       }
     });
     dialogRef.afterClosed().subscribe(result => {
