@@ -11,6 +11,7 @@ import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {Tag} from '../../../model/tag.model';
 import {TimePickerDialogComponent} from '../../dialogs/time-picker-dialog/time-picker-dialog.component';
 import {UUID} from '../../../model/util/uuid';
+import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 
 @Component({
   selector: 'app-tasklet',
@@ -99,6 +100,10 @@ export class TaskletComponent implements OnInit {
     continueTasklet.text = '';
     continueTasklet.creationDate = new Date();
     continueTasklet.persons = [];
+
+    if (this.tasklet.type === TASKLET_TYPE.TODO || this.tasklet.type === TASKLET_TYPE.IDEA) {
+      continueTasklet.type = TASKLET_TYPE.ACTION;
+    }
 
     const dialogRef = this.dialog.open(TaskletDialogComponent, {
       disableClose: false,

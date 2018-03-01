@@ -10,7 +10,9 @@
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Development'
-                                       || tasklet.type == 'Debugging' ">
+                                       || tasklet.type == 'Debugging'
+                                       || tasklet.type == 'Idea'
+                                       || tasklet.type == 'TODO' ">
         <div class="right-attached hidden" (click)="onActionFired('continue')" matTooltip="Continue with tasklet"
              matTooltipPosition="above">
           <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
