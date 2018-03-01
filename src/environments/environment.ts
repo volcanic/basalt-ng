@@ -4,5 +4,9 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  NAME: require('../../package.json').name,
+  VERSION: require('../../package.json').version,
+  LICENSE: require('../../package.json').license,
+  HOMEPAGE: require('../../package.json').homepage
 };

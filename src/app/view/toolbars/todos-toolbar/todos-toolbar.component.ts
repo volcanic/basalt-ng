@@ -30,6 +30,7 @@ export class TodosToolbarComponent implements OnInit {
     iconRegistry.addSvgIcon('menu', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_menu_white_24px.svg'));
     iconRegistry.addSvgIcon('label_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_label_outline_white_24px.svg'));
     iconRegistry.addSvgIcon('list_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_list_white_24px.svg'));
+    iconRegistry.addSvgIcon('more_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_more_vert_white_24px.svg'));
   }
 
   ngOnInit() {

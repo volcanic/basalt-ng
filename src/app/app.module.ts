@@ -48,9 +48,11 @@ import {TimePickerDialogComponent} from './view/dialogs/time-picker-dialog/time-
 import {PersonDialogComponent} from './view/dialogs/person-dialog/person-dialog.component';
 import {TaskletDialogParticipantsComponent} from './view/dialogs/tasklet-dialog-participants/tasklet-dialog-participants.component';
 import {TaskletParticipantsComponent} from './view/components/tasklet-participants/tasklet-participants.component';
+import { AboutDialogComponent } from './view/dialogs/about-dialog/about-dialog.component';
 
 @NgModule({
   declarations: [
+    AboutDialogComponent,
     AppComponent,
     ConfirmationDialogComponent,
     SplashScreenComponent,
@@ -98,6 +100,7 @@ import {TaskletParticipantsComponent} from './view/components/tasklet-participan
     ResponsiveModule
   ],
   entryComponents: [
+    AboutDialogComponent,
     ConfirmationDialogComponent,
     TagDialogComponent,
     TaskletDialogComponent,

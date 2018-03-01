@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content>
+  <p>This is {{ name }} version {{ version }}.</p>
+  <p>It is published under {{ license }}.</p>
+  <p>For more information visit <a href="{{ homepage }}" target="_blank">{{ homepage }}</a>.</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="closing-buttons">
+    <button mat-button [mat-dialog-close]=null>
+      Close
+    </button>
+  </div>
+</mat-dialog-actions>

@@ -20,11 +20,19 @@
   </div>
   <div class="flexbox"></div>
   <div class="toolbar-block">
-    <button mat-button class="toolbar-menu-item" (click)="onClickMenuItem('tags')">
-      <mat-icon svgIcon="label_white"></mat-icon>
+    <button mat-button class="toolbar-menu-item right" [matMenuTriggerFor]="menu">
+      <mat-icon svgIcon="more_white"></mat-icon>
     </button>
-    <button mat-button class="toolbar-menu-item" [routerLink]="['/todos']">
+    <button mat-button class="toolbar-menu-item right" [routerLink]="['/todos']">
       <mat-icon svgIcon="timer_white"></mat-icon>
     </button>
+    <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('tags')">
+      <mat-icon svgIcon="label_white"></mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onClickMenuItem('about')">
+        <span>About</span>
+      </button>
+    </mat-menu>
   </div>
 </mat-toolbar>

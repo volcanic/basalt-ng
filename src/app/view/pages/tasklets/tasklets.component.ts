@@ -3,7 +3,7 @@ import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/debounceTime';
 import {SnackbarService} from '../../../services/snackbar.service';
-import {MatDialog, MatIconRegistry, MatSidenav} from '@angular/material';
+import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
@@ -12,6 +12,8 @@ import {TagDialogComponent} from '../../dialogs/tag-dialog/tag-dialog.component'
 import {MatchService} from '../../../services/match.service';
 import {Tag} from '../../../model/tag.model';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
+import {AboutDialogComponent} from '../../dialogs/about-dialog/about-dialog.component';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-tasklets',
@@ -157,7 +159,19 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         });
         break;
       }
-
+      case 'about': {
+        const dialogRef = this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
+          disableClose: true,
+          data: {
+            title: 'About',
+            name: environment.NAME,
+            version: environment.VERSION,
+            license: environment.LICENSE,
+            homepage: environment.HOMEPAGE,
+          }
+        });
+        break;
+      }
       default: {
         break;
       }
