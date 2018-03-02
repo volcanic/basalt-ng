@@ -40,7 +40,7 @@
     "release-android": "mkdirp ./release && npm run cordova-android-prod && cd ./cordova/platforms/android/build/outputs/apk && bestzip ./../../../../../../release/%npm_package_name%-android-%npm_package_version%.zip ./android-release-unsigned.apk",
     "release-notes": "mkdirp ./release && markdown ./doc/release-notes-%npm_package_version%.md > release/release-notes-%npm_package_version%.html",
     "gh-pages": "ng build --output-path docs --base-href https://florianschwanz.github.io/basalt-ng/",
-    "git-tags": "echo { \"tags\": [ > tags.json && git tag --format=\"{ \\\"%(refname)\\\": \\\"%(subject)\\\"} ,\" >> tags.json && echo ]} >> tags.json"
+    "git-tags": "echo { \"tags\": [ > tags.json && git tag --format=\"{ \\\"annotation\\\":\\\"%(refname)\\\", \\\"message\\\": \\\"%(subject)\\\"} ,\" >> tags.json && replace ,\\n$ \"\" tags.json && echo ]} >> tags.json"
   },
   "private": true,
   "dependencies": {
@@ -90,6 +90,7 @@
     "markdown-to-html": "0.0.13",
     "mkdirp": "^0.5.1",
     "protractor": "~5.1.0",
+    "replace": "^0.3.0",
     "sw-precache": "^5.1.0",
     "ts-node": "1.2.1",
     "tslint": "^4.5.1",

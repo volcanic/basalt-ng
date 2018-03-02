@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {SnackbarService} from './services/snackbar.service';
 import {PouchDBService} from './services/pouchdb.service';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {TaskletsService} from './services/tasklets.service';
+import {environment} from '../environments/environment';
+import {GitTag} from './model/git-tag.model';
+import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new-features-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +18,28 @@ export class AppComponent implements OnInit {
   constructor(private taskletsService: TaskletsService,
               private snackbarService: SnackbarService,
               private pouchDBService: PouchDBService,
+              public dialog: MatDialog,
               public snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
+    (environment.TAGS as GitTag[]).forEach(t => {
+      console.log(`annotation: ${t.annotation}, message: ${t.message}`);
+    });
+
+    const dialogRef = this.dialog.open(NewFeaturesDialogComponent, {
+      disableClose: false,
+      data: {
+        dialogTitle: 'New features',
+        gitTags: environment.TAGS as GitTag[]
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        // TODO Remember that those infos have been seen already
+      }
+    });
+
     this.taskletsService.fetch();
     this.snackbarService.messageSubject.subscribe(
       (snack) => {

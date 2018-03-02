@@ -20,7 +20,8 @@ import {
   MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
-  MatToolbarModule, MatTooltipModule
+  MatToolbarModule,
+  MatTooltipModule
 } from '@angular/material';
 import {PouchDBService} from './services/pouchdb.service';
 import {TaskletsService} from './services/tasklets.service';
@@ -48,7 +49,8 @@ import {TimePickerDialogComponent} from './view/dialogs/time-picker-dialog/time-
 import {PersonDialogComponent} from './view/dialogs/person-dialog/person-dialog.component';
 import {TaskletDialogParticipantsComponent} from './view/dialogs/tasklet-dialog-participants/tasklet-dialog-participants.component';
 import {TaskletParticipantsComponent} from './view/components/tasklet-participants/tasklet-participants.component';
-import { AboutDialogComponent } from './view/dialogs/about-dialog/about-dialog.component';
+import {AboutDialogComponent} from './view/dialogs/about-dialog/about-dialog.component';
+import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new-features-dialog.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +75,7 @@ import { AboutDialogComponent } from './view/dialogs/about-dialog/about-dialog.c
     TodosToolbarComponent,
     TimePickerDialogComponent,
     PersonDialogComponent,
+    NewFeaturesDialogComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -102,6 +105,7 @@ import { AboutDialogComponent } from './view/dialogs/about-dialog/about-dialog.c
   entryComponents: [
     AboutDialogComponent,
     ConfirmationDialogComponent,
+    NewFeaturesDialogComponent,
     TagDialogComponent,
     TaskletDialogComponent,
     TaskletDialogDefaultComponent,

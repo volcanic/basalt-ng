@@ -1,0 +1,14 @@
+<h2 mat-dialog-title xmlns="http://www.w3.org/1999/html">{{ dialogTitle }}</h2>
+<mat-dialog-content>
+  <mat-list>
+    <mat-list-item class="text" *ngFor="let item of gitTags">
+      <span class="annotation"><strong>{{ item.annotation }}</strong></span>
+      <span class="message">{{ item.message }}</span>
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions class="closing-buttons">
+  <button mat-button [mat-dialog-close]=null>
+    OKAY
+  </button>
+</mat-dialog-actions>

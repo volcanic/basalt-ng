@@ -8,5 +8,6 @@ export const environment = {
   NAME: require('../../package.json').name,
   VERSION: require('../../package.json').version,
   LICENSE: require('../../package.json').license,
-  HOMEPAGE: require('../../package.json').homepage
+  HOMEPAGE: require('../../package.json').homepage,
+  TAGS: require('../../tags.json').tags,
 };
