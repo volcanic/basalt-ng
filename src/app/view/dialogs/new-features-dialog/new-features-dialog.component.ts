@@ -20,8 +20,6 @@ export class NewFeaturesDialogComponent implements OnInit {
 
     this.gitTags.forEach(gt => {
       gt.annotation = gt.annotation.replace(/.*v/g, '');
-      console.log(gt.annotation);
     });
   }
-
 }

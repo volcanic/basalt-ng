@@ -2,7 +2,7 @@ import {EventEmitter, Injectable, isDevMode} from '@angular/core';
 import PouchDB from 'pouchdb';
 
 @Injectable()
-export class PouchDBService {
+export class PouchDBSettingsService {
 
   private isInstantiated: boolean;
   private database: any;
@@ -10,7 +10,7 @@ export class PouchDBService {
 
   public constructor() {
     if (!this.isInstantiated) {
-      this.database = new PouchDB('basalt');
+      this.database = new PouchDB('basalt-settings');
       this.isInstantiated = true;
     }
   }

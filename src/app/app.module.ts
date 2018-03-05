@@ -51,6 +51,8 @@ import {TaskletDialogParticipantsComponent} from './view/dialogs/tasklet-dialog-
 import {TaskletParticipantsComponent} from './view/components/tasklet-participants/tasklet-participants.component';
 import {AboutDialogComponent} from './view/dialogs/about-dialog/about-dialog.component';
 import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new-features-dialog.component';
+import {PouchDBSettingsService} from './services/pouchdb-settings.service';
+import {SettingsService} from './services/settings.service';
 
 @NgModule({
   declarations: [
@@ -119,6 +121,8 @@ import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new
     DateService,
     MatchService,
     PouchDBService,
+    PouchDBSettingsService,
+    SettingsService,
     SnackbarService,
     TaskletsService
   ],

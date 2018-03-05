@@ -6,6 +6,9 @@ import {TaskletsService} from './services/tasklets.service';
 import {environment} from '../environments/environment';
 import {GitTag} from './model/git-tag.model';
 import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new-features-dialog.component';
+import {SettingsService} from './services/settings.service';
+import {PouchDBSettingsService} from './services/pouchdb-settings.service';
+import {Settings} from './model/settings/settings.model';
 
 @Component({
   selector: 'app-root',
@@ -18,14 +21,14 @@ export class AppComponent implements OnInit {
   constructor(private taskletsService: TaskletsService,
               private snackbarService: SnackbarService,
               private pouchDBService: PouchDBService,
+              private pouchDBSettingsService: PouchDBSettingsService,
+              private settingsService: SettingsService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
-    (environment.TAGS as GitTag[]).forEach(t => {
-      console.log(`annotation: ${t.annotation}, message: ${t.message}`);
-    });
+    this.settingsService.fetch();
 
     const dialogRef = this.dialog.open(NewFeaturesDialogComponent, {
       disableClose: false,
@@ -36,7 +39,10 @@ export class AppComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        // TODO Remember that those infos have been seen already
+        const settings = new Settings();
+        settings.id = 'version';
+        settings.value = result;
+        this.settingsService.setSettings(settings);
       }
     });
 
@@ -48,6 +54,7 @@ export class AppComponent implements OnInit {
     );
 
     this.pouchDBService.sync('http://localhost:5984/basalt');
+    this.pouchDBSettingsService.sync('http://localhost:5984/basalt_settings');
   }
 
   /**
