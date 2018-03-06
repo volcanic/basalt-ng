@@ -166,7 +166,7 @@ export class TodosComponent implements OnInit, OnDestroy {
         break;
       }
       case 'settings': {
-        this.snackbarService.showSnackbar('Clicked on menu item Settings', '');
+        this.snackbarService.showSnackbar('Clicked on menu item Setting', '');
         break;
       }
       case 'add': {

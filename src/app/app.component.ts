@@ -8,7 +8,7 @@ import {GitTag} from './model/git-tag.model';
 import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new-features-dialog.component';
 import {SettingsService} from './services/settings.service';
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
-import {Settings} from './model/settings/settings.model';
+import {Setting} from './model/settings/setting.model';
 
 @Component({
   selector: 'app-root',
@@ -29,26 +29,17 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.settingsService.fetch();
+    this.settingsService.settingsSubject.subscribe(settings => {
 
-    const dialogRef = this.dialog.open(NewFeaturesDialogComponent, {
-      disableClose: false,
-      data: {
-        dialogTitle: 'New features',
-        gitTags: environment.TAGS as GitTag[]
+      if (settings.get('version') != null) {
+        console.log(`latest version ${settings.get('version').value}`);
+        this.showNewFeatures(settings.get('version').value);
       }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        const settings = new Settings();
-        settings.id = 'version';
-        settings.value = result;
-        this.settingsService.setSettings(settings);
-      }
-    });
+
 
     this.taskletsService.fetch();
-    this.snackbarService.messageSubject.subscribe(
-      (snack) => {
+    this.snackbarService.messageSubject.subscribe(snack => {
         this.openSnackBar(snack[0], snack[1]);
       }
     );
@@ -66,5 +57,51 @@ export class AppComponent implements OnInit {
     this.snackBar.open(message, action, <MatSnackBarConfig>{
       duration: 5000,
     });
+  }
+
+  private showNewFeatures(currentVersion: string) {
+    // Current version
+    const currentMajor = Number.parseInt(environment.VERSION.split('.')[0]);
+    const currentMinor = Number.parseInt(environment.VERSION.split('.')[1]);
+    const currentPatch = Number.parseInt(environment.VERSION.split('.')[2]);
+
+    // Latest version
+    const latestMajor = Number.parseInt(currentVersion.split('.')[0]);
+    const latestMinor = Number.parseInt(currentVersion.split('.')[1]);
+    const latestPatch = Number.parseInt(currentVersion.split('.')[2]);
+
+    if ((currentMajor > latestMajor)
+      || (currentMajor === latestMajor && currentMinor > latestMinor)
+      || (currentMajor === latestMajor && currentMinor === latestMinor && currentPatch > latestPatch)
+    ) {
+
+      const dialogRef = this.dialog.open(NewFeaturesDialogComponent, {
+        disableClose: false,
+        data: {
+          dialogTitle: 'New features',
+          gitTags: (environment.TAGS as GitTag[]).filter(gt => {
+            gt.annotation = gt.annotation.replace(/.*v/g, '');
+
+            // Tag version
+            const tagMajor = Number.parseInt(gt.annotation.split('.')[0]);
+            const tagMinor = Number.parseInt(gt.annotation.split('.')[1]);
+            const tagPatch = Number.parseInt(gt.annotation.split('.')[2]);
+
+            const relevant = ((tagMajor > latestMajor)
+              || (tagMajor === latestMajor && tagMinor > latestMinor)
+              || (tagMajor === latestMajor && tagMinor === latestMinor && tagPatch > latestPatch)
+            );
+
+            console.log(`tag version ${gt.annotation}, relevant: ${relevant}`);
+
+            return relevant;
+          })
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        // Save latest version
+        this.settingsService.updateSetting(new Setting('version', environment.VERSION));
+      });
+    }
   }
 }

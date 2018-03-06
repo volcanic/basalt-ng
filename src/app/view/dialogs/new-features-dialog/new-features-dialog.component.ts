@@ -17,7 +17,6 @@ export class NewFeaturesDialogComponent implements OnInit {
   ngOnInit() {
     this.dialogTitle = this.data.dialogTitle;
     this.gitTags = this.data.gitTags;
-
     this.gitTags.forEach(gt => {
       gt.annotation = gt.annotation.replace(/.*v/g, '');
     });

@@ -35,6 +35,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.7 | Update time |
 | 0.8 | Attach participants |
 | 0.9 | Continue tasklets |
+| 0.10 | Show app information |
 
 ### Planned features
 
