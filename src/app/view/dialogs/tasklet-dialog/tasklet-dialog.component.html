@@ -9,7 +9,8 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="wide-box" color="primary">
+      <mat-form-field class="wide-box" color="primary" *ngIf="tasklet.type != 'Lunch Break'
+                              && tasklet.type != 'Finishing Time'">
         <input matInput name="task" type="text" placeholder="Topic" [formControl]="formControl"
                [(ngModel)]="tasklet.taskName"
                [matAutocomplete]="auto">
@@ -20,10 +21,13 @@
         </mat-autocomplete>
       </mat-form-field>
       <mat-form-field class="wide-box" *ngIf="previousText != null">
-          <textarea matInput required name="previousText" placeholder="Previous" matTextareaAutosize matAutosizeMinRows="1"
+          <textarea matInput required name="previousText" placeholder="Previous" matTextareaAutosize
+                    matAutosizeMinRows="1"
                     matAutosizeMaxRows="5" [(ngModel)]="previousText" disabled></textarea>
       </mat-form-field>
-      <app-tasklet-dialog-default [tasklet]="tasklet"></app-tasklet-dialog-default>
+      <app-tasklet-dialog-default [tasklet]="tasklet"
+                                  *ngIf="tasklet.type != 'Lunch Break'
+                                       && tasklet.type != 'Finishing Time'"></app-tasklet-dialog-default>
       <app-tasklet-dialog-todo [tasklet]="tasklet" *ngIf="tasklet.type == 'TODO'"
                                (onHourSelectedEmitter)="onDueHourSelected($event)"
                                (onMinuteSelectedEmitter)="onDueMinuteSelected($event)"></app-tasklet-dialog-todo>
@@ -34,21 +38,24 @@
                                        || tasklet.type == 'Chat'">
       </app-tasklet-dialog-participants>
     </form>
-    <div class="label">Tags</div>
-    <div class="single-column" *ngFor="let t of existingTags">
-      <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
-    </div>
-    <div class="double-column" *ngFor="let t of existingTags.slice(0, existingTags.length / 2)">
-      <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
-    </div>
-    <div class="double-column" *ngFor="let t of existingTags.slice(existingTags.length / 2, existingTags.length)">
-      <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
-    </div>
-    <div *ngFor="let n of newTags">
-      <mat-checkbox [(ngModel)]=n.checked>
-        <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.value"
-               (ngModelChange)="tagChanged()"/>
-      </mat-checkbox>
+    <div *ngIf="tasklet.type != 'Lunch Break'
+                                       && tasklet.type != 'Finishing Time'">
+      <div class="label">Tags</div>
+      <div class="single-column" *ngFor="let t of existingTags">
+        <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
+      </div>
+      <div class="double-column" *ngFor="let t of existingTags.slice(0, existingTags.length / 2)">
+        <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
+      </div>
+      <div class="double-column" *ngFor="let t of existingTags.slice(existingTags.length / 2, existingTags.length)">
+        <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
+      </div>
+      <div *ngFor="let n of newTags">
+        <mat-checkbox [(ngModel)]=n.checked>
+          <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.value"
+                 (ngModelChange)="tagChanged()"/>
+        </mat-checkbox>
+      </div>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions>
@@ -61,7 +68,8 @@
     <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" [disabled]="!formCtrl.form.valid" (click)="updateTasklet()">
       Update tasklet
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.CONTINUE" [disabled]="!formCtrl.form.valid" (click)="continueTasklet()">
+    <button mat-button *ngIf="mode == DIALOG_MODE.CONTINUE" [disabled]="!formCtrl.form.valid"
+            (click)="continueTasklet()">
       Continue tasklet
     </button>
   </mat-dialog-actions>
