@@ -32,6 +32,8 @@ export class TaskletsComponent implements OnInit, OnDestroy {
   searchItem = '';
   tags = [];
 
+  DISPLAY_LIMIT = 25;
+
   // private windowHeight = 0;
   // private windowWidth = 0;
 
@@ -61,7 +63,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             this.tags = this.getAllTags(value as Tasklet[]);
           }
 
-          this.tasklets = value.filter(t => {
+          this.tasklets = value.slice(0, this.DISPLAY_LIMIT).filter(t => {
             if (this.searchItem !== '') {
               return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
             } else {
