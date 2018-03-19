@@ -3,6 +3,7 @@ export enum TASKLET_TYPE {
   ACTION = 'Action',
   MEETING = 'Meeting',
   CALL = 'Call',
+  DAILY_SCRUM = 'Daily Scrum',
   MAIL = 'Mail',
   CHAT = 'Chat',
   DEVELOPMENT = 'Development',
