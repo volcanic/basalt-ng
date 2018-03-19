@@ -62,14 +62,18 @@
     <button mat-button [mat-dialog-close]=null>
       Cancel
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.ADD" [disabled]="!formCtrl.form.valid" (click)="addTasklet()">
+    <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
+        && tasklet.type != 'Lunch Break'
+        && tasklet.type != 'Finishing Time'">
       Add tasklet
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" [disabled]="!formCtrl.form.valid" (click)="updateTasklet()">
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updateTasklet()" [disabled]="!formCtrl.form.valid
+        && tasklet.type != 'Lunch Break'
+        && tasklet.type != 'Finishing Time'">
       Update tasklet
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.CONTINUE" [disabled]="!formCtrl.form.valid"
-            (click)="continueTasklet()">
+    <button mat-button *ngIf="mode == DIALOG_MODE.CONTINUE" (click)="continueTasklet()"
+            [disabled]="!formCtrl.form.valid">
       Continue tasklet
     </button>
   </mat-dialog-actions>

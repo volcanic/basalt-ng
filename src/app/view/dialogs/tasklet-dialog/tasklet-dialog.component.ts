@@ -100,6 +100,12 @@ export class TaskletDialogComponent implements OnInit {
     );
 
     switch (this.tasklet.type) {
+      case TASKLET_TYPE.LUNCH_BREAK:
+      case TASKLET_TYPE.FINISHING_TIME: {
+        this.tasklet.taskName = this.tasklet.type;
+        this.dialogRef.close(this.tasklet);
+        break;
+      }
       case TASKLET_TYPE.TODO: {
         const taskletTodo = this.tasklet as TaskletTodo;
         taskletTodo.done = false;
@@ -120,6 +126,12 @@ export class TaskletDialogComponent implements OnInit {
     );
 
     switch (this.tasklet.type) {
+      case TASKLET_TYPE.LUNCH_BREAK:
+      case TASKLET_TYPE.FINISHING_TIME: {
+        this.tasklet.taskName = this.tasklet.type;
+        this.dialogRef.close(this.tasklet as Tasklet);
+        break;
+      }
       case TASKLET_TYPE.TODO: {
         this.dialogRef.close(this.tasklet as TaskletTodo);
         break;
