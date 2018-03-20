@@ -1,0 +1,4 @@
+<div>
+  <app-tasklet-dialog-daily-scrum-participant (onPersonSelectedEmitter)="onPersonSelected($event)"
+    *ngFor="let p of tasklet.participants" [dailyScrumParticipant]="p"></app-tasklet-dialog-daily-scrum-participant>
+</div>

@@ -21,7 +21,7 @@ export class SettingsService {
   }
 
   public updateSetting(setting: Setting) {
-    console.log(`${JSON.stringify(this.settings)}`);
+    console.log(`DEBUG ${JSON.stringify(this.settings)}`);
     this.settings.set(setting.id, setting);
     this.pouchDBSettingsService.put(setting.id, setting);
     this.update();
@@ -53,7 +53,6 @@ export class SettingsService {
   }
 
   private setInitialEntries() {
-    console.log(`setInitialEntries`);
     this.updateSetting(new Setting('version', '0.0.0'));
   }
 

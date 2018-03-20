@@ -11,6 +11,7 @@ import {Observable} from 'rxjs/Observable';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Tag} from '../../../model/tag.model';
+import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -100,16 +101,27 @@ export class TaskletDialogComponent implements OnInit {
     );
 
     switch (this.tasklet.type) {
-      case TASKLET_TYPE.LUNCH_BREAK:
-      case TASKLET_TYPE.FINISHING_TIME: {
+      case TASKLET_TYPE.DAILY_SCRUM: {
         this.tasklet.taskName = this.tasklet.type;
-        this.dialogRef.close(this.tasklet);
+        (this.tasklet as TaskletDailyScrum).participants.filter(p => {
+          return p.person != null && p.person.name.length > 0;
+        });
+        (this.tasklet as TaskletDailyScrum).participants.forEach(p => {
+          p.activities.filter(a => {
+            return a.topic.length > 0;
+          });
+        });
+        this.dialogRef.close(this.tasklet as TaskletDailyScrum);
         break;
       }
       case TASKLET_TYPE.TODO: {
-        const taskletTodo = this.tasklet as TaskletTodo;
-        taskletTodo.done = false;
-        this.dialogRef.close(taskletTodo);
+        this.dialogRef.close(this.tasklet as TaskletTodo);
+        break;
+      }
+      case TASKLET_TYPE.LUNCH_BREAK:
+      case TASKLET_TYPE.FINISHING_TIME: {
+        this.tasklet.taskName = this.tasklet.type;
+        this.dialogRef.close(this.tasklet as Tasklet);
         break;
       }
       default: {
@@ -126,14 +138,27 @@ export class TaskletDialogComponent implements OnInit {
     );
 
     switch (this.tasklet.type) {
-      case TASKLET_TYPE.LUNCH_BREAK:
-      case TASKLET_TYPE.FINISHING_TIME: {
+      case TASKLET_TYPE.DAILY_SCRUM: {
         this.tasklet.taskName = this.tasklet.type;
-        this.dialogRef.close(this.tasklet as Tasklet);
+        (this.tasklet as TaskletDailyScrum).participants.filter(p => {
+          return p.person != null && p.person.name.length > 0;
+        });
+        (this.tasklet as TaskletDailyScrum).participants.forEach(p => {
+          p.activities.filter(a => {
+            return a.topic.length > 0;
+          });
+        });
+        this.dialogRef.close(this.tasklet as TaskletDailyScrum);
         break;
       }
       case TASKLET_TYPE.TODO: {
         this.dialogRef.close(this.tasklet as TaskletTodo);
+        break;
+      }
+      case TASKLET_TYPE.LUNCH_BREAK:
+      case TASKLET_TYPE.FINISHING_TIME: {
+        this.tasklet.taskName = this.tasklet.type;
+        this.dialogRef.close(this.tasklet as Tasklet);
         break;
       }
       default: {

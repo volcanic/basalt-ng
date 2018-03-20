@@ -199,7 +199,6 @@ export class TodosComponent implements OnInit, OnDestroy {
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            console.log(`DEBUG ${JSON.stringify(result)}`);
             this.tags = result;
             this.taskletsService.update();
             this.snackbarService.showSnackbar('Tags selected', '');

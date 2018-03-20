@@ -53,17 +53,25 @@ import {AboutDialogComponent} from './view/dialogs/about-dialog/about-dialog.com
 import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new-features-dialog.component';
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {SettingsService} from './services/settings.service';
+import { TaskletDialogDailyScrumComponent } from './view/dialogs/tasklet-dialog-daily-scrum/tasklet-dialog-daily-scrum.component';
+import { TaskletDialogDailyScrumActivityComponent } from './view/dialogs/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
+import { TaskletDialogDailyScrumParticipantComponent } from './view/dialogs/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
 
 @NgModule({
   declarations: [
     AboutDialogComponent,
     AppComponent,
     ConfirmationDialogComponent,
+    NewFeaturesDialogComponent,
+    PersonDialogComponent,
     SplashScreenComponent,
     TagDialogComponent,
     TaskletComponent,
     TaskletDefaultComponent,
     TaskletDialogComponent,
+    TaskletDialogDailyScrumComponent,
+    TaskletDialogDailyScrumActivityComponent,
+    TaskletDialogDailyScrumParticipantComponent,
     TaskletDialogDefaultComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTodoComponent,
@@ -76,8 +84,6 @@ import {SettingsService} from './services/settings.service';
     TodosSideMenuStartComponent,
     TodosToolbarComponent,
     TimePickerDialogComponent,
-    PersonDialogComponent,
-    NewFeaturesDialogComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -110,6 +116,7 @@ import {SettingsService} from './services/settings.service';
     NewFeaturesDialogComponent,
     TagDialogComponent,
     TaskletDialogComponent,
+    TaskletDialogDailyScrumComponent,
     TaskletDialogDefaultComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTodoComponent,

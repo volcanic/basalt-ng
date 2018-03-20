@@ -26,7 +26,6 @@ export class PersonDialogComponent implements OnInit {
   }
 
   addTasklet() {
-    console.log(`DEBUG person ${JSON.stringify(this.person)}`);
     this.dialogRef.close(this.person);
   }
 

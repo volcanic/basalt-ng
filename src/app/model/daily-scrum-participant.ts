@@ -4,4 +4,9 @@ import {DailyScrumActivity} from './daily-scrum-activity';
 export class DailyScrumParticipant {
   person: Person;
   activities: DailyScrumActivity[];
+
+  constructor() {
+    this.person = new Person();
+    this.activities = [];
+  }
 }
