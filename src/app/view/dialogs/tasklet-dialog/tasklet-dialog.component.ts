@@ -102,16 +102,7 @@ export class TaskletDialogComponent implements OnInit {
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
-        this.tasklet.taskName = this.tasklet.type;
-        (this.tasklet as TaskletDailyScrum).participants.filter(p => {
-          return p.person != null && p.person.name.length > 0;
-        });
-        (this.tasklet as TaskletDailyScrum).participants.forEach(p => {
-          p.activities.filter(a => {
-            return a.topic.length > 0;
-          });
-        });
-        this.dialogRef.close(this.tasklet as TaskletDailyScrum);
+        this.updateTaskletDailyScrum(this.tasklet);
         break;
       }
       case TASKLET_TYPE.TODO: {
@@ -139,16 +130,7 @@ export class TaskletDialogComponent implements OnInit {
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
-        this.tasklet.taskName = this.tasklet.type;
-        (this.tasklet as TaskletDailyScrum).participants.filter(p => {
-          return p.person != null && p.person.name.length > 0;
-        });
-        (this.tasklet as TaskletDailyScrum).participants.forEach(p => {
-          p.activities.filter(a => {
-            return a.topic.length > 0;
-          });
-        });
-        this.dialogRef.close(this.tasklet as TaskletDailyScrum);
+        this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
         break;
       }
       case TASKLET_TYPE.TODO: {
@@ -166,6 +148,19 @@ export class TaskletDialogComponent implements OnInit {
         break;
       }
     }
+  }
+
+  updateTaskletDailyScrum(tasklet: TaskletDailyScrum) {
+    tasklet.taskName = tasklet.type;
+    tasklet.participants = tasklet.participants.filter(p => {
+      return p.person != null && p.person.name.length > 0;
+    });
+    tasklet.participants.forEach(p => {
+      p.activities = p.activities.filter(a => {
+        return a.topic.length > 0;
+      });
+    });
+    this.dialogRef.close(this.tasklet);
   }
 
   continueTasklet() {

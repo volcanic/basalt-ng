@@ -18,6 +18,9 @@
           <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
         </div>
       </div>
+      <app-tasklet-daily-scrum [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+                               *ngIf="tasklet.type == 'Daily Scrum'">
+      </app-tasklet-daily-scrum>
       <app-tasklet-todo [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
                         *ngIf="tasklet.type == 'TODO'"></app-tasklet-todo>
       <app-tasklet-participants [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
@@ -29,8 +32,8 @@
     </mat-card-content>
     <hr class="delimiter"/>
     <span class="tag" *ngFor="let t of tasklet.tags">
-    <label class="tag-label">{{ t.value }}</label>
-  </span>
+      <label class="tag-label">{{ t.value }}</label>
+    </span>
     <mat-card-footer>
       <div *ngIf="tasklet.creationDate != null" class="left-attached" (click)="onActionFired('updateTime')">{{ time }}
       </div>

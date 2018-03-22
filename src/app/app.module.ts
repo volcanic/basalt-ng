@@ -56,6 +56,7 @@ import {SettingsService} from './services/settings.service';
 import { TaskletDialogDailyScrumComponent } from './view/dialogs/tasklet-dialog-daily-scrum/tasklet-dialog-daily-scrum.component';
 import { TaskletDialogDailyScrumActivityComponent } from './view/dialogs/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
 import { TaskletDialogDailyScrumParticipantComponent } from './view/dialogs/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
+import { TaskletDailyScrumComponent } from './view/components/tasklet-daily-scrum/tasklet-daily-scrum.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { TaskletDialogDailyScrumParticipantComponent } from './view/dialogs/task
     TodosSideMenuStartComponent,
     TodosToolbarComponent,
     TimePickerDialogComponent,
+    TaskletDailyScrumComponent,
   ],
   imports: [
     AppRoutingModule,

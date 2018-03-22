@@ -1,0 +1,12 @@
+<div class="participant" *ngFor="let dailyScrumParticipant of tasklet.participants">
+  <span class="person">
+      <label class="person-label">{{ dailyScrumParticipant.person.name }}</label>
+  </span>
+  <div class="flexbox"></div>
+  <div class="activities">
+    <div *ngFor="let dailyScrumActivity of dailyScrumParticipant.activities">
+      <label class="type">{{ dailyScrumActivity.type | uppercase }}</label>
+      <label class="topic">{{ dailyScrumActivity.topic }}</label>
+    </div>
+  </div>
+</div>
