@@ -1,4 +1,5 @@
-<div class="participant" *ngFor="let dailyScrumParticipant of tasklet.participants">
+<div (click)="onActionFired.next('update')" class="participant"
+     *ngFor="let dailyScrumParticipant of tasklet.participants">
   <span class="person">
       <label class="person-label">{{ dailyScrumParticipant.person.name }}</label>
   </span>

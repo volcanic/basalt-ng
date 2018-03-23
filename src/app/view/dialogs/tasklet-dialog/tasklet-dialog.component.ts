@@ -102,7 +102,7 @@ export class TaskletDialogComponent implements OnInit {
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
-        this.updateTaskletDailyScrum(this.tasklet);
+        this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
         break;
       }
       case TASKLET_TYPE.TODO: {
