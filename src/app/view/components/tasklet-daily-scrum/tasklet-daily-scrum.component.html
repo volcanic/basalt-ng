@@ -6,7 +6,14 @@
   <div class="flexbox"></div>
   <div class="activities">
     <div *ngFor="let dailyScrumActivity of dailyScrumParticipant.activities">
-      <label class="type">{{ dailyScrumActivity.type | uppercase }}</label>
+      <span ngSwitch="{{ dailyScrumActivity.type }}"
+            matTooltip="{{ dailyScrumActivity.type }}"
+            matTooltipPosition="above">
+        <mat-icon *ngSwitchCase="type.DONE" [svgIcon]='iconDone' class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="type.DOING" [svgIcon]='iconRefresh' class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="type.WILL_DO" [svgIcon]='iconToday' class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="type.IMPEDIMENT" [svgIcon]='iconWarning' class="tasklet-type"></mat-icon>
+      </span>
       <label class="topic">{{ dailyScrumActivity.topic }}</label>
     </div>
   </div>
