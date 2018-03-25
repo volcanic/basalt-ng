@@ -10,18 +10,13 @@ import {DailyScrumActivity} from '../../../model/daily-scrum-activity';
 })
 export class TaskletDialogDailyScrumParticipantComponent implements OnInit {
   @Input() dailyScrumParticipant: DailyScrumParticipant;
+  @Input() existingPersons: string[];
   @Output() onPersonSelectedEmitter = new EventEmitter<string>();
-
-  existingPersons: string[] = [];
 
   constructor(private taskletsService: TaskletsService) {
   }
 
   ngOnInit() {
-    this.existingPersons = this.taskletsService.getPersons().reverse().map(p => {
-      return p.name;
-    });
-
     this.ensureEmptyActivity();
   }
 

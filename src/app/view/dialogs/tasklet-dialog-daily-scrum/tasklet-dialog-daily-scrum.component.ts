@@ -1,6 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
 import {DailyScrumParticipant} from '../../../model/daily-scrum-participant';
+import {TaskletsService} from '../../../services/tasklets.service';
+import {MAT_DIALOG_DATA, MatDialog, MatIconRegistry} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
+import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
+import {PersonDialogComponent} from '../person-dialog/person-dialog.component';
+import {Person} from '../../../model/person.model';
 
 @Component({
   selector: 'app-tasklet-dialog-daily-scrum',
@@ -10,7 +16,16 @@ import {DailyScrumParticipant} from '../../../model/daily-scrum-participant';
 export class TaskletDialogDailyScrumComponent implements OnInit {
   @Input() tasklet: TaskletDailyScrum;
 
-  constructor() {
+  existingPersons: string[] = [];
+
+  iconAdd = 'add';
+
+  constructor(private taskletsService: TaskletsService,
+              public dialog: MatDialog,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              iconRegistry: MatIconRegistry,
+              sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_black_24px.svg'));
   }
 
   ngOnInit() {
@@ -19,6 +34,10 @@ export class TaskletDialogDailyScrumComponent implements OnInit {
     }
 
     this.ensureEmptyParticipant();
+
+    this.existingPersons = this.taskletsService.getPersons().reverse().map(p => {
+      return p.name;
+    });
   }
 
   onPersonSelected() {
@@ -38,5 +57,21 @@ export class TaskletDialogDailyScrumComponent implements OnInit {
     if (noEmptyPerson) {
       this.tasklet.participants.push(new DailyScrumParticipant());
     }
+  }
+
+  addPerson() {
+    const dialogRef = this.dialog.open(PersonDialogComponent, {
+      disableClose: false,
+      data: {
+        mode: DIALOG_MODE.ADD,
+        dialogTitle: 'Add person',
+        person: new Person()
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.existingPersons.unshift(result.name);
+      }
+    });
   }
 }
