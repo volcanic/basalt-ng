@@ -2,6 +2,7 @@
 
 .participant {
   display: flex;
+  margin-bottom: 15px;
 }
 
 .flexbox {
@@ -14,6 +15,10 @@
 
 .activities {
   width: 75%;
+}
+
+.activity {
+  margin-bottom: 5px;
 }
 
 .label {
@@ -54,4 +59,8 @@
 
 .topic {
   width: 75%;
+}
+
+.tasklet-type {
+  vertical-align: sub;
 }

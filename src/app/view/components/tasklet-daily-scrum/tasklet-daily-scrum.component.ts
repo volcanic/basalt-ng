@@ -22,7 +22,7 @@ export class TaskletDailyScrumComponent implements OnInit {
 
   constructor(iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon(this.iconDone, sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_done_black_18px.svg'));
+    iconRegistry.addSvgIcon(this.iconDone, sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_check_circle_green_18px.svg'));
     iconRegistry.addSvgIcon(this.iconRefresh, sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_refresh_black_18px.svg'));
     iconRegistry.addSvgIcon(this.iconToday, sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_today_black_18px.svg'));
     iconRegistry.addSvgIcon(this.iconWarning, sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_warning_black_18px.svg'));

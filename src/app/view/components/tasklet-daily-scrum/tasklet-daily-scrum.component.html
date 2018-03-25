@@ -5,7 +5,7 @@
   </span>
   <div class="flexbox"></div>
   <div class="activities">
-    <div *ngFor="let dailyScrumActivity of dailyScrumParticipant.activities">
+    <div *ngFor="let dailyScrumActivity of dailyScrumParticipant.activities" class="activity">
       <span ngSwitch="{{ dailyScrumActivity.type }}"
             matTooltip="{{ dailyScrumActivity.type }}"
             matTooltipPosition="above">
