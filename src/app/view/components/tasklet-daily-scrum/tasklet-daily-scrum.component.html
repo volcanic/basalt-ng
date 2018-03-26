@@ -1,7 +1,7 @@
 <div (click)="onActionFired.next('update')" class="participant"
      *ngFor="let dailyScrumParticipant of tasklet.participants">
   <span class="person">
-      <label class="person-label">{{ dailyScrumParticipant.person.name }}</label>
+      <label class="person-label">{{ dailyScrumParticipant.person.name.split(' ')[0] }}</label>
   </span>
   <div class="flexbox"></div>
   <div class="activities">
