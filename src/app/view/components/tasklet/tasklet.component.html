@@ -18,6 +18,12 @@
           <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
         </div>
       </div>
+      <div class="template" *ngIf="tasklet.type == 'Daily Scrum' ">
+        <div class="right-attached hidden" (click)="onActionFired('template')" matTooltip="Template this event"
+             matTooltipPosition="above">
+          <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+        </div>
+      </div>
       <app-tasklet-daily-scrum [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
                                *ngIf="tasklet.type == 'Daily Scrum'">
       </app-tasklet-daily-scrum>

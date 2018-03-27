@@ -12,6 +12,7 @@ import {Tag} from '../../../model/tag.model';
 import {TimePickerDialogComponent} from '../../dialogs/time-picker-dialog/time-picker-dialog.component';
 import {UUID} from '../../../model/util/uuid';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
 
 @Component({
   selector: 'app-tasklet',
@@ -55,6 +56,10 @@ export class TaskletComponent implements OnInit {
       }
       case 'continue': {
         this.continueTasklet();
+        break;
+      }
+      case 'template': {
+        this.templateTasklet();
         break;
       }
       case 'save': {
@@ -120,6 +125,36 @@ export class TaskletComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskletsService.createTasklet(result as Tasklet);
+        this.snackbarService.showSnackbar('Added tasklet', '');
+      }
+    });
+  }
+
+  private templateTasklet() {
+    const template = JSON.parse(JSON.stringify(this.tasklet));
+    template._rev = null;
+    template.id = new UUID().toString();
+    template.text = '';
+    template.creationDate = new Date();
+    template.participants.forEach(p => {
+        p.activities = [];
+      }
+    );
+
+    const dialogRef = this.dialog.open(TaskletDialogComponent, {
+      disableClose: false,
+      data: {
+        mode: DIALOG_MODE.CONTINUE,
+        dialogTitle: 'Continue tasklet',
+        tasklet: template,
+        tags: this.tags.map(t => {
+          return new Tag(t.value, false);
+        })
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.taskletsService.createTasklet(result as TaskletDailyScrum);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
