@@ -45,8 +45,6 @@ export class TaskletDefaultComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.tasklet.project = `FOO${new UUID().toString().slice(0, 5)}`;
-
     this.selectIcon();
     this.selectProjectColor();
   }
@@ -106,8 +104,7 @@ export class TaskletDefaultComponent implements OnInit {
 
   selectProjectColor() {
     if (this.tasklet.project != null && this.tasklet.project.trim().length > 0) {
-      this.projectColor = this.projectColors[Hash.hash(this.tasklet.project.replace(' ', '')) % this.projectColors.length];
+      this.projectColor = this.projectColors[Hash.hash(this.tasklet.project.toLowerCase().replace(' ', '')) % this.projectColors.length];
     }
-    console.log(`${this.tasklet.project} > ${this.projectColor}`);
   }
 }

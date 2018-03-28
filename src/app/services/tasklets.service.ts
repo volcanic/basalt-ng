@@ -102,7 +102,7 @@ export class TaskletsService {
     Array.from(this.tasklets.values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     }).forEach(t => {
-      if (t.project != null) {
+      if (t.project != null && t.project.length > 0) {
         projects.set(t.project, t.project);
       }
     });

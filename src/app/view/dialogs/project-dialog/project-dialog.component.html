@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content>
+  <input matInput [(ngModel)]="project" />
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]=null>
+    Cancel
+  </button>
+  <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addProject()">Add
+    person
+  </button>
+  <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updateProject()">
+    Update person
+  </button>
+</mat-dialog-actions>

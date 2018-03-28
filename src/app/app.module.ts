@@ -53,10 +53,11 @@ import {AboutDialogComponent} from './view/dialogs/about-dialog/about-dialog.com
 import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new-features-dialog.component';
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {SettingsService} from './services/settings.service';
-import { TaskletDialogDailyScrumComponent } from './view/dialogs/tasklet-dialog-daily-scrum/tasklet-dialog-daily-scrum.component';
-import { TaskletDialogDailyScrumActivityComponent } from './view/dialogs/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
-import { TaskletDialogDailyScrumParticipantComponent } from './view/dialogs/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
-import { TaskletDailyScrumComponent } from './view/components/tasklet-daily-scrum/tasklet-daily-scrum.component';
+import {TaskletDialogDailyScrumComponent} from './view/dialogs/tasklet-dialog-daily-scrum/tasklet-dialog-daily-scrum.component';
+import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
+import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
+import {TaskletDailyScrumComponent} from './view/components/tasklet-daily-scrum/tasklet-daily-scrum.component';
+import {ProjectDialogComponent} from './view/dialogs/project-dialog/project-dialog.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { TaskletDailyScrumComponent } from './view/components/tasklet-daily-scru
     ConfirmationDialogComponent,
     NewFeaturesDialogComponent,
     PersonDialogComponent,
+    ProjectDialogComponent,
     SplashScreenComponent,
     TagDialogComponent,
     TaskletComponent,
@@ -116,14 +118,15 @@ import { TaskletDailyScrumComponent } from './view/components/tasklet-daily-scru
     AboutDialogComponent,
     ConfirmationDialogComponent,
     NewFeaturesDialogComponent,
+    PersonDialogComponent,
+    ProjectDialogComponent,
     TagDialogComponent,
     TaskletDialogComponent,
     TaskletDialogDailyScrumComponent,
     TaskletDialogDefaultComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTodoComponent,
-    TimePickerDialogComponent,
-    PersonDialogComponent
+    TimePickerDialogComponent
   ],
   providers: [
     MatIconRegistry,

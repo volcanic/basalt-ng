@@ -18,6 +18,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-icon [svgIcon]=iconAdd (click)="addProject()"></mat-icon>
       </div>
       <mat-form-field class="wide-box" color="primary" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'

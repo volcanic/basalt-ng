@@ -13,6 +13,7 @@ import {FormControl} from '@angular/forms';
 import {Tag} from '../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
 import {PersonDialogComponent} from '../person-dialog/person-dialog.component';
+import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -38,6 +39,8 @@ export class TaskletDialogComponent implements OnInit {
   existingProjects = [];
   existingTags: Tag[] = [];
   newTags: Tag[] = [];
+
+  iconAdd = 'add';
 
   constructor(private taskletsService: TaskletsService,
               public dialog: MatDialog,
@@ -94,6 +97,23 @@ export class TaskletDialogComponent implements OnInit {
     const dueDate = new Date(taskletTodo.dueDate);
 
     taskletTodo.dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate(), dueDate.getHours(), value);
+  }
+
+  addProject() {
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      disableClose: false,
+      data: {
+        mode: DIALOG_MODE.ADD,
+        dialogTitle: 'Add project',
+        project: ''
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.tasklet.project = result;
+        this.existingProjects.unshift(result);
+      }
+    });
   }
 
   addTasklet() {
