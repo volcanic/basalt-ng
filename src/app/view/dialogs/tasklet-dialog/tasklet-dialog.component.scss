@@ -12,6 +12,14 @@
   }
 }
 
+.basic-info {
+  display: flex;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
+
 .label {
   color: rgba(0, 0, 0, .54);
   font-family: Roboto, "Helvetica Neue", sans-serif;

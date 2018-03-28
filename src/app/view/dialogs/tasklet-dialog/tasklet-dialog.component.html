@@ -2,13 +2,23 @@
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
     <form #formCtrl="ngForm">
-      <mat-form-field color="primary">
-        <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type">
-          <mat-option *ngFor="let item of taskletTypes" [value]="item">
-            {{ item }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="basic-info">
+        <mat-form-field color="primary">
+          <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type">
+            <mat-option *ngFor="let item of taskletTypes" [value]="item">
+              {{ item }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="flexbox"></div>
+        <mat-form-field color="primary">
+          <mat-select name="type" placeholder="Project" [(ngModel)]="tasklet.project">
+            <mat-option *ngFor="let item of existingProjects" [value]="item">
+              {{ item }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <mat-form-field class="wide-box" color="primary" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'

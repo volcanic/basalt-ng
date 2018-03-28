@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {UUID} from '../../../model/util/uuid';
 import {Tasklet} from '../../../model/tasklet.model';
@@ -12,6 +12,7 @@ import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Tag} from '../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
+import {PersonDialogComponent} from '../person-dialog/person-dialog.component';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -34,16 +35,18 @@ export class TaskletDialogComponent implements OnInit {
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
+  existingProjects = [];
   existingTags: Tag[] = [];
   newTags: Tag[] = [];
 
   constructor(private taskletsService: TaskletsService,
+              public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
-
+    iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_black_24px.svg'));
   }
 
   ngOnInit() {
@@ -59,6 +62,8 @@ export class TaskletDialogComponent implements OnInit {
         startWith(''),
         map(value => this.filterTasks(value))
       );
+
+    this.existingProjects = this.taskletsService.getProjects();
 
     this.tags.forEach(t => {
       this.existingTags.push(new Tag(t.value, false));

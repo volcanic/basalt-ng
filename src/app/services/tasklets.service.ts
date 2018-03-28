@@ -96,6 +96,20 @@ export class TaskletsService {
     this.suggestedSearchItems = this.getSuggestedSearchItems();
   }
 
+  public getProjects(): string[] {
+    const projects = new Map<string, string>();
+
+    Array.from(this.tasklets.values()).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
+    }).forEach(t => {
+      if (t.project != null) {
+        projects.set(t.project, t.project);
+      }
+    });
+
+    return Array.from(projects.values()).reverse();
+  }
+
   public getTasks(): string[] {
     const tasks = new Map<string, string>();
 
