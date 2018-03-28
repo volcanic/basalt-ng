@@ -3,6 +3,7 @@ import {Tasklet} from '../../../model/tasklet.model';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {Hash} from '../../../model/util/hash';
 
 @Component({
   selector: 'app-tasklet-default',
@@ -13,6 +14,19 @@ export class TaskletDefaultComponent implements OnInit {
   @Input() tasklet: Tasklet;
   @Output() onActionFired = new EventEmitter<string>();
   icon = '';
+
+  projectColor = 'transparent';
+  projectColors = [
+    '#C8E6C9',
+    '#A5D6A7',
+    '#81C784',
+    '#DCEDC8',
+    '#C5E1A5',
+    '#AED581',
+    '#F0F4C3',
+    '#E6EE9C',
+    '#DCE775'
+  ];
 
   constructor(iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
@@ -31,6 +45,13 @@ export class TaskletDefaultComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.tasklet.project = `FOO${new UUID().toString().slice(0, 5)}`;
+
+    this.selectIcon();
+    this.selectProjectColor();
+  }
+
+  selectIcon() {
     switch (this.tasklet.type) {
       case TASKLET_TYPE.ACTION: {
         this.icon = 'turned';
@@ -81,5 +102,12 @@ export class TaskletDefaultComponent implements OnInit {
         break;
       }
     }
+  }
+
+  selectProjectColor() {
+    if (this.tasklet.project != null && this.tasklet.project.trim().length > 0) {
+      this.projectColor = this.projectColors[Hash.hash(this.tasklet.project.replace(' ', '')) % this.projectColors.length];
+    }
+    console.log(`${this.tasklet.project} > ${this.projectColor}`);
   }
 }

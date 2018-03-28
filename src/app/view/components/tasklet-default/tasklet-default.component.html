@@ -1,6 +1,10 @@
 <mat-card-header (click)="onActionFired.next('update')">
   <mat-icon [svgIcon]=icon class="tasklet-type"></mat-icon>
   {{ tasklet.taskName }}
+  <div class="flexbox"></div>
+  <div class="project" [style.background-color]="projectColor" *ngIf="tasklet.project != null">
+    {{ tasklet.project }}
+  </div>
 </mat-card-header>
 <mat-card-content [ngSwitch]="tasklet.type" (click)="onActionFired.next('update')">
   <mat-list>
