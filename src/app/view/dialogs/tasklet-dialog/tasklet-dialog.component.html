@@ -12,13 +12,13 @@
         </mat-form-field>
         <div class="flexbox"></div>
         <mat-form-field color="primary">
-          <mat-select name="type" placeholder="Project" [(ngModel)]="tasklet.project">
+          <mat-select name="project" placeholder="Project" [(ngModel)]="tasklet.project">
             <mat-option *ngFor="let item of existingProjects" [value]="item">
               {{ item }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-icon [svgIcon]=iconAdd (click)="addProject()"></mat-icon>
+        <mat-icon class="project-add"[svgIcon]=iconAdd (click)="addProject()"></mat-icon>
       </div>
       <mat-form-field class="wide-box" color="primary" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
