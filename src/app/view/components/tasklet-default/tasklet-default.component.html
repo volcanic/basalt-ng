@@ -2,7 +2,9 @@
   <mat-icon [svgIcon]=icon class="tasklet-type"></mat-icon>
   {{ tasklet.taskName }}
   <div class="flexbox"></div>
-  <div class="project" [style.background-color]="projectColor" *ngIf="tasklet.project != null">
+  <div class="project"
+       [style.background-color]="projectColor"
+       *ngIf="tasklet.project != null && tasklet.project !=''">
     {{ tasklet.project }}
   </div>
 </mat-card-header>
