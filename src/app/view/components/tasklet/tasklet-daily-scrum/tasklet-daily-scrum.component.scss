@@ -1,0 +1,66 @@
+@import '../../../../../theme';
+
+.participant {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
+
+.person {
+  width: 20%
+}
+
+.activities {
+  width: 75%;
+}
+
+.activity {
+  margin-bottom: 5px;
+}
+
+.label {
+  color: rgba(0, 0, 0, .54);
+  font-size: 12px;
+}
+
+.person {
+  background-color: #cfd8dc;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  margin: 6px 6px 0 0;
+  color: rgba(0, 0, 0, .87);
+  direction: ltr;
+  font-family: 'Roboto', arial, sans-serif;
+  font-size: 15px;
+  float: left;
+  align-items: center;
+  height: 18px;
+  padding: 3px 5px;
+  text-align: left;
+}
+
+.person-label {
+  padding: 1px;
+}
+
+.type {
+  font-weight: 800;
+  margin: 0 10px;
+  width: 20%;
+}
+
+.tasklet-type {
+  height: 18px;
+  width: 18px;
+}
+
+.topic {
+  width: 75%;
+}
+
+.tasklet-type {
+  vertical-align: sub;
+}

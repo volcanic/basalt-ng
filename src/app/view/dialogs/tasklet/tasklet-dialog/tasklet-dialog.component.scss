@@ -1,0 +1,80 @@
+@import '../../../../../theme';
+
+.dialog {
+  @media #{$mat-small} {
+    width: 100%;
+  }
+  @media #{$mat-medium} {
+    width: 600px;
+  }
+  @media #{$mat-large} {
+    width: 600px;
+  }
+}
+
+.basic-info {
+  display: flex;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
+
+.project-add {
+  padding-top: 15px;
+}
+
+.label {
+  color: rgba(0, 0, 0, .54);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  top: 1.28125em;
+  font-weight: 400;
+  line-height: 1.125;
+  left: 0;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.tag-input {
+  margin-left: 9px;
+}
+
+.wide-box {
+  display: block !important;
+  width: 100%;
+}
+
+.single-column {
+  @media #{$mat-small} {
+    display: block;
+    width: 100%;
+  }
+  @media #{$mat-medium} {
+    display: none;
+  }
+  @media #{$mat-large} {
+    display: none;
+  }
+}
+
+.double-column {
+  @media #{$mat-small} {
+    display: none;
+  }
+  @media #{$mat-medium} {
+    display: block;
+    width: 45%;
+    float: left;
+  }
+  @media #{$mat-large} {
+    display: block;
+    width: 45%;
+    float: left;
+  }
+}
+
+.wide-box {
+  display: block !important;
+  width: 100%;
+}

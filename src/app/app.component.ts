@@ -5,7 +5,7 @@ import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {TaskletsService} from './services/tasklets.service';
 import {environment} from '../environments/environment';
 import {GitTag} from './model/git-tag.model';
-import {NewFeaturesDialogComponent} from './view/dialogs/new-features-dialog/new-features-dialog.component';
+import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-dialog/new-features-dialog.component';
 import {SettingsService} from './services/settings.service';
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {Setting} from './model/settings/setting.model';

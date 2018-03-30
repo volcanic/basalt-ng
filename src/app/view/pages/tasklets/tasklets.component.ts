@@ -7,12 +7,12 @@ import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/
 import {DomSanitizer} from '@angular/platform-browser';
 import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
-import {TaskletDialogComponent} from '../../dialogs/tasklet-dialog/tasklet-dialog.component';
-import {TagDialogComponent} from '../../dialogs/tag-dialog/tag-dialog.component';
+import {TaskletDialogComponent} from '../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
+import {TagDialogComponent} from '../../dialogs/filters/tag-dialog/tag-dialog.component';
 import {MatchService} from '../../../services/match.service';
 import {Tag} from '../../../model/tag.model';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
-import {AboutDialogComponent} from '../../dialogs/about-dialog/about-dialog.component';
+import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
 
 @Component({
