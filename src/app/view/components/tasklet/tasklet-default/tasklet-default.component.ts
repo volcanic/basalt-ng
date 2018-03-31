@@ -103,8 +103,10 @@ export class TaskletDefaultComponent implements OnInit {
   }
 
   selectProjectColor() {
-    if (this.tasklet.project != null && this.tasklet.project.trim().length > 0) {
-      this.projectColor = this.projectColors[Math.abs(Hash.hash(this.tasklet.project.toLowerCase().replace(' ', ''))) % this.projectColors.length];
+    if (this.tasklet.project != null
+      && this.tasklet.project.value != null
+      && this.tasklet.project.value.trim().length > 0) {
+      this.projectColor = this.projectColors[Math.abs(Hash.hash(this.tasklet.project.value.toLowerCase().replace(' ', ''))) % this.projectColors.length];
     }
   }
 }

@@ -14,7 +14,7 @@
         <mat-form-field color="primary">
           <mat-select name="project" placeholder="Project" [(ngModel)]="tasklet.project">
             <mat-option *ngFor="let item of existingProjects" [value]="item">
-              {{ item }}
+              {{ item.value }}
             </mat-option>
           </mat-select>
         </mat-form-field>

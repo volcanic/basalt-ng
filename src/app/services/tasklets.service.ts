@@ -5,6 +5,7 @@ import {PouchDBService} from './pouchdb.service';
 import {Person} from '../model/person.model';
 import {TASKLET_TYPE} from '../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../model/tasklet-daily-scrum.model';
+import {Project} from '../model/project.model';
 
 @Injectable()
 export class TaskletsService {
@@ -55,7 +56,7 @@ export class TaskletsService {
     this.pouchDBService.fetch().then(result => {
         result.rows.forEach(r => {
           const tasklet = r.doc as Tasklet;
-          console.log(`DEBUG fetch tasklet ${tasklet.id}`);
+          console.trace(`TRACE fetch tasklet ${tasklet.id}`);
           this.tasklets.set(tasklet.id, tasklet);
         });
         this.update();
@@ -96,14 +97,14 @@ export class TaskletsService {
     this.suggestedSearchItems = this.getSuggestedSearchItems();
   }
 
-  public getProjects(): string[] {
-    const projects = new Map<string, string>();
+  public getProjects(): Project[] {
+    const projects = new Map<string, Project>();
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     }).forEach(t => {
-      if (t.project != null && t.project.length > 0) {
-        projects.set(t.project, t.project);
+      if (t.project != null && t.project.value != null && t.project.value.length > 0) {
+        projects.set(t.project.value, t.project);
       }
     });
 

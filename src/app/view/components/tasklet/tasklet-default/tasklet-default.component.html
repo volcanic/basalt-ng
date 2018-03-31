@@ -4,8 +4,8 @@
   <div class="flexbox"></div>
   <div class="project"
        [style.background-color]="projectColor"
-       *ngIf="tasklet.project != null && tasklet.project !=''">
-    {{ tasklet.project }}
+       *ngIf="tasklet.project != null && tasklet.project.value != null && tasklet.project.value !=''">
+    {{ tasklet.project.value }}
   </div>
 </mat-card-header>
 <mat-card-content [ngSwitch]="tasklet.type" (click)="onActionFired.next('update')">
