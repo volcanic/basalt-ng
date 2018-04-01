@@ -12,8 +12,7 @@ import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Tag} from '../../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
-import {PersonDialogComponent} from '../../other/person-dialog/person-dialog.component';
-import {ProjectDialogComponent} from '../../other/project-dialog/project-dialog.component';
+import {ProjectDialogComponent} from '../../filters/project-dialog/project-dialog.component';
 
 @Component({
   selector: 'app-tasklet-dialog',

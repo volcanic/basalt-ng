@@ -6,6 +6,7 @@ import {Person} from '../model/person.model';
 import {TASKLET_TYPE} from '../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../model/tasklet-daily-scrum.model';
 import {Project} from '../model/project.model';
+import {Tag} from '../model/tag.model';
 
 @Injectable()
 export class TaskletsService {
@@ -56,7 +57,7 @@ export class TaskletsService {
     this.pouchDBService.fetch().then(result => {
         result.rows.forEach(r => {
           const tasklet = r.doc as Tasklet;
-          console.trace(`TRACE fetch tasklet ${tasklet.id}`);
+          // console.debug(`TRACE fetch tasklet ${tasklet.id}`);
           this.tasklets.set(tasklet.id, tasklet);
         });
         this.update();
@@ -66,6 +67,15 @@ export class TaskletsService {
         }
       }
     );
+  }
+
+  /**
+   * Informs subscribers that something has changed
+   */
+
+  public update() {
+    this.taskletsSubject.next(Array.from(this.tasklets.values()));
+    this.suggestedSearchItems = this.getSuggestedSearchItems();
   }
 
   getSuggestedSearchItems(): string[] {
@@ -88,27 +98,44 @@ export class TaskletsService {
     return this.suggestedSearchItems.reverse();
   }
 
-  /**
-   * Informs subscribers that something has changed
-   */
+  public getTags(): Tag[] {
+    return this.getTagsByTasklets(Array.from(this.tasklets.values()));
+  }
 
-  public update() {
-    this.taskletsSubject.next(Array.from(this.tasklets.values()));
-    this.suggestedSearchItems = this.getSuggestedSearchItems();
+  public getTagsByTasklets(tasklets: Tasklet[]): Tag[] {
+    const tags = new Map<string, Tag>();
+
+    Array.from(tasklets.values()).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
+    }).forEach(tasklet => {
+      if (tasklet.tags != null) {
+        tasklet.tags.forEach(t => {
+          if (t != null && t.value != null && t.value.length > 0) {
+            tags.set(t.value, t);
+          }
+        });
+      }
+    });
+
+    return Array.from(tags.values());
   }
 
   public getProjects(): Project[] {
+    return this.getProjectsByTasklets(Array.from(this.tasklets.values()));
+  }
+
+  public getProjectsByTasklets(tasklets: Tasklet[]): Project[] {
     const projects = new Map<string, Project>();
 
-    Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
+    Array.from(tasklets.values()).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
     }).forEach(t => {
       if (t.project != null && t.project.value != null && t.project.value.length > 0) {
         projects.set(t.project.value, t.project);
       }
     });
 
-    return Array.from(projects.values()).reverse();
+    return Array.from(projects.values());
   }
 
   public getTasks(): string[] {

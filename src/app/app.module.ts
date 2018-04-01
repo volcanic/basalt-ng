@@ -54,10 +54,10 @@ import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-d
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {SettingsService} from './services/settings.service';
 import {TaskletDialogDailyScrumComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum/tasklet-dialog-daily-scrum.component';
+import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-daily-scrum/tasklet-daily-scrum.component';
+import {ProjectDialogComponent} from './view/dialogs/filters/project-dialog/project-dialog.component';
 import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
 import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
-import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-daily-scrum/tasklet-daily-scrum.component';
-import {ProjectDialogComponent} from './view/dialogs/other/project-dialog/project-dialog.component';
 
 @NgModule({
   declarations: [

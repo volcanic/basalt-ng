@@ -29,6 +29,7 @@ export class TaskletsToolbarComponent  implements OnInit {
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('menu', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_menu_white_24px.svg'));
     iconRegistry.addSvgIcon('label_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_label_outline_white_24px.svg'));
+    iconRegistry.addSvgIcon('agenda_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_view_agenda_white_24px.svg'));
     iconRegistry.addSvgIcon('timer_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_white_24px.svg'));
     iconRegistry.addSvgIcon('more_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_more_vert_white_24px.svg'));
   }

@@ -6,7 +6,7 @@ import {Project} from './project.model';
 export class Tasklet {
   id = '';
   type = TASKLET_TYPE.UNSPECIFIED;
-  project: Project = {};
+  project: Project = null;
   taskName = '';
   text = '';
   creationDate: Date;

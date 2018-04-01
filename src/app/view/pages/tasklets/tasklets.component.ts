@@ -14,6 +14,7 @@ import {Tag} from '../../../model/tag.model';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
+import {ProjectDialogComponent} from '../../dialogs/filters/project-dialog/project-dialog.component';
 
 @Component({
   selector: 'app-tasklets',
@@ -31,6 +32,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
   // Page specific filters
   searchItem = '';
   tags = [];
+  projects = [];
 
   DISPLAY_LIMIT = 100;
 
@@ -59,24 +61,35 @@ export class TaskletsComponent implements OnInit, OnDestroy {
       .takeUntil(this.taskletsUnsubscribeSubject)
       .subscribe((value) => {
         if (value != null) {
+          // Get unique list of tags
           if (this.tags.length === 0) {
-            this.tags = this.getAllTags(value as Tasklet[]);
+            this.tags = this.taskletsService.getTagsByTasklets(value as Tasklet[]);
+            this.tags.forEach(t => {
+              t.checked = true;
+            });
           }
 
-          this.tasklets = value.filter(t => {
-            if (this.searchItem !== '') {
-              return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
-            } else {
-              return true;
-            }
-          }).filter(tasklet => {
-            // Filter tasklets that match selected tags
-            if (tasklet.tags != null) {
-              let match = false;
+          // Get unique list of projects
+          if (this.projects.length === 0) {
+            this.projects = this.taskletsService.getProjectsByTasklets(value as Tasklet[]);
+            this.projects.forEach(p => {
+              p.checked = true;
+            });
+          }
 
-              if (this.tasklets.length === 0 || tasklet.tags.length === 0) {
-                return true;
+          this.tasklets = value
+            .filter(t => {
+              if (this.searchItem !== '') {
+                return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
               } else {
+                return true;
+              }
+            })
+            .filter(tasklet => {
+              // Filter tasklets that match selected tags
+              if (tasklet.tags != null && tasklet.tags.length > 0) {
+                let match = false;
+
                 tasklet.tags.forEach(taskletTag => {
                   this.tags.forEach(tag => {
                     if (taskletTag.value === tag.value && tag.checked) {
@@ -86,16 +99,32 @@ export class TaskletsComponent implements OnInit, OnDestroy {
                 });
 
                 return match;
+              } else {
+                return true;
               }
-            } else {
-              return true;
-            }
-          }).sort((t1: Tasklet, t2: Tasklet) => {
-            const date1 = new Date(t1.creationDate).getTime();
-            const date2 = new Date(t2.creationDate).getTime();
+            })
+            .filter(tasklet => {
+              // Filter tasklets that match selected projects
+              if (tasklet.project != null) {
+                let match = false;
 
-            return date2 - date1;
-          }).slice(0, this.DISPLAY_LIMIT);
+                this.projects.forEach(project => {
+                  if (tasklet.project.value === project.value && project.checked) {
+                    match = true;
+                  }
+                });
+
+                return match;
+              } else {
+                return true;
+              }
+            })
+            .sort((t1: Tasklet, t2: Tasklet) => {
+              const date1 = new Date(t1.creationDate).getTime();
+              const date2 = new Date(t2.creationDate).getTime();
+
+              return date2 - date1;
+            }).slice(0, this.DISPLAY_LIMIT);
         } else {
           this.tasklets = [];
         }
@@ -157,6 +186,23 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             this.tags = result;
             this.taskletsService.update();
             this.snackbarService.showSnackbar('Tags selected', '');
+          }
+        });
+        break;
+      }
+      case 'projects': {
+        const dialogRef = this.dialog.open(ProjectDialogComponent, {
+          disableClose: true,
+          data: {
+            dialogTitle: 'Select projects',
+            projects: this.projects
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            this.projects = result;
+            this.taskletsService.update();
+            this.snackbarService.showSnackbar('Projects selected', '');
           }
         });
         break;
