@@ -13,6 +13,7 @@ import {TimePickerDialogComponent} from '../../../dialogs/other/time-picker-dial
 import {UUID} from '../../../../model/util/uuid';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
+import {Project} from '../../../../model/project.model';
 
 @Component({
   selector: 'app-tasklet',
@@ -21,7 +22,8 @@ import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
 })
 export class TaskletComponent implements OnInit {
   @Input() tasklet: Tasklet;
-  @Input() tags: Tag[];
+  tags: Tag[] = [];
+  projects: Project[] = [];
 
   time = '';
   date = '';
@@ -40,6 +42,21 @@ export class TaskletComponent implements OnInit {
   }
 
   ngOnInit() {
+      this.tags = this.taskletsService.getTags();
+      this.tags.forEach(t => {
+        if (this.tasklet.tags != null) {
+          t.checked = false;
+
+          this.tasklet.tags.forEach(tt => {
+            if (t.value === tt.value) {
+              t.checked = true;
+            }
+          });
+        }
+      });
+
+    this.projects = this.taskletsService.getProjects();
+
     this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
   }
@@ -76,6 +93,8 @@ export class TaskletComponent implements OnInit {
         mode: DIALOG_MODE.UPDATE,
         dialogTitle: 'Update tasklet',
         tasklet: this.tasklet,
+        tags: this.tags,
+        /*
         tags: this.tags.map(tag => {
           if (this.tasklet.tags != null) {
             this.tasklet.tags.forEach(t => {
@@ -86,7 +105,9 @@ export class TaskletComponent implements OnInit {
 
             return (new Tag(tag.value, false));
           }
-        })
+        }),
+        */
+        projects: this.projects
       }
     });
 
@@ -116,9 +137,8 @@ export class TaskletComponent implements OnInit {
         mode: DIALOG_MODE.CONTINUE,
         dialogTitle: 'Continue tasklet',
         tasklet: continueTasklet,
-        tags: this.tags.map(t => {
-          return new Tag(t.value, false);
-        }),
+        tags: this.tags,
+        projects: this.projects,
         previousText: this.tasklet.text
       }
     });
@@ -147,9 +167,8 @@ export class TaskletComponent implements OnInit {
         mode: DIALOG_MODE.CONTINUE,
         dialogTitle: 'Continue tasklet',
         tasklet: template,
-        tags: this.tags.map(t => {
-          return new Tag(t.value, false);
-        })
+        tags: this.tags,
+        projects: this.projects
       }
     });
     dialogRef.afterClosed().subscribe(result => {

@@ -13,6 +13,7 @@ import {FormControl} from '@angular/forms';
 import {Tag} from '../../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
 import {ProjectDialogComponent} from '../../filters/project-dialog/project-dialog.component';
+import {Project} from '../../../../model/project.model';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -25,7 +26,6 @@ export class TaskletDialogComponent implements OnInit {
   mode = DIALOG_MODE.NONE;
   dialogTitle = '';
   tasklet: Tasklet;
-  tags = [];
   previousText = '';
 
   taskOptions = [];
@@ -35,8 +35,8 @@ export class TaskletDialogComponent implements OnInit {
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
-  existingProjects = [];
-  existingTags: Tag[] = [];
+  projects: Project[] = [];
+  tags: Tag[] = [];
   newTags: Tag[] = [];
 
   iconAdd = 'add';
@@ -55,7 +55,22 @@ export class TaskletDialogComponent implements OnInit {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = this.data.tasklet;
-    this.tags = this.data.tags;
+    this.tags = this.data.tags.sort((t1, t2) => {
+      return t1.value > t2.value ? 1 : -1;
+    }).map(t => {
+      if (this.tasklet.tags != null) {
+        t.checked = false;
+
+        this.tasklet.tags.forEach(tt => {
+          if (t.value === tt.value) {
+            t.checked = true;
+          }
+        });
+      }
+
+      return t;
+    });
+    this.projects = this.data.projects;
     this.previousText = this.data.previousText;
 
     this.taskOptions = this.taskletsService.getTasks();
@@ -65,22 +80,6 @@ export class TaskletDialogComponent implements OnInit {
         map(value => this.filterTasks(value))
       );
 
-    this.existingProjects = this.taskletsService.getProjects();
-
-    this.tags.forEach(t => {
-      this.existingTags.push(new Tag(t.value, false));
-    });
-
-    // Get existing suggestedTags and add empty tag to new suggestedTags
-    this.existingTags.forEach(et => {
-      if (this.tasklet.tags != null) {
-        this.tasklet.tags.forEach(t => {
-          if (et.value === t.value) {
-            et.checked = true;
-          }
-        });
-      }
-    });
     this.newTags.push(new Tag('', false));
   }
 
@@ -110,7 +109,7 @@ export class TaskletDialogComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.tasklet.project = result;
-        this.existingProjects.unshift(result);
+        this.projects.unshift(result);
       }
     });
   }
@@ -119,7 +118,7 @@ export class TaskletDialogComponent implements OnInit {
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
     this.tasklet.tags = [];
-    this.existingTags.concat(this.newTags).filter(t => t.checked).forEach(t => {
+    this.tags.concat(this.newTags).filter(t => t.checked).forEach(t => {
         this.tasklet.tags.push(t);
       }
     );
@@ -147,7 +146,7 @@ export class TaskletDialogComponent implements OnInit {
 
   updateTasklet() {
     this.tasklet.tags = [];
-    this.existingTags.concat(this.newTags).filter(t => t.checked).forEach(t => {
+    this.tags.concat(this.newTags).filter(t => t.checked).forEach(t => {
         this.tasklet.tags.push(t);
       }
     );
@@ -191,7 +190,7 @@ export class TaskletDialogComponent implements OnInit {
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
     this.tasklet.tags = [];
-    this.existingTags.concat(this.newTags).filter(t => t.checked).forEach(t => {
+    this.tags.concat(this.newTags).filter(t => t.checked).forEach(t => {
         this.tasklet.tags.push(t);
       }
     );

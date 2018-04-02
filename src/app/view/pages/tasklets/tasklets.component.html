@@ -12,7 +12,7 @@
 
   <div class="content">
 
-    <app-tasklet *ngFor="let t of tasklets" [tasklet]="t" [tags]="tags">
+    <app-tasklet *ngFor="let t of tasklets" [tasklet]="t">
     </app-tasklet>
 
     <button mat-fab class="fab" (click)="onMenuItemClicked('add')">

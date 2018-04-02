@@ -22,27 +22,27 @@
 
     <h3 class="label">Overdue</h3>
 
-    <app-todo *ngFor="let t of taskletsOverdue" [tasklet]="t" [tags]="tags">
+    <app-todo *ngFor="let t of taskletsOverdue" [tasklet]="t">
     </app-todo>
 
     <h3 class="label">Today</h3>
 
-    <app-todo *ngFor="let t of taskletsToday" [tasklet]="t" [tags]="tags">
+    <app-todo *ngFor="let t of taskletsToday" [tasklet]="t">
     </app-todo>
 
     <h3 class="label">This week</h3>
 
-    <app-todo *ngFor="let t of taskletsThisWeek" [tasklet]="t" [tags]="tags">
+    <app-todo *ngFor="let t of taskletsThisWeek" [tasklet]="t">
     </app-todo>
 
     <h2 class="label">Next week</h2>
 
-    <app-todo *ngFor="let t of taskletsNextWeek" [tasklet]="t" [tags]="tags">
+    <app-todo *ngFor="let t of taskletsNextWeek" [tasklet]="t">
     </app-todo>
 
     <h2 class="label">Later</h2>
 
-    <app-todo *ngFor="let t of taskletsLater" [tasklet]="t" [tags]="tags">
+    <app-todo *ngFor="let t of taskletsLater" [tasklet]="t">
     </app-todo>
 
     <button mat-fab class="fab" (click)="onMenuItemClicked('add')">

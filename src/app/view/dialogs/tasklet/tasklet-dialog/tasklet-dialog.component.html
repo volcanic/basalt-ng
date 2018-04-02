@@ -13,12 +13,12 @@
         <div class="flexbox"></div>
         <mat-form-field color="primary">
           <mat-select name="project" placeholder="Project" [(ngModel)]="tasklet.project">
-            <mat-option *ngFor="let item of existingProjects" [value]="item">
+            <mat-option *ngFor="let item of projects" [value]="item">
               {{ item.value }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-icon class="project-add"[svgIcon]=iconAdd (click)="addProject()"></mat-icon>
+        <mat-icon class="project-add" [svgIcon]=iconAdd (click)="addProject()"></mat-icon>
       </div>
       <mat-form-field class="wide-box" color="primary" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
@@ -74,21 +74,23 @@
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'
                                        || tasklet.type == 'TODO'">
-      <div class="label">Tags</div>
-      <div class="single-column" *ngFor="let t of existingTags">
-        <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
-      </div>
-      <div class="double-column" *ngFor="let t of existingTags.slice(0, existingTags.length / 2)">
-        <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
-      </div>
-      <div class="double-column" *ngFor="let t of existingTags.slice(existingTags.length / 2, existingTags.length)">
-        <mat-checkbox [(ngModel)]=t.checked>{{ t.value}}</mat-checkbox>
-      </div>
-      <div *ngFor="let n of newTags">
-        <mat-checkbox [(ngModel)]=n.checked>
-          <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.value"
-                 (ngModelChange)="tagChanged()"/>
-        </mat-checkbox>
+      <div *ngIf="tags != null">
+        <div class="label">Tags</div>
+        <div class="single-column" *ngFor="let t of tags">
+          <mat-checkbox [(ngModel)]="t.checked">{{ t.value}}</mat-checkbox>
+        </div>
+        <div class="double-column" *ngFor="let t of tags.slice(0, tags.length / 2)">
+          <mat-checkbox [(ngModel)]="t.checked">{{ t.value}}</mat-checkbox>
+        </div>
+        <div class="double-column" *ngFor="let t of tags.slice(tags.length / 2, tags.length)">
+          <mat-checkbox [(ngModel)]="t.checked">{{ t.value}}</mat-checkbox>
+        </div>
+        <div *ngFor="let n of newTags">
+          <mat-checkbox [(ngModel)]="n.checked">
+            <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.value"
+                   (ngModelChange)="tagChanged()"/>
+          </mat-checkbox>
+        </div>
       </div>
     </div>
   </mat-dialog-content>

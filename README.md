@@ -37,6 +37,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.9 | Continue tasklets |
 | 0.10 | Show app information |
 | 0.11 | Specialize tasklets daily scrum |
+| 0.12 | Assign tasklets to projects |
 
 ### Planned features
 
@@ -45,6 +46,7 @@ Don't miss any important information. Be able to report what you spent your time
 * reporting by day and by week
 * multi-device synchronization
 * code snippet formatting
+* inline tagging using # and @
 
 ### Based on Amphibian
 

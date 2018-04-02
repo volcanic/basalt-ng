@@ -57,23 +57,24 @@ export class TaskletsComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
+    // Subscribe tasklet changes
     this.taskletsService.taskletsSubject
       .takeUntil(this.taskletsUnsubscribeSubject)
       .subscribe((value) => {
         if (value != null) {
-          // Get unique list of tags
+          // Get initial list of tags
           if (this.tags.length === 0) {
-            this.tags = this.taskletsService.getTagsByTasklets(value as Tasklet[]);
-            this.tags.forEach(t => {
+            this.tags = this.taskletsService.getTags().map(t => {
               t.checked = true;
+              return t;
             });
           }
 
-          // Get unique list of projects
+          // Get initial list of projects
           if (this.projects.length === 0) {
-            this.projects = this.taskletsService.getProjectsByTasklets(value as Tasklet[]);
-            this.projects.forEach(p => {
+            this.projects = this.taskletsService.getProjects().map(p => {
               p.checked = true;
+              return p;
             });
           }
 
@@ -91,7 +92,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
                 let match = false;
 
                 tasklet.tags.forEach(taskletTag => {
-                  this.tags.forEach(tag => {
+                  this.tags.slice().forEach(tag => {
                     if (taskletTag.value === tag.value && tag.checked) {
                       match = true;
                     }
@@ -160,9 +161,8 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             mode: DIALOG_MODE.ADD,
             dialogTitle: 'Add tasklet',
             tasklet: new Tasklet(),
-            tags: this.tags.map(t => {
-              return new Tag(t.value, false);
-            })
+            tags: this.tags,
+            projects: this.projects
           }
         });
         dialogRef.afterClosed().subscribe(result => {

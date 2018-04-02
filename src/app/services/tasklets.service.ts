@@ -111,7 +111,10 @@ export class TaskletsService {
       if (tasklet.tags != null) {
         tasklet.tags.forEach(t => {
           if (t != null && t.value != null && t.value.length > 0) {
-            tags.set(t.value, t);
+            // Deep copy
+            const tag = new Tag(t.value, t.checked);
+
+            tags.set(tag.value, tag);
           }
         });
       }
@@ -131,7 +134,10 @@ export class TaskletsService {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
     }).forEach(t => {
       if (t.project != null && t.project.value != null && t.project.value.length > 0) {
-        projects.set(t.project.value, t.project);
+        // Deep copy
+        const project = new Project(t.project.value, t.project.checked);
+
+        projects.set(project.value, project);
       }
     });
 

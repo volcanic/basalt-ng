@@ -18,7 +18,9 @@ export class ProjectDialogComponent implements OnInit {
     iconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
 
     this.dialogTitle = data.dialogTitle;
-    this.projects = this.data.projects;
+    this.projects = this.data.projects.sort((p1, p2) => {
+      return p1.value > p2.value ? 1 : -1;
+    });
   }
 
   ngOnInit() {

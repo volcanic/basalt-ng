@@ -44,6 +44,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   taskletType = TASKLET_TYPE.TODO;
   searchItem = '';
   tags = [];
+  projects = [];
   priority = '';
 
   // private windowHeight = 0;
@@ -72,10 +73,20 @@ export class TodosComponent implements OnInit, OnDestroy {
       .takeUntil(this.taskletsUnsubscribeSubject)
       .subscribe((value) => {
         if (value != null) {
+          // Get initial list of tags
           if (this.tags.length === 0) {
-            this.tags = this.getAllTags((value as Tasklet[]).filter(tasklet => {
-              return tasklet.type === this.taskletType;
-            }));
+            this.tags = this.taskletsService.getTags().map(t => {
+              t.checked = true;
+              return t;
+            });
+          }
+
+          // Get initial list of projects
+          if (this.projects.length === 0) {
+            this.projects = this.taskletsService.getProjects().map(p => {
+              p.checked = true;
+              return p;
+            });
           }
 
           this.tasklets = (value as TaskletTodo[]).filter(tasklet => {
@@ -176,9 +187,8 @@ export class TodosComponent implements OnInit, OnDestroy {
             mode: DIALOG_MODE.ADD,
             dialogTitle: 'Add tasklet',
             tasklet: new Tasklet(),
-            tags: this.tags.map(t => {
-              return new Tag(t.value, false);
-            })
+            tags: this.tags,
+            projects: this.projects
           }
         });
         dialogRef.afterClosed().subscribe(result => {

@@ -11,6 +11,7 @@ import {ConfirmationDialogComponent} from '../../../dialogs/other/confirmation-d
 import {TASKLET_PRIORITY} from '../../../../model/tasklet-priority.enum';
 import {Tag} from '../../../../model/tag.model';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
+import {Project} from '../../../../model/project.model';
 
 @Component({
   selector: 'app-todo',
@@ -19,7 +20,8 @@ import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 })
 export class TodoComponent implements OnInit {
   @Input() tasklet: TaskletTodo;
-  @Input() tags: Tag[];
+  tags: Tag[] = [];
+  projects: Project[] = [];
 
   time = '';
   date = '';
@@ -47,6 +49,21 @@ export class TodoComponent implements OnInit {
     this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
     this.dueDate = this.dateService.getDate(new Date(this.tasklet.dueDate));
+
+    this.tags = this.taskletsService.getTags();
+    this.tags.forEach(t => {
+      if (this.tasklet.tags != null) {
+        t.checked = false;
+
+        this.tasklet.tags.forEach(tt => {
+          if (t.value === tt.value) {
+            t.checked = true;
+          }
+        });
+      }
+    });
+
+    this.projects = this.taskletsService.getProjects();
 
     if (this.tasklet.priority != null) {
       switch (this.tasklet.priority) {
@@ -94,17 +111,8 @@ export class TodoComponent implements OnInit {
         mode: DIALOG_MODE.UPDATE,
         dialogTitle: 'Update tasklet',
         tasklet: this.tasklet,
-        tags: this.tags.map(tag => {
-          if (this.tasklet.tags != null) {
-            this.tasklet.tags.forEach(t => {
-              if (tag.value === t.value) {
-                return (new Tag(tag.value, true));
-              }
-            });
-
-            return (new Tag(tag.value, false));
-          }
-        })
+        tags: this.tags,
+        projects: this.projects
       }
     });
     dialogRef.afterClosed().subscribe(result => {

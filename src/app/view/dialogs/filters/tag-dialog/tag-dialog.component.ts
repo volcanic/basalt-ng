@@ -18,7 +18,9 @@ export class TagDialogComponent implements OnInit {
     iconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
 
     this.dialogTitle = data.dialogTitle;
-    this.tags = this.data.tags;
+    this.tags = this.data.tags.sort((t1, t2) => {
+      return t1.value > t2.value ? 1 : -1;
+    });
   }
 
   ngOnInit() {
