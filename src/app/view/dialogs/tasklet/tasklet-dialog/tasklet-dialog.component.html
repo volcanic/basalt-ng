@@ -20,7 +20,9 @@
         </mat-form-field>
         <mat-icon class="project-add" [svgIcon]=iconAdd (click)="addProject()"></mat-icon>
       </div>
-      <mat-form-field class="wide-box" color="primary" *ngIf="tasklet.type == 'Action'
+      <app-tasklet-dialog-topic [tasklet]="tasklet"
+                                [taskOptions]="taskOptions"
+                                *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Mail'
@@ -29,15 +31,7 @@
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'
                                        || tasklet.type == 'TODO'">
-        <input matInput name="task" type="text" placeholder="Topic" [formControl]="formControl"
-               [(ngModel)]="tasklet.taskName"
-               [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredTaskOptions | async" [value]="option">
-            {{ option }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+      </app-tasklet-dialog-topic>
       <mat-form-field class="wide-box" *ngIf="previousText != null">
           <textarea matInput required name="previousText" placeholder="Previous" matTextareaAutosize
                     matAutosizeMinRows="1"

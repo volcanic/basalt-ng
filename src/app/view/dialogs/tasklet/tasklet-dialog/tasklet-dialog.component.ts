@@ -7,9 +7,6 @@ import {TaskletsService} from '../../../../services/tasklets.service';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {TaskletTodo} from '../../../../model/tasklet-todo.model';
-import {Observable} from 'rxjs/Observable';
-import {map, startWith} from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
 import {Tag} from '../../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
 import {ProjectDialogComponent} from '../../filters/project-dialog/project-dialog.component';
@@ -29,9 +26,6 @@ export class TaskletDialogComponent implements OnInit {
   previousText = '';
 
   taskOptions = [];
-  filteredTaskOptions: Observable<string[]>;
-
-  formControl: FormControl = new FormControl();
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
@@ -74,11 +68,6 @@ export class TaskletDialogComponent implements OnInit {
     this.previousText = this.data.previousText;
 
     this.taskOptions = this.taskletsService.getTasks();
-    this.filteredTaskOptions = this.formControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this.filterTasks(value))
-      );
 
     this.newTags.push(new Tag('', false));
   }
@@ -196,10 +185,5 @@ export class TaskletDialogComponent implements OnInit {
     );
 
     this.dialogRef.close(this.tasklet);
-  }
-
-  filterTasks(val: string): string[] {
-    return this.taskOptions.filter(option =>
-      option.toLowerCase().includes(val.toLowerCase()));
   }
 }
