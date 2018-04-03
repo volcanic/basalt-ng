@@ -44,37 +44,3 @@
   display: block !important;
   width: 100%;
 }
-
-.single-column {
-  @media #{$mat-small} {
-    display: block;
-    width: 100%;
-  }
-  @media #{$mat-medium} {
-    display: none;
-  }
-  @media #{$mat-large} {
-    display: none;
-  }
-}
-
-.double-column {
-  @media #{$mat-small} {
-    display: none;
-  }
-  @media #{$mat-medium} {
-    display: block;
-    width: 45%;
-    float: left;
-  }
-  @media #{$mat-large} {
-    display: block;
-    width: 45%;
-    float: left;
-  }
-}
-
-.wide-box {
-  display: block !important;
-  width: 100%;
-}

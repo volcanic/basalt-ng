@@ -64,8 +64,10 @@
       </app-tasklet-dialog-participants>
       <app-tasklet-dialog-daily-scrum [tasklet]="tasklet"
                                       *ngIf="tasklet.type == 'Daily Scrum'"></app-tasklet-dialog-daily-scrum>
-    </form>
-    <div *ngIf="tasklet.type == 'Action'
+      <app-tasklet-dialog-tags [tasklet]="tasklet"
+                               [tags]="tags"
+                               [newTags]="newTags"
+                               *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Mail'
@@ -74,25 +76,9 @@
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'
                                        || tasklet.type == 'TODO'">
-      <div *ngIf="tags != null">
-        <div class="label">Tags</div>
-        <div class="single-column" *ngFor="let t of tags">
-          <mat-checkbox [(ngModel)]="t.checked">{{ t.value}}</mat-checkbox>
-        </div>
-        <div class="double-column" *ngFor="let t of tags.slice(0, tags.length / 2)">
-          <mat-checkbox [(ngModel)]="t.checked">{{ t.value}}</mat-checkbox>
-        </div>
-        <div class="double-column" *ngFor="let t of tags.slice(tags.length / 2, tags.length)">
-          <mat-checkbox [(ngModel)]="t.checked">{{ t.value}}</mat-checkbox>
-        </div>
-        <div *ngFor="let n of newTags">
-          <mat-checkbox [(ngModel)]="n.checked">
-            <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.value"
-                   (ngModelChange)="tagChanged()"/>
-          </mat-checkbox>
-        </div>
-      </div>
-    </div>
+
+      </app-tasklet-dialog-tags>
+    </form>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button [mat-dialog-close]=null>

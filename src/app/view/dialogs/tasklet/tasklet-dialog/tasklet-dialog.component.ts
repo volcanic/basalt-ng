@@ -202,19 +202,4 @@ export class TaskletDialogComponent implements OnInit {
     return this.taskOptions.filter(option =>
       option.toLowerCase().includes(val.toLowerCase()));
   }
-
-  tagChanged() {
-    let noEmptyTag = true;
-
-    this.newTags.forEach((t: Tag) => {
-        if (t.value.trim().length === 0) {
-          noEmptyTag = false;
-        }
-      }
-    );
-
-    if (noEmptyTag) {
-      this.newTags.push(new Tag('', false));
-    }
-  }
 }

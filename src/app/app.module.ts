@@ -58,6 +58,7 @@ import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-dail
 import {ProjectDialogComponent} from './view/dialogs/filters/project-dialog/project-dialog.component';
 import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
 import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
+import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,8 @@ import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/taskle
     TaskletDialogTodoComponent,
     TaskletParticipantsComponent,
     TaskletsComponent,
+    TaskletDailyScrumComponent,
+    TaskletDialogTagsComponent,
     TaskletsToolbarComponent,
     TaskletTodoComponent,
     TodoComponent,
@@ -87,7 +90,6 @@ import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/taskle
     TodosSideMenuStartComponent,
     TodosToolbarComponent,
     TimePickerDialogComponent,
-    TaskletDailyScrumComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -125,6 +127,7 @@ import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/taskle
     TaskletDialogDailyScrumComponent,
     TaskletDialogDefaultComponent,
     TaskletDialogParticipantsComponent,
+    TaskletDialogTagsComponent,
     TaskletDialogTodoComponent,
     TimePickerDialogComponent
   ],
