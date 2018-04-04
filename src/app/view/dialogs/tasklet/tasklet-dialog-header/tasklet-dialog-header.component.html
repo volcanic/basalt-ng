@@ -1,0 +1,18 @@
+<div class="header">
+  <mat-form-field color="primary">
+    <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type">
+      <mat-option *ngFor="let item of taskletTypes" [value]="item">
+        {{ item }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="flexbox"></div>
+  <mat-form-field color="primary">
+    <mat-select name="project" placeholder="Project" [(ngModel)]="tasklet.project">
+      <mat-option *ngFor="let item of projects" [value]="item">
+        {{ item.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-icon class="project-add" [svgIcon]=iconAdd (click)="addProject()"></mat-icon>
+</div>

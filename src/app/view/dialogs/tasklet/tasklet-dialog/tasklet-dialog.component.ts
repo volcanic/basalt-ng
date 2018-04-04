@@ -27,8 +27,6 @@ export class TaskletDialogComponent implements OnInit {
 
   taskOptions = [];
 
-  taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
-
   projects: Project[] = [];
   tags: Tag[] = [];
   newTags: Tag[] = [];

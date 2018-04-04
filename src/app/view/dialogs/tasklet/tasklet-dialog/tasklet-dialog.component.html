@@ -2,27 +2,12 @@
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
     <form #formCtrl="ngForm">
-      <div class="basic-info">
-        <mat-form-field color="primary">
-          <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type">
-            <mat-option *ngFor="let item of taskletTypes" [value]="item">
-              {{ item }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="flexbox"></div>
-        <mat-form-field color="primary">
-          <mat-select name="project" placeholder="Project" [(ngModel)]="tasklet.project">
-            <mat-option *ngFor="let item of projects" [value]="item">
-              {{ item.value }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-icon class="project-add" [svgIcon]=iconAdd (click)="addProject()"></mat-icon>
-      </div>
-      <app-tasklet-dialog-topic [tasklet]="tasklet"
-                                [taskOptions]="taskOptions"
-                                *ngIf="tasklet.type == 'Action'
+      <app-tasklet-dialog-header
+        [tasklet]="tasklet"
+        [projects]="projects"></app-tasklet-dialog-header>
+      <app-tasklet-dialog-topic
+        [tasklet]="tasklet"
+        [taskOptions]="taskOptions" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Mail'
@@ -37,8 +22,8 @@
                     matAutosizeMinRows="1"
                     matAutosizeMaxRows="5" [(ngModel)]="previousText" disabled></textarea>
       </mat-form-field>
-      <app-tasklet-dialog-default [tasklet]="tasklet"
-                                  *ngIf="tasklet.type == 'Action'
+      <app-tasklet-dialog-default
+        [tasklet]="tasklet" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Mail'
@@ -47,30 +32,30 @@
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'
                                        || tasklet.type == 'TODO'"></app-tasklet-dialog-default>
-      <app-tasklet-dialog-todo [tasklet]="tasklet" *ngIf="tasklet.type == 'TODO'"
-                               (onHourSelectedEmitter)="onDueHourSelected($event)"
-                               (onMinuteSelectedEmitter)="onDueMinuteSelected($event)"></app-tasklet-dialog-todo>
-      <app-tasklet-dialog-participants [tasklet]="tasklet"
-                                       *ngIf="tasklet.type == 'Meeting'
+      <app-tasklet-dialog-todo
+        [tasklet]="tasklet" *ngIf="tasklet.type == 'TODO'"
+        (onHourSelectedEmitter)="onDueHourSelected($event)"
+        (onMinuteSelectedEmitter)="onDueMinuteSelected($event)"></app-tasklet-dialog-todo>
+      <app-tasklet-dialog-participants
+        [tasklet]="tasklet" *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'">
       </app-tasklet-dialog-participants>
-      <app-tasklet-dialog-daily-scrum [tasklet]="tasklet"
-                                      *ngIf="tasklet.type == 'Daily Scrum'"></app-tasklet-dialog-daily-scrum>
-      <app-tasklet-dialog-tags [tasklet]="tasklet"
-                               [tags]="tags"
-                               [newTags]="newTags"
-                               *ngIf="tasklet.type == 'Action'
-                                       || tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Call'
-                                       || tasklet.type == 'Mail'
-                                       || tasklet.type == 'Chat'
-                                       || tasklet.type == 'Development'
-                                       || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'
-                                       || tasklet.type == 'TODO'">
-
+      <app-tasklet-dialog-daily-scrum
+        [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'"></app-tasklet-dialog-daily-scrum>
+      <app-tasklet-dialog-tags
+        [tasklet]="tasklet"
+        [tags]="tags"
+        [newTags]="newTags" *ngIf="tasklet.type == 'Action'
+                               || tasklet.type == 'Meeting'
+                               || tasklet.type == 'Call'
+                               || tasklet.type == 'Mail'
+                               || tasklet.type == 'Chat'
+                               || tasklet.type == 'Development'
+                               || tasklet.type == 'Debugging'
+                               || tasklet.type == 'Idea'
+                               || tasklet.type == 'TODO'">
       </app-tasklet-dialog-tags>
     </form>
   </mat-dialog-content>

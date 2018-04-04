@@ -60,6 +60,7 @@ import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet/t
 import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
 import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
 import { TaskletDialogTopicComponent } from './view/dialogs/tasklet/tasklet-dialog-topic/tasklet-dialog-topic.component';
+import { TaskletDialogHeaderComponent } from './view/dialogs/tasklet/tasklet-dialog-header/tasklet-dialog-header.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { TaskletDialogTopicComponent } from './view/dialogs/tasklet/tasklet-dial
     TodosToolbarComponent,
     TimePickerDialogComponent,
     TaskletDialogTopicComponent,
+    TaskletDialogHeaderComponent,
   ],
   imports: [
     AppRoutingModule,
