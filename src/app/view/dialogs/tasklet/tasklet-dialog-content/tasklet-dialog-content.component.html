@@ -1,3 +1,8 @@
+<mat-form-field class="wide-box" *ngIf="previousText != null">
+          <textarea matInput required name="previousText" placeholder="Previous" matTextareaAutosize
+                    matAutosizeMinRows="1"
+                    matAutosizeMaxRows="5" [(ngModel)]="previousText" disabled></textarea>
+</mat-form-field>
 <mat-form-field color="primary" class="wide-box">
           <textarea matInput required name="text" placeholder="Text" matTextareaAutosize matAutosizeMinRows="5"
                     matAutosizeMaxRows="5" [(ngModel)]="tasklet.text"></textarea>

@@ -34,7 +34,7 @@ import {SnackbarService} from './services/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TaskletTodoComponent} from './view/components/tasklet/tasklet-todo/tasklet-todo.component';
 import {TaskletDialogTodoComponent} from './view/dialogs/tasklet/tasklet-dialog-todo/tasklet-dialog-todo.component';
-import {TaskletDialogDefaultComponent} from './view/dialogs/tasklet/tasklet-dialog-default/tasklet-dialog-default.component';
+import {TaskletDialogContentComponent} from './view/dialogs/tasklet/tasklet-dialog-content/tasklet-dialog-content.component';
 import {TaskletDefaultComponent} from './view/components/tasklet/tasklet-default/tasklet-default.component';
 import {DateService} from './services/date.service';
 import {TagDialogComponent} from './view/dialogs/filters/tag-dialog/tag-dialog.component';
@@ -78,7 +78,7 @@ import { TaskletDialogHeaderComponent } from './view/dialogs/tasklet/tasklet-dia
     TaskletDialogDailyScrumComponent,
     TaskletDialogDailyScrumActivityComponent,
     TaskletDialogDailyScrumParticipantComponent,
-    TaskletDialogDefaultComponent,
+    TaskletDialogContentComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTodoComponent,
     TaskletParticipantsComponent,
@@ -129,7 +129,7 @@ import { TaskletDialogHeaderComponent } from './view/dialogs/tasklet/tasklet-dia
     TagDialogComponent,
     TaskletDialogComponent,
     TaskletDialogDailyScrumComponent,
-    TaskletDialogDefaultComponent,
+    TaskletDialogContentComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTagsComponent,
     TaskletDialogTodoComponent,
