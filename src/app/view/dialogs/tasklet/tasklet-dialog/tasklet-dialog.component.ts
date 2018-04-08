@@ -47,7 +47,7 @@ export class TaskletDialogComponent implements OnInit {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = JSON.parse(JSON.stringify(this.data.tasklet));
-    this.tags = this.data.tags.sort((t1, t2) => {
+    this.tags = JSON.parse(JSON.stringify(this.data.tags)).sort((t1, t2) => {
       return t1.value > t2.value ? 1 : -1;
     }).map(t => {
       if (this.tasklet.tags != null) {
