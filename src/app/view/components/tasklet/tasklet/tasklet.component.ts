@@ -42,7 +42,7 @@ export class TaskletComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.tags = this.taskletsService.getTags();
+      this.tags = Array.from(this.taskletsService.getTags().values());
       this.tags.forEach(t => {
         if (this.tasklet.tags != null) {
           t.checked = false;

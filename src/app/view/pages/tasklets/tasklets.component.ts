@@ -31,7 +31,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
 
   // Page specific filters
   searchItem = '';
-  tags = [];
+  tags = new Map<string, Tag>();
   projects = [];
 
   DISPLAY_LIMIT = 100;
@@ -63,10 +63,10 @@ export class TaskletsComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value != null) {
           // Get initial list of tags
-          if (this.tags.length === 0) {
-            this.tags = this.taskletsService.getTags().map(t => {
-              t.checked = true;
-              return t;
+          if (this.tags.size === 0) {
+            this.tags = this.taskletsService.getTags();
+            this.tags.forEach((tag: Tag, key: string) => {
+              tag.checked = true;
             });
           }
 
@@ -92,7 +92,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
                 let match = false;
 
                 tasklet.tags.forEach(taskletTag => {
-                  this.tags.slice().forEach(tag => {
+                  this.tags.forEach(tag => {
                     if (taskletTag.value === tag.value && tag.checked) {
                       match = true;
                     }
@@ -161,7 +161,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             mode: DIALOG_MODE.ADD,
             dialogTitle: 'Add tasklet',
             tasklet: new Tasklet(),
-            tags: this.tags,
+            tags: Array.from(this.tags.values()),
             projects: this.projects
           }
         });
@@ -169,6 +169,11 @@ export class TaskletsComponent implements OnInit, OnDestroy {
           if (result != null) {
             this.taskletsService.createTasklet(result as Tasklet);
             this.snackbarService.showSnackbar('Added tasklet', '');
+
+            // Select all tags that are contained in tasklet
+            (result as Tasklet).tags.forEach(t => {
+              this.tags.set(t.value, t);
+            });
           }
         });
         break;
@@ -178,12 +183,14 @@ export class TaskletsComponent implements OnInit, OnDestroy {
           disableClose: true,
           data: {
             dialogTitle: 'Select tags',
-            tags: this.tags
+            tags: Array.from(this.tags.values())
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            this.tags = result;
+            result.forEach(t => {
+              this.tags.set(t.value, t);
+            });
             this.taskletsService.update();
             this.snackbarService.showSnackbar('Tags selected', '');
           }

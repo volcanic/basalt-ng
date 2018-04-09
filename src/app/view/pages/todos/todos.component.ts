@@ -43,7 +43,7 @@ export class TodosComponent implements OnInit, OnDestroy {
   // Page specific filters
   taskletType = TASKLET_TYPE.TODO;
   searchItem = '';
-  tags = [];
+  tags = new Map<string, Tag>();
   projects = [];
   priority = '';
 
@@ -74,10 +74,10 @@ export class TodosComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value != null) {
           // Get initial list of tags
-          if (this.tags.length === 0) {
-            this.tags = this.taskletsService.getTags().map(t => {
-              t.checked = true;
-              return t;
+          if (this.tags.size === 0) {
+            this.tags = this.taskletsService.getTags();
+            this.tags.forEach((tag: Tag, key: string) => {
+              tag.checked = true;
             });
           }
 

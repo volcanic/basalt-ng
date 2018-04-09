@@ -98,11 +98,11 @@ export class TaskletsService {
     return this.suggestedSearchItems.reverse();
   }
 
-  public getTags(): Tag[] {
+  public getTags(): Map<string, Tag> {
     return this.getTagsByTasklets(Array.from(this.tasklets.values()));
   }
 
-  public getTagsByTasklets(tasklets: Tasklet[]): Tag[] {
+  public getTagsByTasklets(tasklets: Tasklet[]): Map<string, Tag> {
     const tags = new Map<string, Tag>();
 
     Array.from(tasklets.values()).sort((t1, t2) => {
@@ -120,7 +120,7 @@ export class TaskletsService {
       }
     });
 
-    return Array.from(tags.values());
+    return tags;
   }
 
   public getProjects(): Project[] {

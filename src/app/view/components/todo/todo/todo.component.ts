@@ -50,7 +50,7 @@ export class TodoComponent implements OnInit {
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
     this.dueDate = this.dateService.getDate(new Date(this.tasklet.dueDate));
 
-    this.tags = this.taskletsService.getTags();
+    this.tags = Array.from(this.taskletsService.getTags().values());
     this.tags.forEach(t => {
       if (this.tasklet.tags != null) {
         t.checked = false;
