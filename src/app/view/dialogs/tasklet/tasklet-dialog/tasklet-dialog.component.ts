@@ -102,13 +102,27 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   addTasklet() {
+    const tags = new Map<string, Tag>();
+    const explicitTags = new Map<string, Tag>();
+    const inferredTags = this.inferTags(this.tasklet);
+
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
     this.tasklet.tags = [];
     this.tags.concat(this.newTags).filter(t => t.checked).forEach(t => {
-        this.tasklet.tags.push(t);
+        explicitTags.set(t.value, t);
       }
     );
+
+    // Concatenate maps
+    explicitTags.forEach((value, key) => {
+      tags.set(key, value);
+    });
+    inferredTags.forEach((value, key) => {
+      tags.set(key, value);
+    });
+
+    this.tasklet.tags = Array.from(tags.values());
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
@@ -132,11 +146,24 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   updateTasklet() {
-    this.tasklet.tags = [];
+    const tags = new Map<string, Tag>();
+    const explicitTags = new Map<string, Tag>();
+    const inferredTags = this.inferTags(this.tasklet);
+
     this.tags.concat(this.newTags).filter(t => t.checked).forEach(t => {
-        this.tasklet.tags.push(t);
+        explicitTags.set(t.value, t);
       }
     );
+
+    // Concatenate maps
+    explicitTags.forEach((value, key) => {
+      tags.set(key, value);
+    });
+    inferredTags.forEach((value, key) => {
+      tags.set(key, value);
+    });
+
+    this.tasklet.tags = Array.from(tags.values());
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
@@ -183,5 +210,18 @@ export class TaskletDialogComponent implements OnInit {
     );
 
     this.dialogRef.close(this.tasklet);
+  }
+
+  inferTags(tasklet: Tasklet): Map<string, Tag> {
+    const inferredTags = new Map<string, Tag>();
+
+    tasklet.text.split(' ').forEach(word => {
+      if (word.startsWith('#')) {
+        const tag = new Tag(word.replace('#', ''), true);
+        inferredTags.set(tag.value, tag);
+      }
+    });
+
+    return inferredTags;
   }
 }
