@@ -11,6 +11,7 @@ import {Tag} from '../../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
 import {ProjectDialogComponent} from '../../filters/project-dialog/project-dialog.component';
 import {Project} from '../../../../model/project.model';
+import {Person} from '../../../../model/person.model';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -102,27 +103,10 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   addTasklet() {
-    const tags = new Map<string, Tag>();
-    const explicitTags = new Map<string, Tag>();
-    const inferredTags = this.inferTags(this.tasklet);
-
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
-    this.tasklet.tags = [];
-    this.tags.concat(this.newTags).filter(t => t.checked).forEach(t => {
-        explicitTags.set(t.value, t);
-      }
-    );
-
-    // Concatenate maps
-    explicitTags.forEach((value, key) => {
-      tags.set(key, value);
-    });
-    inferredTags.forEach((value, key) => {
-      tags.set(key, value);
-    });
-
-    this.tasklet.tags = Array.from(tags.values());
+    this.tasklet.tags = this.aggregateTags(this.tasklet, this.tags, this.newTags);
+    this.tasklet.persons = this.aggregatePersons(this.tasklet);
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
@@ -146,24 +130,8 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   updateTasklet() {
-    const tags = new Map<string, Tag>();
-    const explicitTags = new Map<string, Tag>();
-    const inferredTags = this.inferTags(this.tasklet);
-
-    this.tags.concat(this.newTags).filter(t => t.checked).forEach(t => {
-        explicitTags.set(t.value, t);
-      }
-    );
-
-    // Concatenate maps
-    explicitTags.forEach((value, key) => {
-      tags.set(key, value);
-    });
-    inferredTags.forEach((value, key) => {
-      tags.set(key, value);
-    });
-
-    this.tasklet.tags = Array.from(tags.values());
+    this.tasklet.tags = this.aggregateTags(this.tasklet, this.tags, this.newTags);
+    this.tasklet.persons = this.aggregatePersons(this.tasklet);
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
@@ -212,6 +180,23 @@ export class TaskletDialogComponent implements OnInit {
     this.dialogRef.close(this.tasklet);
   }
 
+  aggregateTags(tasklet: Tasklet, existingTags: Tag[], newTags: Tag[]): Tag[] {
+    const aggregatedTags = new Map<string, Tag>();
+
+    // Concatenate
+    existingTags.filter(t => t.checked).forEach(t => {
+      aggregatedTags.set(t.value, t);
+    });
+    newTags.filter(t => t.checked).forEach(t => {
+      aggregatedTags.set(t.value, t);
+    });
+    this.inferTags(tasklet).forEach((value, key) => {
+      aggregatedTags.set(key, value);
+    });
+
+    return Array.from(aggregatedTags.values());
+  }
+
   inferTags(tasklet: Tasklet): Map<string, Tag> {
     const inferredTags = new Map<string, Tag>();
 
@@ -223,5 +208,32 @@ export class TaskletDialogComponent implements OnInit {
     });
 
     return inferredTags;
+  }
+
+  aggregatePersons(tasklet: Tasklet): Person[] {
+    const aggregatedPersons = new Map<string, Person>();
+
+    // Concatenate
+    tasklet.persons.forEach(p => {
+      aggregatedPersons.set(p.name, p);
+    });
+    this.inferPersons(tasklet).forEach((value, key) => {
+      aggregatedPersons.set(key, value);
+    });
+
+    return Array.from(aggregatedPersons.values());
+  }
+
+  inferPersons(tasklet: Tasklet): Map<string, Person> {
+    const inferredPersons = new Map<string, Person>();
+
+    tasklet.text.split(' ').forEach(word => {
+      if (word.startsWith('@')) {
+        const person = new Person(word.replace('@', ''));
+        inferredPersons.set(person.name, person);
+      }
+    });
+
+    return inferredPersons;
   }
 }

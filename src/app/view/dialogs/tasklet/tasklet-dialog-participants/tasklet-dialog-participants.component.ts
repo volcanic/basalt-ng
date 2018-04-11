@@ -41,7 +41,7 @@ export class TaskletDialogParticipantsComponent implements OnInit {
       data: {
         mode: DIALOG_MODE.ADD,
         dialogTitle: 'Add person',
-        person: new Person()
+        person: new Person('')
       }
     });
     dialogRef.afterClosed().subscribe(result => {
