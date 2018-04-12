@@ -200,11 +200,13 @@ export class TaskletDialogComponent implements OnInit {
   inferTags(tasklet: Tasklet): Map<string, Tag> {
     const inferredTags = new Map<string, Tag>();
 
-    tasklet.text.split(' ').forEach(word => {
-      if (word.startsWith('#')) {
-        const tag = new Tag(word.replace('#', ''), true);
-        inferredTags.set(tag.value, tag);
-      }
+    tasklet.text.split('\n').forEach(line => {
+      line.split(' ').forEach(word => {
+        if (word.startsWith('#')) {
+          const tag = new Tag(word.replace('#', ''), true);
+          inferredTags.set(tag.value, tag);
+        }
+      });
     });
 
     return inferredTags;
@@ -227,11 +229,13 @@ export class TaskletDialogComponent implements OnInit {
   inferPersons(tasklet: Tasklet): Map<string, Person> {
     const inferredPersons = new Map<string, Person>();
 
-    tasklet.text.split(' ').forEach(word => {
-      if (word.startsWith('@')) {
-        const person = new Person(word.replace('@', ''));
-        inferredPersons.set(person.name, person);
-      }
+    tasklet.text.split('\n').forEach(line => {
+      line.split(' ').forEach(word => {
+        if (word.startsWith('@')) {
+          const person = new Person(word.replace('@', ''));
+          inferredPersons.set(person.name, person);
+        }
+      });
     });
 
     return inferredPersons;
