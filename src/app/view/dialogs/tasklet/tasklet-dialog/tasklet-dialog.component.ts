@@ -232,7 +232,7 @@ export class TaskletDialogComponent implements OnInit {
     tasklet.text.split('\n').forEach(line => {
       line.split(' ').forEach(word => {
         if (word.startsWith('@')) {
-          const person = new Person(word.replace('@', ''));
+          const person = new Person(word.replace('@', '').replace('_', ' '));
           inferredPersons.set(person.name, person);
         }
       });
