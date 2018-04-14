@@ -1,6 +1,8 @@
 <div>
   <mat-form-field color="primary">
-    <mat-select name="type" placeholder="Participant" [(ngModel)]="tasklet.persons" multiple>
+    <mat-select name="participant" placeholder="Participant"
+                [(ngModel)]="tasklet.persons"
+                [compareWith]="comparePerson" multiple>
       <mat-option *ngFor="let item of existingPersons" [value]="item">
         {{ item.name }}
       </mat-option>
