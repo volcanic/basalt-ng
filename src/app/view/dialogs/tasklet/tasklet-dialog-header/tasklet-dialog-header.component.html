@@ -8,7 +8,9 @@
   </mat-form-field>
   <div class="flexbox"></div>
   <mat-form-field color="primary">
-    <mat-select name="project" placeholder="Project" [(ngModel)]="tasklet.project">
+    <mat-select name="project" placeholder="Project"
+                [(ngModel)]="tasklet.project"
+                [compareWith]="compareProject">
       <mat-option *ngFor="let item of projects" [value]="item">
         {{ item.value }}
       </mat-option>
