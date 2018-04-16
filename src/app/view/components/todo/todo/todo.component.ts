@@ -123,24 +123,6 @@ export class TodoComponent implements OnInit {
     });
   }
 
-  public deleteTasklet() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-      disableClose: true,
-      data: {
-        title: 'Delete tasklet',
-        text: 'Do you want to delete this tasklet?',
-        action: 'Delete',
-        value: this.tasklet
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        this.taskletsService.deleteTasklet(result as Tasklet);
-        this.snackbarService.showSnackbar('Deleted tasklet', '');
-      }
-    });
-  }
-
   onToggledDone() {
     this.taskletsService.updateTasklet(this.tasklet);
   }

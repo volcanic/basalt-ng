@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatIconRegistry} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {UUID} from '../../../../model/util/uuid';
 import {Tasklet} from '../../../../model/tasklet.model';
@@ -12,6 +12,8 @@ import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
 import {ProjectDialogComponent} from '../../filters/project-dialog/project-dialog.component';
 import {Project} from '../../../../model/project.model';
 import {Person} from '../../../../model/person.model';
+import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
+import {SnackbarService} from '../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -35,6 +37,7 @@ export class TaskletDialogComponent implements OnInit {
   iconAdd = 'add';
 
   constructor(private taskletsService: TaskletsService,
+              private snackbarService: SnackbarService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -166,6 +169,25 @@ export class TaskletDialogComponent implements OnInit {
       });
     });
     this.dialogRef.close(this.tasklet);
+  }
+
+  deleteTasklet() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+      disableClose: true,
+      data: {
+        title: 'Delete tasklet',
+        text: 'Do you want to delete this tasklet?',
+        action: 'Delete',
+        value: this.tasklet
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.taskletsService.deleteTasklet(result as Tasklet);
+        this.snackbarService.showSnackbar('Deleted tasklet', '');
+        this.dialogRef.close(null);
+      }
+    });
   }
 
   continueTasklet() {

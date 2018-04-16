@@ -55,6 +55,10 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
+    <button mat-button color="warn" *ngIf="mode == DIALOG_MODE.UPDATE" (click)="deleteTasklet()">
+      Delete tasklet
+    </button>
+    <div class="flexbox"></div>
     <button mat-button [mat-dialog-close]=null>
       Cancel
     </button>
