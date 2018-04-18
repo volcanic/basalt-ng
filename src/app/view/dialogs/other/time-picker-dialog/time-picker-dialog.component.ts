@@ -25,13 +25,16 @@ export class TimePickerDialogComponent implements OnInit {
   calendarDate = new Date(this.year, this.month, this.day);
   dateFormControl = new FormControl(this.calendarDate);
 
-  constructor(public dialogRef: MatDialogRef<TimePickerDialogComponent>,
+  constructor(private adapter: DateAdapter<any>,
+              public dialogRef: MatDialogRef<TimePickerDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.dialogTitle = data.dialogTitle;
     this.tasklet = this.data.tasklet;
   }
 
   ngOnInit() {
+    this.adapter.setLocale('en-GB');
+
     this.year = new Date(this.tasklet.creationDate).getFullYear();
     this.month = new Date(this.tasklet.creationDate).getMonth();
     this.day = new Date(this.tasklet.creationDate).getDate();

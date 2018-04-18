@@ -40,7 +40,8 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.11 | Specialize tasklets daily scrum |
 | 0.12 | Assign tasklets to projects |
 | 0.13 | Infer tags and persons |
-| 0.13 | Delete tasklets |
+| 0.14 | Delete tasklets |
+| 0.15 | Update date |
 
 ### Planned features
 
