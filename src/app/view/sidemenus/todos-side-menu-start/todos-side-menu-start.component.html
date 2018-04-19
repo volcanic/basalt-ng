@@ -1,6 +1,6 @@
 <div class="side-menu">
   <div class="label">Tags</div>
-  <div *ngFor="let t of tags">
+  <div *ngFor="let t of tagList">
     <mat-checkbox [(ngModel)]=t.checked (change)="onTagChanged()">{{ t.value}}</mat-checkbox>
   </div>
   <hr class="delimiter"/>
