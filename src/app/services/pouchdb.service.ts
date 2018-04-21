@@ -71,8 +71,9 @@ export class PouchDBService {
    * @param id
    */
   public remove(id: string, document: any) {
-    console.log(`DEBUG remove ${id}`);
-    return this.database.remove(id);
+    console.log(`DEBUG remove ${document._id}`);
+    console.log(`DEBUG remove ${document._rev}`);
+    return this.database.remove(document._id, document._rev);
   }
 
   /**
