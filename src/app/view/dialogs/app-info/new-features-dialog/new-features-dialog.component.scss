@@ -1,8 +1,11 @@
 @import '../../../../../theme';
 
-.closing-buttons {
-  display: inline;
-  float: right;
+mat-dialog-actions {
+  display: flex;
+}
+
+.flexbox {
+  flex-grow: 1;
 }
 
 .annotation {
