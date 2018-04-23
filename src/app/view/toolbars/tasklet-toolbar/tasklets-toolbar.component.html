@@ -33,7 +33,13 @@
       <mat-icon svgIcon="label_white"></mat-icon>
     </button>
     <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onClickMenuItem('download')">
+        <mat-icon svgIcon="download_black"></mat-icon>
+        <span>Download</span>
+      </button>
+      <mat-divider></mat-divider>
       <button mat-menu-item (click)="onClickMenuItem('about')">
+        <mat-icon svgIcon="blank"></mat-icon>
         <span>About</span>
       </button>
     </mat-menu>

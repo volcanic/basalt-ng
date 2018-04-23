@@ -214,6 +214,10 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         });
         break;
       }
+      case 'download': {
+        this.taskletsService.downloadTasklets();
+        break;
+      }
       case 'about': {
         const dialogRef = this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
           disableClose: true,

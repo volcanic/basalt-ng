@@ -78,7 +78,17 @@ export class TaskletsService {
     this.suggestedSearchItems = this.getSuggestedSearchItems();
   }
 
-  getSuggestedSearchItems(): string[] {
+  public downloadTasklets() {
+    const fileContents = JSON.stringify(Array.from(this.tasklets.values()));
+    const filename = 'tasklets.basalt';
+    const filetype = 'text/plain';
+
+    const blob = new Blob([fileContents], {type: filetype});
+    const url = window.URL.createObjectURL(blob);
+    window.open(url);
+  }
+
+  public getSuggestedSearchItems(): string[] {
     this.suggestedSearchItems = [];
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
