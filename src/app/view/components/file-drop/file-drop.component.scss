@@ -1,0 +1,26 @@
+@import '../../../../theme';
+
+$dropzone-border-with: 5px;
+
+.dropzone {
+  border: dashed $dropzone-border-with lightgray;
+  height: 100px;
+  width: -webkit-calc(100% - (2 * #{$dropzone-border-with}));
+  width:    -moz-calc(100% - (2 * #{$dropzone-border-with}));
+  width:         calc(100% - (2 * #{$dropzone-border-with}));
+  text-align: center;
+  display: table;
+}
+
+.dropzone-label {
+  color: #808080;
+  font-size: 20px;
+  font-weight: 700;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.nv-file-over {
+  background: mat-color($app-accent, 200);
+  border: dashed 5px mat-color($app-accent, 600);
+}

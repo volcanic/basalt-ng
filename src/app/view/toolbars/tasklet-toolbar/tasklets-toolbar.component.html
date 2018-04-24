@@ -35,7 +35,11 @@
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="onClickMenuItem('download')">
         <mat-icon svgIcon="download_black"></mat-icon>
-        <span>Download</span>
+        <span>Export</span>
+      </button>
+      <button mat-menu-item (click)="onClickMenuItem('upload')">
+        <mat-icon svgIcon="upload_black"></mat-icon>
+        <span>Import</span>
       </button>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="onClickMenuItem('about')">

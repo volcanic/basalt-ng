@@ -1,0 +1,21 @@
+@import '../../../../../theme';
+
+.dialog {
+  @media #{$mat-small} {
+    width: 100%;
+  }
+  @media #{$mat-medium} {
+    width: 600px;
+  }
+  @media #{$mat-large} {
+    width: 600px;
+  }
+}
+
+mat-dialog-actions {
+  display: flex;
+}
+
+.flexbox {
+  flex-grow: 1;
+}

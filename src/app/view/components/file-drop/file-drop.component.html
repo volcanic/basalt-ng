@@ -1,0 +1,9 @@
+<div ng2FileDrop
+     [ngClass]="{'nv-file-over': hasDropZoneOver}"
+     (fileOver)="fileOverBase($event)"
+     [uploader]="uploader"
+     (onFileDrop)="fileDropped($event)"
+     class="well dropzone">
+  <span class="dropzone-label">DROP IT LIKE IT'S HOT</span>
+</div>
+

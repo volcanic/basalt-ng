@@ -83,6 +83,21 @@ export class TaskletsService {
     const filename = 'tasklets.basalt';
     const filetype = 'text/plain';
 
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileContents));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+
+  public showTasklets() {
+    const fileContents = JSON.stringify(Array.from(this.tasklets.values()));
+    const filename = 'tasklets.basalt';
+    const filetype = 'text/plain';
+
     const blob = new Blob([fileContents], {type: filetype});
     const url = window.URL.createObjectURL(blob);
     window.open(url);

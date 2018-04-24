@@ -61,12 +61,16 @@ import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/taskle
 import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
 import { TaskletDialogTopicComponent } from './view/dialogs/tasklet/tasklet-dialog-topic/tasklet-dialog-topic.component';
 import { TaskletDialogHeaderComponent } from './view/dialogs/tasklet/tasklet-dialog-header/tasklet-dialog-header.component';
+import { UploadDialogComponent } from './view/dialogs/other/upload-dialog/upload-dialog.component';
+import {FileDropComponent} from './view/components/file-drop/file-drop.component';
+import {FileUploadModule} from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
     AboutDialogComponent,
     AppComponent,
     ConfirmationDialogComponent,
+    FileDropComponent,
     NewFeaturesDialogComponent,
     PersonDialogComponent,
     ProjectDialogComponent,
@@ -94,11 +98,13 @@ import { TaskletDialogHeaderComponent } from './view/dialogs/tasklet/tasklet-dia
     TimePickerDialogComponent,
     TaskletDialogTopicComponent,
     TaskletDialogHeaderComponent,
+    UploadDialogComponent,
   ],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    FileUploadModule,
     FormsModule,
     HttpModule,
     MatAutocompleteModule,
@@ -133,7 +139,8 @@ import { TaskletDialogHeaderComponent } from './view/dialogs/tasklet/tasklet-dia
     TaskletDialogParticipantsComponent,
     TaskletDialogTagsComponent,
     TaskletDialogTodoComponent,
-    TimePickerDialogComponent
+    TimePickerDialogComponent,
+    UploadDialogComponent
   ],
   providers: [
     MatIconRegistry,

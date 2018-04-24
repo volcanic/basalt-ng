@@ -15,6 +15,7 @@ import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
 import {ProjectDialogComponent} from '../../dialogs/filters/project-dialog/project-dialog.component';
+import {UploadDialogComponent} from '../../dialogs/other/upload-dialog/upload-dialog.component';
 
 @Component({
   selector: 'app-tasklets',
@@ -210,6 +211,15 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             this.projects = result;
             this.taskletsService.update();
             this.snackbarService.showSnackbar('Projects selected', '');
+          }
+        });
+        break;
+      }
+      case 'upload': {
+        const dialogRef = this.dialog.open(UploadDialogComponent, <MatDialogConfig>{
+          disableClose: true,
+          data: {
+            title: 'Upload'
           }
         });
         break;
