@@ -26,6 +26,9 @@ export class UploadDialogComponent implements OnInit {
 
     this.dropContent.asObservable().subscribe((result) => {
       (result as Tasklet[]).forEach(t => {
+        t['_rev'] = null;
+        t['_id'] = null;
+        console.log(`DEBUG tasklet ${JSON.stringify(t)}`);
         this.taskletsService.updateTasklet(t);
       });
     });
