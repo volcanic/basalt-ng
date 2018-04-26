@@ -74,7 +74,12 @@ export class TaskletsService {
    */
 
   public update() {
-    this.taskletsSubject.next(Array.from(this.tasklets.values()));
+    this.taskletsSubject.next(Array.from(this.tasklets.values()).sort((t1: Tasklet, t2: Tasklet) => {
+      const date1 = new Date(t1.creationDate).getTime();
+      const date2 = new Date(t2.creationDate).getTime();
+
+      return date2 - date1;
+    }));
     this.suggestedSearchItems = this.getSuggestedSearchItems();
   }
 

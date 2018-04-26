@@ -42,6 +42,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.13 | Infer tags and persons |
 | 0.14 | Delete tasklets |
 | 0.15 | Update date |
+| 0.16 | Import/export tasklets |
 
 ### Planned features
 
