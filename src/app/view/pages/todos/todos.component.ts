@@ -217,7 +217,7 @@ export class TodosComponent implements OnInit, OnDestroy {
         break;
       }
       case 'about': {
-        const dialogRef = this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
+        /* const dialogRef = */ this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
           disableClose: true,
           data: {
             title: 'About',

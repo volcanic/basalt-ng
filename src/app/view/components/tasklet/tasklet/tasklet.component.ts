@@ -55,7 +55,7 @@ export class TaskletComponent implements OnInit {
         }
       });
 
-    this.projects = Array.from(this.taskletsService.getProjects().values()).reverse();
+    this.projects = Array.from(this.taskletsService.getProjects().values());
 
     this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));

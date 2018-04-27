@@ -21,6 +21,6 @@ export class TaskletDialogHeaderComponent implements OnInit {
   }
 
   compareProject(p1: Project, p2: Project) {
-    return p1 == null && p2 == null && p1.value === p2.value;
+    return p1 != null && p2 != null && p1.value === p2.value;
   }
 }
