@@ -28,7 +28,7 @@ export class TaskletDialogDailyScrumActivityComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dailyScrumActivityOptions = this.taskletsService.getDailyScrumActivities(this.person);
+    this.dailyScrumActivityOptions = Array.from(this.taskletsService.getDailyScrumActivities(this.person).values()).reverse();
     this.filteredDailyScrumActivityOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),

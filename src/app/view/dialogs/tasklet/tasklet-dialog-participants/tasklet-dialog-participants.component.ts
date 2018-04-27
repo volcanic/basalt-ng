@@ -31,10 +31,7 @@ export class TaskletDialogParticipantsComponent implements OnInit {
     if (this.tasklet.persons == null) {
       this.tasklet.persons = [];
     }
-    this.existingPersons = this.taskletsService.getPersons().reverse();
-
-    console.log(`DEBUG persons ${JSON.stringify(this.tasklet.persons)}`);
-    console.log(`DEBUG existingPersons ${JSON.stringify(this.existingPersons)}`);
+    this.existingPersons = Array.from(this.taskletsService.getPersons().values()).reverse();
   }
 
   addPerson() {

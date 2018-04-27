@@ -83,7 +83,7 @@ export class TodosComponent implements OnInit, OnDestroy {
 
           // Get initial list of projects
           if (this.projects.length === 0) {
-            this.projects = this.taskletsService.getProjects().map(p => {
+            this.projects = Array.from(this.taskletsService.getProjects().values()).map(p => {
               p.checked = true;
               return p;
             });

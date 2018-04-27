@@ -69,7 +69,7 @@ export class TaskletDialogComponent implements OnInit {
     this.projects = this.data.projects;
     this.previousText = this.data.previousText;
 
-    this.taskOptions = this.taskletsService.getTasks();
+    this.taskOptions = Array.from(this.taskletsService.getTasks().values());
 
     this.newTags.push(new Tag('', false));
   }

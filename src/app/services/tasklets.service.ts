@@ -28,6 +28,10 @@ export class TaskletsService {
       });
   }
 
+  //
+  // Persistence
+  //
+
   public createTasklet(tasklet: Tasklet) {
     console.log(`DEBUG createTasklet ${JSON.stringify(tasklet)}`);
     this.tasklets.set(tasklet.id, tasklet);
@@ -72,7 +76,6 @@ export class TaskletsService {
   /**
    * Informs subscribers that something has changed
    */
-
   public update() {
     this.taskletsSubject.next(Array.from(this.tasklets.values()).sort((t1: Tasklet, t2: Tasklet) => {
       const date1 = new Date(t1.creationDate).getTime();
@@ -82,6 +85,10 @@ export class TaskletsService {
     }));
     this.suggestedSearchItems = this.getSuggestedSearchItems();
   }
+
+  //
+  // Import/Export
+  //
 
   public downloadTasklets() {
     const fileContents = JSON.stringify(Array.from(this.tasklets.values()));
@@ -108,6 +115,14 @@ export class TaskletsService {
     window.open(url);
   }
 
+  //
+  // Lookup
+  //
+
+  /**
+   * Returns a list of suggested search items
+   * @returns {any[]}
+   */
   public getSuggestedSearchItems(): string[] {
     this.suggestedSearchItems = [];
 
@@ -128,10 +143,19 @@ export class TaskletsService {
     return this.suggestedSearchItems.reverse();
   }
 
+  /**
+   * Returns a map of tags
+   * @returns {Map<string, Tag>}
+   */
   public getTags(): Map<string, Tag> {
     return this.getTagsByTasklets(Array.from(this.tasklets.values()));
   }
 
+  /**
+   * Returns a map of tags of a given list of tasklets
+   * @param tasklets given list of tasklets
+   * @returns {Map<string, Tag>}
+   */
   public getTagsByTasklets(tasklets: Tasklet[]): Map<string, Tag> {
     const tags = new Map<string, Tag>();
 
@@ -153,11 +177,20 @@ export class TaskletsService {
     return tags;
   }
 
-  public getProjects(): Project[] {
+  /**
+   * Returns a map of projects
+   * @returns {Map<string, Project>}
+   */
+  public getProjects(): Map<string, Project> {
     return this.getProjectsByTasklets(Array.from(this.tasklets.values()));
   }
 
-  public getProjectsByTasklets(tasklets: Tasklet[]): Project[] {
+  /**
+   * Returns a map of projects of a given list of tasklets
+   * @param tasklets given list of tasklets
+   * @returns {Array<Project>}
+   */
+  public getProjectsByTasklets(tasklets: Tasklet[]): Map<string, Project> {
     const projects = new Map<string, Project>();
 
     Array.from(tasklets.values()).sort((t1, t2) => {
@@ -171,10 +204,14 @@ export class TaskletsService {
       }
     });
 
-    return Array.from(projects.values());
+    return projects;
   }
 
-  public getTasks(): string[] {
+  /**
+   * Returns a map of tasks
+   * @returns {Map<string, string>}
+   */
+  public getTasks(): Map<string, string> {
     const tasks = new Map<string, string>();
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
@@ -185,15 +222,15 @@ export class TaskletsService {
       }
     });
 
-    return Array.from(tasks.values()).reverse();
+    return tasks;
   }
 
   /**
-   * Returns a list of recent daily scrum activities of a given person
+   * Returns a map of recent daily scrum activities of a given person
    * @param person given person
-   * @returns {string[]}
+   * @returns {IterableIterator<string>}
    */
-  public getDailyScrumActivities(person: Person): string[] {
+  public getDailyScrumActivities(person: Person): Map<string, string> {
     const dailyScrumActivities = new Map<string, string>();
 
     if (person != null) {
@@ -214,10 +251,14 @@ export class TaskletsService {
       });
     }
 
-    return Array.from(dailyScrumActivities.values()).reverse();
+    return dailyScrumActivities;
   }
 
-  public getPersons(): Person[] {
+  /**
+   * Returns a map of persons
+   * @returns {Map<string, Person>}
+   */
+  public getPersons(): Map<string, Person> {
     const persons = new Map<string, Person>();
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
@@ -230,6 +271,6 @@ export class TaskletsService {
       }
     });
 
-    return Array.from(persons.values()).reverse();
+    return persons;
   }
 }

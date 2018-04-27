@@ -63,7 +63,7 @@ export class TodoComponent implements OnInit {
       }
     });
 
-    this.projects = this.taskletsService.getProjects();
+    this.projects = Array.from(this.taskletsService.getProjects().values());
 
     if (this.tasklet.priority != null) {
       switch (this.tasklet.priority) {

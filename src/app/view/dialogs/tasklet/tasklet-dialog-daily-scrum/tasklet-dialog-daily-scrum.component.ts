@@ -35,7 +35,7 @@ export class TaskletDialogDailyScrumComponent implements OnInit {
 
     this.ensureEmptyParticipant();
 
-    this.existingPersons = this.taskletsService.getPersons().reverse().map(p => {
+    this.existingPersons = Array.from(this.taskletsService.getPersons().values()).reverse().map(p => {
       return p.name;
     });
   }
