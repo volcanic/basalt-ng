@@ -42,6 +42,7 @@ export class TaskletDefaultComponent implements OnInit {
     iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
     iconRegistry.addSvgIcon('dining', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_local_dining_black_24px.svg'));
     iconRegistry.addSvgIcon('run', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_directions_run_black_24px.svg'));
+    iconRegistry.addSvgIcon('receipt', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/outline-receipt-24px.svg'));
   }
 
   ngOnInit() {
@@ -99,6 +100,10 @@ export class TaskletDefaultComponent implements OnInit {
         this.icon = 'run';
         break;
       }
+      case TASKLET_TYPE.WEEKLY_DIGEST: {
+        this.icon = 'receipt';
+        break;
+      }
     }
   }
 
@@ -106,7 +111,8 @@ export class TaskletDefaultComponent implements OnInit {
     if (this.tasklet.project != null
       && this.tasklet.project.value != null
       && this.tasklet.project.value.trim().length > 0) {
-      this.projectColor = this.projectColors[Math.abs(Hash.hash(this.tasklet.project.value.toLowerCase().replace(' ', ''))) % this.projectColors.length];
+      this.projectColor = this.projectColors[
+      Math.abs(Hash.hash(this.tasklet.project.value.toLowerCase().replace(' ', ''))) % this.projectColors.length];
     }
   }
 }

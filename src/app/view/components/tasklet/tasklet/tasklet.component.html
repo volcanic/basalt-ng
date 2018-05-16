@@ -35,6 +35,9 @@
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'">
       </app-tasklet-participants>
+      <app-tasklet-weekly-digest [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+                                 *ngIf="tasklet.type == 'Weekly Digest'">
+      </app-tasklet-weekly-digest>
     </mat-card-content>
     <hr class="delimiter"/>
     <span class="tag" *ngFor="let t of tasklet.tags">

@@ -59,11 +59,14 @@ import {ProjectDialogComponent} from './view/dialogs/filters/project-dialog/proj
 import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
 import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
 import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
-import { TaskletDialogTopicComponent } from './view/dialogs/tasklet/tasklet-dialog-topic/tasklet-dialog-topic.component';
-import { TaskletDialogHeaderComponent } from './view/dialogs/tasklet/tasklet-dialog-header/tasklet-dialog-header.component';
-import { UploadDialogComponent } from './view/dialogs/other/upload-dialog/upload-dialog.component';
+import {TaskletDialogTopicComponent} from './view/dialogs/tasklet/tasklet-dialog-topic/tasklet-dialog-topic.component';
+import {TaskletDialogHeaderComponent} from './view/dialogs/tasklet/tasklet-dialog-header/tasklet-dialog-header.component';
+import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
 import {FileDropComponent} from './view/components/file-drop/file-drop.component';
 import {FileUploadModule} from 'ng2-file-upload';
+import {TaskletWeeklyDigestComponent} from './view/components/tasklet/tasklet-weekly-digest/tasklet-weekly-digest.component';
+import {TaskletDialogWeeklyDigestComponent} from './view/dialogs/tasklet/tasklet-dialog-weekly-digest/tasklet-dialog-weekly-digest.component';
+import {DigestService} from './services/digest.service';
 
 @NgModule({
   declarations: [
@@ -78,26 +81,28 @@ import {FileUploadModule} from 'ng2-file-upload';
     TagDialogComponent,
     TaskletComponent,
     TaskletDefaultComponent,
+    TaskletDailyScrumComponent,
     TaskletDialogComponent,
+    TaskletDialogTagsComponent,
     TaskletDialogDailyScrumComponent,
     TaskletDialogDailyScrumActivityComponent,
     TaskletDialogDailyScrumParticipantComponent,
     TaskletDialogContentComponent,
+    TaskletDialogHeaderComponent,
     TaskletDialogParticipantsComponent,
+    TaskletDialogTopicComponent,
     TaskletDialogTodoComponent,
+    TaskletDialogWeeklyDigestComponent,
     TaskletParticipantsComponent,
     TaskletsComponent,
-    TaskletDailyScrumComponent,
-    TaskletDialogTagsComponent,
     TaskletsToolbarComponent,
     TaskletTodoComponent,
+    TaskletWeeklyDigestComponent,
+    TimePickerDialogComponent,
     TodoComponent,
     TodosComponent,
     TodosSideMenuStartComponent,
     TodosToolbarComponent,
-    TimePickerDialogComponent,
-    TaskletDialogTopicComponent,
-    TaskletDialogHeaderComponent,
     UploadDialogComponent,
   ],
   imports: [
@@ -139,12 +144,14 @@ import {FileUploadModule} from 'ng2-file-upload';
     TaskletDialogParticipantsComponent,
     TaskletDialogTagsComponent,
     TaskletDialogTodoComponent,
+    TaskletDialogWeeklyDigestComponent,
     TimePickerDialogComponent,
     UploadDialogComponent
   ],
   providers: [
     MatIconRegistry,
     DateService,
+    DigestService,
     MatchService,
     PouchDBService,
     PouchDBSettingsService,

@@ -14,6 +14,7 @@ import {Project} from '../../../../model/project.model';
 import {Person} from '../../../../model/person.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
 import {SnackbarService} from '../../../../services/snackbar.service';
+import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -124,6 +125,11 @@ export class TaskletDialogComponent implements OnInit {
       case TASKLET_TYPE.FINISHING_TIME: {
         this.tasklet.taskName = this.tasklet.type;
         this.dialogRef.close(this.tasklet as Tasklet);
+        break;
+      }
+      case TASKLET_TYPE.WEEKLY_DIGEST: {
+        this.tasklet.taskName = this.tasklet.type;
+        this.dialogRef.close(this.tasklet as TaskletWeeklyDigest);
         break;
       }
       default: {

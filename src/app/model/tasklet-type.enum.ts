@@ -12,4 +12,5 @@ export enum TASKLET_TYPE {
   TODO = 'TODO',
   LUNCH_BREAK = 'Lunch Break',
   FINISHING_TIME = 'Finishing Time',
+  WEEKLY_DIGEST = 'Weekly Digest'
 }
