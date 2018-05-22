@@ -5,6 +5,14 @@ Weekly Digest for {{ tasklet.focusDate }}
 <p>
   Week End: {{ weekEnd }}
 </p>
-<p>
-  Number of tasklets: {{ tasklets.length }}
-</p>
+<mat-divider></mat-divider>
+<div *ngFor="let dailyDigest of weeklyDigest">
+  <h3>{{ dailyDigest.weekDayString }}</h3>
+  <ul>
+    <li>start {{ dailyDigest.startTimeString }}</li>
+    <li>end {{ dailyDigest.endTimeString }}</li>
+  </ul>
+  <div *ngFor="let projectEffort of dailyDigest.getProjectEfforts()">
+    {{ projectEffort.project.value }} : {{ projectEffort.effort / 60 }}h
+  </div>
+</div>

@@ -3,7 +3,7 @@ import {MatDialog, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {DigestService} from '../../../../services/digest.service';
 import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
-import {Tasklet} from '../../../../model/tasklet.model';
+import {DailyDigest} from '../../../../model/daily-digest.model';
 
 @Component({
   selector: 'app-tasklet-weekly-digest',
@@ -16,7 +16,8 @@ export class TaskletWeeklyDigestComponent implements OnInit {
 
   weekStart: Date;
   weekEnd: Date;
-  tasklets: Tasklet[];
+
+  weeklyDigest: DailyDigest[];
 
   constructor(public dialog: MatDialog,
               private digestService: DigestService,
@@ -28,6 +29,7 @@ export class TaskletWeeklyDigestComponent implements OnInit {
   ngOnInit() {
     this.weekStart = DigestService.getWeekStart(this.tasklet.focusDate);
     this.weekEnd = DigestService.getWeekEnd(this.tasklet.focusDate);
-    this.tasklets = this.digestService.getRelevantTasklets(this.tasklet.focusDate);
+
+    this.weeklyDigest = this.digestService.getWeeklyDigest(this.tasklet.focusDate);
   }
 }
