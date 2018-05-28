@@ -3,7 +3,7 @@ import {Tasklet} from '../../../../model/tasklet.model';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
-import {Hash} from '../../../../model/util/hash';
+import {ColorService} from '../../../../services/color.service';
 
 @Component({
   selector: 'app-tasklet-default',
@@ -16,19 +16,9 @@ export class TaskletDefaultComponent implements OnInit {
   icon = '';
 
   projectColor = 'transparent';
-  projectColors = [
-    '#C8E6C9',
-    '#A5D6A7',
-    '#81C784',
-    '#DCEDC8',
-    '#C5E1A5',
-    '#AED581',
-    '#F0F4C3',
-    '#E6EE9C',
-    '#DCE775'
-  ];
 
-  constructor(iconRegistry: MatIconRegistry,
+  constructor(private colorService: ColorService,
+              iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('turned', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_turned_in_not_black_24px.svg'));
     iconRegistry.addSvgIcon('people', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_people_black_24px.svg'));
@@ -47,7 +37,12 @@ export class TaskletDefaultComponent implements OnInit {
 
   ngOnInit() {
     this.selectIcon();
-    this.selectProjectColor();
+
+    if (this.tasklet.project != null
+      && this.tasklet.project.value != null
+      && this.tasklet.project.value.trim().length > 0) {
+      this.projectColor = this.colorService.getProjectColor(this.tasklet.project.value);
+    }
   }
 
   selectIcon() {
@@ -104,15 +99,6 @@ export class TaskletDefaultComponent implements OnInit {
         this.icon = 'receipt';
         break;
       }
-    }
-  }
-
-  selectProjectColor() {
-    if (this.tasklet.project != null
-      && this.tasklet.project.value != null
-      && this.tasklet.project.value.trim().length > 0) {
-      this.projectColor = this.projectColors[
-      Math.abs(Hash.hash(this.tasklet.project.value.toLowerCase().replace(' ', ''))) % this.projectColors.length];
     }
   }
 }

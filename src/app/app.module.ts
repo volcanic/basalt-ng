@@ -67,6 +67,7 @@ import {FileUploadModule} from 'ng2-file-upload';
 import {TaskletWeeklyDigestComponent} from './view/components/tasklet/tasklet-weekly-digest/tasklet-weekly-digest.component';
 import {TaskletDialogWeeklyDigestComponent} from './view/dialogs/tasklet/tasklet-dialog-weekly-digest/tasklet-dialog-weekly-digest.component';
 import {DigestService} from './services/digest.service';
+import {ColorService} from './services/color.service';
 
 @NgModule({
   declarations: [
@@ -150,6 +151,7 @@ import {DigestService} from './services/digest.service';
   ],
   providers: [
     MatIconRegistry,
+    ColorService,
     DateService,
     DigestService,
     MatchService,
