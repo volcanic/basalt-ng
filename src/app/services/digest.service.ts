@@ -73,12 +73,14 @@ export class DigestService {
 
 
   getDailyDigest(date: Date): DailyDigest {
-    const dailyDigest = new DailyDigest();
-    const tasklets = this.getTaskletsOfDay(date, Array.from(this.taskletsService.tasklets.values()));
-
-    dailyDigest.weekDayString = this.dateService.getWeekDayString(date.getDay());
+    const tasklets = this.getTaskletsOfDay(date, Array.from(this.taskletsService.tasklets.values())).filter(t => {
+      return t.type !== TASKLET_TYPE.WEEKLY_DIGEST;
+    });
 
     if (tasklets.length !== 0) {
+      const dailyDigest = new DailyDigest();
+      dailyDigest.weekDayString = this.dateService.getWeekDayString(date.getDay());
+
       dailyDigest.startTime = tasklets[0].creationDate;
       dailyDigest.endTime = tasklets[tasklets.length - 1].creationDate;
 
@@ -110,9 +112,11 @@ export class DigestService {
           dailyDigest.projectEfforts.set(tasklet.project.value, projectEffort);
         }
       }
+
+      return dailyDigest;
     }
 
-    return dailyDigest;
+    return null;
   }
 
   getWeeklyDigest(date: Date) {
@@ -122,8 +126,11 @@ export class DigestService {
 
     [0, 1, 2, 3, 4].forEach(index => {
         const day = new Date(weekStart);
+        const dailyDigest = this.getDailyDigest(new Date(day.setDate(weekStart.getDate() + index)));
 
-        weeklyDigest.push(this.getDailyDigest(new Date(day.setDate(weekStart.getDate() + index))));
+        if (dailyDigest != null) {
+          weeklyDigest.push(dailyDigest);
+        }
       }
     );
 

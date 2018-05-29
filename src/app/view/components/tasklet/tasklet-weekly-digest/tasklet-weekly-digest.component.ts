@@ -4,6 +4,8 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {DigestService} from '../../../../services/digest.service';
 import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
 import {DailyDigest} from '../../../../model/daily-digest.model';
+import {ColorService} from '../../../../services/color.service';
+import {DateService} from '../../../../services/date.service';
 
 @Component({
   selector: 'app-tasklet-weekly-digest',
@@ -16,11 +18,14 @@ export class TaskletWeeklyDigestComponent implements OnInit {
 
   weekStart: Date;
   weekEnd: Date;
+  weekHours = 0;
 
   weeklyDigest: DailyDigest[];
 
   constructor(public dialog: MatDialog,
               private digestService: DigestService,
+              private dateService: DateService,
+              private colorService: ColorService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_edit_black_18px.svg'));
@@ -31,5 +36,14 @@ export class TaskletWeeklyDigestComponent implements OnInit {
     this.weekEnd = DigestService.getWeekEnd(this.tasklet.focusDate);
 
     this.weeklyDigest = this.digestService.getWeeklyDigest(this.tasklet.focusDate);
+    this.weeklyDigest.forEach(dailyDigest => {
+      dailyDigest.getProjectEfforts().forEach(pe => {
+        this.weekHours += pe.effort;
+      });
+    });
+  }
+
+  getEffortInHours(minutes: number): number {
+    return Math.round(minutes);
   }
 }

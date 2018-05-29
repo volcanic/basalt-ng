@@ -1,18 +1,20 @@
-Weekly Digest for {{ tasklet.focusDate }}
 <p>
-  Week Start: {{ weekStart }}
+  Week Start: {{ dateService.getDate(weekStart) }}
 </p>
 <p>
-  Week End: {{ weekEnd }}
+  Week End: {{ dateService.getDate(weekEnd) }}
+</p>
+<p>
+  Total effort: {{(weekHours / 60 ).toFixed(2) }}h
 </p>
 <mat-divider></mat-divider>
 <div *ngFor="let dailyDigest of weeklyDigest">
-  <h3>{{ dailyDigest.weekDayString }}</h3>
-  <ul>
-    <li>start {{ dailyDigest.startTimeString }}</li>
-    <li>end {{ dailyDigest.endTimeString }}</li>
-  </ul>
-  <div *ngFor="let projectEffort of dailyDigest.getProjectEfforts()">
-    {{ projectEffort.project.value }} : {{ projectEffort.effort / 60 }}h
+  <h3>{{ dailyDigest.weekDayString }} [ {{ dailyDigest.startTimeString }} - {{ dailyDigest.endTimeString }} ]</h3>
+  <div class="projectEffort" *ngFor="let projectEffort of dailyDigest.getProjectEfforts()">
+    <span class="project"
+          [style.background-color]="colorService.getProjectColor(projectEffort.project.value)">
+      {{ projectEffort.project.value }}
+    </span>
+    <span class="effort">{{(projectEffort.effort / 60 ).toFixed(2) }}h</span>
   </div>
 </div>
