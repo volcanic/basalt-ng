@@ -2,6 +2,7 @@
   <mat-form-field color="primary">
     <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type">
       <mat-option *ngFor="let item of taskletTypes" [value]="item">
+        <mat-icon [svgIcon]=selectIcon(item) class="tasklet-type"></mat-icon>
         {{ item }}
       </mat-option>
     </mat-select>
