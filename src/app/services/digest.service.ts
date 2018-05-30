@@ -5,6 +5,7 @@ import {DailyDigest} from '../model/daily-digest.model';
 import {DateService} from './date.service';
 import {TASKLET_TYPE} from '../model/tasklet-type.enum';
 import {ProjectEffort} from '../model/project-effort.model';
+import {WeeklyDigest} from '../model/weekly-digest.model';
 
 @Injectable()
 export class DigestService {
@@ -71,7 +72,6 @@ export class DigestService {
     });
   }
 
-
   getDailyDigest(date: Date): DailyDigest {
     const tasklets = this.getTaskletsOfDay(date, Array.from(this.taskletsService.tasklets.values())).filter(t => {
       return t.type !== TASKLET_TYPE.WEEKLY_DIGEST;
@@ -119,17 +119,31 @@ export class DigestService {
     return null;
   }
 
-  getWeeklyDigest(date: Date) {
-    const weeklyDigest: DailyDigest[] = [];
+  getWeeklyDigest(date: Date): WeeklyDigest {
+    const weeklyDigest: WeeklyDigest = new WeeklyDigest();
 
     const weekStart = DigestService.getWeekStart(date);
 
+    // Iterate over all weekdays
     [0, 1, 2, 3, 4].forEach(index => {
         const day = new Date(weekStart);
         const dailyDigest = this.getDailyDigest(new Date(day.setDate(weekStart.getDate() + index)));
 
         if (dailyDigest != null) {
-          weeklyDigest.push(dailyDigest);
+          weeklyDigest.dailyDigests.push(dailyDigest);
+
+          // Aggregate
+          dailyDigest.projectEfforts.forEach(pe => {
+            let projectEffort = weeklyDigest.projectEfforts.get(pe.project.value);
+
+            if (projectEffort == null) {
+              projectEffort = new ProjectEffort(pe.project, 0);
+            }
+
+            projectEffort.effort += pe.effort;
+
+            weeklyDigest.projectEfforts.set(pe.project.value, projectEffort);
+          });
         }
       }
     );
