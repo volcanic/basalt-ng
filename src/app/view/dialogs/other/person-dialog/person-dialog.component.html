@@ -1,6 +1,15 @@
 <h2 mat-dialog-title>{{ dialogTitle }}</h2>
 <mat-dialog-content>
-  <input matInput [(ngModel)]="person.name" />
+  <mat-form-field class="wide-box">
+    <input matInput name="person" type="text" placeholder="Person" [formControl]="formControl"
+           [(ngModel)]="person.name"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredPersonOptions | async" [value]="option">
+        {{ option.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button [mat-dialog-close]=null>

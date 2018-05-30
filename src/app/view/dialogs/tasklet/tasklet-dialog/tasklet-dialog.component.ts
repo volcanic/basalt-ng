@@ -30,6 +30,7 @@ export class TaskletDialogComponent implements OnInit {
   previousText = '';
 
   taskOptions = [];
+  personOptions = [];
 
   projects: Project[] = [];
   tags: Tag[] = [];
@@ -71,6 +72,7 @@ export class TaskletDialogComponent implements OnInit {
     this.previousText = this.data.previousText;
 
     this.taskOptions = Array.from(this.taskletsService.getTasks().values());
+    this.personOptions = Array.from(this.taskletsService.getPersons().values());
 
     this.newTags.push(new Tag('', false));
   }

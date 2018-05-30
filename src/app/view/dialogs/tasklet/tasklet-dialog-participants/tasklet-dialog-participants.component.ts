@@ -14,6 +14,7 @@ import {Tasklet} from '../../../../model/tasklet.model';
 })
 export class TaskletDialogParticipantsComponent implements OnInit {
   @Input() tasklet: Tasklet;
+  @Input() personOptions = [];
 
   existingPersons: Person[] = [];
 
@@ -40,7 +41,8 @@ export class TaskletDialogParticipantsComponent implements OnInit {
       data: {
         mode: DIALOG_MODE.ADD,
         dialogTitle: 'Add person',
-        person: new Person('')
+        person: new Person(''),
+        personOptions: this.personOptions
       }
     });
     dialogRef.afterClosed().subscribe(result => {

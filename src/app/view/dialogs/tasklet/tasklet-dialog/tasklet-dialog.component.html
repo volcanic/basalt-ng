@@ -32,7 +32,7 @@
         (onHourSelectedEmitter)="onDueHourSelected($event)"
         (onMinuteSelectedEmitter)="onDueMinuteSelected($event)"></app-tasklet-dialog-todo>
       <app-tasklet-dialog-participants
-        [tasklet]="tasklet" *ngIf="tasklet.type == 'Meeting'
+        [tasklet]="tasklet" [personOptions]="personOptions" *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'">
