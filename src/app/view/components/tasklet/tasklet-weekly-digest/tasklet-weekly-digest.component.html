@@ -9,25 +9,30 @@
 </p>
 <div style="display: inline-block">
   <div class="projectEffort" *ngFor="let projectEffort of weeklyDigest.getProjectEfforts()">
-    <div class="project"
-         [style.background-color]="colorService.getProjectColor(projectEffort.project.value)">
-      <span class="effort">{{(projectEffort.effort / 60 ).toFixed(2) }}h</span> {{ projectEffort.project.value }}
-    </div>
-    <div class="task" *ngFor="let taskEffort of projectEffort.getTaskEfforts()">
-      {{(taskEffort.effort / 60 ).toFixed(2) }}h {{ taskEffort.task.slice(0, 30) }}
-    </div>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header [style.background-color]="colorService.getProjectColor(projectEffort.project.value)">
+        <span class="effort">{{(projectEffort.effort / 60 ).toFixed(2) }}h</span> {{ projectEffort.project.value }}
+      </mat-expansion-panel-header>
+      <div class="task" *ngFor="let taskEffort of projectEffort.getTaskEfforts()">
+        <span class="effort">{{(taskEffort.effort / 60 ).toFixed(2) }}h</span> {{ taskEffort.task.slice(0, 30) }}
+      </div>
+    </mat-expansion-panel>
   </div>
 </div>
 <mat-divider></mat-divider>
 <div *ngFor="let dailyDigest of weeklyDigest.dailyDigests">
-  <h3>{{ dailyDigest.weekDayString }} [ {{ dailyDigest.startTimeString }} - {{ dailyDigest.endTimeString }} ]</h3>
-  <div class="projectEffort" *ngFor="let projectEffort of dailyDigest.getProjectEfforts()">
-    <div class="project"
-         [style.background-color]="colorService.getProjectColor(projectEffort.project.value)">
-      {{(projectEffort.effort / 60 ).toFixed(2) }}h {{ projectEffort.project.value }}
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <h3>{{ dailyDigest.weekDayString }} [ {{ dailyDigest.startTimeString }} - {{ dailyDigest.endTimeString }} ]</h3>
+    </mat-expansion-panel-header>
+    <div class="projectEffort" *ngFor="let projectEffort of dailyDigest.getProjectEfforts()">
+      <mat-expansion-panel-header
+        [style.background-color]="colorService.getProjectColor(projectEffort.project.value)">
+        <span class="effort">{{(projectEffort.effort / 60 ).toFixed(2) }}h</span> {{ projectEffort.project.value }}
+      </mat-expansion-panel-header>
+      <div class="task" *ngFor="let taskEffort of projectEffort.getTaskEfforts()">
+        <span class="effort">{{(taskEffort.effort / 60 ).toFixed(2) }}h</span> {{ taskEffort.task.slice(0, 30) }}
+      </div>
     </div>
-    <div class="task" *ngFor="let taskEffort of projectEffort.getTaskEfforts()">
-        {{(taskEffort.effort / 60 ).toFixed(2) }}h {{ taskEffort.task.slice(0, 30) }}
-    </div>
-  </div>
+  </mat-expansion-panel>
 </div>

@@ -5,12 +5,13 @@ import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {ResponsiveModule} from 'ng2-responsive';
 import {
+  MatAccordion, MatAccordionDisplayMode,
   MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
   MatDatepickerModule,
-  MatDialogModule,
+  MatDialogModule, MatExpansionModule,
   MatIconModule,
   MatIconRegistry,
   MatInputModule,
@@ -114,11 +115,12 @@ import {ColorService} from './services/color.service';
     FormsModule,
     HttpModule,
     MatAutocompleteModule,
+    MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatButtonModule,
     MatDialogModule,
+    MatExpansionModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
