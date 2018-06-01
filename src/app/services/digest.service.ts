@@ -6,6 +6,7 @@ import {DateService} from './date.service';
 import {TASKLET_TYPE} from '../model/tasklet-type.enum';
 import {ProjectEffort} from '../model/project-effort.model';
 import {WeeklyDigest} from '../model/weekly-digest.model';
+import {TaskEffort} from '../model/task-effort.model';
 
 @Injectable()
 export class DigestService {
@@ -72,6 +73,11 @@ export class DigestService {
     });
   }
 
+  /**
+   * Generates a digest for certain day
+   * @param date day to create digest for
+   * @returns {DailyDigest}
+   */
   getDailyDigest(date: Date): DailyDigest {
     const tasklets = this.getTaskletsOfDay(date, Array.from(this.taskletsService.tasklets.values())).filter(t => {
       return t.type !== TASKLET_TYPE.WEEKLY_DIGEST;
@@ -87,6 +93,7 @@ export class DigestService {
       dailyDigest.startTimeString = this.dateService.getTime(dailyDigest.startTime);
       dailyDigest.endTimeString = this.dateService.getTime(dailyDigest.endTime);
 
+      // Iterate over all tasklets
       for (let index = 0; index < tasklets.length; index++) {
         const tasklet = tasklets[index];
         const nextTasklet = tasklets[index + 1];
@@ -97,18 +104,25 @@ export class DigestService {
           && tasklet.type !== TASKLET_TYPE.WEEKLY_DIGEST
           && tasklet.project != null) {
 
-          let projectEffort: ProjectEffort = dailyDigest.projectEfforts.get(tasklet.project.value);
-
-          if (projectEffort == null) {
-            projectEffort = new ProjectEffort(tasklet.project, null);
-          }
-
-          const minutesAlready = projectEffort != null ? projectEffort.effort : 0;
-
+          // Additional minutes
           const diff = new Date(nextTasklet.creationDate).getTime() - new Date(tasklet.creationDate).getTime();
           const minutesNew = Math.round(diff / 60000);
 
-          projectEffort.effort = minutesAlready + minutesNew;
+          // Get existing efforts
+          let projectEffort: ProjectEffort = dailyDigest.projectEfforts.get(tasklet.project.value);
+          if (projectEffort == null) {
+            projectEffort = new ProjectEffort(tasklet.project, null);
+          }
+          let taskEffort: TaskEffort = projectEffort.taskEfforts.get(tasklet.taskName);
+          if (taskEffort == null) {
+            taskEffort = new TaskEffort(tasklet.taskName, tasklet.project.value, 0);
+          }
+
+          // Add new efforts
+          taskEffort.effort += minutesNew;
+          projectEffort.effort += minutesNew;
+
+          projectEffort.taskEfforts.set(tasklet.taskName, taskEffort);
           dailyDigest.projectEfforts.set(tasklet.project.value, projectEffort);
         }
       }
@@ -119,9 +133,13 @@ export class DigestService {
     return null;
   }
 
+  /**
+   * Generates a digest for a whole week
+   * @param date
+   * @returns {WeeklyDigest}
+   */
   getWeeklyDigest(date: Date): WeeklyDigest {
     const weeklyDigest: WeeklyDigest = new WeeklyDigest();
-
     const weekStart = DigestService.getWeekStart(date);
 
     // Iterate over all weekdays
@@ -132,16 +150,26 @@ export class DigestService {
         if (dailyDigest != null) {
           weeklyDigest.dailyDigests.push(dailyDigest);
 
-          // Aggregate
+          // Aggregate project efforts
           dailyDigest.projectEfforts.forEach(pe => {
-            let projectEffort = weeklyDigest.projectEfforts.get(pe.project.value);
-
+            // Get existing efforts
+            let projectEffort: ProjectEffort = weeklyDigest.projectEfforts.get(pe.project.value);
             if (projectEffort == null) {
-              projectEffort = new ProjectEffort(pe.project, 0);
+              projectEffort = new ProjectEffort(pe.project, null);
             }
 
-            projectEffort.effort += pe.effort;
+            // Aggregate task efforts
+            pe.taskEfforts.forEach(te => {
+              let taskEffort: TaskEffort = projectEffort.taskEfforts.get(te.task);
+              if (taskEffort == null) {
+                taskEffort = new TaskEffort(te.task, te.project, 0);
+              }
 
+              taskEffort.effort += te.effort;
+              projectEffort.taskEfforts.set(te.task, taskEffort);
+            });
+
+            projectEffort.effort += pe.effort;
             weeklyDigest.projectEfforts.set(pe.project.value, projectEffort);
           });
         }

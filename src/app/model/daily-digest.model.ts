@@ -1,4 +1,5 @@
 import {ProjectEffort} from './project-effort.model';
+import {TaskEffort} from './task-effort.model';
 export class DailyDigest {
   weekDayString = '';
   startTime: Date;
