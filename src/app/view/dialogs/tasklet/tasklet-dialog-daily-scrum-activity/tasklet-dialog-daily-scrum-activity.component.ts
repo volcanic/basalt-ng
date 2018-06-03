@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DailyScrumActivity} from '../../../../model/daily-scrum-activity';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Person} from '../../../../model/person.model';

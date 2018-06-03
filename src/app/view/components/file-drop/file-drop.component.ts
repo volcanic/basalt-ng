@@ -1,9 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
 import {Tasklet} from '../../../model/tasklet.model';
-import {Subscription} from 'rxjs/Subscription';
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
+import {Observable, Subject, Subscription, of} from 'rxjs';
+import {catchError, map, switchMap} from 'rxjs/operators';
 
 const URL = 'https://foo.bar.com';
 
@@ -38,8 +37,8 @@ export class FileDropComponent implements OnInit, OnDestroy {
 
   constructor() {
     this.filesSubject = new Subject();
-    this.uploadedFilesObservable = this.filesSubject.asObservable()
-      .switchMap((file: File) => {
+    this.uploadedFilesObservable = this.filesSubject.asObservable().pipe(
+      switchMap((file: File) => {
         return new Observable<any>((observer) => {
           const reader: FileReader = new FileReader();
           reader.onload = (e) => {
@@ -49,13 +48,12 @@ export class FileDropComponent implements OnInit, OnDestroy {
           return () => {
             reader.abort();
           };
-        }).map((value: string) => {
-          return FileDropComponent.parseBasaltFile(value);
-        }).map((results: any) => {
-          return {result: SUCCESS, payload: results};
-        })
-          .catch(e => Observable.of({result: FAILURE, payload: e}));
-      });
+        });
+      }), map((value: string) => {
+        return FileDropComponent.parseBasaltFile(value);
+      }), map((results: any) => {
+        return {result: SUCCESS, payload: results};
+      }));
   }
 
   ngOnInit() {

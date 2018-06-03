@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {Person} from '../../../../model/person.model';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 

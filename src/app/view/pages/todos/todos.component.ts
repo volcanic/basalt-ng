@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/debounceTime';
 import {SnackbarService} from '../../../services/snackbar.service';
@@ -18,6 +18,7 @@ import {Tag} from '../../../model/tag.model';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
+import {takeUntil} from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-tasklets',
@@ -69,87 +70,87 @@ export class TodosComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
-    this.taskletsService.taskletsSubject
-      .takeUntil(this.taskletsUnsubscribeSubject)
-      .subscribe((value) => {
-        if (value != null) {
-          // Get initial list of tags
-          if (this.tags.size === 0) {
-            this.tags = this.taskletsService.getTags();
-            this.tags.forEach((tag: Tag, key: string) => {
-              tag.checked = true;
-            });
-          }
-
-          // Get initial list of projects
-          if (this.projects.length === 0) {
-            this.projects = Array.from(this.taskletsService.getProjects().values()).map(p => {
-              p.checked = true;
-              return p;
-            });
-          }
-
-          this.tasklets = (value as TaskletTodo[]).filter(tasklet => {
-            return tasklet.type === this.taskletType;
-          }).filter(t => {
-            if (this.searchItem !== '') {
-              return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
-            } else {
-              return true;
-            }
-          }).filter(tasklet => {
-            // Filter tasklets that match selected tags
-            if (tasklet.tags != null) {
-              let match = false;
-
-              if (tasklet.tags.length === 0) {
-                return true;
-              } else {
-                tasklet.tags.forEach(taskletTag => {
-                  this.tags.forEach(tag => {
-                    if (taskletTag.value === tag.value && tag.checked) {
-                      match = true;
-                    }
-                  });
-                });
-
-                return match;
-              }
-            } else {
-              return true;
-            }
-          }).filter(tasklet => {
-            return this.priority === '' || (tasklet as TaskletTodo).priority === this.priority;
-          }).filter(tasklet => {
-            return !(tasklet as TaskletTodo).done;
-          }).sort((t1: TaskletTodo, t2: TaskletTodo) => {
-            const date1 = new Date(t1.dueDate).getTime();
-            const date2 = new Date(t2.dueDate).getTime();
-
-            return date2 - date1;
+    this.taskletsService.taskletsSubject.pipe(
+      takeUntil(this.taskletsUnsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        // Get initial list of tags
+        if (this.tags.size === 0) {
+          this.tags = this.taskletsService.getTags();
+          this.tags.forEach((tag: Tag, key: string) => {
+            tag.checked = true;
           });
-        } else {
-          this.tasklets = [];
         }
 
-        const now = new Date();
+        // Get initial list of projects
+        if (this.projects.length === 0) {
+          this.projects = Array.from(this.taskletsService.getProjects().values()).map(p => {
+            p.checked = true;
+            return p;
+          });
+        }
 
-        this.taskletsOverdue = this.tasklets.filter(tasklet => {
-          return this.dateService.isBefore(tasklet.dueDate, now);
+        this.tasklets = (value as TaskletTodo[]).filter(tasklet => {
+          return tasklet.type === this.taskletType;
+        }).filter(t => {
+          if (this.searchItem !== '') {
+            return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
+          } else {
+            return true;
+          }
+        }).filter(tasklet => {
+          // Filter tasklets that match selected tags
+          if (tasklet.tags != null) {
+            let match = false;
+
+            if (tasklet.tags.length === 0) {
+              return true;
+            } else {
+              tasklet.tags.forEach(taskletTag => {
+                this.tags.forEach(tag => {
+                  if (taskletTag.value === tag.value && tag.checked) {
+                    match = true;
+                  }
+                });
+              });
+
+              return match;
+            }
+          } else {
+            return true;
+          }
+        }).filter(tasklet => {
+          return this.priority === '' || (tasklet as TaskletTodo).priority === this.priority;
+        }).filter(tasklet => {
+          return !(tasklet as TaskletTodo).done;
+        }).sort((t1: TaskletTodo, t2: TaskletTodo) => {
+          const date1 = new Date(t1.dueDate).getTime();
+          const date2 = new Date(t2.dueDate).getTime();
+
+          return date2 - date1;
         });
-        this.taskletsToday = this.tasklets.filter(tasklet => {
-          return this.dateService.isToday(tasklet.dueDate, now);
-        });
-        this.taskletsThisWeek = this.tasklets.filter(tasklet => {
-          return this.dateService.isThisWeek(tasklet.dueDate, now) && this.dateService.isAfter(tasklet.dueDate, now);
-        });
-        this.taskletsNextWeek = this.tasklets.filter(tasklet => {
-          return this.dateService.isNextWeek(tasklet.dueDate, now);
-        });
-        this.taskletsLater = this.tasklets.filter(tasklet => {
-          return this.dateService.isAfterNextWeek(tasklet.dueDate, now);
-        });
+      } else {
+        this.tasklets = [];
+      }
+
+      const now = new Date();
+
+      this.taskletsOverdue = this.tasklets.filter(tasklet => {
+        return this.dateService.isBefore(tasklet.dueDate, now);
       });
+      this.taskletsToday = this.tasklets.filter(tasklet => {
+        return this.dateService.isToday(tasklet.dueDate, now);
+      });
+      this.taskletsThisWeek = this.tasklets.filter(tasklet => {
+        return this.dateService.isThisWeek(tasklet.dueDate, now) && this.dateService.isAfter(tasklet.dueDate, now);
+      });
+      this.taskletsNextWeek = this.tasklets.filter(tasklet => {
+        return this.dateService.isNextWeek(tasklet.dueDate, now);
+      });
+      this.taskletsLater = this.tasklets.filter(tasklet => {
+        return this.dateService.isAfterNextWeek(tasklet.dueDate, now);
+      });
+    });
 
     this.priorities = Array.from(Object.keys(TASKLET_PRIORITY).map(key => {
       return TASKLET_PRIORITY[key];
@@ -217,7 +218,8 @@ export class TodosComponent implements OnInit, OnDestroy {
         break;
       }
       case 'about': {
-        /* const dialogRef = */ this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
+        /* const dialogRef = */
+        this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
           disableClose: true,
           data: {
             title: 'About',

@@ -7,7 +7,6 @@ import {SnackbarService} from '../../../../services/snackbar.service';
 import {DateService} from '../../../../services/date.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TaskletDialogComponent} from '../../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
-import {ConfirmationDialogComponent} from '../../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {TASKLET_PRIORITY} from '../../../../model/tasklet-priority.enum';
 import {Tag} from '../../../../model/tag.model';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';

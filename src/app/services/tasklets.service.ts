@@ -1,6 +1,6 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Tasklet} from '../model/tasklet.model';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {PouchDBService} from './pouchdb.service';
 import {Person} from '../model/person.model';
 import {TASKLET_TYPE} from '../model/tasklet-type.enum';

@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/debounceTime';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -59,78 +58,78 @@ export class TaskletsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Subscribe tasklet changes
-    this.taskletsService.taskletsSubject
-      .takeUntil(this.taskletsUnsubscribeSubject)
-      .subscribe((value) => {
-        if (value != null) {
-          // Get initial list of tags
-          if (this.tags.size === 0) {
-            this.tags = this.taskletsService.getTags();
-            this.tags.forEach((tag: Tag, key: string) => {
-              tag.checked = true;
-            });
-          }
+    this.taskletsService.taskletsSubject.pipe(
+      takeUntil(this.taskletsUnsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        // Get initial list of tags
+        if (this.tags.size === 0) {
+          this.tags = this.taskletsService.getTags();
+          this.tags.forEach((tag: Tag, key: string) => {
+            tag.checked = true;
+          });
+        }
 
-          // Get initial list of projects
-          if (this.projects.length === 0) {
-            this.projects = Array.from(this.taskletsService.getProjects().values()).map(p => {
-              p.checked = true;
-              return p;
-            });
-          }
+        // Get initial list of projects
+        if (this.projects.length === 0) {
+          this.projects = Array.from(this.taskletsService.getProjects().values()).map(p => {
+            p.checked = true;
+            return p;
+          });
+        }
 
-          this.tasklets = value
-            .filter(t => {
-              if (this.searchItem !== '') {
-                return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
-              } else {
-                return true;
-              }
-            })
-            .filter(tasklet => {
-              // Filter tasklets that match selected tags
-              if (tasklet.tags != null && tasklet.tags.length > 0) {
-                let match = false;
+        this.tasklets = value
+          .filter(t => {
+            if (this.searchItem !== '') {
+              return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
+            } else {
+              return true;
+            }
+          })
+          .filter(tasklet => {
+            // Filter tasklets that match selected tags
+            if (tasklet.tags != null && tasklet.tags.length > 0) {
+              let match = false;
 
-                tasklet.tags.forEach(taskletTag => {
-                  this.tags.forEach(tag => {
-                    if (taskletTag.value === tag.value && tag.checked) {
-                      match = true;
-                    }
-                  });
-                });
-
-                return match;
-              } else {
-                return true;
-              }
-            })
-            .filter(tasklet => {
-              // Filter tasklets that match selected projects
-              if (tasklet.project != null) {
-                let match = false;
-
-                this.projects.forEach(project => {
-                  if (tasklet.project.value === project.value && project.checked) {
+              tasklet.tags.forEach(taskletTag => {
+                this.tags.forEach(tag => {
+                  if (taskletTag.value === tag.value && tag.checked) {
                     match = true;
                   }
                 });
+              });
 
-                return match;
-              } else {
-                return true;
-              }
-            })
-            .sort((t1: Tasklet, t2: Tasklet) => {
-              const date1 = new Date(t1.creationDate).getTime();
-              const date2 = new Date(t2.creationDate).getTime();
+              return match;
+            } else {
+              return true;
+            }
+          })
+          .filter(tasklet => {
+            // Filter tasklets that match selected projects
+            if (tasklet.project != null) {
+              let match = false;
 
-              return date2 - date1;
-            }).slice(0, this.DISPLAY_LIMIT);
-        } else {
-          this.tasklets = [];
-        }
-      });
+              this.projects.forEach(project => {
+                if (tasklet.project.value === project.value && project.checked) {
+                  match = true;
+                }
+              });
+
+              return match;
+            } else {
+              return true;
+            }
+          })
+          .sort((t1: Tasklet, t2: Tasklet) => {
+            const date1 = new Date(t1.creationDate).getTime();
+            const date2 = new Date(t2.creationDate).getTime();
+
+            return date2 - date1;
+          }).slice(0, this.DISPLAY_LIMIT);
+      } else {
+        this.tasklets = [];
+      }
+    });
 
     this.taskletsService.update();
   }

@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Tasklet} from '../../../../model/tasklet.model';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {DropResult, SUCCESS} from '../../../components/file-drop/file-drop.component';
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {TaskletsService} from '../../../../services/tasklets.service';

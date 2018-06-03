@@ -3,15 +3,14 @@ import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
-import {ResponsiveModule} from 'ng2-responsive';
 import {
-  MatAccordion, MatAccordionDisplayMode,
   MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
   MatDatepickerModule,
-  MatDialogModule, MatExpansionModule,
+  MatDialogModule,
+  MatExpansionModule,
   MatIconModule,
   MatIconRegistry,
   MatInputModule,
@@ -22,7 +21,8 @@ import {
   MatSidenavModule,
   MatSnackBarModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatTreeModule
 } from '@angular/material';
 import {PouchDBService} from './services/pouchdb.service';
 import {TaskletsService} from './services/tasklets.service';
@@ -69,6 +69,7 @@ import {TaskletWeeklyDigestComponent} from './view/components/tasklet/tasklet-we
 import {TaskletDialogWeeklyDigestComponent} from './view/dialogs/tasklet/tasklet-dialog-weekly-digest/tasklet-dialog-weekly-digest.component';
 import {DigestService} from './services/digest.service';
 import {ColorService} from './services/color.service';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import {ColorService} from './services/color.service';
     FileUploadModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
@@ -131,8 +133,8 @@ import {ColorService} from './services/color.service';
     MatSnackBarModule,
     MatToolbarModule,
     MatTooltipModule,
-    ReactiveFormsModule,
-    ResponsiveModule
+    MatTreeModule,
+    ReactiveFormsModule
   ],
   entryComponents: [
     AboutDialogComponent,

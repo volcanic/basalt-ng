@@ -2,17 +2,17 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
 import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
+import {Observable, Subject} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {TaskletsService} from '../../../services/tasklets.service';
-import {Subject} from 'rxjs/Subject';
+import {debounceTime} from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-tasklets-toolbar',
   templateUrl: './tasklets-toolbar.component.html',
   styles: [require('./tasklets-toolbar.component.scss')]
 })
-export class TaskletsToolbarComponent  implements OnInit {
+export class TaskletsToolbarComponent implements OnInit {
   @Input() title;
   @Output() onSearchItemChangedEmitter = new EventEmitter<string>();
   @Output() onMenuItemClickedEmitter = new EventEmitter<string>();
@@ -47,9 +47,9 @@ export class TaskletsToolbarComponent  implements OnInit {
         map(value => this.filterSearchItems(value))
       );
 
-    this.debouncer
-      .debounceTime(300)
-      .subscribe((value) => this.onSearchItemChangedEmitter.emit(value.toString()));
+    this.debouncer.pipe(
+      debounceTime(300)
+    ).subscribe((value) => this.onSearchItemChangedEmitter.emit(value.toString()));
   }
 
   onClickMenuItem(menuItem: string): void {
