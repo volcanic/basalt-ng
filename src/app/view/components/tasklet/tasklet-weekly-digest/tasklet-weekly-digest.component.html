@@ -1,38 +1,7 @@
-<p>
-  Week Start: {{ dateService.getDate(weekStart) }}
-</p>
-<p>
-  Week End: {{ dateService.getDate(weekEnd) }}
-</p>
-<p>
-  Total effort: {{(weekHours / 60 ).toFixed(2) }}h
-</p>
-<div style="display: inline-block">
-  <div class="projectEffort" *ngFor="let projectEffort of weeklyDigest.getProjectEfforts()">
-    <mat-expansion-panel>
-      <mat-expansion-panel-header [style.background-color]="colorService.getProjectColor(projectEffort.project.value)">
-        <span class="effort">{{(projectEffort.effort / 60 ).toFixed(2) }}h</span> {{ projectEffort.project.value }}
-      </mat-expansion-panel-header>
-      <div class="task" *ngFor="let taskEffort of projectEffort.getTaskEfforts()">
-        <span class="effort">{{(taskEffort.effort / 60 ).toFixed(2) }}h</span> {{ taskEffort.task.slice(0, 30) }}
-      </div>
-    </mat-expansion-panel>
-  </div>
-</div>
+<app-weekly-effort-tree [weeklyDigest]="weeklyDigest"></app-weekly-effort-tree>
+
 <mat-divider></mat-divider>
+
 <div *ngFor="let dailyDigest of weeklyDigest.dailyDigests">
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <h3>{{ dailyDigest.weekDayString }} [ {{ dailyDigest.startTimeString }} - {{ dailyDigest.endTimeString }} ]</h3>
-    </mat-expansion-panel-header>
-    <div class="projectEffort" *ngFor="let projectEffort of dailyDigest.getProjectEfforts()">
-      <mat-expansion-panel-header
-        [style.background-color]="colorService.getProjectColor(projectEffort.project.value)">
-        <span class="effort">{{(projectEffort.effort / 60 ).toFixed(2) }}h</span> {{ projectEffort.project.value }}
-      </mat-expansion-panel-header>
-      <div class="task" *ngFor="let taskEffort of projectEffort.getTaskEfforts()">
-        <span class="effort">{{(taskEffort.effort / 60 ).toFixed(2) }}h</span> {{ taskEffort.task.slice(0, 30) }}
-      </div>
-    </div>
-  </mat-expansion-panel>
+  <app-daily-effort-tree [dailyDigest]="dailyDigest"></app-daily-effort-tree>
 </div>

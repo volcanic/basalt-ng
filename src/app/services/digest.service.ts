@@ -85,13 +85,9 @@ export class DigestService {
 
     if (tasklets.length !== 0) {
       const dailyDigest = new DailyDigest();
-      dailyDigest.weekDayString = this.dateService.getWeekDayString(date.getDay());
 
-      dailyDigest.startTime = tasklets[0].creationDate;
-      dailyDigest.endTime = tasklets[tasklets.length - 1].creationDate;
-
-      dailyDigest.startTimeString = this.dateService.getTime(dailyDigest.startTime);
-      dailyDigest.endTimeString = this.dateService.getTime(dailyDigest.endTime);
+      dailyDigest.start = tasklets[0].creationDate;
+      dailyDigest.end = tasklets[tasklets.length - 1].creationDate;
 
       // Iterate over all tasklets
       for (let index = 0; index < tasklets.length; index++) {
@@ -141,6 +137,9 @@ export class DigestService {
   getWeeklyDigest(date: Date): WeeklyDigest {
     const weeklyDigest: WeeklyDigest = new WeeklyDigest();
     const weekStart = DigestService.getWeekStart(date);
+
+    weeklyDigest.start = DigestService.getWeekStart(date);
+    weeklyDigest.end = DigestService.getWeekEnd(date);
 
     // Iterate over all weekdays
     [0, 1, 2, 3, 4].forEach(index => {

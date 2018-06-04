@@ -9,7 +9,7 @@
   </div>
 </mat-card-header>
 <mat-card-content (click)="onActionFired.next('update')">
-  <mat-list *ngIf="tasklet.text != null">
+  <mat-list *ngIf="tasklet.text != null && tasklet.text.length > 0">
     <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}</mat-list-item>
   </mat-list>
 </mat-card-content>

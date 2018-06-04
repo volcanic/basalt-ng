@@ -5,7 +5,8 @@
   </div>
   <mat-card>
     <mat-card-content>
-      <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)"></app-tasklet-default>
+      <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)">
+      </app-tasklet-default>
       <div class="continue" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
@@ -35,7 +36,7 @@
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'">
       </app-tasklet-participants>
-      <app-tasklet-weekly-digest [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+      <app-tasklet-weekly-digest [tasklet]="tasklet" (actionFiredEmitter)="onActionFired($event)"
                                  *ngIf="tasklet.type == 'Weekly Digest'">
       </app-tasklet-weekly-digest>
     </mat-card-content>

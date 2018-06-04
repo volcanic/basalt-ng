@@ -3,6 +3,8 @@ import {ProjectEffort} from './project-effort.model';
 import {TaskEffort} from './task-effort.model';
 
 export class WeeklyDigest {
+  start = new Date();
+  end = new Date();
   dailyDigests: DailyDigest[] = [];
 
   projectEfforts = new Map<String, ProjectEffort>();
@@ -13,5 +15,13 @@ export class WeeklyDigest {
         return e2.effort - e1.effort;
       }
     );
+  }
+
+  getProjectEffortSum(): number {
+    return this.getProjectEfforts()
+      .map(pe => pe.getTaskEfforts()
+        .map(te => te.effort)
+        .reduce((teSum, teCurrent) => teSum + teCurrent))
+      .reduce((peSum, peCurrent) => peSum + peCurrent);
   }
 }

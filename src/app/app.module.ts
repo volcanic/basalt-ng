@@ -70,12 +70,15 @@ import {TaskletDialogWeeklyDigestComponent} from './view/dialogs/tasklet/tasklet
 import {DigestService} from './services/digest.service';
 import {ColorService} from './services/color.service';
 import {HttpClientModule} from '@angular/common/http';
+import {ProjectEffortTreeComponent} from './view/components/trees/weekly-effort-tree/weekly-effort-tree.component';
+import {DailyEffortTreeComponent} from './view/components/trees/daily-effort-tree/daily-effort-tree.component';
 
 @NgModule({
   declarations: [
     AboutDialogComponent,
     AppComponent,
     ConfirmationDialogComponent,
+    DailyEffortTreeComponent,
     FileDropComponent,
     NewFeaturesDialogComponent,
     PersonDialogComponent,
@@ -107,6 +110,8 @@ import {HttpClientModule} from '@angular/common/http';
     TodosSideMenuStartComponent,
     TodosToolbarComponent,
     UploadDialogComponent,
+    ProjectEffortTreeComponent,
+    DailyEffortTreeComponent
   ],
   imports: [
     AppRoutingModule,

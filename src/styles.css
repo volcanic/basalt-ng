@@ -53,6 +53,11 @@ mat-icon {
   -webkit-font-smoothing: antialiased;
 }
 
+.mat-list .mat-list-item, .mat-list .mat-list-option, .mat-nav-list .mat-list-item, .mat-nav-list .mat-list-option, .mat-selection-list .mat-list-item, .mat-selection-list .mat-list-option {
+  display: block;
+  height: inherit !important;
+}
+
 mat-list-item.text > .mat-list-item-content {
   height: inherit !important;
 }
