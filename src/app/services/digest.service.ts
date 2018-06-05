@@ -11,7 +11,8 @@ import {TaskEffort} from '../model/task-effort.model';
 @Injectable()
 export class DigestService {
 
-  constructor(private taskletsService: TaskletsService, private dateService: DateService) {
+  constructor(private taskletsService: TaskletsService,
+              private dateService: DateService) {
   }
 
   static getDayStart(date: Date): Date {
@@ -102,7 +103,7 @@ export class DigestService {
 
           // Additional minutes
           const diff = new Date(nextTasklet.creationDate).getTime() - new Date(tasklet.creationDate).getTime();
-          const minutesNew = Math.round(diff / 60000);
+          const minutesNew = this.dateService.getRoundedMinutes((diff / 60000));
 
           // Get existing efforts
           let projectEffort: ProjectEffort = dailyDigest.projectEfforts.get(tasklet.project.value);

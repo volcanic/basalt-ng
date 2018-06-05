@@ -9,10 +9,8 @@ export class DateService {
 
   getTime(date: Date): string {
     if (date != null) {
-      const MINUTES_INTERVAL = DateService.MINUTES_INTERVAL;
-
       let hours = new Date(date).getHours();
-      let minutes = Math.ceil(new Date(date).getMinutes() / MINUTES_INTERVAL) * MINUTES_INTERVAL;
+      let minutes = this.getRoundedMinutes(new Date(date).getMinutes());
 
       if (minutes === 60) {
         minutes = 0;
@@ -39,6 +37,10 @@ export class DateService {
     } else {
       return '';
     }
+  }
+
+  getRoundedMinutes(minutes: number): number {
+    return Math.ceil(minutes / DateService.MINUTES_INTERVAL) * DateService.MINUTES_INTERVAL;
   }
 
   getDate(date: Date): string {
