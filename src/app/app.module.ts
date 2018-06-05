@@ -72,6 +72,7 @@ import {ColorService} from './services/color.service';
 import {HttpClientModule} from '@angular/common/http';
 import {ProjectEffortTreeComponent} from './view/components/trees/weekly-effort-tree/weekly-effort-tree.component';
 import {DailyEffortTreeComponent} from './view/components/trees/daily-effort-tree/daily-effort-tree.component';
+import { TaskletDailyDigestComponent } from './view/components/tasklet/tasklet-daily-digest/tasklet-daily-digest.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import {DailyEffortTreeComponent} from './view/components/trees/daily-effort-tre
     TodosToolbarComponent,
     UploadDialogComponent,
     ProjectEffortTreeComponent,
-    DailyEffortTreeComponent
+    DailyEffortTreeComponent,
+    TaskletDailyDigestComponent
   ],
   imports: [
     AppRoutingModule,

@@ -14,5 +14,6 @@
 { "annotation":"refs/tags/v0.13.0", "message": "Infer tags and projects"},
 { "annotation":"refs/tags/v0.14.0", "message": "Delete tasklets"},
 { "annotation":"refs/tags/v0.15.0", "message": "Update date"},
-{ "annotation":"refs/tags/v0.16.0", "message": "Import/export tasklets"}
+{ "annotation":"refs/tags/v0.16.0", "message": "Import/export tasklets"},
+{ "annotation":"refs/tags/v0.17.0", "message": "Effort reports"}
 ]}

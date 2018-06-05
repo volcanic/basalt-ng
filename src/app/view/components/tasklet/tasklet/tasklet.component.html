@@ -36,6 +36,9 @@
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'">
       </app-tasklet-participants>
+      <app-tasklet-daily-digest [tasklet]="tasklet" (actionFiredEmitter)="onActionFired($event)"
+                                 *ngIf="tasklet.type == 'Finishing Time'">
+      </app-tasklet-daily-digest>
       <app-tasklet-weekly-digest [tasklet]="tasklet" (actionFiredEmitter)="onActionFired($event)"
                                  *ngIf="tasklet.type == 'Weekly Digest'">
       </app-tasklet-weekly-digest>
