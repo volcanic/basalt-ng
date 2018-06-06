@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TagDialogComponent } from './tag-dialog.component';
+import { TagDialogComponent } from './tag-filter-dialog.component';
 
 xdescribe('TagDialogComponent', () => {
   let component: TagDialogComponent;

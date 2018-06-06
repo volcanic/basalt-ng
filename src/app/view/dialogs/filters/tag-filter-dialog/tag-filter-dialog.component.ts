@@ -3,23 +3,23 @@ import {MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry} from '@angular/material'
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-project-dialog',
-  templateUrl: './project-dialog.component.html',
-  styles: [require('./project-dialog.component.scss')],
+  selector: 'app-tag-filter-dialog',
+  templateUrl: './tag-filter-dialog.component.html',
+  styles: [require('./tag-filter-dialog.component.scss')],
 })
-export class ProjectDialogComponent implements OnInit {
+export class TagDialogComponent implements OnInit {
   dialogTitle = '';
-  projects = [];
+  tags = [];
 
-  constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<TagDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
 
     this.dialogTitle = data.dialogTitle;
-    this.projects = this.data.projects.sort((p1, p2) => {
-      return p1.value > p2.value ? 1 : -1;
+    this.tags = this.data.tags.sort((t1, t2) => {
+      return t1.value > t2.value ? 1 : -1;
     });
   }
 
@@ -27,18 +27,18 @@ export class ProjectDialogComponent implements OnInit {
   }
 
   selectAll() {
-    this.projects.forEach(p => {
-      p.checked = true;
+    this.tags.forEach(t => {
+      t.checked = true;
     });
   }
 
   selectNone() {
-    this.projects.forEach(p => {
-      p.checked = false;
+    this.tags.forEach(t => {
+      t.checked = false;
     });
   }
 
   apply() {
-    this.dialogRef.close(this.projects);
+    this.dialogRef.close(this.tags);
   }
 }

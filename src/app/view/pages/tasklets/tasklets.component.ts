@@ -7,13 +7,13 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
-import {TagDialogComponent} from '../../dialogs/filters/tag-dialog/tag-dialog.component';
+import {TagDialogComponent} from '../../dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {MatchService} from '../../../services/match.service';
 import {Tag} from '../../../model/tag.model';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
-import {ProjectDialogComponent} from '../../dialogs/filters/project-dialog/project-dialog.component';
+import {ProjectsFilterDialogComponent} from '../../dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {UploadDialogComponent} from '../../dialogs/other/upload-dialog/upload-dialog.component';
 
 @Component({
@@ -198,7 +198,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         break;
       }
       case 'projects': {
-        const dialogRef = this.dialog.open(ProjectDialogComponent, {
+        const dialogRef = this.dialog.open(ProjectsFilterDialogComponent, {
           disableClose: true,
           data: {
             dialogTitle: 'Select projects',

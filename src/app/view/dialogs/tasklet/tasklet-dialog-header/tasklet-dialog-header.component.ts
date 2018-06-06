@@ -3,7 +3,11 @@ import {Tasklet} from '../../../../model/tasklet.model';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {Project} from '../../../../model/project.model';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MatIconRegistry} from '@angular/material';
+import {MatDialog, MatIconRegistry} from '@angular/material';
+import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
+import {ProjectsFilterDialogComponent} from '../../filters/project-filter-dialog/project-filter-dialog.component';
+import {TaskletDialogComponent} from '../tasklet-dialog/tasklet-dialog.component';
+import {ProjectDialogComponent} from '../../other/project-dialog/project-dialog.component';
 
 @Component({
   selector: 'app-tasklet-dialog-header',
@@ -12,12 +16,14 @@ import {MatIconRegistry} from '@angular/material';
 })
 export class TaskletDialogHeaderComponent implements OnInit {
   @Input() tasklet: Tasklet;
-  @Input() projects: Tasklet;
+  @Input() projects: Project[];
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
-  constructor(iconRegistry: MatIconRegistry,
+  constructor(public dialog: MatDialog,
+              iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_black_24px.svg'));
     iconRegistry.addSvgIcon('turned', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_turned_in_not_black_24px.svg'));
     iconRegistry.addSvgIcon('people', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_people_black_24px.svg'));
     iconRegistry.addSvgIcon('call', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_call_black_24px.svg'));
@@ -34,6 +40,23 @@ export class TaskletDialogHeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  addProject() {
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      disableClose: false,
+      data: {
+        mode: DIALOG_MODE.ADD,
+        dialogTitle: 'Add project',
+        project: new Project('', false)
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.tasklet.project = result;
+        this.projects.unshift(result);
+      }
+    });
   }
 
   compareProject(p1: Project, p2: Project) {

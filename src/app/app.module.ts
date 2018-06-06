@@ -38,7 +38,7 @@ import {TaskletDialogTodoComponent} from './view/dialogs/tasklet/tasklet-dialog-
 import {TaskletDialogContentComponent} from './view/dialogs/tasklet/tasklet-dialog-content/tasklet-dialog-content.component';
 import {TaskletDefaultComponent} from './view/components/tasklet/tasklet-default/tasklet-default.component';
 import {DateService} from './services/date.service';
-import {TagDialogComponent} from './view/dialogs/filters/tag-dialog/tag-dialog.component';
+import {TagDialogComponent} from './view/dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {MatchService} from './services/match.service';
 import {TodosComponent} from './view/pages/todos/todos.component';
 import {TodosToolbarComponent} from './view/toolbars/todos-toolbar/todos-toolbar.component';
@@ -56,7 +56,7 @@ import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {SettingsService} from './services/settings.service';
 import {TaskletDialogDailyScrumComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum/tasklet-dialog-daily-scrum.component';
 import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-daily-scrum/tasklet-daily-scrum.component';
-import {ProjectDialogComponent} from './view/dialogs/filters/project-dialog/project-dialog.component';
+import {ProjectsFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
 import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
 import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
@@ -72,7 +72,8 @@ import {ColorService} from './services/color.service';
 import {HttpClientModule} from '@angular/common/http';
 import {ProjectEffortTreeComponent} from './view/components/trees/weekly-effort-tree/weekly-effort-tree.component';
 import {DailyEffortTreeComponent} from './view/components/trees/daily-effort-tree/daily-effort-tree.component';
-import { TaskletDailyDigestComponent } from './view/components/tasklet/tasklet-daily-digest/tasklet-daily-digest.component';
+import {TaskletDailyDigestComponent} from './view/components/tasklet/tasklet-daily-digest/tasklet-daily-digest.component';
+import {ProjectDialogComponent} from './view/dialogs/other/project-dialog/project-dialog.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,7 @@ import { TaskletDailyDigestComponent } from './view/components/tasklet/tasklet-d
     FileDropComponent,
     NewFeaturesDialogComponent,
     PersonDialogComponent,
-    ProjectDialogComponent,
+    ProjectsFilterDialogComponent,
     SplashScreenComponent,
     TagDialogComponent,
     TaskletComponent,
@@ -113,7 +114,8 @@ import { TaskletDailyDigestComponent } from './view/components/tasklet/tasklet-d
     UploadDialogComponent,
     ProjectEffortTreeComponent,
     DailyEffortTreeComponent,
-    TaskletDailyDigestComponent
+    TaskletDailyDigestComponent,
+    ProjectDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -149,6 +151,7 @@ import { TaskletDailyDigestComponent } from './view/components/tasklet/tasklet-d
     NewFeaturesDialogComponent,
     PersonDialogComponent,
     ProjectDialogComponent,
+    ProjectsFilterDialogComponent,
     TagDialogComponent,
     TaskletDialogComponent,
     TaskletDialogDailyScrumComponent,

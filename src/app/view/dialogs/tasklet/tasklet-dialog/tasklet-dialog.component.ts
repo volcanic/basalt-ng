@@ -9,7 +9,7 @@ import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {TaskletTodo} from '../../../../model/tasklet-todo.model';
 import {Tag} from '../../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
-import {ProjectDialogComponent} from '../../filters/project-dialog/project-dialog.component';
+import {ProjectsFilterDialogComponent} from '../../filters/project-filter-dialog/project-filter-dialog.component';
 import {Project} from '../../../../model/project.model';
 import {Person} from '../../../../model/person.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
@@ -89,23 +89,6 @@ export class TaskletDialogComponent implements OnInit {
     const dueDate = new Date(taskletTodo.dueDate);
 
     taskletTodo.dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate(), dueDate.getHours(), value);
-  }
-
-  addProject() {
-    const dialogRef = this.dialog.open(ProjectDialogComponent, {
-      disableClose: false,
-      data: {
-        mode: DIALOG_MODE.ADD,
-        dialogTitle: 'Add project',
-        project: ''
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        this.tasklet.project = result;
-        this.projects.unshift(result);
-      }
-    });
   }
 
   addTasklet() {

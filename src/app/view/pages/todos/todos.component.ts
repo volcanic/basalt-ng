@@ -8,7 +8,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {Tasklet} from '../../../model/tasklet.model';
 import {TaskletsService} from '../../../services/tasklets.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
-import {TagDialogComponent} from '../../dialogs/filters/tag-dialog/tag-dialog.component';
+import {TagDialogComponent} from '../../dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {TaskletTodo} from '../../../model/tasklet-todo.model';
 import {DateService} from '../../../services/date.service';

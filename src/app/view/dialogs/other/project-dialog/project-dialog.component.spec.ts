@@ -1,16 +1,16 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ProjectDialogComponent} from './project-dialog.component';
+import { ProjectDialogComponent } from './project-dialog.component';
 
-xdescribe('ProjectDialogComponent', () => {
+describe('ProjectDialogComponent', () => {
   let component: ProjectDialogComponent;
   let fixture: ComponentFixture<ProjectDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProjectDialogComponent]
+      declarations: [ ProjectDialogComponent ]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
