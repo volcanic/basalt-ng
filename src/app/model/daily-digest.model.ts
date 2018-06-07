@@ -16,7 +16,7 @@ export class DailyDigest {
     return this.getProjectEfforts()
       .map(pe => pe.getTaskEfforts()
         .map(te => te.effort)
-        .reduce((teSum, teCurrent) => teSum + teCurrent))
-      .reduce((peSum, peCurrent) => peSum + peCurrent);
+        .reduce((teSum, teCurrent) => teSum + teCurrent, 0))
+      .reduce((peSum, peCurrent) => peSum + peCurrent, 0);
   }
 }

@@ -15,6 +15,8 @@ import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-di
 import {environment} from '../../../../environments/environment';
 import {ProjectsFilterDialogComponent} from '../../dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {UploadDialogComponent} from '../../dialogs/other/upload-dialog/upload-dialog.component';
+import {Project} from '../../../model/project.model';
+import {PlaceholderValues} from '../../../model/placeholder-values.model';
 
 @Component({
   selector: 'app-tasklets',
@@ -62,6 +64,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
       takeUntil(this.taskletsUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
+
         // Get initial list of tags
         if (this.tags.size === 0) {
           this.tags = this.taskletsService.getTags();
@@ -71,11 +74,12 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         }
 
         // Get initial list of projects
-        if (this.projects.length === 0) {
+        if (this.projects.length < 2) {
           this.projects = Array.from(this.taskletsService.getProjects().values()).map(p => {
             p.checked = true;
             return p;
           });
+          this.projects.push(new Project(PlaceholderValues.EMPTY_PROJECT, true));
         }
 
         this.tasklets = value
@@ -105,20 +109,19 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             }
           })
           .filter(tasklet => {
-            // Filter tasklets that match selected projects
-            if (tasklet.project != null) {
-              let match = false;
+            let match = false;
 
-              this.projects.forEach(project => {
-                if (tasklet.project.value === project.value && project.checked) {
+            // Filter tasklets that match selected projects
+            this.projects.forEach(project => {
+              if (project.checked) {
+                if ((tasklet.project != null && project.value === tasklet.project.value) ||
+                  (tasklet.project == null && project.value === PlaceholderValues.EMPTY_PROJECT)) {
                   match = true;
                 }
-              });
+              }
+            });
 
-              return match;
-            } else {
-              return true;
-            }
+            return match;
           })
           .sort((t1: Tasklet, t2: Tasklet) => {
             const date1 = new Date(t1.creationDate).getTime();
@@ -127,9 +130,11 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             return date2 - date1;
           }).slice(0, this.DISPLAY_LIMIT);
       } else {
-        this.tasklets = [];
+        this
+          .tasklets = [];
       }
-    });
+    })
+    ;
 
     this.taskletsService.update();
   }
