@@ -66,11 +66,12 @@ export class TaskletsComponent implements OnInit, OnDestroy {
       if (value != null) {
 
         // Get initial list of tags
-        if (this.tags.size === 0) {
+        if (this.tags.size < 2) {
           this.tags = this.taskletsService.getTags();
           this.tags.forEach((tag: Tag, key: string) => {
             tag.checked = true;
           });
+          this.tags.set(PlaceholderValues.EMPTY_TAG, new Tag(PlaceholderValues.EMPTY_TAG, true));
         }
 
         // Get initial list of projects
@@ -91,22 +92,26 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             }
           })
           .filter(tasklet => {
+            let match = false;
+
             // Filter tasklets that match selected tags
-            if (tasklet.tags != null && tasklet.tags.length > 0) {
-              let match = false;
-
-              tasklet.tags.forEach(taskletTag => {
-                this.tags.forEach(tag => {
-                  if (taskletTag.value === tag.value && tag.checked) {
+            this.tags.forEach(tag => {
+                if (tag.checked) {
+                  if (tag.value === PlaceholderValues.EMPTY_PROJECT
+                    && (tasklet.tags == null || tasklet.tags.length === 0)) {
                     match = true;
+                  } else if (tasklet.tags != null && tasklet.tags.length > 0) {
+                    tasklet.tags.forEach(taskletTag => {
+                      if (taskletTag.value === tag.value && tag.checked) {
+                        match = true;
+                      }
+                    });
                   }
-                });
-              });
+                }
+              }
+            );
 
-              return match;
-            } else {
-              return true;
-            }
+            return match;
           })
           .filter(tasklet => {
             let match = false;
