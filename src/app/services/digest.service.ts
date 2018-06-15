@@ -15,51 +15,10 @@ export class DigestService {
               private dateService: DateService) {
   }
 
-  static getDayStart(date: Date): Date {
-    date.setHours(0, 0, 0, 0);
-
-    return new Date(date);
-  }
-
-  static getDayEnd(date: Date): Date {
-    date.setHours(23, 59, 59, 999);
-
-    return new Date(date);
-  }
-
-  /**
-   * Returns the beginning of the week that contains a given date {@param date}
-   * @returns {Date}
-   */
-  static getWeekStart(date: Date) {
-    date = new Date(date);
-
-    const day = date.getDay();
-    const diff: number = date.getDate() - day + (day === 0 ? -6 : 1);
-    const monday = new Date(date.setDate(diff));
-
-    return DigestService.getDayStart(monday);
-  }
-
-  /**
-   * Returns the end of the week that contains a given date {@param date}
-   * @returns {Date}
-   */
-  static getWeekEnd(date: Date) {
-    date = new Date(date);
-
-    const day = date.getDay();
-    const diff: number = date.getDate() - day + (day === 0 ? 0 : 7);
-    const sunday = new Date(date.setDate(diff));
-
-
-    return DigestService.getDayEnd(sunday);
-  }
-
-  private getTaskletsOfDay(date: Date, tasklets: Tasklet[]): Tasklet[] {
+  public getTaskletsOfDay(date: Date, tasklets: Tasklet[]): Tasklet[] {
     return tasklets.filter(t => {
-      return new Date(t.creationDate) > new Date(DigestService.getDayStart(date))
-        && new Date(t.creationDate) < new Date(DigestService.getDayEnd(date));
+      return new Date(t.creationDate) > new Date(this.dateService.getDayStart(date))
+        && new Date(t.creationDate) < new Date(this.dateService.getDayEnd(date));
     }).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     });
@@ -67,8 +26,8 @@ export class DigestService {
 
   private getTaskletsOfPeriod(startDate: Date, endDate: Date, tasklets: Tasklet[]): Tasklet[] {
     return tasklets.filter(t => {
-      return new Date(t.creationDate) > new Date(DigestService.getWeekStart(startDate))
-        && new Date(t.creationDate) < new Date(DigestService.getWeekEnd(endDate));
+      return new Date(t.creationDate) > new Date(this.dateService.getWeekStart(startDate))
+        && new Date(t.creationDate) < new Date(this.dateService.getWeekEnd(endDate));
     }).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     });
@@ -137,10 +96,10 @@ export class DigestService {
    */
   getWeeklyDigest(date: Date): WeeklyDigest {
     const weeklyDigest: WeeklyDigest = new WeeklyDigest();
-    const weekStart = DigestService.getWeekStart(date);
+    const weekStart = this.dateService.getWeekStart(date);
 
-    weeklyDigest.start = DigestService.getWeekStart(date);
-    weeklyDigest.end = DigestService.getWeekEnd(date);
+    weeklyDigest.start = this.dateService.getWeekStart(date);
+    weeklyDigest.end = this.dateService.getWeekEnd(date);
 
     // Iterate over all weekdays
     [0, 1, 2, 3, 4].forEach(index => {

@@ -175,4 +175,46 @@ export class DateService {
 
     return new Date(date) > endOfTheWeek;
   }
+
+  getDayStart(date: Date): Date {
+    date.setHours(0, 0, 0, 0);
+
+    return new Date(date);
+  }
+
+  getDayEnd(date: Date): Date {
+    date.setHours(23, 59, 59, 999);
+
+    return new Date(date);
+  }
+
+  /**
+   * Returns the beginning of the week that contains a given date {@param date}
+   * @returns {Date}
+   */
+  getWeekStart(date: Date) {
+    date = new Date(date);
+
+    const day = date.getDay();
+    const diff: number = date.getDate() - day + (day === 0 ? -6 : 1);
+    const monday = new Date(date.setDate(diff));
+
+    return this.getDayStart(monday);
+  }
+
+  /**
+   * Returns the end of the week that contains a given date {@param date}
+   * @returns {Date}
+   */
+  getWeekEnd(date: Date) {
+    date = new Date(date);
+
+    const day = date.getDay();
+    const diff: number = date.getDate() - day + (day === 0 ? 0 : 7);
+    const sunday = new Date(date.setDate(diff));
+
+
+    return this.getDayEnd(sunday);
+  }
+
 }
