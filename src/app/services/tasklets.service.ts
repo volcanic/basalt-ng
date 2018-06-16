@@ -7,6 +7,7 @@ import {TASKLET_TYPE} from '../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../model/tasklet-daily-scrum.model';
 import {Project} from '../model/project.model';
 import {Tag} from '../model/tag.model';
+import {DateService} from './date.service';
 
 @Injectable()
 export class TaskletsService {
@@ -16,7 +17,8 @@ export class TaskletsService {
   // Suggestions
   suggestedSearchItems = [];
 
-  constructor(private pouchDBService: PouchDBService) {
+  constructor(private dateService: DateService,
+              private pouchDBService: PouchDBService) {
     this.pouchDBService.getChangeListener().subscribe(
       item => {
         console.log(`DEBUG pouchDBService item`);
@@ -93,7 +95,7 @@ export class TaskletsService {
   public downloadTasklets() {
     const fileContents = JSON.stringify(Array.from(this.tasklets.values()));
     const filename = 'tasklets.basalt';
-    const filetype = 'text/plain';
+    // const filetype = 'text/plain';
 
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileContents));
@@ -107,7 +109,7 @@ export class TaskletsService {
 
   public showTasklets() {
     const fileContents = JSON.stringify(Array.from(this.tasklets.values()));
-    const filename = 'tasklets.basalt';
+    // const filename = 'tasklets.basalt';
     const filetype = 'text/plain';
 
     const blob = new Blob([fileContents], {type: filetype});
@@ -129,14 +131,16 @@ export class TaskletsService {
     Array.from(this.tasklets.values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     }).forEach(t => {
-      t.text.split('\n').forEach(v => {
-        if (v.trim() !== '') {
-          this.suggestedSearchItems.push(v.trim().replace(/(^-)/g, ''));
-        }
-      });
+      if (t != null && t.text != null) {
+        t.text.split('\n').forEach(v => {
+          if (v.trim() !== '') {
+            this.suggestedSearchItems.push(v.trim().replace(/(^-)/g, ''));
+          }
+        });
 
-      if (t.taskName != null) {
-        this.suggestedSearchItems.push(t.taskName.trim().replace(/(^-)/g, ''));
+        if (t.taskName != null) {
+          this.suggestedSearchItems.push(t.taskName.trim().replace(/(^-)/g, ''));
+        }
       }
     });
 
@@ -272,5 +276,12 @@ export class TaskletsService {
     });
 
     return persons;
+  }
+
+  // Filters
+
+  public matchesDate(tasklet: Tasklet, date: Date) {
+    return new Date(tasklet.creationDate) > new Date(this.dateService.getDayStart(date))
+      && new Date(tasklet.creationDate) < new Date(this.dateService.getDayEnd(date));
   }
 }
