@@ -135,8 +135,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             return date2 - date1;
           }).slice(0, this.DISPLAY_LIMIT);
       } else {
-        this
-          .tasklets = [];
+        this.tasklets = [];
       }
     })
     ;
@@ -156,8 +155,6 @@ export class TaskletsComponent implements OnInit, OnDestroy {
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
       case 'menu': {
-        // this.sidenavStart.toggle();
-        // this.sidenavEnd.toggle();
         break;
       }
       case 'settings': {
@@ -222,6 +219,11 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             this.snackbarService.showSnackbar('Projects selected', '');
           }
         });
+        break;
+      }
+      case 'todo': {
+        this.sidenavStart.toggle();
+        this.sidenavEnd.toggle();
         break;
       }
       case 'upload': {

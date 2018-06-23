@@ -23,7 +23,7 @@
     <button mat-button class="toolbar-menu-item right" [matMenuTriggerFor]="menu">
       <mat-icon svgIcon="more_white"></mat-icon>
     </button>
-    <button mat-button class="toolbar-menu-item right" [routerLink]="['/todos']">
+    <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('todo')">
       <mat-icon svgIcon="timer_white"></mat-icon>
     </button>
     <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('projects')">

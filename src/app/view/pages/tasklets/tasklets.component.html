@@ -5,19 +5,18 @@
   (onMenuItemClickedEmitter)="onMenuItemClicked($event)"></app-tasklets-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">
-  <mat-sidenav #sidenavStart mode="side" position="start" opened="false" class="sidenav">
+  <mat-sidenav #sidenavStart mode="side" position="start" opened="true" class="sidenav sidenav-start">
   </mat-sidenav>
-  <mat-sidenav #sidenavEnd mode="side" position="end" opened="false" class="sidenav">
+  <mat-sidenav #sidenavEnd mode="side" position="end" opened="true" class="sidenav sidenav-end">
   </mat-sidenav>
 
   <div class="content">
-
     <app-tasklet *ngFor="let t of tasklets" [tasklet]="t">
     </app-tasklet>
-
-    <button mat-fab class="fab" (click)="onMenuItemClicked('add')">
-      <mat-icon svgIcon="add"></mat-icon>
-    </button>
   </div>
 
 </mat-sidenav-container>
+
+<button mat-fab class="fab" (click)="onMenuItemClicked('add')">
+  <mat-icon svgIcon="add"></mat-icon>
+</button>
