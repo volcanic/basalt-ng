@@ -74,6 +74,11 @@ import {ProjectEffortTreeComponent} from './view/components/trees/weekly-effort-
 import {DailyEffortTreeComponent} from './view/components/trees/daily-effort-tree/daily-effort-tree.component';
 import {TaskletDailyDigestComponent} from './view/components/tasklet/tasklet-daily-digest/tasklet-daily-digest.component';
 import {ProjectDialogComponent} from './view/dialogs/other/project-dialog/project-dialog.component';
+import {CalendarComponent} from './view/pages/calendar/calendar.component';
+import {CalendarGridComponent} from './view/components/calendar/calendar-grid/calendar-grid.component';
+import {CalendarGridDayComponent} from './view/components/calendar/calendar-grid-day/calendar-grid-day.component';
+import {CalendarGridQuarterHourComponent} from './view/components/calendar/calendar-grid-quarter-hour/calendar-grid-quarter-hour.component';
+import { CalendarItemComponent } from './view/components/calendar/calendar-item/calendar-item.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +120,12 @@ import {ProjectDialogComponent} from './view/dialogs/other/project-dialog/projec
     ProjectEffortTreeComponent,
     DailyEffortTreeComponent,
     TaskletDailyDigestComponent,
-    ProjectDialogComponent
+    ProjectDialogComponent,
+    CalendarComponent,
+    CalendarGridComponent,
+    CalendarGridDayComponent,
+    CalendarGridQuarterHourComponent,
+    CalendarItemComponent
   ],
   imports: [
     AppRoutingModule,

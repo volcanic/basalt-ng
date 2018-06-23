@@ -1,0 +1,38 @@
+@import '../../../../../theme';
+
+// Header
+
+.day-header {
+  border: #e0e0e0 1px solid;
+  color: mat-color($app-accent, 500);
+}
+
+.weekDay {
+
+}
+
+.date {
+
+}
+
+// Underlay
+
+.underlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.time-step {
+  height: 20px;
+}
+
+// Overlay
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}

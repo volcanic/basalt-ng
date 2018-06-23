@@ -1,0 +1,15 @@
+<div class="day-header">
+  <span class="weekDay">{{ weekDay }}</span>
+  <h1 class="date">{{ date }}</h1>
+</div>
+
+<div>
+  <div class="underlay">
+    <app-calendar-grid-quarter-hour *ngFor="let qh of quarterHours" [quarterHour]="qh">
+
+    </app-calendar-grid-quarter-hour>
+  </div>
+  <div class="overlay">
+    <app-calendar-item *ngFor="let tasklet of tasklets"></app-calendar-item>
+  </div>
+</div>
