@@ -47,23 +47,10 @@ export class PouchDBService {
    * Observable<Response>|IDBRequest>|Promise<R>|webdriver.promise.Promise<any>|webdriver.promise.Promise<R>|Promise<U>|any}
    */
   public put(id: string, document: any) {
-    console.log(`DEBUG put ${id}`);
     document._id = id;
-    return this.get(id).then(result => {
-      document._rev = result._rev;
-      console.log(`DEBUG put ${JSON.stringify(document)}`);
-      return this.database.put(document);
-    }, error => {
-      console.log(`DEBUG error ${error}`);
-      if (error.status === 404) {
-        console.log(`DEBUG put document ${id}`);
-        return this.database.put(document);
-      } else {
-        return new Promise((resolve, reject) => {
-          reject(error);
-        });
-      }
-    });
+
+    console.log(`DEBUG put ${JSON.stringify(document)}`);
+    return this.database.put(document);
   }
 
   /**
