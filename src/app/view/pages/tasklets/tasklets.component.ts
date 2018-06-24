@@ -145,7 +145,9 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             mode: DIALOG_MODE.ADD,
             dialogTitle: 'Add tasklet',
             tasklet: new Tasklet(),
-            tags: Array.from(this.tags.values()),
+            tags: Array.from(this.tags.values()).filter(tag => {
+              return tag.name !== PlaceholderValues.EMPTY_TAG;
+            }),
           }
         });
         dialogRef.afterClosed().subscribe(result => {
