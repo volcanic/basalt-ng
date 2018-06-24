@@ -1,6 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DigestService} from '../../../../services/digest.service';
-import {TaskletsService} from '../../../../services/tasklets.service';
 
 @Component({
   selector: 'app-calendar-grid',

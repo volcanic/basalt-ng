@@ -25,7 +25,6 @@ import {
   MatTreeModule
 } from '@angular/material';
 import {PouchDBService} from './services/pouchdb.service';
-import {TaskletsService} from './services/tasklets.service';
 import {ConfirmationDialogComponent} from './view/dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {TaskletDialogComponent} from './view/dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -33,18 +32,12 @@ import {TaskletsComponent} from './view/pages/tasklets/tasklets.component';
 import {TaskletComponent} from './view/components/tasklet/tasklet/tasklet.component';
 import {SnackbarService} from './services/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TaskletTodoComponent} from './view/components/tasklet/tasklet-todo/tasklet-todo.component';
-import {TaskletDialogTodoComponent} from './view/dialogs/tasklet/tasklet-dialog-todo/tasklet-dialog-todo.component';
 import {TaskletDialogContentComponent} from './view/dialogs/tasklet/tasklet-dialog-content/tasklet-dialog-content.component';
 import {TaskletDefaultComponent} from './view/components/tasklet/tasklet-default/tasklet-default.component';
 import {DateService} from './services/date.service';
 import {TagDialogComponent} from './view/dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {MatchService} from './services/match.service';
-import {TodosComponent} from './view/pages/todos/todos.component';
-import {TodosToolbarComponent} from './view/toolbars/todos-toolbar/todos-toolbar.component';
 import {TaskletsToolbarComponent} from './view/toolbars/tasklet-toolbar/tasklets-toolbar.component';
-import {TodoComponent} from './view/components/todo/todo/todo.component';
-import {TodosSideMenuStartComponent} from './view/sidemenus/todos-side-menu-start/todos-side-menu-start.component';
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
 import {TimePickerDialogComponent} from './view/dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {PersonDialogComponent} from './view/dialogs/other/person-dialog/person-dialog.component';
@@ -60,7 +53,7 @@ import {ProjectsFilterDialogComponent} from './view/dialogs/filters/project-filt
 import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
 import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
 import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
-import {TaskletDialogTopicComponent} from './view/dialogs/tasklet/tasklet-dialog-topic/tasklet-dialog-topic.component';
+import {TaskletDialogTaskComponent} from './view/dialogs/tasklet/tasklet-dialog-task/tasklet-dialog-task.component';
 import {TaskletDialogHeaderComponent} from './view/dialogs/tasklet/tasklet-dialog-header/tasklet-dialog-header.component';
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
 import {FileDropComponent} from './view/components/file-drop/file-drop.component';
@@ -78,7 +71,11 @@ import {CalendarComponent} from './view/pages/calendar/calendar.component';
 import {CalendarGridComponent} from './view/components/calendar/calendar-grid/calendar-grid.component';
 import {CalendarGridDayComponent} from './view/components/calendar/calendar-grid-day/calendar-grid-day.component';
 import {CalendarGridQuarterHourComponent} from './view/components/calendar/calendar-grid-quarter-hour/calendar-grid-quarter-hour.component';
-import { CalendarItemComponent } from './view/components/calendar/calendar-item/calendar-item.component';
+import {CalendarItemComponent} from './view/components/calendar/calendar-item/calendar-item.component';
+import {TodosListComponent} from './view/components/lists/todos-list/todos-list.component';
+import {TodosListItemComponent} from './view/components/lists/todos-list-item/todos-list-item.component';
+import {TaskDialogComponent} from './view/dialogs/other/task-dialog/task-dialog.component';
+import {TaskletService} from './services/entities/tasklet.service';
 
 @NgModule({
   declarations: [
@@ -103,19 +100,13 @@ import { CalendarItemComponent } from './view/components/calendar/calendar-item/
     TaskletDialogContentComponent,
     TaskletDialogHeaderComponent,
     TaskletDialogParticipantsComponent,
-    TaskletDialogTopicComponent,
-    TaskletDialogTodoComponent,
+    TaskletDialogTaskComponent,
     TaskletDialogWeeklyDigestComponent,
     TaskletParticipantsComponent,
     TaskletsComponent,
     TaskletsToolbarComponent,
-    TaskletTodoComponent,
     TaskletWeeklyDigestComponent,
     TimePickerDialogComponent,
-    TodoComponent,
-    TodosComponent,
-    TodosSideMenuStartComponent,
-    TodosToolbarComponent,
     UploadDialogComponent,
     ProjectEffortTreeComponent,
     DailyEffortTreeComponent,
@@ -125,7 +116,10 @@ import { CalendarItemComponent } from './view/components/calendar/calendar-item/
     CalendarGridComponent,
     CalendarGridDayComponent,
     CalendarGridQuarterHourComponent,
-    CalendarItemComponent
+    CalendarItemComponent,
+    TodosListComponent,
+    TodosListItemComponent,
+    TaskDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -168,10 +162,10 @@ import { CalendarItemComponent } from './view/components/calendar/calendar-item/
     TaskletDialogContentComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTagsComponent,
-    TaskletDialogTodoComponent,
     TaskletDialogWeeklyDigestComponent,
     TimePickerDialogComponent,
-    UploadDialogComponent
+    UploadDialogComponent,
+    TaskDialogComponent
   ],
   providers: [
     MatIconRegistry,
@@ -183,7 +177,7 @@ import { CalendarItemComponent } from './view/components/calendar/calendar-item/
     PouchDBSettingsService,
     SettingsService,
     SnackbarService,
-    TaskletsService
+    TaskletService
   ],
   bootstrap: [AppComponent]
 })

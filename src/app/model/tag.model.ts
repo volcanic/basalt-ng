@@ -1,9 +1,9 @@
 export class Tag {
-  value: string;
+  name: string;
   checked = false;
 
-  constructor(value: string, checked: boolean) {
-    this.value = value;
+  constructor(name: string, checked: boolean) {
+    this.name = name;
     this.checked = checked;
   }
 }

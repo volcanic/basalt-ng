@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Tasklet} from '../../../../model/tasklet.model';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 
 @Component({
   selector: 'app-tasklet-participants',

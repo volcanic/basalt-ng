@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TaskletsService} from '../../../../services/tasklets.service';
 import {DailyScrumParticipant} from '../../../../model/daily-scrum-participant';
 import {DailyScrumActivity} from '../../../../model/daily-scrum-activity';
+import {TaskletService} from '../../../../services/entities/tasklet.service';
 
 @Component({
   selector: 'app-tasklet-dialog-daily-scrum-participant',
@@ -13,7 +13,7 @@ export class TaskletDialogDailyScrumParticipantComponent implements OnInit {
   @Input() existingPersons: string[];
   @Output() onPersonSelectedEmitter = new EventEmitter<string>();
 
-  constructor(private taskletsService: TaskletsService) {
+  constructor(private taskletService: TaskletService) {
   }
 
   ngOnInit() {

@@ -4,7 +4,7 @@ import {MatIconRegistry} from '@angular/material';
 import {FormControl} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {TaskletsService} from '../../../services/tasklets.service';
+import {TaskletService} from '../../../services/entities/tasklet.service';
 import {debounceTime} from 'rxjs/internal/operators';
 
 @Component({
@@ -24,7 +24,7 @@ export class TaskletsToolbarComponent implements OnInit {
 
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletsService: TaskletsService,
+  constructor(private taskletService: TaskletService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('menu', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_menu_white_24px.svg'));
@@ -39,7 +39,7 @@ export class TaskletsToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchOptions = this.taskletsService.suggestedSearchItems;
+    this.searchOptions = this.taskletService.suggestedSearchItems;
 
     this.filteredSearchOptions = this.formControl.valueChanges
       .pipe(
@@ -57,7 +57,7 @@ export class TaskletsToolbarComponent implements OnInit {
   }
 
   onClickInput() {
-    this.searchOptions = this.taskletsService.suggestedSearchItems;
+    this.searchOptions = this.taskletService.suggestedSearchItems;
   }
 
   onChangeSearchItem(searchItem: string): void {

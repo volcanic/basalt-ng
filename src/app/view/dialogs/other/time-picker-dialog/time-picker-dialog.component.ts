@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DateAdapter, MAT_DIALOG_DATA, MatDatepickerInputEvent, MatDialogRef} from '@angular/material';
-import {Tasklet} from '../../../../model/tasklet.model';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {DateService} from '../../../../services/date.service';
 import {FormControl} from '@angular/forms';
 

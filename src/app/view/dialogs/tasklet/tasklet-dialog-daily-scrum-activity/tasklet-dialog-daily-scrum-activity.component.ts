@@ -4,8 +4,8 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Person} from '../../../../model/person.model';
-import {TaskletsService} from '../../../../services/tasklets.service';
 import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../../model/daily-scrum-activity-type.enum';
+import {TaskletService} from '../../../../services/entities/tasklet.service';
 
 @Component({
   selector: 'app-tasklet-dialog-daily-scrum-activity',
@@ -24,11 +24,11 @@ export class TaskletDialogDailyScrumActivityComponent implements OnInit {
 
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletsService: TaskletsService) {
+  constructor(private taskletService: TaskletService) {
   }
 
   ngOnInit() {
-    this.dailyScrumActivityOptions = Array.from(this.taskletsService.getDailyScrumActivities(this.person).values()).reverse();
+    this.dailyScrumActivityOptions = Array.from(this.taskletService.getDailyScrumActivities(this.person).values()).reverse();
     this.filteredDailyScrumActivityOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),

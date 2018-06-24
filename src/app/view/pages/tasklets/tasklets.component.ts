@@ -4,8 +4,7 @@ import {takeUntil} from 'rxjs/operators';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Tasklet} from '../../../model/tasklet.model';
-import {TaskletsService} from '../../../services/tasklets.service';
+import {TaskletService} from '../../../services/entities/tasklet.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
 import {TagDialogComponent} from '../../dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {MatchService} from '../../../services/match.service';
@@ -15,8 +14,12 @@ import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-di
 import {environment} from '../../../../environments/environment';
 import {ProjectsFilterDialogComponent} from '../../dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {UploadDialogComponent} from '../../dialogs/other/upload-dialog/upload-dialog.component';
-import {Project} from '../../../model/project.model';
 import {PlaceholderValues} from '../../../model/placeholder-values.model';
+import {Tasklet} from '../../../model/entities/tasklet.model';
+import {Project} from '../../../model/entities/project.model';
+import {EntityService} from '../../../services/entities/entity.service';
+import {ProjectService} from '../../../services/entities/project.service';
+import {TaskService} from '../../../services/entities/task.service';
 
 @Component({
   selector: 'app-tasklets',
@@ -33,15 +36,18 @@ export class TaskletsComponent implements OnInit, OnDestroy {
 
   // Page specific filters
   searchItem = '';
-  tags = new Map<string, Tag>();
-  projects = [];
+  tags: Map<string, Tag> = new Map<string, Tag>();
+  projects: Map<string, Project> = new Map<string, Project>();
 
   DISPLAY_LIMIT = 100;
 
   // private windowHeight = 0;
   // private windowWidth = 0;
 
-  constructor(private taskletsService: TaskletsService,
+  constructor(private entityService: EntityService,
+              private projectService: ProjectService,
+              private taskletService: TaskletService,
+              private taskService: TaskService,
               private snackbarService: SnackbarService,
               private matchService: MatchService,
               public dialog: MatDialog,
@@ -60,73 +66,44 @@ export class TaskletsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Subscribe tasklet changes
-    this.taskletsService.taskletsSubject.pipe(
+    this.taskletService.taskletsSubject.pipe(
       takeUntil(this.taskletsUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
 
         // Get initial list of tags
-        if (this.tags.size < 2) {
-          this.tags = this.taskletsService.getTags();
+        if (this.tags.size < 1) {
+          this.tags = this.taskletService.getTags();
           this.tags.forEach((tag: Tag, key: string) => {
             tag.checked = true;
           });
-          this.tags.set(PlaceholderValues.EMPTY_TAG, new Tag(PlaceholderValues.EMPTY_TAG, true));
+
+          // Add empty element
+          let tag = new Tag(PlaceholderValues.EMPTY_TAG, true);
+          this.tags.set(tag.name, tag);
         }
 
         // Get initial list of projects
-        if (this.projects.length < 2) {
-          this.projects = Array.from(this.taskletsService.getProjects().values()).map(p => {
-            p.checked = true;
-            return p;
+        if (this.projects.size < 1) {
+          this.projects = this.projectService.projects;
+          this.tags.forEach((project: Project, key: string) => {
+            project.checked = true;
+            return project;
           });
-          this.projects.push(new Project(PlaceholderValues.EMPTY_PROJECT, true));
+
+          // Add empty element
+          let project = new Project(PlaceholderValues.EMPTY_PROJECT, true);
+          project.id = PlaceholderValues.EMPTY_PROJECT_ID;
+          this.projects.set(project.id, project);
         }
 
         this.tasklets = value
-          .filter(t => {
-            if (this.searchItem !== '') {
-              return this.matchService.taskletMatchesEveryItem(t, this.searchItem);
-            } else {
-              return true;
-            }
-          })
           .filter(tasklet => {
-            let match = false;
+            let matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.searchItem);
+            let matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.tags.values()));
+            let matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.projects.values()));
 
-            // Filter tasklets that match selected tags
-            this.tags.forEach(tag => {
-                if (tag.checked) {
-                  if (tag.value === PlaceholderValues.EMPTY_PROJECT
-                    && (tasklet.tags == null || tasklet.tags.length === 0)) {
-                    match = true;
-                  } else if (tasklet.tags != null && tasklet.tags.length > 0) {
-                    tasklet.tags.forEach(taskletTag => {
-                      if (taskletTag.value === tag.value && tag.checked) {
-                        match = true;
-                      }
-                    });
-                  }
-                }
-              }
-            );
-
-            return match;
-          })
-          .filter(tasklet => {
-            let match = false;
-
-            // Filter tasklets that match selected projects
-            this.projects.forEach(project => {
-              if (project.checked) {
-                if ((tasklet.project != null && project.value === tasklet.project.value) ||
-                  (tasklet.project == null && project.value === PlaceholderValues.EMPTY_PROJECT)) {
-                  match = true;
-                }
-              }
-            });
-
-            return match;
+            return matchesSearchItem && matchesTags && matchesProjects;
           })
           .sort((t1: Tasklet, t2: Tasklet) => {
             const date1 = new Date(t1.creationDate).getTime();
@@ -140,7 +117,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
     })
     ;
 
-    this.taskletsService.update();
+    this.taskletService.notify();
   }
 
   ngOnDestroy(): void {
@@ -169,18 +146,17 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             dialogTitle: 'Add tasklet',
             tasklet: new Tasklet(),
             tags: Array.from(this.tags.values()),
-            projects: this.projects
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            this.taskletsService.createTasklet(result as Tasklet);
-            this.snackbarService.showSnackbar('Added tasklet', '');
-
             // Select all tags that are contained in tasklet
             (result as Tasklet).tags.forEach(t => {
-              this.tags.set(t.value, t);
+              this.tags.set(t.name, t);
             });
+
+            this.taskletService.createTasklet(result as Tasklet);
+            this.snackbarService.showSnackbar('Added tasklet', '');
           }
         });
         break;
@@ -196,9 +172,9 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             result.forEach(t => {
-              this.tags.set(t.value, t);
+              this.tags.set(t.name, t);
             });
-            this.taskletsService.update();
+            this.taskletService.notify();
             this.snackbarService.showSnackbar('Tags selected', '');
           }
         });
@@ -209,13 +185,15 @@ export class TaskletsComponent implements OnInit, OnDestroy {
           disableClose: true,
           data: {
             dialogTitle: 'Select projects',
-            projects: this.projects
+            projects: Array.from(this.projects.values())
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            this.projects = result;
-            this.taskletsService.update();
+            result.forEach(p => {
+              this.projects.set(p.id, p);
+            });
+            this.taskletService.notify();
             this.snackbarService.showSnackbar('Projects selected', '');
           }
         });
@@ -236,7 +214,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         break;
       }
       case 'download': {
-        this.taskletsService.downloadTasklets();
+        this.entityService.downloadEntities();
         break;
       }
       case 'about': {
@@ -264,7 +242,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
    */
   onSearchItemChanged(searchItem: string) {
     this.searchItem = searchItem;
-    this.taskletsService.update();
+    this.taskletService.notify();
   }
 
   /**
@@ -287,7 +265,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
         tasklet.tags.forEach(tag => {
             let unique = true;
             ts.forEach(t => {
-              if (tag.value === t.value) {
+              if (tag.name === t.name) {
                 unique = false;
               }
             });
@@ -301,7 +279,7 @@ export class TaskletsComponent implements OnInit, OnDestroy {
     });
 
     return ts.sort((t1, t2) => {
-      return (t1.value > t2.value) ? 1 : -1;
+      return (t1.name > t2.name) ? 1 : -1;
     });
   }
 }

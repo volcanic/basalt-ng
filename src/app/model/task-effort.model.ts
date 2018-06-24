@@ -1,9 +1,12 @@
+import {Project} from './entities/project.model';
+import {Task} from './entities/task.model';
+
 export class TaskEffort {
-  task: string;
-  project: string;
+  task: Task;
+  project: Project;
   effort: number;
 
-  constructor(task: string, project: string, effort: number) {
+  constructor(task: Task, project: Project, effort: number) {
     this.task = task;
     this.project = project;
     this.effort = effort;

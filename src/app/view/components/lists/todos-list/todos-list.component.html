@@ -1,0 +1,14 @@
+<div class="label" color="">Overdue</div>
+
+<app-todos-list-item *ngFor="let t of tasksOverdue" [task]="t">
+</app-todos-list-item>
+
+<div class="label">Next</div>
+
+<app-todos-list-item *ngFor="let t of tasksToday" [task]="t">
+</app-todos-list-item>
+
+<div class="label">Inbox</div>
+
+<app-todos-list-item *ngFor="let t of tasksLater" [task]="t">
+</app-todos-list-item>

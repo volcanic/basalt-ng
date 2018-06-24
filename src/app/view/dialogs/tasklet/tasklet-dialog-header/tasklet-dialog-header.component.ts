@@ -1,13 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tasklet} from '../../../../model/tasklet.model';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
-import {Project} from '../../../../model/project.model';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatDialog, MatIconRegistry} from '@angular/material';
-import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
-import {ProjectsFilterDialogComponent} from '../../filters/project-filter-dialog/project-filter-dialog.component';
-import {TaskletDialogComponent} from '../tasklet-dialog/tasklet-dialog.component';
-import {ProjectDialogComponent} from '../../other/project-dialog/project-dialog.component';
+import {Project} from '../../../../model/entities/project.model';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
+import {EntityService} from '../../../../services/entities/entity.service';
 
 @Component({
   selector: 'app-tasklet-dialog-header',
@@ -16,11 +13,13 @@ import {ProjectDialogComponent} from '../../other/project-dialog/project-dialog.
 })
 export class TaskletDialogHeaderComponent implements OnInit {
   @Input() tasklet: Tasklet;
-  @Input() projects: Project[];
+
+  project: Project;
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
-  constructor(public dialog: MatDialog,
+  constructor(private entityService: EntityService,
+              public dialog: MatDialog,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_black_24px.svg'));
@@ -33,34 +32,14 @@ export class TaskletDialogHeaderComponent implements OnInit {
     iconRegistry.addSvgIcon('code', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_black_24px.svg'));
     iconRegistry.addSvgIcon('bug', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_bug_report_black_24px.svg'));
     iconRegistry.addSvgIcon('lightbulb', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_lightbulb_outline_black_24px.svg'));
-    iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
     iconRegistry.addSvgIcon('dining', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_local_dining_black_24px.svg'));
     iconRegistry.addSvgIcon('run', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_directions_run_black_24px.svg'));
     iconRegistry.addSvgIcon('receipt', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/outline-receipt-24px.svg'));
+
+    this.project = this.entityService.getProjectByTasklet(this.tasklet)
   }
 
   ngOnInit() {
-  }
-
-  addProject() {
-    const dialogRef = this.dialog.open(ProjectDialogComponent, {
-      disableClose: false,
-      data: {
-        mode: DIALOG_MODE.ADD,
-        dialogTitle: 'Add project',
-        project: new Project('', false)
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        this.tasklet.project = result;
-        this.projects.unshift(result);
-      }
-    });
-  }
-
-  compareProject(p1: Project, p2: Project) {
-    return p1 != null && p2 != null && p1.value === p2.value;
   }
 
   selectIcon(type: TASKLET_TYPE) {
@@ -88,9 +67,6 @@ export class TaskletDialogHeaderComponent implements OnInit {
       }
       case TASKLET_TYPE.DEBUGGING: {
         return 'bug';
-      }
-      case TASKLET_TYPE.TODO: {
-        return 'timer';
       }
       case TASKLET_TYPE.IDEA: {
         return 'lightbulb';

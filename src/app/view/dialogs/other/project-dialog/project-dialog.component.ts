@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {FormControl} from '@angular/forms';
-import {Project} from '../../../../model/project.model';
+import {Project} from '../../../../model/entities/project.model';
 
 @Component({
   selector: 'app-project-dialog',
@@ -21,7 +21,6 @@ export class ProjectDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-
   }
 
   ngOnInit() {

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tasklet} from '../../../../model/tasklet.model';
 import {Tag} from '../../../../model/tag.model';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 
 @Component({
   selector: 'app-tasklet-dialog-tags',
@@ -22,7 +22,7 @@ export class TaskletDialogTagsComponent implements OnInit {
     let noEmptyTag = true;
 
     this.newTags.forEach((t: Tag) => {
-        if (t.value.trim().length === 0) {
+        if (t.name.trim().length === 0) {
           noEmptyTag = false;
         }
       }

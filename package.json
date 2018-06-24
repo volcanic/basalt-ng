@@ -21,7 +21,7 @@
     "progressive-build-prod": "ng build --env=prod --aot && npm run precache",
     "progressive-start": "npm run progressive-build-prod && npm run static-serve",
     "electron-build": "ng build && cd ./src/electron && copyfiles ./* ./../../dist/",
-    "electron-build-prod": "ng build --env=prod && cd ./src/electron && copyfiles ./* ./../../dist/",
+    "electron-build-prod": "ng build --prod && cd ./src/electron && copyfiles ./* ./../../dist/",
     "electron-start": "npm run electron-build && electron ./dist/.",
     "electron-linux": "npm run electron-build && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=linux --out=out --prune=true --overwrite",
     "electron-linux-prod": "npm run electron-build-prod && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=linux --out=out --prune=true --overwrite",

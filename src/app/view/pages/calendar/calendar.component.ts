@@ -1,8 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TaskletsService} from '../../../services/tasklets.service';
-import {takeUntil} from 'rxjs/internal/operators';
-import {Tasklet} from '../../../model/tasklet.model';
-import {Subject} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-calendar',

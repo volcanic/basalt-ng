@@ -7,17 +7,4 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <div class="flexbox"></div>
-  <div>
-    <mat-form-field color="primary">
-      <mat-select name="project" placeholder="Project"
-                  [(ngModel)]="tasklet.project"
-                  [compareWith]="compareProject">
-        <mat-option *ngFor="let item of projects" [value]="item">
-          {{ item.value }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-icon class="project-add" svgIcon="add" (click)="addProject()"></mat-icon>
-  </div>
 </div>

@@ -3,7 +3,7 @@ import {DailyDigest} from '../../../../model/daily-digest.model';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatDialog, MatIconRegistry} from '@angular/material';
 import {DigestService} from '../../../../services/digest.service';
-import {Tasklet} from '../../../../model/tasklet.model';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 
 @Component({
   selector: 'app-tasklet-daily-digest',

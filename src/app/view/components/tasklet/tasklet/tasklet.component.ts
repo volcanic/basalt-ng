@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
-import {TaskletsService} from '../../../../services/tasklets.service';
-import {Tasklet} from '../../../../model/tasklet.model';
+import {TaskletService} from '../../../../services/entities/tasklet.service';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {TaskletDialogComponent} from '../../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
@@ -13,7 +13,9 @@ import {TimePickerDialogComponent} from '../../../dialogs/other/time-picker-dial
 import {UUID} from '../../../../model/util/uuid';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
-import {Project} from '../../../../model/project.model';
+import {Project} from '../../../../model/entities/project.model';
+import {EntityService} from '../../../../services/entities/entity.service';
+import {ProjectService} from '../../../../services/entities/project.service';
 
 @Component({
   selector: 'app-tasklet',
@@ -22,13 +24,16 @@ import {Project} from '../../../../model/project.model';
 })
 export class TaskletComponent implements OnInit {
   @Input() tasklet: Tasklet;
+
   tags: Tag[] = [];
   projects: Project[] = [];
 
   time = '';
   date = '';
 
-  constructor(private taskletsService: TaskletsService,
+  constructor(private entityService: EntityService,
+              private projectService: ProjectService,
+              private taskletService: TaskletService,
               private snackbarService: SnackbarService,
               private dateService: DateService,
               public dialog: MatDialog,
@@ -42,20 +47,20 @@ export class TaskletComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.tags = Array.from(this.taskletsService.getTags().values());
-      this.tags.forEach(t => {
-        if (this.tasklet.tags != null) {
-          t.checked = false;
+    this.tags = Array.from(this.taskletService.getTags().values());
+    this.tags.forEach(t => {
+      if (this.tasklet.tags != null) {
+        t.checked = false;
 
-          this.tasklet.tags.forEach(tt => {
-            if (t.value === tt.value) {
-              t.checked = true;
-            }
-          });
-        }
-      });
+        this.tasklet.tags.forEach(tt => {
+          if (t.name === tt.name) {
+            t.checked = true;
+          }
+        });
+      }
+    });
 
-    this.projects = Array.from(this.taskletsService.getProjects().values());
+    this.projects = Array.from(this.projectService.projects.values());
 
     this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
@@ -80,7 +85,7 @@ export class TaskletComponent implements OnInit {
         break;
       }
       case 'save': {
-        this.taskletsService.updateTasklet(this.tasklet);
+        this.taskletService.updateTasklet(this.tasklet);
         break;
       }
     }
@@ -93,27 +98,24 @@ export class TaskletComponent implements OnInit {
         mode: DIALOG_MODE.UPDATE,
         dialogTitle: 'Update tasklet',
         tasklet: this.tasklet,
-        tags: this.tags,
-        /*
         tags: this.tags.map(tag => {
           if (this.tasklet.tags != null) {
             this.tasklet.tags.forEach(t => {
-              if (tag.value === t.value) {
-                return (new Tag(tag.value, true));
+              if (tag.name === t.name) {
+                return (new Tag(tag.name, true));
               }
             });
 
-            return (new Tag(tag.value, false));
+            return (new Tag(tag.name, false));
           }
         }),
-        */
         projects: this.projects
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletsService.updateTasklet(result as Tasklet);
+        this.taskletService.updateTasklet(result as Tasklet);
         this.snackbarService.showSnackbar('Continued tasklet', '');
       }
     });
@@ -127,7 +129,7 @@ export class TaskletComponent implements OnInit {
     continueTasklet.creationDate = new Date();
     continueTasklet.persons = [];
 
-    if (this.tasklet.type === TASKLET_TYPE.TODO || this.tasklet.type === TASKLET_TYPE.IDEA) {
+    if (this.tasklet.type === TASKLET_TYPE.IDEA) {
       continueTasklet.type = TASKLET_TYPE.ACTION;
     }
 
@@ -144,7 +146,7 @@ export class TaskletComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletsService.createTasklet(result as Tasklet);
+        this.taskletService.createTasklet(result as Tasklet);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
@@ -173,7 +175,7 @@ export class TaskletComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletsService.createTasklet(result as TaskletDailyScrum);
+        this.taskletService.createTasklet(result as TaskletDailyScrum);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
@@ -190,7 +192,7 @@ export class TaskletComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletsService.updateTasklet(result as Tasklet);
+        this.taskletService.updateTasklet(result as Tasklet);
         this.snackbarService.showSnackbar('Updated tasklet creation time', '');
       }
     });
@@ -208,7 +210,7 @@ export class TaskletComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletsService.deleteTasklet(result as Tasklet);
+        this.taskletService.deleteTasklet(result as Tasklet);
         this.snackbarService.showSnackbar('Deleted tasklet', '');
       }
     });

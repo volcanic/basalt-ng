@@ -1,7 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TaskletTodo} from '../../../../model/tasklet-todo.model';
-import {TASKLET_PRIORITY} from '../../../../model/tasklet-priority.enum';
-import {DateService} from '../../../../services/date.service';
+import {Component, Input, OnInit} from '@angular/core';
 import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
 
 @Component({

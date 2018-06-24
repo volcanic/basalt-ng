@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tasklet} from '../../../../model/tasklet.model';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 
 @Component({
   selector: 'app-tasklet-dialog-content',

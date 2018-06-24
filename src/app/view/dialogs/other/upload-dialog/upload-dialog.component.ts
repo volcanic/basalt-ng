@@ -1,10 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Tasklet} from '../../../../model/tasklet.model';
 import {Subject} from 'rxjs';
 import {DropResult, SUCCESS} from '../../../components/file-drop/file-drop.component';
 import {SnackbarService} from '../../../../services/snackbar.service';
-import {TaskletsService} from '../../../../services/tasklets.service';
+import {Entity} from '../../../../model/entities/entity.model';
+import {EntityService} from '../../../../services/entities/entity.service';
+import {ProjectService} from '../../../../services/entities/project.service';
+import {Project} from '../../../../model/entities/project.model';
 
 @Component({
   selector: 'app-upload-dialog',
@@ -13,9 +15,9 @@ import {TaskletsService} from '../../../../services/tasklets.service';
 })
 export class UploadDialogComponent implements OnInit {
   dialogTitle = '';
-  dropContent: Subject<Tasklet[]> = new Subject();
+  dropContent: Subject<Project[]> = new Subject();
 
-  constructor(private taskletsService: TaskletsService,
+  constructor(private projectService: ProjectService,
               private snackbarService: SnackbarService,
               public dialogRef: MatDialogRef<UploadDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -25,11 +27,11 @@ export class UploadDialogComponent implements OnInit {
     this.dialogTitle = this.data.title;
 
     this.dropContent.asObservable().subscribe((result) => {
-      (result as Tasklet[]).forEach(t => {
-        t['_rev'] = null;
-        t['_id'] = null;
-        console.log(`DEBUG tasklet ${JSON.stringify(t)}`);
-        this.taskletsService.updateTasklet(t);
+      (result as Project[]).forEach(e => {
+        e['_rev'] = null;
+        e['_id'] = null;
+        console.log(`DEBUG entity ${JSON.stringify(e)}`);
+        this.projectService.updateProject(e);
       });
     });
   }

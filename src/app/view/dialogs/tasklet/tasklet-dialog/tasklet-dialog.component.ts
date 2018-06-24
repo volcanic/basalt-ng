@@ -2,19 +2,20 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {UUID} from '../../../../model/util/uuid';
-import {Tasklet} from '../../../../model/tasklet.model';
-import {TaskletsService} from '../../../../services/tasklets.service';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
-import {TaskletTodo} from '../../../../model/tasklet-todo.model';
 import {Tag} from '../../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
-import {ProjectsFilterDialogComponent} from '../../filters/project-filter-dialog/project-filter-dialog.component';
-import {Project} from '../../../../model/project.model';
+import {Project} from '../../../../model/entities/project.model';
+import {Task} from '../../../../model/entities/task.model';
 import {Person} from '../../../../model/person.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
+import {TaskletService} from '../../../../services/entities/tasklet.service';
+import {TaskService} from '../../../../services/entities/task.service';
+import {EntityService} from '../../../../services/entities/entity.service';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -32,13 +33,11 @@ export class TaskletDialogComponent implements OnInit {
   taskOptions = [];
   personOptions = [];
 
-  projects: Project[] = [];
   tags: Tag[] = [];
   newTags: Tag[] = [];
 
-  iconAdd = 'add';
-
-  constructor(private taskletsService: TaskletsService,
+  constructor(private taskService: TaskService,
+              private taskletService: TaskletService,
               private snackbarService: SnackbarService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
@@ -54,13 +53,13 @@ export class TaskletDialogComponent implements OnInit {
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = JSON.parse(JSON.stringify(this.data.tasklet));
     this.tags = JSON.parse(JSON.stringify(this.data.tags)).sort((t1, t2) => {
-      return t1.value > t2.value ? 1 : -1;
+      return t1.name > t2.name ? 1 : -1;
     }).map(t => {
       if (this.tasklet.tags != null) {
         t.checked = false;
 
         this.tasklet.tags.forEach(tt => {
-          if (t.value === tt.value) {
+          if (t.name === tt.name) {
             t.checked = true;
           }
         });
@@ -68,32 +67,15 @@ export class TaskletDialogComponent implements OnInit {
 
       return t;
     });
-    this.projects = this.data.projects;
     this.previousText = this.data.previousText;
 
-    this.taskOptions = Array.from(this.taskletsService.getTasks().values());
-    this.personOptions = Array.from(this.taskletsService.getPersons().values());
+    this.taskOptions = Array.from(this.taskService.tasks.values());
+    this.personOptions = Array.from(this.taskletService.getPersons().values());
 
     this.newTags.push(new Tag('', false));
   }
 
-  onDueHourSelected(value: number) {
-    const taskletTodo = this.tasklet as TaskletTodo;
-    const dueDate = new Date(taskletTodo.dueDate);
-
-    taskletTodo.dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate(), value, dueDate.getMinutes());
-  }
-
-  onDueMinuteSelected(value: number) {
-    const taskletTodo = this.tasklet as TaskletTodo;
-    const dueDate = new Date(taskletTodo.dueDate);
-
-    taskletTodo.dueDate = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate(), dueDate.getHours(), value);
-  }
-
   addTasklet() {
-    this.tasklet.id = new UUID().toString();
-    this.tasklet.creationDate = new Date();
     this.tasklet.tags = this.aggregateTags(this.tasklet, this.tags, this.newTags);
     this.tasklet.persons = this.aggregatePersons(this.tasklet);
 
@@ -102,18 +84,12 @@ export class TaskletDialogComponent implements OnInit {
         this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
         break;
       }
-      case TASKLET_TYPE.TODO: {
-        this.dialogRef.close(this.tasklet as TaskletTodo);
-        break;
-      }
       case TASKLET_TYPE.LUNCH_BREAK:
       case TASKLET_TYPE.FINISHING_TIME: {
-        this.tasklet.taskName = this.tasklet.type;
         this.dialogRef.close(this.tasklet as Tasklet);
         break;
       }
       case TASKLET_TYPE.WEEKLY_DIGEST: {
-        this.tasklet.taskName = this.tasklet.type;
         this.dialogRef.close(this.tasklet as TaskletWeeklyDigest);
         break;
       }
@@ -132,13 +108,8 @@ export class TaskletDialogComponent implements OnInit {
         this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
         break;
       }
-      case TASKLET_TYPE.TODO: {
-        this.dialogRef.close(this.tasklet as TaskletTodo);
-        break;
-      }
       case TASKLET_TYPE.LUNCH_BREAK:
       case TASKLET_TYPE.FINISHING_TIME: {
-        this.tasklet.taskName = this.tasklet.type;
         this.dialogRef.close(this.tasklet as Tasklet);
         break;
       }
@@ -150,7 +121,6 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   updateTaskletDailyScrum(tasklet: TaskletDailyScrum) {
-    tasklet.taskName = tasklet.type;
     tasklet.participants = tasklet.participants.filter(p => {
       return p.person != null && p.person.name.length > 0;
     });
@@ -174,7 +144,7 @@ export class TaskletDialogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletsService.deleteTasklet(result as Tasklet);
+        this.taskletService.deleteTasklet(result as Tasklet);
         this.snackbarService.showSnackbar('Deleted tasklet', '');
         this.dialogRef.close(null);
       }
@@ -198,10 +168,10 @@ export class TaskletDialogComponent implements OnInit {
 
     // Concatenate
     existingTags.filter(t => t.checked).forEach(t => {
-      aggregatedTags.set(t.value, t);
+      aggregatedTags.set(t.name, t);
     });
     newTags.filter(t => t.checked).forEach(t => {
-      aggregatedTags.set(t.value, t);
+      aggregatedTags.set(t.name, t);
     });
     this.inferTags(tasklet).forEach((value, key) => {
       aggregatedTags.set(key, value);
@@ -217,7 +187,7 @@ export class TaskletDialogComponent implements OnInit {
       line.split(' ').forEach(word => {
         if (word.startsWith('#')) {
           const tag = new Tag(word.replace('#', ''), true);
-          inferredTags.set(tag.value, tag);
+          inferredTags.set(tag.name, tag);
         }
       });
     });

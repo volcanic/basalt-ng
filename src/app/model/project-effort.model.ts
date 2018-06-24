@@ -1,5 +1,5 @@
-import {Project} from './project.model';
 import {TaskEffort} from './task-effort.model';
+import {Project} from './entities/project.model';
 
 export class ProjectEffort {
   project: Project;

@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
-import {Project} from '../../../../model/project.model';
+import {Project} from '../../../../model/entities/project.model';
 
 @Component({
   selector: 'app-project-filter-dialog',
@@ -21,7 +21,7 @@ export class ProjectsFilterDialogComponent implements OnInit {
     this.dialogTitle = data.dialogTitle;
 
     this.projects = this.data.projects.sort((p1, p2) => {
-      return p1.value > p2.value ? 1 : -1;
+      return p1.name > p2.name ? 1 : -1;
     });
   }
 

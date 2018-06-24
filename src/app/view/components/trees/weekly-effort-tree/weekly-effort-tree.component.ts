@@ -64,15 +64,15 @@ export class ProjectEffortTreeComponent implements OnInit {
 
       pe.getTaskEfforts().forEach(te => {
         const taskEffortNode = new EffortNode();
-        taskEffortNode.topic = te.task;
+        taskEffortNode.topic = te.task.name;
         taskEffortNode.effort = te.effort;
         taskNodes.push(taskEffortNode);
       });
 
       const projectEffortNode = new EffortNode();
-      projectEffortNode.topic = pe.project.value;
+      projectEffortNode.topic = pe.project.name;
       projectEffortNode.effort = pe.effort;
-      projectEffortNode.color = this.colorService.getProjectColor(pe.project.value);
+      projectEffortNode.color = this.colorService.getProjectColor(pe.project.name);
       projectEffortNode.children = taskNodes;
 
       week.children.push(projectEffortNode);

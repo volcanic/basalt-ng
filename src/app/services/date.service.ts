@@ -216,5 +216,4 @@ export class DateService {
 
     return this.getDayEnd(sunday);
   }
-
 }

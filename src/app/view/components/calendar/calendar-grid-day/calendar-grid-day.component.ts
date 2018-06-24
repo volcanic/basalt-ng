@@ -1,11 +1,11 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {QuarterHour} from '../../../../model/quarterhour.model';
 import {DigestService} from '../../../../services/digest.service';
-import {TaskletsService} from '../../../../services/tasklets.service';
 import {DateService} from '../../../../services/date.service';
-import {Tasklet} from '../../../../model/tasklet.model';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Rx';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
+import {TaskletService} from '../../../../services/entities/tasklet.service';
 
 @Component({
   selector: 'app-calendar-grid-day',
@@ -24,13 +24,13 @@ export class CalendarGridDayComponent implements OnInit, OnDestroy {
   DISPLAY_LIMIT = 100;
 
   constructor(private dateService: DateService,
-              private taskletsService: TaskletsService,
+              private taskletService: TaskletService,
               private digestService: DigestService) {
   }
 
   ngOnInit() {
     // Subscribe tasklet changes
-    this.taskletsService.taskletsSubject.pipe(
+    this.taskletService.taskletsSubject.pipe(
       takeUntil(this.taskletsUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
@@ -40,16 +40,14 @@ export class CalendarGridDayComponent implements OnInit, OnDestroy {
 
           return date2 - date1;
         }).filter(t => {
-           this.taskletsService.matchesDate(t, new Date(this.focusDay));
+          this.taskletService.matchesDate(t, new Date(this.focusDay));
         }).slice(0, this.DISPLAY_LIMIT);
-
-        console.log(`FOO ${this.tasklets.length}`);
       } else {
         this.tasklets = [];
       }
     });
 
-    this.taskletsService.update();
+    this.taskletService.notify();
 
     this.weekDay = this.dateService.getWeekDayString(this.focusDay.getDay());
     this.date = this.focusDay.getDate().toString();

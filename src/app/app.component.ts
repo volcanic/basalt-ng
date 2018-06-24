@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {SnackbarService} from './services/snackbar.service';
 import {PouchDBService} from './services/pouchdb.service';
 import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
-import {TaskletsService} from './services/tasklets.service';
 import {environment} from '../environments/environment';
 import {GitTag} from './model/git-tag.model';
 import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-dialog/new-features-dialog.component';
 import {SettingsService} from './services/settings.service';
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {Setting} from './model/settings/setting.model';
+import {EntityService} from './services/entities/entity.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,7 @@ import {Setting} from './model/settings/setting.model';
 export class AppComponent implements OnInit {
   title = 'Basalt';
 
-  constructor(private taskletsService: TaskletsService,
+  constructor(private entityService: EntityService,
               private snackbarService: SnackbarService,
               private pouchDBService: PouchDBService,
               private pouchDBSettingsService: PouchDBSettingsService,
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
     });
 
 
-    this.taskletsService.fetch();
+    this.entityService.fetch();
     this.snackbarService.messageSubject.subscribe(snack => {
         this.openSnackBar(snack[0], snack[1]);
       }

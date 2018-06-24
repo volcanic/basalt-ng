@@ -1,9 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Tasklet} from '../../../../model/tasklet.model';
 import {MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {ColorService} from '../../../../services/color.service';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
+import {EntityService} from '../../../../services/entities/entity.service';
+import {Project} from '../../../../model/entities/project.model';
 
 @Component({
   selector: 'app-tasklet-default',
@@ -13,11 +15,15 @@ import {ColorService} from '../../../../services/color.service';
 export class TaskletDefaultComponent implements OnInit {
   @Input() tasklet: Tasklet;
   @Output() onActionFired = new EventEmitter<string>();
+
+  topic: string;
+  project: Project;
   icon = '';
 
   projectColor = 'transparent';
 
-  constructor(private colorService: ColorService,
+  constructor(private entityService: EntityService,
+              private colorService: ColorService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('turned', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_turned_in_not_black_24px.svg'));
@@ -36,12 +42,31 @@ export class TaskletDefaultComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Set topic to be displayed
+    switch (this.tasklet.type) {
+      case TASKLET_TYPE.DAILY_SCRUM:
+      case TASKLET_TYPE.LUNCH_BREAK:
+      case TASKLET_TYPE.FINISHING_TIME:
+      case TASKLET_TYPE.WEEKLY_DIGEST: {
+        this.topic = this.tasklet.type;
+        break;
+      }
+      default: {
+        const task = this.entityService.getTaskByTasklet(this.tasklet);
+
+        if (task != null) {
+          this.topic = task.name;
+        } else {
+          this.topic = this.tasklet.type;
+        }
+      }
+    }
+
+    this.project = this.entityService.getProjectByTasklet(this.tasklet);
     this.selectIcon();
 
-    if (this.tasklet.project != null
-      && this.tasklet.project.value != null
-      && this.tasklet.project.value.trim().length > 0) {
-      this.projectColor = this.colorService.getProjectColor(this.tasklet.project.value);
+    if (this.project != null) {
+      this.projectColor = this.colorService.getProjectColor(this.project.name);
     }
   }
 
@@ -77,10 +102,6 @@ export class TaskletDefaultComponent implements OnInit {
       }
       case TASKLET_TYPE.DEBUGGING: {
         this.icon = 'bug';
-        break;
-      }
-      case TASKLET_TYPE.TODO: {
-        this.icon = 'timer';
         break;
       }
       case TASKLET_TYPE.IDEA: {

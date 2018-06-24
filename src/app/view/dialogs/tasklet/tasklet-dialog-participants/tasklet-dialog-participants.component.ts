@@ -1,11 +1,11 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {TaskletsService} from '../../../../services/tasklets.service';
 import {Person} from '../../../../model/person.model';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MAT_DIALOG_DATA, MatDialog, MatIconRegistry} from '@angular/material';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {PersonDialogComponent} from '../../other/person-dialog/person-dialog.component';
-import {Tasklet} from '../../../../model/tasklet.model';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
+import {TaskletService} from '../../../../services/entities/tasklet.service';
 
 @Component({
   selector: 'app-tasklet-dialog-participants',
@@ -20,7 +20,7 @@ export class TaskletDialogParticipantsComponent implements OnInit {
 
   iconAdd = 'add';
 
-  constructor(private taskletsService: TaskletsService,
+  constructor(private taskletService: TaskletService,
               public dialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any,
               iconRegistry: MatIconRegistry,
@@ -32,7 +32,7 @@ export class TaskletDialogParticipantsComponent implements OnInit {
     if (this.tasklet.persons == null) {
       this.tasklet.persons = [];
     }
-    this.existingPersons = Array.from(this.taskletsService.getPersons().values());
+    this.existingPersons = Array.from(this.taskletService.getPersons().values());
   }
 
   addPerson() {

@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
-import {Tasklet} from '../../../model/tasklet.model';
 import {Observable, Subject, Subscription, of} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
+import {Entity} from '../../../model/entities/entity.model';
 
 const URL = 'https://foo.bar.com';
 
@@ -31,7 +31,7 @@ export class FileDropComponent implements OnInit, OnDestroy {
   @Output()
   public uploadedFiles: EventEmitter<DropResult> = new EventEmitter();
 
-  static parseBasaltFile(value: string): Tasklet[] {
+  static parseBasaltFile(value: string): Entity[] {
     return JSON.parse(value);
   }
 

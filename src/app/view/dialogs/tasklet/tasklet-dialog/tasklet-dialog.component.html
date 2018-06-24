@@ -3,9 +3,8 @@
   <mat-dialog-content>
     <form #formCtrl="ngForm">
       <app-tasklet-dialog-header
-        [tasklet]="tasklet"
-        [projects]="projects"></app-tasklet-dialog-header>
-      <app-tasklet-dialog-topic
+        [tasklet]="tasklet"></app-tasklet-dialog-header>
+      <app-tasklet-dialog-task
         [tasklet]="tasklet"
         [taskOptions]="taskOptions" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
@@ -14,9 +13,8 @@
                                        || tasklet.type == 'Chat'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'
-                                       || tasklet.type == 'TODO'">
-      </app-tasklet-dialog-topic>
+                                       || tasklet.type == 'Idea'">
+      </app-tasklet-dialog-task>
       <app-tasklet-dialog-content
         [tasklet]="tasklet" [previousText]="previousText" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Call'
@@ -25,12 +23,7 @@
                                        || tasklet.type == 'Chat'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'
-                                       || tasklet.type == 'TODO'"></app-tasklet-dialog-content>
-      <app-tasklet-dialog-todo
-        [tasklet]="tasklet" *ngIf="tasklet.type == 'TODO'"
-        (onHourSelectedEmitter)="onDueHourSelected($event)"
-        (onMinuteSelectedEmitter)="onDueMinuteSelected($event)"></app-tasklet-dialog-todo>
+                                       || tasklet.type == 'Idea'"></app-tasklet-dialog-content>
       <app-tasklet-dialog-participants
         [tasklet]="tasklet" [personOptions]="personOptions" *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
@@ -51,8 +44,7 @@
                                || tasklet.type == 'Chat'
                                || tasklet.type == 'Development'
                                || tasklet.type == 'Debugging'
-                               || tasklet.type == 'Idea'
-                               || tasklet.type == 'TODO'">
+                               || tasklet.type == 'Idea'">
       </app-tasklet-dialog-tags>
     </form>
   </mat-dialog-content>
