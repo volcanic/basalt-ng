@@ -65,6 +65,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
    */
 
   ngOnInit() {
+    // Add empty elements
+    let tag = new Tag(PlaceholderValues.EMPTY_TAG, true);
+    let project = new Project(PlaceholderValues.EMPTY_PROJECT, true);
+    project.id = PlaceholderValues.EMPTY_PROJECT_ID;
+    this.tags.set(tag.name, tag);
+    this.projects.set(project.id, project);
+
     // Subscribe tasklet changes
     this.taskletService.taskletsSubject.pipe(
       takeUntil(this.taskletsUnsubscribeSubject)
@@ -72,29 +79,19 @@ export class TimelineComponent implements OnInit, OnDestroy {
       if (value != null) {
 
         // Get initial list of tags
-        if (this.tags.size < 1) {
-          this.tags = this.taskletService.getTags();
-          this.tags.forEach((tag: Tag, key: string) => {
+        if (this.tags.size < 2) {
+          this.taskletService.getTags().forEach((tag: Tag, key: string) => {
             tag.checked = true;
+            this.tags.set(tag.name, tag);
           });
-
-          // Add empty element
-          let tag = new Tag(PlaceholderValues.EMPTY_TAG, true);
-          this.tags.set(tag.name, tag);
         }
-
+        
         // Get initial list of projects
-        if (this.projects.size < 1) {
-          this.projects = this.projectService.projects;
-          this.tags.forEach((project: Project, key: string) => {
+        if (this.projects.size < 2) {
+          this.projectService.projects.forEach((project: Project, key: string) => {
             project.checked = true;
-            return project;
+            this.projects.set(project.id, project);
           });
-
-          // Add empty element
-          let project = new Project(PlaceholderValues.EMPTY_PROJECT, true);
-          project.id = PlaceholderValues.EMPTY_PROJECT_ID;
-          this.projects.set(project.id, project);
         }
 
         this.tasklets = value
