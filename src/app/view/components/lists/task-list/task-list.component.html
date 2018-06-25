@@ -5,12 +5,12 @@
 
 <div class="label">Next</div>
 
-<app-task-list-item *ngFor="let t of tasksToday" [task]="t">
+<app-task-list-item *ngFor="let t of tasksNext" [task]="t">
 </app-task-list-item>
 
 <mat-divider></mat-divider>
 
 <div class="label">Inbox</div>
 
-<app-task-list-item *ngFor="let t of tasksLater" [task]="t">
+<app-task-list-item *ngFor="let t of tasksInbox" [task]="t">
 </app-task-list-item>
