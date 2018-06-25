@@ -28,7 +28,6 @@ import {PouchDBService} from './services/pouchdb.service';
 import {ConfirmationDialogComponent} from './view/dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {TaskletDialogComponent} from './view/dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
 import {AppRoutingModule} from './app-routing.module';
-import {TaskletsComponent} from './view/pages/tasklets/tasklets.component';
 import {TaskletComponent} from './view/components/tasklet/tasklet/tasklet.component';
 import {SnackbarService} from './services/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -37,7 +36,7 @@ import {TaskletDefaultComponent} from './view/components/tasklet/tasklet-default
 import {DateService} from './services/date.service';
 import {TagDialogComponent} from './view/dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {MatchService} from './services/match.service';
-import {TaskletsToolbarComponent} from './view/toolbars/tasklet-toolbar/tasklets-toolbar.component';
+import {TimelineToolbarComponent} from './view/toolbars/timeline-toolbar/timeline-toolbar.component';
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
 import {TimePickerDialogComponent} from './view/dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {PersonDialogComponent} from './view/dialogs/other/person-dialog/person-dialog.component';
@@ -76,6 +75,7 @@ import {TaskDialogComponent} from './view/dialogs/other/task-dialog/task-dialog.
 import {TaskletService} from './services/entities/tasklet.service';
 import {TaskListItemComponent} from './view/components/lists/task-list-item/task-list-item.component';
 import {TaskListComponent} from './view/components/lists/task-list/task-list.component';
+import {TimelineComponent} from './view/pages/timeline/timeline.component';
 
 @NgModule({
   declarations: [
@@ -103,8 +103,8 @@ import {TaskListComponent} from './view/components/lists/task-list/task-list.com
     TaskletDialogTaskComponent,
     TaskletDialogWeeklyDigestComponent,
     TaskletParticipantsComponent,
-    TaskletsComponent,
-    TaskletsToolbarComponent,
+    TimelineComponent,
+    TimelineToolbarComponent,
     TaskletWeeklyDigestComponent,
     TimePickerDialogComponent,
     UploadDialogComponent,

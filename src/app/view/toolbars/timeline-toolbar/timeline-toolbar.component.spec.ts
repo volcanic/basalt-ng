@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {TaskletsToolbarComponent} from './tasklets-toolbar.component';
+import {TimelineToolbarComponent} from './tasklets-toolbar.component';
 
-describe('TaskletsToolbarComponent', () => {
-  let component: TaskletsToolbarComponent;
-  let fixture: ComponentFixture<TaskletsToolbarComponent>;
+describe('TimelineToolbarComponent', () => {
+  let component: TimelineToolbarComponent;
+  let fixture: ComponentFixture<TimelineToolbarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletsToolbarComponent]
+      declarations: [TimelineToolbarComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskletsToolbarComponent);
+    fixture = TestBed.createComponent(TimelineToolbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

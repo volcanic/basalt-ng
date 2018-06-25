@@ -23,10 +23,10 @@ import {TaskService} from '../../../services/entities/task.service';
 
 @Component({
   selector: 'app-tasklets',
-  templateUrl: './tasklets.component.html',
-  styles: [require('./tasklets.component.scss')]
+  templateUrl: './timeline.component.html',
+  styles: [require('./timeline.component.scss')]
 })
-export class TaskletsComponent implements OnInit, OnDestroy {
+export class TimelineComponent implements OnInit, OnDestroy {
   title = 'Basalt';
   tasklets: Tasklet[] = [];
   private taskletsUnsubscribeSubject = new Subject();
@@ -150,14 +150,14 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             }),
           }
         });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
+        dialogRef.afterClosed().subscribe(Timeline => {
+          if (Timeline != null) {
             // Select all tags that are contained in tasklet
-            (result as Tasklet).tags.forEach(t => {
+            (Timeline as Tasklet).tags.forEach(t => {
               this.tags.set(t.name, t);
             });
 
-            this.taskletService.createTasklet(result as Tasklet);
+            this.taskletService.createTasklet(Timeline as Tasklet);
             this.snackbarService.showSnackbar('Added tasklet', '');
           }
         });
@@ -171,9 +171,9 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             tags: Array.from(this.tags.values())
           }
         });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            result.forEach(t => {
+        dialogRef.afterClosed().subscribe(Timeline => {
+          if (Timeline != null) {
+            Timeline.forEach(t => {
               this.tags.set(t.name, t);
             });
             this.taskletService.notify();
@@ -190,9 +190,9 @@ export class TaskletsComponent implements OnInit, OnDestroy {
             projects: Array.from(this.projects.values())
           }
         });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            result.forEach(p => {
+        dialogRef.afterClosed().subscribe(Timeline => {
+          if (Timeline != null) {
+            Timeline.forEach(p => {
               this.projects.set(p.id, p);
             });
             this.taskletService.notify();

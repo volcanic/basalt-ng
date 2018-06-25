@@ -54,7 +54,7 @@ export class DigestService {
       dailyDigest.start = tasklets[0].creationDate;
       dailyDigest.end = tasklets[tasklets.length - 1].creationDate;
 
-      // Iterate over all tasklets
+      // Iterate over all timeline
       for (let index = 0; index < tasklets.length; index++) {
         const tasklet = tasklets[index];
         const nextTasklet = tasklets[index + 1];

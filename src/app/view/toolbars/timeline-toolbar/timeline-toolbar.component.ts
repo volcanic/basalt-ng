@@ -8,11 +8,11 @@ import {TaskletService} from '../../../services/entities/tasklet.service';
 import {debounceTime} from 'rxjs/internal/operators';
 
 @Component({
-  selector: 'app-tasklets-toolbar',
-  templateUrl: './tasklets-toolbar.component.html',
-  styles: [require('./tasklets-toolbar.component.scss')]
+  selector: 'app-timeline-toolbar',
+  templateUrl: './timeline-toolbar.component.html',
+  styles: [require('./timeline-toolbar.component.scss')]
 })
-export class TaskletsToolbarComponent implements OnInit {
+export class TimelineToolbarComponent implements OnInit {
   @Input() title;
   @Output() onSearchItemChangedEmitter = new EventEmitter<string>();
   @Output() onMenuItemClickedEmitter = new EventEmitter<string>();

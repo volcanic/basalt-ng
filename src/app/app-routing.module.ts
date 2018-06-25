@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {TaskletsComponent} from './view/pages/tasklets/tasklets.component';
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
 import {CalendarComponent} from './view/pages/calendar/calendar.component';
+import {TimelineComponent} from './view/pages/timeline/timeline.component';
 
 const routes: Routes = [
     {path: '', component: SplashScreenComponent},
-    {path: 'tasklets', component: TaskletsComponent},
+    {path: 'timeline', component: TimelineComponent},
     {path: 'calendar', component: CalendarComponent}
   ]
 ;
