@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
 
 @Component({
-  selector: 'app-todos-list',
-  templateUrl: './todos-list.component.html',
-  styleUrls: ['./todos-list.component.scss']
+  selector: 'app-task-list',
+  templateUrl: './task-list.component.html',
+  styleUrls: ['./task-list.component.scss']
 })
-export class TodosListComponent implements OnInit {
+export class TaskListComponent implements OnInit {
 
   tasksOverdue = [];
   tasksToday = [];

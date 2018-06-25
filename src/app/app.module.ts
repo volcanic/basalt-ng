@@ -72,10 +72,10 @@ import {CalendarGridComponent} from './view/components/calendar/calendar-grid/ca
 import {CalendarGridDayComponent} from './view/components/calendar/calendar-grid-day/calendar-grid-day.component';
 import {CalendarGridQuarterHourComponent} from './view/components/calendar/calendar-grid-quarter-hour/calendar-grid-quarter-hour.component';
 import {CalendarItemComponent} from './view/components/calendar/calendar-item/calendar-item.component';
-import {TodosListComponent} from './view/components/lists/todos-list/todos-list.component';
-import {TodosListItemComponent} from './view/components/lists/todos-list-item/todos-list-item.component';
 import {TaskDialogComponent} from './view/dialogs/other/task-dialog/task-dialog.component';
 import {TaskletService} from './services/entities/tasklet.service';
+import {TaskListItemComponent} from './view/components/lists/task-list-item/task-list-item.component';
+import {TaskListComponent} from './view/components/lists/task-list/task-list.component';
 
 @NgModule({
   declarations: [
@@ -117,8 +117,8 @@ import {TaskletService} from './services/entities/tasklet.service';
     CalendarGridDayComponent,
     CalendarGridQuarterHourComponent,
     CalendarItemComponent,
-    TodosListComponent,
-    TodosListItemComponent,
+    TaskListComponent,
+    TaskListItemComponent,
     TaskDialogComponent
   ],
   imports: [
