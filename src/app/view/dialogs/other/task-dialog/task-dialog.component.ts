@@ -1,8 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
-import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry} from '@angular/material';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {DateService} from '../../../../services/date.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-task-dialog',
@@ -24,7 +25,10 @@ export class TaskDialogComponent implements OnInit {
 
   constructor(private adapter: DateAdapter<any>,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              iconRegistry: MatIconRegistry,
+              sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
   }
 
   ngOnInit() {
@@ -36,8 +40,8 @@ export class TaskDialogComponent implements OnInit {
     if (this.task.dueDate == null) {
       this.task.dueDate = new Date();
     }
-    this.hour = this.task.dueDate.getHours();
-    this.minute = this.task.dueDate.getMinutes();
+    this.hour = new Date(this.task.dueDate).getHours();
+    this.minute = new Date(this.task.dueDate).getMinutes();
 
     for (let h = 0; h < 24; h++) {
       this.hours.push(h);
