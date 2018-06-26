@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {SnackbarService} from '../../../services/snackbar.service';
@@ -50,6 +50,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
               private taskService: TaskService,
               private snackbarService: SnackbarService,
               private matchService: MatchService,
+              public zone: NgZone,
               public dialog: MatDialog,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
@@ -85,7 +86,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
             this.tags.set(tag.name, tag);
           });
         }
-        
+
         // Get initial list of projects
         if (this.projects.size < 2) {
           this.projectService.projects.forEach((project: Project, key: string) => {
@@ -94,8 +95,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
           });
         }
 
-        this.tasklets = value
-          .filter(tasklet => {
+        value.filter(tasklet => {
             let matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.searchItem);
             let matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.tags.values()));
             let matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.projects.values()));
@@ -109,10 +109,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
             return date2 - date1;
           }).slice(0, this.DISPLAY_LIMIT);
       } else {
-        this.tasklets = [];
+        value = [];
       }
-    })
-    ;
+
+      this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(value)));
+    });
 
     this.taskletService.notify();
   }
@@ -147,14 +148,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
             }),
           }
         });
-        dialogRef.afterClosed().subscribe(Timeline => {
-          if (Timeline != null) {
+        dialogRef.afterClosed().subscribe(tasklet => {
+          if (tasklet != null) {
             // Select all tags that are contained in tasklet
-            (Timeline as Tasklet).tags.forEach(t => {
+            (tasklet as Tasklet).tags.forEach(t => {
               this.tags.set(t.name, t);
             });
 
-            this.taskletService.createTasklet(Timeline as Tasklet);
+            this.taskletService.createTasklet(tasklet as Tasklet);
             this.snackbarService.showSnackbar('Added tasklet', '');
           }
         });
