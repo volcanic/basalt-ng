@@ -1,16 +1,21 @@
 <h2 mat-dialog-title>{{ dialogTitle }}</h2>
-<mat-dialog-content>
-  <mat-form-field class="wide-box">
-    <input matInput name="task" type="text" placeholder="Task" [formControl]="formControl"
-           [(ngModel)]="task.name">
-  </mat-form-field>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button [mat-dialog-close]=null>
-    Cancel
-  </button>
-  <div class="flexbox"></div>
-  <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addTask()">Add
-    task
-  </button>
-</mat-dialog-actions>
+<form #formCtrl="ngForm">
+  <mat-dialog-content>
+    <mat-form-field class="wide-box">
+      <input matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
+             [(ngModel)]="task.name">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button [mat-dialog-close]=null>
+      Cancel
+    </button>
+    <div class="flexbox"></div>
+    <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addTask()" [disabled]="!formCtrl.form.valid">
+      Add task
+    </button>
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updateTask()" [disabled]="!formCtrl.form.valid">
+      Update task
+    </button>
+  </mat-dialog-actions>
+</form>

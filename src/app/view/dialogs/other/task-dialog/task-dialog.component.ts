@@ -17,8 +17,6 @@ export class TaskDialogComponent implements OnInit {
   dialogTitle = '';
   task: Task;
 
-  formControl: FormControl = new FormControl();
-
   constructor(public dialogRef: MatDialogRef<TaskDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -26,11 +24,14 @@ export class TaskDialogComponent implements OnInit {
   ngOnInit() {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
-    this.task = this.data.task;
+    this.task = JSON.parse(this.data.task);
   }
 
   addTask() {
     this.dialogRef.close(this.task);
   }
 
+  updateTask() {
+    this.dialogRef.close(this.task);
+  }
 }
