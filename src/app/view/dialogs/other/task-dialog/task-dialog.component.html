@@ -1,10 +1,35 @@
 <h2 mat-dialog-title>{{ dialogTitle }}</h2>
 <form #formCtrl="ngForm">
   <mat-dialog-content>
-    <mat-form-field class="wide-box">
-      <input matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
-             [(ngModel)]="task.name">
-    </mat-form-field>
+    <div>
+      <mat-form-field class="wide-box">
+        <input matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
+               [(ngModel)]="task.name">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput [(ngModel)]="task.dueDate" [matDatepicker]="picker" name="dueDate" placeholder="Due date">
+        <mat-datepicker-toggle name="datepickertoggle" matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker name="datepicker"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field color="primary" class="time-select">
+        <mat-select [(ngModel)]="hour" name="hour" placeholder="Hour" >
+          <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
+            {{ addTrailingZero(item) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      :
+      <mat-form-field color="primary" class="time-select">
+        <mat-select [(ngModel)]="minute" name="minute" placeholder="Minute" >
+          <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
+            {{ addTrailingZero(item) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button [mat-dialog-close]=null>
