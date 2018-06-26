@@ -119,10 +119,18 @@ export class DateService {
   }
 
   isBefore(d1: Date, d2: Date) {
-    return new Date(d1).setHours(0, 0, 0, 0) < new Date(d2).setHours(0, 0, 0, 0);
+    return new Date(d1) < new Date(d2);
   }
 
   isAfter(d1: Date, d2: Date) {
+    return new Date(d1) > new Date(d2);
+  }
+
+  isDayBefore(d1: Date, d2: Date) {
+    return new Date(d1).setHours(0, 0, 0, 0) < new Date(d2).setHours(0, 0, 0, 0);
+  }
+
+  isDayAfter(d1: Date, d2: Date) {
     return new Date(d1).setHours(0, 0, 0, 0) > new Date(d2).setHours(0, 0, 0, 0);
   }
 

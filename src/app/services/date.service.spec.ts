@@ -17,13 +17,13 @@ describe('DateService', () => {
     const d1 = new Date('2017-12-31');
     const d2 = new Date('2018-01-01');
 
-    expect(service.isBefore(d1, d2)).toBeTruthy();
+    expect(service.isDayBefore(d1, d2)).toBeTruthy();
   }));
 
   it('should determine that two similar dates are not before each other', inject([DateService], (service: DateService) => {
     const d1 = new Date('2018-01-01');
 
-    expect(service.isBefore(d1, d1)).toBeFalsy();
+    expect(service.isDayBefore(d1, d1)).toBeFalsy();
   }));
 
   it('should determine whether a date is today', inject([DateService], (service: DateService) => {
