@@ -11,7 +11,7 @@ export class Task extends Entity {
   creationDate: Date;
   dueDate: Date;
   completionDate: Date;
-  priority: TASKLET_PRIORITY;
+  priority: number;
   tags: Tag[];
 
   constructor(name: string, description: string) {
@@ -21,7 +21,7 @@ export class Task extends Entity {
     this.creationDate = new Date();
     this.dueDate = null;
     this.completionDate = null;
-    this.priority = TASKLET_PRIORITY.UNSPECIFIED;
+    this.priority = 0;
     this.tags = [];
   }
 }

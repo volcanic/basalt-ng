@@ -1,9 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
-import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {DateService} from '../../../../services/date.service';
-import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-task-dialog',
@@ -18,10 +17,28 @@ export class TaskDialogComponent implements OnInit {
   dialogTitle = '';
   task: Task;
 
+  // Due date
   hour = 0;
   minute = 0;
   hours = [];
   minutes = [];
+
+  // Priority
+  colorEmpty = '#cfd8dc';
+  colorsPriorities = [
+    '#90a4ae',
+    '#78909c',
+    '#607d8b',
+    '#546e7a',
+    '#455a64',
+  ];
+  colorsFlags = [
+    '#cfd8dc',
+    '#cfd8dc',
+    '#cfd8dc',
+    '#cfd8dc',
+    '#cfd8dc'
+  ];
 
   constructor(private adapter: DateAdapter<any>,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -34,6 +51,12 @@ export class TaskDialogComponent implements OnInit {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.task = JSON.parse(this.data.task);
+
+    this.initializeDueDate();
+    this.initializePriority();
+  }
+
+  initializeDueDate() {
     if (this.task.dueDate == null) {
       this.task.dueDate = new Date();
     }
@@ -51,12 +74,40 @@ export class TaskDialogComponent implements OnInit {
     this.minute = new Date(this.task.dueDate).getMinutes();
   }
 
+  initializePriority() {
+    this.colorsFlags.forEach((flagColor, index) => {
+      if (index <= this.task.priority) {
+        this.colorsFlags[index] = this.colorsPriorities[this.task.priority];
+      } else {
+        this.colorsFlags[index] = this.colorEmpty;
+      }
+    });
+  }
+
   addTask() {
     this.dialogRef.close(this.task);
   }
 
   updateTask() {
     this.dialogRef.close(this.task);
+  }
+
+  onHoverFlag(priority: number) {
+    this.colorsFlags.forEach((flagColor, index) => {
+      if (index <= priority) {
+        this.colorsFlags[index] = this.colorsPriorities[priority];
+      } else {
+        this.colorsFlags[index] = this.colorEmpty;
+      }
+    });
+  }
+
+  onLeaveFlag() {
+    this.initializePriority();
+  }
+
+  onClickFlag(priority: number) {
+    this.task.priority = priority;
   }
 
   onHourSelected(value: number) {

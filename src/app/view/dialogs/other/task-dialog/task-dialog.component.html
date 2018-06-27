@@ -43,6 +43,29 @@
           </mat-form-field>
         </div>
       </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Priority
+          </mat-panel-title>
+          <mat-panel-description>
+            Select a priority
+          </mat-panel-description>
+          <mat-icon svgIcon="flag"></mat-icon>
+        </mat-expansion-panel-header>
+
+        <mat-icon *ngFor="let item of colorsPriorities; let i = index"
+                  class="priority"
+                  svgIcon="flag"
+                  [style.fill]="colorsFlags[i]"
+                  (mouseenter)="onHoverFlag(i)"
+                  (mouseleave)="onLeaveFlag()"
+                  (click)="onClickFlag(i)">
+        </mat-icon>
+
+        <div>
+        </div>
+      </mat-expansion-panel>
     </mat-accordion>
   </mat-dialog-content>
   <mat-dialog-actions>
