@@ -1,6 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {ColorService} from '../../../../services/color.service';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
@@ -23,22 +21,7 @@ export class TaskletDefaultComponent implements OnInit {
   projectColor = 'transparent';
 
   constructor(private entityService: EntityService,
-              private colorService: ColorService,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('turned', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_turned_in_not_black_24px.svg'));
-    iconRegistry.addSvgIcon('people', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_people_black_24px.svg'));
-    iconRegistry.addSvgIcon('call', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_call_black_24px.svg'));
-    iconRegistry.addSvgIcon('scrum', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
-    iconRegistry.addSvgIcon('mail', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_mail_outline_black_24px.svg'));
-    iconRegistry.addSvgIcon('chat', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_chat_bubble_outline_black_24px.svg'));
-    iconRegistry.addSvgIcon('code', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_black_24px.svg'));
-    iconRegistry.addSvgIcon('bug', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_bug_report_black_24px.svg'));
-    iconRegistry.addSvgIcon('lightbulb', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_lightbulb_outline_black_24px.svg'));
-    iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
-    iconRegistry.addSvgIcon('dining', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_local_dining_black_24px.svg'));
-    iconRegistry.addSvgIcon('run', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_directions_run_black_24px.svg'));
-    iconRegistry.addSvgIcon('receipt', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/outline-receipt-24px.svg'));
+              private colorService: ColorService) {
   }
 
   ngOnInit() {
@@ -73,11 +56,11 @@ export class TaskletDefaultComponent implements OnInit {
   selectIcon() {
     switch (this.tasklet.type) {
       case TASKLET_TYPE.ACTION: {
-        this.icon = 'turned';
+        this.icon = 'turned_in_not';
         break;
       }
       case TASKLET_TYPE.MEETING: {
-        this.icon = 'people';
+        this.icon = 'people_18';
         break;
       }
       case TASKLET_TYPE.CALL: {
@@ -101,19 +84,19 @@ export class TaskletDefaultComponent implements OnInit {
         break;
       }
       case TASKLET_TYPE.DEBUGGING: {
-        this.icon = 'bug';
+        this.icon = 'bug_report';
         break;
       }
       case TASKLET_TYPE.IDEA: {
-        this.icon = 'lightbulb';
+        this.icon = 'lightbulb_outline';
         break;
       }
       case TASKLET_TYPE.LUNCH_BREAK: {
-        this.icon = 'dining';
+        this.icon = 'local_dining';
         break;
       }
       case TASKLET_TYPE.FINISHING_TIME: {
-        this.icon = 'run';
+        this.icon = 'local_run';
         break;
       }
       case TASKLET_TYPE.WEEKLY_DIGEST: {

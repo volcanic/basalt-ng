@@ -22,6 +22,10 @@ body {
   flex-direction: column;
 }
 
+.white-icon svg {
+  fill: white;
+}
+
 app-root {
   display: block;
   height: 100%;

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SnackbarService} from './services/snackbar.service';
 import {PouchDBService} from './services/pouchdb.service';
-import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatDialog, MatIconRegistry, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {environment} from '../environments/environment';
 import {GitTag} from './model/git-tag.model';
 import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-dialog/new-features-dialog.component';
@@ -9,6 +9,7 @@ import {SettingsService} from './services/settings.service';
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {Setting} from './model/settings/setting.model';
 import {EntityService} from './services/entities/entity.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,70 @@ export class AppComponent implements OnInit {
               private pouchDBSettingsService: PouchDBSettingsService,
               private settingsService: SettingsService,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar,
+              iconRegistry: MatIconRegistry,
+              sanitizer: DomSanitizer) {
+
+    const ICON_ROOT_DIR = 'assets/material-design-icons';
+    // const VARIANT_DESIGN = 'design';
+    const VARIANT_PRODUCTION = 'production';
+    const VARIANT = VARIANT_PRODUCTION;
+
+    class Icon {
+      topic: string;
+      name: string;
+      file: string;
+
+      constructor(topic: string, name: string, file: string) {
+      this.topic = topic;
+      this.name = name;
+      this.file = file;
+      }
+    }
+
+    const ACTION = 'action';
+    const AV = 'av';
+    const CONTENT = 'content';
+    const COMMUNICATION = 'communication';
+    const EDITOR = 'editor';
+    const FILE = 'file';
+    const IMAGE = 'image';
+    const MAPS = 'maps';
+    const NAVIGATION = 'navigation';
+    const SOCIAL = 'social';
+
+    let icons: Icon[] = [];
+    icons.push(new Icon(ACTION, 'agenda', 'ic_view_agenda_24px.svg'));
+    icons.push(new Icon(ACTION, 'bug_report', 'ic_bug_report_24px.svg'));
+    icons.push(new Icon(ACTION, 'code', 'ic_code_24px.svg'));
+    icons.push(new Icon(ACTION, 'label_outline', 'ic_label_outline_24px.svg'));
+    icons.push(new Icon(ACTION, 'lightbulb_outline', 'ic_lightbulb_outline_24px.svg'));
+    icons.push(new Icon(ACTION, 'receipt', 'ic_receipt_24px.svg'));
+    icons.push(new Icon(ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
+    icons.push(new Icon(AV, 'play_circle_filled', 'ic_play_circle_filled_24px.svg'));
+    icons.push(new Icon(COMMUNICATION, 'call', 'ic_call_24px.svg'));
+    icons.push(new Icon(COMMUNICATION, 'chat', 'ic_chat_24px.svg'));
+    icons.push(new Icon(CONTENT, 'add', 'ic_add_24px.svg'));
+    icons.push(new Icon(CONTENT, 'mail', 'ic_mail_24px.svg'));
+    icons.push(new Icon(CONTENT, 'people_18', 'ic_people_18px.svg'));
+    icons.push(new Icon(EDITOR, 'delete', 'ic_delete_24px.svg'));
+    icons.push(new Icon(EDITOR, 'mode_edit_18', 'ic_mode_edit_18px.svg'));
+    icons.push(new Icon(FILE, 'file_download', 'ic_file_download_24px.svg'));
+    icons.push(new Icon(FILE, 'file_upload', 'ic_file_upload_24px.svg'));
+    icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
+    icons.push(new Icon(MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
+    icons.push(new Icon(MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
+    icons.push(new Icon(NAVIGATION, 'menu', 'ic_menu_24px.svg'));
+    icons.push(new Icon(NAVIGATION, 'more_vert', 'ic_more_vert_24px.svg'));
+    icons.push(new Icon(SOCIAL, 'people', 'ic_people_24px.svg'));
+
+    icons.forEach(icon => {
+      iconRegistry.addSvgIcon(icon.name, sanitizer.bypassSecurityTrustResourceUrl(ICON_ROOT_DIR + '/' + icon.topic + '/svg/' + VARIANT + '/' + icon.file));
+    });
+
+    iconRegistry
+      .addSvgIcon('blank', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'))
+      .addSvgIcon('scrum', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'))
   }
 
   ngOnInit(): void {

@@ -1,6 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
-import {MatIconRegistry} from '@angular/material';
 import {FormControl} from '@angular/forms';
 import {Observable, Subject} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -24,18 +22,7 @@ export class TimelineToolbarComponent implements OnInit {
 
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletService: TaskletService,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('menu', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_menu_white_24px.svg'));
-    iconRegistry.addSvgIcon('label_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_label_outline_white_24px.svg'));
-    iconRegistry.addSvgIcon('agenda_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_view_agenda_white_24px.svg'));
-    iconRegistry.addSvgIcon('download_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_file_download_white_24px.svg'));
-    iconRegistry.addSvgIcon('download_black', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_file_download_black_24px.svg'));
-    iconRegistry.addSvgIcon('upload_black', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_file_upload_black_24px.svg'));
-    iconRegistry.addSvgIcon('timer_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_white_24px.svg'));
-    iconRegistry.addSvgIcon('more_white', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_more_vert_white_24px.svg'));
-    iconRegistry.addSvgIcon('blank', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'));
+  constructor(private taskletService: TaskletService) {
   }
 
   ngOnInit() {

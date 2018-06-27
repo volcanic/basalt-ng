@@ -1,21 +1,17 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef, MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {UUID} from '../../../../model/util/uuid';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {Tag} from '../../../../model/tag.model';
 import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
-import {Project} from '../../../../model/entities/project.model';
-import {Task} from '../../../../model/entities/task.model';
 import {Person} from '../../../../model/person.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
-import {EntityService} from '../../../../services/entities/entity.service';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -41,11 +37,7 @@ export class TaskletDialogComponent implements OnInit {
               private snackbarService: SnackbarService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
-    iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_black_24px.svg'));
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit() {

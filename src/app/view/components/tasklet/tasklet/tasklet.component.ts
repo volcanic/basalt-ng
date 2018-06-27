@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig, MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import {MatDialog, MatDialogConfig} from '@angular/material';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {SnackbarService} from '../../../../services/snackbar.service';
@@ -36,14 +35,8 @@ export class TaskletComponent implements OnInit {
               private taskletService: TaskletService,
               private snackbarService: SnackbarService,
               private dateService: DateService,
-              public dialog: MatDialog,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('more_black', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_more_vert_black_18px.svg'));
-    iconRegistry.addSvgIcon('play_circle_filled',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_play_circle_outline_black_36px.svg'));
-    iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_edit_black_18px.svg'));
-    iconRegistry.addSvgIcon('delete', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_delete_black_18px.svg'));
+              public dialog: MatDialog) {
+
   }
 
   ngOnInit() {

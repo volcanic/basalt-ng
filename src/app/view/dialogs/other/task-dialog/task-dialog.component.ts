@@ -25,10 +25,7 @@ export class TaskDialogComponent implements OnInit {
 
   constructor(private adapter: DateAdapter<any>,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('timer', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_timer_black_24px.svg'));
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   ngOnInit() {

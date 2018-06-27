@@ -2,8 +2,7 @@ import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {SnackbarService} from '../../../services/snackbar.service';
-import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {TaskletDialogComponent} from '../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
 import {TagDialogComponent} from '../../dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
@@ -51,10 +50,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
               private snackbarService: SnackbarService,
               private matchService: MatchService,
               public zone: NgZone,
-              public dialog: MatDialog,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_white_24px.svg'));
+              public dialog: MatDialog) {
   }
 
   /*
@@ -96,12 +92,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
         }
 
         value.filter(tasklet => {
-            let matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.searchItem);
-            let matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.tags.values()));
-            let matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.projects.values()));
+          let matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.searchItem);
+          let matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.tags.values()));
+          let matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.projects.values()));
 
-            return matchesSearchItem && matchesTags && matchesProjects;
-          })
+          return matchesSearchItem && matchesTags && matchesProjects;
+        })
           .sort((t1: Tasklet, t2: Tasklet) => {
             const date1 = new Date(t1.creationDate).getTime();
             const date2 = new Date(t2.creationDate).getTime();

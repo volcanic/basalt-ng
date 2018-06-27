@@ -19,22 +19,7 @@ export class TaskletDialogHeaderComponent implements OnInit {
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
   constructor(private entityService: EntityService,
-              public dialog: MatDialog,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_black_24px.svg'));
-    iconRegistry.addSvgIcon('turned', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_turned_in_not_black_24px.svg'));
-    iconRegistry.addSvgIcon('people', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_people_black_24px.svg'));
-    iconRegistry.addSvgIcon('call', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_call_black_24px.svg'));
-    iconRegistry.addSvgIcon('scrum', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
-    iconRegistry.addSvgIcon('mail', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_mail_outline_black_24px.svg'));
-    iconRegistry.addSvgIcon('chat', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_chat_bubble_outline_black_24px.svg'));
-    iconRegistry.addSvgIcon('code', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_black_24px.svg'));
-    iconRegistry.addSvgIcon('bug', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_bug_report_black_24px.svg'));
-    iconRegistry.addSvgIcon('lightbulb', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_lightbulb_outline_black_24px.svg'));
-    iconRegistry.addSvgIcon('dining', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_local_dining_black_24px.svg'));
-    iconRegistry.addSvgIcon('run', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_directions_run_black_24px.svg'));
-    iconRegistry.addSvgIcon('receipt', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/outline-receipt-24px.svg'));
+              public dialog: MatDialog) {
 
     this.project = this.entityService.getProjectByTasklet(this.tasklet)
   }
@@ -45,7 +30,7 @@ export class TaskletDialogHeaderComponent implements OnInit {
   selectIcon(type: TASKLET_TYPE) {
     switch (type) {
       case TASKLET_TYPE.ACTION: {
-        return 'turned';
+        return 'turned_in_not';
       }
       case TASKLET_TYPE.MEETING: {
         return 'people';
@@ -66,16 +51,16 @@ export class TaskletDialogHeaderComponent implements OnInit {
         return 'code';
       }
       case TASKLET_TYPE.DEBUGGING: {
-        return 'bug';
+        return 'bug_report';
       }
       case TASKLET_TYPE.IDEA: {
-        return 'lightbulb';
+        return 'lightbulb_outline';
       }
       case TASKLET_TYPE.LUNCH_BREAK: {
-        return 'dining';
+        return 'local_dining';
       }
       case TASKLET_TYPE.FINISHING_TIME: {
-        return 'run';
+        return 'directions_run';
       }
       case TASKLET_TYPE.WEEKLY_DIGEST: {
         return 'receipt';
