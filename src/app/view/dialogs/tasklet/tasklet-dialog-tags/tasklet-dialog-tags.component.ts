@@ -24,6 +24,9 @@ export class TaskletDialogTagsComponent implements OnInit {
     this.newTags.forEach((t: Tag) => {
         if (t.name.trim().length === 0) {
           noEmptyTag = false;
+          t.checked = false;
+        } else {
+          t.checked = true;
         }
       }
     );
