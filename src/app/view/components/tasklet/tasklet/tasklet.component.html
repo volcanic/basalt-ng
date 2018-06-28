@@ -15,9 +15,9 @@
       </div>
     </mat-card-header>
 
-    <mat-card-content>
+    <mat-card-content (click)="onActionFired('update')">
       <mat-accordion class="headers-align">
-        <mat-expansion-panel [expanded]="expansionPanelOpened" (click)="onActionFired('update')" hideToggle>
+        <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
           <div class="text">
             <mat-list *ngIf="tasklet.text != null && tasklet.text.length > 0">
               <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}
