@@ -48,6 +48,20 @@ export class TaskletComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initializeTags();
+    this.initializeProjects();
+    this.initializeDate();
+    this.initializeIcon();
+    this.initializeTopic();
+    this.initializeProject();
+    this.initializeExpansionPanel();
+  }
+
+  //
+  // Initialization
+  //
+
+  private initializeTags() {
     this.tags = Array.from(this.taskletService.getTags().values());
     this.tags.forEach(t => {
       if (this.tasklet.tags != null) {
@@ -60,20 +74,11 @@ export class TaskletComponent implements OnInit {
         });
       }
     });
-
-    this.projects = Array.from(this.projectService.projects.values());
-
-    this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
-    this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
-
-    this.initializeIcon();
-    this.initializeTopic();
-    this.initializeProject();
   }
 
-  //
-  // Initialization
-  //
+  private initializeProjects() {
+    this.projects = Array.from(this.projectService.projects.values());
+  }
 
   private initializeIcon() {
     switch (this.tasklet.type) {
@@ -128,6 +133,11 @@ export class TaskletComponent implements OnInit {
     }
   }
 
+  private initializeDate() {
+    this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
+    this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
+  }
+
   private initializeTopic() {
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM:
@@ -154,6 +164,13 @@ export class TaskletComponent implements OnInit {
     this.projectColor = this.colorService.getProjectColor(this.project);
   }
 
+  private initializeExpansionPanel() {
+    this.expansionPanelOpened = this.dateService.isToday(this.tasklet.creationDate, new Date());
+  }
+
+  //
+  // Actions
+  //
 
   onActionFired(action: string) {
     switch (action) {
@@ -180,12 +197,9 @@ export class TaskletComponent implements OnInit {
     }
   }
 
-  toggleExpansionPanel() {
+  onToggleExpansionPanel() {
     this.expansionPanelOpened = !this.expansionPanelOpened;
   }
-  //
-  // Actions
-  //
 
   private updateTasklet() {
     const dialogRef = this.dialog.open(TaskletDialogComponent, <MatDialogConfig>{
