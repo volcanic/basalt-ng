@@ -1,4 +1,3 @@
-import {TASKLET_PRIORITY} from '../tasklet-priority.enum';
 import {Tag} from '../tag.model';
 import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
