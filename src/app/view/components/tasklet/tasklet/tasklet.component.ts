@@ -15,6 +15,7 @@ import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
 import {Project} from '../../../../model/entities/project.model';
 import {EntityService} from '../../../../services/entities/entity.service';
 import {ProjectService} from '../../../../services/entities/project.service';
+import {ColorService} from '../../../../services/color.service';
 
 @Component({
   selector: 'app-tasklet',
@@ -27,12 +28,19 @@ export class TaskletComponent implements OnInit {
   tags: Tag[] = [];
   projects: Project[] = [];
 
+  icon = '';
+  topic = '';
+  project: Project;
+  projectColor = 'transparent';
   time = '';
   date = '';
+
+  expansionPanelOpened = false;
 
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
               private taskletService: TaskletService,
+              private colorService: ColorService,
               private snackbarService: SnackbarService,
               private dateService: DateService,
               public dialog: MatDialog) {
@@ -57,7 +65,95 @@ export class TaskletComponent implements OnInit {
 
     this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
+
+    this.initializeIcon();
+    this.initializeTopic();
+    this.initializeProject();
   }
+
+  //
+  // Initialization
+  //
+
+  private initializeIcon() {
+    switch (this.tasklet.type) {
+      case TASKLET_TYPE.ACTION: {
+        this.icon = 'turned_in_not';
+        break;
+      }
+      case TASKLET_TYPE.MEETING: {
+        this.icon = 'people_18';
+        break;
+      }
+      case TASKLET_TYPE.CALL: {
+        this.icon = 'call';
+        break;
+      }
+      case TASKLET_TYPE.DAILY_SCRUM: {
+        this.icon = 'scrum';
+        break;
+      }
+      case TASKLET_TYPE.MAIL: {
+        this.icon = 'mail';
+        break;
+      }
+      case TASKLET_TYPE.CHAT: {
+        this.icon = 'chat';
+        break;
+      }
+      case TASKLET_TYPE.DEVELOPMENT: {
+        this.icon = 'code';
+        break;
+      }
+      case TASKLET_TYPE.DEBUGGING: {
+        this.icon = 'bug_report';
+        break;
+      }
+      case TASKLET_TYPE.IDEA: {
+        this.icon = 'lightbulb_outline';
+        break;
+      }
+      case TASKLET_TYPE.LUNCH_BREAK: {
+        this.icon = 'local_dining';
+        break;
+      }
+      case TASKLET_TYPE.FINISHING_TIME: {
+        this.icon = 'local_run';
+        break;
+      }
+      case TASKLET_TYPE.WEEKLY_DIGEST: {
+        this.icon = 'receipt';
+        break;
+      }
+    }
+  }
+
+  private initializeTopic() {
+    switch (this.tasklet.type) {
+      case TASKLET_TYPE.DAILY_SCRUM:
+      case TASKLET_TYPE.LUNCH_BREAK:
+      case TASKLET_TYPE.FINISHING_TIME:
+      case TASKLET_TYPE.WEEKLY_DIGEST: {
+        this.topic = this.tasklet.type;
+        break;
+      }
+      default: {
+        const task = this.entityService.getTaskByTasklet(this.tasklet);
+
+        if (task != null) {
+          this.topic = task.name;
+        } else {
+          this.topic = this.tasklet.type;
+        }
+      }
+    }
+  }
+
+  private initializeProject() {
+    this.project = this.entityService.getProjectByTasklet(this.tasklet);
+    this.projectColor = this.colorService.getProjectColor(this.project);
+  }
+
 
   onActionFired(action: string) {
     switch (action) {
@@ -83,6 +179,13 @@ export class TaskletComponent implements OnInit {
       }
     }
   }
+
+  toggleExpansionPanel() {
+    this.expansionPanelOpened = !this.expansionPanelOpened;
+  }
+  //
+  // Actions
+  //
 
   private updateTasklet() {
     const dialogRef = this.dialog.open(TaskletDialogComponent, <MatDialogConfig>{

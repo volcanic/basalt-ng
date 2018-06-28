@@ -4,9 +4,49 @@
     <div class="top-connection-line"></div>
   </div>
   <mat-card>
+    <mat-card-header (click)="toggleExpansionPanel()">
+      <mat-icon [svgIcon]=icon class="tasklet-type"></mat-icon>
+      <span class="topic">{{ topic }}</span>
+      <div class="flexbox"></div>
+      <div class="project"
+           [style.background-color]="projectColor"
+           *ngIf="project != null && project.name != null && project.name !=''">
+        {{ project.name }}
+      </div>
+    </mat-card-header>
+
     <mat-card-content>
-      <app-tasklet-default [tasklet]="tasklet" (onActionFired)="onActionFired($event)">
-      </app-tasklet-default>
+      <mat-accordion class="headers-align">
+        <mat-expansion-panel [expanded]="expansionPanelOpened" (click)="onActionFired('update')" hideToggle>
+          <div class="text">
+            <mat-list *ngIf="tasklet.text != null && tasklet.text.length > 0">
+              <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}
+              </mat-list-item>
+            </mat-list>
+          </div>
+          <div class="template" *ngIf="tasklet.type == 'Daily Scrum' ">
+            <div class="right-attached hidden" (click)="onActionFired('template')" matTooltip="Template this event"
+                 matTooltipPosition="above">
+              <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+            </div>
+          </div>
+          <app-tasklet-daily-scrum [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+                                   *ngIf="tasklet.type == 'Daily Scrum'">
+          </app-tasklet-daily-scrum>
+          <app-tasklet-participants [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
+                                    *ngIf="tasklet.type == 'Meeting'
+                                       || tasklet.type == 'Call'
+                                       || tasklet.type == 'Mail'
+                                       || tasklet.type == 'Chat'">
+          </app-tasklet-participants>
+          <app-tasklet-daily-digest [tasklet]="tasklet" (actionFiredEmitter)="onActionFired($event)"
+                                    *ngIf="tasklet.type == 'Finishing Time'">
+          </app-tasklet-daily-digest>
+          <app-tasklet-weekly-digest [tasklet]="tasklet" (actionFiredEmitter)="onActionFired($event)"
+                                     *ngIf="tasklet.type == 'Weekly Digest'">
+          </app-tasklet-weekly-digest>
+        </mat-expansion-panel>
+      </mat-accordion>
       <div class="continue" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
@@ -19,32 +59,11 @@
           <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
         </div>
       </div>
-      <div class="template" *ngIf="tasklet.type == 'Daily Scrum' ">
-        <div class="right-attached hidden" (click)="onActionFired('template')" matTooltip="Template this event"
-             matTooltipPosition="above">
-          <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
-        </div>
-      </div>
-      <app-tasklet-daily-scrum [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
-                               *ngIf="tasklet.type == 'Daily Scrum'">
-      </app-tasklet-daily-scrum>
-      <app-tasklet-participants [tasklet]="tasklet" (onActionFired)="onActionFired($event)"
-                                *ngIf="tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Call'
-                                       || tasklet.type == 'Mail'
-                                       || tasklet.type == 'Chat'">
-      </app-tasklet-participants>
-      <app-tasklet-daily-digest [tasklet]="tasklet" (actionFiredEmitter)="onActionFired($event)"
-                                 *ngIf="tasklet.type == 'Finishing Time'">
-      </app-tasklet-daily-digest>
-      <app-tasklet-weekly-digest [tasklet]="tasklet" (actionFiredEmitter)="onActionFired($event)"
-                                 *ngIf="tasklet.type == 'Weekly Digest'">
-      </app-tasklet-weekly-digest>
-    </mat-card-content>
-    <hr class="delimiter"/>
-    <span class="tag" *ngFor="let t of tasklet.tags">
+      <hr class="delimiter"/>
+      <span class="tag" *ngFor="let t of tasklet.tags">
       <label class="tag-label">{{ t.name }}</label>
     </span>
+    </mat-card-content>
     <mat-card-footer>
       <div *ngIf="tasklet.creationDate != null" class="left-attached" (click)="onActionFired('updateTime')">{{ time }}
       </div>

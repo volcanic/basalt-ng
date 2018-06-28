@@ -72,7 +72,7 @@ export class DailyEffortTreeComponent implements OnInit {
       const projectEffortNode = new EffortNode();
       projectEffortNode.topic = pe.project.name;
       projectEffortNode.effort = pe.effort;
-      projectEffortNode.color = this.colorService.getProjectColor(pe.project.name);
+      projectEffortNode.color = this.colorService.getProjectColor(pe.project);
       projectEffortNode.children = taskNodes;
 
       day.children.push(projectEffortNode);

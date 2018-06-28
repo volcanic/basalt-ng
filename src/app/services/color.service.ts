@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Hash} from '../model/util/hash';
+import {Project} from '../model/entities/project.model';
 
 @Injectable()
 export class ColorService {
@@ -19,13 +20,12 @@ export class ColorService {
   constructor() {
   }
 
-  getProjectColor(value: string) {
-    if (value != null && value.trim().length > 0) {
+  getProjectColor(project: Project) {
+    if (project != null && project.name != null && project.name.trim().length > 0) {
       return this.projectColors[
-      Math.abs(Hash.hash(value.toLowerCase().replace(' ', ''))) % this.projectColors.length];
+      Math.abs(Hash.hash(project.name.toLowerCase().replace(' ', ''))) % this.projectColors.length];
     } else {
       return 'transparent';
     }
   }
-
 }

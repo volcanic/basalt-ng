@@ -1,8 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
-import {DateAdapter, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {Project} from '../../../../model/entities/project.model';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {DateService} from '../../../../services/date.service';
+import {ProjectService} from '../../../../services/entities/project.service';
+import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
+import {EntityService} from '../../../../services/entities/entity.service';
 
 @Component({
   selector: 'app-task-dialog',
@@ -40,7 +44,14 @@ export class TaskDialogComponent implements OnInit {
     '#cfd8dc'
   ];
 
-  constructor(private adapter: DateAdapter<any>,
+  // Task
+  project: Project;
+  projectOptions = [];
+
+  constructor(private entityService: EntityService,
+              private projectService: ProjectService,
+              private adapter: DateAdapter<any>,
+              public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -54,7 +65,12 @@ export class TaskDialogComponent implements OnInit {
 
     this.initializeDueDate();
     this.initializePriority();
+    this.initializeProject();
   }
+
+  //
+  // Initialization
+  //
 
   initializeDueDate() {
     if (this.task.dueDate == null) {
@@ -84,6 +100,15 @@ export class TaskDialogComponent implements OnInit {
     });
   }
 
+  initializeProject() {
+    this.project = this.entityService.getEntityById(this.task.projectId) as Project;
+    this.projectOptions = Array.from(this.projectService.projects.values());
+  }
+
+  //
+  // Action buttons
+  //
+
   addTask() {
     this.dialogRef.close(this.task);
   }
@@ -91,6 +116,30 @@ export class TaskDialogComponent implements OnInit {
   updateTask() {
     this.dialogRef.close(this.task);
   }
+
+  //
+  // Due date
+  //
+
+  onHourSelected(value: number) {
+    this.task.dueDate = new Date(this.task.dueDate.getFullYear(), this.task.dueDate.getMonth(), this.task.dueDate.getDate(), value, this.task.dueDate.getMinutes());
+  }
+
+  onMinuteSelected(value: number) {
+    this.task.dueDate = new Date(this.task.dueDate.getFullYear(), this.task.dueDate.getMonth(), this.task.dueDate.getDate(), this.task.dueDate.getHours(), value);
+  }
+
+  addTrailingZero(value: number) {
+    if (value < 10) {
+      return `0${value}`;
+    }
+
+    return value;
+  }
+
+  //
+  // Priority
+  //
 
   onHoverFlag(priority: number) {
     this.colorsFlags.forEach((flagColor, index) => {
@@ -110,19 +159,32 @@ export class TaskDialogComponent implements OnInit {
     this.task.priority = priority;
   }
 
-  onHourSelected(value: number) {
-    this.task.dueDate = new Date(this.task.dueDate.getFullYear(), this.task.dueDate.getMonth(), this.task.dueDate.getDate(), value, this.task.dueDate.getMinutes());
+  //
+  // Project
+  //
+
+  onProjectSelectionChanged() {
+    this.task.projectId = this.project.id;
   }
 
-  onMinuteSelected(value: number) {
-    this.task.dueDate = new Date(this.task.dueDate.getFullYear(), this.task.dueDate.getMonth(), this.task.dueDate.getDate(), this.task.dueDate.getHours(), value);
+  compareProject(p1: Project, p2: Project) {
+    return p1 != null && p2 != null && p1.id === p2.id;
   }
 
-  addTrailingZero(value: number) {
-    if (value < 10) {
-      return `0${value}`;
-    }
-
-    return value;
+  addProject() {
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      disableClose: false,
+      data: {
+        mode: DIALOG_MODE.ADD,
+        dialogTitle: 'Add project',
+        project: JSON.stringify(new Project('', true))
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        this.projectService.createProject(result as Project);
+        this.projectOptions.push(result as Project);
+      }
+    });
   }
 }

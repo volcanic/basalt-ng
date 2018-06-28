@@ -26,7 +26,7 @@ export class ProjectDialogComponent implements OnInit {
   ngOnInit() {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
-    this.project = this.data.project;
+    this.project = JSON.parse(this.data.project);
   }
 
   addProject() {

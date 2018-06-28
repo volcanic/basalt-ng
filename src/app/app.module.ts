@@ -32,7 +32,6 @@ import {TaskletComponent} from './view/components/tasklet/tasklet/tasklet.compon
 import {SnackbarService} from './services/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TaskletDialogContentComponent} from './view/dialogs/tasklet/tasklet-dialog-content/tasklet-dialog-content.component';
-import {TaskletDefaultComponent} from './view/components/tasklet/tasklet-default/tasklet-default.component';
 import {DateService} from './services/date.service';
 import {TagDialogComponent} from './view/dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {MatchService} from './services/match.service';
@@ -90,7 +89,6 @@ import {TimelineComponent} from './view/pages/timeline/timeline.component';
     SplashScreenComponent,
     TagDialogComponent,
     TaskletComponent,
-    TaskletDefaultComponent,
     TaskletDailyScrumComponent,
     TaskletDialogComponent,
     TaskletDialogTagsComponent,
