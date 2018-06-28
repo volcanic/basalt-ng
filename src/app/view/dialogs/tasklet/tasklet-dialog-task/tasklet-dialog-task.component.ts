@@ -1,16 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
-import {MatDialog, MatIconRegistry, MatSelectChange} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import {MatDialog} from '@angular/material';
 import {TaskDialogComponent} from '../../other/task-dialog/task-dialog.component';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {Task} from '../../../../model/entities/task.model';
 import {TaskService} from '../../../../services/entities/task.service';
-import EventEmitter = NodeJS.EventEmitter;
 import {EntityService} from '../../../../services/entities/entity.service';
+import EventEmitter = NodeJS.EventEmitter;
 
 @Component({
   selector: 'app-tasklet-dialog-task',
@@ -24,10 +20,7 @@ export class TaskletDialogTaskComponent implements OnInit {
 
   constructor(private entityService: EntityService,
               private taskService: TaskService,
-              public dialog: MatDialog,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('add', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_black_24px.svg'));
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
