@@ -1,6 +1,6 @@
 <div class="card-wrapper">
   <div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
-    {{ date }}
+    {{ weekDay }}, {{ date }}
     <div class="top-connection-line"></div>
   </div>
   <mat-card>
@@ -65,7 +65,11 @@
     </span>
     </mat-card-content>
     <mat-card-footer>
-      <div *ngIf="tasklet.creationDate != null" class="left-attached" (click)="onActionFired('updateTime')">{{ time }}
+      <div *ngIf="tasklet.creationDate != null" class="left-attached" (click)="onActionFired('updateTime')">
+        <span *ngIf="dateService.isBeforeToday(tasklet.creationDate)">{{ weekDay }}<br/> </span>
+        <span *ngIf="dateService.isBeforeToday(tasklet.creationDate)
+        && dateService.isBeforeThisWeek(tasklet.creationDate)">{{ date }}<br/></span>
+        <span>{{ time }}</span>
       </div>
     </mat-card-footer>
   </mat-card>

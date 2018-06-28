@@ -44,11 +44,10 @@ export class DateService {
   }
 
   getDate(date: Date): string {
-    const weekday = this.getWeekDayString(new Date(date).getDay());
     const day = new Date(date).getDate();
     const month = this.getMonthString(new Date(date).getMonth());
     const year = new Date(date).getFullYear();
-    return `${weekday}, ${day} ${month} ${year}`;
+    return `${day} ${month} ${year}`;
   }
 
   getWeekDayString(weekday: number) {
@@ -134,8 +133,17 @@ export class DateService {
     return new Date(d1).setHours(0, 0, 0, 0) > new Date(d2).setHours(0, 0, 0, 0);
   }
 
-  isToday(date: Date, now: Date) {
-    return new Date(date).setHours(0, 0, 0, 0) === new Date(now).setHours(0, 0, 0, 0);
+  isBeforeToday(date: Date) {
+    return this.isBefore(date, new Date(new Date().setHours(0, 0, 0, 0)));
+  }
+
+  isBeforeThisWeek(date: Date) {
+    const weekStart = this.getBeginningOfTheWeek(new Date());
+    return this.isBefore(date, weekStart);
+  }
+
+  isInsideDay(date: Date, referenceDate: Date) {
+    return new Date(date).setHours(0, 0, 0, 0) === new Date(referenceDate).setHours(0, 0, 0, 0);
   }
 
   getBeginningOfTheWeek(date: Date): Date {
@@ -145,7 +153,7 @@ export class DateService {
     const daysFromMonday = currentWeekDay === 0 ? 6 : currentWeekDay - 1;
 
     beginningOfTheWeek.setHours(0, 0, 0, 0);
-    beginningOfTheWeek.setDate(date.getDate() - daysFromMonday);
+    beginningOfTheWeek.setDate(new Date(date).getDate() - daysFromMonday);
 
     return beginningOfTheWeek;
   }
@@ -157,7 +165,7 @@ export class DateService {
     const daysTillSunday = currentWeekDay === 0 ? 0 : 7 - currentWeekDay;
 
     endOfTheWeek.setHours(23, 59, 59, 0);
-    endOfTheWeek.setDate(date.getDate() + daysTillSunday);
+    endOfTheWeek.setDate(new Date(date).getDate() + daysTillSunday);
 
     return endOfTheWeek;
   }

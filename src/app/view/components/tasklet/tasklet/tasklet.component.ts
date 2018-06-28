@@ -33,6 +33,7 @@ export class TaskletComponent implements OnInit {
   project: Project;
   projectColor = 'transparent';
   time = '';
+  weekDay = '';
   date = '';
 
   expansionPanelOpened = false;
@@ -44,7 +45,6 @@ export class TaskletComponent implements OnInit {
               private snackbarService: SnackbarService,
               private dateService: DateService,
               public dialog: MatDialog) {
-
   }
 
   ngOnInit() {
@@ -135,6 +135,7 @@ export class TaskletComponent implements OnInit {
 
   private initializeDate() {
     this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
+    this.weekDay = this.dateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
     this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
   }
 
@@ -165,7 +166,7 @@ export class TaskletComponent implements OnInit {
   }
 
   private initializeExpansionPanel() {
-    this.expansionPanelOpened = this.dateService.isToday(this.tasklet.creationDate, new Date());
+    this.expansionPanelOpened = !this.dateService.isBeforeToday(this.tasklet.creationDate);
   }
 
   //
