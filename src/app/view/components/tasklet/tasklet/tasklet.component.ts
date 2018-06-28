@@ -87,7 +87,7 @@ export class TaskletComponent implements OnInit {
         break;
       }
       case TASKLET_TYPE.MEETING: {
-        this.icon = 'people_18';
+        this.icon = 'people';
         break;
       }
       case TASKLET_TYPE.CALL: {
@@ -123,7 +123,7 @@ export class TaskletComponent implements OnInit {
         break;
       }
       case TASKLET_TYPE.FINISHING_TIME: {
-        this.icon = 'local_run';
+        this.icon = 'directions_run';
         break;
       }
       case TASKLET_TYPE.WEEKLY_DIGEST: {
