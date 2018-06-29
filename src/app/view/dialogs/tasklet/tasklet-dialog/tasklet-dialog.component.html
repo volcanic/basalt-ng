@@ -34,18 +34,15 @@
         [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'"></app-tasklet-dialog-daily-scrum>
       <app-tasklet-dialog-weekly-digest [tasklet]="tasklet"
                                         *ngIf="tasklet.type == 'Weekly Digest'"></app-tasklet-dialog-weekly-digest>
-      <app-tasklet-dialog-tags
-        [tasklet]="tasklet"
-        [tags]="tags"
-        [newTags]="newTags" *ngIf="tasklet.type == 'Action'
-                               || tasklet.type == 'Meeting'
-                               || tasklet.type == 'Call'
-                               || tasklet.type == 'Mail'
-                               || tasklet.type == 'Chat'
-                               || tasklet.type == 'Development'
-                               || tasklet.type == 'Debugging'
-                               || tasklet.type == 'Idea'">
-      </app-tasklet-dialog-tags>
+      <app-select-tag-fragment [tags]="tags" [newTags]="newTags" *ngIf="tasklet.type == 'Action'
+                         || tasklet.type == 'Meeting'
+                         || tasklet.type == 'Call'
+                         || tasklet.type == 'Mail'
+                         || tasklet.type == 'Chat'
+                         || tasklet.type == 'Development'
+                         || tasklet.type == 'Debugging'
+                         || tasklet.type == 'Idea'" >
+      </app-select-tag-fragment>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>

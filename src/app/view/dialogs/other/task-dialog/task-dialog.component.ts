@@ -7,6 +7,8 @@ import {DateService} from '../../../../services/date.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {EntityService} from '../../../../services/entities/entity.service';
+import {Tag} from '../../../../model/tag.model';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 
 @Component({
   selector: 'app-task-dialog',
@@ -44,9 +46,13 @@ export class TaskDialogComponent implements OnInit {
     '#cfd8dc'
   ];
 
-  // Task
+  // Project
   project: Project;
   projectOptions = [];
+
+  // Tags
+  tags: Tag[] = [];
+  newTags: Tag[] = [];
 
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
@@ -66,6 +72,7 @@ export class TaskDialogComponent implements OnInit {
     this.initializeDueDate();
     this.initializePriority();
     this.initializeProject();
+    this.initializeTags();
   }
 
   //
@@ -105,15 +112,22 @@ export class TaskDialogComponent implements OnInit {
     this.projectOptions = Array.from(this.projectService.projects.values());
   }
 
+  initializeTags() {
+    this.tags = this.task.tags;
+    this.newTags.push(new Tag('', false));
+  }
+
   //
   // Action buttons
   //
 
   addTask() {
+    this.task.tags = this.aggregateTags(this.tags, this.newTags);
     this.dialogRef.close(this.task);
   }
 
   updateTask() {
+    this.task.tags = this.aggregateTags(this.tags, this.newTags);
     this.dialogRef.close(this.task);
   }
 
@@ -186,5 +200,23 @@ export class TaskDialogComponent implements OnInit {
         this.projectOptions.push(result as Project);
       }
     });
+  }
+
+  //
+  // Tags
+  //
+
+  aggregateTags(existingTags: Tag[], newTags: Tag[]): Tag[] {
+    const aggregatedTags = new Map<string, Tag>();
+
+    // Concatenate
+    existingTags.filter(t => t.checked).forEach(t => {
+      aggregatedTags.set(t.name, t);
+    });
+    newTags.filter(t => t.checked).forEach(t => {
+      aggregatedTags.set(t.name, t);
+    });
+
+    return Array.from(aggregatedTags.values());
   }
 }

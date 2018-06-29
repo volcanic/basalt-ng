@@ -50,7 +50,6 @@ import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-dail
 import {ProjectsFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
 import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
-import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
 import {TaskletDialogTaskComponent} from './view/dialogs/tasklet/tasklet-dialog-task/tasklet-dialog-task.component';
 import {TaskletDialogHeaderComponent} from './view/dialogs/tasklet/tasklet-dialog-header/tasklet-dialog-header.component';
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
@@ -75,6 +74,7 @@ import {TaskletService} from './services/entities/tasklet.service';
 import {TaskListItemComponent} from './view/components/lists/task-list-item/task-list-item.component';
 import {TaskListComponent} from './view/components/lists/task-list/task-list.component';
 import {TimelineComponent} from './view/pages/timeline/timeline.component';
+import {SelectTagFragmentComponent} from './view/dialogs/fragments/select-tag-fragment/select-tag-fragment.component';
 
 @NgModule({
   declarations: [
@@ -91,7 +91,6 @@ import {TimelineComponent} from './view/pages/timeline/timeline.component';
     TaskletComponent,
     TaskletDailyScrumComponent,
     TaskletDialogComponent,
-    TaskletDialogTagsComponent,
     TaskletDialogDailyScrumComponent,
     TaskletDialogDailyScrumActivityComponent,
     TaskletDialogDailyScrumParticipantComponent,
@@ -117,7 +116,8 @@ import {TimelineComponent} from './view/pages/timeline/timeline.component';
     CalendarItemComponent,
     TaskListComponent,
     TaskListItemComponent,
-    TaskDialogComponent
+    TaskDialogComponent,
+    SelectTagFragmentComponent
   ],
   imports: [
     AppRoutingModule,

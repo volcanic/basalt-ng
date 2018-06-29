@@ -90,6 +90,19 @@
         <mat-icon class="task-project" svgIcon="add" (click)="addProject()"></mat-icon>
       </mat-expansion-panel>
 
+      <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Tags
+          </mat-panel-title>
+          <mat-panel-description>
+            Select tags
+          </mat-panel-description>
+          <mat-icon svgIcon="label_outline"></mat-icon>
+        </mat-expansion-panel-header>
+        <app-select-tag-fragment [tags]="tags" [newTags]="newTags"></app-select-tag-fragment>
+      </mat-expansion-panel>
+
     </mat-accordion>
   </mat-dialog-content>
   <mat-dialog-actions>
