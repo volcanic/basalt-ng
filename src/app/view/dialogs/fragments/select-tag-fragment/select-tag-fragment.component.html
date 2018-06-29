@@ -7,7 +7,7 @@
 <div class="double-column" *ngFor="let t of tags.slice(tags.length / 2, tags.length)">
   <mat-checkbox [(ngModel)]="t.checked">{{ t.name }}</mat-checkbox>
 </div>
-<div *ngFor="let n of newTags">
+<div #tagElement *ngFor="let n of newTags">
   <mat-checkbox [(ngModel)]="n.checked">
     <input matInput class="tag-input" type="text" name="tag" placeholder="New tag" [(ngModel)]="n.name"
            (ngModelChange)="tagChanged()"/>

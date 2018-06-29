@@ -75,6 +75,7 @@ import {TaskListItemComponent} from './view/components/lists/task-list-item/task
 import {TaskListComponent} from './view/components/lists/task-list/task-list.component';
 import {TimelineComponent} from './view/pages/timeline/timeline.component';
 import {SelectTagFragmentComponent} from './view/dialogs/fragments/select-tag-fragment/select-tag-fragment.component';
+import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +99,7 @@ import {SelectTagFragmentComponent} from './view/dialogs/fragments/select-tag-fr
     TaskletDialogHeaderComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTaskComponent,
+    TaskletDialogTagsComponent,
     TaskletDialogWeeklyDigestComponent,
     TaskletParticipantsComponent,
     TimelineComponent,
