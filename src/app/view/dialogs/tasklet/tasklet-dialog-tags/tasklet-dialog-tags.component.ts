@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Tag} from '../../../../model/tag.model';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
+
 
 @Component({
   selector: 'app-tasklet-dialog-tags',
@@ -11,6 +12,7 @@ export class TaskletDialogTagsComponent implements OnInit {
   @Input() tasklet: Tasklet;
   @Input() tags: Tag[] = [];
   @Input() newTags: Tag[] = [];
+  @ViewChildren('tagElement') tagElements: QueryList<ElementRef>;
 
   constructor() {
   }
@@ -31,19 +33,15 @@ export class TaskletDialogTagsComponent implements OnInit {
 
         // If the current empty tag is at second last position, pop the last tag
         if ( loopIndex === this.newTags.length - 2 ) {
-
          this.newTags.pop();
-
         } else if ( loopIndex < this.newTags.length - 2) {
-
           // if the current empty tag is before second last position, splice array
           this.newTags.splice(loopIndex, 1);
-          // TODO: Switch cursor focus to the empty tag after splicing
-
+          const lastTagLabel = this.tagElements.last.nativeElement.childNodes[0].childNodes[0].childNodes[1].childNodes[1];
+          lastTagLabel.focus(); // Re-focus cursor to last element of the new tags // TODO: Make html-model unreliant
          } else {
           // If the current empty tag is at the end of the list, do nothing
         }
-
       } else {
         t.checked = true; // if the tag has content, i.e. user starts typing, tick the checkbox
       }
