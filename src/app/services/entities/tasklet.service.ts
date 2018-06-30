@@ -38,6 +38,7 @@ export class TaskletService {
         }
       );
 
+      this.updateSuggestedSearchItems();
       this.notify();
     });
   }
@@ -85,20 +86,36 @@ export class TaskletService {
    * Returns a list of suggested search items
    * @returns {any[]}
    */
-  public getSuggestedSearchItems(): string[] {
+  public updateSuggestedSearchItems() {
     this.suggestedSearchItems = [];
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     }).forEach(t => {
-      if (t != null && t.description != null) {
+      if (t != null) {
 
         // Add description lines to search items
-        t.description.value.split('\n').forEach(v => {
-          if (v.trim() !== '') {
-            this.suggestedSearchItems.push(v.trim().replace(/(^-)/g, ''));
-          }
-        });
+        if (t.description.value != null) {
+          t.description.value.split('\n').forEach(v => {
+            if (v.trim() !== '') {
+              this.suggestedSearchItems.push(v.trim().replace(/(^-)/g, ''));
+            }
+          });
+        }
+
+        // Add tags to search items
+        if (t.tags != null) {
+          t.tags.forEach(tag => {
+            this.suggestedSearchItems.push(tag.name);
+          })
+        }
+
+        // Add persons to search items
+        if (t.persons != null) {
+          t.persons.forEach(person => {
+            this.suggestedSearchItems.push(person.name);
+          })
+        }
 
         // Add tasklet name to search items
         const task: Task = this.entityService.getEntityById(t.taskId) as Task;
@@ -114,7 +131,7 @@ export class TaskletService {
       }
     });
 
-    return this.suggestedSearchItems.reverse();
+    console.log(`DEBUG suggestedSearchItems ${JSON.stringify(this.suggestedSearchItems)}`);
   }
 
   /**
