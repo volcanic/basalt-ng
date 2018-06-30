@@ -19,6 +19,14 @@ mat-dialog-actions {
     0 1px 5px 0 rgba(0, 0, 0, 0);
 }
 
+.task-selection {
+  display: flex;
+}
+
+.task-select {
+  width: 100%;
+}
+
 .priority {
   padding: 0 10px;
 }

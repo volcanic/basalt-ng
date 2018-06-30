@@ -159,7 +159,6 @@ import {SelectTagFragmentComponent} from './view/dialogs/fragments/select-tag-fr
     TaskletDialogDailyScrumComponent,
     TaskletDialogContentComponent,
     TaskletDialogParticipantsComponent,
-    TaskletDialogTagsComponent,
     TaskletDialogWeeklyDigestComponent,
     TimePickerDialogComponent,
     UploadDialogComponent,

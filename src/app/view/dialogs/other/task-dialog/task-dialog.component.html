@@ -77,17 +77,21 @@
           </mat-panel-description>
           <mat-icon svgIcon="agenda"></mat-icon>
         </mat-expansion-panel-header>
-        <mat-form-field class="task-select" color="primary">
-          <mat-select name="project" placeholder="Project" (selectionChange)="onProjectSelectionChanged($event)"
-                      [(ngModel)]="project"
-                      [compareWith]="compareProject">
-            <mat-option *ngFor="let project of projectOptions" [value]="project">
-              {{ project.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="flexbox"></div>
-        <mat-icon class="task-project" svgIcon="add" (click)="addProject()"></mat-icon>
+        <div class="task-selection">
+          <mat-form-field class="task-select" color="primary">
+            <mat-select name="project" placeholder="Project" (selectionChange)="onProjectSelectionChanged($event)"
+                        [(ngModel)]="project"
+                        [compareWith]="compareProject">
+              <mat-option *ngFor="let project of projectOptions" [value]="project">
+                {{ project.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="flexbox"></div>
+          <button mat-button (click)="addProject()">
+            <mat-icon svgIcon="add"></mat-icon>
+          </button>
+        </div>
       </mat-expansion-panel>
 
       <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
