@@ -91,10 +91,10 @@ export class TaskletService {
     Array.from(this.tasklets.values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     }).forEach(t => {
-      if (t != null && t.text != null) {
+      if (t != null && t.description != null) {
 
-        // Add text lines to search items
-        t.text.split('\n').forEach(v => {
+        // Add description lines to search items
+        t.description.value.split('\n').forEach(v => {
           if (v.trim() !== '') {
             this.suggestedSearchItems.push(v.trim().replace(/(^-)/g, ''));
           }
