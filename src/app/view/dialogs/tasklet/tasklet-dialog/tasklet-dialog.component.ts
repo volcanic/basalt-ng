@@ -155,6 +155,10 @@ export class TaskletDialogComponent implements OnInit {
     this.dialogRef.close(this.tasklet);
   }
 
+  onDescriptionChanged(description: string) {
+    console.log(`BOING ${description}`);
+  }
+
   aggregateTags(tasklet: Tasklet, existingTags: Tag[], newTags: Tag[]): Tag[] {
     const aggregatedTags = new Map<string, Tag>();
 
@@ -175,7 +179,7 @@ export class TaskletDialogComponent implements OnInit {
   inferTags(tasklet: Tasklet): Map<string, Tag> {
     const inferredTags = new Map<string, Tag>();
 
-    tasklet.text.split('\n').forEach(line => {
+    tasklet.description.value.split('\n').forEach(line => {
       line.split(' ').forEach(word => {
         if (word.startsWith('#')) {
           const tag = new Tag(word.replace('#', ''), true);
@@ -204,7 +208,7 @@ export class TaskletDialogComponent implements OnInit {
   inferPersons(tasklet: Tasklet): Map<string, Person> {
     const inferredPersons = new Map<string, Person>();
 
-    tasklet.text.split('\n').forEach(line => {
+    tasklet.description.value.split('\n').forEach(line => {
       line.split(' ').forEach(word => {
         if (word.startsWith('@')) {
           const person = new Person(word.replace('@', '').replace('_', ' '));

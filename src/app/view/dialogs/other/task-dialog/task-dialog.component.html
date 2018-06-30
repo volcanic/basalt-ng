@@ -12,12 +12,17 @@
 
       <mat-expansion-panel [expanded]="step === 0" (opened)="false" hideToggle>
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            Due date
-          </mat-panel-title>
-          <mat-panel-description>
-            Select a due date
-          </mat-panel-description>
+          <mat-panel-title>Description</mat-panel-title>
+          <mat-panel-description>Describe this task</mat-panel-description>
+          <mat-icon svgIcon="short_text"></mat-icon>
+        </mat-expansion-panel-header>
+        <app-description-fragment [description]="task.description"></app-description-fragment>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === 0" (opened)="false" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Due date</mat-panel-title>
+          <mat-panel-description>Select a due date</mat-panel-description>
           <mat-icon svgIcon="timer"></mat-icon>
         </mat-expansion-panel-header>
 
@@ -45,15 +50,10 @@
         </div>
       </mat-expansion-panel>
 
-
       <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            Priority
-          </mat-panel-title>
-          <mat-panel-description>
-            Select a priority
-          </mat-panel-description>
+          <mat-panel-title>Priority</mat-panel-title>
+          <mat-panel-description>Select a priority</mat-panel-description>
           <mat-icon svgIcon="flag"></mat-icon>
         </mat-expansion-panel-header>
         <mat-icon *ngFor="let item of colorsPriorities; let i = index"
@@ -65,7 +65,6 @@
                   (click)="onClickFlag(i)">
         </mat-icon>
       </mat-expansion-panel>
-
 
       <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
         <mat-expansion-panel-header>
@@ -104,7 +103,7 @@
           </mat-panel-description>
           <mat-icon svgIcon="label_outline"></mat-icon>
         </mat-expansion-panel-header>
-        <app-select-tag-fragment [tags]="tags" [newTags]="newTags"></app-select-tag-fragment>
+        <app-tag-selection-fragment [tags]="tags" [newTags]="newTags"></app-tag-selection-fragment>
       </mat-expansion-panel>
 
     </mat-accordion>

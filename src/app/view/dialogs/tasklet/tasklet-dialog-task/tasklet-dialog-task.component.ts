@@ -41,7 +41,7 @@ export class TaskletDialogTaskComponent implements OnInit {
       data: {
         mode: DIALOG_MODE.ADD,
         dialogTitle: 'Add task',
-        task: JSON.stringify(new Task('', ''))
+        task: JSON.stringify(new Task(''))
       }
     });
     dialogRef.afterClosed().subscribe(result => {

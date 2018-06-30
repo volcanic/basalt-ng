@@ -19,8 +19,8 @@
       <mat-accordion class="headers-align">
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
           <div class="text">
-            <mat-list *ngIf="tasklet.text != null && tasklet.text.length > 0">
-              <mat-list-item class="text" *ngFor="let item of tasklet.text.split('\n')">{{ item.trim() }}
+            <mat-list *ngIf="tasklet.description.value != null && tasklet.description.value.length > 0">
+              <mat-list-item class="text" *ngFor="let item of tasklet.description.value.split('\n')">{{ item }}
               </mat-list-item>
             </mat-list>
           </div>

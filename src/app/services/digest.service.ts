@@ -83,7 +83,7 @@ export class DigestService {
           // Get existing efforts (task)
           let task = this.entityService.getTaskByTasklet(tasklet);
           if (task == null) {
-            task = new Task(PlaceholderValues.UNSPECIFIED_TASK, "");
+            task = new Task(PlaceholderValues.UNSPECIFIED_TASK);
             task.id = PlaceholderValues.EMPTY_TASK_ID;
           }
 

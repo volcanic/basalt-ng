@@ -74,8 +74,8 @@ import {TaskletService} from './services/entities/tasklet.service';
 import {TaskListItemComponent} from './view/components/lists/task-list-item/task-list-item.component';
 import {TaskListComponent} from './view/components/lists/task-list/task-list.component';
 import {TimelineComponent} from './view/pages/timeline/timeline.component';
-import {SelectTagFragmentComponent} from './view/dialogs/fragments/select-tag-fragment/select-tag-fragment.component';
-import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-tags/tasklet-dialog-tags.component';
+import {DescriptionFragmentComponent} from './view/fragments/description-fragment/description-fragment.component';
+import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-fragment/tag-selection-fragment.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +99,6 @@ import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-
     TaskletDialogHeaderComponent,
     TaskletDialogParticipantsComponent,
     TaskletDialogTaskComponent,
-    TaskletDialogTagsComponent,
     TaskletDialogWeeklyDigestComponent,
     TaskletParticipantsComponent,
     TimelineComponent,
@@ -119,7 +118,8 @@ import {TaskletDialogTagsComponent} from './view/dialogs/tasklet/tasklet-dialog-
     TaskListComponent,
     TaskListItemComponent,
     TaskDialogComponent,
-    SelectTagFragmentComponent
+    TagSelectionFragmentComponent,
+    DescriptionFragmentComponent
   ],
   imports: [
     AppRoutingModule,

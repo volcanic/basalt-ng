@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SelectTagFragmentComponent } from './select-tag-fragment.component';
+import {SelectTagFragmentComponent} from './select-tag-fragment.component';
 
 describe('SelectTagFragmentComponent', () => {
   let component: SelectTagFragmentComponent;

@@ -236,7 +236,7 @@ export class TaskletComponent implements OnInit {
     const continueTasklet = JSON.parse(JSON.stringify(this.tasklet));
     continueTasklet._rev = null;
     continueTasklet.id = new UUID().toString();
-    continueTasklet.text = '';
+    continueTasklet.description = '';
     continueTasklet.creationDate = new Date();
     continueTasklet.persons = [];
 
@@ -252,7 +252,7 @@ export class TaskletComponent implements OnInit {
         tasklet: continueTasklet,
         tags: this.tags,
         projects: this.projects,
-        previousText: this.tasklet.text
+        previousText: this.tasklet.description
       }
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -267,7 +267,7 @@ export class TaskletComponent implements OnInit {
     const template = JSON.parse(JSON.stringify(this.tasklet));
     template._rev = null;
     template.id = new UUID().toString();
-    template.text = '';
+    template.description = '';
     template.creationDate = new Date();
     template.participants.forEach(p => {
         p.activities = [];

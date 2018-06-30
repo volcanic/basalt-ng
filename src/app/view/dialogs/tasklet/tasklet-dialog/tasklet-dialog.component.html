@@ -24,6 +24,16 @@
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'"></app-tasklet-dialog-content>
+      <app-description-fragment [description]="tasklet.description"
+                                (onDescriptionChanged)="onDescriptionChangedEmitter($event)"
+                                *ngIf="tasklet.type == 'Action'
+                                       || tasklet.type == 'Call'
+                                       || tasklet.type == 'Meeting'
+                                       || tasklet.type == 'Mail'
+                                       || tasklet.type == 'Chat'
+                                       || tasklet.type == 'Development'
+                                       || tasklet.type == 'Debugging'
+                                       || tasklet.type == 'Idea'"></app-description-fragment>
       <app-tasklet-dialog-participants
         [tasklet]="tasklet" [personOptions]="personOptions" *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
@@ -34,15 +44,15 @@
         [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'"></app-tasklet-dialog-daily-scrum>
       <app-tasklet-dialog-weekly-digest [tasklet]="tasklet"
                                         *ngIf="tasklet.type == 'Weekly Digest'"></app-tasklet-dialog-weekly-digest>
-      <app-select-tag-fragment [tags]="tags" [newTags]="newTags" *ngIf="tasklet.type == 'Action'
+      <app-tag-selection-fragment [tags]="tags" [newTags]="newTags" *ngIf="tasklet.type == 'Action'
                          || tasklet.type == 'Meeting'
                          || tasklet.type == 'Call'
                          || tasklet.type == 'Mail'
                          || tasklet.type == 'Chat'
                          || tasklet.type == 'Development'
                          || tasklet.type == 'Debugging'
-                         || tasklet.type == 'Idea'" >
-      </app-select-tag-fragment>
+                         || tasklet.type == 'Idea'">
+      </app-tag-selection-fragment>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>

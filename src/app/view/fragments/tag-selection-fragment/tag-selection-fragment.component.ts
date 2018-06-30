@@ -1,17 +1,16 @@
 import {Component, ElementRef, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {Tag} from '../../../../model/tag.model';
+import {Tag} from '../../../model/tag.model';
 
 @Component({
-  selector: 'app-select-tag-fragment',
-  templateUrl: './select-tag-fragment.component.html',
-  styleUrls: ['./select-tag-fragment.component.scss']
+  selector: 'app-tag-selection-fragment',
+  templateUrl: './tag-selection-fragment.component.html',
+  styleUrls: ['./tag-selection-fragment.component.scss']
 })
-export class SelectTagFragmentComponent implements OnInit {
+export class TagSelectionFragmentComponent implements OnInit {
 
   @Input() tags: Tag[] = [];
   @Input() newTags: Tag[] = [];
   @ViewChildren('tagElement') tagElements: QueryList<ElementRef>;
-
 
   constructor() {
   }

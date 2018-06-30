@@ -74,6 +74,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(CONTENT, 'people_18', 'ic_people_18px.svg'));
     icons.push(new Icon(EDITOR, 'delete', 'ic_delete_24px.svg'));
     icons.push(new Icon(EDITOR, 'mode_edit_18', 'ic_mode_edit_18px.svg'));
+    icons.push(new Icon(EDITOR, 'short_text', 'ic_short_text_24px.svg'));
     icons.push(new Icon(FILE, 'file_download', 'ic_file_download_24px.svg'));
     icons.push(new Icon(FILE, 'file_upload', 'ic_file_upload_24px.svg'));
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));

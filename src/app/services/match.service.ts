@@ -117,7 +117,7 @@ export class MatchService {
    */
   public taskletMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
     const match = this.taskletTaskNameMatchesSingleItem(tasklet, item)
-      || this.taskletTextMatchesSingleItem(tasklet, item)
+      || this.taskletDescriptionMatchesSingleItem(tasklet, item)
       || this.taskletPersonsMatchesSingleItem(tasklet, item)
       || this.taskletTagsMatchesSingleItem(tasklet, item);
 
@@ -130,8 +130,8 @@ export class MatchService {
     return (task != null) ? this.textMatchesSingleItem(task.name, item) : false;
   }
 
-  private taskletTextMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    return tasklet.text != null && tasklet.text.split('\n').some(s => {
+  private taskletDescriptionMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
+    return tasklet.description.value != null && tasklet.description.value.split('\n').some(s => {
         return this.textMatchesSingleItem(s, item);
       });
   }
