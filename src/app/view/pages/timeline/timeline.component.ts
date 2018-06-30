@@ -91,24 +91,22 @@ export class TimelineComponent implements OnInit, OnDestroy {
           });
         }
 
-        value.filter(tasklet => {
-          let matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.searchItem);
-          let matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.tags.values()));
-          let matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.projects.values()));
+        this.tasklets = value.filter(tasklet => {
+
+          const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.searchItem);
+          const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.tags.values()));
+          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.projects.values()));
 
           return matchesSearchItem && matchesTags && matchesProjects;
-        })
-          .sort((t1: Tasklet, t2: Tasklet) => {
+        }).sort((t1: Tasklet, t2: Tasklet) => {
             const date1 = new Date(t1.creationDate).getTime();
             const date2 = new Date(t2.creationDate).getTime();
 
             return date2 - date1;
           }).slice(0, this.DISPLAY_LIMIT);
-      } else {
-        value = [];
       }
 
-      this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(value)));
+      this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
     });
 
     this.taskletService.notify();
@@ -238,6 +236,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
    */
   onSearchItemChanged(searchItem: string) {
     this.searchItem = searchItem;
+    console.log(`DEBUG searchItem ${searchItem}`);
     this.taskletService.notify();
   }
 

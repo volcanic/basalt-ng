@@ -33,7 +33,6 @@ export class TaskletService {
           if (entity.entityType === EntityType.TASKLET) {
             const tasklet = entity as Tasklet;
             this.tasklets.set(tasklet.id, tasklet);
-            console.debug(`DEBUG subscribe tasklet ${JSON.stringify(tasklet)}`);
           }
         }
       );

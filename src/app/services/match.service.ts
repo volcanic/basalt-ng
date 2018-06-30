@@ -99,32 +99,37 @@ export class MatchService {
    * @returns {boolean}
    */
   public taskletMatchesEveryItem(tasklet: Tasklet, items: string): boolean {
+
     // Indicate a match if no filter mechanism is used
     if ((items == null || items.trim() === '')) {
       return true;
     }
 
-    return this.splitSearchItems(items).every(i => {
+    const match = this.splitSearchItems(items).every(i => {
       return this.taskletMatchesSingleItem(tasklet, i);
     });
+
+    return match;
   }
 
   /**
-   * Determines whether any of tasklet's attributes contains a certain item
+   * Determines whether any of tasklet's attributes contain a certain item
    * @param tasklet tasklet
    * @param item single word
    * @returns {boolean}
    */
   public taskletMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    const match = this.taskletTaskNameMatchesSingleItem(tasklet, item)
-      || this.taskletDescriptionMatchesSingleItem(tasklet, item)
-      || this.taskletPersonsMatchesSingleItem(tasklet, item)
-      || this.taskletTagsMatchesSingleItem(tasklet, item);
 
-    return match
+    const matchesTask = this.taskletTaskNameMatchesSingleItem(tasklet, item);
+    const matchesDescription = this.taskletDescriptionMatchesSingleItem(tasklet, item);
+    const matchesPersons = this.taskletPersonsMatchesSingleItem(tasklet, item);
+    const matchesTags = this.taskletTagsMatchesSingleItem(tasklet, item);
+
+    return matchesTask || matchesDescription || matchesPersons || matchesTags;
   }
 
   private taskletTaskNameMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
+
     const task = this.entityService.getTaskByTasklet(tasklet);
 
     return (task != null) ? this.textMatchesSingleItem(task.name, item) : false;
