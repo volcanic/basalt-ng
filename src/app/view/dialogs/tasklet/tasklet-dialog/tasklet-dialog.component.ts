@@ -29,9 +29,6 @@ export class TaskletDialogComponent implements OnInit {
   taskOptions = [];
   personOptions = [];
 
-  tags: Tag[] = [];
-  newTags: Tag[] = [];
-
   constructor(private taskService: TaskService,
               private taskletService: TaskletService,
               private snackbarService: SnackbarService,
@@ -44,31 +41,14 @@ export class TaskletDialogComponent implements OnInit {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = JSON.parse(JSON.stringify(this.data.tasklet));
-    this.tags = JSON.parse(JSON.stringify(this.data.tags)).sort((t1, t2) => {
-      return t1.name > t2.name ? 1 : -1;
-    }).map(t => {
-      if (this.tasklet.tags != null) {
-        t.checked = false;
-
-        this.tasklet.tags.forEach(tt => {
-          if (t.name === tt.name) {
-            t.checked = true;
-          }
-        });
-      }
-
-      return t;
-    });
     this.previousText = this.data.previousText;
 
     this.taskOptions = Array.from(this.taskService.tasks.values());
     this.personOptions = Array.from(this.taskletService.getPersons().values());
-
-    this.newTags.push(new Tag('', false));
   }
 
   addTasklet() {
-    this.tasklet.tags = this.aggregateTags(this.tasklet, this.tags, this.newTags);
+    this.tasklet.tags = this.aggregateTags(this.tasklet);
     this.tasklet.persons = this.aggregatePersons(this.tasklet);
 
     switch (this.tasklet.type) {
@@ -92,7 +72,7 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   updateTasklet() {
-    this.tasklet.tags = this.aggregateTags(this.tasklet, this.tags, this.newTags);
+    this.tasklet.tags = this.aggregateTags(this.tasklet);
     this.tasklet.persons = this.aggregatePersons(this.tasklet);
 
     switch (this.tasklet.type) {
@@ -146,28 +126,16 @@ export class TaskletDialogComponent implements OnInit {
   continueTasklet() {
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
-    this.tasklet.tags = [];
-    this.tags.concat(this.newTags).filter(t => t.checked).forEach(t => {
-        this.tasklet.tags.push(t);
-      }
-    );
 
     this.dialogRef.close(this.tasklet);
   }
 
-  onDescriptionChanged(description: string) {
-    console.log(`BOING ${description}`);
-  }
-
-  aggregateTags(tasklet: Tasklet, existingTags: Tag[], newTags: Tag[]): Tag[] {
+  aggregateTags(tasklet: Tasklet): Tag[] {
     const aggregatedTags = new Map<string, Tag>();
 
     // Concatenate
-    existingTags.filter(t => t.checked).forEach(t => {
-      aggregatedTags.set(t.name, t);
-    });
-    newTags.filter(t => t.checked).forEach(t => {
-      aggregatedTags.set(t.name, t);
+    this.tasklet.tags.forEach(tag => {
+      aggregatedTags.set(tag.name, tag);
     });
     this.inferTags(tasklet).forEach((value, key) => {
       aggregatedTags.set(key, value);

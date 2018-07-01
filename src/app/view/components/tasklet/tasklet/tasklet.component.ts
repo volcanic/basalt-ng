@@ -62,7 +62,7 @@ export class TaskletComponent implements OnInit {
   //
 
   private initializeTags() {
-    this.tags = Array.from(this.taskletService.getTags().values());
+    this.tags = Array.from(this.taskletService.tags.values());
     this.tags.forEach(t => {
       if (this.tasklet.tags != null) {
         t.checked = false;

@@ -77,7 +77,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
         // Get initial list of tags
         if (this.tags.size < 2) {
-          this.taskletService.getTags().forEach((tag: Tag, key: string) => {
+          this.taskletService.updateTags();
+          this.taskletService.tags.forEach((tag: Tag, key: string) => {
             tag.checked = true;
             this.tags.set(tag.name, tag);
           });

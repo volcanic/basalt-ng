@@ -20,8 +20,8 @@ export class TaskletService {
 
   private entitiesUnsubscribeSubject = new Subject();
 
-  // Suggestions
-  suggestedSearchItems = [];
+  searchItems = [];
+  tags: Map<string, Tag>;
 
   constructor(private entityService: EntityService,
               private dateService: DateService) {
@@ -37,7 +37,8 @@ export class TaskletService {
         }
       );
 
-      this.updateSuggestedSearchItems();
+      this.updateSearchItems();
+      this.updateTags();
       this.notify();
     });
   }
@@ -64,7 +65,6 @@ export class TaskletService {
     this.notify();
   }
 
-
   /**
    * Informs subscribers that something has changed
    */
@@ -82,11 +82,10 @@ export class TaskletService {
   //
 
   /**
-   * Returns a list of suggested search items
-   * @returns {any[]}
+   * Updates search items
    */
-  public updateSuggestedSearchItems() {
-    this.suggestedSearchItems = [];
+  public updateSearchItems() {
+    this.searchItems = [];
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
@@ -97,7 +96,7 @@ export class TaskletService {
         if (t.description.value != null) {
           t.description.value.split('\n').forEach(v => {
             if (v.trim() !== '') {
-              this.suggestedSearchItems.push(v.trim().replace(/(^-)/g, ''));
+              this.searchItems.push(v.trim().replace(/(^-)/g, ''));
             }
           });
         }
@@ -105,51 +104,39 @@ export class TaskletService {
         // Add tags to search items
         if (t.tags != null) {
           t.tags.forEach(tag => {
-            this.suggestedSearchItems.push(tag.name);
+            this.searchItems.push(tag.name);
           })
         }
 
         // Add persons to search items
         if (t.persons != null) {
           t.persons.forEach(person => {
-            this.suggestedSearchItems.push(person.name);
+            this.searchItems.push(person.name);
           })
         }
 
         // Add tasklet name to search items
         const task: Task = this.entityService.getEntityById(t.taskId) as Task;
         if (task != null) {
-          this.suggestedSearchItems.push(task.name.trim().replace(/(^-)/g, ''));
+          this.searchItems.push(task.name.trim().replace(/(^-)/g, ''));
 
           // Add project name to search items
           const project: Project = this.entityService.getEntityById(task.projectId) as Project;
           if (project != null) {
-            this.suggestedSearchItems.push(project.name.trim().replace(/(^-)/g, ''));
+            this.searchItems.push(project.name.trim().replace(/(^-)/g, ''));
           }
         }
       }
     });
-
-    console.log(`DEBUG suggestedSearchItems ${JSON.stringify(this.suggestedSearchItems)}`);
   }
 
   /**
-   * Returns a map of tags
-   * @returns {Map<string, Tag>}
+   * Update tags
    */
-  public getTags(): Map<string, Tag> {
-    return this.getTagsByTasklets(Array.from(this.tasklets.values()));
-  }
+  public updateTags() {
+    this.tags = new Map<string, Tag>();
 
-  /**
-   * Returns a map of tags of a given list of tasklets
-   * @param tasklets given list of tasklets
-   * @returns {Map<string, Tag>}
-   */
-  public getTagsByTasklets(tasklets: Tasklet[]): Map<string, Tag> {
-    const tags = new Map<string, Tag>();
-
-    Array.from(tasklets.values()).sort((t1, t2) => {
+    Array.from(Array.from(this.tasklets.values()).values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
     }).forEach(tasklet => {
       if (tasklet.tags != null) {
@@ -157,14 +144,11 @@ export class TaskletService {
           if (t != null && t.name != null && t.name.length > 0) {
             // Deep copy
             const tag = new Tag(t.name, t.checked);
-
-            tags.set(tag.name, tag);
+            this.tags.set(tag.name, tag);
           }
         });
       }
     });
-
-    return tags;
   }
 
   /**
@@ -216,7 +200,9 @@ export class TaskletService {
     return persons;
   }
 
+  //
   // Filters
+  //
 
   public matchesDate(tasklet: Tasklet, date: Date) {
     return new Date(tasklet.creationDate) > new Date(this.dateService.getDayStart(date))

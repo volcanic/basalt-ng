@@ -26,7 +26,7 @@ export class TimelineToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchOptions = this.taskletService.suggestedSearchItems;
+    this.searchOptions = this.taskletService.searchItems;
 
     this.filteredSearchOptions = this.formControl.valueChanges
       .pipe(
@@ -44,7 +44,7 @@ export class TimelineToolbarComponent implements OnInit {
   }
 
   onClickInput() {
-    this.searchOptions = this.taskletService.suggestedSearchItems;
+    this.searchOptions = this.taskletService.searchItems;
   }
 
   onChangeSearchItem(searchItem: string): void {

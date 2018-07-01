@@ -1,0 +1,18 @@
+<mat-chip-list>
+  <mat-chip *ngFor="let tag of tags">
+    {{ tag.name }}
+  </mat-chip>
+  <div class="searchbox">
+    <input class="search-input" matInput name="search" type="text" placeholder="New tag"
+           [(ngModel)]="value"
+           [formControl]="formControl"
+           [matAutocomplete]="auto"
+           (keyup)="onKeyUp($event)"
+           (keydown)="onKeyDown($event)">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+</mat-chip-list>

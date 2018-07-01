@@ -7,7 +7,7 @@ import {
   MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
-  MatCheckboxModule,
+  MatCheckboxModule, MatChipsModule,
   MatDatepickerModule,
   MatDialogModule,
   MatExpansionModule,
@@ -76,6 +76,7 @@ import {TaskListComponent} from './view/components/lists/task-list/task-list.com
 import {TimelineComponent} from './view/pages/timeline/timeline.component';
 import {DescriptionFragmentComponent} from './view/fragments/description-fragment/description-fragment.component';
 import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-fragment/tag-selection-fragment.component';
+import { TagChipsFragmentComponent } from './view/fragments/tag-chips-fragment/tag-chips-fragment.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-frag
     TaskListItemComponent,
     TaskDialogComponent,
     TagSelectionFragmentComponent,
-    DescriptionFragmentComponent
+    DescriptionFragmentComponent,
+    TagChipsFragmentComponent
   ],
   imports: [
     AppRoutingModule,
@@ -133,6 +135,7 @@ import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-frag
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatChipsModule,
     MatDatepickerModule,
     MatDialogModule,
     MatExpansionModule,
