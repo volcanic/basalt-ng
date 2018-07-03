@@ -44,7 +44,7 @@
         [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'"></app-tasklet-dialog-daily-scrum>
       <app-tasklet-dialog-weekly-digest [tasklet]="tasklet"
                                         *ngIf="tasklet.type == 'Weekly Digest'"></app-tasklet-dialog-weekly-digest>
-      <app-tag-chips-fragment [tags]="tasklet.tags">
+      <app-tag-chips-fragment [tags]="tasklet.tags" (onTagChangedEmitter)="onTagChangedEmitter($event)">
       </app-tag-chips-fragment>
     </form>
   </mat-dialog-content>

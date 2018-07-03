@@ -1,6 +1,6 @@
 <mat-chip-list>
   <mat-chip *ngFor="let tag of tags">
-    {{ tag.name }}
+    {{ tag.name }} <mat-icon class="delete-button hidden" svgIcon="close_18" (click)="onDeleteTag(tag)"></mat-icon>
   </mat-chip>
   <div class="searchbox">
     <input class="search-input" matInput name="search" type="text" placeholder="New tag"

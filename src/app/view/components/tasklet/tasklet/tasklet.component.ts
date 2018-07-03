@@ -227,7 +227,7 @@ export class TaskletComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskletService.updateTasklet(result as Tasklet);
-        this.snackbarService.showSnackbar('Continued tasklet', '');
+        this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
   }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tag} from '../../../model/tag.model';
 import {Observable} from 'rxjs/Rx';
 import {FormControl} from '@angular/forms';
@@ -13,6 +13,8 @@ import {map, startWith} from 'rxjs/internal/operators';
 export class TagChipsFragmentComponent implements OnInit {
 
   @Input() tags: Tag[] = [];
+  @Output() onTagChangedEmitter = new EventEmitter<Tag[]>();
+
   value = '';
 
   options = [];
@@ -35,8 +37,12 @@ export class TagChipsFragmentComponent implements OnInit {
       );
   }
 
-  onChangeSearchItem(value: string) {
-    // this.value = value;
+  onDeleteTag(value: Tag) {
+    this.tags = this.tags.filter(tag => {
+      return tag.name !== value.name;
+    });
+
+    this.notify();
   }
 
   onKeyUp(event: any) {
@@ -46,6 +52,7 @@ export class TagChipsFragmentComponent implements OnInit {
     if (this.value !== '' && this.value !== ',' && (event.keyCode == KEY_CODE_ENTER || event.keyCode == KEY_CODE_COMMA)) {
       this.tags.push(new Tag(this.value.replace(/,/, ''), true));
       this.value = '';
+      this.notify();
     }
   }
 
@@ -59,4 +66,7 @@ export class TagChipsFragmentComponent implements OnInit {
     );
   }
 
+  notify() {
+    this.onTagChangedEmitter.emit(this.tags);
+  }
 }

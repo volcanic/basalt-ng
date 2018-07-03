@@ -47,6 +47,10 @@ export class TaskletDialogComponent implements OnInit {
     this.personOptions = Array.from(this.taskletService.getPersons().values());
   }
 
+  onTagChangedEmitter (tags: Tag[]) {
+    this.tasklet.tags = tags;
+  }
+
   addTasklet() {
     this.tasklet.tags = this.aggregateTags(this.tasklet);
     this.tasklet.persons = this.aggregatePersons(this.tasklet);
@@ -131,6 +135,8 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   aggregateTags(tasklet: Tasklet): Tag[] {
+    console.log(`DEBUG tags ${tasklet.tags}`);
+
     const aggregatedTags = new Map<string, Tag>();
 
     // Concatenate

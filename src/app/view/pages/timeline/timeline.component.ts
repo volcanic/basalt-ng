@@ -248,34 +248,4 @@ export class TimelineComponent implements OnInit, OnDestroy {
   onSideMenuItemClicked(menuItem: string) {
     this.snackbarService.showSnackbar(`Clicked on side menu item ${menuItem}`, '');
   }
-
-  /**
-   * Returns an array of unique tags
-   * @returns {Tag[]}
-   */
-  getAllTags(tasklets: Tasklet[]): Tag[] {
-    const ts = [];
-
-    tasklets.forEach(tasklet => {
-      if (tasklet.tags != null) {
-        tasklet.tags.forEach(tag => {
-            let unique = true;
-            ts.forEach(t => {
-              if (tag.name === t.name) {
-                unique = false;
-              }
-            });
-
-            if (unique) {
-              ts.push(tag);
-            }
-          }
-        );
-      }
-    });
-
-    return ts.sort((t1, t2) => {
-      return (t1.name > t2.name) ? 1 : -1;
-    });
-  }
 }

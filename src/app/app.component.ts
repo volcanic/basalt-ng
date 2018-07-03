@@ -80,6 +80,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
     icons.push(new Icon(MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
     icons.push(new Icon(MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
+    icons.push(new Icon(NAVIGATION, 'close_18', 'ic_close_18px.svg'));
     icons.push(new Icon(NAVIGATION, 'menu', 'ic_menu_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'more_vert', 'ic_more_vert_24px.svg'));
     icons.push(new Icon(SOCIAL, 'people', 'ic_people_24px.svg'));
