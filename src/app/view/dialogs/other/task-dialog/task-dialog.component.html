@@ -103,7 +103,8 @@
           </mat-panel-description>
           <mat-icon svgIcon="label_outline"></mat-icon>
         </mat-expansion-panel-header>
-        <app-tag-selection-fragment [tags]="tags" [newTags]="newTags"></app-tag-selection-fragment>
+        <app-tag-chips-fragment [tags]="task.tags" (onTagChangedEmitter)="onTagChangedEmitter($event)">
+        </app-tag-chips-fragment>
       </mat-expansion-panel>
 
     </mat-accordion>

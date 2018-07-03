@@ -118,6 +118,14 @@ export class TaskDialogComponent implements OnInit {
   }
 
   //
+  // Listeners
+  //
+
+  onTagChangedEmitter (tags: Tag[]) {
+    this.task.tags = tags;
+  }
+
+  //
   // Action buttons
   //
 
