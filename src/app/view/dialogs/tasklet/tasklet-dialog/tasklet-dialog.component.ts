@@ -55,6 +55,10 @@ export class TaskletDialogComponent implements OnInit {
     this.tasklet.tags = tags;
   }
 
+  onPersonChangedEmitter(persons: Person[]) {
+    this.tasklet.persons = persons;
+  }
+
   //
   // Action buttons
   //

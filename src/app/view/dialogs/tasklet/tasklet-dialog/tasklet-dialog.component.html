@@ -34,16 +34,17 @@
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'"></app-description-fragment>
-      <app-tasklet-dialog-participants
-        [tasklet]="tasklet" [personOptions]="personOptions" *ngIf="tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Call'
-                                       || tasklet.type == 'Mail'
-                                       || tasklet.type == 'Chat'">
-      </app-tasklet-dialog-participants>
+
       <app-tasklet-dialog-daily-scrum
         [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'"></app-tasklet-dialog-daily-scrum>
       <app-tasklet-dialog-weekly-digest [tasklet]="tasklet"
                                         *ngIf="tasklet.type == 'Weekly Digest'"></app-tasklet-dialog-weekly-digest>
+      <app-person-chips-fragment [persons]="tasklet.persons" (onPersonChangedEmitter)="onPersonChangedEmitter($event)"
+                                 *ngIf="tasklet.type == 'Meeting'
+                                       || tasklet.type == 'Call'
+                                       || tasklet.type == 'Mail'
+                                       || tasklet.type == 'Chat'">
+      </app-person-chips-fragment>
       <app-tag-chips-fragment [tags]="tasklet.tags" (onTagChangedEmitter)="onTagChangedEmitter($event)">
       </app-tag-chips-fragment>
     </form>

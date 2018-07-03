@@ -22,6 +22,7 @@ export class TaskletService {
 
   searchItems = [];
   tags: Map<string, Tag>;
+  persons: Map<string, Person>;
 
   constructor(private entityService: EntityService,
               private dateService: DateService) {
@@ -39,6 +40,7 @@ export class TaskletService {
 
       this.updateSearchItems();
       this.updateTags();
+      this.updatePersons();
       this.notify();
     });
   }
@@ -131,7 +133,7 @@ export class TaskletService {
   }
 
   /**
-   * Update tags
+   * Updates tags
    */
   public updateTags() {
     this.tags = new Map<string, Tag>();
@@ -145,6 +147,27 @@ export class TaskletService {
             // Deep copy
             const tag = new Tag(t.name, t.checked);
             this.tags.set(tag.name, tag);
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Updates persons
+   */
+  public updatePersons() {
+    this.persons = new Map<string, Tag>();
+
+    Array.from(Array.from(this.tasklets.values()).values()).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
+    }).forEach(tasklet => {
+      if (tasklet.persons != null) {
+        tasklet.persons.forEach(p => {
+          if (p != null && p.name != null && p.name.length > 0) {
+            // Deep copy
+            const person = new Person(p.name);
+            this.persons.set(person.name, person);
           }
         });
       }

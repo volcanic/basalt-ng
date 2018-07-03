@@ -7,7 +7,8 @@ import {
   MatAutocompleteModule,
   MatButtonModule,
   MatCardModule,
-  MatCheckboxModule, MatChipsModule,
+  MatCheckboxModule,
+  MatChipsModule,
   MatDatepickerModule,
   MatDialogModule,
   MatExpansionModule,
@@ -39,8 +40,6 @@ import {TimelineToolbarComponent} from './view/toolbars/timeline-toolbar/timelin
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
 import {TimePickerDialogComponent} from './view/dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {PersonDialogComponent} from './view/dialogs/other/person-dialog/person-dialog.component';
-import {TaskletDialogParticipantsComponent} from './view/dialogs/tasklet/tasklet-dialog-participants/tasklet-dialog-participants.component';
-import {TaskletParticipantsComponent} from './view/components/tasklet/tasklet-participants/tasklet-participants.component';
 import {AboutDialogComponent} from './view/dialogs/app-info/about-dialog/about-dialog.component';
 import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-dialog/new-features-dialog.component';
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
@@ -76,7 +75,8 @@ import {TaskListComponent} from './view/components/lists/task-list/task-list.com
 import {TimelineComponent} from './view/pages/timeline/timeline.component';
 import {DescriptionFragmentComponent} from './view/fragments/description-fragment/description-fragment.component';
 import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-fragment/tag-selection-fragment.component';
-import { TagChipsFragmentComponent } from './view/fragments/tag-chips-fragment/tag-chips-fragment.component';
+import {TagChipsFragmentComponent} from './view/fragments/tag-chips-fragment/tag-chips-fragment.component';
+import {PersonChipsFragmentComponent} from './view/fragments/person-chips-fragment/person-chips-fragment.component';
 
 @NgModule({
   declarations: [
@@ -98,10 +98,8 @@ import { TagChipsFragmentComponent } from './view/fragments/tag-chips-fragment/t
     TaskletDialogDailyScrumParticipantComponent,
     TaskletDialogContentComponent,
     TaskletDialogHeaderComponent,
-    TaskletDialogParticipantsComponent,
     TaskletDialogTaskComponent,
     TaskletDialogWeeklyDigestComponent,
-    TaskletParticipantsComponent,
     TimelineComponent,
     TimelineToolbarComponent,
     TaskletWeeklyDigestComponent,
@@ -121,7 +119,8 @@ import { TagChipsFragmentComponent } from './view/fragments/tag-chips-fragment/t
     TaskDialogComponent,
     TagSelectionFragmentComponent,
     DescriptionFragmentComponent,
-    TagChipsFragmentComponent
+    TagChipsFragmentComponent,
+    PersonChipsFragmentComponent
   ],
   imports: [
     AppRoutingModule,
@@ -163,7 +162,6 @@ import { TagChipsFragmentComponent } from './view/fragments/tag-chips-fragment/t
     TaskletDialogComponent,
     TaskletDialogDailyScrumComponent,
     TaskletDialogContentComponent,
-    TaskletDialogParticipantsComponent,
     TaskletDialogWeeklyDigestComponent,
     TimePickerDialogComponent,
     UploadDialogComponent,

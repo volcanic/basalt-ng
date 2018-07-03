@@ -1,0 +1,19 @@
+<mat-chip-list>
+  <mat-chip *ngFor="let person of persons" color="primary">
+    {{ person.name }}
+    <mat-icon class="delete-button hidden" svgIcon="close_18" (click)="onDeletePerson(person)"></mat-icon>
+  </mat-chip>
+  <div class="searchbox">
+    <input class="search-input" matInput name="search" type="text" placeholder="New person"
+           [(ngModel)]="value"
+           [formControl]="formControl"
+           [matAutocomplete]="auto"
+           (keyup)="onKeyUp($event)"
+           (keydown)="onKeyDown($event)">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+</mat-chip-list>

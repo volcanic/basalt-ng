@@ -1,0 +1,20 @@
+@import '../../../../theme';
+
+.delete-button {
+  height: 14px;
+  width: 14px;
+  margin-top: -14px;
+  margin-left: 10px;
+}
+
+mat-chip {
+  background-color: #cfd8dc !important;
+
+  &:hover .hidden {
+    display: inline-block;
+  }
+}
+
+.hidden {
+  display: none;
+}
