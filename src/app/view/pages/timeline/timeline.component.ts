@@ -19,6 +19,8 @@ import {Project} from '../../../model/entities/project.model';
 import {EntityService} from '../../../services/entities/entity.service';
 import {ProjectService} from '../../../services/entities/project.service';
 import {TaskService} from '../../../services/entities/task.service';
+import {TaskDialogComponent} from '../../dialogs/other/task-dialog/task-dialog.component';
+import {Task} from '../../../model/entities/task.model';
 
 @Component({
   selector: 'app-tasklets',
@@ -100,11 +102,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
           return matchesSearchItem && matchesTags && matchesProjects;
         }).sort((t1: Tasklet, t2: Tasklet) => {
-            const date1 = new Date(t1.creationDate).getTime();
-            const date2 = new Date(t2.creationDate).getTime();
+          const date1 = new Date(t1.creationDate).getTime();
+          const date2 = new Date(t2.creationDate).getTime();
 
-            return date2 - date1;
-          }).slice(0, this.DISPLAY_LIMIT);
+          return date2 - date1;
+        }).slice(0, this.DISPLAY_LIMIT);
       }
 
       this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
@@ -131,7 +133,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
         this.snackbarService.showSnackbar('Clicked on menu item Setting', '');
         break;
       }
-      case 'add': {
+      case 'add-tasklet': {
         const dialogRef = this.dialog.open(TaskletDialogComponent, {
           disableClose: false,
           data: {
@@ -152,6 +154,22 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
             this.taskletService.createTasklet(tasklet as Tasklet);
             this.snackbarService.showSnackbar('Added tasklet', '');
+          }
+        });
+        break;
+      }
+      case 'add-task': {
+        const dialogRef = this.dialog.open(TaskDialogComponent, {
+          disableClose: false,
+          data: {
+            mode: DIALOG_MODE.ADD,
+            dialogTitle: 'Add task',
+            task: JSON.stringify(new Task(''))
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            this.taskService.createTask(result as Task);
           }
         });
         break;

@@ -8,6 +8,12 @@
   <mat-sidenav #sidenavStart mode="side" position="start" opened="true" class="sidenav sidenav-start">
   </mat-sidenav>
   <mat-sidenav #sidenavEnd mode="side" position="end" opened="true" class="sidenav sidenav-end">
+    <div>
+      <button mat-button class="add-task" (click)="onMenuItemClicked('add-task')">
+        <mat-icon class="add-task-icon" svgIcon="add"></mat-icon>
+        <span>Add new task</span>
+      </button>
+    </div>
     <app-task-list></app-task-list>
   </mat-sidenav>
 
@@ -18,6 +24,6 @@
 
 </mat-sidenav-container>
 
-<button mat-fab class="fab" (click)="onMenuItemClicked('add')">
+<button mat-fab class="fab" (click)="onMenuItemClicked('add-tasklet')">
   <mat-icon svgIcon="add" class="white-icon"></mat-icon>
 </button>
