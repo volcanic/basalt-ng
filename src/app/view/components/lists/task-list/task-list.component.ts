@@ -16,6 +16,9 @@ export class TaskListComponent implements OnInit {
   tasksNext = [];
   tasksInbox = [];
 
+  tasksOverdueBadgeColor = 'transparent';
+  tasksInboxBadgeColor = 'transparent';
+
   private tasksUnsubscribeSubject = new Subject();
 
   constructor(private taskService: TaskService,
@@ -32,6 +35,9 @@ export class TaskListComponent implements OnInit {
         this.tasksOverdue = (value as Task[]).filter(task => task != null && task.dueDate != null && this.dateService.isBefore(task.dueDate, new Date()));
         this.tasksNext = (value as Task[]).filter(task => task != null && task.dueDate != null && this.dateService.isAfter(task.dueDate, new Date()));
         this.tasksInbox = (value as Task[]).filter(task => task == null || task.dueDate == null);
+
+        this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
+        this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
       }
     });
   }

@@ -5,6 +5,7 @@ import {HttpModule} from '@angular/http';
 import {AppComponent} from './app.component';
 import {
   MatAutocompleteModule,
+  MatBadgeModule,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
@@ -133,6 +134,7 @@ import {ProjectAutocompleteFragmentComponent} from './view/fragments/project-aut
     HttpModule,
     HttpClientModule,
     MatAutocompleteModule,
+    MatBadgeModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,

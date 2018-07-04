@@ -1,4 +1,7 @@
-<div class="label" color="">Overdue</div>
+<div class="label" color="">
+  <span matBadge="{{ tasksOverdue.length }}"
+        matBadgeOverlap="false"
+        [matBadgeColor]="tasksOverdueBadgeColor">Overdue</span></div>
 
 <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t">
 </app-task-list-item>
@@ -10,7 +13,11 @@
 
 <mat-divider></mat-divider>
 
-<div class="label">Inbox</div>
+<div class="label">
+  <span matBadge="{{ tasksInbox.length }}"
+        matBadgeOverlap="false"
+        [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
+</div>
 
 <app-task-list-item *ngFor="let t of tasksInbox" [task]="t">
 </app-task-list-item>
