@@ -1,23 +1,45 @@
-<div class="label" color="">
-  <span matBadge="{{ tasksOverdue.length }}"
-        matBadgeOverlap="false"
-        [matBadgeColor]="tasksOverdueBadgeColor">Overdue</span></div>
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="tasksOverdue.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label" color="">
+          <span matBadge="{{ tasksOverdue.length }}"
+                matBadgeOverlap="false"
+                [matBadgeColor]="tasksOverdueBadgeColor">Overdue</span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t">
+    </app-task-list-item>
+  </mat-expansion-panel>
+</mat-accordion>
 
-<app-task-list-item *ngFor="let t of tasksOverdue" [task]="t">
-</app-task-list-item>
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="tasksNext.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label">
+          <span matBadge="{{ tasksNext.length }}"
+                matBadgeOverlap="false"
+                [matBadgeColor]="tasksNextBadgeColor">Next</span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-task-list-item *ngFor="let t of tasksNext" [task]="t">
+    </app-task-list-item>
+  </mat-expansion-panel>
+</mat-accordion>
 
-<div class="label">Next</div>
-
-<app-task-list-item *ngFor="let t of tasksNext" [task]="t">
-</app-task-list-item>
-
-<mat-divider></mat-divider>
-
-<div class="label">
-  <span matBadge="{{ tasksInbox.length }}"
-        matBadgeOverlap="false"
-        [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
-</div>
-
-<app-task-list-item *ngFor="let t of tasksInbox" [task]="t">
-</app-task-list-item>
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="tasksInbox.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <div class="label">
+        <span matBadge="{{ tasksInbox.length }}"
+              matBadgeOverlap="false"
+              [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
+      </div>
+    </mat-expansion-panel-header>
+    <app-task-list-item *ngFor="let t of tasksInbox" [task]="t">
+    </app-task-list-item>
+  </mat-expansion-panel>
+</mat-accordion>

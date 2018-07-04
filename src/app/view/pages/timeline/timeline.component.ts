@@ -269,7 +269,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
    */
   onSearchItemChanged(searchItem: string) {
     this.searchItem = searchItem;
-    console.log(`DEBUG searchItem ${searchItem}`);
     this.taskletService.notify();
   }
 
