@@ -14,6 +14,7 @@ import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
 import {Task} from '../../../../model/entities/task.model';
 import {EntityService} from '../../../../services/entities/entity.service';
+import {Description} from '../../../../model/description.model';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -26,7 +27,7 @@ export class TaskletDialogComponent implements OnInit {
   mode = DIALOG_MODE.NONE;
   dialogTitle = '';
   tasklet: Tasklet;
-  previousText = '';
+  previousDescription = new Description();
 
   // Temporary
   task: Task;
@@ -46,7 +47,7 @@ export class TaskletDialogComponent implements OnInit {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = JSON.parse(JSON.stringify(this.data.tasklet));
-    this.previousText = this.data.previousText;
+    this.previousDescription = this.data.previousDescription;
 
     this.task = this.entityService.getEntityById(this.tasklet.taskId) as Task;
   }

@@ -8,7 +8,7 @@ import {Tasklet} from '../../../../model/entities/tasklet.model';
 })
 export class TaskletDialogContentComponent implements OnInit {
   @Input() tasklet: Tasklet;
-  @Input() previousText: string;
+  @Input() previousDescription;
 
   constructor() {
   }

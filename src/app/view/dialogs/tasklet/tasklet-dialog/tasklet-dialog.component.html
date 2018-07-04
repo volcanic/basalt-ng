@@ -15,7 +15,7 @@
           || tasklet.type == 'Idea'">
       </app-task-autocomplete-fragment>
       <app-tasklet-dialog-content
-        [tasklet]="tasklet" [previousText]="previousText" *ngIf="tasklet.type == 'Action'
+        [tasklet]="tasklet" [previousDescription]="previousDescription" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Mail'

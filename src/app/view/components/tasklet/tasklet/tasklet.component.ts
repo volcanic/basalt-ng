@@ -252,7 +252,7 @@ export class TaskletComponent implements OnInit {
         tasklet: continueTasklet,
         tags: this.tags,
         projects: this.projects,
-        previousText: this.tasklet.description
+        previousDescription: this.tasklet.description
       }
     });
     dialogRef.afterClosed().subscribe(result => {
