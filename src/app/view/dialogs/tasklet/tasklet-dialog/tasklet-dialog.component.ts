@@ -12,6 +12,8 @@ import {SnackbarService} from '../../../../services/snackbar.service';
 import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
+import {Task} from '../../../../model/entities/task.model';
+import {EntityService} from '../../../../services/entities/entity.service';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -26,10 +28,13 @@ export class TaskletDialogComponent implements OnInit {
   tasklet: Tasklet;
   previousText = '';
 
-  taskOptions = [];
+  // Temporary
+  task: Task;
+
   personOptions = [];
 
-  constructor(private taskService: TaskService,
+  constructor(private entityService: EntityService,
+              private taskService: TaskService,
               private taskletService: TaskletService,
               private snackbarService: SnackbarService,
               public dialog: MatDialog,
@@ -43,15 +48,18 @@ export class TaskletDialogComponent implements OnInit {
     this.tasklet = JSON.parse(JSON.stringify(this.data.tasklet));
     this.previousText = this.data.previousText;
 
-    this.taskOptions = Array.from(this.taskService.tasks.values());
-    this.personOptions = Array.from(this.taskletService.getPersons().values());
+    this.task = this.entityService.getEntityById(this.tasklet.taskId) as Task;
   }
 
   //
   // Listeners
   //
 
-  onTagChangedEmitter (tags: Tag[]) {
+  onTaskChangedEmitter(task: Task) {
+    this.task = task;
+  }
+
+  onTagChangedEmitter(tags: Tag[]) {
     this.tasklet.tags = tags;
   }
 
@@ -64,6 +72,7 @@ export class TaskletDialogComponent implements OnInit {
   //
 
   addTasklet() {
+    this.evaluateTask();
     this.tasklet.tags = this.aggregateTags(this.tasklet);
     this.tasklet.persons = this.aggregatePersons(this.tasklet);
 
@@ -88,6 +97,7 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   updateTasklet() {
+    this.evaluateTask();
     this.tasklet.tags = this.aggregateTags(this.tasklet);
     this.tasklet.persons = this.aggregatePersons(this.tasklet);
 
@@ -149,6 +159,22 @@ export class TaskletDialogComponent implements OnInit {
   //
   // Helpers
   //
+
+  evaluateTask(): Task {
+    let task = this.taskService.getTaskByName(this.task.name);
+
+    if (task != null) {
+      // Existing task
+      this.tasklet.taskId = task.id;
+    } else {
+      // New task
+      task = new Task(this.task.name);
+      this.tasklet.taskId = task.id;
+      this.taskService.createTask(task);
+    }
+
+    return task;
+  }
 
   aggregateTags(tasklet: Tasklet): Tag[] {
     console.log(`DEBUG tags ${tasklet.tags}`);

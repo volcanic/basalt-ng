@@ -66,4 +66,18 @@ export class TaskService {
       return date2 - date1;
     }));
   }
+
+  //
+  // Lookup
+  //
+
+  public getTaskByName(name: string): Task {
+    this.tasks.forEach((task: Task, index: string) => {
+      if (task.name === name) {
+        return task;
+      }
+    });
+
+    return null;
+  }
 }

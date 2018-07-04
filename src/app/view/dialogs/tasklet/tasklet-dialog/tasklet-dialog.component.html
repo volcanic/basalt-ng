@@ -4,17 +4,16 @@
     <form #formCtrl="ngForm">
       <app-tasklet-dialog-header
         [tasklet]="tasklet"></app-tasklet-dialog-header>
-      <app-tasklet-dialog-task
-        [tasklet]="tasklet"
-        [taskOptions]="taskOptions" *ngIf="tasklet.type == 'Action'
-                                       || tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Call'
-                                       || tasklet.type == 'Mail'
-                                       || tasklet.type == 'Chat'
-                                       || tasklet.type == 'Development'
-                                       || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'">
-      </app-tasklet-dialog-task>
+      <app-task-autocomplete-fragment
+        [task]="task" (onTaskChangedEmitter)="onTaskChangedEmitter($event)" *ngIf="tasklet.type == 'Action'
+          || tasklet.type == 'Meeting'
+          || tasklet.type == 'Call'
+          || tasklet.type == 'Mail'
+          || tasklet.type == 'Chat'
+          || tasklet.type == 'Development'
+          || tasklet.type == 'Debugging'
+          || tasklet.type == 'Idea'">
+      </app-task-autocomplete-fragment>
       <app-tasklet-dialog-content
         [tasklet]="tasklet" [previousText]="previousText" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Call'

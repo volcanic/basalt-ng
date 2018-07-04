@@ -138,7 +138,7 @@ export class TaskletService {
   public updateTags() {
     this.tags = new Map<string, Tag>();
 
-    Array.from(Array.from(this.tasklets.values()).values()).sort((t1, t2) => {
+    Array.from(this.tasklets.values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
     }).forEach(tasklet => {
       if (tasklet.tags != null) {

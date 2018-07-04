@@ -49,7 +49,6 @@ import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-dail
 import {ProjectsFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {TaskletDialogDailyScrumActivityComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-activity/tasklet-dialog-daily-scrum-activity.component';
 import {TaskletDialogDailyScrumParticipantComponent} from './view/dialogs/tasklet/tasklet-dialog-daily-scrum-participant/tasklet-dialog-daily-scrum-participant.component';
-import {TaskletDialogTaskComponent} from './view/dialogs/tasklet/tasklet-dialog-task/tasklet-dialog-task.component';
 import {TaskletDialogHeaderComponent} from './view/dialogs/tasklet/tasklet-dialog-header/tasklet-dialog-header.component';
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
 import {FileDropComponent} from './view/components/file-drop/file-drop.component';
@@ -77,6 +76,7 @@ import {DescriptionFragmentComponent} from './view/fragments/description-fragmen
 import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-fragment/tag-selection-fragment.component';
 import {TagChipsFragmentComponent} from './view/fragments/tag-chips-fragment/tag-chips-fragment.component';
 import {PersonChipsFragmentComponent} from './view/fragments/person-chips-fragment/person-chips-fragment.component';
+import {TaskAutocompleteFragmentComponent} from './view/fragments/task-autocomplete-fragment/task-autocomplete-fragment.component';
 
 @NgModule({
   declarations: [
@@ -98,7 +98,6 @@ import {PersonChipsFragmentComponent} from './view/fragments/person-chips-fragme
     TaskletDialogDailyScrumParticipantComponent,
     TaskletDialogContentComponent,
     TaskletDialogHeaderComponent,
-    TaskletDialogTaskComponent,
     TaskletDialogWeeklyDigestComponent,
     TimelineComponent,
     TimelineToolbarComponent,
@@ -114,13 +113,14 @@ import {PersonChipsFragmentComponent} from './view/fragments/person-chips-fragme
     CalendarGridDayComponent,
     CalendarGridQuarterHourComponent,
     CalendarItemComponent,
+    TaskDialogComponent,
     TaskListComponent,
     TaskListItemComponent,
-    TaskDialogComponent,
     TagSelectionFragmentComponent,
     DescriptionFragmentComponent,
     TagChipsFragmentComponent,
-    PersonChipsFragmentComponent
+    PersonChipsFragmentComponent,
+    TaskAutocompleteFragmentComponent
   ],
   imports: [
     AppRoutingModule,
