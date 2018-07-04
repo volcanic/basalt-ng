@@ -1,16 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DailyScrumParticipant} from '../../../../model/daily-scrum-participant';
-import {DailyScrumActivity} from '../../../../model/daily-scrum-activity';
-import {TaskletService} from '../../../../services/entities/tasklet.service';
+import {DailyScrumParticipant} from '../../../model/daily-scrum-participant';
+import {DailyScrumActivity} from '../../../model/daily-scrum-activity';
+import {TaskletService} from '../../../services/entities/tasklet.service';
+import {Person} from '../../../model/person.model';
 
 @Component({
-  selector: 'app-tasklet-dialog-daily-scrum-participant',
-  templateUrl: './tasklet-dialog-daily-scrum-participant.component.html',
-  styleUrls: ['./tasklet-dialog-daily-scrum-participant.component.scss']
+  selector: 'app-daily-scrum-participant-fragment',
+  templateUrl: './daily-scrum-participant-fragment.component.html',
+  styleUrls: ['./daily-scrum-participant-fragment.component.scss']
 })
-export class TaskletDialogDailyScrumParticipantComponent implements OnInit {
+export class DailyScrumParticipantFragmentComponent implements OnInit {
   @Input() dailyScrumParticipant: DailyScrumParticipant;
-  @Input() existingPersons: string[];
   @Output() onPersonSelectedEmitter = new EventEmitter<string>();
 
   constructor(private taskletService: TaskletService) {
@@ -20,7 +20,9 @@ export class TaskletDialogDailyScrumParticipantComponent implements OnInit {
     this.ensureEmptyActivity();
   }
 
-  onPersonSelected() {
+  onPersonChanged(person: Person) {
+    this.dailyScrumParticipant.person = person;
+    console.log(`DEBUG dailyScrumParticipant ${JSON.stringify(this.dailyScrumParticipant)}`);
     this.onPersonSelectedEmitter.next('');
   }
 
@@ -28,6 +30,9 @@ export class TaskletDialogDailyScrumParticipantComponent implements OnInit {
     this.ensureEmptyActivity();
   }
 
+  /**
+   * Makes sure that there is always one empty activity
+   */
   ensureEmptyActivity() {
     let noEmptyActivity = true;
 

@@ -12,7 +12,6 @@ import {WeeklyDigest} from '../../../../model/weekly-digest.model';
 })
 export class TaskletWeeklyDigestComponent implements OnInit {
   @Input() tasklet: TaskletWeeklyDigest;
-  @Output() actionFiredEmitter = new EventEmitter<string>();
 
   weeklyDigest: WeeklyDigest;
 

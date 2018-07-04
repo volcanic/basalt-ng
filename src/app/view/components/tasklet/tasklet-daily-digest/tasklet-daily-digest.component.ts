@@ -13,7 +13,6 @@ import {Tasklet} from '../../../../model/entities/tasklet.model';
 export class TaskletDailyDigestComponent implements OnInit {
 
   @Input() tasklet: Tasklet;
-  @Output() actionFiredEmitter = new EventEmitter<string>();
 
   dailyDigest: DailyDigest;
 

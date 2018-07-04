@@ -3,7 +3,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {SnackbarService} from '../../../../services/snackbar.service';
-import {TaskletDialogComponent} from '../../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
+import {TaskletDialogComponent} from '../../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {DateService} from '../../../../services/date.service';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';

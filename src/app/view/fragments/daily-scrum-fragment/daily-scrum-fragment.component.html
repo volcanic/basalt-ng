@@ -1,0 +1,4 @@
+<app-daily-scrum-participant-fragment *ngFor="let p of tasklet.participants"
+                                            [dailyScrumParticipant]="p"
+                                            (onPersonSelectedEmitter)="onPersonSelected($event)">
+</app-daily-scrum-participant-fragment>

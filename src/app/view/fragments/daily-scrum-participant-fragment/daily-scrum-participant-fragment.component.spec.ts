@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TaskletDialogDailyScrumParticipantComponent } from './tasklet-dialog-daily-scrum-participant.component';
+import {TaskletDialogDailyScrumParticipantComponent} from './daily-scrum-participant-fragment.component';
 
 describe('TaskletDialogDailyScrumParticipantComponent', () => {
   let component: TaskletDialogDailyScrumParticipantComponent;
@@ -8,9 +8,9 @@ describe('TaskletDialogDailyScrumParticipantComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskletDialogDailyScrumParticipantComponent ]
+      declarations: [TaskletDialogDailyScrumParticipantComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

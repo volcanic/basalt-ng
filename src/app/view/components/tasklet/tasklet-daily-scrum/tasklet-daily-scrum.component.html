@@ -1,4 +1,4 @@
-<div (click)="onActionFired.next('update')" class="participant"
+<div class="participant"
      *ngFor="let dailyScrumParticipant of tasklet.participants">
   <span class="person">
       <label class="person-label">{{ dailyScrumParticipant.person.name.split(' ')[0] }}</label>
@@ -9,10 +9,10 @@
       <span ngSwitch="{{ dailyScrumActivity.type }}"
             matTooltip="{{ dailyScrumActivity.type }}"
             matTooltipPosition="above">
-        <mat-icon *ngSwitchCase="type.DONE" [svgIcon]='iconDone' class="tasklet-type"></mat-icon>
-        <mat-icon *ngSwitchCase="type.DOING" [svgIcon]='iconRefresh' class="tasklet-type"></mat-icon>
-        <mat-icon *ngSwitchCase="type.WILL_DO" [svgIcon]='iconToday' class="tasklet-type"></mat-icon>
-        <mat-icon *ngSwitchCase="type.IMPEDIMENT" [svgIcon]='iconWarning' class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="type.DONE" svgIcon="check_circle" class="tasklet-type done"></mat-icon>
+        <mat-icon *ngSwitchCase="type.DOING" svgIcon="refresh" class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="type.WILL_DO" svgIcon="today" class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="type.IMPEDIMENT" svgIcon="warning" class="tasklet-type"></mat-icon>
       </span>
       <label class="topic">{{ dailyScrumActivity.topic }}</label>
     </div>

@@ -1,17 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
-import {DomSanitizer} from '@angular/platform-browser';
-import {MatDialog, MatIconRegistry} from '@angular/material';
-import {Project} from '../../../../model/entities/project.model';
-import {Tasklet} from '../../../../model/entities/tasklet.model';
-import {EntityService} from '../../../../services/entities/entity.service';
+import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {MatDialog} from '@angular/material';
+import {Project} from '../../../model/entities/project.model';
+import {Tasklet} from '../../../model/entities/tasklet.model';
+import {EntityService} from '../../../services/entities/entity.service';
 
 @Component({
-  selector: 'app-tasklet-dialog-header',
-  templateUrl: './tasklet-dialog-header.component.html',
-  styleUrls: ['./tasklet-dialog-header.component.scss']
+  selector: 'app-header-fragment',
+  templateUrl: './header-fragment.component.html',
+  styleUrls: ['./header-fragment.component.scss']
 })
-export class TaskletDialogHeaderComponent implements OnInit {
+export class HeaderFragmentComponent implements OnInit {
   @Input() tasklet: Tasklet;
 
   project: Project;

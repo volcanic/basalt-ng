@@ -2,8 +2,8 @@
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
     <form #formCtrl="ngForm">
-      <app-tasklet-dialog-header
-        [tasklet]="tasklet"></app-tasklet-dialog-header>
+      <app-header-fragment [tasklet]="tasklet">
+      </app-header-fragment>
       <app-task-autocomplete-fragment
         [task]="task" (onTaskChangedEmitter)="onTaskChanged($event)" *ngIf="tasklet.type == 'Action'
           || tasklet.type == 'Meeting'
@@ -14,15 +14,15 @@
           || tasklet.type == 'Debugging'
           || tasklet.type == 'Idea'">
       </app-task-autocomplete-fragment>
-      <app-tasklet-dialog-content
-        [tasklet]="tasklet" [previousDescription]="previousDescription" *ngIf="tasklet.type == 'Action'
+      <app-previous-description-fragment
+        [previousDescription]="previousDescription" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'"></app-tasklet-dialog-content>
+                                       || tasklet.type == 'Idea'"></app-previous-description-fragment>
       <app-description-fragment [description]="tasklet.description"
                                 (onDescriptionChanged)="onDescriptionChangedEmitter($event)"
                                 *ngIf="tasklet.type == 'Action'
@@ -33,11 +33,10 @@
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'"></app-description-fragment>
-
-      <app-tasklet-dialog-daily-scrum
-        [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'"></app-tasklet-dialog-daily-scrum>
-      <app-tasklet-dialog-weekly-digest [tasklet]="tasklet"
-                                        *ngIf="tasklet.type == 'Weekly Digest'"></app-tasklet-dialog-weekly-digest>
+      <app-daily-scrum-fragment [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'">
+      </app-daily-scrum-fragment>
+      <app-weekly-digest-fragment [tasklet]="tasklet" *ngIf="tasklet.type == 'Weekly Digest'">
+      </app-weekly-digest-fragment>
       <app-person-chips-fragment [persons]="tasklet.persons" (onPersonChangedEmitter)="onPersonChanged($event)"
                                  *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'

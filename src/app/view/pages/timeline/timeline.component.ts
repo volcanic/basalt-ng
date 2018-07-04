@@ -4,7 +4,7 @@ import {takeUntil} from 'rxjs/operators';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
-import {TaskletDialogComponent} from '../../dialogs/tasklet/tasklet-dialog/tasklet-dialog.component';
+import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {TagDialogComponent} from '../../dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {MatchService} from '../../../services/match.service';
 import {Tag} from '../../../model/tag.model';
@@ -19,7 +19,7 @@ import {Project} from '../../../model/entities/project.model';
 import {EntityService} from '../../../services/entities/entity.service';
 import {ProjectService} from '../../../services/entities/project.service';
 import {TaskService} from '../../../services/entities/task.service';
-import {TaskDialogComponent} from '../../dialogs/other/task-dialog/task-dialog.component';
+import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
 import {Task} from '../../../model/entities/task.model';
 
 @Component({

@@ -1,0 +1,14 @@
+<div class="participant">
+  <app-person-autocomplete-fragment
+    [person]="dailyScrumParticipant.person"
+    (onPersonChangedEmitter)="onPersonChanged($event)">
+  </app-person-autocomplete-fragment>
+  <div class="flexbox"></div>
+  <div class="activities">
+    <app-daily-scrum-activity-fragment *ngFor="let a of dailyScrumParticipant.activities"
+                                             [person]="dailyScrumParticipant.person"
+                                             [dailyScrumActivity]="a"
+                                             (onActivityEmitter)="onActivityEdited($event)">
+    </app-daily-scrum-activity-fragment>
+  </div>
+</div>

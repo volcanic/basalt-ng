@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
     }
 
     const ACTION = 'action';
+    const ALERT = 'alert';
     const AV = 'av';
     const CONTENT = 'content';
     const COMMUNICATION = 'communication';
@@ -60,11 +61,14 @@ export class AppComponent implements OnInit {
     let icons: Icon[] = [];
     icons.push(new Icon(ACTION, 'agenda', 'ic_view_agenda_24px.svg'));
     icons.push(new Icon(ACTION, 'bug_report', 'ic_bug_report_24px.svg'));
+    icons.push(new Icon(ACTION, 'check_circle', 'ic_check_circle_24px.svg'));
     icons.push(new Icon(ACTION, 'code', 'ic_code_24px.svg'));
     icons.push(new Icon(ACTION, 'label_outline', 'ic_label_outline_24px.svg'));
     icons.push(new Icon(ACTION, 'lightbulb_outline', 'ic_lightbulb_outline_24px.svg'));
     icons.push(new Icon(ACTION, 'receipt', 'ic_receipt_24px.svg'));
+    icons.push(new Icon(ACTION, 'today', 'ic_today_24px.svg'));
     icons.push(new Icon(ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
+    icons.push(new Icon(ALERT, 'warning', 'ic_warning_24px.svg'));
     icons.push(new Icon(AV, 'play_circle_filled', 'ic_play_circle_filled_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'call', 'ic_call_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'chat', 'ic_chat_24px.svg'));
@@ -83,6 +87,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(NAVIGATION, 'close_18', 'ic_close_18px.svg'));
     icons.push(new Icon(NAVIGATION, 'menu', 'ic_menu_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'more_vert', 'ic_more_vert_24px.svg'));
+    icons.push(new Icon(NAVIGATION, 'refresh', 'ic_refresh_24px.svg'));
     icons.push(new Icon(SOCIAL, 'people', 'ic_people_24px.svg'));
 
     icons.forEach(icon => {

@@ -1,8 +1,0 @@
-<div>
-  <app-tasklet-dialog-daily-scrum-participant (onPersonSelectedEmitter)="onPersonSelected($event)"
-                                              *ngFor="let p of tasklet.participants"
-                                              [dailyScrumParticipant]="p"
-    [existingPersons]="existingPersons" >
-  </app-tasklet-dialog-daily-scrum-participant>
-  <mat-icon [svgIcon]=iconAdd class="tasklet-type" (click)="addPerson()"></mat-icon>
-</div>

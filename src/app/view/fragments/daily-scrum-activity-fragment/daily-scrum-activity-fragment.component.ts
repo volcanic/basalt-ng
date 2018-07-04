@@ -1,18 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DailyScrumActivity} from '../../../../model/daily-scrum-activity';
+import {DailyScrumActivity} from '../../../model/daily-scrum-activity';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
-import {Person} from '../../../../model/person.model';
-import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../../model/daily-scrum-activity-type.enum';
-import {TaskletService} from '../../../../services/entities/tasklet.service';
+import {Person} from '../../../model/person.model';
+import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../model/daily-scrum-activity-type.enum';
+import {TaskletService} from '../../../services/entities/tasklet.service';
 
 @Component({
-  selector: 'app-tasklet-dialog-daily-scrum-activity',
-  templateUrl: './tasklet-dialog-daily-scrum-activity.component.html',
-  styleUrls: ['./tasklet-dialog-daily-scrum-activity.component.scss']
+  selector: 'app-daily-scrum-activity-fragment',
+  templateUrl: './daily-scrum-activity-fragment.component.html',
+  styleUrls: ['./daily-scrum-activity-fragment.component.scss']
 })
-export class TaskletDialogDailyScrumActivityComponent implements OnInit {
+export class DailyScrumActivityFragmenComponent implements OnInit {
   @Input() person: Person;
   @Input() dailyScrumActivity: DailyScrumActivity;
   @Output() onActivityEmitter = new EventEmitter<string>();

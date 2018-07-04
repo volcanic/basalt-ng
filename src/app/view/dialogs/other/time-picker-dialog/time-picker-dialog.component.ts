@@ -23,7 +23,6 @@ export class TimePickerDialogComponent implements OnInit {
   minutes = [];
 
   calendarDate = new Date(this.year, this.month, this.day);
-  dateFormControl = new FormControl(this.calendarDate);
 
   constructor(private adapter: DateAdapter<any>,
               public dialogRef: MatDialogRef<TimePickerDialogComponent>,
@@ -50,7 +49,6 @@ export class TimePickerDialogComponent implements OnInit {
     this.minute = new Date(this.tasklet.creationDate).getMinutes();
 
     this.calendarDate = new Date(this.year, this.month, this.day);
-    this.dateFormControl = new FormControl(this.calendarDate);
   }
 
   onHourSelected(value: number) {
