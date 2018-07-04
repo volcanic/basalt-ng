@@ -55,15 +55,15 @@ export class TaskletDialogComponent implements OnInit {
   // Listeners
   //
 
-  onTaskChangedEmitter(task: Task) {
+  onTaskChanged(task: Task) {
     this.task = task;
   }
 
-  onTagChangedEmitter(tags: Tag[]) {
+  onTagChanged(tags: Tag[]) {
     this.tasklet.tags = tags;
   }
 
-  onPersonChangedEmitter(persons: Person[]) {
+  onPersonChanged(persons: Person[]) {
     this.tasklet.persons = persons;
   }
 
@@ -160,20 +160,23 @@ export class TaskletDialogComponent implements OnInit {
   // Helpers
   //
 
-  evaluateTask(): Task {
-    let task = this.taskService.getTaskByName(this.task.name);
+  /**
+   * Determines whether the selected task already exists, otherwise creates a new one
+   */
+  evaluateTask() {
+    if (this.task != null) {
+      let task = this.taskService.getTaskByName(this.task.name);
 
-    if (task != null) {
-      // Existing task
-      this.tasklet.taskId = task.id;
-    } else {
-      // New task
-      task = new Task(this.task.name);
-      this.tasklet.taskId = task.id;
-      this.taskService.createTask(task);
+      if (task != null) {
+        // Existing task
+        this.tasklet.taskId = task.id;
+      } else {
+        // New task
+        task = new Task(this.task.name);
+        this.tasklet.taskId = task.id;
+        this.taskService.createTask(task);
+      }
     }
-
-    return task;
   }
 
   aggregateTags(tasklet: Tasklet): Tag[] {

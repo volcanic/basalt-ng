@@ -23,7 +23,7 @@ export class Task extends Entity {
     this.creationDate = new Date();
     this.dueDate = null;
     this.completionDate = null;
-    this.priority = 0;
+    this.priority = -1;
     this.tags = [];
   }
 }

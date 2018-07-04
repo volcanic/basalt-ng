@@ -61,4 +61,20 @@ export class ProjectService {
   public notify() {
     this.projectsSubject.next(Array.from(this.projects.values()));
   }
+
+  //
+  // Lookup
+  //
+
+  public getProjectByName(name: string): Project {
+    let project: Project;
+
+    Array.from(this.projects.values()).forEach(p => {
+      if (p.name === name) {
+        project = p;
+      }
+    });
+
+    return project;
+  }
 }

@@ -1,19 +1,19 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs/Rx';
-import {Task} from '../../../model/entities/task.model';
+import {Project} from '../../../model/entities/project.model';
 import {map, startWith} from 'rxjs/internal/operators';
-import {TaskService} from '../../../services/entities/task.service';
+import {ProjectService} from '../../../services/entities/project.service';
 
 @Component({
-  selector: 'app-task-autocomplete-fragment',
-  templateUrl: './task-autocomplete-fragment.component.html',
-  styleUrls: ['./task-autocomplete-fragment.component.scss']
+  selector: 'app-project-autocomplete-fragment',
+  templateUrl: './project-autocomplete-fragment.component.html',
+  styleUrls: ['./project-autocomplete-fragment.component.scss']
 })
-export class TaskAutocompleteFragmentComponent implements OnInit {
+export class ProjectAutocompleteFragmentComponent implements OnInit {
 
-  @Input() task: Task;
-  @Output() onTaskChangedEmitter = new EventEmitter<Task>();
+  @Input() project: Project;
+  @Output() onProjectChangedEmitter = new EventEmitter<Project>();
 
   value = '';
 
@@ -21,18 +21,18 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private taskService: TaskService) {
+  constructor(private projectService: ProjectService) {
   }
 
   ngOnInit() {
-    if (this.task == null) {
-      this.task = new Task('');
+    if (this.project == null) {
+      this.project = new Project('', true);
     }
 
     // Cut ties with existing entity
-    this.task = JSON.parse(JSON.stringify(this.task));
+    this.project = JSON.parse(JSON.stringify(this.project));
 
-    this.options = Array.from(this.taskService.tasks.values()).map(tag => {
+    this.options = Array.from(this.projectService.projects.values()).map(tag => {
       return tag.name;
     });
 
@@ -58,7 +58,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.onTaskChangedEmitter.emit(this.task);
+    this.onProjectChangedEmitter.emit(this.project);
   }
 
 }

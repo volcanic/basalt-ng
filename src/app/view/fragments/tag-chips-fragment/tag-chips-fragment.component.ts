@@ -56,6 +56,12 @@ export class TagChipsFragmentComponent implements OnInit {
     }
   }
 
+  onOptionSelected(event: any) {
+    this.tags.push(new Tag(this.value.replace(/,/, ''), true));
+    this.value = '';
+    this.notify();
+  }
+
   onKeyDown(event: any) {
     this.value = this.value.replace(/,/, '');
   }

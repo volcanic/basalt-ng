@@ -77,6 +77,7 @@ import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-frag
 import {TagChipsFragmentComponent} from './view/fragments/tag-chips-fragment/tag-chips-fragment.component';
 import {PersonChipsFragmentComponent} from './view/fragments/person-chips-fragment/person-chips-fragment.component';
 import {TaskAutocompleteFragmentComponent} from './view/fragments/task-autocomplete-fragment/task-autocomplete-fragment.component';
+import {ProjectAutocompleteFragmentComponent} from './view/fragments/project-autocomplete-fragment/project-autocomplete-fragment.component';
 
 @NgModule({
   declarations: [
@@ -120,7 +121,8 @@ import {TaskAutocompleteFragmentComponent} from './view/fragments/task-autocompl
     DescriptionFragmentComponent,
     TagChipsFragmentComponent,
     PersonChipsFragmentComponent,
-    TaskAutocompleteFragmentComponent
+    TaskAutocompleteFragmentComponent,
+    ProjectAutocompleteFragmentComponent
   ],
   imports: [
     AppRoutingModule,

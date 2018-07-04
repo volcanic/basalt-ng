@@ -5,10 +5,8 @@ import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/ma
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {DateService} from '../../../../services/date.service';
 import {ProjectService} from '../../../../services/entities/project.service';
-import {ProjectDialogComponent} from '../project-dialog/project-dialog.component';
 import {EntityService} from '../../../../services/entities/entity.service';
 import {Tag} from '../../../../model/tag.model';
-import {Tasklet} from '../../../../model/entities/tasklet.model';
 
 @Component({
   selector: 'app-task-dialog',
@@ -48,14 +46,13 @@ export class TaskDialogComponent implements OnInit {
 
   // Project
   project: Project;
-  projectOptions = [];
 
   // Tags
   tags: Tag[] = [];
-  newTags: Tag[] = [];
 
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
+              private dateService: DateService,
               private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -80,11 +77,10 @@ export class TaskDialogComponent implements OnInit {
   //
 
   initializeDueDate() {
-    if (this.task.dueDate == null) {
-      this.task.dueDate = new Date();
+    if (this.task.dueDate != null) {
+      this.hour = new Date(this.task.dueDate).getHours();
+      this.minute = new Date(this.task.dueDate).getMinutes();
     }
-    this.hour = new Date(this.task.dueDate).getHours();
-    this.minute = new Date(this.task.dueDate).getMinutes();
 
     for (let h = 0; h < 24; h++) {
       this.hours.push(h);
@@ -92,9 +88,6 @@ export class TaskDialogComponent implements OnInit {
     for (let m = 0; m < 60; m = m + DateService.MINUTES_INTERVAL) {
       this.minutes.push(m);
     }
-
-    this.hour = new Date(this.task.dueDate).getHours();
-    this.minute = new Date(this.task.dueDate).getMinutes();
   }
 
   initializePriority() {
@@ -109,20 +102,10 @@ export class TaskDialogComponent implements OnInit {
 
   initializeProject() {
     this.project = this.entityService.getEntityById(this.task.projectId) as Project;
-    this.projectOptions = Array.from(this.projectService.projects.values());
   }
 
   initializeTags() {
     this.tags = this.task.tags;
-    this.newTags.push(new Tag('', false));
-  }
-
-  //
-  // Listeners
-  //
-
-  onTagChangedEmitter (tags: Tag[]) {
-    this.task.tags = tags;
   }
 
   //
@@ -130,12 +113,14 @@ export class TaskDialogComponent implements OnInit {
   //
 
   addTask() {
-    this.task.tags = this.aggregateTags(this.tags, this.newTags);
+    this.evaluateProject();
+    this.task.tags = this.tags;
     this.dialogRef.close(this.task);
   }
 
   updateTask() {
-    this.task.tags = this.aggregateTags(this.tags, this.newTags);
+    this.evaluateProject();
+    this.task.tags = this.tags;
     this.dialogRef.close(this.task);
   }
 
@@ -179,52 +164,59 @@ export class TaskDialogComponent implements OnInit {
 
   onClickFlag(priority: number) {
     this.task.priority = priority;
+
+    if (priority === -1) {
+      this.colorsFlags = [
+        '#cfd8dc',
+        '#cfd8dc',
+        '#cfd8dc',
+        '#cfd8dc',
+        '#cfd8dc'
+      ];
+    }
   }
 
   //
   // Project
   //
 
-  onProjectSelectionChanged() {
-    this.task.projectId = this.project.id;
+  onProjectChanged(project: Project) {
+    this.project = project;
+    this.task.projectId = project.id;
   }
 
   compareProject(p1: Project, p2: Project) {
     return p1 != null && p2 != null && p1.id === p2.id;
   }
 
-  addProject() {
-    const dialogRef = this.dialog.open(ProjectDialogComponent, {
-      disableClose: false,
-      data: {
-        mode: DIALOG_MODE.ADD,
-        dialogTitle: 'Add project',
-        project: JSON.stringify(new Project('', true))
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        this.projectService.createProject(result as Project);
-        this.projectOptions.push(result as Project);
-      }
-    });
-  }
-
   //
   // Tags
   //
 
-  aggregateTags(existingTags: Tag[], newTags: Tag[]): Tag[] {
-    const aggregatedTags = new Map<string, Tag>();
+  onTagChanged(tags: Tag[]) {
+    this.tags = tags;
+  }
 
-    // Concatenate
-    existingTags.filter(t => t.checked).forEach(t => {
-      aggregatedTags.set(t.name, t);
-    });
-    newTags.filter(t => t.checked).forEach(t => {
-      aggregatedTags.set(t.name, t);
-    });
+  //
+  // Helpers
+  //
 
-    return Array.from(aggregatedTags.values());
+  /**
+   * Determines whether the selected project already exists, otherwise creates a new one
+   */
+  evaluateProject() {
+    if (this.project != null) {
+      let project = this.projectService.getProjectByName(this.project.name);
+
+      if (project != null) {
+        // Existing project
+        this.task.projectId = project.id;
+      } else {
+        // New project
+        project = new Project(this.project.name, true);
+        this.task.projectId = project.id;
+        this.projectService.createProject(project);
+      }
+    }
   }
 }

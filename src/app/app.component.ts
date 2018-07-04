@@ -92,6 +92,7 @@ export class AppComponent implements OnInit {
     iconRegistry
       .addSvgIcon('blank', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'))
       .addSvgIcon('scrum', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'))
+      .addSvgIcon('outlined_flag', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'))
   }
 
   ngOnInit(): void {

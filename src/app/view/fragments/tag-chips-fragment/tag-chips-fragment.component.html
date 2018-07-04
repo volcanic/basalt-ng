@@ -10,7 +10,7 @@
            (keyup)="onKeyUp($event)"
            (keydown)="onKeyDown($event)">
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="onOptionSelected($event)">
         {{ option }}
       </mat-option>
     </mat-autocomplete>

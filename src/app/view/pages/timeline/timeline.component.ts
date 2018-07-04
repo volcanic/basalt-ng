@@ -31,6 +31,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   title = 'Basalt';
   tasklets: Tasklet[] = [];
   private taskletsUnsubscribeSubject = new Subject();
+  private projectUnsubscribeSubject = new Subject();
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
@@ -110,6 +111,19 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
 
       this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
+    });
+
+    // Subscribe project changes
+    this.projectService.projectsSubject.pipe(
+      takeUntil(this.projectUnsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        (value as Project[]).forEach(project => {
+          if (!this.projects.has(project.id)) {
+            this.projects.set(project.id, project);
+          }
+        });
+      }
     });
 
     this.taskletService.notify();
