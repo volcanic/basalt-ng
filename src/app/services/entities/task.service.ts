@@ -72,12 +72,14 @@ export class TaskService {
   //
 
   public getTaskByName(name: string): Task {
-    this.tasks.forEach((task: Task, index: string) => {
-      if (task.name === name) {
-        return task;
+    let task: Task;
+
+    Array.from(this.tasks.values()).forEach(t => {
+      if (t.name === name) {
+        task = t;
       }
     });
 
-    return null;
+    return task;
   }
 }
