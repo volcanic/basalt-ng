@@ -60,6 +60,10 @@ export class TaskletDialogComponent implements OnInit {
     this.task = task;
   }
 
+  onDescriptionChanged(description: Description) {
+    this.tasklet.description = description;
+  }
+
   onTagChanged(tags: Tag[]) {
     this.tasklet.tags = tags;
   }
@@ -181,8 +185,6 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   aggregateTags(tasklet: Tasklet): Tag[] {
-    console.log(`DEBUG tags ${tasklet.tags}`);
-
     const aggregatedTags = new Map<string, Tag>();
 
     // Concatenate
@@ -199,14 +201,16 @@ export class TaskletDialogComponent implements OnInit {
   inferTags(tasklet: Tasklet): Map<string, Tag> {
     const inferredTags = new Map<string, Tag>();
 
-    tasklet.description.value.split('\n').forEach(line => {
-      line.split(' ').forEach(word => {
-        if (word.startsWith('#')) {
-          const tag = new Tag(word.replace('#', ''), true);
-          inferredTags.set(tag.name, tag);
-        }
+    if (tasklet.description != null && tasklet.description.value != null) {
+      tasklet.description.value.split('\n').forEach(line => {
+        line.split(' ').forEach(word => {
+          if (word.startsWith('#')) {
+            const tag = new Tag(word.replace('#', ''), true);
+            inferredTags.set(tag.name, tag);
+          }
+        });
       });
-    });
+    }
 
     return inferredTags;
   }
@@ -228,14 +232,16 @@ export class TaskletDialogComponent implements OnInit {
   inferPersons(tasklet: Tasklet): Map<string, Person> {
     const inferredPersons = new Map<string, Person>();
 
-    tasklet.description.value.split('\n').forEach(line => {
-      line.split(' ').forEach(word => {
-        if (word.startsWith('@')) {
-          const person = new Person(word.replace('@', '').replace('_', ' '));
-          inferredPersons.set(person.name, person);
-        }
+    if (tasklet.description != null && tasklet.description.value != null) {
+      tasklet.description.value.split('\n').forEach(line => {
+        line.split(' ').forEach(word => {
+          if (word.startsWith('@')) {
+            const person = new Person(word.replace('@', '').replace('_', ' '));
+            inferredPersons.set(person.name, person);
+          }
+        });
       });
-    });
+    }
 
     return inferredPersons;
   }

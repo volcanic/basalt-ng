@@ -1,6 +1,6 @@
 <mat-form-field color="primary" class="wide-box">
           <textarea matInput matTextareaAutosize required name="description" placeholder="Description"
-                    matAutosizeMinRows="5" matAutosizeMaxRows="5" [(ngModel)]="description.value">
+                    matAutosizeMinRows="5" matAutosizeMaxRows="5" [(ngModel)]="description.value" (change)="onDescriptionChanged($event)">
           </textarea>
   <button mat-button *ngIf="description.value" matSuffix mat-icon-button aria-label="Clear" (click)="title=''">
     <mat-icon svgIcon="close_18"></mat-icon>

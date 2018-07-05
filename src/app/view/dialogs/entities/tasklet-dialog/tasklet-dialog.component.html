@@ -24,7 +24,7 @@
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'"></app-previous-description-fragment>
       <app-description-fragment [description]="tasklet.description"
-                                (onDescriptionChanged)="onDescriptionChangedEmitter($event)"
+                                (onDescriptionChangedEmitter)="onDescriptionChanged($event)"
                                 *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Meeting'

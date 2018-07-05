@@ -7,7 +7,9 @@ import {Description} from '../../../model/description.model';
   styleUrls: ['./description-fragment.component.scss']
 })
 export class DescriptionFragmentComponent implements OnInit {
+
   @Input() description: Description = new Description();
+  @Output() onDescriptionChangedEmitter = new EventEmitter<Description>();
 
   constructor() {
   }
@@ -15,4 +17,7 @@ export class DescriptionFragmentComponent implements OnInit {
   ngOnInit() {
   }
 
+  onDescriptionChanged(value: string) {
+    this.onDescriptionChangedEmitter.next(this.description);
+  }
 }
