@@ -63,7 +63,9 @@
           </div>
           <div *ngIf="tasklet.type == 'Daily Scrum'" class="side-attached right-attached hidden"
                (click)="onActionFired('template')" matTooltip="Template this event" matTooltipPosition="above">
-            <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+            <div class="right-attached-content">
+              <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+            </div>
           </div>
         </div>
       </div>
