@@ -43,7 +43,7 @@ export class TaskletComponent implements OnInit {
               private taskletService: TaskletService,
               private colorService: ColorService,
               private snackbarService: SnackbarService,
-              private dateService: DateService,
+              public dateService: DateService,
               public dialog: MatDialog) {
   }
 
