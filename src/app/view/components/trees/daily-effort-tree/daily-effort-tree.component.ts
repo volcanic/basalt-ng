@@ -38,8 +38,14 @@ export class DailyEffortTreeComponent implements OnInit {
               private dateService: DateService,
               iconRegistry: MatIconRegistry,
               sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('expand_more', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-expand_more-24px.svg'));
-    iconRegistry.addSvgIcon('chevron_right', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-chevron_right-24px.svg'));
+    iconRegistry.addSvgIcon(
+      'expand_more',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/material-design-icons/navigation/svg/production/ic_expand_more_24px.svg')
+    );
+    iconRegistry.addSvgIcon(
+      'chevron_right',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/material-design-icons/navigation/svg/design/ic_chevron_right_24px.svg')
+    );
 
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
       this.isExpandable, this.getChildren);
