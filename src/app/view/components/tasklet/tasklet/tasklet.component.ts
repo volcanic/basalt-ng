@@ -16,6 +16,7 @@ import {Project} from '../../../../model/entities/project.model';
 import {EntityService} from '../../../../services/entities/entity.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {ColorService} from '../../../../services/color.service';
+import {Description} from '../../../../model/description.model';
 
 @Component({
   selector: 'app-tasklet',
@@ -236,7 +237,7 @@ export class TaskletComponent implements OnInit {
     const continueTasklet = JSON.parse(JSON.stringify(this.tasklet));
     continueTasklet._rev = null;
     continueTasklet.id = new UUID().toString();
-    continueTasklet.description = '';
+    continueTasklet.description = new Description();
     continueTasklet.creationDate = new Date();
     continueTasklet.persons = []; // TODO: Depending on tasklet type, this might be worth keeping
 
