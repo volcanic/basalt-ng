@@ -238,7 +238,7 @@ export class TaskletComponent implements OnInit {
     continueTasklet.id = new UUID().toString();
     continueTasklet.description = '';
     continueTasklet.creationDate = new Date();
-    continueTasklet.persons = [];
+    continueTasklet.persons = []; // TODO: Depending on tasklet type, this might be worth keeping
 
     if (this.tasklet.type === TASKLET_TYPE.IDEA) {
       continueTasklet.type = TASKLET_TYPE.ACTION;
