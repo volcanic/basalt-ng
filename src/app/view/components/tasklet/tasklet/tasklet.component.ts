@@ -204,7 +204,7 @@ export class TaskletComponent implements OnInit {
 
   private updateTasklet() {
     const dialogRef = this.dialog.open(TaskletDialogComponent, <MatDialogConfig>{
-      disableClose: true,
+      disableClose: false,
       data: {
         mode: DIALOG_MODE.UPDATE,
         dialogTitle: 'Update tasklet',
@@ -294,7 +294,7 @@ export class TaskletComponent implements OnInit {
 
   private updateTaskletTime() {
     const dialogRef = this.dialog.open(TimePickerDialogComponent, <MatDialogConfig>{
-      disableClose: true,
+      disableClose: false,
       data: {
         dialogTitle: 'Set creation time',
         tasklet: this.tasklet
@@ -311,7 +311,7 @@ export class TaskletComponent implements OnInit {
 
   public deleteTasklet() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-      disableClose: true,
+      disableClose: false,
       data: {
         title: 'Delete tasklet',
         text: 'Do you want to delete this tasklet?',

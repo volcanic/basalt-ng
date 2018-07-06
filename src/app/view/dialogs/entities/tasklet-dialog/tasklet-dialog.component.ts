@@ -137,7 +137,7 @@ export class TaskletDialogComponent implements OnInit {
 
   deleteTasklet() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-      disableClose: true,
+      disableClose: false,
       data: {
         title: 'Delete tasklet',
         text: 'Do you want to delete this tasklet?',
@@ -244,5 +244,13 @@ export class TaskletDialogComponent implements OnInit {
     }
 
     return inferredPersons;
+  }
+
+  private onKeyPress(event: any) {
+        const KEY_CODE_ENTER = 13;
+
+    if (event.keyCode === KEY_CODE_ENTER && event.shiftKey) {
+      this.updateTasklet();
+    }
   }
 }

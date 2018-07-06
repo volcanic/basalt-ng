@@ -187,7 +187,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
       case 'tags': {
         const dialogRef = this.dialog.open(TagDialogComponent, {
-          disableClose: true,
+          disableClose: false,
           data: {
             dialogTitle: 'Select tags',
             tags: Array.from(this.tags.values())
@@ -206,7 +206,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
       case 'projects': {
         const dialogRef = this.dialog.open(ProjectsFilterDialogComponent, {
-          disableClose: true,
+          disableClose: false,
           data: {
             dialogTitle: 'Select projects',
             projects: Array.from(this.projects.values())
@@ -230,7 +230,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
       case 'upload': {
         const dialogRef = this.dialog.open(UploadDialogComponent, <MatDialogConfig>{
-          disableClose: true,
+          disableClose: false,
           data: {
             title: 'Upload'
           }
@@ -243,7 +243,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
       }
       case 'about': {
         const dialogRef = this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
-          disableClose: true,
+          disableClose: false,
           data: {
             title: 'About',
             name: environment.NAME,
