@@ -1,4 +1,13 @@
-<div>
+<div id="container">
+  <button mat-icon-button
+          matTooltip="Work on this task"
+          matTooltipPosition="above"
+          matTooltipShowDelay="250"
+          [disableRipple]="true"
+          class="startWorkButton"
+          (click)="startWorkOnTask()">
+    <mat-icon [svgIcon]="'reply'"></mat-icon>
+  </button>
   <button mat-button class="task" (click)="updateTask()">
     {{ task.name }}
   </button>

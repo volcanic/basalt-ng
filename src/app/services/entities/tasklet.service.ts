@@ -107,7 +107,7 @@ export class TaskletService {
         if (t.tags != null) {
           t.tags.forEach(tag => {
             this.searchItems.push(tag.name);
-          })
+          });
         }
 
         // Add persons to search items

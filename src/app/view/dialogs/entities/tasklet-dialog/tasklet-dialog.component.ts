@@ -246,10 +246,9 @@ export class TaskletDialogComponent implements OnInit {
     return inferredPersons;
   }
 
-  private onKeyPress(event: any) {
-        const KEY_CODE_ENTER = 13;
-
-    if (event.keyCode === KEY_CODE_ENTER && event.shiftKey) {
+  private onKeyDown(event: any) {
+    const KEY_CODE_ENTER = 13;
+    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
       this.updateTasklet();
     }
   }
