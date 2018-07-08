@@ -1,117 +1,119 @@
-<h2 mat-dialog-title>{{ dialogTitle }}</h2>
-<form #formCtrl="ngForm">
+<div class="dialog" (keydown)="onKeyDown($event)">
+  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
-    <div>
-      <mat-form-field class="wide-box">
-        <input matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
-               [(ngModel)]="task.name">
-      </mat-form-field>
-    </div>
+    <form #formCtrl="ngForm">
+      <div>
+        <mat-form-field class="wide-box">
+          <input matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
+                 [(ngModel)]="task.name">
+        </mat-form-field>
+      </div>
 
-    <mat-accordion class="headers-align">
+      <mat-accordion class="headers-align">
 
-      <mat-expansion-panel [expanded]="step === 0" (opened)="false" hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Description</mat-panel-title>
-          <mat-panel-description *ngIf="task.description == null || task.description.value == ''">
-            Describe this task
-          </mat-panel-description>
-          <mat-panel-description *ngIf="task.description != null && task.description.value != ''">
-            <span class="value-set description">{{ task.description.value }}</span>
-          </mat-panel-description>
-          <mat-icon svgIcon="short_text"></mat-icon>
-        </mat-expansion-panel-header>
-        <app-description-fragment [description]="task.description"></app-description-fragment>
-      </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 0" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Description</mat-panel-title>
+            <mat-panel-description *ngIf="task.description == null || task.description.value == ''">
+              Describe this task
+            </mat-panel-description>
+            <mat-panel-description *ngIf="task.description != null && task.description.value != ''">
+              <span class="value-set description">{{ task.description.value }}</span>
+            </mat-panel-description>
+            <mat-icon svgIcon="short_text"></mat-icon>
+          </mat-expansion-panel-header>
+          <app-description-fragment [description]="task.description"></app-description-fragment>
+        </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 0" (opened)="false" hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Due date</mat-panel-title>
-          <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
-          <mat-panel-description *ngIf="task.dueDate != null" class="value-set">
-            {{ dateService.getTime(task.dueDate) }}, {{ dateService.getDate(task.dueDate) }}
-          </mat-panel-description>
-          <mat-icon svgIcon="timer"></mat-icon>
-        </mat-expansion-panel-header>
+        <mat-expansion-panel [expanded]="step === 0" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Due date</mat-panel-title>
+            <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
+            <mat-panel-description *ngIf="task.dueDate != null" class="value-set">
+              {{ dateService.getTime(task.dueDate) }}, {{ dateService.getDate(task.dueDate) }}
+            </mat-panel-description>
+            <mat-icon svgIcon="timer"></mat-icon>
+          </mat-expansion-panel-header>
 
-        <div>
-          <mat-form-field>
-            <input matInput [(ngModel)]="task.dueDate" [matDatepicker]="picker" name="dueDate" placeholder="Due date">
-            <mat-datepicker-toggle name="datepickertoggle" matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker name="datepicker"></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field color="primary" class="time-select">
-            <mat-select [(ngModel)]="hour" name="hour" placeholder="Hour">
-              <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
-                {{ addTrailingZero(item) }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          :
-          <mat-form-field color="primary" class="time-select">
-            <mat-select [(ngModel)]="minute" name="minute" placeholder="Minute">
-              <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
-                {{ addTrailingZero(item) }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </mat-expansion-panel>
+          <div>
+            <mat-form-field>
+              <input matInput [(ngModel)]="task.dueDate" [matDatepicker]="picker" name="dueDate" placeholder="Due date">
+              <mat-datepicker-toggle name="datepickertoggle" matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker name="datepicker"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field color="primary" class="time-select">
+              <mat-select [(ngModel)]="hour" name="hour" placeholder="Hour">
+                <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
+                  {{ addTrailingZero(item) }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            :
+            <mat-form-field color="primary" class="time-select">
+              <mat-select [(ngModel)]="minute" name="minute" placeholder="Minute">
+                <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
+                  {{ addTrailingZero(item) }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>Priority</mat-panel-title>
-          <mat-panel-description *ngIf="task.priority < 0">Select a priority</mat-panel-description>
-          <mat-panel-description *ngIf="task.priority >= 0">
-            <span class="value-set">Priority {{ task.priority + 1 }}</span>
-          </mat-panel-description>
-          <mat-icon svgIcon="flag"></mat-icon>
-        </mat-expansion-panel-header>
-        <mat-icon class="priority" svgIcon="outlined_flag" (click)="onClickFlag(-1)"></mat-icon>
-        <mat-icon *ngFor="let item of colorsPriorities; let i = index"
-                  class="priority"
-                  svgIcon="flag"
-                  [style.fill]="colorsFlags[i]"
-                  (mouseenter)="onHoverFlag(i)"
-                  (mouseleave)="onLeaveFlag()"
-                  (click)="onClickFlag(i)">
-        </mat-icon>
-      </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Priority</mat-panel-title>
+            <mat-panel-description *ngIf="task.priority < 0">Select a priority</mat-panel-description>
+            <mat-panel-description *ngIf="task.priority >= 0">
+              <span class="value-set">Priority {{ task.priority + 1 }}</span>
+            </mat-panel-description>
+            <mat-icon svgIcon="flag"></mat-icon>
+          </mat-expansion-panel-header>
+          <mat-icon class="priority" svgIcon="outlined_flag" (click)="onClickFlag(-1)"></mat-icon>
+          <mat-icon *ngFor="let item of colorsPriorities; let i = index"
+                    class="priority"
+                    svgIcon="flag"
+                    [style.fill]="colorsFlags[i]"
+                    (mouseenter)="onHoverFlag(i)"
+                    (mouseleave)="onLeaveFlag()"
+                    (click)="onClickFlag(i)">
+          </mat-icon>
+        </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Project
-          </mat-panel-title>
-          <mat-panel-description *ngIf="project == null">Assign this task to a project</mat-panel-description>
-          <mat-panel-description *ngIf="project != null">
-            <span class="value-set">{{ project.name }}</span>
-          </mat-panel-description>
-          <mat-icon svgIcon="agenda"></mat-icon>
-        </mat-expansion-panel-header>
-        <div>
-          <app-project-autocomplete-fragment
-            [project]="project"
-            (onProjectChangedEmitter)="onProjectChanged($event)"></app-project-autocomplete-fragment>
-        </div>
-      </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Project
+            </mat-panel-title>
+            <mat-panel-description *ngIf="project == null">Assign this task to a project</mat-panel-description>
+            <mat-panel-description *ngIf="project != null">
+              <span class="value-set">{{ project.name }}</span>
+            </mat-panel-description>
+            <mat-icon svgIcon="agenda"></mat-icon>
+          </mat-expansion-panel-header>
+          <div>
+            <app-project-autocomplete-fragment
+              [project]="project"
+              (onProjectChangedEmitter)="onProjectChanged($event)"></app-project-autocomplete-fragment>
+          </div>
+        </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Tags
-          </mat-panel-title>
-          <mat-panel-description *ngIf="tags == null || tags.length == 0">Select tags</mat-panel-description>
-          <mat-panel-description *ngIf="tags != null && tags.length > 0" class="justify-left">
-            <span class="value-set" *ngFor="let tag of tags.slice(0, 3)">{{ tag.name }}<span>, </span></span>
-          </mat-panel-description>
-          <mat-icon svgIcon="label_outline"></mat-icon>
-        </mat-expansion-panel-header>
-        <app-tag-chips-fragment [tags]="task.tags" (onTagChangedEmitter)="onTagChanged($event)">
-        </app-tag-chips-fragment>
-      </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Tags
+            </mat-panel-title>
+            <mat-panel-description *ngIf="tags == null || tags.length == 0">Select tags</mat-panel-description>
+            <mat-panel-description *ngIf="tags != null && tags.length > 0" class="justify-left">
+              <span class="value-set" *ngFor="let tag of tags.slice(0, 3)">{{ tag.name }}<span>, </span></span>
+            </mat-panel-description>
+            <mat-icon svgIcon="label_outline"></mat-icon>
+          </mat-expansion-panel-header>
+          <app-tag-chips-fragment [tags]="task.tags" (onTagChangedEmitter)="onTagChanged($event)">
+          </app-tag-chips-fragment>
+        </mat-expansion-panel>
 
-    </mat-accordion>
+      </mat-accordion>
+    </form>
   </mat-dialog-content>
   <mat-dialog-actions>
     <button mat-button [mat-dialog-close]=null>
@@ -125,4 +127,4 @@
       Update task
     </button>
   </mat-dialog-actions>
-</form>
+</div>
