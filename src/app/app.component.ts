@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(CONTENT, 'mail', 'ic_mail_24px.svg'));
     icons.push(new Icon(CONTENT, 'people_18', 'ic_people_18px.svg'));
     icons.push(new Icon(EDITOR, 'delete', 'ic_delete_24px.svg'));
+    icons.push(new Icon(EDITOR, 'mode_edit', 'ic_mode_edit_24px.svg'));
     icons.push(new Icon(EDITOR, 'mode_edit_18', 'ic_mode_edit_18px.svg'));
     icons.push(new Icon(EDITOR, 'short_text', 'ic_short_text_24px.svg'));
     icons.push(new Icon(FILE, 'file_download', 'ic_file_download_24px.svg'));
@@ -84,7 +85,9 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
     icons.push(new Icon(MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
     icons.push(new Icon(MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
+    icons.push(new Icon(NAVIGATION, 'chevron_right', 'ic_chevron_right_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'close_18', 'ic_close_18px.svg'));
+    icons.push(new Icon(NAVIGATION, 'expand_more', 'ic_expand_more_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'menu', 'ic_menu_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'more_vert', 'ic_more_vert_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'refresh', 'ic_refresh_24px.svg'));
