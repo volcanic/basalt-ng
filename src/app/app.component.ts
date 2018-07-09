@@ -26,9 +26,42 @@ export class AppComponent implements OnInit {
               private settingsService: SettingsService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
+              private iconRegistry: MatIconRegistry,
+              private sanitizer: DomSanitizer) {
+  }
 
+  ngOnInit(): void {
+    this.initializeSettings();
+    this.initializeEntities();
+    this.initializeIcons();
+    this.initializeDatabaseSync();
+  }
+
+  initializeDatabaseSync() {
+    this.pouchDBService.sync('http://localhost:5984/basalt');
+    this.pouchDBSettingsService.sync('http://localhost:5984/basalt_settings');
+  }
+
+  initializeSettings() {
+    this.settingsService.fetch();
+    this.settingsService.settingsSubject.subscribe(settings => {
+
+      if (settings.get('version') != null) {
+        console.log(`latest version ${settings.get('version').value}`);
+        this.showNewFeatures(settings.get('version').value);
+      }
+    });
+  }
+
+  initializeEntities() {
+    this.entityService.fetch();
+    this.snackbarService.messageSubject.subscribe(snack => {
+        this.openSnackBar(snack[0], snack[1]);
+      }
+    );
+  }
+
+  initializeIcons() {
     const ICON_ROOT_DIR = 'assets/material-design-icons';
     // const VARIANT_DESIGN = 'design';
     const VARIANT_PRODUCTION = 'production';
@@ -40,9 +73,9 @@ export class AppComponent implements OnInit {
       file: string;
 
       constructor(topic: string, name: string, file: string) {
-      this.topic = topic;
-      this.name = name;
-      this.file = file;
+        this.topic = topic;
+        this.name = name;
+        this.file = file;
       }
     }
 
@@ -77,6 +110,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(CONTENT, 'mail', 'ic_mail_24px.svg'));
     icons.push(new Icon(CONTENT, 'people_18', 'ic_people_18px.svg'));
     icons.push(new Icon(EDITOR, 'delete', 'ic_delete_24px.svg'));
+    icons.push(new Icon(EDITOR, 'mode_edit', 'ic_mode_edit_24px.svg'));
     icons.push(new Icon(EDITOR, 'mode_edit_18', 'ic_mode_edit_18px.svg'));
     icons.push(new Icon(EDITOR, 'short_text', 'ic_short_text_24px.svg'));
     icons.push(new Icon(FILE, 'file_download', 'ic_file_download_24px.svg'));
@@ -84,41 +118,21 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
     icons.push(new Icon(MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
     icons.push(new Icon(MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
+    icons.push(new Icon(NAVIGATION, 'chevron_right', 'ic_chevron_right_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'close_18', 'ic_close_18px.svg'));
+    icons.push(new Icon(NAVIGATION, 'expand_more', 'ic_expand_more_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'menu', 'ic_menu_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'more_vert', 'ic_more_vert_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'refresh', 'ic_refresh_24px.svg'));
     icons.push(new Icon(SOCIAL, 'people', 'ic_people_24px.svg'));
 
     icons.forEach(icon => {
-      iconRegistry.addSvgIcon(icon.name, sanitizer.bypassSecurityTrustResourceUrl(ICON_ROOT_DIR + '/' + icon.topic + '/svg/' + VARIANT + '/' + icon.file));
+      this.iconRegistry.addSvgIcon(icon.name, this.sanitizer.bypassSecurityTrustResourceUrl(ICON_ROOT_DIR + '/' + icon.topic + '/svg/' + VARIANT + '/' + icon.file));
     });
 
-    iconRegistry
-      .addSvgIcon('blank', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'))
-      .addSvgIcon('scrum', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'))
-      .addSvgIcon('outlined_flag', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'))
-  }
-
-  ngOnInit(): void {
-    this.settingsService.fetch();
-    this.settingsService.settingsSubject.subscribe(settings => {
-
-      if (settings.get('version') != null) {
-        console.log(`latest version ${settings.get('version').value}`);
-        this.showNewFeatures(settings.get('version').value);
-      }
-    });
-
-
-    this.entityService.fetch();
-    this.snackbarService.messageSubject.subscribe(snack => {
-        this.openSnackBar(snack[0], snack[1]);
-      }
-    );
-
-    this.pouchDBService.sync('http://localhost:5984/basalt');
-    this.pouchDBSettingsService.sync('http://localhost:5984/basalt_settings');
+    this.iconRegistry.addSvgIcon('blank', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'));
+    this.iconRegistry.addSvgIcon('scrum', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
+    this.iconRegistry.addSvgIcon('outlined_flag', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
   }
 
   /**

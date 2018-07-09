@@ -16,10 +16,7 @@ export class TaskletWeeklyDigestComponent implements OnInit {
   weeklyDigest: WeeklyDigest;
 
   constructor(public dialog: MatDialog,
-              private digestService: DigestService,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_edit_black_18px.svg'));
+              private digestService: DigestService) {
   }
 
   ngOnInit() {

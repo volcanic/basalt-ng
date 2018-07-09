@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DailyDigest} from '../../../../model/daily-digest.model';
-import {DomSanitizer} from '@angular/platform-browser';
-import {MatDialog, MatIconRegistry} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {DigestService} from '../../../../services/digest.service';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 
@@ -17,10 +16,7 @@ export class TaskletDailyDigestComponent implements OnInit {
   dailyDigest: DailyDigest;
 
   constructor(public dialog: MatDialog,
-              private digestService: DigestService,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('edit', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_edit_black_18px.svg'));
+              private digestService: DigestService) {
   }
 
   ngOnInit() {

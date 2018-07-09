@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {MatIconRegistry, MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {Observable, of as observableOf} from 'rxjs';
-import {DomSanitizer} from '@angular/platform-browser';
 import {ColorService} from '../../../../services/color.service';
 import {WeeklyDigest} from '../../../../model/weekly-digest.model';
 import {DateService} from '../../../../services/date.service';
@@ -35,12 +34,7 @@ export class ProjectEffortTreeComponent implements OnInit {
   dataSource: MatTreeFlatDataSource<EffortNode, EffortFlatNode>;
 
   constructor(private colorService: ColorService,
-              private dateService: DateService,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('expand_more', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-expand_more-24px.svg'));
-    iconRegistry.addSvgIcon('chevron_right', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-chevron_right-24px.svg'));
-
+              private dateService: DateService) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel,
       this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl<EffortFlatNode>(this.getLevel, this.isExpandable);
