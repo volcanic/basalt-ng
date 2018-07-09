@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>{{ dialogTitle }}</h2>
-<form #formCtrl="ngForm">
+<form #formCtrl="ngForm" (keydown)="onKeyDown($event)">
   <mat-dialog-content>
     <div>
       <mat-form-field class="wide-box">

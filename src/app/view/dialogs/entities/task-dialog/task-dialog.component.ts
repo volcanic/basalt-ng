@@ -52,7 +52,7 @@ export class TaskDialogComponent implements OnInit {
 
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
-              private dateService: DateService,
+              public dateService: DateService,
               private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -129,11 +129,21 @@ export class TaskDialogComponent implements OnInit {
   //
 
   onHourSelected(value: number) {
-    this.task.dueDate = new Date(this.task.dueDate.getFullYear(), this.task.dueDate.getMonth(), this.task.dueDate.getDate(), value, this.task.dueDate.getMinutes());
+    this.task.dueDate = new Date(
+        this.task.dueDate.getFullYear(),
+        this.task.dueDate.getMonth(),
+        this.task.dueDate.getDate(),
+        value,
+        this.task.dueDate.getMinutes());
   }
 
   onMinuteSelected(value: number) {
-    this.task.dueDate = new Date(this.task.dueDate.getFullYear(), this.task.dueDate.getMonth(), this.task.dueDate.getDate(), this.task.dueDate.getHours(), value);
+    this.task.dueDate = new Date(
+      this.task.dueDate.getFullYear(),
+      this.task.dueDate.getMonth(),
+      this.task.dueDate.getDate(),
+      this.task.dueDate.getHours(),
+      value);
   }
 
   addTrailingZero(value: number) {
@@ -217,6 +227,13 @@ export class TaskDialogComponent implements OnInit {
         this.task.projectId = project.id;
         this.projectService.createProject(project);
       }
+    }
+  }
+
+  private onKeyDown(event: any) {
+    const KEY_CODE_ENTER = 13;
+    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+      this.updateTask();
     }
   }
 }
