@@ -1,12 +1,15 @@
-<div id="container">
-  <button mat-icon-button
+<div class="container"
+     (mouseenter)="onHoverContainer(true)"
+     (mouseleave)="onHoverContainer(false)">
+  <button [@continueAnimation]="state"
+          mat-icon-button
           matTooltip="Work on this task"
           matTooltipPosition="above"
           matTooltipShowDelay="250"
+          class="continue"
           [disableRipple]="true"
-          class="startWorkButton"
           (click)="startWorkOnTask()">
-    <mat-icon [svgIcon]="'reply'"></mat-icon>
+    <mat-icon svgIcon='reply'></mat-icon>
   </button>
   <button mat-button class="task" (click)="updateTask()">
     {{ task.name }}

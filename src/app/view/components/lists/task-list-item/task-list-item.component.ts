@@ -10,15 +10,34 @@ import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {DomSanitizer} from '@angular/platform-browser';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 
 @Component({
   selector: 'app-task-list-item',
   templateUrl: './task-list-item.component.html',
-  styleUrls: ['./task-list-item.component.scss']
+  styleUrls: ['./task-list-item.component.scss'],
+  animations: [
+    trigger('continueAnimation', [
+      state('inactive', style({
+        margin: '0',
+        opacity: '0',
+        width: '0'
+      })),
+      state('active', style({
+        margin: '0 12px 0 0',
+        opacity: '0.9',
+        width: '24px'
+      })),
+      transition('inactive => active', animate('250ms ease-in')),
+      transition('active => inactive', animate('250ms ease-out'))
+    ])
+  ]
 })
 export class TaskListItemComponent implements OnInit {
   @Input() task: Task;
+
+  state = 'inactive';
 
   constructor(private taskService: TaskService,
               private taskletService: TaskletService,
@@ -33,6 +52,10 @@ export class TaskListItemComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  onHoverContainer(hovered: boolean) {
+    this.state = hovered ? 'active' : 'inactive';
   }
 
   updateTask() {
