@@ -171,6 +171,16 @@ export class TaskletService {
           }
         });
       }
+
+      if (tasklet.participants != null) {
+        tasklet.participants.forEach(p => {
+          if (p != null && p.person != null && p.person.name != null && p.person.name.length > 0) {
+            // Deep copy
+            const person = new Person(p.person.name);
+            this.persons.set(person.name, person);
+          }
+        })
+      }
     });
   }
 

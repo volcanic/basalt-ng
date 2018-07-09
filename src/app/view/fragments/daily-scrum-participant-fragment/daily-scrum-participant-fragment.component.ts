@@ -22,7 +22,6 @@ export class DailyScrumParticipantFragmentComponent implements OnInit {
 
   onPersonChanged(person: Person) {
     this.dailyScrumParticipant.person = person;
-    console.log(`DEBUG dailyScrumParticipant ${JSON.stringify(this.dailyScrumParticipant)}`);
     this.onPersonSelectedEmitter.next('');
   }
 
