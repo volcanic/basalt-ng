@@ -34,7 +34,7 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
 
     this.options = Array.from(this.taskletService.persons.values()).map(tag => {
       return tag.name;
-    });
+    }).reverse();
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(

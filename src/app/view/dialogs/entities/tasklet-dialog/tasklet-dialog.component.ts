@@ -32,8 +32,6 @@ export class TaskletDialogComponent implements OnInit {
   // Temporary
   task: Task;
 
-  personOptions = [];
-
   constructor(private entityService: EntityService,
               private taskService: TaskService,
               private taskletService: TaskletService,

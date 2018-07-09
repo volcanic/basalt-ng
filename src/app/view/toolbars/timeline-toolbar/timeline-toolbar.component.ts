@@ -44,7 +44,7 @@ export class TimelineToolbarComponent implements OnInit {
   }
 
   onClickInput() {
-    this.searchOptions = this.taskletService.searchItems;
+    this.searchOptions = this.taskletService.searchItems.reverse();
   }
 
   onChangeSearchItem(searchItem: string): void {

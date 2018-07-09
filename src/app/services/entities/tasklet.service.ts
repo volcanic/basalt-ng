@@ -21,6 +21,7 @@ export class TaskletService {
   private entitiesUnsubscribeSubject = new Subject();
 
   searchItems = [];
+  tasks: Map<string, Task>;
   tags: Map<string, Tag>;
   persons: Map<string, Person>;
 
@@ -39,6 +40,7 @@ export class TaskletService {
       );
 
       this.updateSearchItems();
+      this.updateTasks();
       this.updateTags();
       this.updatePersons();
       this.notify();
@@ -127,6 +129,25 @@ export class TaskletService {
           if (project != null) {
             this.searchItems.push(project.name.trim().replace(/(^-)/g, ''));
           }
+        }
+      }
+    });
+  }
+
+  /**
+   * Updates tasks
+   */
+  public updateTasks() {
+    this.tasks = new Map<string, Task>();
+
+    Array.from(this.tasklets.values()).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
+    }).forEach(tasklet => {
+      if (tasklet.taskId != null) {
+        const task = this.entityService.getEntityById(tasklet.taskId) as Task;
+
+        if (task != null) {
+          this.tasks.set(task.name, task);
         }
       }
     });

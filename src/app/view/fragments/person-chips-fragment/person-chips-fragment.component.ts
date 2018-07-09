@@ -63,7 +63,7 @@ export class PersonChipsFragmentComponent implements OnInit {
   filterSearchItems(value: string): string[] {
     return this.options.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
-    );
+    ).reverse();
   }
 
   notify() {
