@@ -36,7 +36,12 @@ export class TaskListComponent implements OnInit {
         this.tasksOverdue = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate != null && this.dateService.isBefore(task.dueDate, new Date()));
         this.tasksNext = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate != null && this.dateService.isAfter(task.dueDate, new Date()));
         this.tasksInbox = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate == null);
-        this.tasksCompleted = (value as Task[]).filter(task => task != null && task.completionDate != null);
+        this.tasksCompleted = (value as Task[]).filter(task => task != null && task.completionDate != null).sort((t1: Task, t2: Task) => {
+          const date1 = new Date(t1.completionDate).getTime();
+          const date2 = new Date(t2.completionDate).getTime();
+
+          return date2 - date1;
+        });
 
         this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
         this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
