@@ -68,13 +68,9 @@ export class TaskListItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskService.updateTask(result as Task);
+        this.snackbarService.showSnackbar('Updated task', '');
       }
     });
-  }
-
-  completeTask() {
-    this.task.completionDate = new Date();
-    this.taskService.updateTask(this.task);
   }
 
   continueTask() {
@@ -95,5 +91,17 @@ export class TaskListItemComponent implements OnInit {
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
+  }
+
+  completeTask() {
+    this.task.completionDate = new Date();
+    this.taskService.updateTask(this.task);
+    this.snackbarService.showSnackbar('Completed task', '');
+  }
+
+  reopenTask() {
+    this.task.completionDate = null;
+    this.taskService.updateTask(this.task);
+    this.snackbarService.showSnackbar('Re-opened task', '');
   }
 }

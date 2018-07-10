@@ -4,24 +4,38 @@
   <button mat-button class="task flex" (click)="updateTask()">
     {{ task.name }}
   </button>
-  <button [@actionAnimation]="state"
-          mat-icon-button
-          matTooltip="Complete"
-          matTooltipPosition="above"
-          matTooltipShowDelay="250"
-          class="action"
-          [disableRipple]="true"
-          (click)="completeTask()">
-    <mat-icon svgIcon='check'></mat-icon>
-  </button>
-  <button [@actionAnimation]="state"
-          mat-icon-button
-          matTooltip="Continue"
-          matTooltipPosition="above"
-          matTooltipShowDelay="250"
-          class="action"
-          [disableRipple]="true"
-          (click)="continueTask()">
-    <mat-icon svgIcon='reply'></mat-icon>
-  </button>
+  <div *ngIf="task.completionDate == null">
+    <button [@actionAnimation]="state"
+            mat-icon-button
+            matTooltip="Complete"
+            matTooltipPosition="above"
+            matTooltipShowDelay="250"
+            class="action"
+            [disableRipple]="true"
+            (click)="completeTask()">
+      <mat-icon svgIcon='check'></mat-icon>
+    </button>
+    <button [@actionAnimation]="state"
+            mat-icon-button
+            matTooltip="Continue"
+            matTooltipPosition="above"
+            matTooltipShowDelay="250"
+            class="action"
+            [disableRipple]="true"
+            (click)="continueTask()">
+      <mat-icon svgIcon='reply'></mat-icon>
+    </button>
+  </div>
+  <div *ngIf="task.completionDate != null">
+    <button [@actionAnimation]="state"
+            mat-icon-button
+            matTooltip="Re-open"
+            matTooltipPosition="above"
+            matTooltipShowDelay="250"
+            class="action"
+            [disableRipple]="true"
+            (click)="reopenTask()">
+      <mat-icon svgIcon='replay'></mat-icon>
+    </button>
+  </div>
 </div>

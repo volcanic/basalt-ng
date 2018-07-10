@@ -103,6 +103,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
     icons.push(new Icon(ALERT, 'warning', 'ic_warning_24px.svg'));
     icons.push(new Icon(AV, 'play_circle_filled', 'ic_play_circle_filled_24px.svg'));
+    icons.push(new Icon(AV, 'replay', 'ic_replay_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'call', 'ic_call_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'chat', 'ic_chat_24px.svg'));
     icons.push(new Icon(CONTENT, 'add', 'ic_add_24px.svg'));
