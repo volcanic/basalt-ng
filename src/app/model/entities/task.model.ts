@@ -12,6 +12,7 @@ export class Task extends Entity {
   dueDate: Date;
   completionDate: Date;
   priority: number;
+  effort: number;
   tags: Tag[];
 
   constructor(name: string) {
@@ -24,6 +25,7 @@ export class Task extends Entity {
     this.dueDate = null;
     this.completionDate = null;
     this.priority = -1;
+    this.effort = 0;
     this.tags = [];
   }
 }

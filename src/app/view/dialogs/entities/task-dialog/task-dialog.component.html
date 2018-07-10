@@ -22,13 +22,14 @@
           </mat-expansion-panel-header>
           <div>
             <mat-form-field>
-              <input matInput [(ngModel)]="task.completionDate" [matDatepicker]="picker"
+              <input matInput [(ngModel)]="task.completionDate" [matDatepicker]="pickerCompletion"
                      name="completionDate" placeholder="Completion date">
-              <mat-datepicker-toggle name="datepickertoggle" matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker name="datepicker"></mat-datepicker>
+              <mat-datepicker-toggle name="datepickertoggleCompletion" matSuffix
+                                     [for]="pickerCompletion"></mat-datepicker-toggle>
+              <mat-datepicker #pickerCompletion name="datepickerCompletion"></mat-datepicker>
             </mat-form-field>
             <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="hourCompletion" name="hour" placeholder="Hour">
+              <mat-select [(ngModel)]="hourCompletion" name="hourCompletion" placeholder="Hour">
                 <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourCompletionSelected(item)">
                   {{ addTrailingZero(item) }}
                 </mat-option>
@@ -36,7 +37,7 @@
             </mat-form-field>
             :
             <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="minuteCompletion" name="minute" placeholder="Minute">
+              <mat-select [(ngModel)]="minuteCompletion" name="minuteCompletion" placeholder="Minute">
                 <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteCompletionSelected(item)">
                   {{ addTrailingZero(item) }}
                 </mat-option>
@@ -56,7 +57,8 @@
             </mat-panel-description>
             <mat-icon svgIcon="short_text"></mat-icon>
           </mat-expansion-panel-header>
-          <app-description-fragment [description]="task.description" [disabled]="inputDisabled"></app-description-fragment>
+          <app-description-fragment [description]="task.description"
+                                    [disabled]="inputDisabled"></app-description-fragment>
         </mat-expansion-panel>
 
         <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
@@ -66,17 +68,17 @@
             <mat-panel-description *ngIf="task.dueDate != null" class="value-set">
               {{ dateService.getTime(task.dueDate) }}, {{ dateService.getDate(task.dueDate) }}
             </mat-panel-description>
-            <mat-icon svgIcon="timer"></mat-icon>
+            <mat-icon svgIcon="today"></mat-icon>
           </mat-expansion-panel-header>
           <div>
             <mat-form-field>
-              <input matInput [(ngModel)]="task.dueDate" [disabled]="inputDisabled" [matDatepicker]="picker"
+              <input matInput [(ngModel)]="task.dueDate" [disabled]="inputDisabled" [matDatepicker]="pickerDue"
                      name="dueDate" placeholder="Due date">
-              <mat-datepicker-toggle name="datepickertoggle" matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker name="datepicker"></mat-datepicker>
+              <mat-datepicker-toggle name="datepickertoggleDue" matSuffix [for]="pickerDue"></mat-datepicker-toggle>
+              <mat-datepicker #pickerDue name="datepickerDue"></mat-datepicker>
             </mat-form-field>
             <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="hourDue" [disabled]="inputDisabled" name="hour" placeholder="Hour">
+              <mat-select [(ngModel)]="hourDue" [disabled]="inputDisabled" name="hourDue" placeholder="Hour">
                 <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourDueSelected(item)">
                   {{ addTrailingZero(item) }}
                 </mat-option>
@@ -84,7 +86,7 @@
             </mat-form-field>
             :
             <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="minuteDue" [disabled]="inputDisabled" name="minute" placeholder="Minute">
+              <mat-select [(ngModel)]="minuteDue" [disabled]="inputDisabled" name="minuteDue" placeholder="Minute">
                 <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteDueSelected(item)">
                   {{ addTrailingZero(item) }}
                 </mat-option>
@@ -134,6 +136,24 @@
 
         <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
+            <mat-panel-title>Estimated effort</mat-panel-title>
+            <mat-panel-description *ngIf="task.effort == null || task.effort <= 0">Estimate the effort
+            </mat-panel-description>
+            <mat-panel-description *ngIf="task.effort > 0">
+              <span class="value-set">{{ task.effort }} hours</span>
+            </mat-panel-description>
+            <mat-icon svgIcon="timer"></mat-icon>
+          </mat-expansion-panel-header>
+          <div>
+            <mat-form-field>
+              <input matInput [(ngModel)]="task.effort" name="effort" placeholder="Effort" type="number">
+            </mat-form-field>
+            <span>hours</span>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
             <mat-panel-title>
               Tags
             </mat-panel-title>
@@ -143,7 +163,8 @@
             </mat-panel-description>
             <mat-icon svgIcon="label_outline"></mat-icon>
           </mat-expansion-panel-header>
-          <app-tag-chips-fragment [tags]="task.tags" [disabled]="inputDisabled" (onTagChangedEmitter)="onTagChanged($event)">
+          <app-tag-chips-fragment [tags]="task.tags" [disabled]="inputDisabled"
+                                  (onTagChangedEmitter)="onTagChanged($event)">
           </app-tag-chips-fragment>
         </mat-expansion-panel>
 
@@ -155,10 +176,12 @@
       Cancel
     </button>
     <div class="flexbox"></div>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate != null" color="accent"  (click)="reopenTask()">
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate != null" color="accent"
+            (click)="reopenTask()">
       Re-open task
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate == null" color="accent"  (click)="completeTask()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate == null" color="accent"
+            (click)="completeTask()" [disabled]="!formCtrl.form.valid">
       Complete task
     </button>
     <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addTask()" [disabled]="!formCtrl.form.valid">
