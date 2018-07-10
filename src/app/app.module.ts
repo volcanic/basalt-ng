@@ -78,6 +78,7 @@ import {PersonAutocompleteFragmentComponent} from './view/fragments/person-autoc
 import {HeaderFragmentComponent} from './view/fragments/header-fragment/header-fragment.component';
 import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-daily-scrum/tasklet-daily-scrum.component';
 import {DailyScrumFragmentComponent} from './view/fragments/daily-scrum-fragment/daily-scrum-fragment.component';
+import {DateTimePickerFragmentComponent} from './view/fragments/date-time-picker-fragment/date-time-picker-fragment.component';
 
 @NgModule({
   declarations: [
@@ -121,7 +122,8 @@ import {DailyScrumFragmentComponent} from './view/fragments/daily-scrum-fragment
     DailyScrumActivityFragmenComponent,
     DailyScrumParticipantFragmentComponent,
     HeaderFragmentComponent,
-    TaskletDailyScrumComponent
+    TaskletDailyScrumComponent,
+    DateTimePickerFragmentComponent
   ],
   imports: [
     AppRoutingModule,

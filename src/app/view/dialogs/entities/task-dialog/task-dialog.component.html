@@ -20,30 +20,11 @@
             </mat-panel-description>
             <mat-icon svgIcon="check"></mat-icon>
           </mat-expansion-panel-header>
-          <div>
-            <mat-form-field>
-              <input matInput [(ngModel)]="task.completionDate" [matDatepicker]="pickerCompletion"
-                     name="completionDate" placeholder="Completion date">
-              <mat-datepicker-toggle name="datepickertoggleCompletion" matSuffix
-                                     [for]="pickerCompletion"></mat-datepicker-toggle>
-              <mat-datepicker #pickerCompletion name="datepickerCompletion"></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="hourCompletion" name="hourCompletion" placeholder="Hour">
-                <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourCompletionSelected(item)">
-                  {{ addTrailingZero(item) }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            :
-            <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="minuteCompletion" name="minuteCompletion" placeholder="Minute">
-                <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteCompletionSelected(item)">
-                  {{ addTrailingZero(item) }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+          <app-date-time-picker-fragment
+            [date]="task.completionDate"
+            [disabled]="inputDisabled"
+            (onDateChangedEmitter)="onCompletionDateChanged($event)">
+          </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
         <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
@@ -70,29 +51,11 @@
             </mat-panel-description>
             <mat-icon svgIcon="today"></mat-icon>
           </mat-expansion-panel-header>
-          <div>
-            <mat-form-field>
-              <input matInput [(ngModel)]="task.dueDate" [disabled]="inputDisabled" [matDatepicker]="pickerDue"
-                     name="dueDate" placeholder="Due date">
-              <mat-datepicker-toggle name="datepickertoggleDue" matSuffix [for]="pickerDue"></mat-datepicker-toggle>
-              <mat-datepicker #pickerDue name="datepickerDue"></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="hourDue" [disabled]="inputDisabled" name="hourDue" placeholder="Hour">
-                <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourDueSelected(item)">
-                  {{ addTrailingZero(item) }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            :
-            <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="minuteDue" [disabled]="inputDisabled" name="minuteDue" placeholder="Minute">
-                <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteDueSelected(item)">
-                  {{ addTrailingZero(item) }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+          <app-date-time-picker-fragment
+            [date]="task.dueDate"
+            [disabled]="inputDisabled"
+            (onDateChangedEmitter)="onDueDateChanged($event)">
+          </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
         <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>

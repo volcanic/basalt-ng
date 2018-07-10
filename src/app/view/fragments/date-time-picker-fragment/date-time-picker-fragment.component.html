@@ -1,0 +1,30 @@
+<mat-form-field>
+  <input matInput
+         name="date"
+         placeholder="Date"
+         [(ngModel)]="date"
+         [disabled]="inputDisabled"
+         [matDatepicker]="picker"
+         (ngModelChange)="onDateChanged($event)">
+  <mat-datepicker-toggle matSuffix
+                         name="datepickertoggle"
+                         [for]="picker">
+  </mat-datepicker-toggle>
+  <mat-datepicker #picker name="datepicker"></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field color="primary" class="time-select">
+  <mat-select [(ngModel)]="hour" [disabled]="inputDisabled" name="hour" placeholder="Hour">
+    <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
+      {{ addTrailingZero(item) }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+:
+<mat-form-field color="primary" class="time-select">
+  <mat-select [(ngModel)]="minuteDue" [disabled]="inputDisabled" name="minute" placeholder="Minute">
+    <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
+      {{ addTrailingZero(item) }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

@@ -1,31 +1,10 @@
 <h2 mat-dialog-title>{{ dialogTitle }}</h2>
 <mat-dialog-content>
-
-  <mat-form-field>
-    <input matInput
-           placeholder="Choose a date"
-           [matDatepicker]="picker"
-           (dateInput)="onDateChanged('input', $event)"
-           (dateChange)="onDateChanged('change', $event)">
-    <mat-datepicker-toggle matSuffix [for]=" picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker startView="week" [startAt]="calendarDate"></mat-datepicker>
-  </mat-form-field>
-
-  <mat-form-field color="primary" class="time-select">
-    <mat-select name="type" placeholder="Time" [(ngModel)]="hour">
-      <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
-        {{ addTrailingZero(item) }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  :
-  <mat-form-field color="primary" class="time-select">
-    <mat-select name="type" [(ngModel)]="minute">
-      <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
-        {{ addTrailingZero(item) }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <app-date-time-picker-fragment
+    [date]="tasklet.creationDate"
+    [disabled]="inputDisabled"
+    (onDateChangedEmitter)="onDateChanged($event)">
+  </app-date-time-picker-fragment>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button [mat-dialog-close]=null>

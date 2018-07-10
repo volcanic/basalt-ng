@@ -23,17 +23,6 @@ export class TaskDialogComponent implements OnInit {
 
   inputDisabled = false;
 
-  hours = [];
-  minutes = [];
-
-  // Completion date
-  hourCompletion = 0;
-  minuteCompletion = 0;
-
-  // Due date
-  hourDue = 0;
-  minuteDue = 0;
-
   // Priority
   colorEmpty = '#cfd8dc';
   colorsPriorities = [
@@ -75,7 +64,6 @@ export class TaskDialogComponent implements OnInit {
 
     this.inputDisabled = this.task.completionDate != null;
 
-    this.initializeDueDate();
     this.initializePriority();
     this.initializeProject();
     this.initializeTags();
@@ -84,20 +72,6 @@ export class TaskDialogComponent implements OnInit {
   //
   // Initialization
   //
-
-  initializeDueDate() {
-    if (this.task.dueDate != null) {
-      this.hourDue = new Date(this.task.dueDate).getHours();
-      this.minuteDue = new Date(this.task.dueDate).getMinutes();
-    }
-
-    for (let h = 0; h < 24; h++) {
-      this.hours.push(h);
-    }
-    for (let m = 0; m < 60; m = m + DateService.MINUTES_INTERVAL) {
-      this.minutes.push(m);
-    }
-  }
 
   initializePriority() {
     this.colorsFlags.forEach((flagColor, index) => {
@@ -149,52 +123,16 @@ export class TaskDialogComponent implements OnInit {
   // Completion date
   //
 
-  onHourCompletionSelected(value: number) {
-    this.task.completionDate = new Date(
-      this.task.completionDate.getFullYear(),
-      this.task.completionDate.getMonth(),
-      this.task.completionDate.getDate(),
-      value,
-      this.task.completionDate.getMinutes());
-  }
-
-  onMinuteCompletionSelected(value: number) {
-    this.task.completionDate = new Date(
-      this.task.completionDate.getFullYear(),
-      this.task.completionDate.getMonth(),
-      this.task.completionDate.getDate(),
-      this.task.completionDate.getHours(),
-      value);
+  onCompletionDateChanged(value: Date) {
+    this.task.completionDate = value;
   }
 
   //
   // Due date
   //
 
-  onHourDueSelected(value: number) {
-    this.task.dueDate = new Date(
-        this.task.dueDate.getFullYear(),
-        this.task.dueDate.getMonth(),
-        this.task.dueDate.getDate(),
-        value,
-        this.task.dueDate.getMinutes());
-  }
-
-  onMinuteDueSelected(value: number) {
-    this.task.dueDate = new Date(
-      this.task.dueDate.getFullYear(),
-      this.task.dueDate.getMonth(),
-      this.task.dueDate.getDate(),
-      this.task.dueDate.getHours(),
-      value);
-  }
-
-  addTrailingZero(value: number) {
-    if (value < 10) {
-      return `0${value}`;
-    }
-
-    return value;
+  onDueDateChanged(value: Date) {
+    this.task.dueDate = value;
   }
 
   //
