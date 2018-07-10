@@ -23,11 +23,16 @@ export class TaskDialogComponent implements OnInit {
 
   inputDisabled = false;
 
-  // Due date
-  hour = 0;
-  minute = 0;
   hours = [];
   minutes = [];
+
+  // Completion date
+  hourCompletion = 0;
+  minuteCompletion = 0;
+
+  // Due date
+  hourDue = 0;
+  minuteDue = 0;
 
   // Priority
   colorEmpty = '#cfd8dc';
@@ -82,8 +87,8 @@ export class TaskDialogComponent implements OnInit {
 
   initializeDueDate() {
     if (this.task.dueDate != null) {
-      this.hour = new Date(this.task.dueDate).getHours();
-      this.minute = new Date(this.task.dueDate).getMinutes();
+      this.hourDue = new Date(this.task.dueDate).getHours();
+      this.minuteDue = new Date(this.task.dueDate).getMinutes();
     }
 
     for (let h = 0; h < 24; h++) {
@@ -141,10 +146,32 @@ export class TaskDialogComponent implements OnInit {
   }
 
   //
+  // Completion date
+  //
+
+  onHourCompletionSelected(value: number) {
+    this.task.completionDate = new Date(
+      this.task.completionDate.getFullYear(),
+      this.task.completionDate.getMonth(),
+      this.task.completionDate.getDate(),
+      value,
+      this.task.completionDate.getMinutes());
+  }
+
+  onMinuteCompletionSelected(value: number) {
+    this.task.completionDate = new Date(
+      this.task.completionDate.getFullYear(),
+      this.task.completionDate.getMonth(),
+      this.task.completionDate.getDate(),
+      this.task.completionDate.getHours(),
+      value);
+  }
+
+  //
   // Due date
   //
 
-  onHourSelected(value: number) {
+  onHourDueSelected(value: number) {
     this.task.dueDate = new Date(
         this.task.dueDate.getFullYear(),
         this.task.dueDate.getMonth(),
@@ -153,7 +180,7 @@ export class TaskDialogComponent implements OnInit {
         this.task.dueDate.getMinutes());
   }
 
-  onMinuteSelected(value: number) {
+  onMinuteDueSelected(value: number) {
     this.task.dueDate = new Date(
       this.task.dueDate.getFullYear(),
       this.task.dueDate.getMonth(),

@@ -12,6 +12,39 @@
 
       <mat-accordion class="headers-align">
 
+        <mat-expansion-panel *ngIf="task.completionDate != null" [expanded]="step === 0" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Completion date</mat-panel-title>
+            <mat-panel-description *ngIf="task.completionDate != null" class="value-set">
+              {{ dateService.getTime(task.completionDate) }}, {{ dateService.getDate(task.completionDate) }}
+            </mat-panel-description>
+            <mat-icon svgIcon="check"></mat-icon>
+          </mat-expansion-panel-header>
+          <div>
+            <mat-form-field>
+              <input matInput [(ngModel)]="task.completionDate" [matDatepicker]="picker"
+                     name="completionDate" placeholder="Completion date">
+              <mat-datepicker-toggle name="datepickertoggle" matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker name="datepicker"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field color="primary" class="time-select">
+              <mat-select [(ngModel)]="hourCompletion" name="hour" placeholder="Hour">
+                <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourCompletionSelected(item)">
+                  {{ addTrailingZero(item) }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            :
+            <mat-form-field color="primary" class="time-select">
+              <mat-select [(ngModel)]="minuteCompletion" name="minute" placeholder="Minute">
+                <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteCompletionSelected(item)">
+                  {{ addTrailingZero(item) }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+
         <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Description</mat-panel-title>
@@ -43,16 +76,16 @@
               <mat-datepicker #picker name="datepicker"></mat-datepicker>
             </mat-form-field>
             <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="hour" [disabled]="inputDisabled" name="hour" placeholder="Hour">
-                <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
+              <mat-select [(ngModel)]="hourDue" [disabled]="inputDisabled" name="hour" placeholder="Hour">
+                <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourDueSelected(item)">
                   {{ addTrailingZero(item) }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             :
             <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="minute" [disabled]="inputDisabled" name="minute" placeholder="Minute">
-                <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
+              <mat-select [(ngModel)]="minuteDue" [disabled]="inputDisabled" name="minute" placeholder="Minute">
+                <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteDueSelected(item)">
                   {{ addTrailingZero(item) }}
                 </mat-option>
               </mat-select>
@@ -131,7 +164,7 @@
     <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addTask()" [disabled]="!formCtrl.form.valid">
       Add task
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate == null" (click)="updateTask()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updateTask()" [disabled]="!formCtrl.form.valid">
       Update task
     </button>
   </mat-dialog-actions>
