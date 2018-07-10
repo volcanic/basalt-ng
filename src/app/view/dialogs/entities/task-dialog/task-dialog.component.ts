@@ -21,6 +21,8 @@ export class TaskDialogComponent implements OnInit {
   dialogTitle = '';
   task: Task;
 
+  inputDisabled = false;
+
   // Due date
   hour = 0;
   minute = 0;
@@ -65,6 +67,8 @@ export class TaskDialogComponent implements OnInit {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.task = JSON.parse(this.data.task);
+
+    this.inputDisabled = this.task.completionDate != null;
 
     this.initializeDueDate();
     this.initializePriority();
@@ -171,30 +175,36 @@ export class TaskDialogComponent implements OnInit {
   //
 
   onHoverFlag(priority: number) {
-    this.colorsFlags.forEach((flagColor, index) => {
-      if (index <= priority) {
-        this.colorsFlags[index] = this.colorsPriorities[priority];
-      } else {
-        this.colorsFlags[index] = this.colorEmpty;
-      }
-    });
+    if (!this.inputDisabled) {
+      this.colorsFlags.forEach((flagColor, index) => {
+        if (index <= priority) {
+          this.colorsFlags[index] = this.colorsPriorities[priority];
+        } else {
+          this.colorsFlags[index] = this.colorEmpty;
+        }
+      });
+    }
   }
 
   onLeaveFlag() {
-    this.initializePriority();
+    if (!this.inputDisabled) {
+      this.initializePriority();
+    }
   }
 
   onClickFlag(priority: number) {
-    this.task.priority = priority;
+    if (!this.inputDisabled) {
+      this.task.priority = priority;
 
-    if (priority === -1) {
-      this.colorsFlags = [
-        '#cfd8dc',
-        '#cfd8dc',
-        '#cfd8dc',
-        '#cfd8dc',
-        '#cfd8dc'
-      ];
+      if (priority === -1) {
+        this.colorsFlags = [
+          '#cfd8dc',
+          '#cfd8dc',
+          '#cfd8dc',
+          '#cfd8dc',
+          '#cfd8dc'
+        ];
+      }
     }
   }
 

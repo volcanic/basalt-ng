@@ -33,11 +33,6 @@ export class TaskListComponent implements OnInit {
       takeUntil(this.tasksUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        (value as Task[]).forEach(task => {
-          console.log(`DEBUG task ${JSON.stringify(task)}`);
-          console.log(`DEBUG task.completionDate == null ${JSON.stringify(task.completionDate == null)}`);
-        });
-
         this.tasksOverdue = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate != null && this.dateService.isBefore(task.dueDate, new Date()));
         this.tasksNext = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate != null && this.dateService.isAfter(task.dueDate, new Date()));
         this.tasksInbox = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate == null);

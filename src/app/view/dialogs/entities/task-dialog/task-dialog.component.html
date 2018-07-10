@@ -5,13 +5,14 @@
       <div>
         <mat-form-field class="wide-box">
           <input matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
+                 [disabled]="inputDisabled"
                  [(ngModel)]="task.name">
         </mat-form-field>
       </div>
 
       <mat-accordion class="headers-align">
 
-        <mat-expansion-panel [expanded]="step === 0" (opened)="false" hideToggle>
+        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Description</mat-panel-title>
             <mat-panel-description *ngIf="task.description == null || task.description.value == ''">
@@ -22,10 +23,10 @@
             </mat-panel-description>
             <mat-icon svgIcon="short_text"></mat-icon>
           </mat-expansion-panel-header>
-          <app-description-fragment [description]="task.description"></app-description-fragment>
+          <app-description-fragment [description]="task.description" [disabled]="inputDisabled"></app-description-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 0" (opened)="false" hideToggle>
+        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Due date</mat-panel-title>
             <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
@@ -34,15 +35,15 @@
             </mat-panel-description>
             <mat-icon svgIcon="timer"></mat-icon>
           </mat-expansion-panel-header>
-
           <div>
             <mat-form-field>
-              <input matInput [(ngModel)]="task.dueDate" [matDatepicker]="picker" name="dueDate" placeholder="Due date">
+              <input matInput [(ngModel)]="task.dueDate" [disabled]="inputDisabled" [matDatepicker]="picker"
+                     name="dueDate" placeholder="Due date">
               <mat-datepicker-toggle name="datepickertoggle" matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker name="datepicker"></mat-datepicker>
             </mat-form-field>
             <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="hour" name="hour" placeholder="Hour">
+              <mat-select [(ngModel)]="hour" [disabled]="inputDisabled" name="hour" placeholder="Hour">
                 <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
                   {{ addTrailingZero(item) }}
                 </mat-option>
@@ -50,7 +51,7 @@
             </mat-form-field>
             :
             <mat-form-field color="primary" class="time-select">
-              <mat-select [(ngModel)]="minute" name="minute" placeholder="Minute">
+              <mat-select [(ngModel)]="minute" [disabled]="inputDisabled" name="minute" placeholder="Minute">
                 <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
                   {{ addTrailingZero(item) }}
                 </mat-option>
@@ -59,7 +60,7 @@
           </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
+        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Priority</mat-panel-title>
             <mat-panel-description *ngIf="task.priority < 0">Select a priority</mat-panel-description>
@@ -79,7 +80,7 @@
           </mat-icon>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
+        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Project
@@ -93,11 +94,12 @@
           <div>
             <app-project-autocomplete-fragment
               [project]="project"
+              [disabled]="inputDisabled"
               (onProjectChangedEmitter)="onProjectChanged($event)"></app-project-autocomplete-fragment>
           </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 1" (opened)="false" hideToggle>
+        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Tags
@@ -108,7 +110,7 @@
             </mat-panel-description>
             <mat-icon svgIcon="label_outline"></mat-icon>
           </mat-expansion-panel-header>
-          <app-tag-chips-fragment [tags]="task.tags" (onTagChangedEmitter)="onTagChanged($event)">
+          <app-tag-chips-fragment [tags]="task.tags" [disabled]="inputDisabled" (onTagChangedEmitter)="onTagChanged($event)">
           </app-tag-chips-fragment>
         </mat-expansion-panel>
 
@@ -120,7 +122,7 @@
       Cancel
     </button>
     <div class="flexbox"></div>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate != null" color="accent"  (click)="reopenTask()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate != null" color="accent"  (click)="reopenTask()">
       Re-open task
     </button>
     <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate == null" color="accent"  (click)="completeTask()" [disabled]="!formCtrl.form.valid">
@@ -129,7 +131,7 @@
     <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addTask()" [disabled]="!formCtrl.form.valid">
       Add task
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updateTask()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate == null" (click)="updateTask()" [disabled]="!formCtrl.form.valid">
       Update task
     </button>
   </mat-dialog-actions>

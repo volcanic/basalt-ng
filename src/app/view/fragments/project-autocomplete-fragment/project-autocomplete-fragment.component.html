@@ -1,6 +1,7 @@
 <div class="searchbox">
   <input class="search-input" matInput name="search" type="text" placeholder="Project"
          [(ngModel)]="project.name"
+         [disabled]="disabled"
          [formControl]="formControl"
          [matAutocomplete]="auto"
          (keyup)="onKeyUp($event)">

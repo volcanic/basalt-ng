@@ -13,6 +13,7 @@ import {ProjectService} from '../../../services/entities/project.service';
 export class ProjectAutocompleteFragmentComponent implements OnInit {
 
   @Input() project: Project;
+  @Input() disabled: false;
   @Output() onProjectChangedEmitter = new EventEmitter<Project>();
 
   value = '';
@@ -44,11 +45,15 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   }
 
   onKeyUp(event: any) {
-    this.notify();
+    if (!this.disabled) {
+      this.notify();
+    }
   }
 
   onOptionSelected(event: any) {
-    this.notify();
+    if (!this.disabled) {
+      this.notify();
+    }
   }
 
   filterSearchItems(value: string): string[] {

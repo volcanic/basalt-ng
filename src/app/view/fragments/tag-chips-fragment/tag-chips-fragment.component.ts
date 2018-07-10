@@ -13,6 +13,7 @@ import {map, startWith} from 'rxjs/internal/operators';
 export class TagChipsFragmentComponent implements OnInit {
 
   @Input() tags: Tag[] = [];
+  @Input() disabled = false;
   @Output() onTagChangedEmitter = new EventEmitter<Tag[]>();
 
   value = '';
@@ -38,32 +39,39 @@ export class TagChipsFragmentComponent implements OnInit {
   }
 
   onDeleteTag(value: Tag) {
-    this.tags = this.tags.filter(tag => {
-      return tag.name !== value.name;
-    });
+    if (!this.disabled) {
+      this.tags = this.tags.filter(tag => {
+        return tag.name !== value.name;
+      });
 
-    this.notify();
+      this.notify();
+    }
   }
 
   onKeyUp(event: any) {
-    const KEY_CODE_ENTER = 13;
-    const KEY_CODE_COMMA = 188;
+    if (!this.disabled) {
+      const KEY_CODE_ENTER = 13;
+      const KEY_CODE_COMMA = 188;
 
-    if (this.value !== '' && this.value !== ',' && (event.keyCode == KEY_CODE_ENTER || event.keyCode == KEY_CODE_COMMA)) {
+      if (this.value !== '' && this.value !== ',' && (event.keyCode == KEY_CODE_ENTER || event.keyCode == KEY_CODE_COMMA)) {
+        this.tags.push(new Tag(this.value.replace(/,/, ''), true));
+        this.value = '';
+        this.notify();
+      }
+    }
+  }
+
+  onOptionSelected(event: any) {
+    if (!this.disabled) {
       this.tags.push(new Tag(this.value.replace(/,/, ''), true));
       this.value = '';
       this.notify();
     }
   }
 
-  onOptionSelected(event: any) {
-    this.tags.push(new Tag(this.value.replace(/,/, ''), true));
-    this.value = '';
-    this.notify();
-  }
-
   onKeyDown(event: any) {
     this.value = this.value.replace(/,/, '');
+
   }
 
   filterSearchItems(value: string): string[] {

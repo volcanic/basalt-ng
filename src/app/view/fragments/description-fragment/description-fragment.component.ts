@@ -9,6 +9,7 @@ import {Description} from '../../../model/description.model';
 export class DescriptionFragmentComponent implements OnInit {
 
   @Input() description: Description = new Description();
+  @Input() disabled = false;
   @Output() onDescriptionChangedEmitter = new EventEmitter<Description>();
 
   constructor() {
