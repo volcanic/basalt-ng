@@ -15,6 +15,7 @@ export class TaskListComponent implements OnInit {
   tasksOverdue = [];
   tasksNext = [];
   tasksInbox = [];
+  tasksCompleted = [];
 
   tasksOverdueBadgeColor = 'transparent';
   tasksInboxBadgeColor = 'transparent';
@@ -32,9 +33,15 @@ export class TaskListComponent implements OnInit {
       takeUntil(this.tasksUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        this.tasksOverdue = (value as Task[]).filter(task => task != null && task.dueDate != null && this.dateService.isBefore(task.dueDate, new Date()));
-        this.tasksNext = (value as Task[]).filter(task => task != null && task.dueDate != null && this.dateService.isAfter(task.dueDate, new Date()));
-        this.tasksInbox = (value as Task[]).filter(task => task == null || task.dueDate == null);
+        (value as Task[]).forEach(task => {
+          console.log(`DEBUG task ${JSON.stringify(task)}`);
+          console.log(`DEBUG task.completionDate == null ${JSON.stringify(task.completionDate == null)}`);
+        });
+
+        this.tasksOverdue = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate != null && this.dateService.isBefore(task.dueDate, new Date()));
+        this.tasksNext = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate != null && this.dateService.isAfter(task.dueDate, new Date()));
+        this.tasksInbox = (value as Task[]).filter(task => task != null && task.completionDate == null && task.dueDate == null);
+        this.tasksCompleted = (value as Task[]).filter(task => task != null && task.completionDate != null);
 
         this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
         this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';

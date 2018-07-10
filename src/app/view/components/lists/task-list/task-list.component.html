@@ -43,3 +43,15 @@
     </app-task-list-item>
   </mat-expansion-panel>
 </mat-accordion>
+
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="false" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <div class="label">
+        <span>Completed</span>
+      </div>
+    </mat-expansion-panel-header>
+    <app-task-list-item *ngFor="let t of tasksCompleted" [task]="t">
+    </app-task-list-item>
+  </mat-expansion-panel>
+</mat-accordion>

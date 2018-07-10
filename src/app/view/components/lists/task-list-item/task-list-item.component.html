@@ -4,14 +4,24 @@
   <button mat-button class="task flex" (click)="updateTask()">
     {{ task.name }}
   </button>
-  <button [@continueAnimation]="state"
+  <button [@actionAnimation]="state"
           mat-icon-button
-          matTooltip="Work on this task"
+          matTooltip="Complete"
           matTooltipPosition="above"
           matTooltipShowDelay="250"
-          class="continue"
+          class="action"
           [disableRipple]="true"
-          (click)="startWorkOnTask()">
+          (click)="completeTask()">
+    <mat-icon svgIcon='check'></mat-icon>
+  </button>
+  <button [@actionAnimation]="state"
+          mat-icon-button
+          matTooltip="Continue"
+          matTooltipPosition="above"
+          matTooltipShowDelay="250"
+          class="action"
+          [disableRipple]="true"
+          (click)="continueTask()">
     <mat-icon svgIcon='reply'></mat-icon>
   </button>
 </div>

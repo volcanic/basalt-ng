@@ -18,13 +18,13 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
   templateUrl: './task-list-item.component.html',
   styleUrls: ['./task-list-item.component.scss'],
   animations: [
-    trigger('continueAnimation', [
+    trigger('actionAnimation', [
       state('inactive', style({
         opacity: '0',
         width: '0'
       })),
       state('active', style({
-        opacity: '0.9',
+        opacity: '0.6',
         width: '24px'
       })),
       transition('inactive => active', animate('0ms ease-in')),
@@ -72,7 +72,12 @@ export class TaskListItemComponent implements OnInit {
     });
   }
 
-  startWorkOnTask() {
+  completeTask() {
+    this.task.completionDate = new Date();
+    this.taskService.updateTask(this.task);
+  }
+
+  continueTask() {
     const newTasklet = new Tasklet();
     newTasklet.taskId = this.task.id;
     newTasklet.type = TASKLET_TYPE.ACTION;
