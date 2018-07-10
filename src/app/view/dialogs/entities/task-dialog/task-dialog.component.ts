@@ -124,6 +124,12 @@ export class TaskDialogComponent implements OnInit {
     this.dialogRef.close(this.task);
   }
 
+  completeTask() {
+    this.evaluateProject();
+    this.task.completionDate = new Date();
+    this.dialogRef.close(this.task);
+  }
+
   //
   // Due date
   //
