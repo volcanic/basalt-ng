@@ -120,6 +120,9 @@
       Cancel
     </button>
     <div class="flexbox"></div>
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate != null" color="accent"  (click)="reopenTask()" [disabled]="!formCtrl.form.valid">
+      Re-open task
+    </button>
     <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate == null" color="accent"  (click)="completeTask()" [disabled]="!formCtrl.form.valid">
       Complete task
     </button>
