@@ -2,7 +2,11 @@
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <button mat-button class="task flex" (click)="updateTask()">
-    {{ task.name }}
+    <span>{{ task.name }}</span>
+    <span [@actionAnimation]="state"
+          *ngIf="task.effort > 0" class="effort">
+      ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
+    </span>
   </button>
   <div *ngIf="task.completionDate == null">
     <button [@actionAnimation]="state"

@@ -12,6 +12,7 @@ import {EntityService} from './entity.service';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Entity} from '../../model/entities/entity.model';
+import {TaskService} from './task.service';
 
 @Injectable()
 export class TaskletService {
@@ -26,6 +27,7 @@ export class TaskletService {
   persons: Map<string, Person>;
 
   constructor(private entityService: EntityService,
+              private taskService: TaskService,
               private dateService: DateService) {
     this.entityService.entitiesSubject.pipe(
       takeUntil(this.entitiesUnsubscribeSubject)
@@ -149,6 +151,12 @@ export class TaskletService {
         if (task != null) {
           this.tasks.set(task.name, task);
         }
+      }
+    });
+
+    Array.from(this.taskService.tasks.values()).forEach(task => {
+      if (task != null) {
+        this.tasks.set(task.name, task);
       }
     });
   }

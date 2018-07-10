@@ -11,6 +11,7 @@ import {EntityService} from './entities/entity.service';
 import {Project} from '../model/entities/project.model';
 import {PlaceholderValues} from '../model/placeholder-values.model';
 import {Task} from '../model/entities/task.model';
+import {TaskDigest} from '../model/task-digest.model';
 
 @Injectable()
 export class DigestService {
@@ -154,5 +155,52 @@ export class DigestService {
     );
 
     return weeklyDigest;
+  }
+
+  /**
+   * Generates a digest for specific task
+   * @param task
+   * @returns {TaskDigest}
+   */
+  getTaskDigest(task: Task): TaskDigest {
+
+    const tasklets = Array.from(this.taskletService.tasklets.values()).filter(t => {
+      return t.type !== TASKLET_TYPE.WEEKLY_DIGEST;
+    }).sort((t1: Tasklet, t2: Tasklet) => {
+      const date1 = new Date(t1.creationDate).getTime();
+      const date2 = new Date(t2.creationDate).getTime();
+
+      return date1 - date2;
+    });
+
+    if (tasklets.length !== 0) {
+      const taskDigest = new TaskDigest();
+
+      taskDigest.start = tasklets[0].creationDate;
+      taskDigest.end = tasklets[tasklets.length - 1].creationDate;
+
+      // Iterate over all tasklets
+      for (let index = 0; index < tasklets.length; index++) {
+        const tasklet = tasklets[index];
+        const nextTasklet = tasklets[index + 1];
+
+        if (nextTasklet != null && new Date(tasklet.creationDate).getDay() === new Date(nextTasklet.creationDate).getDay()
+          && tasklet.taskId === task.id
+          && tasklet.type !== TASKLET_TYPE.LUNCH_BREAK
+          && tasklet.type !== TASKLET_TYPE.FINISHING_TIME
+          && tasklet.type !== TASKLET_TYPE.WEEKLY_DIGEST) {
+
+          // Additional minutes
+          const diff = new Date(nextTasklet.creationDate).getTime() - new Date(tasklet.creationDate).getTime();
+
+          // Add new efforts
+          taskDigest.effort += this.dateService.getRoundedMinutes((diff / 60000));
+        }
+      }
+
+      return taskDigest;
+    }
+
+    return null;
   }
 }

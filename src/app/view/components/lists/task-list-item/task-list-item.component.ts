@@ -2,15 +2,16 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
 import {TaskDialogComponent} from '../../../dialogs/entities/task-dialog/task-dialog.component';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
-import {MatDialog, MatIconRegistry} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {TaskService} from '../../../../services/entities/task.service';
 import {TaskletDialogComponent} from '../../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
-import {DomSanitizer} from '@angular/platform-browser';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {DigestService} from '../../../../services/digest.service';
+import {TaskDigest} from '../../../../model/task-digest.model';
 
 
 @Component({
@@ -36,20 +37,17 @@ export class TaskListItemComponent implements OnInit {
   @Input() task: Task;
 
   state = 'inactive';
+  taskDigest: TaskDigest;
 
   constructor(private taskService: TaskService,
               private taskletService: TaskletService,
+              private digestService: DigestService,
               private snackbarService: SnackbarService,
-              public dialog: MatDialog,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon(
-      'reply',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/material-design-icons/content/svg/design/ic_reply_24px.svg')
-    );
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
+    this.taskDigest = this.digestService.getTaskDigest(this.task);
   }
 
   onHoverContainer(hovered: boolean) {
