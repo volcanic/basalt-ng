@@ -1,6 +1,9 @@
 <div class="container"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
+  <button mat-button class="task flex" (click)="updateTask()">
+    {{ task.name }}
+  </button>
   <button [@continueAnimation]="state"
           mat-icon-button
           matTooltip="Work on this task"
@@ -11,15 +14,4 @@
           (click)="startWorkOnTask()">
     <mat-icon svgIcon='reply'></mat-icon>
   </button>
-  <button mat-button class="task" (click)="updateTask()">
-    {{ task.name }}
-  </button>
 </div>
-
-<!--
-# Taskname
-# Due Time
-# "Do Now"-Button
-# "Re-Schedule"-Button
-# If "Later": Day
--->

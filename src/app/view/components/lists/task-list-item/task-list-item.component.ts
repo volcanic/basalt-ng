@@ -20,17 +20,15 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
   animations: [
     trigger('continueAnimation', [
       state('inactive', style({
-        margin: '0',
         opacity: '0',
         width: '0'
       })),
       state('active', style({
-        margin: '0 12px 0 0',
         opacity: '0.9',
         width: '24px'
       })),
-      transition('inactive => active', animate('250ms ease-in')),
-      transition('active => inactive', animate('250ms ease-out'))
+      transition('inactive => active', animate('0ms ease-in')),
+      transition('active => inactive', animate('0ms ease-out'))
     ])
   ]
 })

@@ -3,7 +3,13 @@
   width: 100%;
 }
 
-.task {
+.flex {
   flex-grow: 1;
+}
+
+.task {
+  overflow: hidden;
   text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
