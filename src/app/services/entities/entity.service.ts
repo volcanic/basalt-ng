@@ -1,7 +1,7 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {PouchDBService} from '../pouchdb.service';
 import {Project} from '../../model/entities/project.model';
-import {Subject} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
 import {Tasklet} from '../../model/entities/tasklet.model';
 import {Task} from '../../model/entities/task.model';
 import {EntityType} from '../../model/entities/entity-type.enum';
@@ -24,18 +24,14 @@ export class EntityService {
           if (entityType === EntityType.PROJECT) {
             const project = entity as Project;
             this.entities.set(project.id, project);
-            console.debug(`DEBUG sync project ${JSON.stringify(project)}`);
           } else if (entityType === EntityType.TASK) {
             const task = entity as Task;
             this.entities.set(task.id, task);
-            console.debug(`DEBUG sync task ${JSON.stringify(task)}`);
           } else if (entityType === EntityType.TASKLET) {
             const tasklet = entity as Tasklet;
             this.entities.set(tasklet.id, tasklet);
-            console.debug(`DEBUG sync tasklet ${JSON.stringify(tasklet)}`);
           }
 
-          console.debug(`DEBUG sync entities ${JSON.stringify(this.entities.values())}`);
           this.notify();
         });
       });
@@ -54,15 +50,12 @@ export class EntityService {
           if (entityType === EntityType.PROJECT) {
             const project = entity as Project;
             this.entities.set(project.id, project);
-            console.debug(`DEBUG fetch project ${JSON.stringify(project)}`);
           } else if (entityType === EntityType.TASK) {
             const task = entity as Task;
             this.entities.set(task.id, task);
-            console.debug(`DEBUG fetch task ${JSON.stringify(task)}`);
           } else if (entityType === EntityType.TASKLET) {
             const tasklet = entity as Tasklet;
             this.entities.set(tasklet.id, tasklet);
-            console.debug(`DEBUG fetch tasklet ${JSON.stringify(tasklet)}`);
           }
         });
 
@@ -104,7 +97,6 @@ export class EntityService {
    * Informs subscribers that something has changed
    */
   public notify() {
-    console.debug(`DEBUG notify ${JSON.stringify(Array.from(this.entities.values()))}`);
     this.entitiesSubject.next(Array.from(this.entities.values()));
   }
 
@@ -127,6 +119,7 @@ export class EntityService {
     document.body.removeChild(element);
   }
 
+  /*
   public showEntities() {
     const fileContents = JSON.stringify(Array.from(this.entities.values()));
     // const filename = 'entities.basalt';
@@ -136,6 +129,7 @@ export class EntityService {
     const url = window.URL.createObjectURL(blob);
     window.open(url);
   }
+  */
 
   //
   // Lookup
