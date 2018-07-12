@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Task} from '../../model/entities/task.model';
-import {Subject} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
 import {EntityService} from './entity.service';
 import {Entity} from '../../model/entities/entity.model';
 import {takeUntil} from 'rxjs/internal/operators';
@@ -24,7 +24,6 @@ export class TaskService {
           if (entity.entityType === EntityType.TASK) {
             const task = entity as Task;
             this.tasks.set(task.id, task);
-            console.debug(`DEBUG subscribe task ${JSON.stringify(task)}`);
           }
         }
       );

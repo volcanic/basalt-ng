@@ -79,6 +79,8 @@ import {HeaderFragmentComponent} from './view/fragments/header-fragment/header-f
 import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-daily-scrum/tasklet-daily-scrum.component';
 import {DailyScrumFragmentComponent} from './view/fragments/daily-scrum-fragment/daily-scrum-fragment.component';
 import {DateTimePickerFragmentComponent} from './view/fragments/date-time-picker-fragment/date-time-picker-fragment.component';
+import {ProjectListComponent} from './view/components/lists/project-list/project-list.component';
+import {ProjectListItemComponent} from './view/components/lists/project-list-item/project-list-item.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +125,9 @@ import {DateTimePickerFragmentComponent} from './view/fragments/date-time-picker
     DailyScrumParticipantFragmentComponent,
     HeaderFragmentComponent,
     TaskletDailyScrumComponent,
-    DateTimePickerFragmentComponent
+    DateTimePickerFragmentComponent,
+    ProjectListComponent,
+    ProjectListItemComponent,
   ],
   imports: [
     AppRoutingModule,
