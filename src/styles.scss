@@ -3,6 +3,7 @@
 
 @include mat-core();
 @import 'theme.scss';
+@import 'sizes.scss';
 
 .app-theme {
   @include angular-material-theme($app-theme);
@@ -49,6 +50,18 @@ app-root {
 
 .mat-toolbar-row {
   height: 56px !important;
+}
+
+mat-dialog-container {
+  @media #{$mat-small} {
+    width: 100%;
+  }
+  @media #{$mat-medium} {
+    width: 500px !important;
+  }
+  @media #{$mat-large} {
+    width: 750px !important;
+  }
 }
 
 mat-icon {
