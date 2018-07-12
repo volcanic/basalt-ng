@@ -15,7 +15,15 @@
       </button>
     </div>
     <app-task-list></app-task-list>
+
     <mat-divider></mat-divider>
+
+    <div>
+      <button mat-button class="add-project" (click)="onMenuItemClicked('add-project')">
+        <mat-icon class="add-project-icon" svgIcon="add"></mat-icon>
+        <span>Add new project</span>
+      </button>
+    </div>
     <app-project-list></app-project-list>
   </mat-sidenav>
 

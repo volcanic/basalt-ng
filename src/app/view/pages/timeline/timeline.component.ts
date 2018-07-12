@@ -21,6 +21,7 @@ import {ProjectService} from '../../../services/entities/project.service';
 import {TaskService} from '../../../services/entities/task.service';
 import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
 import {Task} from '../../../model/entities/task.model';
+import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
 
 @Component({
   selector: 'app-tasklets',
@@ -177,12 +178,28 @@ export class TimelineComponent implements OnInit, OnDestroy {
           data: {
             mode: DIALOG_MODE.ADD,
             dialogTitle: 'Add task',
-            task: JSON.stringify(new Task(''))
+            task: new Task('')
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             this.taskService.createTask(result as Task);
+          }
+        });
+        break;
+      }
+      case 'add-project': {
+        const dialogRef = this.dialog.open(ProjectDialogComponent, {
+          disableClose: false,
+          data: {
+            mode: DIALOG_MODE.ADD,
+            dialogTitle: 'Add project',
+            project: new Project('', true)
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            this.projectService.createProject(result as Project);
           }
         });
         break;

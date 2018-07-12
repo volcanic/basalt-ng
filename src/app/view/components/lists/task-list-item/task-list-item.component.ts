@@ -60,7 +60,7 @@ export class TaskListItemComponent implements OnInit {
       data: {
         mode: DIALOG_MODE.UPDATE,
         dialogTitle: 'Update task',
-        task: JSON.stringify(this.task)
+        task: this.task
       }
     });
     dialogRef.afterClosed().subscribe(result => {

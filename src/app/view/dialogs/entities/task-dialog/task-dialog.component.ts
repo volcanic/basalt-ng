@@ -60,7 +60,7 @@ export class TaskDialogComponent implements OnInit {
 
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
-    this.task = JSON.parse(this.data.task);
+    this.task = JSON.parse(JSON.stringify(this.data.task));
 
     this.inputDisabled = this.task.completionDate != null;
 
