@@ -1,0 +1,26 @@
+<div (keydown)="onKeyDown($event)">
+  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+  <mat-dialog-content>
+    <form #formCtrl="ngForm">
+      <div>
+        <mat-form-field class="wide-box">
+          <input matInput required name="project" type="text" placeholder="Project" ngControl="controlProject"
+                 [disabled]="inputDisabled"
+                 [(ngModel)]="project.name">
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button [mat-dialog-close]=null>
+      Cancel
+    </button>
+    <div class="flexbox"></div>
+    <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addProject()" [disabled]="!formCtrl.form.valid">
+      Add project
+    </button>
+    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updateProject()" [disabled]="!formCtrl.form.valid">
+      Update project
+    </button>
+  </mat-dialog-actions>
+</div>

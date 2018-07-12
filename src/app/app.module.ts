@@ -81,6 +81,7 @@ import {DailyScrumFragmentComponent} from './view/fragments/daily-scrum-fragment
 import {DateTimePickerFragmentComponent} from './view/fragments/date-time-picker-fragment/date-time-picker-fragment.component';
 import {ProjectListComponent} from './view/components/lists/project-list/project-list.component';
 import {ProjectListItemComponent} from './view/components/lists/project-list-item/project-list-item.component';
+import {ProjectDialogComponent} from './view/dialogs/entities/project-dialog/project-dialog.component';
 
 @NgModule({
   declarations: [
@@ -128,6 +129,7 @@ import {ProjectListItemComponent} from './view/components/lists/project-list-ite
     DateTimePickerFragmentComponent,
     ProjectListComponent,
     ProjectListItemComponent,
+    ProjectDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -168,7 +170,8 @@ import {ProjectListItemComponent} from './view/components/lists/project-list-ite
     TaskletDialogComponent,
     TimePickerDialogComponent,
     UploadDialogComponent,
-    TaskDialogComponent
+    TaskDialogComponent,
+    ProjectDialogComponent
   ],
   providers: [
     MatIconRegistry,
