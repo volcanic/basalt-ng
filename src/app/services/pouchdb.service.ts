@@ -49,8 +49,16 @@ export class PouchDBService {
   public put(id: string, document: any) {
     document._id = id;
 
-    console.log(`DEBUG put ${JSON.stringify(document)}`);
+    // console.log(`DEBUG put ${JSON.stringify(document)}`);
     return this.database.put(document);
+  }
+
+  public bulk(documents: any[]) {
+    documents.forEach(d => {
+      d._id = d.id;
+    });
+
+    return this.database.bulkDocs(documents);
   }
 
   /**

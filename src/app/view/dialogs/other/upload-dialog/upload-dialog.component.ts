@@ -11,6 +11,8 @@ import {EntityType} from '../../../../model/entities/entity-type.enum';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {Task} from '../../../../model/entities/task.model';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
+import {EntityService} from '../../../../services/entities/entity.service';
+import {PouchDBService} from '../../../../services/pouchdb.service';
 
 @Component({
   selector: 'app-upload-dialog',
@@ -21,9 +23,11 @@ export class UploadDialogComponent implements OnInit {
   dialogTitle = '';
   dropContent: Subject<Project[]> = new Subject();
 
-  constructor(private projectService: ProjectService,
+  constructor(private entityService: EntityService,
+              private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
+              private pouchDBService: PouchDBService,
               private snackbarService: SnackbarService,
               public dialogRef: MatDialogRef<UploadDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -36,17 +40,9 @@ export class UploadDialogComponent implements OnInit {
       (result as Entity[]).forEach(entity => {
         entity['_rev'] = null;
         entity['_id'] = null;
-
-        const entityType = (entity as Entity).entityType;
-
-        if (entityType === EntityType.PROJECT) {
-          this.projectService.updateProject(entity as Project);
-        } else if (entityType === EntityType.TASK) {
-          this.taskService.updateTask(entity as Task);
-        } else if (entityType === EntityType.TASKLET) {
-          this.taskletService.updateTasklet(entity as Tasklet);
-        }
       });
+
+      this.pouchDBService.bulk(result as Entity[]);
     });
   }
 
