@@ -17,6 +17,10 @@ export class CloneService {
     return JSON.parse(JSON.stringify(original));
   }
 
+  cloneProjects(original: Project[]): Project[] {
+    return JSON.parse(JSON.stringify(original));
+  }
+
   cloneTask(original: Task): Task {
     return JSON.parse(JSON.stringify(original));
   }

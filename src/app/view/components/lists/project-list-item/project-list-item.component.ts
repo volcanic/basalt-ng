@@ -5,6 +5,7 @@ import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {MatDialog} from '@angular/material';
+import {FilterService} from '../../../../services/filter.service';
 
 @Component({
   selector: 'app-project-list-item',
@@ -17,6 +18,7 @@ export class ProjectListItemComponent implements OnInit {
   state = 'inactive';
 
   constructor(private projectService: ProjectService,
+              private filterService: FilterService,
               private snackbarService: SnackbarService,
               public dialog: MatDialog) {
   }
@@ -39,6 +41,8 @@ export class ProjectListItemComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
+        this.filterService.updateProjects([result as Project], true);
+
         this.projectService.updateProject(result as Project);
         this.snackbarService.showSnackbar('Updated project', '');
       }

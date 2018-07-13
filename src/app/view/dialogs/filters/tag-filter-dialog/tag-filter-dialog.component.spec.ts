@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TagDialogComponent } from './tag-filter-dialog.component';
+import { TagFilterDialogComponent } from './tag-filter-dialog.component';
 
-xdescribe('TagDialogComponent', () => {
-  let component: TagDialogComponent;
-  const fixture: ComponentFixture<TagDialogComponent>;
+xdescribe('TagFilterDialogComponent', () => {
+  let component: TagFilterDialogComponent;
+  const fixture: ComponentFixture<TagFilterDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TagDialogComponent ]
+      declarations: [ TagFilterDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TagDialogComponent);
+    fixture = TestBed.createComponent(TagFilterDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

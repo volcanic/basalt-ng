@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Project} from '../../../../model/entities/project.model';
+import {CloneService} from '../../../../services/util/clone.service';
 
 @Component({
   selector: 'app-project-filter-dialog',
@@ -12,15 +12,13 @@ export class ProjectsFilterDialogComponent implements OnInit {
   dialogTitle = '';
   projects: Project[] = [];
 
-  constructor(public dialogRef: MatDialogRef<ProjectsFilterDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any,
-              iconRegistry: MatIconRegistry,
-              sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon('close', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_black_24px.svg'));
+  constructor(private cloneService: CloneService,
+                public dialogRef: MatDialogRef<ProjectsFilterDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.dialogTitle = data.dialogTitle;
 
-    this.projects = this.data.projects.sort((p1, p2) => {
+    this.projects = this.cloneService.cloneProjects(this.data.projects).sort((p1, p2) => {
       return p1.name > p2.name ? 1 : -1;
     });
   }

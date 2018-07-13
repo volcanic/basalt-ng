@@ -34,7 +34,7 @@ import {TaskletComponent} from './view/components/tasklet/tasklet/tasklet.compon
 import {SnackbarService} from './services/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DateService} from './services/date.service';
-import {TagDialogComponent} from './view/dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
+import {TagFilterDialogComponent} from './view/dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
 import {MatchService} from './services/match.service';
 import {TimelineToolbarComponent} from './view/toolbars/timeline-toolbar/timeline-toolbar.component';
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
@@ -94,7 +94,7 @@ import { InformationDialogComponent } from './view/dialogs/other/information-dia
     NewFeaturesDialogComponent,
     ProjectsFilterDialogComponent,
     SplashScreenComponent,
-    TagDialogComponent,
+    TagFilterDialogComponent,
     TaskletComponent,
     TaskletDialogComponent,
     TimelineComponent,
@@ -168,7 +168,7 @@ import { InformationDialogComponent } from './view/dialogs/other/information-dia
     ConfirmationDialogComponent,
     NewFeaturesDialogComponent,
     ProjectsFilterDialogComponent,
-    TagDialogComponent,
+    TagFilterDialogComponent,
     TaskletDialogComponent,
     TimePickerDialogComponent,
     UploadDialogComponent,

@@ -18,6 +18,7 @@ import {ProjectService} from '../../../../services/entities/project.service';
 import {ColorService} from '../../../../services/color.service';
 import {Description} from '../../../../model/description.model';
 import {CloneService} from '../../../../services/util/clone.service';
+import {FilterService} from '../../../../services/filter.service';
 
 @Component({
   selector: 'app-tasklet',
@@ -43,6 +44,7 @@ export class TaskletComponent implements OnInit {
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
               private taskletService: TaskletService,
+              private filterService: FilterService,
               private colorService: ColorService,
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
@@ -212,24 +214,16 @@ export class TaskletComponent implements OnInit {
         mode: DIALOG_MODE.UPDATE,
         dialogTitle: 'Update tasklet',
         tasklet: this.tasklet,
-        tags: this.tags.map(tag => {
-          if (this.tasklet.tags != null) {
-            this.tasklet.tags.forEach(t => {
-              if (tag.name === t.name) {
-                return (new Tag(tag.name, true));
-              }
-            });
-
-            return (new Tag(tag.name, false));
-          }
-        }),
+        tags: this.taskletService.tags,
         projects: this.projects
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        this.taskletService.updateTasklet(result as Tasklet);
+    dialogRef.afterClosed().subscribe(tasklet => {
+      if (tasklet != null) {
+        this.filterService.updateTags(Array.from(tasklet.tags), true);
+
+        this.taskletService.updateTasklet(tasklet as Tasklet);
         this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
