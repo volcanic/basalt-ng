@@ -1,9 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs/Observable';
 import {Task} from '../../../model/entities/task.model';
 import {map, startWith} from 'rxjs/internal/operators';
-import {TaskService} from '../../../services/entities/task.service';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 
 @Component({

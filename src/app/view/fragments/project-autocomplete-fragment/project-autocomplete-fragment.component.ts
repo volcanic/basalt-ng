@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs/Observable';
 import {Project} from '../../../model/entities/project.model';
 import {map, startWith} from 'rxjs/internal/operators';
 import {ProjectService} from '../../../services/entities/project.service';
