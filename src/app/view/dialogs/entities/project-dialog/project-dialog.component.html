@@ -12,10 +12,13 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
+    <button mat-button color="warn" *ngIf="mode == DIALOG_MODE.UPDATE" (click)="deleteProject()">
+      Delete project
+    </button>
+    <div class="flexbox"></div>
     <button mat-button [mat-dialog-close]=null>
       Cancel
     </button>
-    <div class="flexbox"></div>
     <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addProject()" [disabled]="!formCtrl.form.valid">
       Add project
     </button>

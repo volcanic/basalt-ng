@@ -1,8 +1,14 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Project} from '../../../../model/entities/project.model';
+import {Task} from '../../../../model/entities/task.model';
 import {DateService} from '../../../../services/date.service';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
+import {TaskService} from '../../../../services/entities/task.service';
+import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
+import {SnackbarService} from '../../../../services/snackbar.service';
+import {ProjectService} from '../../../../services/entities/project.service';
+import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
 
 @Component({
   selector: 'app-project-dialog',
@@ -19,7 +25,10 @@ export class ProjectDialogComponent implements OnInit {
 
   inputDisabled = false;
 
-  constructor(public dateService: DateService,
+  constructor(private projectService: ProjectService,
+              private taskService: TaskService,
+              private dateService: DateService,
+              private snackbarService: SnackbarService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<ProjectDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -41,6 +50,42 @@ export class ProjectDialogComponent implements OnInit {
 
   updateProject() {
     this.dialogRef.close(this.project);
+  }
+
+  deleteProject() {
+
+    const references = Array.from(this.taskService.tasks.values()).filter((task: Task) => {
+      return task.projectId === this.project.id;
+    }).length;
+
+    if (references > 0) {
+      this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+        disableClose: false,
+        data: {
+          title: 'Cannot delete project',
+          text: `There are still ${references} tasks associated with this project.`,
+          action: 'Okay',
+          value: this.project
+        }
+      });
+    } else {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+        disableClose: false,
+        data: {
+          title: 'Delete project',
+          text: 'Do you want to delete this project?',
+          action: 'Delete',
+          value: this.project
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result != null) {
+          this.projectService.deleteProject(result as Project);
+          this.snackbarService.showSnackbar('Deleted project', '');
+          this.dialogRef.close(null);
+        }
+      });
+    }
   }
 
   private onKeyDown(event: any) {
