@@ -12,8 +12,8 @@ import {debounceTime} from 'rxjs/internal/operators';
 })
 export class TimelineToolbarComponent implements OnInit {
   @Input() title;
-  @Output() onSearchItemChangedEmitter = new EventEmitter<string>();
-  @Output() onMenuItemClickedEmitter = new EventEmitter<string>();
+  @Output() searchItemChangedEmitter = new EventEmitter<string>();
+  @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
   searchOptions = [];
   filteredSearchOptions: Observable<string[]>;
@@ -36,11 +36,11 @@ export class TimelineToolbarComponent implements OnInit {
 
     this.debouncer.pipe(
       debounceTime(300)
-    ).subscribe((value) => this.onSearchItemChangedEmitter.emit(value.toString()));
+    ).subscribe((value) => this.searchItemChangedEmitter.emit(value.toString()));
   }
 
   onClickMenuItem(menuItem: string): void {
-    this.onMenuItemClickedEmitter.emit(menuItem);
+    this.menuItemClickedEmitter.emit(menuItem);
   }
 
   onClickInput() {

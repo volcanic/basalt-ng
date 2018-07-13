@@ -13,7 +13,7 @@ import {map, startWith} from 'rxjs/internal/operators';
 export class PersonChipsFragmentComponent implements OnInit {
 
   @Input() persons: Person[] = [];
-  @Output() onPersonChangedEmitter = new EventEmitter<Person[]>();
+  @Output() personChangedEmitter = new EventEmitter<Person[]>();
 
   value = '';
 
@@ -67,6 +67,6 @@ export class PersonChipsFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.onPersonChangedEmitter.emit(this.persons);
+    this.personChangedEmitter.emit(this.persons);
   }
 }

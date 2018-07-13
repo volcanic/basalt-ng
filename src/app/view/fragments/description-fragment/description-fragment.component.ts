@@ -10,7 +10,7 @@ export class DescriptionFragmentComponent implements OnInit {
 
   @Input() description: Description = new Description();
   @Input() disabled = false;
-  @Output() onDescriptionChangedEmitter = new EventEmitter<Description>();
+  @Output() descriptionChangedEmitter = new EventEmitter<Description>();
 
   constructor() {
   }
@@ -23,6 +23,6 @@ export class DescriptionFragmentComponent implements OnInit {
   }
 
   onDescriptionChanged(value: string) {
-    this.onDescriptionChangedEmitter.next(this.description);
+    this.descriptionChangedEmitter.emit(this.description);
   }
 }

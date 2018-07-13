@@ -5,7 +5,7 @@
       <app-header-fragment [tasklet]="tasklet">
       </app-header-fragment>
       <app-task-autocomplete-fragment
-        [task]="task" (onTaskChangedEmitter)="onTaskChanged($event)" *ngIf="tasklet.type == 'Action'
+        [task]="task" (taskChangedEmitter)="onTaskChanged($event)" *ngIf="tasklet.type == 'Action'
           || tasklet.type == 'Meeting'
           || tasklet.type == 'Call'
           || tasklet.type == 'Mail'
@@ -24,7 +24,7 @@
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea'"></app-previous-description-fragment>
       <app-description-fragment [description]="tasklet.description"
-                                (onDescriptionChangedEmitter)="onDescriptionChanged($event)"
+                                (descriptionChangedEmitter)="onDescriptionChanged($event)"
                                 *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Meeting'
@@ -37,13 +37,13 @@
       </app-daily-scrum-fragment>
       <app-weekly-digest-fragment [tasklet]="tasklet" *ngIf="tasklet.type == 'Weekly Digest'">
       </app-weekly-digest-fragment>
-      <app-person-chips-fragment [persons]="tasklet.persons" (onPersonChangedEmitter)="onPersonChanged($event)"
+      <app-person-chips-fragment [persons]="tasklet.persons" (personChangedEmitter)="onPersonChanged($event)"
                                  *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'">
       </app-person-chips-fragment>
-      <app-tag-chips-fragment [tags]="tasklet.tags" (onTagChangedEmitter)="onTagChanged($event)">
+      <app-tag-chips-fragment [tags]="tasklet.tags" (tagChangedEmitter)="onTagChanged($event)">
       </app-tag-chips-fragment>
     </form>
   </mat-dialog-content>

@@ -11,7 +11,7 @@ import {Project} from '../../../../model/entities/project.model';
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
 
-  @Output() onMenuItemClickedEmitter = new EventEmitter<string>();
+  @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
   projects = [];
 
@@ -42,6 +42,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
    * @param menuItem
    */
   onMenuItemClicked(menuItem: string) {
-    this.onMenuItemClickedEmitter.emit(menuItem);
+    this.menuItemClickedEmitter.emit(menuItem);
   }
 }

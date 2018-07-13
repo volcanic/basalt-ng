@@ -10,7 +10,7 @@ export class DateTimePickerFragmentComponent implements OnInit {
 
   @Input() date: Date;
   @Input() disabled = false;
-  @Output() onDateChangedEmitter = new EventEmitter<Date>();
+  @Output() dateChangedEmitter = new EventEmitter<Date>();
 
   hour = 0;
   minute = 0;
@@ -73,6 +73,6 @@ export class DateTimePickerFragmentComponent implements OnInit {
   }
 
   private notify() {
-    this.onDateChangedEmitter.emit(this.date);
+    this.dateChangedEmitter.emit(this.date);
   }
 }

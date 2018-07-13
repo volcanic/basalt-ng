@@ -14,7 +14,7 @@ export class TagChipsFragmentComponent implements OnInit {
 
   @Input() tags: Tag[] = [];
   @Input() disabled = false;
-  @Output() onTagChangedEmitter = new EventEmitter<Tag[]>();
+  @Output() tagChangedEmitter = new EventEmitter<Tag[]>();
 
   value = '';
 
@@ -81,6 +81,6 @@ export class TagChipsFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.onTagChangedEmitter.emit(this.tags);
+    this.tagChangedEmitter.emit(this.tags);
   }
 }

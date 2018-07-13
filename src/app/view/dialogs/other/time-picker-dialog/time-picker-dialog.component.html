@@ -3,7 +3,7 @@
   <app-date-time-picker-fragment
     [date]="tasklet.creationDate"
     [disabled]="inputDisabled"
-    (onDateChangedEmitter)="onDateChanged($event)">
+    (dateChangedEmitter)="onDateChanged($event)">
   </app-date-time-picker-fragment>
 </mat-dialog-content>
 <mat-dialog-actions>

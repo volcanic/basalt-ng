@@ -15,7 +15,7 @@ import {TaskletService} from '../../../services/entities/tasklet.service';
 export class DailyScrumActivityFragmenComponent implements OnInit {
   @Input() person: Person;
   @Input() dailyScrumActivity: DailyScrumActivity;
-  @Output() onActivityEmitter = new EventEmitter<string>();
+  @Output() activityEditedEmitter = new EventEmitter<string>();
 
   dailyScrumActivityOptions = [];
   filteredDailyScrumActivityOptions: Observable<string[]>;
@@ -42,6 +42,6 @@ export class DailyScrumActivityFragmenComponent implements OnInit {
   }
 
   onTopicEdited() {
-    this.onActivityEmitter.next('');
+    this.activityEditedEmitter.emit('');
   }
 }

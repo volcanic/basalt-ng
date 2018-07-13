@@ -1,17 +1,17 @@
 <app-timeline-toolbar
   class="fixed"
   [title]="title"
-  (onSearchItemChangedEmitter)="onSearchItemChanged($event)"
-  (onMenuItemClickedEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
+  (searchItemChangedEmitter)="onSearchItemChanged($event)"
+  (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">
   <mat-sidenav #sidenavStart mode="side" position="start" opened="true" class="sidenav sidenav-start">
   </mat-sidenav>
 
   <mat-sidenav #sidenavEnd mode="side" position="end" opened="true" class="sidenav sidenav-end">
-    <app-task-list (onMenuItemClickedEmitter)="onMenuItemClicked($event)"></app-task-list>
+    <app-task-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-task-list>
     <mat-divider></mat-divider>
-    <app-project-list (onMenuItemClickedEmitter)="onMenuItemClicked($event)"></app-project-list>
+    <app-project-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-project-list>
   </mat-sidenav>
 
   <div class="content">

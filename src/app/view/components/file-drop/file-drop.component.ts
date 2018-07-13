@@ -29,7 +29,7 @@ export class FileDropComponent implements OnInit, OnDestroy {
   private uploadedFilesObservable: Observable<{ result: string, payload: any }>;
 
   @Output()
-  public uploadedFiles: EventEmitter<DropResult> = new EventEmitter();
+  public uploadedFilesEmitter: EventEmitter<DropResult> = new EventEmitter();
 
   static parseBasaltFile(value: string): Entity[] {
     return JSON.parse(value);
@@ -57,7 +57,7 @@ export class FileDropComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.uploadedFilesObservable.subscribe(this.uploadedFiles);
+    this.subscription = this.uploadedFilesObservable.subscribe(this.uploadedFilesEmitter);
   }
 
   ngOnDestroy() {

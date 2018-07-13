@@ -23,7 +23,7 @@
           <app-date-time-picker-fragment
             [date]="task.completionDate"
             [disabled]="inputDisabled"
-            (onDateChangedEmitter)="onCompletionDateChanged($event)">
+            (dateChangedEmitter)="onCompletionDateChanged($event)">
           </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
@@ -54,7 +54,7 @@
           <app-date-time-picker-fragment
             [date]="task.dueDate"
             [disabled]="inputDisabled"
-            (onDateChangedEmitter)="onDueDateChanged($event)">
+            (dateChangedEmitter)="onDueDateChanged($event)">
           </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
@@ -93,7 +93,7 @@
             <app-project-autocomplete-fragment
               [project]="project"
               [disabled]="inputDisabled"
-              (onProjectChangedEmitter)="onProjectChanged($event)"></app-project-autocomplete-fragment>
+              (projectChangedEmitter)="onProjectChanged($event)"></app-project-autocomplete-fragment>
           </div>
         </mat-expansion-panel>
 
@@ -127,7 +127,7 @@
             <mat-icon svgIcon="label_outline"></mat-icon>
           </mat-expansion-panel-header>
           <app-tag-chips-fragment [tags]="task.tags" [disabled]="inputDisabled"
-                                  (onTagChangedEmitter)="onTagChanged($event)">
+                                  (tagChangedEmitter)="onTagChanged($event)">
           </app-tag-chips-fragment>
         </mat-expansion-panel>
 

@@ -14,7 +14,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
 
   @Input() project: Project;
   @Input() disabled: false;
-  @Output() onProjectChangedEmitter = new EventEmitter<Project>();
+  @Output() projectChangedEmitter = new EventEmitter<Project>();
 
   value = '';
 
@@ -63,7 +63,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.onProjectChangedEmitter.emit(this.project);
+    this.projectChangedEmitter.emit(this.project);
   }
 
 }

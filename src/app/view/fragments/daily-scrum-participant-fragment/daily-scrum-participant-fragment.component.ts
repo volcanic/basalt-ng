@@ -11,7 +11,7 @@ import {Person} from '../../../model/person.model';
 })
 export class DailyScrumParticipantFragmentComponent implements OnInit {
   @Input() dailyScrumParticipant: DailyScrumParticipant;
-  @Output() onPersonSelectedEmitter = new EventEmitter<string>();
+  @Output() personSelectedEmitter = new EventEmitter<string>();
 
   constructor(private taskletService: TaskletService) {
   }
@@ -22,7 +22,7 @@ export class DailyScrumParticipantFragmentComponent implements OnInit {
 
   onPersonChanged(person: Person) {
     this.dailyScrumParticipant.person = person;
-    this.onPersonSelectedEmitter.next('');
+    this.personSelectedEmitter.emit('');
   }
 
   onActivityEdited() {

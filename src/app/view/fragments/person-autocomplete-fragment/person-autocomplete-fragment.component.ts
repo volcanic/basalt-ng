@@ -13,7 +13,7 @@ import {TaskletService} from '../../../services/entities/tasklet.service';
 export class PersonAutocompleteFragmentComponent implements OnInit {
 
   @Input() person: Person;
-  @Output() onPersonChangedEmitter = new EventEmitter<Person>();
+  @Output() personChangedEmitter = new EventEmitter<Person>();
 
   value = '';
 
@@ -58,7 +58,7 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.onPersonChangedEmitter.emit(this.person);
+    this.personChangedEmitter.emit(this.person);
   }
 
 }

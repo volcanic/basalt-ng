@@ -12,7 +12,7 @@ import {Task} from '../../../../model/entities/task.model';
 })
 export class TaskListComponent implements OnInit, OnDestroy {
 
-  @Output() onMenuItemClickedEmitter = new EventEmitter<string>();
+  @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
   tasksOverdue = [];
   tasksNext = [];
@@ -77,6 +77,6 @@ export class TaskListComponent implements OnInit, OnDestroy {
    * @param menuItem
    */
   onMenuItemClicked(menuItem: string) {
-    this.onMenuItemClickedEmitter.emit(menuItem);
+    this.menuItemClickedEmitter.emit(menuItem);
   }
 }

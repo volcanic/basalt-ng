@@ -14,7 +14,7 @@ import {TaskletService} from '../../../services/entities/tasklet.service';
 export class TaskAutocompleteFragmentComponent implements OnInit {
 
   @Input() task: Task;
-  @Output() onTaskChangedEmitter = new EventEmitter<Task>();
+  @Output() taskChangedEmitter = new EventEmitter<Task>();
 
   value = '';
 
@@ -59,7 +59,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.onTaskChangedEmitter.emit(this.task);
+    this.taskChangedEmitter.emit(this.task);
   }
 
 }
