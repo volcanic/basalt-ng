@@ -118,7 +118,7 @@ export class TaskletService {
         if (t.persons != null) {
           t.persons.forEach(person => {
             this.searchItems.push(person.name);
-          })
+          });
         }
 
         // Add tasklet name to search items
@@ -208,7 +208,7 @@ export class TaskletService {
             const person = new Person(p.person.name);
             this.persons.set(person.name, person);
           }
-        })
+        });
       }
     });
   }

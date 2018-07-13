@@ -49,7 +49,7 @@ export class PersonChipsFragmentComponent implements OnInit {
     const KEY_CODE_ENTER = 13;
     const KEY_CODE_COMMA = 188;
 
-    if (this.value !== '' && this.value !== ',' && (event.keyCode == KEY_CODE_ENTER || event.keyCode == KEY_CODE_COMMA)) {
+    if (this.value !== '' && this.value !== ',' && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
       this.persons.push(new Person(this.value.replace(/,/, '')));
       this.value = '';
       this.notify();

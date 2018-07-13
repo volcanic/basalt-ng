@@ -4,7 +4,7 @@ import PouchDB from 'pouchdb';
 @Injectable()
 export class PouchDBSettingsService {
 
-  private isInstantiated: boolean;
+  private readonly isInstantiated: boolean;
   private database: any;
   private listener: EventEmitter<any> = new EventEmitter();
 

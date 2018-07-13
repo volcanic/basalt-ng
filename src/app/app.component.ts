@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
     const NAVIGATION = 'navigation';
     const SOCIAL = 'social';
 
-    let icons: Icon[] = [];
+    const icons: Icon[] = [];
     icons.push(new Icon(ACTION, 'agenda', 'ic_view_agenda_24px.svg'));
     icons.push(new Icon(ACTION, 'bug_report', 'ic_bug_report_24px.svg'));
     icons.push(new Icon(ACTION, 'check_circle', 'ic_check_circle_24px.svg'));
@@ -130,11 +130,13 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(SOCIAL, 'people', 'ic_people_24px.svg'));
 
     icons.forEach(icon => {
-      this.iconRegistry.addSvgIcon(icon.name, this.sanitizer.bypassSecurityTrustResourceUrl(ICON_ROOT_DIR + '/' + icon.topic + '/svg/' + VARIANT + '/' + icon.file));
+      this.iconRegistry.addSvgIcon(icon.name,
+        this.sanitizer.bypassSecurityTrustResourceUrl(ICON_ROOT_DIR + '/' + icon.topic + '/svg/' + VARIANT + '/' + icon.file));
     });
 
     this.iconRegistry.addSvgIcon('blank', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'));
-    this.iconRegistry.addSvgIcon('scrum', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
+    this.iconRegistry.addSvgIcon('scrum',
+      this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
     this.iconRegistry.addSvgIcon('outlined_flag', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
   }
 

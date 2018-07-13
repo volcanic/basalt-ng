@@ -20,7 +20,7 @@ export class HeaderFragmentComponent implements OnInit {
   constructor(private entityService: EntityService,
               public dialog: MatDialog) {
 
-    this.project = this.entityService.getProjectByTasklet(this.tasklet)
+    this.project = this.entityService.getProjectByTasklet(this.tasklet);
   }
 
   ngOnInit() {

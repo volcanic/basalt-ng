@@ -53,7 +53,7 @@ export class TagChipsFragmentComponent implements OnInit {
       const KEY_CODE_ENTER = 13;
       const KEY_CODE_COMMA = 188;
 
-      if (this.value !== '' && this.value !== ',' && (event.keyCode == KEY_CODE_ENTER || event.keyCode == KEY_CODE_COMMA)) {
+      if (this.value !== '' && this.value !== ',' && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
         this.tags.push(new Tag(this.value.replace(/,/, ''), true));
         this.value = '';
         this.notify();

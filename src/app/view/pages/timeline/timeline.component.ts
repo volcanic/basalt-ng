@@ -67,8 +67,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Add empty elements
-    let tag = new Tag(PlaceholderValues.EMPTY_TAG, true);
-    let project = new Project(PlaceholderValues.EMPTY_PROJECT, true);
+    const tag = new Tag(PlaceholderValues.EMPTY_TAG, true);
+    const project = new Project(PlaceholderValues.EMPTY_PROJECT, true);
     project.id = PlaceholderValues.EMPTY_PROJECT_ID;
     this.tags.set(tag.name, tag);
     this.projects.set(project.id, project);
@@ -82,8 +82,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
         // Get initial list of tags
         if (this.tags.size < 2) { // There's only an empty tag existent
           this.taskletService.updateTags();
-          this.taskletService.tags.forEach((tag: Tag, key: string) => {
-            const filterTag = JSON.parse(JSON.stringify(tag));
+          this.taskletService.tags.forEach((t: Tag) => {
+            const filterTag = JSON.parse(JSON.stringify(t));
             filterTag.checked = true;
             this.tags.set(filterTag.name, filterTag);
           });
@@ -91,8 +91,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
         // Get initial list of projects
         if (this.projects.size < 2) { // There's only an empty tag existent
-          this.projectService.projects.forEach((project: Project, key: string) => {
-            const filterProject = JSON.parse(JSON.stringify(project));
+          this.projectService.projects.forEach((p: Project) => {
+            const filterProject = JSON.parse(JSON.stringify(p));
             filterProject.checked = true;
             this.projects.set(filterProject.id, filterProject);
           });
@@ -121,9 +121,9 @@ export class TimelineComponent implements OnInit, OnDestroy {
       takeUntil(this.projectUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        (value as Project[]).forEach(project => {
-          if (!this.projects.has(project.id)) {
-            this.projects.set(project.id, project);
+        (value as Project[]).forEach(p => {
+          if (!this.projects.has(p.id)) {
+            this.projects.set(p.id, p);
           }
         });
       }

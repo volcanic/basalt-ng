@@ -3,7 +3,7 @@ import {QuarterHour} from '../../../../model/quarterhour.model';
 import {DigestService} from '../../../../services/digest.service';
 import {DateService} from '../../../../services/date.service';
 import {takeUntil} from 'rxjs/internal/operators';
-import {Subject} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 

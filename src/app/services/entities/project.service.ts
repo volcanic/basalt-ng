@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Project} from '../../model/entities/project.model';
-import {Subject} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
 import {EntityService} from './entity.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Entity} from '../../model/entities/entity.model';

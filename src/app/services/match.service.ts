@@ -58,7 +58,7 @@ export class MatchService {
     // Filter tasklets that match selected projects
     projects.forEach(p => {
       if (p.checked) {
-        let project = this.entityService.getProjectByTasklet(tasklet);
+        const project = this.entityService.getProjectByTasklet(tasklet);
 
         if ((project != null && project.id != null && p.id === project.id ) ||
           (project == null && p.id === PlaceholderValues.EMPTY_PROJECT_ID)) {

@@ -49,7 +49,8 @@ export class ProjectEffortTreeComponent implements OnInit {
     const data: any[] = [];
 
     const week = new EffortNode();
-    week.topic = `Week [ ${this.dateService.getDate(this.weeklyDigest.start).replace(/[0-9]{4}/, '').trim()} - ${this.dateService.getDate(this.weeklyDigest.end)} ]`;
+    week.topic = `Week [ ${this.dateService.getDate(this.weeklyDigest.start)
+      .replace(/[0-9]{4}/, '').trim()} - ${this.dateService.getDate(this.weeklyDigest.end)} ]`;
     week.effort = this.weeklyDigest.getProjectEffortSum();
     week.children = [];
 

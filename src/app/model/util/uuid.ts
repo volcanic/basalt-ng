@@ -1,5 +1,5 @@
 export class UUID {
-  private str: string;
+  private readonly str: string;
 
   constructor(str?: string) {
     this.str = str || this.getNewGUIDString();
