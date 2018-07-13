@@ -4,7 +4,7 @@ import { NewFeaturesDialogComponent } from './new-features-dialog.component';
 
 describe('NewFeaturesDialogComponent', () => {
   let component: NewFeaturesDialogComponent;
-  let fixture: ComponentFixture<NewFeaturesDialogComponent>;
+  const fixture: ComponentFixture<NewFeaturesDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

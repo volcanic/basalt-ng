@@ -4,7 +4,7 @@ import { DateTimePickerFragmentComponent } from './date-time-picker-fragment.com
 
 describe('DateTimePickerFragmentComponent', () => {
   let component: DateTimePickerFragmentComponent;
-  let fixture: ComponentFixture<DateTimePickerFragmentComponent>;
+  const fixture: ComponentFixture<DateTimePickerFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

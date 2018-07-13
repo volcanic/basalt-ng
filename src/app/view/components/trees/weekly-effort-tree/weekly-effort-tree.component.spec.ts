@@ -4,7 +4,7 @@ import { ProjectEffortTreeComponent } from './weekly-effort-tree.component';
 
 describe('ProjectEffortTreeComponent', () => {
   let component: ProjectEffortTreeComponent;
-  let fixture: ComponentFixture<ProjectEffortTreeComponent>;
+  const fixture: ComponentFixture<ProjectEffortTreeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

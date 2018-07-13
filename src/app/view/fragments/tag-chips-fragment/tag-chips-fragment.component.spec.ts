@@ -4,7 +4,7 @@ import { TagChipsFragmentComponent } from './tag-chips-fragment.component';
 
 describe('TagChipsFragmentComponent', () => {
   let component: TagChipsFragmentComponent;
-  let fixture: ComponentFixture<TagChipsFragmentComponent>;
+  const fixture: ComponentFixture<TagChipsFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -4,7 +4,7 @@ import { DescriptionFragmentComponent } from './description-fragment.component';
 
 describe('DescriptionFragmentComponent', () => {
   let component: DescriptionFragmentComponent;
-  let fixture: ComponentFixture<DescriptionFragmentComponent>;
+  const fixture: ComponentFixture<DescriptionFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

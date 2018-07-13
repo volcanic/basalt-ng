@@ -4,7 +4,7 @@ import {WeeklyDigestFragment} from './weekly-digest-fragment.component';
 
 describe('WeeklyDigestFragment', () => {
   let component: WeeklyDigestFragment;
-  let fixture: ComponentFixture<WeeklyDigestFragment>;
+  const fixture: ComponentFixture<WeeklyDigestFragment>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

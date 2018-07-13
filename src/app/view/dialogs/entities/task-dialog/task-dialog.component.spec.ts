@@ -4,7 +4,7 @@ import { TaskDialogComponent } from './task-dialog.component';
 
 describe('TaskDialogComponent', () => {
   let component: TaskDialogComponent;
-  let fixture: ComponentFixture<TaskDialogComponent>;
+  const fixture: ComponentFixture<TaskDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

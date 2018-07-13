@@ -4,7 +4,7 @@ import {TimelineToolbarComponent} from './tasklets-toolbar.component';
 
 describe('TimelineToolbarComponent', () => {
   let component: TimelineToolbarComponent;
-  let fixture: ComponentFixture<TimelineToolbarComponent>;
+  const fixture: ComponentFixture<TimelineToolbarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

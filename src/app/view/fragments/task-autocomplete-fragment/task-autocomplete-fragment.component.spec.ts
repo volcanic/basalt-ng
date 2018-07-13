@@ -4,7 +4,7 @@ import { TaskAutocompleteFragmentComponent } from './task-autocomplete-fragment.
 
 describe('TaskAutocompleteFragmentComponent', () => {
   let component: TaskAutocompleteFragmentComponent;
-  let fixture: ComponentFixture<TaskAutocompleteFragmentComponent>;
+  const fixture: ComponentFixture<TaskAutocompleteFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

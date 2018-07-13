@@ -4,7 +4,7 @@ import { AboutDialogComponent } from './about-dialog.component';
 
 describe('AboutDialogComponent', () => {
   let component: AboutDialogComponent;
-  let fixture: ComponentFixture<AboutDialogComponent>;
+  const fixture: ComponentFixture<AboutDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

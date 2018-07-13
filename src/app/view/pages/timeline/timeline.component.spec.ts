@@ -3,7 +3,7 @@ import {TimelineComponent} from './tasklets.component';
 
 describe('TimelineComponent', () => {
   let component: TimelineComponent;
-  let fixture: ComponentFixture<TimelineComponent>;
+  const fixture: ComponentFixture<TimelineComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

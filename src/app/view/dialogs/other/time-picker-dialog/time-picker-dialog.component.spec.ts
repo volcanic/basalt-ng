@@ -4,7 +4,7 @@ import { TimePickerDialogComponent } from './time-picker-dialog.component';
 
 describe('TimePickerDialogComponent', () => {
   let component: TimePickerDialogComponent;
-  let fixture: ComponentFixture<TimePickerDialogComponent>;
+  const fixture: ComponentFixture<TimePickerDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

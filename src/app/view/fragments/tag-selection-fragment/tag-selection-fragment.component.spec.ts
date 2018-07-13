@@ -4,7 +4,7 @@ import {SelectTagFragmentComponent} from './select-tag-fragment.component';
 
 describe('SelectTagFragmentComponent', () => {
   let component: SelectTagFragmentComponent;
-  let fixture: ComponentFixture<SelectTagFragmentComponent>;
+  const fixture: ComponentFixture<SelectTagFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

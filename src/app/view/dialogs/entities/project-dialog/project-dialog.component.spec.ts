@@ -4,7 +4,7 @@ import { ProjectDialogComponent } from './project-dialog.component';
 
 describe('ProjectDialogComponent', () => {
   let component: ProjectDialogComponent;
-  let fixture: ComponentFixture<ProjectDialogComponent>;
+  const fixture: ComponentFixture<ProjectDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

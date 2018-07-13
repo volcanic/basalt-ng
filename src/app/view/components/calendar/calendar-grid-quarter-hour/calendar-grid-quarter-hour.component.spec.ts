@@ -4,7 +4,7 @@ import { CalendarGridHourComponent } from './calendar-grid-quarter-hour.componen
 
 describe('CalendarGridHourComponent', () => {
   let component: CalendarGridHourComponent;
-  let fixture: ComponentFixture<CalendarGridHourComponent>;
+  const fixture: ComponentFixture<CalendarGridHourComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

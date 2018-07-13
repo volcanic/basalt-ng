@@ -4,7 +4,7 @@ import {PersonChipsFragmentComponent} from './person-chips-fragment.component';
 
 describe('PersonChipsFragmentComponent', () => {
   let component: PersonChipsFragmentComponent;
-  let fixture: ComponentFixture<PersonChipsFragmentComponent>;
+  const fixture: ComponentFixture<PersonChipsFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -4,7 +4,7 @@ import { CalendarItemComponent } from './calendar-item.component';
 
 describe('CalendarItemComponent', () => {
   let component: CalendarItemComponent;
-  let fixture: ComponentFixture<CalendarItemComponent>;
+  const fixture: ComponentFixture<CalendarItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

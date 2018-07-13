@@ -4,7 +4,7 @@ import { taskListItemComponent } from './todos-list-item.component';
 
 describe('taskListItemComponent', () => {
   let component: taskListItemComponent;
-  let fixture: ComponentFixture<taskListItemComponent>;
+  const fixture: ComponentFixture<taskListItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

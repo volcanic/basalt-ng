@@ -4,7 +4,7 @@ import { HeaderFragmentComponent } from './header-fragment.component';
 
 describe('HeaderFragmentComponent', () => {
   let component: HeaderFragmentComponent;
-  let fixture: ComponentFixture<HeaderFragmentComponent>;
+  const fixture: ComponentFixture<HeaderFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

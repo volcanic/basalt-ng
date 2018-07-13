@@ -4,7 +4,7 @@ import { TaskletComponent } from './tasklet.component';
 
 describe('TaskletWeeklyDigestComponent', () => {
   let component: TaskletComponent;
-  let fixture: ComponentFixture<TaskletComponent>;
+  const fixture: ComponentFixture<TaskletComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -4,7 +4,7 @@ import { TagDialogComponent } from './tag-filter-dialog.component';
 
 xdescribe('TagDialogComponent', () => {
   let component: TagDialogComponent;
-  let fixture: ComponentFixture<TagDialogComponent>;
+  const fixture: ComponentFixture<TagDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

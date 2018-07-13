@@ -4,7 +4,7 @@ import {TaskletDialogDailyScrumComponent} from './tasklet-dialog-daily-scrum.com
 
 describe('TaskletDialogDailyScrumComponent', () => {
   let component: TaskletDialogDailyScrumComponent;
-  let fixture: ComponentFixture<TaskletDialogDailyScrumComponent>;
+  const fixture: ComponentFixture<TaskletDialogDailyScrumComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -4,7 +4,7 @@ import { CalendarGridDayComponent } from './calendar-grid-day.component';
 
 describe('CalendarGridDayComponent', () => {
   let component: CalendarGridDayComponent;
-  let fixture: ComponentFixture<CalendarGridDayComponent>;
+  const fixture: ComponentFixture<CalendarGridDayComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
