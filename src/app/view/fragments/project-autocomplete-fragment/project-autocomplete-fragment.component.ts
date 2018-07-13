@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {Project} from '../../../model/entities/project.model';
 import {map, startWith} from 'rxjs/internal/operators';
 import {ProjectService} from '../../../services/entities/project.service';
+import {CloneService} from '../../../services/util/clone.service';
 
 @Component({
   selector: 'app-project-autocomplete-fragment',
@@ -22,7 +23,8 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private projectService: ProjectService) {
+  constructor(private projectService: ProjectService,
+              private cloneService: CloneService) {
   }
 
   ngOnInit() {
@@ -30,8 +32,8 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
       this.project = new Project('', true);
     }
 
-    // Cut ties with existing entity
-    this.project = JSON.parse(JSON.stringify(this.project));
+    // Deep copy
+    this.project = this.cloneService.cloneProject(this.project);
 
     this.options = Array.from(this.projectService.projects.values()).map(tag => {
       return tag.name;

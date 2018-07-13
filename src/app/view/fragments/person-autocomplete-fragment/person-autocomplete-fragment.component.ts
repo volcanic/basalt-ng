@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {Person} from '../../../model/person.model';
 import {map, startWith} from 'rxjs/internal/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
+import {CloneService} from '../../../services/util/clone.service';
 
 @Component({
   selector: 'app-person-autocomplete-fragment',
@@ -21,7 +22,8 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletService: TaskletService) {
+  constructor(private taskletService: TaskletService,
+              private cloneService: CloneService) {
   }
 
   ngOnInit() {
@@ -29,8 +31,8 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
       this.person = new Person('');
     }
 
-    // Cut ties with existing entity
-    this.person = JSON.parse(JSON.stringify(this.person));
+    // Deep copy
+    this.person = this.cloneService.clonePerson(this.person);
 
     this.options = Array.from(this.taskletService.persons.values()).map(tag => {
       return tag.name;

@@ -22,6 +22,7 @@ import {TaskService} from '../../../services/entities/task.service';
 import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
 import {Task} from '../../../model/entities/task.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
+import {CloneService} from '../../../services/util/clone.service';
 
 @Component({
   selector: 'app-tasklets',
@@ -52,6 +53,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
               private taskletService: TaskletService,
               private taskService: TaskService,
               private snackbarService: SnackbarService,
+              private cloneService: CloneService,
               private matchService: MatchService,
               public zone: NgZone,
               public dialog: MatDialog) {
@@ -83,7 +85,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
         if (this.tags.size < 2) { // There's only an empty tag existent
           this.taskletService.updateTags();
           this.taskletService.tags.forEach((t: Tag) => {
-            const filterTag = JSON.parse(JSON.stringify(t));
+            // Deep copy
+            const filterTag = this.cloneService.cloneTag(t);
             filterTag.checked = true;
             this.tags.set(filterTag.name, filterTag);
           });
@@ -92,7 +95,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
         // Get initial list of projects
         if (this.projects.size < 2) { // There's only an empty tag existent
           this.projectService.projects.forEach((p: Project) => {
-            const filterProject = JSON.parse(JSON.stringify(p));
+            // Deep copy
+            const filterProject = this.cloneService.cloneProject(p);
             filterProject.checked = true;
             this.projects.set(filterProject.id, filterProject);
           });
@@ -113,7 +117,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
         }).slice(0, this.DISPLAY_LIMIT);
       }
 
-      this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
+      this.zone.run(() => this.tasklets = this.cloneService.cloneTasklets(this.tasklets));
     });
 
     // Subscribe project changes
@@ -163,7 +167,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
           if (tasklet != null) {
             // Select all tags that are contained in tasklet
             (tasklet as Tasklet).tags.forEach(t => {
-              this.tags.set(t.name, t);
+              // Deep copy
+              const tag: Tag = this.cloneService.cloneTag(t);
+              tag.checked = true;
+              this.tags.set(tag.name, tag);
             });
 
             this.taskletService.createTasklet(tasklet as Tasklet);

@@ -13,6 +13,7 @@ import {InformationDialogComponent} from '../../other/information-dialog/informa
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
 import {SnackbarService} from '../../../../services/snackbar.service';
+import {CloneService} from '../../../../services/util/clone.service';
 
 @Component({
   selector: 'app-task-dialog',
@@ -58,6 +59,7 @@ export class TaskDialogComponent implements OnInit {
               private taskletService: TaskletService,
               private dateService: DateService,
               private snackbarService: SnackbarService,
+              private cloneService: CloneService,
               private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -69,7 +71,9 @@ export class TaskDialogComponent implements OnInit {
 
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
-    this.task = JSON.parse(JSON.stringify(this.data.task));
+
+    // Deep copy
+    this.task = this.cloneService.cloneTask(this.data.task);
 
     this.inputDisabled = this.task.completionDate != null;
 

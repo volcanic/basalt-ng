@@ -15,6 +15,7 @@ import {TaskService} from '../../../../services/entities/task.service';
 import {Task} from '../../../../model/entities/task.model';
 import {EntityService} from '../../../../services/entities/entity.service';
 import {Description} from '../../../../model/description.model';
+import {CloneService} from '../../../../services/util/clone.service';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -36,6 +37,7 @@ export class TaskletDialogComponent implements OnInit {
               private taskService: TaskService,
               private taskletService: TaskletService,
               private snackbarService: SnackbarService,
+              private cloneService: CloneService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -44,7 +46,9 @@ export class TaskletDialogComponent implements OnInit {
   ngOnInit() {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
-    this.tasklet = JSON.parse(JSON.stringify(this.data.tasklet));
+
+    // Deep copy
+    this.tasklet = this.cloneService.cloneTasklet(this.data.tasklet);
     this.previousDescription = this.data.previousDescription;
 
     this.task = this.entityService.getEntityById(this.tasklet.taskId) as Task;

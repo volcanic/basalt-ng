@@ -17,6 +17,7 @@ import {EntityService} from '../../../../services/entities/entity.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {ColorService} from '../../../../services/color.service';
 import {Description} from '../../../../model/description.model';
+import {CloneService} from '../../../../services/util/clone.service';
 
 @Component({
   selector: 'app-tasklet',
@@ -44,6 +45,7 @@ export class TaskletComponent implements OnInit {
               private taskletService: TaskletService,
               private colorService: ColorService,
               private snackbarService: SnackbarService,
+              private cloneService: CloneService,
               public dateService: DateService,
               public dialog: MatDialog) {
   }
@@ -234,8 +236,10 @@ export class TaskletComponent implements OnInit {
   }
 
   private continueTasklet() {
-    const continueTasklet = JSON.parse(JSON.stringify(this.tasklet));
-    continueTasklet._rev = null;
+    // Deep copy
+    const continueTasklet = this.cloneService.cloneTasklet(this.tasklet);
+
+    continueTasklet['_rev'] = null;
     continueTasklet.id = new UUID().toString();
     continueTasklet.description = new Description();
     continueTasklet.creationDate = new Date();
@@ -265,10 +269,12 @@ export class TaskletComponent implements OnInit {
   }
 
   private templateTasklet() {
-    const template = JSON.parse(JSON.stringify(this.tasklet));
-    template._rev = null;
+    // Deep copy
+    const template = this.cloneService.cloneTasklet(this.tasklet);
+
+    template['_rev'] = null;
     template.id = new UUID().toString();
-    template.description = '';
+    template.description = new Description();
     template.creationDate = new Date();
     template.participants.forEach(p => {
         p.activities = [];

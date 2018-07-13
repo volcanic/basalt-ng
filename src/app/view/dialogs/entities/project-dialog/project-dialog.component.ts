@@ -9,6 +9,7 @@ import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confi
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
+import {CloneService} from '../../../../services/util/clone.service';
 
 @Component({
   selector: 'app-project-dialog',
@@ -29,6 +30,7 @@ export class ProjectDialogComponent implements OnInit {
               private taskService: TaskService,
               private dateService: DateService,
               private snackbarService: SnackbarService,
+              private cloneService: CloneService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<ProjectDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -37,7 +39,9 @@ export class ProjectDialogComponent implements OnInit {
   ngOnInit() {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
-    this.project = JSON.parse(JSON.stringify(this.data.project));
+
+    // Deep copy
+    this.project = this.cloneService.cloneProject(this.data.project);
   }
 
   //

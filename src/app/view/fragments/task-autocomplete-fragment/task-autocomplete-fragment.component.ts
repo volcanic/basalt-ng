@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {Task} from '../../../model/entities/task.model';
 import {map, startWith} from 'rxjs/internal/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
+import {CloneService} from '../../../services/util/clone.service';
 
 @Component({
   selector: 'app-task-autocomplete-fragment',
@@ -21,7 +22,8 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletService: TaskletService) {
+  constructor(private taskletService: TaskletService,
+              private cloneService: CloneService) {
   }
 
   ngOnInit() {
@@ -30,7 +32,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
     }
 
     // Cut ties with existing entity
-    this.task = JSON.parse(JSON.stringify(this.task));
+    this.task = this.cloneService.cloneTask(this.task);
 
     this.options = Array.from(this.taskletService.tasks.values()).map(tag => {
       return tag.name;
