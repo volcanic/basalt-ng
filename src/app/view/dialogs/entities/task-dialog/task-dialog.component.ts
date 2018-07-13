@@ -1,12 +1,18 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
 import {Project} from '../../../../model/entities/project.model';
-import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {DateService} from '../../../../services/date.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {EntityService} from '../../../../services/entities/entity.service';
 import {Tag} from '../../../../model/tag.model';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
+import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
+import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
+import {TaskletService} from '../../../../services/entities/tasklet.service';
+import {TaskService} from '../../../../services/entities/task.service';
+import {SnackbarService} from '../../../../services/snackbar.service';
 
 @Component({
   selector: 'app-task-dialog',
@@ -48,7 +54,10 @@ export class TaskDialogComponent implements OnInit {
 
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
-              public dateService: DateService,
+              private taskService: TaskService,
+              private taskletService: TaskletService,
+              private dateService: DateService,
+              private snackbarService: SnackbarService,
               private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -117,6 +126,42 @@ export class TaskDialogComponent implements OnInit {
     this.evaluateProject();
     this.task.completionDate = null;
     this.dialogRef.close(this.task);
+  }
+
+  deleteTask() {
+
+    const references = Array.from(this.taskletService.tasklets.values()).filter((tasklet: Tasklet) => {
+      return tasklet.taskId === this.task.id;
+    }).length;
+
+    if (references > 0) {
+      this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+        disableClose: false,
+        data: {
+          title: 'Cannot delete task',
+          text: `There are still ${references} tasklets associated with this task.`,
+          action: 'Okay',
+          value: this.task
+        }
+      });
+    } else {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+        disableClose: false,
+        data: {
+          title: 'Delete task',
+          text: 'Do you want to delete this task?',
+          action: 'Delete',
+          value: this.task
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result != null) {
+          this.taskService.deleteTask(result as Task);
+          this.snackbarService.showSnackbar('Deleted task', '');
+          this.dialogRef.close(null);
+        }
+      });
+    }
   }
 
   //
