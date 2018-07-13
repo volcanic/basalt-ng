@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {TaskService} from '../../../../services/entities/task.service';
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/internal/operators';
@@ -11,6 +11,8 @@ import {Task} from '../../../../model/entities/task.model';
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit, OnDestroy {
+
+  @Output() onMenuItemClickedEmitter = new EventEmitter<string>();
 
   tasksOverdue = [];
   tasksNext = [];
@@ -68,5 +70,13 @@ export class TaskListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.tasksUnsubscribeSubject.next();
     this.tasksUnsubscribeSubject.complete();
+  }
+
+  /**
+   * Handles click on menu items
+   * @param menuItem
+   */
+  onMenuItemClicked(menuItem: string) {
+    this.onMenuItemClickedEmitter.emit(menuItem);
   }
 }

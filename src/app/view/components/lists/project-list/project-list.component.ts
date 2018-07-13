@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {takeUntil} from 'rxjs/internal/operators';
@@ -10,6 +10,8 @@ import {Project} from '../../../../model/entities/project.model';
   styleUrls: ['./project-list.component.scss']
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
+
+  @Output() onMenuItemClickedEmitter = new EventEmitter<string>();
 
   projects = [];
 
@@ -33,5 +35,13 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.projectsUnsubscribeSubject.next();
     this.projectsUnsubscribeSubject.complete();
+  }
+
+  /**
+   * Handles click on menu items
+   * @param menuItem
+   */
+  onMenuItemClicked(menuItem: string) {
+    this.onMenuItemClickedEmitter.emit(menuItem);
   }
 }
