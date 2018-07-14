@@ -6,9 +6,7 @@ import {map, startWith} from 'rxjs/internal/operators';
 import {ProjectService} from '../../../services/entities/project.service';
 import {CloneService} from '../../../services/util/clone.service';
 import {Subject} from 'rxjs/Subject';
-import {Task} from '../../../model/entities/task.model';
 import {debounceTime} from 'rxjs/operators';
-import {Tag} from '../../../model/tag.model';
 
 @Component({
   selector: 'app-project-autocomplete-fragment',
@@ -56,13 +54,13 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
     ).subscribe((value: Project) => this.projectChangedEmitter.emit(value));
   }
 
-  onKeyUp(event: any) {
+  onKeyUp() {
     if (!this.disabled) {
       this.notify();
     }
   }
 
-  onOptionSelected(event: any) {
+  onOptionSelected() {
     if (!this.disabled) {
       this.notify();
     }

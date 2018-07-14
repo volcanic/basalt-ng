@@ -5,9 +5,7 @@ import {FormControl} from '@angular/forms';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
-import {Task} from '../../../model/entities/task.model';
 import {debounceTime} from 'rxjs/operators';
-import {Tag} from '../../../model/tag.model';
 
 @Component({
   selector: 'app-person-chips-fragment',
@@ -67,11 +65,11 @@ export class PersonChipsFragmentComponent implements OnInit {
     }
   }
 
-  onKeyDown(event: any) {
+  onKeyDown() {
     this.value = this.value.replace(/,/, '');
   }
 
-  onOptionSelected(event: any) {
+  onOptionSelected() {
     if (!this.disabled) {
       this.persons.push(new Person(this.value.replace(/,/, '')));
       this.value = '';
