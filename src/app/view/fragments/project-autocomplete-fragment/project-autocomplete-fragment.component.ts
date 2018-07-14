@@ -5,6 +5,9 @@ import {Project} from '../../../model/entities/project.model';
 import {map, startWith} from 'rxjs/internal/operators';
 import {ProjectService} from '../../../services/entities/project.service';
 import {CloneService} from '../../../services/util/clone.service';
+import {Subject} from 'rxjs/Subject';
+import {Task} from '../../../model/entities/task.model';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-autocomplete-fragment',
@@ -16,6 +19,8 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   @Input() project: Project;
   @Input() disabled: false;
   @Output() projectChangedEmitter = new EventEmitter<Project>();
+
+  debouncer = new Subject();
 
   value = '';
 
@@ -44,6 +49,10 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
         startWith(''),
         map(value => this.filterSearchItems(value))
       );
+
+    this.debouncer.pipe(
+      debounceTime(500)
+    ).subscribe((value: Project) => this.projectChangedEmitter.emit(value));
   }
 
   onKeyUp(event: any) {
@@ -65,7 +74,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.projectChangedEmitter.emit(this.project);
+    this.debouncer.next(this.project);
   }
 
 }

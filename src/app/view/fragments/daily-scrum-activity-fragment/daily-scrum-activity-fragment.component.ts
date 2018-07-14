@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DailyScrumActivity} from '../../../model/daily-scrum-activity';
 import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {debounceTime, map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {Person} from '../../../model/person.model';
 import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../model/daily-scrum-activity-type.enum';
 import {TaskletService} from '../../../services/entities/tasklet.service';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'app-daily-scrum-activity-fragment',
@@ -16,6 +17,8 @@ export class DailyScrumActivityFragmenComponent implements OnInit {
   @Input() person: Person;
   @Input() dailyScrumActivity: DailyScrumActivity;
   @Output() activityEditedEmitter = new EventEmitter<string>();
+
+  debouncer = new Subject();
 
   dailyScrumActivityOptions = [];
   filteredDailyScrumActivityOptions: Observable<string[]>;
@@ -34,6 +37,10 @@ export class DailyScrumActivityFragmenComponent implements OnInit {
         startWith(''),
         map(value => this.filterDailyScrumActivities(value))
       );
+
+    this.debouncer.pipe(
+      debounceTime(500)
+    ).subscribe((value: string) => this.activityEditedEmitter.emit(value));
   }
 
   filterDailyScrumActivities(val: string): string[] {
@@ -42,6 +49,6 @@ export class DailyScrumActivityFragmenComponent implements OnInit {
   }
 
   onTopicEdited() {
-    this.activityEditedEmitter.emit('');
+    this.debouncer.next('');
   }
 }

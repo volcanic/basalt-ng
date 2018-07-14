@@ -8,12 +8,13 @@
   <div class="flexbox"></div>
   <div class="searchbox">
     <input class="search-input" matInput #search name="search" type="text" placeholder="Search"
+           [(ngModel)]="searchItem"
            [formControl]="formControl"
            [matAutocomplete]="auto"
-           (keyup)="onChangeSearchItem(search.value)"
-           (click)="onClickInput()">
+           (keyup)="onKeyUp($event)">
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredSearchOptions | async" [value]="option">
+      <mat-option *ngFor="let option of searchOptionsFiltered | async" [value]="option"
+                  (click)="onOptionSelected($event)">
         {{ option }}
       </mat-option>
     </mat-autocomplete>

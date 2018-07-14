@@ -4,6 +4,9 @@ import {Observable} from 'rxjs/Observable';
 import {FormControl} from '@angular/forms';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {map, startWith} from 'rxjs/internal/operators';
+import {Subject} from 'rxjs/Subject';
+import {Task} from '../../../model/entities/task.model';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-person-chips-fragment',
@@ -14,6 +17,8 @@ export class PersonChipsFragmentComponent implements OnInit {
 
   @Input() persons: Person[] = [];
   @Output() personChangedEmitter = new EventEmitter<Person[]>();
+
+  debouncer = new Subject();
 
   value = '';
 
@@ -35,6 +40,10 @@ export class PersonChipsFragmentComponent implements OnInit {
         startWith(''),
         map(value => this.filterSearchItems(value))
       );
+
+    this.debouncer.pipe(
+      debounceTime(500)
+    ).subscribe((value: Person[]) => this.personChangedEmitter.emit(value));
   }
 
   onDeletePerson(value: Person) {
@@ -67,6 +76,6 @@ export class PersonChipsFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.personChangedEmitter.emit(this.persons);
+    this.debouncer.next(this.persons);
   }
 }

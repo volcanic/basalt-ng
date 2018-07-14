@@ -18,10 +18,11 @@ import {TaskService} from './task.service';
 export class TaskletService {
   tasklets = new Map<string, Tasklet>();
   taskletsSubject = new Subject<Tasklet[]>();
+  searchOptionsSubject = new Subject<string[]>();
 
   private entitiesUnsubscribeSubject = new Subject();
 
-  searchItems = [];
+  searchOptions = [];
   tasks: Map<string, Task>;
   tags: Map<string, Tag>;
   persons: Map<string, Person>;
@@ -41,7 +42,7 @@ export class TaskletService {
         }
       );
 
-      this.updateSearchItems();
+      this.updateSearchOptions();
       this.updateTasks();
       this.updateTags();
       this.updatePersons();
@@ -81,6 +82,7 @@ export class TaskletService {
 
       return date2 - date1;
     }));
+    this.searchOptionsSubject.next(this.searchOptions);
   }
 
   //
@@ -88,10 +90,10 @@ export class TaskletService {
   //
 
   /**
-   * Updates search items
+   * Updates search options
    */
-  public updateSearchItems() {
-    this.searchItems = [];
+  public updateSearchOptions() {
+    this.searchOptions = [];
 
     Array.from(this.tasklets.values()).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
@@ -102,7 +104,7 @@ export class TaskletService {
         if (t.description.value != null) {
           t.description.value.split('\n').forEach(v => {
             if (v.trim() !== '') {
-              this.searchItems.push(v.trim().replace(/(^-)/g, ''));
+              this.searchOptions.push(v.trim().replace(/(^-)/g, ''));
             }
           });
         }
@@ -110,26 +112,26 @@ export class TaskletService {
         // Add tags to search items
         if (t.tags != null) {
           t.tags.forEach(tag => {
-            this.searchItems.push(tag.name);
+            this.searchOptions.push(tag.name);
           });
         }
 
-        // Add persons to search items
+        // Add persons to search options
         if (t.persons != null) {
           t.persons.forEach(person => {
-            this.searchItems.push(person.name);
+            this.searchOptions.push(person.name);
           });
         }
 
-        // Add tasklet name to search items
+        // Add tasklet name to search options
         const task: Task = this.entityService.getEntityById(t.taskId) as Task;
         if (task != null) {
-          this.searchItems.push(task.name.trim().replace(/(^-)/g, ''));
+          this.searchOptions.push(task.name.trim().replace(/(^-)/g, ''));
 
-          // Add project name to search items
+          // Add project name to search options
           const project: Project = this.entityService.getEntityById(task.projectId) as Project;
           if (project != null) {
-            this.searchItems.push(project.name.trim().replace(/(^-)/g, ''));
+            this.searchOptions.push(project.name.trim().replace(/(^-)/g, ''));
           }
         }
       }

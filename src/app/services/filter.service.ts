@@ -41,8 +41,6 @@ export class FilterService {
       const tag = new Tag(PlaceholderValues.EMPTY_TAG, true);
       this.tags.set(tag.name, tag);
 
-      console.log(`DEBUG init ${tags.length}`);
-
       // Add all the other tags
       this.updateTags(tags, true);
     }

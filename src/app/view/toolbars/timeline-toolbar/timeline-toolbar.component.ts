@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {Observable, Subject} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
-import {debounceTime} from 'rxjs/internal/operators';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'app-timeline-toolbar',
@@ -15,27 +15,36 @@ export class TimelineToolbarComponent implements OnInit {
   @Output() searchItemChangedEmitter = new EventEmitter<string>();
   @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
-  searchOptions = [];
-  filteredSearchOptions: Observable<string[]>;
-
+  private searchOptionsUnsubscribeSubject = new Subject();
   debouncer = new Subject();
 
+  searchItem = '';
+
+  searchOptions = [];
+  searchOptionsFiltered: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
   constructor(private taskletService: TaskletService) {
   }
 
   ngOnInit() {
-    this.searchOptions = this.taskletService.searchItems;
+    // Subscribe search option changes
+    this.taskletService.searchOptionsSubject.pipe(
+      takeUntil(this.searchOptionsUnsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        this.searchOptions = value as string[];
+      }
+    });
 
-    this.filteredSearchOptions = this.formControl.valueChanges
+    this.searchOptionsFiltered = this.formControl.valueChanges
       .pipe(
         startWith(''),
         map(value => this.filterSearchItems(value))
       );
 
     this.debouncer.pipe(
-      debounceTime(300)
+      debounceTime(500)
     ).subscribe((value) => this.searchItemChangedEmitter.emit(value.toString()));
   }
 
@@ -43,17 +52,21 @@ export class TimelineToolbarComponent implements OnInit {
     this.menuItemClickedEmitter.emit(menuItem);
   }
 
-  onClickInput() {
-    this.searchOptions = this.taskletService.searchItems.reverse();
+  onKeyUp(event: any) {
+    this.notifySearchItemChanged();
   }
 
-  onChangeSearchItem(searchItem: string): void {
-    this.debouncer.next(searchItem);
+  onOptionSelected(event: any) {
+    this.notifySearchItemChanged();
   }
 
   filterSearchItems(val: string): string[] {
     return this.searchOptions.filter(option =>
       option.toLowerCase().includes(val.toLowerCase())
     );
+  }
+
+  notifySearchItemChanged() {
+    this.debouncer.next(this.searchItem);
   }
 }

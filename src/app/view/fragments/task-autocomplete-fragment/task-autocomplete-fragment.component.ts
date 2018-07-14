@@ -5,6 +5,8 @@ import {Task} from '../../../model/entities/task.model';
 import {map, startWith} from 'rxjs/internal/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {CloneService} from '../../../services/util/clone.service';
+import {Subject} from 'rxjs/Subject';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-autocomplete-fragment',
@@ -15,6 +17,8 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
 
   @Input() task: Task;
   @Output() taskChangedEmitter = new EventEmitter<Task>();
+
+  debouncer = new Subject();
 
   value = '';
 
@@ -43,6 +47,10 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
         startWith(''),
         map(value => this.filterSearchItems(value))
       );
+
+    this.debouncer.pipe(
+      debounceTime(500)
+    ).subscribe((value: Task) => this.taskChangedEmitter.emit(value));
   }
 
   onKeyUp(event: any) {
@@ -60,7 +68,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.taskChangedEmitter.emit(this.task);
+    this.debouncer.next(this.task);
   }
 
 }

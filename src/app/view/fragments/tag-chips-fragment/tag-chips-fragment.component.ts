@@ -4,6 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import {FormControl} from '@angular/forms';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {map, startWith} from 'rxjs/internal/operators';
+import {Subject} from 'rxjs/Subject';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'app-tag-chips-fragment',
@@ -15,6 +17,8 @@ export class TagChipsFragmentComponent implements OnInit {
   @Input() tags: Tag[] = [];
   @Input() disabled = false;
   @Output() tagChangedEmitter = new EventEmitter<Tag[]>();
+
+  debouncer = new Subject();
 
   value = '';
 
@@ -36,6 +40,10 @@ export class TagChipsFragmentComponent implements OnInit {
         startWith(''),
         map(value => this.filterSearchItems(value))
       );
+
+    this.debouncer.pipe(
+      debounceTime(500)
+    ).subscribe((value: Tag[]) => this.tagChangedEmitter.emit(value));
   }
 
   onDeleteTag(value: Tag) {
@@ -61,17 +69,17 @@ export class TagChipsFragmentComponent implements OnInit {
     }
   }
 
+  onKeyDown(event: any) {
+    this.value = this.value.replace(/,/, '');
+
+  }
+
   onOptionSelected(event: any) {
     if (!this.disabled) {
       this.tags.push(new Tag(this.value.replace(/,/, ''), true));
       this.value = '';
       this.notify();
     }
-  }
-
-  onKeyDown(event: any) {
-    this.value = this.value.replace(/,/, '');
-
   }
 
   filterSearchItems(value: string): string[] {
@@ -81,6 +89,6 @@ export class TagChipsFragmentComponent implements OnInit {
   }
 
   notify() {
-    this.tagChangedEmitter.emit(this.tags);
+    this.debouncer.next(this.tags);
   }
 }
