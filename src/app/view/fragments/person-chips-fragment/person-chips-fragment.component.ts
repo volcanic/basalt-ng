@@ -7,6 +7,7 @@ import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {Task} from '../../../model/entities/task.model';
 import {debounceTime} from 'rxjs/operators';
+import {Tag} from '../../../model/tag.model';
 
 @Component({
   selector: 'app-person-chips-fragment',
@@ -16,6 +17,7 @@ import {debounceTime} from 'rxjs/operators';
 export class PersonChipsFragmentComponent implements OnInit {
 
   @Input() persons: Person[] = [];
+  @Input() disabled = false;
   @Output() personChangedEmitter = new EventEmitter<Person[]>();
 
   debouncer = new Subject();
@@ -67,6 +69,14 @@ export class PersonChipsFragmentComponent implements OnInit {
 
   onKeyDown(event: any) {
     this.value = this.value.replace(/,/, '');
+  }
+
+  onOptionSelected(event: any) {
+    if (!this.disabled) {
+      this.persons.push(new Person(this.value.replace(/,/, '')));
+      this.value = '';
+      this.notify();
+    }
   }
 
   filterSearchItems(value: string): string[] {

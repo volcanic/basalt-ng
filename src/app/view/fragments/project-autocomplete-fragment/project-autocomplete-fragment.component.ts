@@ -8,6 +8,7 @@ import {CloneService} from '../../../services/util/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {Task} from '../../../model/entities/task.model';
 import {debounceTime} from 'rxjs/operators';
+import {Tag} from '../../../model/tag.model';
 
 @Component({
   selector: 'app-project-autocomplete-fragment',
