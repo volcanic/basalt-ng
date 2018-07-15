@@ -6,6 +6,7 @@ import {CloneService} from './util/clone.service';
 import {takeUntil} from 'rxjs/operators';
 import {ProjectService} from './entities/project.service';
 import {Subject} from 'rxjs/index';
+import {TaskletService} from './entities/tasklet.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,9 @@ export class FilterService {
   private projectUnsubscribeSubject = new Subject();
 
   constructor(private projectService: ProjectService,
-              private cloneService: CloneService) {
+              private cloneService: CloneService,
+              private taskletService: TaskletService
+  ) {
 
     // Subscribe project changes
     this.projectService.projectsSubject.pipe(
@@ -56,6 +59,21 @@ export class FilterService {
       }
 
       this.tags.set(tag.name, tag);
+    });
+  }
+
+  public deleteUnusedTags() {
+    this.tags.forEach((outerTag, key) => { // Iterate over all existing tags
+      if (outerTag.name !== 'empty') { // Ignore the "empty" tag
+        const isContained = Array.from(this.taskletService.tasklets.values()).some(tasklet => { // Check if tag is contained in tasklets
+          return tasklet.tags.some(innerTag => { // check if tag is contained in tasklet
+            return innerTag.name === outerTag.name;
+          });
+        });
+        if (!isContained) { // If tag is not contained in tasklets, delete from tag list
+          this.tags.delete(key);
+        }
+      }
     });
   }
 

@@ -221,9 +221,9 @@ export class TaskletComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(tasklet => {
       if (tasklet != null) {
-        this.filterService.updateTags(Array.from(tasklet.tags), true);
-
         this.taskletService.updateTasklet(tasklet as Tasklet);
+        this.filterService.updateTags(Array.from(tasklet.tags), true);
+        this.filterService.deleteUnusedTags();
         this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
