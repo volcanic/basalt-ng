@@ -5,7 +5,6 @@ import {EntityService} from './entity.service';
 import {Entity} from '../../model/entities/entity.model';
 import {takeUntil} from 'rxjs/internal/operators';
 import {EntityType} from '../../model/entities/entity-type.enum';
-import {Tag} from '../../model/tag.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +12,6 @@ import {Tag} from '../../model/tag.model';
 export class TaskService {
   tasks = new Map<string, Task>();
   tasksSubject = new Subject<Task[]>();
-  tags: Map<string, Tag>;
 
   private entitiesUnsubscribeSubject = new Subject();
 
@@ -82,23 +80,5 @@ export class TaskService {
     });
 
     return task;
-  }
-
-  updateTags() {
-    this.tags = new Map<string, Tag>();
-
-    Array.from(this.tasks.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
-    }).forEach(task => {
-      if (task.tags != null) {
-        task.tags.forEach(t => {
-          if (t != null && t.name != null && t.name.length > 0) {
-            // Deep copy
-            const tag = new Tag(t.name, t.checked);
-            this.tags.set(tag.name, tag);
-          }
-        });
-      }
-    });
   }
 }

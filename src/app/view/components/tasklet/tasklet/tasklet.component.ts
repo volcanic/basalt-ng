@@ -53,7 +53,6 @@ export class TaskletComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeTags();
     this.initializeProjects();
     this.initializeDate();
     this.initializeIcon();
@@ -65,21 +64,6 @@ export class TaskletComponent implements OnInit {
   //
   // Initialization
   //
-
-  private initializeTags() {
-    this.tags = Array.from(this.taskletService.tags.values());
-    this.tags.forEach(t => {
-      if (this.tasklet.tags != null) {
-        t.checked = false;
-
-        this.tasklet.tags.forEach(tt => {
-          if (t.name === tt.name) {
-            t.checked = true;
-          }
-        });
-      }
-    });
-  }
 
   private initializeProjects() {
     this.projects = Array.from(this.projectService.projects.values());
@@ -214,7 +198,6 @@ export class TaskletComponent implements OnInit {
         mode: DIALOG_MODE.UPDATE,
         dialogTitle: 'Update tasklet',
         tasklet: this.tasklet,
-        tags: this.taskletService.tags,
         projects: this.projects
       }
     });
@@ -222,8 +205,6 @@ export class TaskletComponent implements OnInit {
     dialogRef.afterClosed().subscribe(tasklet => {
       if (tasklet != null) {
         this.taskletService.updateTasklet(tasklet as Tasklet);
-        this.filterService.updateTags(Array.from(tasklet.tags), true);
-        this.filterService.deleteUnusedTags();
         this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
@@ -249,7 +230,6 @@ export class TaskletComponent implements OnInit {
         mode: DIALOG_MODE.CONTINUE,
         dialogTitle: 'Continue tasklet',
         tasklet: continueTasklet,
-        tags: this.tags,
         projects: this.projects,
         previousDescription: this.tasklet.description
       }
@@ -281,7 +261,6 @@ export class TaskletComponent implements OnInit {
         mode: DIALOG_MODE.CONTINUE,
         dialogTitle: 'Continue tasklet',
         tasklet: template,
-        tags: this.tags,
         projects: this.projects
       }
     });

@@ -12,7 +12,6 @@ import {EntityService} from './entity.service';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Entity} from '../../model/entities/entity.model';
-import {TaskService} from './task.service';
 
 @Injectable()
 export class TaskletService {
@@ -22,14 +21,14 @@ export class TaskletService {
 
   private entitiesUnsubscribeSubject = new Subject();
 
+  private filterInitialized = false;
+
   searchOptions = [];
-  tasks: Map<string, Task>;
-  tags: Map<string, Tag>;
   persons: Map<string, Person>;
 
   constructor(private entityService: EntityService,
-              private taskService: TaskService,
               private dateService: DateService) {
+
     this.entityService.entitiesSubject.pipe(
       takeUntil(this.entitiesUnsubscribeSubject)
     ).subscribe((value) => {
@@ -43,8 +42,6 @@ export class TaskletService {
       );
 
       this.updateSearchOptions();
-      this.updateTasks();
-      this.updateTags();
       this.updatePersons();
       this.notify();
     });
@@ -89,6 +86,7 @@ export class TaskletService {
   // Lookup
   //
 
+  // TODO: move to filter service
   /**
    * Updates search options
    */
@@ -134,52 +132,6 @@ export class TaskletService {
             this.searchOptions.push(project.name.trim().replace(/(^-)/g, ''));
           }
         }
-      }
-    });
-  }
-
-  /**
-   * Updates tasks
-   */
-  public updateTasks() {
-    this.tasks = new Map<string, Task>();
-
-    Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
-    }).forEach(tasklet => {
-      if (tasklet.taskId != null) {
-        const task = this.entityService.getEntityById(tasklet.taskId) as Task;
-
-        if (task != null) {
-          this.tasks.set(task.name, task);
-        }
-      }
-    });
-
-    Array.from(this.taskService.tasks.values()).forEach(task => {
-      if (task != null) {
-        this.tasks.set(task.name, task);
-      }
-    });
-  }
-
-  /**
-   * Updates tags
-   */
-  public updateTags() {
-    this.tags = new Map<string, Tag>();
-
-    Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
-    }).forEach(tasklet => {
-      if (tasklet.tags != null) {
-        tasklet.tags.forEach(t => {
-          if (t != null && t.name != null && t.name.length > 0) {
-            // Deep copy
-            const tag = new Tag(t.name, t.checked);
-            this.tags.set(tag.name, tag);
-          }
-        });
       }
     });
   }

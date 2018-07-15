@@ -3,10 +3,10 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {Task} from '../../../model/entities/task.model';
 import {map, startWith} from 'rxjs/internal/operators';
-import {TaskletService} from '../../../services/entities/tasklet.service';
 import {CloneService} from '../../../services/util/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
+import {TaskService} from '../../../services/entities/task.service';
 
 @Component({
   selector: 'app-task-autocomplete-fragment',
@@ -26,7 +26,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletService: TaskletService,
+  constructor(private taskService: TaskService,
               private cloneService: CloneService) {
   }
 
@@ -38,8 +38,8 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
     // Cut ties with existing entity
     this.task = this.cloneService.cloneTask(this.task);
 
-    this.options = Array.from(this.taskletService.tasks.values()).map(tag => {
-      return tag.name;
+    this.options = Array.from(this.taskService.tasks.values()).map(task => {
+      return task.name;
     }).reverse();
 
     this.filteredOptions = this.formControl.valueChanges

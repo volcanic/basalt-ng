@@ -20,8 +20,8 @@ import {TaskService} from '../../../services/entities/task.service';
 import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
 import {Task} from '../../../model/entities/task.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
-import {CloneService} from '../../../services/util/clone.service';
 import {FilterService} from '../../../services/filter.service';
+import {Tag} from '../../../model/tag.model';
 
 @Component({
   selector: 'app-tasklets',
@@ -46,7 +46,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
               private taskletService: TaskletService,
               private filterService: FilterService,
               private snackbarService: SnackbarService,
-              private cloneService: CloneService,
               private matchService: MatchService,
               public zone: NgZone,
               public dialog: MatDialog) {
@@ -89,10 +88,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
             tasklet: new Tasklet(),
           }
         });
-        dialogRef.afterClosed().subscribe(tasklet => {
-          if (tasklet != null) {
-            this.taskletService.createTasklet(tasklet as Tasklet);
-            this.filterService.updateTags(Array.from(tasklet.tags), true);
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const tasklet = result as Tasklet;
+
+            this.taskletService.createTasklet(tasklet);
+            this.filterService.updateTags(tasklet.tags, true);
             this.snackbarService.showSnackbar('Added tasklet', '');
           }
         });
@@ -107,10 +108,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
             task: new Task('')
           }
         });
-        dialogRef.afterClosed().subscribe((resultingTask) => {
-          if (resultingTask != null) {
-            this.taskService.createTask(resultingTask);
-            this.filterService.updateTags(Array.from(resultingTask.tags), true);
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const task = result as Task;
+
+            this.taskService.createTask(task);
+            this.filterService.updateTags(task.tags, true);
           }
         });
         break;
@@ -126,7 +129,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            this.projectService.createProject(result as Project);
+            const project = result as Project;
+            this.projectService.createProject(project);
           }
         });
         break;
@@ -139,8 +143,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
             tags: Array.from(this.filterService.tags.values())
           }
         });
-        dialogRef.afterClosed().subscribe(tags => {
-          if (tags != null) {
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const tags = result as Tag[];
+
             this.filterService.updateTags(tags, false);
             this.taskletService.notify();
             this.taskService.notify();
@@ -162,6 +168,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
             this.filterService.updateProjects(projects, false);
 
             this.taskletService.notify();
+            this.taskService.notify();
             this.snackbarService.showSnackbar('Projects selected', '');
           }
         });
@@ -213,6 +220,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   onSearchItemChanged(searchItem: string) {
     this.filterService.searchItem = searchItem;
     this.taskletService.notify();
+    this.taskService.notify();
   }
 
   /**
@@ -236,16 +244,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
       takeUntil(this.taskletsUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
+        const tasklets: Tasklet[] = (value as Tasklet[]);
 
-        // Initialize filters
-        this.taskletService.updateTags();
-        this.filterService.initializeTags();
-        this.filterService.initializeProjects(Array.from(this.projectService.projects.values()));
+        this.tasklets = tasklets.filter(tasklet => {
+          const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
+          const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
+          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()));
 
-        this.tasklets = value.filter(tasklet => {
-          return this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem)
-            && this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()))
-            && this.matchService.taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()));
+          return matchesSearchItem && matchesTags && matchesProjects;
         }).sort((t1: Tasklet, t2: Tasklet) => {
 
           return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();

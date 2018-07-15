@@ -11,6 +11,9 @@ import {Entity} from '../../model/entities/entity.model';
   providedIn: 'root'
 })
 export class EntityService {
+
+  // TODO add separate lists for each type
+
   entities = new Map<string, Entity>();
   entitiesSubject = new Subject<Entity[]>();
 

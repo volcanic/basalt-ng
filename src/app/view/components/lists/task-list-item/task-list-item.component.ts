@@ -67,9 +67,10 @@ export class TaskListItemComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskService.updateTask(result as Task);
-        this.filterService.updateTags(Array.from((result as Task).tags), true);
-        this.filterService.deleteUnusedTags();
+        const task = result as Task;
+
+        this.taskService.updateTask(task);
+        this.filterService.updateTags(task.tags, true);
         this.snackbarService.showSnackbar('Updated task', '');
       }
     });
@@ -87,9 +88,12 @@ export class TaskListItemComponent implements OnInit {
         tasklet: newTasklet,
       }
     });
-    dialogRef.afterClosed().subscribe(tasklet => {
-      if (tasklet != null) {
-        this.taskletService.createTasklet(tasklet as Tasklet);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        const tasklet = result as Tasklet;
+
+        this.taskletService.createTasklet(tasklet);
+        this.filterService.updateTags(tasklet.tags, true);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });

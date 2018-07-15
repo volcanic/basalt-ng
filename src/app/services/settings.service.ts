@@ -11,7 +11,6 @@ export class SettingsService {
   constructor(private pouchDBSettingsService: PouchDBSettingsService) {
     this.pouchDBSettingsService.getChangeListener().subscribe(
       item => {
-        console.log(`DEBUG SettingsService item`);
         (item['change']['docs']).forEach(d => {
           const setting = d as Setting;
           this.settings.set(setting.id, setting);
@@ -21,7 +20,6 @@ export class SettingsService {
   }
 
   public updateSetting(setting: Setting) {
-    console.log(`DEBUG ${JSON.stringify(this.settings)}`);
     this.settings.set(setting.id, setting);
     this.pouchDBSettingsService.put(setting.id, setting);
     this.update();
@@ -39,7 +37,6 @@ export class SettingsService {
 
         result.rows.forEach(r => {
           const setting = r.doc as Setting;
-          console.log(`DEBUG fetch setting ${setting.id}`);
           this.settings.set(setting.id, setting);
         });
 

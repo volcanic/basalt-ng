@@ -5,6 +5,8 @@ import {PlaceholderValues} from '../model/placeholder-values.model';
 import {Project} from '../model/entities/project.model';
 import {Task} from '../model/entities/task.model';
 import {Tag} from '../model/tag.model';
+import {Description} from '../model/description.model';
+import {Person} from '../model/person.model';
 
 
 @Injectable()
@@ -55,112 +57,19 @@ export class MatchService {
    * @returns {boolean}
    */
   public taskletMatchesProjects(tasklet: Tasklet, projects: Project[]): boolean {
-    let match = false;
 
-    // Filter tasklets that match selected projects
-    projects.forEach(p => {
-      if (p.checked) {
-        const project = this.entityService.getProjectByTasklet(tasklet);
+    return projects.length === 0 || projects.some(p => {
+        if (p.checked) {
+          const project = this.entityService.getProjectByTasklet(tasklet);
 
-        if ((project != null && project.id != null && p.id === project.id ) ||
-          (project == null && p.id === PlaceholderValues.EMPTY_PROJECT_ID)) {
-          match = true;
+          if ((project != null && project.id != null && p.id === project.id ) ||
+            (project == null && p.id === PlaceholderValues.EMPTY_PROJECT_ID)) {
+            return true;
+          }
         }
-      }
-    });
 
-    return match;
-  }
-
-  //
-  // Search item
-  //
-
-  /**
-   * Determines whether a tasklet matches any of the specified items
-   *
-   * @param tasklet value to check
-   * @param items multiple words in one string
-   * @returns {boolean}
-   */
-  public taskletMatchesAnyItem(tasklet: Tasklet, items: string): boolean {
-    if (items == null || items.trim() === '') {
-      return true;
-    }
-
-    return this.splitSearchItems(items).some(i => {
-      return this.taskletMatchesSingleItem(tasklet, i);
-    });
-  }
-
-  /**
-   * Determines whether a tasklet matches every of the specified items
-   *
-   * @param tasklet value to check
-   * @param items multiple words in one string
-   * @returns {boolean}
-   */
-  public taskletMatchesEveryItem(tasklet: Tasklet, items: string): boolean {
-
-    // Indicate a match if no filter mechanism is used
-    if ((items == null || items.trim() === '')) {
-      return true;
-    }
-
-    const match = this.splitSearchItems(items).every(i => {
-      return this.taskletMatchesSingleItem(tasklet, i);
-    });
-
-    return match;
-  }
-
-  /**
-   * Determines whether any of tasklet's attributes contain a certain item
-   * @param tasklet tasklet
-   * @param item single word
-   * @returns {boolean}
-   */
-  public taskletMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-
-    const matchesTask = this.taskletTaskNameMatchesSingleItem(tasklet, item);
-    const matchesDescription = this.taskletDescriptionMatchesSingleItem(tasklet, item);
-    const matchesPersons = this.taskletPersonsMatchesSingleItem(tasklet, item);
-    const matchesTags = this.taskletTagsMatchesSingleItem(tasklet, item);
-
-    return matchesTask || matchesDescription || matchesPersons || matchesTags;
-  }
-
-  private taskletTaskNameMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-
-    const task = this.entityService.getTaskByTasklet(tasklet);
-
-    return (task != null) ? this.textMatchesSingleItem(task.name, item) : false;
-  }
-
-  private taskletDescriptionMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    return tasklet.description.value != null && tasklet.description.value.split('\n').some(s => {
-        return this.textMatchesSingleItem(s, item);
+        return false;
       });
-  }
-
-  private taskletPersonsMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    if (tasklet.persons != null) {
-      return tasklet.persons.some(p => {
-        return this.textMatchesSingleItem(p.name, item);
-      });
-    }
-
-    return false;
-  }
-
-  private taskletTagsMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-    if (tasklet.tags != null) {
-      return tasklet.tags.some(t => {
-        return this.textMatchesSingleItem(t.name, item);
-      });
-    }
-
-    return false;
   }
 
   /**
@@ -191,6 +100,139 @@ export class MatchService {
     );
 
     return match;
+  }
+
+  /**
+   * Determines whether a task matches a given set of projects
+   *
+   * @param task
+   * @param projects
+   * @returns {boolean}
+   */
+  public taskMatchesProjects(task: Task, projects: Project[]): boolean {
+
+    return projects.length === 0 || projects.some(p => {
+        if (p.checked) {
+          const project = this.entityService.getEntityById(task.projectId);
+
+          if ((project != null && project.id != null && p.id === project.id ) ||
+            (project == null && p.id === PlaceholderValues.EMPTY_PROJECT_ID)) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+  }
+
+  //
+  // Search item
+  //
+
+  /**
+   * Determines whether a tasklet matches every of the specified items
+   *
+   * @param tasklet value to check
+   * @param items multiple words in one string
+   * @returns {boolean}
+   */
+  public taskletMatchesEveryItem(tasklet: Tasklet, items: string): boolean {
+
+    // Indicate a match if no filter mechanism is used
+    if ((items == null || items.trim() === '')) {
+      return true;
+    }
+
+    return this.splitSearchItems(items).every(i => {
+      return this.taskletMatchesSingleItem(tasklet, i);
+    });
+  }
+
+  /**
+   * Determines whether any of tasklet's attributes contain a certain item
+   * @param tasklet tasklet
+   * @param item single word
+   * @returns {boolean}
+   */
+  public taskletMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
+
+    const task = this.entityService.getTaskByTasklet(tasklet);
+
+    const matchesTaskName = this.taskNameMatchesSingleItem(task, item);
+    const matchesDescription = this.descriptionMatchesSingleItem(tasklet.description, item);
+    const matchesPersons = this.personsMatchesSingleItem(tasklet.persons, item);
+    const matchesTags = this.tagsMatchesSingleItem(tasklet.tags, item);
+
+    return matchesTaskName || matchesDescription || matchesPersons || matchesTags;
+  }
+
+  /**
+   * Determines whether a task matches every of the specified items
+   *
+   * @param task value to check
+   * @param items multiple words in one string
+   * @returns {boolean}
+   */
+  public taskMatchesEveryItem(task: Task, items: string): boolean {
+
+    // Indicate a match if no filter mechanism is used
+    if ((items == null || items.trim() === '')) {
+      return true;
+    }
+
+    return this.splitSearchItems(items).every(i => {
+      return this.taskMatchesSingleItem(task, i);
+    });
+  }
+
+  /**
+   * Determines whether any of task's attributes contain a certain item
+   * @param task task
+   * @param item single word
+   * @returns {boolean}
+   */
+  public taskMatchesSingleItem(task: Task, item: string): boolean {
+
+    const matchesTaskName = this.taskNameMatchesSingleItem(task, item);
+    const matchesDescription = this.descriptionMatchesSingleItem(task.description, item);
+    const matchesTags = this.tagsMatchesSingleItem(task.tags, item);
+
+    return matchesTaskName || matchesDescription || matchesTags;
+  }
+
+  //
+  // Search item parts
+  //
+
+  private taskNameMatchesSingleItem(task: Task, item: string): boolean {
+
+    return (task != null) ? this.textMatchesSingleItem(task.name, item) : false;
+  }
+
+  private descriptionMatchesSingleItem(description: Description, item: string): boolean {
+    return description.value != null && description.value.split('\n').some(s => {
+        return this.textMatchesSingleItem(s, item);
+      });
+  }
+
+  private personsMatchesSingleItem(persons: Person[], item: string): boolean {
+    if (persons != null) {
+      return persons.some(p => {
+        return this.textMatchesSingleItem(p.name, item);
+      });
+    }
+
+    return false;
+  }
+
+  private tagsMatchesSingleItem(tags: Tag[], item: string): boolean {
+    if (tags != null) {
+      return tags.some(t => {
+        return this.textMatchesSingleItem(t.name, item);
+      });
+    }
+
+    return false;
   }
 
   public textMatchesAnyItem(text: string, items: string): boolean {

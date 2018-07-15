@@ -2,10 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tag} from '../../../model/tag.model';
 import {Observable} from 'rxjs/Observable';
 import {FormControl} from '@angular/forms';
-import {TaskletService} from '../../../services/entities/tasklet.service';
 import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
+import {FilterService} from '../../../services/filter.service';
 
 @Component({
   selector: 'app-tag-chips-fragment',
@@ -26,12 +26,11 @@ export class TagChipsFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletService: TaskletService) {
+  constructor(private filterService: FilterService) {
   }
 
   ngOnInit() {
-    this.taskletService.updateTags();
-    this.options = Array.from(this.taskletService.tags.values()).map(tag => {
+    this.options = Array.from(this.filterService.tags.values()).map(tag => {
       return tag.name;
     });
 
