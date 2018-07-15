@@ -125,6 +125,27 @@ export class MatchService {
       });
   }
 
+  /**
+   * Determines whether a project matches a given set of projects
+   *
+   * @param project
+   * @param projects
+   * @returns {boolean}
+   */
+  public projectMatchesProjects(project: Project, projects: Project[]): boolean {
+
+    return projects.length === 0 || projects.some(p => {
+        if (p.checked) {
+          if ((project != null && project.id != null && p.id === project.id ) ||
+            (project == null && p.id === PlaceholderValues.EMPTY_PROJECT_ID)) {
+            return true;
+          }
+        }
+
+        return false;
+      });
+  }
+
   //
   // Search item
   //
@@ -200,6 +221,38 @@ export class MatchService {
     return matchesTaskName || matchesDescription || matchesTags;
   }
 
+  /**
+   * Determines whether a project matches every of the specified items
+   *
+   * @param project value to check
+   * @param items multiple words in one string
+   * @returns {boolean}
+   */
+  public projectMatchesEveryItem(project: Project, items: string): boolean {
+
+    // Indicate a match if no filter mechanism is used
+    if ((items == null || items.trim() === '')) {
+      return true;
+    }
+
+    return this.splitSearchItems(items).every(i => {
+      return this.projectMatchesSingleItem(project, i);
+    });
+  }
+
+  /**
+   * Determines whether any of project's attributes contain a certain item
+   * @param project project
+   * @param item single word
+   * @returns {boolean}
+   */
+  public projectMatchesSingleItem(project: Project, item: string): boolean {
+
+    const matchesProjectName = this.projectNameMatchesSingleItem(project, item);
+
+    return matchesProjectName;
+  }
+
   //
   // Search item parts
   //
@@ -207,6 +260,11 @@ export class MatchService {
   private taskNameMatchesSingleItem(task: Task, item: string): boolean {
 
     return (task != null) ? this.textMatchesSingleItem(task.name, item) : false;
+  }
+
+  private projectNameMatchesSingleItem(project: Project, item: string): boolean {
+
+    return (project != null) ? this.textMatchesSingleItem(project.name, item) : false;
   }
 
   private descriptionMatchesSingleItem(description: Description, item: string): boolean {

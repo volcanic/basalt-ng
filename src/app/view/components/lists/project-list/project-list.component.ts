@@ -3,6 +3,8 @@ import {Subject} from 'rxjs/Subject';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Project} from '../../../../model/entities/project.model';
+import {FilterService} from '../../../../services/filter.service';
+import {MatchService} from '../../../../services/match.service';
 
 @Component({
   selector: 'app-project-list',
@@ -17,17 +19,33 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 
   private projectsUnsubscribeSubject = new Subject();
 
-  constructor(private projectService: ProjectService) {
+  constructor(private projectService: ProjectService,
+              private matchService: MatchService,
+              private filterService: FilterService,) {
   }
 
   ngOnInit() {
 
-    // Subscribe project changes
+    this.initializeProjectSubscription();
+  }
+
+  /**
+   * Subscribes project changes
+   */
+  private initializeProjectSubscription() {
+
     this.projectService.projectsSubject.pipe(
       takeUntil(this.projectsUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        this.projects = (value as Project[]);
+        const projects = value as Project[];
+
+        this.projects = projects.filter(project => {
+          const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
+          const matchesProjects = this.matchService.projectMatchesProjects(project, Array.from(this.filterService.projects.values()));
+
+          return matchesSearchItem && matchesProjects;
+        });
       }
     });
   }

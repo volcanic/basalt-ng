@@ -41,9 +41,8 @@ export class ProjectListItemComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.filterService.updateProjects([result as Project], true);
-
         this.projectService.updateProject(result as Project);
+        this.filterService.updateProjects([result as Project], true);
         this.snackbarService.showSnackbar('Updated project', '');
       }
     });

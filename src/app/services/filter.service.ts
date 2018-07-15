@@ -22,6 +22,7 @@ export class FilterService {
 
   initializedTagsOfTasklets = false;
   initializedTagsOfTasks = false;
+  initializedProjects = false;
 
   projects: Map<string, Project> = new Map<string, Project>();
   projectsNone: true;
@@ -74,7 +75,10 @@ export class FilterService {
       if (value != null) {
         const projects = value as Project[];
 
-        this.updateProjects(projects, this.projects.size === 0);
+        if (!this.initializedProjects) {
+          this.updateProjects(projects, true);
+          this.initializedProjects = true;
+        }
       }
     });
   }
@@ -130,6 +134,7 @@ export class FilterService {
   }
 
   public updateProjects(projects: Project[], enable: boolean) {
+
     projects.forEach((p: Project) => {
       // Deep copy
       const project = this.cloneService.cloneProject(p);

@@ -150,6 +150,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
             this.filterService.updateTags(tags, false);
             this.taskletService.notify();
             this.taskService.notify();
+            this.projectService.notify();
             this.snackbarService.showSnackbar('Tags selected', '');
           }
         });
@@ -163,12 +164,15 @@ export class TimelineComponent implements OnInit, OnDestroy {
             projects: Array.from(this.filterService.projects.values())
           }
         });
-        dialogRef.afterClosed().subscribe(projects => {
-          if (projects != null) {
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const projects = result as Project[];
+
             this.filterService.updateProjects(projects, false);
 
             this.taskletService.notify();
             this.taskService.notify();
+            this.projectService.notify();
             this.snackbarService.showSnackbar('Projects selected', '');
           }
         });
@@ -221,6 +225,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.filterService.searchItem = searchItem;
     this.taskletService.notify();
     this.taskService.notify();
+    this.projectService.notify();
   }
 
   /**
