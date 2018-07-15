@@ -33,7 +33,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   tasklets: Tasklet[] = [];
 
   private taskletsUnsubscribeSubject = new Subject();
-  private projectssUnsubscribeSubject = new Subject();
+  private projectsUnsubscribeSubject = new Subject();
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
@@ -266,8 +266,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
       if (value != null) {
 
         (value as Project[]).forEach(project => {
-          if (!this.projects.has(project.id)) {
-            this.projects.set(project.id, project);
+          if (!this.filterService.projects.has(project.id)) {
+            this.filterService.projects.set(project.id, project);
           }
         });
       }
