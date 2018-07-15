@@ -10,7 +10,16 @@
                     [disabled]="disabled"
                     (change)="onDescriptionChanged($event)">
           </textarea>
-  <button mat-button *ngIf="description.value" matSuffix mat-icon-button aria-label="Clear" (click)="onDeleteButtonClicked()" title=''>
+  <button
+    *ngIf="description.value"
+    mat-button
+    mat-icon-button
+    matSuffix
+    aria-label="Clear"
+    type="button"
+    title=''
+    (click)="onDeleteButtonClicked()"
+  >
     <mat-icon svgIcon="close_18"></mat-icon>
   </button>
 </mat-form-field>
