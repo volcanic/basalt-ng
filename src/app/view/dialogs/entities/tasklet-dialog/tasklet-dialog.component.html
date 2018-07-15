@@ -52,9 +52,6 @@
       Delete tasklet
     </button>
     <div class="flexbox"></div>
-    <button mat-button [mat-dialog-close]=null>
-      Cancel
-    </button>
     <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
         && tasklet.type != 'Lunch Break'
         && tasklet.type != 'Finishing Time'">

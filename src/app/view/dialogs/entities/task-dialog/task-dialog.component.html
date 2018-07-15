@@ -139,9 +139,6 @@
       Delete task
     </button>
     <div class="flexbox"></div>
-    <button mat-button [mat-dialog-close]=null>
-      Cancel
-    </button>
     <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate != null" color="accent"
             (click)="reopenTask()">
       Re-open task
