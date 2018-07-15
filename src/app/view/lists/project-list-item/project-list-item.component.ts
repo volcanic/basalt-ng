@@ -1,11 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Project} from '../../../../model/entities/project.model';
-import {ProjectDialogComponent} from '../../../dialogs/entities/project-dialog/project-dialog.component';
-import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
-import {SnackbarService} from '../../../../services/snackbar.service';
-import {ProjectService} from '../../../../services/entities/project.service';
+import {Project} from '../../../model/entities/project.model';
+import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
+import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
+import {SnackbarService} from '../../../services/snackbar.service';
+import {ProjectService} from '../../../services/entities/project.service';
 import {MatDialog} from '@angular/material';
-import {FilterService} from '../../../../services/filter.service';
+import {FilterService} from '../../../services/filter.service';
 
 @Component({
   selector: 'app-project-list-item',

@@ -15,8 +15,7 @@
   </mat-sidenav>
 
   <div class="content">
-    <app-tasklet *ngFor="let t of tasklets" [tasklet]="t">
-    </app-tasklet>
+    <app-tasklet-list [tasklets]="tasklets"></app-tasklet-list>
   </div>
 
 </mat-sidenav-container>

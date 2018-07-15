@@ -1,18 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Task} from '../../../../model/entities/task.model';
-import {TaskDialogComponent} from '../../../dialogs/entities/task-dialog/task-dialog.component';
-import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
+import {Task} from '../../../model/entities/task.model';
+import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
+import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {MatDialog} from '@angular/material';
-import {TaskService} from '../../../../services/entities/task.service';
-import {TaskletDialogComponent} from '../../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
-import {Tasklet} from '../../../../model/entities/tasklet.model';
-import {TaskletService} from '../../../../services/entities/tasklet.service';
-import {SnackbarService} from '../../../../services/snackbar.service';
-import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
+import {TaskService} from '../../../services/entities/task.service';
+import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
+import {Tasklet} from '../../../model/entities/tasklet.model';
+import {TaskletService} from '../../../services/entities/tasklet.service';
+import {SnackbarService} from '../../../services/snackbar.service';
+import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {DigestService} from '../../../../services/digest.service';
-import {TaskDigest} from '../../../../model/task-digest.model';
-import {FilterService} from '../../../../services/filter.service';
+import {DigestService} from '../../../services/digest.service';
+import {TaskDigest} from '../../../model/task-digest.model';
+import {FilterService} from '../../../services/filter.service';
 
 
 @Component({

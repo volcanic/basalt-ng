@@ -1,11 +1,11 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {TaskService} from '../../../../services/entities/task.service';
+import {TaskService} from '../../../services/entities/task.service';
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/internal/operators';
-import {DateService} from '../../../../services/date.service';
-import {Task} from '../../../../model/entities/task.model';
-import {MatchService} from '../../../../services/match.service';
-import {FilterService} from '../../../../services/filter.service';
+import {DateService} from '../../../services/date.service';
+import {Task} from '../../../model/entities/task.model';
+import {MatchService} from '../../../services/match.service';
+import {FilterService} from '../../../services/filter.service';
 
 @Component({
   selector: 'app-task-list',

@@ -1,31 +1,32 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material';
-import {TaskletService} from '../../../../services/entities/tasklet.service';
-import {Tasklet} from '../../../../model/entities/tasklet.model';
-import {SnackbarService} from '../../../../services/snackbar.service';
-import {TaskletDialogComponent} from '../../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
-import {ConfirmationDialogComponent} from '../../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
-import {DateService} from '../../../../services/date.service';
-import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
-import {Tag} from '../../../../model/tag.model';
-import {TimePickerDialogComponent} from '../../../dialogs/other/time-picker-dialog/time-picker-dialog.component';
-import {UUID} from '../../../../model/util/uuid';
-import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
-import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
-import {Project} from '../../../../model/entities/project.model';
-import {EntityService} from '../../../../services/entities/entity.service';
-import {ProjectService} from '../../../../services/entities/project.service';
-import {ColorService} from '../../../../services/color.service';
-import {Description} from '../../../../model/description.model';
-import {CloneService} from '../../../../services/util/clone.service';
-import {FilterService} from '../../../../services/filter.service';
+import {TaskletService} from '../../../services/entities/tasklet.service';
+import {Tasklet} from '../../../model/entities/tasklet.model';
+import {SnackbarService} from '../../../services/snackbar.service';
+import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
+import {ConfirmationDialogComponent} from '../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
+import {DateService} from '../../../services/date.service';
+import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
+import {Tag} from '../../../model/tag.model';
+import {TimePickerDialogComponent} from '../../dialogs/other/time-picker-dialog/time-picker-dialog.component';
+import {UUID} from '../../../model/util/uuid';
+import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
+import {Project} from '../../../model/entities/project.model';
+import {EntityService} from '../../../services/entities/entity.service';
+import {ProjectService} from '../../../services/entities/project.service';
+import {ColorService} from '../../../services/color.service';
+import {Description} from '../../../model/description.model';
+import {CloneService} from '../../../services/util/clone.service';
+import {FilterService} from '../../../services/filter.service';
 
 @Component({
-  selector: 'app-tasklet',
-  templateUrl: './tasklet.component.html',
-  styles: [require('./tasklet.component.scss')]
+  selector: 'app-tasklet-list-item',
+  templateUrl: './tasklet-list-item.component.html',
+  styleUrls: ['./tasklet-list-item.component.scss']
 })
-export class TaskletComponent implements OnInit {
+export class TaskletListItemComponent implements OnInit {
+
   @Input() tasklet: Tasklet;
 
   tags: Tag[] = [];

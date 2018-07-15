@@ -30,7 +30,6 @@ import {PouchDBService} from './services/pouchdb.service';
 import {ConfirmationDialogComponent} from './view/dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {TaskletDialogComponent} from './view/dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {AppRoutingModule} from './app-routing.module';
-import {TaskletComponent} from './view/components/tasklet/tasklet/tasklet.component';
 import {SnackbarService} from './services/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DateService} from './services/date.service';
@@ -64,8 +63,8 @@ import {CalendarGridQuarterHourComponent} from './view/components/calendar/calen
 import {CalendarItemComponent} from './view/components/calendar/calendar-item/calendar-item.component';
 import {TaskDialogComponent} from './view/dialogs/entities/task-dialog/task-dialog.component';
 import {TaskletService} from './services/entities/tasklet.service';
-import {TaskListItemComponent} from './view/components/lists/task-list-item/task-list-item.component';
-import {TaskListComponent} from './view/components/lists/task-list/task-list.component';
+import {TaskListItemComponent} from './view/lists/task-list-item/task-list-item.component';
+import {TaskListComponent} from './view/lists/task-list/task-list.component';
 import {TimelineComponent} from './view/pages/timeline/timeline.component';
 import {DescriptionFragmentComponent} from './view/fragments/description-fragment/description-fragment.component';
 import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-fragment/tag-selection-fragment.component';
@@ -79,10 +78,12 @@ import {HeaderFragmentComponent} from './view/fragments/header-fragment/header-f
 import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-daily-scrum/tasklet-daily-scrum.component';
 import {DailyScrumFragmentComponent} from './view/fragments/daily-scrum-fragment/daily-scrum-fragment.component';
 import {DateTimePickerFragmentComponent} from './view/fragments/date-time-picker-fragment/date-time-picker-fragment.component';
-import {ProjectListComponent} from './view/components/lists/project-list/project-list.component';
-import {ProjectListItemComponent} from './view/components/lists/project-list-item/project-list-item.component';
+import {ProjectListComponent} from './view/lists/project-list/project-list.component';
+import {ProjectListItemComponent} from './view/lists/project-list-item/project-list-item.component';
 import {ProjectDialogComponent} from './view/dialogs/entities/project-dialog/project-dialog.component';
 import { InformationDialogComponent } from './view/dialogs/other/information-dialog/information-dialog.component';
+import { TaskletListComponent } from './view/lists/tasklet-list/tasklet-list.component';
+import { TaskletListItemComponent } from './view/lists/tasklet-list-item/tasklet-list-item.component';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,6 @@ import { InformationDialogComponent } from './view/dialogs/other/information-dia
     ProjectsFilterDialogComponent,
     SplashScreenComponent,
     TagFilterDialogComponent,
-    TaskletComponent,
     TaskletDialogComponent,
     TimelineComponent,
     TimelineToolbarComponent,
@@ -131,7 +131,9 @@ import { InformationDialogComponent } from './view/dialogs/other/information-dia
     ProjectListComponent,
     ProjectListItemComponent,
     ProjectDialogComponent,
-    InformationDialogComponent
+    InformationDialogComponent,
+    TaskletListComponent,
+    TaskletListItemComponent
   ],
   imports: [
     AppRoutingModule,
