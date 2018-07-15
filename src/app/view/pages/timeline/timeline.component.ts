@@ -31,15 +31,14 @@ import {FilterService} from '../../../services/filter.service';
 export class TimelineComponent implements OnInit, OnDestroy {
   title = 'Basalt';
   tasklets: Tasklet[] = [];
+
   private taskletsUnsubscribeSubject = new Subject();
+  private projectssUnsubscribeSubject = new Subject();
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
 
   DISPLAY_LIMIT = 100;
-
-  // private windowHeight = 0;
-  // private windowWidth = 0;
 
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
@@ -53,52 +52,20 @@ export class TimelineComponent implements OnInit, OnDestroy {
               public dialog: MatDialog) {
   }
 
-  /*
-   @HostListener('window:resize', ['$event'])
-   onResize(event) {
-   this.windowHeight = event.target.innerHeight;
-   this.windowWidth = event.target.innerWidth;
-   }
-   */
-
   ngOnInit() {
 
-    // Subscribe tasklet changes
-    this.taskletService.taskletsSubject.pipe(
-      takeUntil(this.taskletsUnsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-
-        // Initialize filters
-        this.taskletService.updateTags();
-        this.filterService.initializeTags(Array.from(this.taskletService.tags.values()));
-        this.filterService.initializeProjects(Array.from(this.projectService.projects.values()));
-
-        this.tasklets = value.filter(tasklet => {
-
-          const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-          const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
-          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()));
-
-          return matchesSearchItem && matchesTags && matchesProjects;
-        }).sort((t1: Tasklet, t2: Tasklet) => {
-          const date1 = new Date(t1.creationDate).getTime();
-          const date2 = new Date(t2.creationDate).getTime();
-
-          return date2 - date1;
-        }).slice(0, this.DISPLAY_LIMIT);
-      }
-
-      this.zone.run(() => this.tasklets = this.cloneService.cloneTasklets(this.tasklets));
-    });
-
-    this.taskletService.notify();
+    this.initializeTaskletSubscription();
+    this.initializeProjectSubscription();
   }
 
   ngOnDestroy(): void {
     this.taskletsUnsubscribeSubject.next();
     this.taskletsUnsubscribeSubject.complete();
   }
+
+  //
+  // Handlers
+  //
 
   /**
    * Handles click on menu items
@@ -186,7 +153,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
           disableClose: false,
           data: {
             dialogTitle: 'Select projects',
-            projects:  Array.from(this.filterService.projects.values())
+            projects: Array.from(this.filterService.projects.values())
           }
         });
         dialogRef.afterClosed().subscribe(projects => {
@@ -200,8 +167,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
         break;
       }
       case 'todo': {
-        this.sidenavStart.toggle().then(() => {});
-        this.sidenavEnd.toggle().then(() => {});
+        this.sidenavStart.toggle().then(() => {
+        });
+        this.sidenavEnd.toggle().then(() => {
+        });
         break;
       }
       case 'upload': {
@@ -237,7 +206,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Reacts on search item typed into the search box
+   * Handles search item typed into the search box
    * @param searchItem
    */
   onSearchItemChanged(searchItem: string) {
@@ -251,5 +220,57 @@ export class TimelineComponent implements OnInit, OnDestroy {
    */
   onSideMenuItemClicked(menuItem: string) {
     this.snackbarService.showSnackbar(`Clicked on side menu item ${menuItem}`, '');
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Subscribes tasklet changes
+   */
+  private initializeTaskletSubscription() {
+
+    this.taskletService.taskletsSubject.pipe(
+      takeUntil(this.taskletsUnsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+
+        // Initialize filters
+        this.taskletService.updateTags();
+        this.filterService.initializeTags(Array.from(this.taskletService.tags.values()));
+        this.filterService.initializeProjects(Array.from(this.projectService.projects.values()));
+
+        this.tasklets = value.filter(tasklet => {
+          return this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem)
+            && this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()))
+            && this.matchService.taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()));
+        }).sort((t1: Tasklet, t2: Tasklet) => {
+
+          return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
+        }).slice(0, this.DISPLAY_LIMIT);
+      }
+
+      this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
+    });
+  }
+
+  /**
+   * Subscribes project changes
+   */
+  private initializeProjectSubscription() {
+
+    this.projectService.projectsSubject.pipe(
+      takeUntil(this.projectsUnsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+
+        (value as Project[]).forEach(project => {
+          if (!this.projects.has(project.id)) {
+            this.projects.set(project.id, project);
+          }
+        });
+      }
+    });
   }
 }
