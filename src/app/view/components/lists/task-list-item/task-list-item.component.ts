@@ -12,6 +12,7 @@ import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DigestService} from '../../../../services/digest.service';
 import {TaskDigest} from '../../../../model/task-digest.model';
+import {FilterService} from '../../../../services/filter.service';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class TaskListItemComponent implements OnInit {
               private taskletService: TaskletService,
               private digestService: DigestService,
               private snackbarService: SnackbarService,
+              private filterService: FilterService,
               public dialog: MatDialog) {
   }
 
@@ -66,6 +68,8 @@ export class TaskListItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskService.updateTask(result as Task);
+        this.filterService.updateTags(Array.from((result as Task).tags), true);
+        this.filterService.deleteUnusedTags();
         this.snackbarService.showSnackbar('Updated task', '');
       }
     });

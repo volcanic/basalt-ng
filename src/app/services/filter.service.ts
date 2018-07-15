@@ -7,21 +7,27 @@ import {takeUntil} from 'rxjs/operators';
 import {ProjectService} from './entities/project.service';
 import {Subject} from 'rxjs/index';
 import {TaskletService} from './entities/tasklet.service';
+import {TaskService} from './entities/task.service';
+import {Task} from '../model/entities/task.model';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class FilterService {
 
   searchItem = '';
   tags: Map<string, Tag> = new Map<string, Tag>();
   projects: Map<string, Project> = new Map<string, Project>();
+  filterSubject = new Subject();
+
 
   private projectUnsubscribeSubject = new Subject();
 
   constructor(private projectService: ProjectService,
               private cloneService: CloneService,
-              private taskletService: TaskletService
+              private taskletService: TaskletService,
+              private taskService: TaskService
   ) {
     // Subscribe project changes
     this.projectService.projectsSubject.pipe(
@@ -37,14 +43,16 @@ export class FilterService {
     });
   }
 
-  public initializeTags(tags: Tag[]) {
+  public initializeTags() {
     if (this.tags.size < 2) {
       // Add empty element
       const tag = new Tag(PlaceholderValues.EMPTY_TAG, true);
       this.tags.set(tag.name, tag);
 
       // Add all the other tags
-      this.updateTags(tags, true);
+      this.updateTags(Array.from(this.taskletService.tags.values()), true);
+      this.updateTags(Array.from(this.taskService.tags.values()), true);
+      this.notify();
     }
   }
 
@@ -67,16 +75,22 @@ export class FilterService {
   public deleteUnusedTags() {
     this.tags.forEach((outerTag, key) => { // Iterate over all existing tags
       if (outerTag.name !== 'empty') { // Ignore the "empty" tag
-        const isContained = Array.from(this.taskletService.tasklets.values()).some(tasklet => { // Check if tag is contained in tasklets
+        const isContainedInTasklet = Array.from(this.taskletService.tasklets.values()).some(tasklet => { // Check if tag is contained in tasklets
           return tasklet.tags.some(innerTag => { // check if tag is contained in tasklet
             return innerTag.name === outerTag.name;
           });
         });
-        if (!isContained) { // If tag is not contained in tasklets, delete from tag list
+        const isContainedInTask = Array.from(this.taskService.tasks.values()).some(task => { // Check if tag is contained in tasks
+          return task.tags.some(innerTag => { // check if tag is contained in task
+            return innerTag.name === outerTag.name;
+          });
+        });
+        if (!(isContainedInTask || isContainedInTasklet)) { // If tag is not contained in tasklets or tasks, delete from tag list
           this.tags.delete(key);
         }
       }
     });
+
   }
 
   public initializeProjects(projects: Project[]) {
@@ -107,5 +121,9 @@ export class FilterService {
 
       this.projects.set(project.id, project);
     });
+  }
+
+  public notify() {
+    this.filterSubject.next();
   }
 }

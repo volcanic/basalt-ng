@@ -3,7 +3,9 @@ import {Tasklet} from '../model/entities/tasklet.model';
 import {EntityService} from './entities/entity.service';
 import {PlaceholderValues} from '../model/placeholder-values.model';
 import {Project} from '../model/entities/project.model';
+import {Task} from '../model/entities/task.model';
 import {Tag} from '../model/tag.model';
+
 
 @Injectable()
 export class MatchService {
@@ -159,6 +161,36 @@ export class MatchService {
     }
 
     return false;
+  }
+
+  /**
+   * Determines whether a task matches a given set of tags
+   *
+   * @param task
+   * @param tags
+   * @returns {boolean}
+   */
+  public taskMatchesTags(task: Task, tags: Tag[]): boolean {
+    let match = false;
+
+    // Filter task that match selected tags
+    tags.forEach(tag => {
+        if (tag.checked) {
+          if ((task.tags == null || task.tags.length === 0)
+            && tag.name === PlaceholderValues.EMPTY_TAG) {
+            match = true;
+          } else if (task.tags != null && task.tags.length > 0) {
+            task.tags.forEach(taskTag => {
+              if (taskTag.name === tag.name) {
+                match = true;
+              }
+            });
+          }
+        }
+      }
+    );
+
+    return match;
   }
 
   public textMatchesAnyItem(text: string, items: string): boolean {

@@ -91,9 +91,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
         });
         dialogRef.afterClosed().subscribe(tasklet => {
           if (tasklet != null) {
-            this.filterService.updateTags(Array.from(tasklet.tags), true);
-
             this.taskletService.createTasklet(tasklet as Tasklet);
+            this.filterService.updateTags(Array.from(tasklet.tags), true);
             this.snackbarService.showSnackbar('Added tasklet', '');
           }
         });
@@ -108,9 +107,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
             task: new Task('')
           }
         });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            this.taskService.createTask(result as Task);
+        dialogRef.afterClosed().subscribe((resultingTask) => {
+          if (resultingTask != null) {
+            this.taskService.createTask(resultingTask);
+            this.filterService.updateTags(Array.from(resultingTask.tags), true);
           }
         });
         break;
@@ -143,6 +143,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
           if (tags != null) {
             this.filterService.updateTags(tags, false);
             this.taskletService.notify();
+            this.taskService.notify();
             this.snackbarService.showSnackbar('Tags selected', '');
           }
         });
@@ -238,7 +239,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
         // Initialize filters
         this.taskletService.updateTags();
-        this.filterService.initializeTags(Array.from(this.taskletService.tags.values()));
+        this.filterService.initializeTags();
         this.filterService.initializeProjects(Array.from(this.projectService.projects.values()));
 
         this.tasklets = value.filter(tasklet => {
