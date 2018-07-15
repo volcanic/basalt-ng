@@ -257,16 +257,19 @@ export class TaskDialogComponent implements OnInit {
       if (project != null) {
         // Existing project
         this.task.projectId = project.id;
-      } else {
+      } else if (this.project.name != null && this.project.name !== '') {
         // New project
         project = new Project(this.project.name, true);
         this.task.projectId = project.id;
         this.projectService.createProject(project);
+      } else {
+        this.task.projectId = null;
       }
     }
   }
 
-  private onKeyDown(event: any) {
+  private
+  onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
       this.updateTask();

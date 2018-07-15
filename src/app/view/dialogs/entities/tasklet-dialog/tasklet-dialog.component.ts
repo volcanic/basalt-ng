@@ -177,11 +177,13 @@ export class TaskletDialogComponent implements OnInit {
       if (task != null) {
         // Existing task
         this.tasklet.taskId = task.id;
-      } else {
+      } else if (this.task.name != null && this.task.name !== '') {
         // New task
         task = new Task(this.task.name);
         this.tasklet.taskId = task.id;
         this.taskService.createTask(task);
+      } else {
+        this.tasklet.taskId = null;
       }
     }
   }

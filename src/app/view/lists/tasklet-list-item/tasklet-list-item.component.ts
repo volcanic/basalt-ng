@@ -18,7 +18,6 @@ import {ProjectService} from '../../../services/entities/project.service';
 import {ColorService} from '../../../services/color.service';
 import {Description} from '../../../model/description.model';
 import {CloneService} from '../../../services/util/clone.service';
-import {FilterService} from '../../../services/filter.service';
 
 @Component({
   selector: 'app-tasklet-list-item',
@@ -45,7 +44,6 @@ export class TaskletListItemComponent implements OnInit {
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
               private taskletService: TaskletService,
-              private filterService: FilterService,
               private colorService: ColorService,
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
