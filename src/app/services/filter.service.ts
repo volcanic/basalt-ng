@@ -23,7 +23,6 @@ export class FilterService {
               private cloneService: CloneService,
               private taskletService: TaskletService
   ) {
-
     // Subscribe project changes
     this.projectService.projectsSubject.pipe(
       takeUntil(this.projectUnsubscribeSubject)
@@ -62,6 +61,9 @@ export class FilterService {
     });
   }
 
+  /**
+   * Deletes tags from filter tag list that are not in use anymore
+   */
   public deleteUnusedTags() {
     this.tags.forEach((outerTag, key) => { // Iterate over all existing tags
       if (outerTag.name !== 'empty') { // Ignore the "empty" tag
