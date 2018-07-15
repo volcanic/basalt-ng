@@ -9,6 +9,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 export class TagFilterDialogComponent implements OnInit {
   dialogTitle = '';
   tags = [];
+  tagsNone = false;
 
   constructor(public dialogRef: MatDialogRef<TagFilterDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -16,6 +17,7 @@ export class TagFilterDialogComponent implements OnInit {
     this.tags = this.data.tags.sort((t1, t2) => {
       return t1.name > t2.name ? 1 : -1;
     });
+    this.tagsNone = this.data.tagsNone;
   }
 
   ngOnInit() {
@@ -34,6 +36,6 @@ export class TagFilterDialogComponent implements OnInit {
   }
 
   apply() {
-    this.dialogRef.close(this.tags);
+    this.dialogRef.close({tags: this.tags, tagsNone: this.tagsNone});
   }
 }

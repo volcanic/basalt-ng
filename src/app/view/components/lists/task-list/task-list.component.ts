@@ -51,8 +51,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
         this.tasks = tasks.filter(task => {
           const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
-          const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()));
-          const matchesProjects = this.matchService.taskMatchesProjects(task, Array.from(this.filterService.projects.values()));
+          const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
+          const matchesProjects = this.matchService.taskMatchesProjects(task, Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
 
           return matchesSearchItem && matchesTags && matchesProjects;
         });

@@ -140,14 +140,18 @@ export class TimelineComponent implements OnInit, OnDestroy {
           disableClose: false,
           data: {
             dialogTitle: 'Select tags',
-            tags: Array.from(this.filterService.tags.values())
+            tags: Array.from(this.filterService.tags.values()),
+            tagsNone: this.filterService.tagsNone
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            const tags = result as Tag[];
+            const tags = result.tags as Tag[];
+            const tagsNone = result.tagsNone as boolean;
 
             this.filterService.updateTags(tags, false);
+            this.filterService.updateTagsNone(tagsNone);
+
             this.taskletService.notify();
             this.taskService.notify();
             this.projectService.notify();
@@ -161,14 +165,17 @@ export class TimelineComponent implements OnInit, OnDestroy {
           disableClose: false,
           data: {
             dialogTitle: 'Select projects',
-            projects: Array.from(this.filterService.projects.values())
+            projects: Array.from(this.filterService.projects.values()),
+            projectsNone: this.filterService.projectsNone
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            const projects = result as Project[];
+            const projects = result.projects as Project[];
+            const projectsNone = result.projectsNone as boolean;
 
             this.filterService.updateProjects(projects, false);
+            this.filterService.updateProjectsNone(projectsNone);
 
             this.taskletService.notify();
             this.taskService.notify();
@@ -253,8 +260,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
         this.tasklets = tasklets.filter(tasklet => {
           const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-          const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
-          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()));
+          const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
+          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
 
           return matchesSearchItem && matchesTags && matchesProjects;
         }).sort((t1: Tasklet, t2: Tasklet) => {

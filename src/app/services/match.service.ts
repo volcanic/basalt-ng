@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Tasklet} from '../model/entities/tasklet.model';
 import {EntityService} from './entities/entity.service';
-import {PlaceholderValues} from '../model/placeholder-values.model';
 import {Project} from '../model/entities/project.model';
 import {Task} from '../model/entities/task.model';
 import {Tag} from '../model/tag.model';
@@ -16,7 +15,7 @@ export class MatchService {
   }
 
   //
-  // Filters
+  // Tags
   //
 
   /**
@@ -24,51 +23,14 @@ export class MatchService {
    *
    * @param tasklet
    * @param tags
+   * @param tagsNone
    * @returns {boolean}
    */
-  public taskletMatchesTags(tasklet: Tasklet, tags: Tag[]): boolean {
-    let match = false;
+  public taskletMatchesTags(tasklet: Tasklet, tags: Tag[], tagsNone: boolean): boolean {
 
-    // Filter tasklets that match selected tags
-    tags.forEach(tag => {
-        if (tag.checked) {
-          if ((tasklet.tags == null || tasklet.tags.length === 0)
-            && tag.name === PlaceholderValues.EMPTY_TAG) {
-            match = true;
-          } else if (tasklet.tags != null && tasklet.tags.length > 0) {
-            tasklet.tags.forEach(taskletTag => {
-              if (taskletTag.name === tag.name) {
-                match = true;
-              }
-            });
-          }
-        }
-      }
-    );
-
-    return match;
-  }
-
-  /**
-   * Determines whether a tasklet matches a given set of projects
-   *
-   * @param tasklet
-   * @param projects
-   * @returns {boolean}
-   */
-  public taskletMatchesProjects(tasklet: Tasklet, projects: Project[]): boolean {
-
-    return projects.length === 0 || projects.some(p => {
-        if (p.checked) {
-          const project = this.entityService.getProjectByTasklet(tasklet);
-
-          if ((project != null && project.id != null && p.id === project.id ) ||
-            (project == null && p.id === PlaceholderValues.EMPTY_PROJECT_ID)) {
-            return true;
-          }
-        }
-
-        return false;
+    return ((tasklet.tags == null || tasklet.tags.length === 0) && tagsNone)
+      || tasklet.tags.some(tag => {
+        return this.tagMatchesTags(tag, tags, tagsNone);
       });
   }
 
@@ -77,29 +39,50 @@ export class MatchService {
    *
    * @param task
    * @param tags
+   * @param tagsNone
    * @returns {boolean}
    */
-  public taskMatchesTags(task: Task, tags: Tag[]): boolean {
-    let match = false;
+  public taskMatchesTags(task: Task, tags: Tag[], tagsNone: boolean): boolean {
 
-    // Filter task that match selected tags
-    tags.forEach(tag => {
-        if (tag.checked) {
-          if ((task.tags == null || task.tags.length === 0)
-            && tag.name === PlaceholderValues.EMPTY_TAG) {
-            match = true;
-          } else if (task.tags != null && task.tags.length > 0) {
-            task.tags.forEach(taskTag => {
-              if (taskTag.name === tag.name) {
-                match = true;
-              }
-            });
-          }
-        }
-      }
-    );
+    return ((task.tags == null || task.tags.length === 0) && tagsNone)
+      || task.tags.some(tag => {
+        return this.tagMatchesTags(tag, tags, tagsNone);
+      });
+  }
 
-    return match;
+  /**
+   * Determines whether a tag matches a given set of tags
+   *
+   * @param tag
+   * @param tags
+   * @param tagsNone
+   * @returns {boolean}
+   */
+  private tagMatchesTags(tag: Tag, tags: Tag[], tagsNone: boolean) {
+    return (tag == null && tagsNone)
+      || tags.length === 0
+      || tags.some(t => {
+        return t.checked && tag != null && tag.name != null && t.name === tag.name;
+      });
+  }
+
+  //
+  // Projects
+  //
+
+  /**
+   * Determines whether a tasklet matches a given set of projects
+   *
+   * @param tasklet
+   * @param projects
+   * @param projectsNone
+   * @returns {boolean}
+   */
+  public taskletMatchesProjects(tasklet: Tasklet, projects: Project[], projectsNone: boolean): boolean {
+
+    const project = this.entityService.getProjectByTasklet(tasklet);
+
+    return this.projectMatchesProjects(project, projects, projectsNone);
   }
 
   /**
@@ -107,22 +90,14 @@ export class MatchService {
    *
    * @param task
    * @param projects
+   * @param projectsNone
    * @returns {boolean}
    */
-  public taskMatchesProjects(task: Task, projects: Project[]): boolean {
+  public taskMatchesProjects(task: Task, projects: Project[], projectsNone: boolean): boolean {
 
-    return projects.length === 0 || projects.some(p => {
-        if (p.checked) {
-          const project = this.entityService.getEntityById(task.projectId);
+    const project = this.entityService.getEntityById(task.projectId) as Project;
 
-          if ((project != null && project.id != null && p.id === project.id ) ||
-            (project == null && p.id === PlaceholderValues.EMPTY_PROJECT_ID)) {
-            return true;
-          }
-        }
-
-        return false;
-      });
+    return this.projectMatchesProjects(project, projects, projectsNone);
   }
 
   /**
@@ -130,19 +105,14 @@ export class MatchService {
    *
    * @param project
    * @param projects
+   * @param projectsNone
    * @returns {boolean}
    */
-  public projectMatchesProjects(project: Project, projects: Project[]): boolean {
-
-    return projects.length === 0 || projects.some(p => {
-        if (p.checked) {
-          if ((project != null && project.id != null && p.id === project.id ) ||
-            (project == null && p.id === PlaceholderValues.EMPTY_PROJECT_ID)) {
-            return true;
-          }
-        }
-
-        return false;
+  public projectMatchesProjects(project: Project, projects: Project[], projectsNone: boolean) {
+    return (project == null && projectsNone)
+      || projects.length === 0
+      || projects.some(p => {
+        return p.checked && project != null && project.id != null && p.id === project.id;
       });
   }
 
@@ -159,32 +129,15 @@ export class MatchService {
    */
   public taskletMatchesEveryItem(tasklet: Tasklet, items: string): boolean {
 
-    // Indicate a match if no filter mechanism is used
-    if ((items == null || items.trim() === '')) {
-      return true;
-    }
-
-    return this.splitSearchItems(items).every(i => {
-      return this.taskletMatchesSingleItem(tasklet, i);
-    });
-  }
-
-  /**
-   * Determines whether any of tasklet's attributes contain a certain item
-   * @param tasklet tasklet
-   * @param item single word
-   * @returns {boolean}
-   */
-  public taskletMatchesSingleItem(tasklet: Tasklet, item: string): boolean {
-
     const task = this.entityService.getTaskByTasklet(tasklet);
 
-    const matchesTaskName = this.taskNameMatchesSingleItem(task, item);
-    const matchesDescription = this.descriptionMatchesSingleItem(tasklet.description, item);
-    const matchesPersons = this.personsMatchesSingleItem(tasklet.persons, item);
-    const matchesTags = this.tagsMatchesSingleItem(tasklet.tags, item);
+    return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
 
-    return matchesTaskName || matchesDescription || matchesPersons || matchesTags;
+        return this.taskNameMatchesSingleItem(task, item)
+          || this.descriptionMatchesSingleItem(tasklet.description, item)
+          || this.personsMatchesSingleItem(tasklet.persons, item)
+          || this.tagsMatchesSingleItem(tasklet.tags, item);
+      });
   }
 
   /**
@@ -196,29 +149,11 @@ export class MatchService {
    */
   public taskMatchesEveryItem(task: Task, items: string): boolean {
 
-    // Indicate a match if no filter mechanism is used
-    if ((items == null || items.trim() === '')) {
-      return true;
-    }
-
-    return this.splitSearchItems(items).every(i => {
-      return this.taskMatchesSingleItem(task, i);
-    });
-  }
-
-  /**
-   * Determines whether any of task's attributes contain a certain item
-   * @param task task
-   * @param item single word
-   * @returns {boolean}
-   */
-  public taskMatchesSingleItem(task: Task, item: string): boolean {
-
-    const matchesTaskName = this.taskNameMatchesSingleItem(task, item);
-    const matchesDescription = this.descriptionMatchesSingleItem(task.description, item);
-    const matchesTags = this.tagsMatchesSingleItem(task.tags, item);
-
-    return matchesTaskName || matchesDescription || matchesTags;
+    return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
+        return this.taskNameMatchesSingleItem(task, item)
+          || this.descriptionMatchesSingleItem(task.description, item)
+          || this.tagsMatchesSingleItem(task.tags, item);
+      });
   }
 
   /**
@@ -230,27 +165,9 @@ export class MatchService {
    */
   public projectMatchesEveryItem(project: Project, items: string): boolean {
 
-    // Indicate a match if no filter mechanism is used
-    if ((items == null || items.trim() === '')) {
-      return true;
-    }
-
-    return this.splitSearchItems(items).every(i => {
-      return this.projectMatchesSingleItem(project, i);
-    });
-  }
-
-  /**
-   * Determines whether any of project's attributes contain a certain item
-   * @param project project
-   * @param item single word
-   * @returns {boolean}
-   */
-  public projectMatchesSingleItem(project: Project, item: string): boolean {
-
-    const matchesProjectName = this.projectNameMatchesSingleItem(project, item);
-
-    return matchesProjectName;
+    return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
+        return this.projectNameMatchesSingleItem(project, item);
+      });
   }
 
   //
@@ -268,42 +185,35 @@ export class MatchService {
   }
 
   private descriptionMatchesSingleItem(description: Description, item: string): boolean {
+
     return description.value != null && description.value.split('\n').some(s => {
         return this.textMatchesSingleItem(s, item);
       });
   }
 
   private personsMatchesSingleItem(persons: Person[], item: string): boolean {
-    if (persons != null) {
-      return persons.some(p => {
+
+    return persons != null && persons.some(p => {
         return this.textMatchesSingleItem(p.name, item);
       });
-    }
-
-    return false;
   }
 
   private tagsMatchesSingleItem(tags: Tag[], item: string): boolean {
-    if (tags != null) {
-      return tags.some(t => {
+
+    return tags != null && tags.some(t => {
         return this.textMatchesSingleItem(t.name, item);
       });
-    }
-
-    return false;
   }
 
   public textMatchesAnyItem(text: string, items: string): boolean {
-    if (items == null || items.toString().trim() === '') {
-      return false;
-    }
 
-    return this.splitSearchItems(items).some(i => {
-      return this.textMatchesSingleItem(text, i);
-    });
+    return items != null && items.toString().trim() !== '' && this.splitSearchItems(items).some(i => {
+        return this.textMatchesSingleItem(text, i);
+      });
   }
 
   public textMatchesSingleItem(text: string, item: string): boolean {
+
     return this.valueMatchesSingleItem(text, item);
   }
 
@@ -316,13 +226,10 @@ export class MatchService {
    * @returns {boolean}
    */
   public valueMatchesAnyItem(value: string, items: string): boolean {
-    if (items == null) {
-      return false;
-    }
 
-    return this.splitSearchItems(items).some(t => {
-      return this.valueMatchesSingleItem(value, t);
-    });
+    return items != null && this.splitSearchItems(items).some(t => {
+        return this.valueMatchesSingleItem(value, t);
+      });
   }
 
   /**
@@ -333,11 +240,11 @@ export class MatchService {
    * @returns {boolean}
    */
   public valueMatchesSingleItem(value: string, item: string): boolean {
-    if (value == null || item == null || item.trim() === '') {
-      return false;
-    }
 
-    return this.normalize(value).includes(this.normalize(item.toString()));
+    return value != null
+      && item != null
+      && item.trim() !== ''
+      && this.normalize(value).includes(this.normalize(item.toString()));
   }
 
   /**
@@ -345,6 +252,7 @@ export class MatchService {
    * @param value
    */
   public normalize(value: string): string {
+
     return (value != null) ? value
       .toString()
       .trim()
@@ -367,6 +275,7 @@ export class MatchService {
    * @param items
    */
   private splitSearchItems(items: string): string[] {
+
     if (items == null) {
       return [];
     }

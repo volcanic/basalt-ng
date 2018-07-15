@@ -18,14 +18,14 @@ export class FilterService {
 
   searchItem = '';
   tags: Map<string, Tag> = new Map<string, Tag>();
-  tagsNone: true;
+  tagsNone = true;
 
   initializedTagsOfTasklets = false;
   initializedTagsOfTasks = false;
   initializedProjects = false;
 
   projects: Map<string, Project> = new Map<string, Project>();
-  projectsNone: true;
+  projectsNone = true;
 
   filterSubject = new Subject();
 
@@ -109,6 +109,10 @@ export class FilterService {
     });
   }
 
+  public updateTagsNone(tagsNone: boolean) {
+    this.tagsNone = tagsNone;
+  }
+
   /**
    * Deletes tags from filter tag list that are not in use anymore
    */
@@ -145,6 +149,10 @@ export class FilterService {
 
       this.projects.set(project.id, project);
     });
+  }
+
+  public updateProjectsNone(projectsNone: boolean) {
+    this.projectsNone = projectsNone;
   }
 
   public notify() {

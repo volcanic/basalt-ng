@@ -11,9 +11,10 @@ import {CloneService} from '../../../../services/util/clone.service';
 export class ProjectsFilterDialogComponent implements OnInit {
   dialogTitle = '';
   projects: Project[] = [];
+  projectsNone = false;
 
   constructor(private cloneService: CloneService,
-                public dialogRef: MatDialogRef<ProjectsFilterDialogComponent>,
+              public dialogRef: MatDialogRef<ProjectsFilterDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.dialogTitle = data.dialogTitle;
@@ -21,6 +22,7 @@ export class ProjectsFilterDialogComponent implements OnInit {
     this.projects = this.cloneService.cloneProjects(this.data.projects).sort((p1, p2) => {
       return p1.name > p2.name ? 1 : -1;
     });
+    this.projectsNone = this.data.projectsNone;
   }
 
   ngOnInit() {
@@ -39,6 +41,6 @@ export class ProjectsFilterDialogComponent implements OnInit {
   }
 
   apply() {
-    this.dialogRef.close(this.projects);
+    this.dialogRef.close({projects: this.projects, projectsNone: this.projectsNone});
   }
 }

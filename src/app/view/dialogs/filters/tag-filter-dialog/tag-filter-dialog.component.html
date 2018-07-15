@@ -10,6 +10,9 @@
     <div class="double-column" *ngFor="let t of tags.slice(tags.length / 2, tags.length)">
       <mat-checkbox [(ngModel)]=t.checked>{{ t.name }}</mat-checkbox>
     </div>
+    <div>
+      <mat-checkbox class="special-tag" [(ngModel)]="tagsNone">elements without tags</mat-checkbox>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="action-buttons">

@@ -42,7 +42,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 
         this.projects = projects.filter(project => {
           const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
-          const matchesProjects = this.matchService.projectMatchesProjects(project, Array.from(this.filterService.projects.values()));
+          const matchesProjects = this.matchService.projectMatchesProjects(project,
+            Array.from(this.filterService.projects.values()),
+            this.filterService.projectsNone);
 
           return matchesSearchItem && matchesProjects;
         });
