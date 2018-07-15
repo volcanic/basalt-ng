@@ -10,6 +10,7 @@ import {SnackbarService} from '../../../../services/snackbar.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
 import {CloneService} from '../../../../services/util/clone.service';
+import {FilterService} from '../../../../services/filter.service';
 
 @Component({
   selector: 'app-project-dialog',
@@ -30,6 +31,7 @@ export class ProjectDialogComponent implements OnInit {
               private taskService: TaskService,
               private dateService: DateService,
               private snackbarService: SnackbarService,
+              private filterService: FilterService,
               private cloneService: CloneService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<ProjectDialogComponent>,
@@ -85,6 +87,7 @@ export class ProjectDialogComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
           this.projectService.deleteProject(result as Project);
+          this.filterService.projects.delete((result as Project).id); // Delete project from filter list
           this.snackbarService.showSnackbar('Deleted project', '');
           this.dialogRef.close(null);
         }
