@@ -4,30 +4,23 @@ import {Subject} from 'rxjs';
 import {Person} from '../../model/person.model';
 import {TASKLET_TYPE} from '../../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../../model/tasklet-daily-scrum.model';
-import {Project} from '../../model/entities/project.model';
-import {Task} from '../../model/entities/task.model';
-import {Tag} from '../../model/tag.model';
 import {DateService} from '../date.service';
 import {EntityService} from './entity.service';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Entity} from '../../model/entities/entity.model';
+import {SuggestionService} from '../suggestion.service';
 
 @Injectable()
 export class TaskletService {
   tasklets = new Map<string, Tasklet>();
   taskletsSubject = new Subject<Tasklet[]>();
-  searchOptionsSubject = new Subject<string[]>();
 
   private entitiesUnsubscribeSubject = new Subject();
 
-  private filterInitialized = false;
-
-  searchOptions = [];
-  persons: Map<string, Person>;
-
   constructor(private entityService: EntityService,
-              private dateService: DateService) {
+              private dateService: DateService,
+              private suggestionService: SuggestionService) {
 
     this.entityService.entitiesSubject.pipe(
       takeUntil(this.entitiesUnsubscribeSubject)
@@ -41,8 +34,7 @@ export class TaskletService {
         }
       );
 
-      this.updateSearchOptions();
-      this.updatePersons();
+      this.suggestionService.updateByTasklets(Array.from(this.tasklets.values()));
       this.notify();
     });
   }
@@ -79,93 +71,11 @@ export class TaskletService {
 
       return date2 - date1;
     }));
-    this.searchOptionsSubject.next(this.searchOptions);
   }
 
   //
   // Lookup
   //
-
-  // TODO: move to filter service
-  /**
-   * Updates search options
-   */
-  public updateSearchOptions() {
-    this.searchOptions = [];
-
-    Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
-    }).forEach(t => {
-      if (t != null) {
-
-        // Add description lines to search items
-        if (t.description.value != null) {
-          t.description.value.split('\n').forEach(v => {
-            if (v.trim() !== '') {
-              this.searchOptions.push(v.trim().replace(/(^-)/g, ''));
-            }
-          });
-        }
-
-        // Add tags to search items
-        if (t.tags != null) {
-          t.tags.forEach(tag => {
-            this.searchOptions.push(tag.name);
-          });
-        }
-
-        // Add persons to search options
-        if (t.persons != null) {
-          t.persons.forEach(person => {
-            this.searchOptions.push(person.name);
-          });
-        }
-
-        // Add tasklet name to search options
-        const task: Task = this.entityService.getEntityById(t.taskId) as Task;
-        if (task != null) {
-          this.searchOptions.push(task.name.trim().replace(/(^-)/g, ''));
-
-          // Add project name to search options
-          const project: Project = this.entityService.getEntityById(task.projectId) as Project;
-          if (project != null) {
-            this.searchOptions.push(project.name.trim().replace(/(^-)/g, ''));
-          }
-        }
-      }
-    });
-  }
-
-  /**
-   * Updates persons
-   */
-  public updatePersons() {
-    this.persons = new Map<string, Tag>();
-
-    Array.from(Array.from(this.tasklets.values()).values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
-    }).forEach(tasklet => {
-      if (tasklet.persons != null) {
-        tasklet.persons.forEach(p => {
-          if (p != null && p.name != null && p.name.length > 0) {
-            // Deep copy
-            const person = new Person(p.name);
-            this.persons.set(person.name, person);
-          }
-        });
-      }
-
-      if (tasklet.participants != null) {
-        tasklet.participants.forEach(p => {
-          if (p != null && p.person != null && p.person.name != null && p.person.name.length > 0) {
-            // Deep copy
-            const person = new Person(p.person.name);
-            this.persons.set(person.name, person);
-          }
-        });
-      }
-    });
-  }
 
   /**
    * Returns a map of recent daily scrum activities of a given person
@@ -196,30 +106,11 @@ export class TaskletService {
     return dailyScrumActivities;
   }
 
-  /**
-   * Returns a map of persons
-   * @returns {Map<string, Person>}
-   */
-  public getPersons(): Map<string, Person> {
-    const persons = new Map<string, Person>();
-
-    Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? -1 : 1;
-    }).forEach(t => {
-      if (t.persons != null) {
-        t.persons.forEach(p => {
-          persons.set(p.name, p);
-        });
-      }
-    });
-
-    return persons;
-  }
-
   //
   // Filters
   //
 
+  // TODO Move to match service
   public matchesDate(tasklet: Tasklet, date: Date) {
     return new Date(tasklet.creationDate) > new Date(this.dateService.getDayStart(date))
       && new Date(tasklet.creationDate) < new Date(this.dateService.getDayEnd(date));

@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Subject} from 'rxjs/Subject';
+import {SuggestionService} from '../../../services/suggestion.service';
 
 @Component({
   selector: 'app-timeline-toolbar',
@@ -24,19 +25,21 @@ export class TimelineToolbarComponent implements OnInit {
   searchOptionsFiltered: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletService: TaskletService) {
+  constructor(private suggestionService: SuggestionService) {
   }
 
   ngOnInit() {
     // Subscribe search option changes
-    this.taskletService.searchOptionsSubject.pipe(
+    this.suggestionService.searchOptionsSubject.pipe(
       takeUntil(this.searchOptionsUnsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        this.searchOptions = value as string[];
+        this.searchOptions = (value as string[]).reverse();
+        this.formControl.setValue(this.formControl.value);
       }
     });
 
+    this.searchOptions = Array.from(this.suggestionService.searchOptions.values()).reverse();
     this.searchOptionsFiltered = this.formControl.valueChanges
       .pipe(
         startWith(''),

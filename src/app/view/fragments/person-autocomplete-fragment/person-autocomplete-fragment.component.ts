@@ -5,6 +5,7 @@ import {Person} from '../../../model/person.model';
 import {map, startWith} from 'rxjs/internal/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {CloneService} from '../../../services/util/clone.service';
+import {SuggestionService} from '../../../services/suggestion.service';
 
 @Component({
   selector: 'app-person-autocomplete-fragment',
@@ -23,7 +24,8 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
   formControl: FormControl = new FormControl();
 
   constructor(private taskletService: TaskletService,
-              private cloneService: CloneService) {
+              private cloneService: CloneService,
+              private suggestionService: SuggestionService) {
   }
 
   ngOnInit() {
@@ -34,9 +36,7 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
     // Deep copy
     this.person = this.cloneService.clonePerson(this.person);
 
-    this.options = Array.from(this.taskletService.persons.values()).map(tag => {
-      return tag.name;
-    }).reverse();
+    this.options = Array.from(this.suggestionService.personOptions.values()).reverse();
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(

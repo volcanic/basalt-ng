@@ -6,6 +6,7 @@ import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
 import {FilterService} from '../../../services/filter.service';
+import {SuggestionService} from '../../../services/suggestion.service';
 
 @Component({
   selector: 'app-tag-chips-fragment',
@@ -26,13 +27,12 @@ export class TagChipsFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private filterService: FilterService) {
+  constructor(private filterService: FilterService,
+              private suggestionService: SuggestionService) {
   }
 
   ngOnInit() {
-    this.options = Array.from(this.filterService.tags.values()).map(tag => {
-      return tag.name;
-    });
+    this.options = Array.from(this.suggestionService.tagOptions.values());
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(

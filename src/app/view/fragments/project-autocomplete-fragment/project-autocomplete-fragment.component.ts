@@ -7,6 +7,7 @@ import {ProjectService} from '../../../services/entities/project.service';
 import {CloneService} from '../../../services/util/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
+import {SuggestionService} from '../../../services/suggestion.service';
 
 @Component({
   selector: 'app-project-autocomplete-fragment',
@@ -28,7 +29,8 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   formControl: FormControl = new FormControl();
 
   constructor(private projectService: ProjectService,
-              private cloneService: CloneService) {
+              private cloneService: CloneService,
+              private suggestionService: SuggestionService) {
   }
 
   ngOnInit() {
@@ -39,9 +41,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
     // Deep copy
     this.project = this.cloneService.cloneProject(this.project);
 
-    this.options = Array.from(this.projectService.projects.values()).map(tag => {
-      return tag.name;
-    });
+    this.options = Array.from(this.suggestionService.projectOptions.values()).reverse();
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(

@@ -5,6 +5,7 @@ import {EntityService} from './entity.service';
 import {Entity} from '../../model/entities/entity.model';
 import {takeUntil} from 'rxjs/internal/operators';
 import {EntityType} from '../../model/entities/entity-type.enum';
+import {SuggestionService} from '../suggestion.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class TaskService {
 
   private entitiesUnsubscribeSubject = new Subject();
 
-  constructor(private entityService: EntityService) {
+  constructor(private entityService: EntityService,
+              private suggestionService: SuggestionService) {
     this.entityService.entitiesSubject.pipe(
       takeUntil(this.entitiesUnsubscribeSubject)
     ).subscribe((value) => {
@@ -28,6 +30,7 @@ export class TaskService {
         }
       );
 
+      this.suggestionService.updateByTasks(Array.from(this.tasks.values()));
       this.notify();
     });
   }

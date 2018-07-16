@@ -6,6 +6,7 @@ import {TaskletService} from '../../../services/entities/tasklet.service';
 import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
+import {SuggestionService} from '../../../services/suggestion.service';
 
 @Component({
   selector: 'app-person-chips-fragment',
@@ -26,14 +27,12 @@ export class PersonChipsFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletService: TaskletService) {
+  constructor(private taskletService: TaskletService,
+              private suggestionService: SuggestionService) {
   }
 
   ngOnInit() {
-    this.taskletService.updatePersons();
-    this.options = Array.from(this.taskletService.persons.values()).map(person => {
-      return person.name;
-    });
+    this.options = Array.from(this.suggestionService.personOptions.values());
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(

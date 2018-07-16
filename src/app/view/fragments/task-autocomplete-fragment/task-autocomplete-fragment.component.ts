@@ -7,6 +7,7 @@ import {CloneService} from '../../../services/util/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
 import {TaskService} from '../../../services/entities/task.service';
+import {SuggestionService} from '../../../services/suggestion.service';
 
 @Component({
   selector: 'app-task-autocomplete-fragment',
@@ -27,7 +28,8 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   formControl: FormControl = new FormControl();
 
   constructor(private taskService: TaskService,
-              private cloneService: CloneService) {
+              private cloneService: CloneService,
+              private suggestionService: SuggestionService) {
   }
 
   ngOnInit() {
@@ -38,9 +40,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
     // Cut ties with existing entity
     this.task = this.cloneService.cloneTask(this.task);
 
-    this.options = Array.from(this.taskService.tasks.values()).map(task => {
-      return task.name;
-    }).reverse();
+    this.options = Array.from(this.suggestionService.taskOptions.values()).reverse();
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(
