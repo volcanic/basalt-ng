@@ -32,6 +32,8 @@
     </button>
     <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('tags')">
       <mat-icon svgIcon="label_outline" class="white-icon"></mat-icon>
+    </button><button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('clearFilter')">
+      <mat-icon svgIcon="layers_clear" class="white-icon"></mat-icon>
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="onClickMenuItem('download')">

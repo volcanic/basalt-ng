@@ -120,6 +120,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
     icons.push(new Icon(MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
     icons.push(new Icon(MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
+    icons.push(new Icon(MAPS, 'layers_clear', 'ic_layers_clear_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'check', 'ic_check_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'chevron_right', 'ic_chevron_right_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'close_18', 'ic_close_18px.svg'));
@@ -137,7 +138,8 @@ export class AppComponent implements OnInit {
     this.iconRegistry.addSvgIcon('blank', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'));
     this.iconRegistry.addSvgIcon('scrum',
       this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
-    this.iconRegistry.addSvgIcon('outlined_flag', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
+    this.iconRegistry.addSvgIcon('outlined_flag',
+      this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
   }
 
   /**

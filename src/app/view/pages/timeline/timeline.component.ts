@@ -118,7 +118,10 @@ export class TimelineComponent implements OnInit {
         });
         break;
       }
-      case 'tags': {
+      case 'clearFilter': {
+        this.filterService.clearAllFilters();
+        break;
+      }case 'tags': {
         const dialogRef = this.dialog.open(TagFilterDialogComponent, {
           disableClose: false,
           data: {
