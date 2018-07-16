@@ -44,7 +44,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.15 | Update date |
 | 0.16 | Import/export tasklets |
 | 0.17 | Effort reports |
-| 0.17 | Top-level tasks |
+| 0.18 | Top-level tasks |
 
 ### Planned features
 

@@ -32,12 +32,14 @@ export class ProjectsFilterDialogComponent implements OnInit {
     this.projects.forEach(p => {
       p.checked = true;
     });
+    this.projectsNone = true;
   }
 
   selectNone() {
     this.projects.forEach(p => {
       p.checked = false;
     });
+    this.projectsNone = false;
   }
 
   apply() {
