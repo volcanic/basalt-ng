@@ -47,6 +47,11 @@ export class ProjectListComponent implements OnInit, OnDestroy {
             this.filterService.projectsNone);
 
           return matchesSearchItem && matchesProjects;
+        }).sort((project1: Project, project2: Project) => {
+          const date1 = new Date(project1.creationDate).getTime();
+          const date2 = new Date(project2.creationDate).getTime();
+
+          return date2 - date1;
         });
       }
     });
