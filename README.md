@@ -2,13 +2,13 @@
 
 [![Basal logo](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)
 
-Visit [https://basalt.interoberlin.de/](https://basalt.interoberlin.de/) for a live demo.
+Visit [https://basalt.intero.berlin/](https://basalt.intero.berlin/) for a live demo.
 
 ## Purpose
 
 Basalt is an Angular based web application that helps you structure your work in a multi-tasking environment - you may call it a have-done list.
 
-<img src="https://github.com/florianschwanz/basalt-ng/blob/master/doc/screenshots/01-overview.png" alt="Screenshot overview" height=45% width=45% /> <img src="https://github.com/florianschwanz/basalt-ng/blob/master/doc/screenshots/04-add.png" alt="Screenshot add" height=45% width=45% />
+<img src="https://github.com/florianschwanz/basalt-ng/blob/master/doc/screenshots/v0.18/01-overview.png" alt="Screenshot overview" height=45% width=45% /> <img src="https://github.com/florianschwanz/basalt-ng/blob/master/doc/screenshots/v0.18/04-add.png" alt="Screenshot add" height=45% width=45% />
 
 In order to structure your work you can note what you just did as a _tasklet_ which is a small work item belonging to a larger topic. That way you keep track of
 * all your current tasks
@@ -44,12 +44,12 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.15 | Update date |
 | 0.16 | Import/export tasklets |
 | 0.17 | Effort reports |
+| 0.17 | Top-level tasks |
 
 ### Planned features
 
 * tasklet aggregation
 * calender view
-* reporting by day and by week
 * multi-device synchronization
 * code snippet formatting
 
