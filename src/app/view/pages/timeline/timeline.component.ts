@@ -130,6 +130,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             const project = result as Project;
+            this.filterService.updateProjects([project], true);
             this.projectService.createProject(project);
           }
         });
@@ -260,8 +261,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
         this.tasklets = tasklets.filter(tasklet => {
           const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-          const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
-          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
+          const matchesTags = this.matchService.taskletMatchesTags(tasklet,
+            Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
+          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
+            Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
 
           return matchesSearchItem && matchesTags && matchesProjects;
         }).sort((t1: Tasklet, t2: Tasklet) => {

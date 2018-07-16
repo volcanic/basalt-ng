@@ -25,6 +25,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
   tasksOverdueBadgeColor = 'transparent';
   tasksInboxBadgeColor = 'transparent';
 
+  DISPLAY_LIMIT = 20;
+
   private tasksUnsubscribeSubject = new Subject();
 
   constructor(private taskService: TaskService,
@@ -51,8 +53,10 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
         this.tasks = tasks.filter(task => {
           const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
-          const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
-          const matchesProjects = this.matchService.taskMatchesProjects(task, Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
+          const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()),
+            this.filterService.tagsNone);
+          const matchesProjects = this.matchService.taskMatchesProjects(task,
+            Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
 
           return matchesSearchItem && matchesTags && matchesProjects;
         });
@@ -81,11 +85,10 @@ export class TaskListComponent implements OnInit, OnDestroy {
           const date2 = new Date(t2.completionDate).getTime();
 
           return date2 - date1;
-        });
+        }).slice(0, this.DISPLAY_LIMIT);
 
         this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
         this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
-        ;
       }
     });
   }
