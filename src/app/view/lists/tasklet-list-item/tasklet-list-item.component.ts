@@ -18,6 +18,7 @@ import {ProjectService} from '../../../services/entities/project.service';
 import {ColorService} from '../../../services/color.service';
 import {Description} from '../../../model/description.model';
 import {CloneService} from '../../../services/util/clone.service';
+import {FilterService} from '../../../services/filter.service';
 
 @Component({
   selector: 'app-tasklet-list-item',
@@ -47,6 +48,7 @@ export class TaskletListItemComponent implements OnInit {
               private colorService: ColorService,
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
+              private filterService: FilterService,
               public dateService: DateService,
               public dialog: MatDialog) {
   }
@@ -201,9 +203,11 @@ export class TaskletListItemComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(tasklet => {
-      if (tasklet != null) {
-        this.taskletService.updateTasklet(tasklet as Tasklet);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        const tasklet = result as Tasklet;
+        this.taskletService.updateTasklet(tasklet);
+        this.filterService.updateTags(tasklet.tags, true);
         this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
@@ -235,7 +239,9 @@ export class TaskletListItemComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletService.createTasklet(result as Tasklet);
+        const tasklet = result as Tasklet;
+        this.taskletService.createTasklet(result);
+        this.filterService.updateTags(tasklet.tags, true);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
@@ -265,7 +271,9 @@ export class TaskletListItemComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletService.createTasklet(result as TaskletDailyScrum);
+        const tasklet = result as TaskletDailyScrum;
+        this.taskletService.createTasklet(tasklet);
+        this.filterService.updateTags(tasklet.tags, true);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
@@ -282,7 +290,8 @@ export class TaskletListItemComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletService.updateTasklet(result as Tasklet);
+        const tasklet = result as Tasklet;
+        this.taskletService.updateTasklet(tasklet);
         this.snackbarService.showSnackbar('Updated tasklet creation time', '');
       }
     });
@@ -301,6 +310,7 @@ export class TaskletListItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskletService.deleteTasklet(result as Tasklet);
+        this.filterService.updateTags([], false);
         this.snackbarService.showSnackbar('Deleted tasklet', '');
       }
     });

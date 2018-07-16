@@ -1,12 +1,9 @@
-import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {TagFilterDialogComponent} from '../../dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
-import {MatchService} from '../../../services/match.service';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
 import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
@@ -28,17 +25,11 @@ import {Tag} from '../../../model/tag.model';
   templateUrl: './timeline.component.html',
   styles: [require('./timeline.component.scss')]
 })
-export class TimelineComponent implements OnInit, OnDestroy {
+export class TimelineComponent implements OnInit {
   title = 'Basalt';
-  tasklets: Tasklet[] = [];
-
-  private taskletsUnsubscribeSubject = new Subject();
-  private projectsUnsubscribeSubject = new Subject();
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
-
-  DISPLAY_LIMIT = 100;
 
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
@@ -46,20 +37,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
               private taskletService: TaskletService,
               private filterService: FilterService,
               private snackbarService: SnackbarService,
-              private matchService: MatchService,
               public zone: NgZone,
               public dialog: MatDialog) {
   }
 
   ngOnInit() {
-
-    this.initializeTaskletSubscription();
-    this.initializeProjectSubscription();
-  }
-
-  ngOnDestroy(): void {
-    this.taskletsUnsubscribeSubject.next();
-    this.taskletsUnsubscribeSubject.complete();
   }
 
   //
@@ -130,6 +112,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             const project = result as Project;
+            this.filterService.updateProjects([project], true);
             this.projectService.createProject(project);
           }
         });
@@ -233,63 +216,5 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.taskletService.notify();
     this.taskService.notify();
     this.projectService.notify();
-  }
-
-  /**
-   * Handles click on side menu items
-   * @param menuItem
-   */
-  onSideMenuItemClicked(menuItem: string) {
-    this.snackbarService.showSnackbar(`Clicked on side menu item ${menuItem}`, '');
-  }
-
-  //
-  // Initialization
-  //
-
-  /**
-   * Subscribes tasklet changes
-   */
-  private initializeTaskletSubscription() {
-
-    this.taskletService.taskletsSubject.pipe(
-      takeUntil(this.taskletsUnsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        const tasklets: Tasklet[] = (value as Tasklet[]);
-
-        this.tasklets = tasklets.filter(tasklet => {
-          const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-          const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
-          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
-
-          return matchesSearchItem && matchesTags && matchesProjects;
-        }).sort((t1: Tasklet, t2: Tasklet) => {
-
-          return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
-        }).slice(0, this.DISPLAY_LIMIT);
-      }
-
-      this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
-    });
-  }
-
-  /**
-   * Subscribes project changes
-   */
-  private initializeProjectSubscription() {
-
-    this.projectService.projectsSubject.pipe(
-      takeUntil(this.projectsUnsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-
-        (value as Project[]).forEach(project => {
-          if (!this.filterService.projects.has(project.id)) {
-            this.filterService.projects.set(project.id, project);
-          }
-        });
-      }
-    });
   }
 }
