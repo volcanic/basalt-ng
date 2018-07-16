@@ -27,12 +27,14 @@ export class TagFilterDialogComponent implements OnInit {
     this.tags.forEach(t => {
       t.checked = true;
     });
+    this.tagsNone = true;
   }
 
   selectNone() {
     this.tags.forEach(t => {
       t.checked = false;
     });
+    this.tagsNone = false;
   }
 
   apply() {
