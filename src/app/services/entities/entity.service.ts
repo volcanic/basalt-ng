@@ -163,7 +163,7 @@ export class EntityService {
   }
 
   /**
-   * Retrieves a project by a tasks
+   * Retrieves a project by a tasklet
    *
    * @param tasklet
    * @returns {any}
@@ -172,6 +172,21 @@ export class EntityService {
     const task = this.getTaskByTasklet(tasklet);
 
     if (tasklet != null && task != null && task.projectId != null) {
+      return this.getEntityById(task.projectId) as Project;
+    }
+
+    return null;
+  }
+
+  /**
+   * Retrieves a project by a task
+   *
+   * @param task
+   * @returns {any}
+   */
+  public getProjectByTask(task: Task): Project {
+
+    if (task != null && task.projectId != null) {
       return this.getEntityById(task.projectId) as Project;
     }
 

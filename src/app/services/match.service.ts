@@ -129,11 +129,13 @@ export class MatchService {
    */
   public taskletMatchesEveryItem(tasklet: Tasklet, items: string): boolean {
 
-    const task = this.entityService.getTaskByTasklet(tasklet);
+    const task = this.entityService.getTaskByTasklet(tasklet) as Task;
+    const project = this.entityService.getProjectByTasklet(tasklet) as Project;
 
     return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
 
         return this.taskNameMatchesSingleItem(task, item)
+          || this.projectNameMatchesSingleItem(project, item)
           || this.descriptionMatchesSingleItem(tasklet.description, item)
           || this.personsMatchesSingleItem(tasklet.persons, item)
           || this.tagsMatchesSingleItem(tasklet.tags, item);
@@ -149,8 +151,11 @@ export class MatchService {
    */
   public taskMatchesEveryItem(task: Task, items: string): boolean {
 
+    const project = this.entityService.getProjectByTask(task) as Project;
+
     return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
         return this.taskNameMatchesSingleItem(task, item)
+          || this.projectNameMatchesSingleItem(project, item)
           || this.descriptionMatchesSingleItem(task.description, item)
           || this.tagsMatchesSingleItem(task.tags, item);
       });
