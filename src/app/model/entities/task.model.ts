@@ -8,7 +8,6 @@ export class Task extends Entity {
   name: string;
   description: Description;
   projectId: string;
-  creationDate: Date;
   dueDate: Date;
   completionDate: Date;
   priority: number;
@@ -21,7 +20,6 @@ export class Task extends Entity {
     this.name = name;
     this.description = new Description();
     this.projectId = '';
-    this.creationDate = new Date();
     this.dueDate = null;
     this.completionDate = null;
     this.priority = -1;

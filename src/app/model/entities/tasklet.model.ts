@@ -11,7 +11,6 @@ export class Tasklet extends Entity {
   type: TASKLET_TYPE;
   taskId: string;
   description: Description;
-  creationDate: Date;
   persons: Person[];
   participants: DailyScrumParticipant[];
   tags: Tag[];
@@ -22,7 +21,6 @@ export class Tasklet extends Entity {
     this.type = TASKLET_TYPE.UNSPECIFIED;
     this.taskId = '';
     this.description = new Description();
-    this.creationDate = new Date();
     this.persons = [];
     this.participants = [];
     this.tags = [];
