@@ -1,0 +1,22 @@
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="tags.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label" color="">
+          <span>Recent tags</span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-tag-list-item *ngFor="let t of tags" [tag]="t">
+    </app-tag-list-item>
+    <div>
+      <mat-checkbox class="special-tag" [(ngModel)]="tagsNone" (ngModelChange)="changeSpecialTag($event)">elements without tags</mat-checkbox>
+    </div>
+    <button mat-button class="label headers-align" (click)="selectAll()">
+      <span>Select all</span>
+    </button>
+    <button mat-button class="label headers-align" (click)="selectNone()">
+      <span>Select none</span>
+    </button>
+  </mat-expansion-panel>
+</mat-accordion>

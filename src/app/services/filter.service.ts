@@ -9,7 +9,6 @@ import {TaskletService} from './entities/tasklet.service';
 import {TaskService} from './entities/task.service';
 import {Tasklet} from '../model/entities/tasklet.model';
 import {Task} from '../model/entities/task.model';
-import {SnackbarService} from './snackbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +36,7 @@ export class FilterService {
   constructor(private projectService: ProjectService,
               private cloneService: CloneService,
               private taskletService: TaskletService,
-              private taskService: TaskService,
-              private snackbarService: SnackbarService) {
+              private taskService: TaskService) {
 
     // Subscribe tasklet changes
     this.taskletService.taskletsSubject.pipe(
@@ -85,19 +83,44 @@ export class FilterService {
     });
   }
 
+  //
+  // Search item
+  //
+
+  public updateSearchItem(searchItem: string) {
+    this.searchItem = searchItem;
+    this.notify();
+  }
+
+  //
+  // Tags
+  //
+
   private updateTagsOfTasklets(tasklets: Tasklet[], enable: boolean) {
     tasklets.forEach(tasklet => {
-      this.updateTags(tasklet.tags, enable);
+      this.updateTagsList(tasklet.tags, enable);
     });
+    this.notify();
   }
 
   private updateTagsOfTasks(tasks: Task[], enable: boolean) {
     tasks.forEach(task => {
-      this.updateTags(task.tags, enable);
+      this.updateTagsList(task.tags, enable);
     });
+    this.notify();
   }
 
-  public updateTags(tags: Tag[], enable: boolean) {
+  public updateTags(tags: Tag[], enable: boolean, tagsNone: boolean) {
+    this.updateTagsList(tags, enable);
+    this.updateTagsNone(tagsNone);
+    this.notify();
+  }
+
+  public updateTagsList(tags: Tag[], enable: boolean) {
+    this.updateTagsListInternal(tags, enable);
+  }
+
+  private updateTagsListInternal(tags: Tag[], enable: boolean) {
 
     tags.forEach((t: Tag) => {
       // Deep copy
@@ -120,26 +143,27 @@ export class FilterService {
    */
   private deleteUnusedTags() {
     this.tags.forEach((outerTag, key) => { // Iterate over all existing tags
-      if (outerTag.name !== 'empty') { // Ignore the "empty" tag
-        const isContainedInTasklet = Array.from(this.taskletService.tasklets.values())
-          .some(tasklet => { // Check if tag is contained in tasklets
-            return tasklet.tags.some(innerTag => { // check if tag is contained in tasklet
-              return innerTag.name === outerTag.name;
-            });
+      const isContainedInTasklet = Array.from(this.taskletService.tasklets.values())
+        .some(tasklet => { // Check if tag is contained in tasklets
+          return tasklet.tags.some(innerTag => { // check if tag is contained in tasklet
+            return innerTag.name === outerTag.name;
           });
-        const isContainedInTask = Array.from(this.taskService.tasks.values())
-          .some(task => { // Check if tag is contained in tasks
-            return task.tags.some(innerTag => { // check if tag is contained in task
-              return innerTag.name === outerTag.name;
-            });
+        });
+      const isContainedInTask = Array.from(this.taskService.tasks.values())
+        .some(task => { // Check if tag is contained in tasks
+          return task.tags.some(innerTag => { // check if tag is contained in task
+            return innerTag.name === outerTag.name;
           });
-        if (!(isContainedInTask || isContainedInTasklet)) { // If tag is not contained in tasklets or tasks, delete from tag list
-          this.tags.delete(key);
-        }
+        });
+      if (!(isContainedInTask || isContainedInTasklet)) { // If tag is not contained in tasklets or tasks, delete from tag list
+        this.tags.delete(key);
       }
     });
-
   }
+
+  //
+  // Projects
+  //
 
   public updateProjects(projects: Project[], enable: boolean) {
 
@@ -153,30 +177,23 @@ export class FilterService {
 
       this.projects.set(project.id, project);
     });
+
+    this.notify();
   }
 
   public updateProjectsNone(projectsNone: boolean) {
     this.projectsNone = projectsNone;
+    this.notify();
   }
 
   /**
    * Clears all currently set filters
    */
   public clearAllFilters() {
-    // Clear tag filters
+
     this.clearTagFilter();
-
-    // Clear project filters
     this.clearProjectFilter();
-
-    // Notify the UI so all lists update
-    // TODO: Check if this can be done after clearing took place. Might cause runtime-issues due to callbacks in individual functions
-    this.taskletService.notify(); // Notify TaskletService so the tasklet list updates
-    this.taskService.notify();  // Notify TaskService so the task list updates
-    this.projectService.notify(); // Notify ProjectService to the project list updates
-
-    // Notify snackbar
-    this.snackbarService.showSnackbar('Filters cleared', '');
+    this.notify();
   }
 
   /**
@@ -201,8 +218,11 @@ export class FilterService {
     this.projectsNone = true; // Select "elements without projects" checkbox
   }
 
+  //
+  // Notifications
+  //
+
   public notify() {
     this.filterSubject.next();
   }
-
 }

@@ -1,0 +1,30 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.flex {
+  flex-grow: 1;
+}
+
+.tag {
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action{
+  margin-left: 8px;
+}
+
+.action-buttons {
+  min-width: 65px;
+}
+
+.list-icon {
+  margin-right: 16px;
+}

@@ -75,7 +75,7 @@ export class TimelineComponent implements OnInit {
             const tasklet = result as Tasklet;
 
             this.taskletService.createTasklet(tasklet);
-            this.filterService.updateTags(tasklet.tags, true);
+            this.filterService.updateTagsList(tasklet.tags, true);
             this.snackbarService.showSnackbar('Added tasklet', '');
           }
         });
@@ -95,7 +95,7 @@ export class TimelineComponent implements OnInit {
             const task = result as Task;
 
             this.taskService.createTask(task);
-            this.filterService.updateTags(task.tags, true);
+            this.filterService.updateTagsList(task.tags, true);
           }
         });
         break;
@@ -118,10 +118,12 @@ export class TimelineComponent implements OnInit {
         });
         break;
       }
-      case 'clearFilter': {
+      case 'clear-filter': {
         this.filterService.clearAllFilters();
+        this.snackbarService.showSnackbar('Filters cleared', '');
         break;
-      }case 'tags': {
+      }
+      case 'filter-tags': {
         const dialogRef = this.dialog.open(TagFilterDialogComponent, {
           disableClose: false,
           data: {
@@ -135,18 +137,13 @@ export class TimelineComponent implements OnInit {
             const tags = result.tags as Tag[];
             const tagsNone = result.tagsNone as boolean;
 
-            this.filterService.updateTags(tags, false);
-            this.filterService.updateTagsNone(tagsNone);
-
-            this.taskletService.notify();
-            this.taskService.notify();
-            this.projectService.notify();
+            this.filterService.updateTags(tags, false, tagsNone);
             this.snackbarService.showSnackbar('Tags selected', '');
           }
         });
         break;
       }
-      case 'projects': {
+      case 'filter-projects': {
         const dialogRef = this.dialog.open(ProjectsFilterDialogComponent, {
           disableClose: false,
           data: {
@@ -162,10 +159,6 @@ export class TimelineComponent implements OnInit {
 
             this.filterService.updateProjects(projects, false);
             this.filterService.updateProjectsNone(projectsNone);
-
-            this.taskletService.notify();
-            this.taskService.notify();
-            this.projectService.notify();
             this.snackbarService.showSnackbar('Projects selected', '');
           }
         });
@@ -215,9 +208,6 @@ export class TimelineComponent implements OnInit {
    * @param searchItem
    */
   onSearchItemChanged(searchItem: string) {
-    this.filterService.searchItem = searchItem;
-    this.taskletService.notify();
-    this.taskService.notify();
-    this.projectService.notify();
+    this.filterService.updateSearchItem(searchItem);
   }
 }

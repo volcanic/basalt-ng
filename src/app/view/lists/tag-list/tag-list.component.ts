@@ -1,0 +1,59 @@
+import {Component, OnInit} from '@angular/core';
+import {FilterService} from '../../../services/filter.service';
+import {takeUntil} from 'rxjs/internal/operators';
+import {Subject} from 'rxjs/Subject';
+
+@Component({
+  selector: 'app-tag-list',
+  templateUrl: './tag-list.component.html',
+  styleUrls: ['./tag-list.component.scss']
+})
+export class TagListComponent implements OnInit {
+
+  tags = [];
+  tagsNone = false;
+
+  private unsubscribeSubject = new Subject();
+
+  constructor(private filterService: FilterService) {
+  }
+
+  ngOnInit() {
+
+    this.initializeTagSubscription();
+  }
+
+  selectAll() {
+    this.tags.forEach(t => {
+      t.checked = true;
+    });
+    this.tagsNone = true;
+    this.filterService.updateTags(this.tags, false, this.tagsNone);
+  }
+
+  selectNone() {
+    this.tags.forEach(t => {
+      t.checked = false;
+    });
+    this.tagsNone = false;
+    this.filterService.updateTags(this.tags, false, this.tagsNone);
+  }
+
+  changeSpecialTag(value: boolean) {
+    this.filterService.updateTags(this.tags, false, this.tagsNone);
+  }
+
+  /**
+   * Subscribes tag changes
+   */
+  private initializeTagSubscription() {
+
+    this.filterService.filterSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe(() => {
+        this.tags = Array.from(this.filterService.tags.values());
+        this.tagsNone = this.filterService.tagsNone;
+      }
+    );
+  }
+}

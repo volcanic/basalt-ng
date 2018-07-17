@@ -14,8 +14,9 @@ import {MatchService} from '../../../services/match.service';
 export class TaskletListComponent implements OnInit, OnDestroy {
 
   tasklets: Tasklet[] = [];
+  taskletsAll: Tasklet[] = [];
 
-  private taskletsUnsubscribeSubject = new Subject();
+  private unsubscribeSubject = new Subject();
 
   DISPLAY_LIMIT = 100;
 
@@ -28,11 +29,12 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.initializeTaskletSubscription();
+    this.initializeFilterSubscription();
   }
 
   ngOnDestroy(): void {
-    this.taskletsUnsubscribeSubject.next();
-    this.taskletsUnsubscribeSubject.complete();
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
   }
 
   //
@@ -45,27 +47,44 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   private initializeTaskletSubscription() {
 
     this.taskletService.taskletsSubject.pipe(
-      takeUntil(this.taskletsUnsubscribeSubject)
+      takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        const tasklets: Tasklet[] = (value as Tasklet[]);
-
-        this.tasklets = tasklets.filter(tasklet => {
-          const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-          const matchesTags = this.matchService.taskletMatchesTags(tasklet,
-            Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
-          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
-            Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
-
-          return matchesSearchItem && matchesTags && matchesProjects;
-        }).sort((t1: Tasklet, t2: Tasklet) => {
-
-          return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
-        }).slice(0, this.DISPLAY_LIMIT);
+        this.taskletsAll = (value as Tasklet[]);
+        this.update();
       }
-
-      this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
     });
   }
 
+  /**
+   * Subscribes filter changes
+   */
+  private initializeFilterSubscription() {
+
+    this.filterService.filterSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe(() => {
+      this.update();
+    });
+  }
+
+  /**
+   * Filters original values
+   */
+  private update() {
+    this.tasklets = this.taskletsAll.filter(tasklet => {
+      const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
+      const matchesTags = this.matchService.taskletMatchesTags(tasklet,
+        Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
+      const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
+        Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
+
+      return matchesSearchItem && matchesTags && matchesProjects;
+    }).sort((t1: Tasklet, t2: Tasklet) => {
+
+      return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
+    }).slice(0, this.DISPLAY_LIMIT);
+
+    this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
+  }
 }

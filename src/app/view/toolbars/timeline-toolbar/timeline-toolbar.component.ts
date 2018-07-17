@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
-import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Subject} from 'rxjs/Subject';
 import {SuggestionService} from '../../../services/suggestion.service';
 

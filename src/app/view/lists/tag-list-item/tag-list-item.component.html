@@ -1,0 +1,7 @@
+<div class="container"
+     (mouseenter)="onHoverContainer(true)"
+     (mouseleave)="onHoverContainer(false)">
+  <div>
+    <mat-checkbox [(ngModel)]=tag.checked (ngModelChange)="onTagChanged($event)">{{ tag.name }}</mat-checkbox>
+  </div>
+</div>

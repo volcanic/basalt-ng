@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, NgZone, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {ProjectService} from '../../../services/entities/project.service';
 import {takeUntil} from 'rxjs/internal/operators';
@@ -16,17 +16,20 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
   projects = [];
+  projectsAll = [];
 
-  private projectsUnsubscribeSubject = new Subject();
+  private unsubscribeSubject = new Subject();
 
   constructor(private projectService: ProjectService,
               private matchService: MatchService,
-              private filterService: FilterService,) {
+              private filterService: FilterService,
+              public zone: NgZone) {
   }
 
   ngOnInit() {
 
     this.initializeProjectSubscription();
+    this.initializeFilterSubscription();
   }
 
   /**
@@ -35,31 +38,18 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   private initializeProjectSubscription() {
 
     this.projectService.projectsSubject.pipe(
-      takeUntil(this.projectsUnsubscribeSubject)
+      takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        const projects = value as Project[];
-
-        this.projects = projects.filter(project => {
-          const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
-          const matchesProjects = this.matchService.projectMatchesProjects(project,
-            Array.from(this.filterService.projects.values()),
-            this.filterService.projectsNone);
-
-          return matchesSearchItem && matchesProjects;
-        }).sort((project1: Project, project2: Project) => {
-          const date1 = new Date(project1.creationDate).getTime();
-          const date2 = new Date(project2.creationDate).getTime();
-
-          return date2 - date1;
-        });
+        this.projectsAll = value as Project[];
+        this.update();
       }
     });
   }
 
   ngOnDestroy(): void {
-    this.projectsUnsubscribeSubject.next();
-    this.projectsUnsubscribeSubject.complete();
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
   }
 
   /**
@@ -68,5 +58,33 @@ export class ProjectListComponent implements OnInit, OnDestroy {
    */
   onMenuItemClicked(menuItem: string) {
     this.menuItemClickedEmitter.emit(menuItem);
+  }
+
+  /**
+   * Subscribes filter changes
+   */
+  private initializeFilterSubscription() {
+
+    this.filterService.filterSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe(() => {
+      this.update();
+    });
+  }
+
+  /**
+   * Filters original values
+   */
+  private update() {
+    this.projects = this.projectsAll.filter(project => {
+      const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
+      const matchesProjects = this.matchService.projectMatchesProjects(project,
+        Array.from(this.filterService.projects.values()),
+        this.filterService.projectsNone);
+
+      return matchesSearchItem && matchesProjects;
+    });
+
+    this.zone.run(() => this.projects = JSON.parse(JSON.stringify(this.projects)));
   }
 }

@@ -70,7 +70,7 @@ export class TaskListItemComponent implements OnInit {
         const task = result as Task;
 
         this.taskService.updateTask(task);
-        this.filterService.updateTags(task.tags, true);
+        this.filterService.updateTagsList(task.tags, true);
         this.snackbarService.showSnackbar('Updated task', '');
       }
     });
@@ -93,7 +93,7 @@ export class TaskListItemComponent implements OnInit {
         const tasklet = result as Tasklet;
 
         this.taskletService.createTasklet(tasklet);
-        this.filterService.updateTags(tasklet.tags, true);
+        this.filterService.updateTagsList(tasklet.tags, true);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });

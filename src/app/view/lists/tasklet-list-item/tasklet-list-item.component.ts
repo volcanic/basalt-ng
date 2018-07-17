@@ -207,7 +207,7 @@ export class TaskletListItemComponent implements OnInit {
       if (result != null) {
         const tasklet = result as Tasklet;
         this.taskletService.updateTasklet(tasklet);
-        this.filterService.updateTags(tasklet.tags, true);
+        this.filterService.updateTagsList(tasklet.tags, true);
         this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
@@ -241,7 +241,7 @@ export class TaskletListItemComponent implements OnInit {
       if (result != null) {
         const tasklet = result as Tasklet;
         this.taskletService.createTasklet(result);
-        this.filterService.updateTags(tasklet.tags, true);
+        this.filterService.updateTagsList(tasklet.tags, true);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
@@ -273,7 +273,7 @@ export class TaskletListItemComponent implements OnInit {
       if (result != null) {
         const tasklet = result as TaskletDailyScrum;
         this.taskletService.createTasklet(tasklet);
-        this.filterService.updateTags(tasklet.tags, true);
+        this.filterService.updateTagsList(tasklet.tags, true);
         this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
@@ -310,7 +310,7 @@ export class TaskletListItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskletService.deleteTasklet(result as Tasklet);
-        this.filterService.updateTags([], false);
+        this.filterService.updateTagsList([], false);
         this.snackbarService.showSnackbar('Deleted tasklet', '');
       }
     });
