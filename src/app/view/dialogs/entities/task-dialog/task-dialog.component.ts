@@ -3,7 +3,6 @@ import {Task} from '../../../../model/entities/task.model';
 import {Project} from '../../../../model/entities/project.model';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
-import {DateService} from '../../../../services/date.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {EntityService} from '../../../../services/entities/entity.service';
 import {Tag} from '../../../../model/tag.model';
@@ -57,7 +56,6 @@ export class TaskDialogComponent implements OnInit {
               private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
-              private dateService: DateService,
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
               private adapter: DateAdapter<any>,

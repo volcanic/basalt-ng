@@ -47,6 +47,18 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Subscribes filter changes
+   */
+  private initializeFilterSubscription() {
+
+    this.filterService.filterSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe(() => {
+      this.update();
+    });
+  }
+
   ngOnDestroy(): void {
     this.unsubscribeSubject.next();
     this.unsubscribeSubject.complete();
@@ -58,18 +70,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
    */
   onMenuItemClicked(menuItem: string) {
     this.menuItemClickedEmitter.emit(menuItem);
-  }
-
-  /**
-   * Subscribes filter changes
-   */
-  private initializeFilterSubscription() {
-
-    this.filterService.filterSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe(() => {
-      this.update();
-    });
   }
 
   /**

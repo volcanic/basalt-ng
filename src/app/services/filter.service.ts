@@ -188,7 +188,6 @@ export class FilterService {
 
       this.projects.set(project.id, project);
     });
-
   }
 
   public updateProjectsNone(projectsNone: boolean) {

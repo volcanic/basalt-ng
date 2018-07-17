@@ -13,6 +13,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DigestService} from '../../../services/digest.service';
 import {TaskDigest} from '../../../model/task-digest.model';
 import {FilterService} from '../../../services/filter.service';
+import {EntityService} from '../../../services/entities/entity.service';
+import {Project} from '../../../model/entities/project.model';
 
 
 @Component({
@@ -40,7 +42,8 @@ export class TaskListItemComponent implements OnInit {
   state = 'inactive';
   taskDigest: TaskDigest;
 
-  constructor(private taskService: TaskService,
+  constructor(private entityService: EntityService,
+              private taskService: TaskService,
               private taskletService: TaskletService,
               private digestService: DigestService,
               private snackbarService: SnackbarService,
@@ -68,8 +71,10 @@ export class TaskListItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         const task = result as Task;
+        const project = this.entityService.getEntityById(task.projectId) as Project;
 
         this.taskService.updateTask(task);
+        this.filterService.updateProjectsList([project], true);
         this.filterService.updateTagsList(task.tags, true);
         this.snackbarService.showSnackbar('Updated task', '');
       }
