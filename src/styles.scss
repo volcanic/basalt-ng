@@ -16,10 +16,11 @@ html {
   overflow: scroll;
   overflow-x: hidden;
 }
+
 ::-webkit-scrollbar {
-  width: 0;  /* remove scrollbar space */
-  height: 0;  /* remove scrollbar space */
-  background: transparent;  /* optional: just make scrollbar invisible */
+  width: 0; /* remove scrollbar space */
+  height: 0; /* remove scrollbar space */
+  background: transparent; /* optional: just make scrollbar invisible */
 }
 
 body {
@@ -50,6 +51,15 @@ app-root {
 
 .mat-toolbar-row {
   height: 56px !important;
+}
+
+.app-theme .mat-toolbar .mat-form-field-underline, .app-theme .mat-toolbar .mat-form-field-ripple, .app-theme .mat-toolbar .mat-focused .mat-form-field-ripple {
+  background-color: transparent !important;
+}
+
+mat-toolbar .mat-form-field-infix {
+  border-top: 0 !important;
+  padding: 0.5em 0;
 }
 
 mat-dialog-container {

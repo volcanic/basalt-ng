@@ -18,7 +18,7 @@ export class DescriptionFragmentComponent implements OnInit {
   ngOnInit() {
   }
 
-  onDeleteButtonClicked() {
+  onClearButtonClicked() {
     this.description.value = '';
   }
 

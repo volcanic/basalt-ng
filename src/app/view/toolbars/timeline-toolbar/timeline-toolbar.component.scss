@@ -34,9 +34,14 @@ mat-toolbar {
   }
 }
 
+.search-form-field {
+  width: 100%;
+}
+
 .searchbox {
+  height: 40px;
+
   background: rgba(255, 255, 255, .15);
-  margin: 10px auto;
 
   padding-left: 24px;
   padding-right: 24px;
@@ -60,8 +65,6 @@ mat-toolbar {
     border: 0;
     border-radius: 2px;
     color: white;
-    margin-left: 10px;
-    margin-right: 10px;
     width: 100%;
 
     font-size: 90%;
@@ -84,4 +87,8 @@ mat-toolbar {
   :-ms-input-placeholder { /* Microsoft Edge */
     color: #E0E0E0;
   }
+}
+
+.icon-white {
+  fill: white;
 }

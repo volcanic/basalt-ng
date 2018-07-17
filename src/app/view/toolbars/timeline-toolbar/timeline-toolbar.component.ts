@@ -62,6 +62,11 @@ export class TimelineToolbarComponent implements OnInit {
     this.notifySearchItemChanged();
   }
 
+  onClearButtonClicked() {
+    this.searchItem = '';
+    this.notifySearchItemChanged();
+  }
+
   filterSearchItems(val: string): string[] {
     return this.searchOptions.filter(option =>
       option.toLowerCase().includes(val.toLowerCase())

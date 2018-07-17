@@ -7,16 +7,23 @@
   </div>
   <div class="flexbox"></div>
   <div class="searchbox">
-    <input class="search-input" matInput #search name="search" type="text" placeholder="Search"
-           [(ngModel)]="searchItem"
-           [formControl]="formControl"
-           [matAutocomplete]="auto"
-           (keyup)="onKeyUp($event)">
+    <mat-form-field floatLabel="never" class="search-form-field">
+      <mat-label>Search</mat-label>
+      <input class="search-input" matInput #search name="search" type="text"
+             [(ngModel)]="searchItem"
+             [formControl]="formControl"
+             [matAutocomplete]="auto"
+             (keyup)="onKeyUp($event)">
+      <button mat-button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear" (click)="onClearButtonClicked()">
+        <mat-icon svgIcon="close_18" class="icon-white"></mat-icon>
+      </button>
+    </mat-form-field>
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let option of searchOptionsFiltered | async" [value]="option"
                   (click)="onOptionSelected($event)">
         {{ option }}
       </mat-option>
+
     </mat-autocomplete>
   </div>
   <div class="flexbox"></div>
@@ -32,7 +39,8 @@
     </button>
     <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('filter-tags')">
       <mat-icon svgIcon="label_outline" class="white-icon"></mat-icon>
-    </button><button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('clear-filter')">
+    </button>
+    <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('clear-filter')">
       <mat-icon svgIcon="layers_clear" class="white-icon"></mat-icon>
     </button>
     <mat-menu #menu="matMenu">
