@@ -28,7 +28,12 @@ export class TimelineToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Subscribe search option changes
+
+    this.initializeSuggestionSubscription();
+
+  }
+
+  private initializeSuggestionSubscription() {
     this.suggestionService.searchOptionsSubject.pipe(
       takeUntil(this.searchOptionsUnsubscribeSubject)
     ).subscribe((value) => {
