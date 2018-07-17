@@ -10,6 +10,7 @@ import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {Setting} from './model/settings/setting.model';
 import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {MediaService} from './services/media.service';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ export class AppComponent implements OnInit {
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               private iconRegistry: MatIconRegistry,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private mediaService: MediaService) {
   }
 
   ngOnInit(): void {

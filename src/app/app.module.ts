@@ -88,6 +88,7 @@ import { FilterTagListComponent } from './view/lists/filter-tag-list/filter-tag-
 import { FilterTagListItemComponent } from './view/lists/filter-tag-list-item/filter-tag-list-item.component';
 import { FilterProjectListComponent } from './view/lists/filter-project-list/filter-project-list.component';
 import { FilterProjectListItemComponent } from './view/lists/filter-project-list-item/filter-project-list-item.component';
+import {MediaService} from './services/media.service';
 
 @NgModule({
   declarations: [
@@ -196,7 +197,8 @@ import { FilterProjectListItemComponent } from './view/lists/filter-project-list
     PouchDBSettingsService,
     SettingsService,
     SnackbarService,
-    TaskletService
+    TaskletService,
+    MediaService
   ],
   bootstrap: [AppComponent]
 })
