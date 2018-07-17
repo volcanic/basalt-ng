@@ -118,6 +118,7 @@ export class FilterService {
 
   public updateTagsList(tags: Tag[], enable: boolean) {
     this.updateTagsListInternal(tags, enable);
+    this.notify();
   }
 
   private updateTagsListInternal(tags: Tag[], enable: boolean) {
