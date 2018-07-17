@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FilterService} from '../../../services/filter.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
+import {Tag} from '../../../model/tag.model';
 
 @Component({
   selector: 'app-filter-tag-list',
@@ -51,7 +52,9 @@ export class FilterTagListComponent implements OnInit {
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
-        this.tags = Array.from(this.filterService.tags.values());
+        this.tags = Array.from(this.filterService.tags.values()).sort((t1: Tag, t2: Tag) => {
+          return t1.name > t2.name ? 1 : -1;
+        });
         this.tagsNone = this.filterService.tagsNone;
       }
     );

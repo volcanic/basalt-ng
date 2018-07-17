@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FilterService} from '../../../services/filter.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
+import {Project} from '../../../model/entities/project.model';
 
 @Component({
   selector: 'app-filter-project-list',
@@ -51,7 +52,9 @@ export class FilterProjectListComponent implements OnInit {
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
-        this.projects = Array.from(this.filterService.projects.values());
+        this.projects = Array.from(this.filterService.projects.values()).sort((p1: Project, p2: Project) => {
+          return p1.name > p2.name ? 1 : -1;
+        });
         this.projectsNone = this.filterService.projectsNone;
       }
     );
