@@ -8,13 +8,17 @@
   <div class="flexbox"></div>
   <div class="searchbox">
     <mat-form-field floatLabel="never" class="search-form-field">
+      <button mat-button *ngIf="!searchItem" matSuffix mat-icon-button aria-label="Search">
+        <mat-icon svgIcon="search" class="icon-white"></mat-icon>
+      </button>
       <mat-label>Search</mat-label>
       <input class="search-input" matInput #search name="search" type="text"
              [(ngModel)]="searchItem"
              [formControl]="formControl"
              [matAutocomplete]="auto"
              (keyup)="onKeyUp($event)">
-      <button mat-button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear" (click)="onClearButtonClicked()">
+      <button mat-button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
+              (click)="onClearButtonClicked()">
         <mat-icon svgIcon="close_18" class="icon-white"></mat-icon>
       </button>
     </mat-form-field>
