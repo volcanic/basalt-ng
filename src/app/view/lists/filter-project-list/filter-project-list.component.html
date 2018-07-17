@@ -1,0 +1,22 @@
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="projects.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label" color="">
+          <span>Projects</span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-filter-project-list-item *ngFor="let p of projects" [project]="p">
+    </app-filter-project-list-item>
+    <div>
+      <mat-checkbox class="special-project" [(ngModel)]="projectsNone" (ngModelChange)="changeSpecialProject($event)">elements without projects</mat-checkbox>
+    </div>
+    <button mat-button class="label headers-align" (click)="selectAll()">
+      <span>Select all</span>
+    </button>
+    <button mat-button class="label headers-align" (click)="selectNone()">
+      <span>Select none</span>
+    </button>
+  </mat-expansion-panel>
+</mat-accordion>

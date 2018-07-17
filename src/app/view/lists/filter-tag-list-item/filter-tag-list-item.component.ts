@@ -3,11 +3,11 @@ import {Tag} from '../../../model/tag.model';
 import {FilterService} from '../../../services/filter.service';
 
 @Component({
-  selector: 'app-tag-list-item',
-  templateUrl: './tag-list-item.component.html',
-  styleUrls: ['./tag-list-item.component.scss']
+  selector: 'app-filter-tag-list-item',
+  templateUrl: './filter-tag-list-item.component.html',
+  styleUrls: ['./filter-tag-list-item.component.scss']
 })
-export class TagListItemComponent implements OnInit {
+export class FilterTagListItemComponent implements OnInit {
 
   @Input() tag: Tag;
 

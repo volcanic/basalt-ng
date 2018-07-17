@@ -4,11 +4,11 @@ import {takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 
 @Component({
-  selector: 'app-tag-list',
-  templateUrl: './tag-list.component.html',
-  styleUrls: ['./tag-list.component.scss']
+  selector: 'app-filter-tag-list',
+  templateUrl: './filter-tag-list.component.html',
+  styleUrls: ['./filter-tag-list.component.scss']
 })
-export class TagListComponent implements OnInit {
+export class FilterTagListComponent implements OnInit {
 
   tags = [];
   tagsNone = false;

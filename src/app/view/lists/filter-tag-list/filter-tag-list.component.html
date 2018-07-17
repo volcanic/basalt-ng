@@ -3,12 +3,12 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div class="label" color="">
-          <span>Recent tags</span>
+          <span>Tags</span>
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-tag-list-item *ngFor="let t of tags" [tag]="t">
-    </app-tag-list-item>
+    <app-filter-tag-list-item *ngFor="let t of tags" [tag]="t">
+    </app-filter-tag-list-item>
     <div>
       <mat-checkbox class="special-tag" [(ngModel)]="tagsNone" (ngModelChange)="changeSpecialTag($event)">elements without tags</mat-checkbox>
     </div>

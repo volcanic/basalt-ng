@@ -44,7 +44,7 @@ export class ProjectListItemComponent implements OnInit {
         const project = result as Project;
 
         this.projectService.updateProject(project);
-        this.filterService.updateProjects([project], true);
+        this.filterService.updateProjectsList([project], true);
         this.snackbarService.showSnackbar('Updated project', '');
       }
     });

@@ -112,7 +112,7 @@ export class TimelineComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             const project = result as Project;
-            this.filterService.updateProjects([project], true);
+            this.filterService.updateProjectsList([project], true);
             this.projectService.createProject(project);
           }
         });
@@ -157,7 +157,7 @@ export class TimelineComponent implements OnInit {
             const projects = result.projects as Project[];
             const projectsNone = result.projectsNone as boolean;
 
-            this.filterService.updateProjects(projects, false);
+            this.filterService.updateProjectsList(projects, false);
             this.filterService.updateProjectsNone(projectsNone);
             this.snackbarService.showSnackbar('Projects selected', '');
           }

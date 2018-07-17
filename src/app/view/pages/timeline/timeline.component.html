@@ -6,7 +6,9 @@
 
 <mat-sidenav-container class="sidenav-container" layout="column">
   <mat-sidenav #sidenavStart mode="side" position="start" opened="true" class="sidenav sidenav-start">
-    <app-tag-list></app-tag-list>
+    <app-filter-tag-list></app-filter-tag-list>
+    <mat-divider></mat-divider>
+    <app-filter-project-list></app-filter-project-list>
   </mat-sidenav>
 
   <mat-sidenav #sidenavEnd mode="side" position="end" opened="true" class="sidenav sidenav-end">

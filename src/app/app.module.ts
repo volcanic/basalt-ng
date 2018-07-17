@@ -84,8 +84,10 @@ import {ProjectDialogComponent} from './view/dialogs/entities/project-dialog/pro
 import { InformationDialogComponent } from './view/dialogs/other/information-dialog/information-dialog.component';
 import { TaskletListComponent } from './view/lists/tasklet-list/tasklet-list.component';
 import { TaskletListItemComponent } from './view/lists/tasklet-list-item/tasklet-list-item.component';
-import { TagListComponent } from './view/lists/tag-list/tag-list.component';
-import { TagListItemComponent } from './view/lists/tag-list-item/tag-list-item.component';
+import { FilterTagListComponent } from './view/lists/filter-tag-list/filter-tag-list.component';
+import { FilterTagListItemComponent } from './view/lists/filter-tag-list-item/filter-tag-list-item.component';
+import { FilterProjectListComponent } from './view/lists/filter-project-list/filter-project-list.component';
+import { FilterProjectListItemComponent } from './view/lists/filter-project-list-item/filter-project-list-item.component';
 
 @NgModule({
   declarations: [
@@ -136,8 +138,10 @@ import { TagListItemComponent } from './view/lists/tag-list-item/tag-list-item.c
     InformationDialogComponent,
     TaskletListComponent,
     TaskletListItemComponent,
-    TagListComponent,
-    TagListItemComponent
+    FilterTagListComponent,
+    FilterTagListItemComponent,
+    FilterProjectListComponent,
+    FilterProjectListItemComponent
   ],
   imports: [
     AppRoutingModule,

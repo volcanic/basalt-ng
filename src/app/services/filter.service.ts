@@ -76,7 +76,7 @@ export class FilterService {
         const projects = value as Project[];
 
         if (!this.initializedProjects) {
-          this.updateProjects(projects, true);
+          this.updateProjectsList(projects, true);
           this.initializedProjects = true;
         }
       }
@@ -165,8 +165,18 @@ export class FilterService {
   // Projects
   //
 
-  public updateProjects(projects: Project[], enable: boolean) {
+  public updateProjects(projects: Project[], enable: boolean, projectsNone: boolean) {
+    this.updateProjectsList(projects, enable);
+    this.updateProjectsNone(projectsNone);
+    this.notify();
+  }
 
+  public updateProjectsList(projects: Project[], enable: boolean) {
+    this.updateProjectsListInternal(projects, enable);
+    this.notify();
+  }
+
+  private updateProjectsListInternal(projects: Project[], enable: boolean) {
     projects.forEach((p: Project) => {
       // Deep copy
       const project = this.cloneService.cloneProject(p);
@@ -178,7 +188,6 @@ export class FilterService {
       this.projects.set(project.id, project);
     });
 
-    this.notify();
   }
 
   public updateProjectsNone(projectsNone: boolean) {
