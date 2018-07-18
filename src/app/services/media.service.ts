@@ -13,6 +13,8 @@ export class MediaService {
 
   constructor(public breakpointObserver: BreakpointObserver) {
 
+    this.initializeSize();
+
     this.breakpointObserver
       .observe([Breakpoints.Small, Breakpoints.HandsetPortrait])
       .subscribe((state: BreakpointState) => {
@@ -37,6 +39,23 @@ export class MediaService {
           this.notify();
         }
       });
+  }
+
+  private initializeSize() {
+
+    const innerWidth = window.innerWidth;
+    console.log(`DEBUG ${innerWidth}`);
+
+    if (innerWidth < 960) {
+      this.media = MEDIA.SMALL;
+      this.notify();
+    } else if (innerWidth >= 960 && innerWidth < 1280) {
+      this.media = MEDIA.MEDIUM;
+      this.notify();
+    } else if (innerWidth > 1280) {
+      this.media = MEDIA.LARGE;
+      this.notify();
+    }
   }
 
   private notify() {
