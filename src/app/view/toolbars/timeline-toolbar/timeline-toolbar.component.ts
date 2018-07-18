@@ -17,8 +17,8 @@ export class TimelineToolbarComponent implements OnInit {
   @Output() searchItemChangedEmitter = new EventEmitter<string>();
   @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
-  private mediaType = MEDIA;
-  private media: MEDIA = MEDIA.UNDEFINED;
+  public mediaType = MEDIA;
+  public media: MEDIA = MEDIA.UNDEFINED;
 
   private unsubscribeSubject = new Subject();
   debouncer = new Subject();

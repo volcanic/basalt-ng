@@ -27,7 +27,7 @@
           </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Description</mat-panel-title>
             <mat-panel-description *ngIf="task.description == null || task.description.value == ''">
@@ -42,7 +42,7 @@
                                     [disabled]="inputDisabled"></app-description-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Due date</mat-panel-title>
             <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
@@ -58,7 +58,7 @@
           </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Priority</mat-panel-title>
             <mat-panel-description *ngIf="task.priority < 0">Select a priority</mat-panel-description>
@@ -78,7 +78,7 @@
           </mat-icon>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Project
@@ -97,7 +97,7 @@
           </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Estimated effort</mat-panel-title>
             <mat-panel-description *ngIf="task.effort == null || task.effort <= 0">Estimate the effort
@@ -115,7 +115,7 @@
           </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [expanded]="step === 0" [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Tags

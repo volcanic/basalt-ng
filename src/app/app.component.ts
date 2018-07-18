@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initializeSettings();
+    // this.initializeSettings();
     this.initializeEntities();
     this.initializeIcons();
     this.initializeDatabaseSync();
