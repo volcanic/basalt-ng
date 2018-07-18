@@ -3,7 +3,7 @@
     <button mat-button class="toolbar-menu-item" (click)="onClickMenuItem('menu')">
       <mat-icon svgIcon="menu" class="white-icon"></mat-icon>
     </button>
-    <span class="toolbar-title">{{ title }}</span>
+    <span *ngIf="media != mediaType.SMALL" class="toolbar-title">{{ title }}</span>
   </div>
   <div class="flexbox"></div>
   <div class="searchbox">
@@ -24,18 +24,37 @@
     <button mat-button class="toolbar-menu-item right" [matMenuTriggerFor]="menu">
       <mat-icon svgIcon="more_vert" class="white-icon"></mat-icon>
     </button>
-    <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('todo')">
+    <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item right"
+            (click)="onClickMenuItem('todo')">
       <mat-icon svgIcon="timer" class="white-icon"></mat-icon>
     </button>
-    <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('filter-projects')">
+    <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item right"
+            (click)="onClickMenuItem('filter-projects')">
       <mat-icon svgIcon="agenda" class="white-icon"></mat-icon>
     </button>
-    <button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('filter-tags')">
+    <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item right"
+            (click)="onClickMenuItem('filter-tags')">
       <mat-icon svgIcon="label_outline" class="white-icon"></mat-icon>
-    </button><button mat-button class="toolbar-menu-item right" (click)="onClickMenuItem('clear-filter')">
-      <mat-icon svgIcon="layers_clear" class="white-icon"></mat-icon>
     </button>
     <mat-menu #menu="matMenu">
+      <div class="toolbar-expanded" *ngIf="media < mediaType.LARGE">
+        <button mat-menu-item (click)="onClickMenuItem('filter-tags')">
+          <mat-icon svgIcon="label_outline"></mat-icon>
+          <span>Filter tags</span>
+        </button>
+        <button mat-menu-item (click)="onClickMenuItem('filter-projects')">
+          <mat-icon svgIcon="agenda"></mat-icon>
+          <span>Filter projects</span>
+        </button>
+        <button mat-menu-item (click)="onClickMenuItem('todo')">
+          <mat-icon svgIcon="timer"></mat-icon>
+          <span>Display sidemenu</span>
+        </button>
+      </div>
+      <button mat-menu-item (click)="onClickMenuItem('clear-filter')">
+        <mat-icon svgIcon="layers_clear"></mat-icon>
+        <span>Clear filters</span>
+      </button>
       <button mat-menu-item (click)="onClickMenuItem('download')">
         <mat-icon svgIcon="file_download"></mat-icon>
         <span>Export</span>

@@ -4,6 +4,8 @@ import {Observable} from 'rxjs';
 import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs/Subject';
 import {SuggestionService} from '../../../services/suggestion.service';
+import {MediaService} from '../../../services/media.service';
+import {MEDIA} from '../../../model/media.enum';
 
 @Component({
   selector: 'app-timeline-toolbar',
@@ -15,7 +17,10 @@ export class TimelineToolbarComponent implements OnInit {
   @Output() searchItemChangedEmitter = new EventEmitter<string>();
   @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
-  private searchOptionsUnsubscribeSubject = new Subject();
+  private mediaType = MEDIA;
+  private media: MEDIA = MEDIA.UNDEFINED;
+
+  private unsubscribeSubject = new Subject();
   debouncer = new Subject();
 
   searchItem = '';
@@ -24,18 +29,29 @@ export class TimelineToolbarComponent implements OnInit {
   searchOptionsFiltered: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private suggestionService: SuggestionService) {
+  constructor(private suggestionService: SuggestionService,
+              private mediaService: MediaService) {
   }
 
   ngOnInit() {
 
+    this.initializeMediaSubscription();
     this.initializeSuggestionSubscription();
 
   }
 
+  private initializeMediaSubscription() {
+    this.media = this.mediaService.media;
+    this.mediaService.mediaSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.media = value as MEDIA;
+    });
+  }
+
   private initializeSuggestionSubscription() {
     this.suggestionService.searchOptionsSubject.pipe(
-      takeUntil(this.searchOptionsUnsubscribeSubject)
+      takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
         this.searchOptions = (value as string[]).reverse();
