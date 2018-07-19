@@ -44,7 +44,6 @@ export class MediaService {
   private initializeSize() {
 
     const innerWidth = window.innerWidth;
-    console.log(`DEBUG ${innerWidth}`);
 
     if (innerWidth < 960) {
       this.media = MEDIA.SMALL;
@@ -59,7 +58,6 @@ export class MediaService {
   }
 
   private notify() {
-    console.log(`DEBUG media ${this.media}`);
     this.mediaSubject.next(this.media);
   }
 }

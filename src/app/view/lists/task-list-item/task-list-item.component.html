@@ -1,4 +1,4 @@
-<div class="container" [matMenuTriggerFor]="contextMenu" #contextMenuTrigger
+<div class="container"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <mat-menu #contextMenu="matMenu">
@@ -13,7 +13,8 @@
             class="action-buttons">Re-open task
     </button>
   </mat-menu>
-  <button mat-button class="task flex" (click)="onActionFired('task')" disabled="media < mediaType.LARGE">
+  <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
+  <button mat-button class="task flex" (click)="onActionFired('task')">
     <span>{{ task.name }}</span>
     <span [@actionAnimation]="state"
           *ngIf="task.effort > 0" class="effort">
