@@ -20,7 +20,7 @@ import {CloneService} from '../../../../services/util/clone.service';
 @Component({
   selector: 'app-tasklet-dialog',
   templateUrl: './tasklet-dialog.component.html',
-  styles: [require('./tasklet-dialog.component.scss')],
+  styleUrls: ['./tasklet-dialog.component.scss'],
 })
 export class TaskletDialogComponent implements OnInit {
   DIALOG_MODE: typeof DIALOG_MODE = DIALOG_MODE;

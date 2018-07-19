@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDialog, MatIconRegistry} from '@angular/material';
-import {DomSanitizer} from '@angular/platform-browser';
+import {Component, Input, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material';
 import {DigestService} from '../../../../services/digest.service';
 import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
 import {WeeklyDigest} from '../../../../model/weekly-digest.model';
@@ -8,7 +7,7 @@ import {WeeklyDigest} from '../../../../model/weekly-digest.model';
 @Component({
   selector: 'app-tasklet-weekly-digest',
   templateUrl: './tasklet-weekly-digest.component.html',
-  styles: [require('./tasklet-weekly-digest.component.scss')]
+  styleUrls: ['./tasklet-weekly-digest.component.scss']
 })
 export class TaskletWeeklyDigestComponent implements OnInit {
   @Input() tasklet: TaskletWeeklyDigest;

@@ -4,7 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 @Component({
   selector: 'app-tag-filter-dialog',
   templateUrl: './tag-filter-dialog.component.html',
-  styles: [require('./tag-filter-dialog.component.scss')],
+  styleUrls: ['./tag-filter-dialog.component.scss'],
 })
 export class TagFilterDialogComponent implements OnInit {
   dialogTitle = '';

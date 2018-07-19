@@ -10,7 +10,7 @@ import {MEDIA} from '../../../model/media.enum';
 @Component({
   selector: 'app-timeline-toolbar',
   templateUrl: './timeline-toolbar.component.html',
-  styles: [require('./timeline-toolbar.component.scss')]
+  styleUrls: ['./timeline-toolbar.component.scss']
 })
 export class TimelineToolbarComponent implements OnInit, OnDestroy {
   @Input() title;

@@ -29,7 +29,7 @@ import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialo
 @Component({
   selector: 'app-tasklets',
   templateUrl: './timeline.component.html',
-  styles: [require('./timeline.component.scss')]
+  styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent implements OnInit {
   title = 'Basalt';
