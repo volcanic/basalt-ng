@@ -28,11 +28,11 @@
         </mat-expansion-panel>
       </mat-accordion>
       <hr class="delimiter"/>
-
     </mat-card-content>
+
     <mat-card-footer>
       <div class="attachments">
-        <div class="attachment-holder">
+        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
           <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
                (click)="onActionFired('updateTime')"
                [matTooltip]=date
@@ -42,6 +42,12 @@
           </div>
         </div>
         <div class="tags-holder" (click)="onActionFired('update')">
+          <span class="time" *ngIf="media <= mediaType.MEDIUM">
+            <label class="time-label">
+             <span>{{ time }}</span>
+              <span *ngIf="dateService.isBeforeToday(tasklet.creationDate)">, {{ date }}</span>
+            </label>
+          </span>
           <span class="person" *ngFor="let p of tasklet.persons"><label class="person-label">{{ p.name }}</label></span>
           <span class="tag" *ngFor="let t of tasklet.tags"><label class="tag-label">{{ t.name }}</label></span>
         </div>

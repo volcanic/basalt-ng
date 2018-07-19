@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Tasklet} from '../../../model/entities/tasklet.model';
@@ -19,15 +19,22 @@ import {ColorService} from '../../../services/color.service';
 import {Description} from '../../../model/description.model';
 import {CloneService} from '../../../services/util/clone.service';
 import {FilterService} from '../../../services/filter.service';
+import {MediaService} from '../../../services/media.service';
+import {takeUntil} from 'rxjs/internal/operators';
+import {MEDIA} from '../../../model/media.enum';
+import {Subject} from 'rxjs/index';
 
 @Component({
   selector: 'app-tasklet-list-item',
   templateUrl: './tasklet-list-item.component.html',
   styleUrls: ['./tasklet-list-item.component.scss']
 })
-export class TaskletListItemComponent implements OnInit {
+export class TaskletListItemComponent implements OnInit, OnDestroy {
 
   @Input() tasklet: Tasklet;
+
+  media: MEDIA = MEDIA.UNDEFINED;
+  mediaType = MEDIA;
 
   tags: Tag[] = [];
   projects: Project[] = [];
@@ -42,6 +49,8 @@ export class TaskletListItemComponent implements OnInit {
 
   expansionPanelOpened = false;
 
+  private unsubscribeSubject = new Subject();
+
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
               private taskletService: TaskletService,
@@ -49,11 +58,13 @@ export class TaskletListItemComponent implements OnInit {
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
               private filterService: FilterService,
+              private mediaService: MediaService,
               public dateService: DateService,
               public dialog: MatDialog) {
   }
 
   ngOnInit() {
+    this.initializeMediaSubscription();
     this.initializeProjects();
     this.initializeDate();
     this.initializeIcon();
@@ -62,9 +73,23 @@ export class TaskletListItemComponent implements OnInit {
     this.initializeExpansionPanel();
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
+  }
+
   //
   // Initialization
   //
+
+  private initializeMediaSubscription() {
+    this.media = this.mediaService.media;
+    this.mediaService.mediaSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.media = value;
+    });
+  }
 
   private initializeProjects() {
     this.projects = Array.from(this.projectService.projects.values());
