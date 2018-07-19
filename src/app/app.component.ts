@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {SnackbarService} from './services/snackbar.service';
 import {PouchDBService} from './services/pouchdb.service';
 import {MatDialog, MatIconRegistry, MatSnackBar, MatSnackBarConfig} from '@angular/material';
@@ -17,7 +17,7 @@ import {MediaService} from './services/media.service';
   templateUrl: './app.component.html',
   styles: [require('./app.component.scss')],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'Basalt';
 
   constructor(private entityService: EntityService,
@@ -36,7 +36,10 @@ export class AppComponent implements OnInit {
     // this.initializeSettings();
     this.initializeEntities();
     this.initializeIcons();
-    this.initializeDatabaseSync();
+  }
+
+  ngAfterViewInit() {
+    // this.initializeDatabaseSync();
   }
 
   initializeDatabaseSync() {
