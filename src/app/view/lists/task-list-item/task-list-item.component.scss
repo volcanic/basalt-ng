@@ -28,3 +28,7 @@
 .action-buttons {
   min-width: 65px;
 }
+
+.app-theme .mat-button.mat-primary[disabled], .app-theme .mat-button.mat-accent[disabled], .app-theme .mat-button.mat-warn[disabled], .app-theme .mat-button[disabled][disabled], .app-theme .mat-icon-button.mat-primary[disabled], .app-theme .mat-icon-button.mat-accent[disabled], .app-theme .mat-icon-button.mat-warn[disabled], .app-theme .mat-icon-button[disabled][disabled], .app-theme .mat-stroked-button.mat-primary[disabled], .app-theme .mat-stroked-button.mat-accent[disabled], .app-theme .mat-stroked-button.mat-warn[disabled], .app-theme .mat-stroked-button[disabled][disabled] {
+  color: inherit !important;
+}

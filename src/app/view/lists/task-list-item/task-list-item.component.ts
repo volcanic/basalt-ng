@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Task} from '../../../model/entities/task.model';
 import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatMenuTrigger} from '@angular/material';
 import {TaskService} from '../../../services/entities/task.service';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {Tasklet} from '../../../model/entities/tasklet.model';
@@ -13,6 +13,10 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DigestService} from '../../../services/digest.service';
 import {TaskDigest} from '../../../model/task-digest.model';
 import {FilterService} from '../../../services/filter.service';
+import {MediaService} from '../../../services/media.service';
+import {takeUntil} from 'rxjs/internal/operators';
+import {MEDIA} from '../../../model/media.enum';
+import {Subject} from 'rxjs/index';
 
 
 @Component({
@@ -35,21 +39,77 @@ import {FilterService} from '../../../services/filter.service';
   ]
 })
 export class TaskListItemComponent implements OnInit {
+
   @Input() task: Task;
+  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+
+  media: MEDIA = MEDIA.UNDEFINED;
+  mediaType = MEDIA;
 
   state = 'inactive';
   taskDigest: TaskDigest;
+
+  private unsubscribeSubject = new Subject();
 
   constructor(private taskService: TaskService,
               private taskletService: TaskletService,
               private digestService: DigestService,
               private snackbarService: SnackbarService,
               private filterService: FilterService,
+              private mediaService: MediaService,
               public dialog: MatDialog) {
   }
 
   ngOnInit() {
+    this.initializeMediaSubscription();
     this.taskDigest = this.digestService.getTaskDigest(this.task);
+  }
+
+  //
+  // Initialization
+  //
+
+  private initializeMediaSubscription() {
+    this.media = this.mediaService.media;
+    this.mediaService.mediaSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.media = value;
+    });
+  }
+
+  //
+  // Actions
+  //
+
+  onActionFired(action: string) {
+    switch (action) {
+      case 'task': {
+        if (this.media > this.mediaType.MEDIUM) {
+          this.onActionFired('update-task');
+        } else {
+          this.contextMenuTrigger.openMenu();
+        }
+        break;
+      }
+
+      case 'update-task': {
+        this.updateTask();
+        break;
+      }
+      case 'continue-task': {
+        this.continueTask();
+        break;
+      }
+      case 'complete-task': {
+        this.completeTask();
+        break;
+      }
+      case 'reopen-task': {
+        this.reopenTask();
+        break;
+      }
+    }
   }
 
   onHoverContainer(hovered: boolean) {
