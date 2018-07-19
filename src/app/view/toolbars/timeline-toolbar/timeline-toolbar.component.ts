@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
@@ -12,7 +12,7 @@ import {MEDIA} from '../../../model/media.enum';
   templateUrl: './timeline-toolbar.component.html',
   styles: [require('./timeline-toolbar.component.scss')]
 })
-export class TimelineToolbarComponent implements OnInit {
+export class TimelineToolbarComponent implements OnInit, OnDestroy {
   @Input() title;
   @Output() searchItemChangedEmitter = new EventEmitter<string>();
   @Output() menuItemClickedEmitter = new EventEmitter<string>();
@@ -37,8 +37,16 @@ export class TimelineToolbarComponent implements OnInit {
 
     this.initializeMediaSubscription();
     this.initializeSuggestionSubscription();
-
   }
+
+  ngOnDestroy() {
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
+  }
+
+  //
+  // Initialization
+  //
 
   private initializeMediaSubscription() {
     this.media = this.mediaService.media;

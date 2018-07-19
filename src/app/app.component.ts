@@ -110,6 +110,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(COMMUNICATION, 'chat', 'ic_chat_24px.svg'));
     icons.push(new Icon(CONTENT, 'add', 'ic_add_24px.svg'));
     icons.push(new Icon(CONTENT, 'flag', 'ic_flag_24px.svg'));
+    icons.push(new Icon(CONTENT, 'filter_list', 'ic_filter_list_24px.svg'));
     icons.push(new Icon(CONTENT, 'mail', 'ic_mail_24px.svg'));
     icons.push(new Icon(CONTENT, 'people_18', 'ic_people_18px.svg'));
     icons.push(new Icon(CONTENT, 'reply', 'ic_reply_24px.svg'));

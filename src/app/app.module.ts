@@ -89,6 +89,8 @@ import { FilterTagListItemComponent } from './view/lists/filter-tag-list-item/fi
 import { FilterProjectListComponent } from './view/lists/filter-project-list/filter-project-list.component';
 import { FilterProjectListItemComponent } from './view/lists/filter-project-list-item/filter-project-list-item.component';
 import {MediaService} from './services/media.service';
+import { ProjectListDialogComponent } from './view/dialogs/lists/project-list-dialog/project-list-dialog.component';
+import { TaskListDialogComponent } from './view/dialogs/lists/task-list-dialog/task-list-dialog.component';
 
 @NgModule({
   declarations: [
@@ -142,7 +144,9 @@ import {MediaService} from './services/media.service';
     FilterTagListComponent,
     FilterTagListItemComponent,
     FilterProjectListComponent,
-    FilterProjectListItemComponent
+    FilterProjectListItemComponent,
+    ProjectListDialogComponent,
+    TaskListDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -185,7 +189,9 @@ import {MediaService} from './services/media.service';
     UploadDialogComponent,
     TaskDialogComponent,
     ProjectDialogComponent,
-    InformationDialogComponent
+    InformationDialogComponent,
+    ProjectListDialogComponent,
+    TaskListDialogComponent
   ],
   providers: [
     MatIconRegistry,

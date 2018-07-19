@@ -50,6 +50,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
    */
   private initializeTaskSubscription() {
 
+    this.tasksAll = Array.from(this.taskService.tasks.values());
+    this.update();
+
     this.taskService.tasksSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
