@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // this.initializeDatabaseSync();
+    this.initializeDatabaseSync();
   }
 
   initializeDatabaseSync() {
