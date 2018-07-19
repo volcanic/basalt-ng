@@ -34,8 +34,8 @@ import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialo
 export class TimelineComponent implements OnInit {
   title = 'Basalt';
 
-  private mediaType = MEDIA;
-  private media: MEDIA = MEDIA.UNDEFINED;
+  public mediaType = MEDIA;
+  public media: MEDIA = MEDIA.UNDEFINED;
 
   private unsubscribeSubject = new Subject();
 
