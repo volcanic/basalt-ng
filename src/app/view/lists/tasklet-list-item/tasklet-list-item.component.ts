@@ -1,5 +1,5 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatDialog, MatDialogConfig, MatMenuTrigger} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {SnackbarService} from '../../../services/snackbar.service';
@@ -32,6 +32,7 @@ import {Subject} from 'rxjs/index';
 export class TaskletListItemComponent implements OnInit, OnDestroy {
 
   @Input() tasklet: Tasklet;
+  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
   media: MEDIA = MEDIA.UNDEFINED;
   mediaType = MEDIA;
@@ -190,15 +191,23 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
 
   onActionFired(action: string) {
     switch (action) {
-      case 'update': {
+      case 'card': {
+        if (this.media > this.mediaType.MEDIUM) {
+          this.onActionFired('update-tasklet');
+        } else {
+          this.contextMenuTrigger.openMenu();
+        }
+        break;
+      }
+      case 'update-tasklet': {
         this.updateTasklet();
         break;
       }
-      case 'updateTime': {
+      case 'update-time': {
         this.updateTaskletTime();
         break;
       }
-      case 'continue': {
+      case 'continue-tasklet': {
         this.continueTasklet();
         break;
       }
@@ -236,6 +245,14 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
+  }
+
+  onLongPress(event: any) {
+    console.log('LONG');
+
+    if (!this.contextMenuTrigger.menuOpen) {
+      this.contextMenuTrigger.openMenu();
+    }
   }
 
   private continueTasklet() {
