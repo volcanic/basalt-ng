@@ -49,6 +49,9 @@ export class FilterProjectListComponent implements OnInit {
    */
   private initializeProjectSubscription() {
 
+    this.projects = Array.from(this.filterService.projects.values());
+    this.projectsNone = this.filterService.projectsNone;
+
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {

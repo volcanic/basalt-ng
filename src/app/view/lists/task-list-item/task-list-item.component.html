@@ -1,14 +1,27 @@
 <div class="container"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
-  <button mat-button class="task flex" (click)="updateTask()">
+  <mat-menu #contextMenu="matMenu">
+    <button mat-menu-item (click)="onActionFired('update-task')">Update task</button>
+    <button mat-menu-item (click)="onActionFired('complete-task')" *ngIf="task.completionDate == null"
+            class="action-buttons">Complete task
+    </button>
+    <button mat-menu-item (click)="onActionFired('continue-task')" *ngIf="task.completionDate == null"
+            class="action-buttons">Continue task
+    </button>
+    <button mat-menu-item (click)="onActionFired('reopen-task')" *ngIf="task.completionDate != null"
+            class="action-buttons">Re-open task
+    </button>
+  </mat-menu>
+  <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
+  <button mat-button class="task flex" (click)="onActionFired('task')">
     <span>{{ task.name }}</span>
     <span [@actionAnimation]="state"
           *ngIf="task.effort > 0" class="effort">
       ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
     </span>
   </button>
-  <div *ngIf="task.completionDate == null" class="action-buttons">
+  <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="action-buttons">
     <button [@actionAnimation]="state"
             mat-icon-button
             matTooltip="Complete"
@@ -16,7 +29,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="completeTask()">
+            (click)="onActionFired('complete-task')">
       <mat-icon svgIcon='check'></mat-icon>
     </button>
     <button [@actionAnimation]="state"
@@ -26,11 +39,11 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="continueTask()">
+            (click)="onActionFired('continue-task')">
       <mat-icon svgIcon='reply'></mat-icon>
     </button>
   </div>
-  <div *ngIf="task.completionDate != null" class="action-buttons">
+  <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="action-buttons">
     <button [@actionAnimation]="state"
             mat-icon-button
             matTooltip="Re-open"
@@ -38,7 +51,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="reopenTask()">
+            (click)="onActionFired('reopen-task')">
       <mat-icon svgIcon='replay'></mat-icon>
     </button>
   </div>

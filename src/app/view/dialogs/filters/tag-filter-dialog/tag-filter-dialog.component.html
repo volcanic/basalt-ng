@@ -1,33 +1,31 @@
-<div class="dialog">
-  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
-  <mat-dialog-content>
-    <div class="single-column" *ngFor="let t of tags">
-      <mat-checkbox [(ngModel)]=t.checked>{{ t.name }}</mat-checkbox>
-    </div>
-    <div class="double-column" *ngFor="let t of tags.slice(0, tags.length / 2)">
-      <mat-checkbox [(ngModel)]=t.checked>{{ t.name }}</mat-checkbox>
-    </div>
-    <div class="double-column" *ngFor="let t of tags.slice(tags.length / 2, tags.length)">
-      <mat-checkbox [(ngModel)]=t.checked>{{ t.name }}</mat-checkbox>
-    </div>
-    <div>
-      <mat-checkbox class="special-tag" [(ngModel)]="tagsNone">elements without tags</mat-checkbox>
-    </div>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <div class="action-buttons">
-      <button mat-button (click)="selectAll()">
-        Select all
-      </button>
-      <button mat-button (click)="selectNone()">
-        Select none
-      </button>
-    </div>
-    <div class="flexbox"></div>
-    <div class="closing-buttons">
-      <button mat-button (click)="apply()">
-        Apply
-      </button>
-    </div>
-  </mat-dialog-actions>
-</div>
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content>
+  <div class="single-column" *ngFor="let t of tags">
+    <mat-checkbox [(ngModel)]=t.checked>{{ t.name }}</mat-checkbox>
+  </div>
+  <div class="double-column" *ngFor="let t of tags.slice(0, tags.length / 2)">
+    <mat-checkbox [(ngModel)]=t.checked>{{ t.name }}</mat-checkbox>
+  </div>
+  <div class="double-column" *ngFor="let t of tags.slice(tags.length / 2, tags.length)">
+    <mat-checkbox [(ngModel)]=t.checked>{{ t.name }}</mat-checkbox>
+  </div>
+  <div>
+    <mat-checkbox class="special-tag" [(ngModel)]="tagsNone">elements without tags</mat-checkbox>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="action-buttons">
+    <button mat-button (click)="selectAll()">
+      Select all
+    </button>
+    <button mat-button (click)="selectNone()">
+      Select none
+    </button>
+  </div>
+  <div class="flexbox"></div>
+  <div class="closing-buttons">
+    <button mat-button (click)="apply()">
+      Apply
+    </button>
+  </div>
+</mat-dialog-actions>

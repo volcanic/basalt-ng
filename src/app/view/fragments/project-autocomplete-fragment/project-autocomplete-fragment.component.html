@@ -4,7 +4,7 @@
          [disabled]="disabled"
          [formControl]="formControl"
          [matAutocomplete]="auto"
-         (keyup)="onKeyUp($event)">
+         (keyup)="onKeyUp()">
   <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
     <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="onOptionSelected($event)">
       {{ option }}

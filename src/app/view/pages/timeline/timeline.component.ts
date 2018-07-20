@@ -19,14 +19,25 @@ import {Task} from '../../../model/entities/task.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
 import {FilterService} from '../../../services/filter.service';
 import {Tag} from '../../../model/tag.model';
+import {MediaService} from '../../../services/media.service';
+import {MEDIA} from '../../../model/media.enum';
+import {takeUntil} from 'rxjs/internal/operators';
+import {Subject} from 'rxjs/Rx';
+import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';
+import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialog/project-list-dialog.component';
 
 @Component({
   selector: 'app-tasklets',
   templateUrl: './timeline.component.html',
-  styles: [require('./timeline.component.scss')]
+  styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent implements OnInit {
   title = 'Basalt';
+
+  public mediaType = MEDIA;
+  public media: MEDIA = MEDIA.UNDEFINED;
+
+  private unsubscribeSubject = new Subject();
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
@@ -37,11 +48,32 @@ export class TimelineComponent implements OnInit {
               private taskletService: TaskletService,
               private filterService: FilterService,
               private snackbarService: SnackbarService,
+              private mediaService: MediaService,
               public zone: NgZone,
               public dialog: MatDialog) {
   }
 
   ngOnInit() {
+
+    this.initializeMediaSubscription();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
+  }
+
+  //
+  // Initialization
+  //
+
+  private initializeMediaSubscription() {
+    this.media = this.mediaService.media;
+    this.mediaService.mediaSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.media = value as MEDIA;
+    });
   }
 
   //
@@ -114,6 +146,24 @@ export class TimelineComponent implements OnInit {
             const project = result as Project;
             this.filterService.updateProjectsList([project], true);
             this.projectService.createProject(project);
+          }
+        });
+        break;
+      }
+      case 'task-list': {
+        this.dialog.open(TaskListDialogComponent, {
+          disableClose: false,
+          data: {
+            dialogTitle: 'Tasks',
+          }
+        });
+        break;
+      }
+      case 'project-list': {
+        this.dialog.open(ProjectListDialogComponent, {
+          disableClose: false,
+          data: {
+            dialogTitle: 'Projects',
           }
         });
         break;

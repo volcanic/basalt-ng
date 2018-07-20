@@ -88,6 +88,9 @@ import { FilterTagListComponent } from './view/lists/filter-tag-list/filter-tag-
 import { FilterTagListItemComponent } from './view/lists/filter-tag-list-item/filter-tag-list-item.component';
 import { FilterProjectListComponent } from './view/lists/filter-project-list/filter-project-list.component';
 import { FilterProjectListItemComponent } from './view/lists/filter-project-list-item/filter-project-list-item.component';
+import {MediaService} from './services/media.service';
+import { ProjectListDialogComponent } from './view/dialogs/lists/project-list-dialog/project-list-dialog.component';
+import { TaskListDialogComponent } from './view/dialogs/lists/task-list-dialog/task-list-dialog.component';
 
 @NgModule({
   declarations: [
@@ -141,7 +144,9 @@ import { FilterProjectListItemComponent } from './view/lists/filter-project-list
     FilterTagListComponent,
     FilterTagListItemComponent,
     FilterProjectListComponent,
-    FilterProjectListItemComponent
+    FilterProjectListItemComponent,
+    ProjectListDialogComponent,
+    TaskListDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -184,7 +189,9 @@ import { FilterProjectListItemComponent } from './view/lists/filter-project-list
     UploadDialogComponent,
     TaskDialogComponent,
     ProjectDialogComponent,
-    InformationDialogComponent
+    InformationDialogComponent,
+    ProjectListDialogComponent,
+    TaskListDialogComponent
   ],
   providers: [
     MatIconRegistry,
@@ -196,7 +203,8 @@ import { FilterProjectListItemComponent } from './view/lists/filter-project-list
     PouchDBSettingsService,
     SettingsService,
     SnackbarService,
-    TaskletService
+    TaskletService,
+    MediaService
   ],
   bootstrap: [AppComponent]
 })

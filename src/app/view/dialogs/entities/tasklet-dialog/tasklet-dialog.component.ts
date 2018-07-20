@@ -20,7 +20,7 @@ import {CloneService} from '../../../../services/util/clone.service';
 @Component({
   selector: 'app-tasklet-dialog',
   templateUrl: './tasklet-dialog.component.html',
-  styles: [require('./tasklet-dialog.component.scss')],
+  styleUrls: ['./tasklet-dialog.component.scss'],
 })
 export class TaskletDialogComponent implements OnInit {
   DIALOG_MODE: typeof DIALOG_MODE = DIALOG_MODE;
@@ -250,7 +250,7 @@ export class TaskletDialogComponent implements OnInit {
     return inferredPersons;
   }
 
-  private onKeyDown(event: any) {
+  public onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
       this.updateTasklet();

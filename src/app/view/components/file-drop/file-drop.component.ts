@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
-import {Observable, Subject, Subscription, of} from 'rxjs';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {Observable, Subject, Subscription} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
 import {Entity} from '../../../model/entities/entity.model';
 
 const URL = 'https://foo.bar.com';
@@ -17,7 +17,7 @@ export interface DropResult {
 @Component({
   selector: 'app-file-drop',
   templateUrl: './file-drop.component.html',
-  styles: [require('./file-drop.component.scss')],
+  styleUrls: ['./file-drop.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FileDropComponent implements OnInit, OnDestroy {

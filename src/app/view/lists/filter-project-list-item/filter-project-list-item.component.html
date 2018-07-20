@@ -2,7 +2,7 @@
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <div>
-    <mat-checkbox [(ngModel)]=project.checked (ngModelChange)="onProjectChanged($event)">{{ project.name }}
+    <mat-checkbox [(ngModel)]=project.checked (ngModelChange)="onProjectChanged()">{{ project.name }}
     </mat-checkbox>
   </div>
 </div>

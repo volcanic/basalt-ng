@@ -49,6 +49,9 @@ export class FilterTagListComponent implements OnInit {
    */
   private initializeTagSubscription() {
 
+    this.tags = Array.from(this.filterService.tags.values());
+    this.tagsNone = this.filterService.tagsNone;
+
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {

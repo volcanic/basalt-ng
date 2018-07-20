@@ -6,7 +6,7 @@ import {CloneService} from '../../../../services/util/clone.service';
 @Component({
   selector: 'app-project-filter-dialog',
   templateUrl: './project-filter-dialog.component.html',
-  styles: [require('./project-filter-dialog.component.scss')],
+  styleUrls: ['./project-filter-dialog.component.scss'],
 })
 export class ProjectsFilterDialogComponent implements OnInit {
   dialogTitle = '';

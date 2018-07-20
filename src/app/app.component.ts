@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {SnackbarService} from './services/snackbar.service';
 import {PouchDBService} from './services/pouchdb.service';
 import {MatDialog, MatIconRegistry, MatSnackBar, MatSnackBarConfig} from '@angular/material';
@@ -10,13 +10,14 @@ import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {Setting} from './model/settings/setting.model';
 import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {MediaService} from './services/media.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styles: [require('./app.component.scss')],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'Basalt';
 
   constructor(private entityService: EntityService,
@@ -27,13 +28,17 @@ export class AppComponent implements OnInit {
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               private iconRegistry: MatIconRegistry,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private mediaService: MediaService) {
   }
 
   ngOnInit(): void {
-    this.initializeSettings();
+    // this.initializeSettings();
     this.initializeEntities();
     this.initializeIcons();
+  }
+
+  ngAfterViewInit() {
     this.initializeDatabaseSync();
   }
 
@@ -109,6 +114,7 @@ export class AppComponent implements OnInit {
     icons.push(new Icon(COMMUNICATION, 'chat', 'ic_chat_24px.svg'));
     icons.push(new Icon(CONTENT, 'add', 'ic_add_24px.svg'));
     icons.push(new Icon(CONTENT, 'flag', 'ic_flag_24px.svg'));
+    icons.push(new Icon(CONTENT, 'filter_list', 'ic_filter_list_24px.svg'));
     icons.push(new Icon(CONTENT, 'mail', 'ic_mail_24px.svg'));
     icons.push(new Icon(CONTENT, 'people_18', 'ic_people_18px.svg'));
     icons.push(new Icon(CONTENT, 'reply', 'ic_reply_24px.svg'));

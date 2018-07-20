@@ -37,6 +37,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
    */
   private initializeProjectSubscription() {
 
+    this.projectsAll = Array.from(this.projectService.projects.values());
+    this.update();
+
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {

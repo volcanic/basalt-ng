@@ -32,7 +32,7 @@ export class TaskletListComponent implements OnInit, OnDestroy {
     this.initializeFilterSubscription();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.unsubscribeSubject.next();
     this.unsubscribeSubject.complete();
   }

@@ -11,7 +11,8 @@
     </mat-card-header>
 
     <mat-card-content class="content">
-      <mat-accordion class="headers-align" (click)="onActionFired('update')">
+      <mat-accordion class="headers-align" (click)="onActionFired('card')" [matMenuTriggerFor]="contextMenu"
+                     #contextMenuTrigger>
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
           <div class="text">
             <mat-list *ngIf="tasklet.description.value != null && tasklet.description.value.length > 0">
@@ -28,20 +29,35 @@
         </mat-expansion-panel>
       </mat-accordion>
       <hr class="delimiter"/>
-
     </mat-card-content>
+
     <mat-card-footer>
+      <mat-menu #contextMenu="matMenu">
+        <button mat-menu-item (click)="onActionFired('update-tasklet')">Update tasklet</button>
+        <button mat-menu-item (click)="onActionFired('update-time')">Update creation time</button>
+        <button mat-menu-item (click)="onActionFired('continue-tasklet')" *ngIf="tasklet.type == 'Action'
+                                       || tasklet.type == 'Meeting'
+                                       || tasklet.type == 'Development'
+                                       || tasklet.type == 'Debugging'
+                                       || tasklet.type == 'Idea'">Continue tasklet</button>
+      </mat-menu>
       <div class="attachments">
-        <div class="attachment-holder">
+        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
           <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
-               (click)="onActionFired('updateTime')"
+               (click)="onActionFired('update-time')"
                [matTooltip]=date
                matTooltipPosition="above">
             <span class="left-attached-content" *ngIf="dateService.isBeforeToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
             <span class="left-attached-content">{{ time }}</span>
           </div>
         </div>
-        <div class="tags-holder" (click)="onActionFired('update')">
+        <div class="tags-holder" (click)="onActionFired('card')">
+          <span class="time" *ngIf="media <= mediaType.MEDIUM">
+            <label class="time-label">
+             <span>{{ time }}</span>
+              <span *ngIf="dateService.isBeforeToday(tasklet.creationDate)">, {{ date }}</span>
+            </label>
+          </span>
           <span class="person" *ngFor="let p of tasklet.persons"><label class="person-label">{{ p.name }}</label></span>
           <span class="tag" *ngFor="let t of tasklet.tags"><label class="tag-label">{{ t.name }}</label></span>
         </div>
@@ -49,12 +65,10 @@
         <div class="attachment-holder">
           <div *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Call'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'
-                                       || tasklet.type == 'TODO' "
-               class="side-attached right-attached hidden" (click)="onActionFired('continue')"
+                                       || tasklet.type == 'Idea' "
+               class="side-attached right-attached hidden" (click)="onActionFired('continue-tasklet')"
                matTooltip="Continue with tasklet"
                matTooltipPosition="above">
             <div class="right-attached-content">

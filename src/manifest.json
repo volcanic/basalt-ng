@@ -11,9 +11,14 @@
       "src": "assets/logos/logo-144x144.png",
       "sizes": "256x256",
       "type": "image/png"
+    },
+    {
+      "src": "assets/logos/logo-144x144.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
-  "theme_color": "#607d8b",
+  "theme_color": "#455a64",
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",

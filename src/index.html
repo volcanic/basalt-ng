@@ -8,11 +8,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#607d8b">
   <link rel="manifest" href="/manifest.json">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <noscript>
+    <h3 style="color: #808080; font-family: Roboto sans-serif; margin: 2rem;">
+      This is Angular. It only works with JavaScript.
+    </h3>
+  </noscript>
+  <style>
+    #root {
+      height: 100%;
+      /*background: #f7f7f7;*/
+    }
+    #container {
+      margin: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #logo {
+      height: 144px;
+      width: 144px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #vendor {
+      font-family: Roboto, "Helvetica Neue", sans-serif;
+      display: block;
+      margin-top: 10%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      font-size: 1.6em;
+      color: #CDCDCD;
+      font-weight: 500;
+    }
+  </style>
 </head>
-<body class="app-theme">
-  <app-root>
-  </app-root>
+<body class="app-theme" style="height: 100%;">
+<app-root id="root">
+  <div id="container">
+    <img id="logo" src="assets/logos/logo-144x144.png"/>
+    <p id="vendor">Basalt</p>
+  </div>
+</app-root>
 </body>
 <script>
   if ('serviceWorker' in navigator) {

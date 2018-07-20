@@ -30,7 +30,7 @@ mat-toolbar {
     width: 100px;
   }
   @media #{$mat-large} {
-    width: 450px;
+    width: 200px;
   }
 }
 
@@ -45,12 +45,13 @@ mat-toolbar {
 
   padding-left: 24px;
   padding-right: 24px;
+  width: 100%;
 
   @media #{$mat-small} {
-    width: 50%;
+    width: 100%;
   }
   @media #{$mat-medium} {
-    width: 300px;
+    width: 450px;
   }
   @media #{$mat-large} {
     width: 450px;

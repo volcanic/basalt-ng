@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {MatDialog, MatDialogConfig, MatMenuTrigger} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {SnackbarService} from '../../../services/snackbar.service';
@@ -19,15 +19,23 @@ import {ColorService} from '../../../services/color.service';
 import {Description} from '../../../model/description.model';
 import {CloneService} from '../../../services/util/clone.service';
 import {FilterService} from '../../../services/filter.service';
+import {MediaService} from '../../../services/media.service';
+import {takeUntil} from 'rxjs/internal/operators';
+import {MEDIA} from '../../../model/media.enum';
+import {Subject} from 'rxjs/index';
 
 @Component({
   selector: 'app-tasklet-list-item',
   templateUrl: './tasklet-list-item.component.html',
   styleUrls: ['./tasklet-list-item.component.scss']
 })
-export class TaskletListItemComponent implements OnInit {
+export class TaskletListItemComponent implements OnInit, OnDestroy {
 
   @Input() tasklet: Tasklet;
+  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+
+  media: MEDIA = MEDIA.UNDEFINED;
+  mediaType = MEDIA;
 
   tags: Tag[] = [];
   projects: Project[] = [];
@@ -42,6 +50,8 @@ export class TaskletListItemComponent implements OnInit {
 
   expansionPanelOpened = false;
 
+  private unsubscribeSubject = new Subject();
+
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
               private taskletService: TaskletService,
@@ -49,11 +59,13 @@ export class TaskletListItemComponent implements OnInit {
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
               private filterService: FilterService,
+              private mediaService: MediaService,
               public dateService: DateService,
               public dialog: MatDialog) {
   }
 
   ngOnInit() {
+    this.initializeMediaSubscription();
     this.initializeProjects();
     this.initializeDate();
     this.initializeIcon();
@@ -62,9 +74,23 @@ export class TaskletListItemComponent implements OnInit {
     this.initializeExpansionPanel();
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
+  }
+
   //
   // Initialization
   //
+
+  private initializeMediaSubscription() {
+    this.media = this.mediaService.media;
+    this.mediaService.mediaSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.media = value;
+    });
+  }
 
   private initializeProjects() {
     this.projects = Array.from(this.projectService.projects.values());
@@ -165,15 +191,23 @@ export class TaskletListItemComponent implements OnInit {
 
   onActionFired(action: string) {
     switch (action) {
-      case 'update': {
+      case 'card': {
+        if (this.media > this.mediaType.MEDIUM) {
+          this.onActionFired('update-tasklet');
+        } else {
+          this.contextMenuTrigger.openMenu();
+        }
+        break;
+      }
+      case 'update-tasklet': {
         this.updateTasklet();
         break;
       }
-      case 'updateTime': {
+      case 'update-time': {
         this.updateTaskletTime();
         break;
       }
-      case 'continue': {
+      case 'continue-tasklet': {
         this.continueTasklet();
         break;
       }
@@ -211,6 +245,14 @@ export class TaskletListItemComponent implements OnInit {
         this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
+  }
+
+  onLongPress(event: any) {
+    console.log('LONG');
+
+    if (!this.contextMenuTrigger.menuOpen) {
+      this.contextMenuTrigger.openMenu();
+    }
   }
 
   private continueTasklet() {
