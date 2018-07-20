@@ -1,0 +1,13 @@
+{
+  "name": "de.interoberlin.basalt",
+  "version": "1.0.0",
+  "displayName": "basalt",
+  "cordova": {
+    "platforms": [
+      "android"
+    ]
+  },
+  "dependencies": {
+    "cordova-android": "~5.2.2"
+  }
+}
