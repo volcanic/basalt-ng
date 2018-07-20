@@ -18,6 +18,7 @@ import {MediaService} from '../../../services/media.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {MEDIA} from '../../../model/media.enum';
 import {Subject} from 'rxjs/Subject';
+import {EntityService} from '../../../services/entities/entity.service';
 
 @Component({
   selector: 'app-task-list-item',
@@ -51,7 +52,8 @@ export class TaskListItemComponent implements OnInit {
 
   private unsubscribeSubject = new Subject();
 
-  constructor(private taskService: TaskService,
+  constructor(private entityService: EntityService,
+              private taskService: TaskService,
               private taskletService: TaskletService,
               private digestService: DigestService,
               private snackbarService: SnackbarService,
