@@ -62,7 +62,7 @@
           <span class="tag" *ngFor="let t of tasklet.tags"><label class="tag-label">{{ t.name }}</label></span>
         </div>
         <div class="flexbox"></div>
-        <div class="attachment-holder">
+        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
           <div *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Development'
