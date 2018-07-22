@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
@@ -22,7 +22,7 @@ import {Tag} from '../../../model/tag.model';
 import {MediaService} from '../../../services/media.service';
 import {MEDIA} from '../../../model/media.enum';
 import {takeUntil} from 'rxjs/internal/operators';
-import {Subject} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
 import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialog/project-list-dialog.component';
 
@@ -31,7 +31,7 @@ import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialo
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss']
 })
-export class TimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit, OnDestroy {
   title = 'Basalt';
 
   public mediaType = MEDIA;

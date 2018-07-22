@@ -266,8 +266,7 @@ export class TaskDialogComponent implements OnInit {
     }
   }
 
-  private
-  onKeyDown(event: any) {
+  public onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
       this.updateTask();
