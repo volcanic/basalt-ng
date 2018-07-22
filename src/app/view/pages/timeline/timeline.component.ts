@@ -234,6 +234,18 @@ export class TimelineComponent implements OnInit {
         this.entityService.downloadEntities();
         break;
       }
+      case 'android': {
+        const filename = 'basalt.apk';
+        const element = document.createElement('a');
+        element.setAttribute('href', 'assets/android-release-unsigned.apk');
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        break;
+      }
       case 'about': {
         this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
           disableClose: false,
