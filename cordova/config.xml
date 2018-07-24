@@ -22,6 +22,7 @@
     <preference name="ShowSplashScreenSpinner" value="false" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <icon density="xxhdpi" src="www/assets/logos/logo-144x144.png"/>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
