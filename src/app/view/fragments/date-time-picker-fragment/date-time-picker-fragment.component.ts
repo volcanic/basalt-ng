@@ -12,6 +12,7 @@ export class DateTimePickerFragmentComponent implements OnInit {
   @Input() disabled = false;
   @Output() dateChangedEmitter = new EventEmitter<Date>();
 
+  day = new Date();
   hour = 0;
   minute = 0;
 
@@ -22,11 +23,24 @@ export class DateTimePickerFragmentComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.initComponents();
+    this.initOptions();
+  }
+
+  //
+  // Initialization
+  //
+
+  initComponents() {
     if (this.date != null) {
+      this.day = JSON.parse(JSON.stringify(this.date));
       this.hour = new Date(this.date).getHours();
       this.minute = this.dateService.getRoundedMinutes(new Date(this.date).getMinutes());
     }
+  }
 
+  initOptions() {
     for (let h = 0; h < 24; h++) {
       this.hours.push(h);
     }
@@ -35,8 +49,20 @@ export class DateTimePickerFragmentComponent implements OnInit {
     }
   }
 
+  //
+  // Actions
+  //
+
   onDateChanged(value: Date) {
-    this.date = value;
+
+    this.date = new Date(
+      new Date(value).getFullYear(),
+      new Date(value).getMonth(),
+      new Date(value).getDate(),
+      this.hour,
+      this.minute);
+
+    this.initComponents();
     this.notify();
   }
 
@@ -48,6 +74,7 @@ export class DateTimePickerFragmentComponent implements OnInit {
       value,
       new Date(this.date).getMinutes());
 
+    this.initComponents();
     this.notify();
   }
 
@@ -61,6 +88,7 @@ export class DateTimePickerFragmentComponent implements OnInit {
       value
     );
 
+    this.initComponents();
     this.notify();
   }
 
