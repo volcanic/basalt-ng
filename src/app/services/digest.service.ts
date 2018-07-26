@@ -131,7 +131,7 @@ export class DigestService {
           // Aggregate project efforts
           dailyDigest.projectEfforts.forEach(pe => {
             // Get existing efforts
-            let projectEffort: ProjectEffort = weeklyDigest.projectEfforts.get(pe.project.name);
+            let projectEffort: ProjectEffort = weeklyDigest.projectEfforts.get(pe.project.id);
             if (projectEffort == null) {
               projectEffort = new ProjectEffort(pe.project, null);
             }
