@@ -13,6 +13,7 @@ import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
 import {SnackbarService} from '../../../../services/snackbar.service';
 import {CloneService} from '../../../../services/util/clone.service';
+import {DateService} from '../../../../services/date.service';
 
 @Component({
   selector: 'app-task-dialog',
@@ -58,6 +59,7 @@ export class TaskDialogComponent implements OnInit {
               private taskletService: TaskletService,
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
+              public dateService: DateService,
               private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
