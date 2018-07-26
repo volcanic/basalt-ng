@@ -11,8 +11,8 @@
     </mat-card-header>
 
     <mat-card-content class="content">
-      <mat-accordion class="headers-align" (click)="onActionFired('card')" [matMenuTriggerFor]="contextMenu"
-                     #contextMenuTrigger>
+      <mat-accordion class="headers-align" (click)="onActionFired('card')">
+        <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
           <div class="text">
             <mat-list *ngIf="tasklet.description.value != null && tasklet.description.value.length > 0">
