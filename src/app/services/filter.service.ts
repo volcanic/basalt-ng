@@ -179,14 +179,16 @@ export class FilterService {
 
   private updateProjectsListInternal(projects: Project[], enable: boolean) {
     projects.forEach((p: Project) => {
-      // Deep copy
-      const project = this.cloneService.cloneProject(p);
+      if (p != null) {
+        // Deep copy
+        const project = this.cloneService.cloneProject(p);
 
-      if (enable) {
-        project.checked = true;
+        if (enable) {
+          project.checked = true;
+        }
+
+        this.projects.set(project.id, project);
       }
-
-      this.projects.set(project.id, project);
     });
   }
 
