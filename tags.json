@@ -15,16 +15,8 @@
 { "annotation":"refs/tags/v0.14.0", "message": "Delete tasklets"},
 { "annotation":"refs/tags/v0.15.0", "message": "Update date"},
 { "annotation":"refs/tags/v0.16.0", "message": "Import/export tasklets"},
-  {
-    "annotation": "refs/tags/v0.17.0",
-    "message": "Effort reports"
-  },
-  {
-    "annotation": "refs/tags/v0.18.0",
-    "message": "Top-level tasks"
-  },
-  {
-    "annotation": "refs/tags/v0.19.0",
-    "message": "Progressive Web App"
-  }
+{ "annotation": "refs/tags/v0.17.0", "message": "Effort reports"},
+{ "annotation": "refs/tags/v0.18.0", "message": "Top-level tasks"},
+{ "annotation": "refs/tags/v0.19.0", "message": "Progressive Web App"},
+{ "annotation": "refs/tags/v0.20.0", "message": "Android App"}
 ]}

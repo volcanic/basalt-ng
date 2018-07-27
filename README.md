@@ -1,6 +1,11 @@
 # Basalt
 
-[![Basal logo](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)
+[![Basalt logo](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)
+
+Basalt is available as
+* a web app
+* a progressive web app
+* an Android app
 
 Visit [https://basalt.intero.berlin/](https://basalt.intero.berlin/) for a live demo.
 
@@ -46,6 +51,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.17 | Effort reports |
 | 0.18 | Top-level tasks |
 | 0.19 | Progressive Web App |
+| 0.20 | Android App |
 
 ### Planned features
 
@@ -57,7 +63,7 @@ Don't miss any important information. Be able to report what you spent your time
 ### Based on Amphibian
 
 This app is powered by the [Amphibian app template](https://github.com/florianschwanz/amphibian).
-Therefore it can be built for the following plattforms
+Therefore it can be built for the following platforms
 
 * web
 * Linux / Windows / MacOS
