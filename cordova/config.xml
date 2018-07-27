@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget android-versionCode="1" id="berlin.intero.basalt" version="1.0.0">
-    <name>basalt</name>
+    <name>Basalt</name>
     <description>
     A sample Apache Cordova application
   </description>
@@ -22,11 +22,11 @@
     <preference name="ShowSplashScreenSpinner" value="false" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="xxhdpi" src="www/assets/logos/logo-144x144.png"/>
+        <icon density="xxhdpi" src="www/assets/logos/logo-144x144.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
-    <engine name="android" spec="~5.2.2" />
+    <engine name="android" spec="~7.0.0" />
 </widget>
