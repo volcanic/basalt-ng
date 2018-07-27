@@ -7,6 +7,14 @@ mat-toolbar {
   font-weight: bolder;
 }
 
+.mat-form-field-infix {
+  display: block;
+  position: relative;
+  flex: auto;
+  min-width: 0;
+  width: 100% !important;
+}
+
 .toolbar-menu-item {
   padding: 0 20px;
 }

@@ -29,6 +29,8 @@
     "electron-macos-prod": "npm run electron-build-prod && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=darwin --out=out --overwrite",
     "electron-windows": "npm run electron-build && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=win32 --out=out --overwrite",
     "electron-windows-prod": "npm run electron-build-prod && electron-packager ./dist %npm_package_name% --icon=src/favicon.ico --platform=win32 --out=out --overwrite",
+    "cordova-clean": "cd ./cordova && cordova clean",
+    "cordova-android-prepare": "cd ./cordova && cordova platform remove android && cordova platform add android",
     "cordova-android": "cd ./cordova && cordova build android --debug",
     "cordova-android-prod": "cd ./cordova && cordova build android --release",
     "cordova-android-start": "npm run cordova-android && cd ./cordova && cordova emulate android",

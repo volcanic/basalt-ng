@@ -234,6 +234,18 @@ export class TimelineComponent implements OnInit, OnDestroy {
         this.entityService.downloadEntities();
         break;
       }
+      case 'android-release': {
+        const filename = 'basalt-release.apk';
+        const element = document.createElement('a');
+        element.setAttribute('href', 'assets/basalt.apk');
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        break;
+      }
       case 'about': {
         this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
           disableClose: false,

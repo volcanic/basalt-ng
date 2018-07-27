@@ -98,6 +98,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     const icons: Icon[] = [];
     icons.push(new Icon(ACTION, 'agenda', 'ic_view_agenda_24px.svg'));
+    icons.push(new Icon(ACTION, 'android', 'ic_android_24px.svg'));
     icons.push(new Icon(ACTION, 'bug_report', 'ic_bug_report_24px.svg'));
     icons.push(new Icon(ACTION, 'check_circle', 'ic_check_circle_24px.svg'));
     icons.push(new Icon(ACTION, 'code', 'ic_code_24px.svg'));
