@@ -23,6 +23,18 @@
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="xxhdpi" src="www/assets/logos/logo-144x144.png" />
+        <splash density="land-hdpi" src="www/assets/splash-screens/drawable-land-hdpi/screen.png" />
+        <splash density="land-ldpi" src="www/assets/splash-screens/drawable-land-ldpi/screen.png" />
+        <splash density="land-mdpi" src="www/assets/splash-screens/drawable-land-mdpi/screen.png" />
+        <splash density="land-xhdpi" src="www/assets/splash-screens/drawable-land-xhdpi/screen.png" />
+        <splash density="land-xxhdpi" src="www/assets/splash-screens/drawable-land-xxhdpi/screen.png" />
+        <splash density="land-xxxhdpi" src="www/assets/splash-screens/drawable-land-xxxhdpi/screen.png" />
+        <splash density="port-hdpi" src="www/assets/splash-screens/drawable-port-hdpi/screen.png" />
+        <splash density="port-ldpi" src="www/assets/splash-screens/drawable-port-ldpi/screen.png" />
+        <splash density="port-mdpi" src="www/assets/splash-screens/drawable-port-mdpi/screen.png" />
+        <splash density="port-xhdpi" src="www/assets/splash-screens/drawable-port-xhdpi/screen.png" />
+        <splash density="port-xxhdpi" src="www/assets/splash-screens/drawable-port-xxhdpi/screen.png" />
+        <splash density="port-xxxhdpi" src="www/assets/splash-screens/drawable-port-xxxhdpi/screen.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
