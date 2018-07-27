@@ -234,22 +234,10 @@ export class TimelineComponent implements OnInit {
         this.entityService.downloadEntities();
         break;
       }
-      case 'android-debug': {
-        const filename = 'basalt-debug.apk';
-        const element = document.createElement('a');
-        element.setAttribute('href', 'assets/android-debug.apk');
-        element.setAttribute('download', filename);
-
-        element.style.display = 'none';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-        break;
-      }
       case 'android-release': {
         const filename = 'basalt-release.apk';
         const element = document.createElement('a');
-        element.setAttribute('href', 'assets/android-release-unsigned.apk');
+        element.setAttribute('href', 'assets/basalt.apk');
         element.setAttribute('download', filename);
 
         element.style.display = 'none';
