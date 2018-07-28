@@ -1,5 +1,6 @@
 import {EventEmitter, Injectable, isDevMode} from '@angular/core';
 import PouchDB from 'pouchdb';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class PouchDBService {
@@ -10,22 +11,22 @@ export class PouchDBService {
 
   public constructor() {
     if (!this.isInstantiated) {
-      this.database = new PouchDB('basalt');
+      this.database = new PouchDB(environment.DATABASE_ENTITIES);
       this.isInstantiated = true;
     }
   }
 
   /**
-   * Returns all documents from the database
+   * Returns all documents from the DATABASE_ENTITIES
    * @returns {any}
    */
   public fetch() {
-    console.log(`DEBUG fetch`);
+    console.log(`DEBUG fetch ${environment.DATABASE_ENTITIES}`);
     return this.database.allDocs({include_docs: true});
   }
 
   /**
-   * Compacts the database
+   * Compacts the DATABASE_ENTITIES
    */
   public compact() {
     this.database.compact();
@@ -40,7 +41,7 @@ export class PouchDBService {
   }
 
   /**
-   * Inserts a document into the database
+   * Inserts a document into the DATABASE_ENTITIES
    * @param id
    * @param document
    * @returns {wdpromise.Promise<any>|Promise<any|Observable<AjaxResponse>|
@@ -72,7 +73,7 @@ export class PouchDBService {
   }
 
   /**
-   * Deletes all documents from the database
+   * Deletes all documents from the DATABASE_ENTITIES
    */
   public clear() {
     console.log(`DEBUG clear`);
@@ -88,7 +89,7 @@ export class PouchDBService {
   }
 
   /**
-   * Synchronizes local database with a remote database
+   * Synchronizes local DATABASE_ENTITIES with a remote DATABASE_ENTITIES
    * @param remote
    */
   public sync(remote: string) {

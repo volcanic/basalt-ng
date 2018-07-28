@@ -5,6 +5,8 @@
 
 export const environment = {
   production: false,
+  DATABASE_ENTITIES: 'basalt-dev',
+  DATABASE_SETTINGS: 'basalt_settings-dev',
   NAME: require('../../package.json').name,
   VERSION: require('../../package.json').version,
   LICENSE: require('../../package.json').license,
