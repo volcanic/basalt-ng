@@ -1,4 +1,4 @@
-import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
@@ -21,17 +21,31 @@ import {FilterService} from '../../../services/filter.service';
 import {Tag} from '../../../model/tag.model';
 import {MediaService} from '../../../services/media.service';
 import {MEDIA} from '../../../model/media.enum';
-import {takeUntil} from 'rxjs/internal/operators';
+import {map, takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialog/project-list-dialog.component';
+import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
   selector: 'app-tasklets',
   templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.scss']
+  styleUrls: ['./timeline.component.scss'],
+  animations: [
+    trigger('toolbarAnimation', [
+      state('inactive', style({
+        transform: 'translateY(-75px)'
+      })),
+      state('active', style({
+        transform: 'translateY(0px)'
+      })),
+      transition('inactive => active', animate('300ms ease-in')),
+      transition('active => inactive', animate('300ms ease-out'))
+    ])
+  ]
 })
-export class TimelineComponent implements OnInit, OnDestroy {
+export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   title = 'Basalt';
 
   public mediaType = MEDIA;
@@ -39,8 +53,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   private unsubscribeSubject = new Subject();
 
+  private readonly ELEVATION_BREAKPOINT = 32;
+  private scrollPosLast = 0;
+  state = 'active';
+
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
+  @ViewChild(CdkScrollable) scrollable: CdkScrollable;
 
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
@@ -50,12 +69,34 @@ export class TimelineComponent implements OnInit, OnDestroy {
               private snackbarService: SnackbarService,
               private mediaService: MediaService,
               public zone: NgZone,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private scroll: ScrollDispatcher) {
   }
 
   ngOnInit() {
-
     this.initializeMediaSubscription();
+  }
+
+  toogleState() {
+    if (this.state === 'active') {
+      this.state = 'inactive';
+    } else {
+      this.state = 'active';
+    }
+  }
+
+  ngAfterViewInit() {
+    this.scroll.scrolled(0)
+      .pipe(map(() => {
+        const scrollPos = this.scrollable.getElementRef().nativeElement.scrollTop;
+        if (scrollPos > this.ELEVATION_BREAKPOINT && scrollPos > this.scrollPosLast) {
+          this.state = 'inactive';
+        } else {
+          this.state = 'active';
+        }
+        this.scrollPosLast = scrollPos;
+      }))
+      .subscribe();
   }
 
   ngOnDestroy() {

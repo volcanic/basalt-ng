@@ -81,16 +81,17 @@ import {DateTimePickerFragmentComponent} from './view/fragments/date-time-picker
 import {ProjectListComponent} from './view/lists/project-list/project-list.component';
 import {ProjectListItemComponent} from './view/lists/project-list-item/project-list-item.component';
 import {ProjectDialogComponent} from './view/dialogs/entities/project-dialog/project-dialog.component';
-import { InformationDialogComponent } from './view/dialogs/other/information-dialog/information-dialog.component';
-import { TaskletListComponent } from './view/lists/tasklet-list/tasklet-list.component';
-import { TaskletListItemComponent } from './view/lists/tasklet-list-item/tasklet-list-item.component';
-import { FilterTagListComponent } from './view/lists/filter-tag-list/filter-tag-list.component';
-import { FilterTagListItemComponent } from './view/lists/filter-tag-list-item/filter-tag-list-item.component';
-import { FilterProjectListComponent } from './view/lists/filter-project-list/filter-project-list.component';
-import { FilterProjectListItemComponent } from './view/lists/filter-project-list-item/filter-project-list-item.component';
+import {InformationDialogComponent} from './view/dialogs/other/information-dialog/information-dialog.component';
+import {TaskletListComponent} from './view/lists/tasklet-list/tasklet-list.component';
+import {TaskletListItemComponent} from './view/lists/tasklet-list-item/tasklet-list-item.component';
+import {FilterTagListComponent} from './view/lists/filter-tag-list/filter-tag-list.component';
+import {FilterTagListItemComponent} from './view/lists/filter-tag-list-item/filter-tag-list-item.component';
+import {FilterProjectListComponent} from './view/lists/filter-project-list/filter-project-list.component';
+import {FilterProjectListItemComponent} from './view/lists/filter-project-list-item/filter-project-list-item.component';
 import {MediaService} from './services/media.service';
-import { ProjectListDialogComponent } from './view/dialogs/lists/project-list-dialog/project-list-dialog.component';
-import { TaskListDialogComponent } from './view/dialogs/lists/task-list-dialog/task-list-dialog.component';
+import {ProjectListDialogComponent} from './view/dialogs/lists/project-list-dialog/project-list-dialog.component';
+import {TaskListDialogComponent} from './view/dialogs/lists/task-list-dialog/task-list-dialog.component';
+import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -176,7 +177,8 @@ import { TaskListDialogComponent } from './view/dialogs/lists/task-list-dialog/t
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ScrollDispatchModule
   ],
   entryComponents: [
     AboutDialogComponent,
