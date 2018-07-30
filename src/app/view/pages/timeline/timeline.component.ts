@@ -28,20 +28,31 @@ import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialo
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
+export enum AnimationState {ACTIVE, INACTIVE }
+
 @Component({
   selector: 'app-tasklets',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
   animations: [
     trigger('toolbarAnimation', [
-      state('inactive', style({
+      state(`${AnimationState.INACTIVE}`, style({
         transform: 'translateY(-75px)'
       })),
-      state('active', style({
+      state(`${AnimationState.ACTIVE}`, style({
         transform: 'translateY(0px)'
       })),
-      transition('inactive => active', animate('300ms ease-in')),
-      transition('active => inactive', animate('300ms ease-out'))
+      transition(`${AnimationState.INACTIVE} => ${AnimationState.ACTIVE}`, animate('300ms ease-in')),
+      transition(`${AnimationState.ACTIVE} => ${AnimationState.INACTIVE}`, animate('300ms ease-out'))
+    ]), trigger('fabAnimation', [
+      state(`${AnimationState.INACTIVE}`, style({
+        transform: 'translateY(75px)'
+      })),
+      state(`${AnimationState.ACTIVE}`, style({
+        transform: 'translateY(0px)'
+      })),
+      transition(`${AnimationState.INACTIVE} => ${AnimationState.ACTIVE}`, animate('300ms ease-in')),
+      transition(`${AnimationState.ACTIVE} => ${AnimationState.INACTIVE}`, animate('300ms ease-out'))
     ])
   ]
 })
@@ -53,9 +64,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private unsubscribeSubject = new Subject();
 
-  private readonly ELEVATION_BREAKPOINT = 32;
   private scrollPosLast = 0;
-  state = 'active';
+  public animationState: AnimationState = AnimationState.ACTIVE;
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
@@ -77,26 +87,22 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeMediaSubscription();
   }
 
-  toogleState() {
-    if (this.state === 'active') {
-      this.state = 'inactive';
-    } else {
-      this.state = 'active';
-    }
-  }
-
   ngAfterViewInit() {
     this.scroll.scrolled(0)
       .pipe(map(() => {
         const scrollPos = this.scrollable.getElementRef().nativeElement.scrollTop;
-        if (scrollPos > this.ELEVATION_BREAKPOINT && scrollPos > this.scrollPosLast) {
-          this.state = 'inactive';
-        } else {
-          this.state = 'active';
+        if (this.animationState === AnimationState.ACTIVE && scrollPos > this.scrollPosLast) {
+          this.animationState = AnimationState.INACTIVE;
+          this.zone.run(() => {
+          });
+        } else if (this.animationState === AnimationState.INACTIVE && scrollPos < this.scrollPosLast) {
+          this.animationState = AnimationState.ACTIVE;
+          this.zone.run(() => {
+          });
         }
+
         this.scrollPosLast = scrollPos;
-      }))
-      .subscribe();
+      })).subscribe();
   }
 
   ngOnDestroy() {

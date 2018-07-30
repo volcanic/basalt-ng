@@ -1,5 +1,5 @@
 <app-timeline-toolbar
-  [@toolbarAnimation]="state"
+  [@toolbarAnimation]="animationState"
   class="fixed"
   [title]="title"
   (searchItemChangedEmitter)="onSearchItemChanged($event)"
@@ -21,12 +21,12 @@
   </mat-sidenav>
 
   <mat-sidenav-content cdkScrollable>
-    <div class="content" (click)="toogleState()">
+    <div class="content">
       <app-tasklet-list></app-tasklet-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<button mat-fab class="fab" (click)="onMenuItemClicked('add-tasklet')">
+<button mat-fab class="fab" [@fabAnimation]="animationState" (click)="onMenuItemClicked('add-tasklet')">
   <mat-icon svgIcon="add" class="white-icon"></mat-icon>
 </button>
