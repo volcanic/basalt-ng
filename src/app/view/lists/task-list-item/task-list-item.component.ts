@@ -20,22 +20,24 @@ import {MEDIA} from '../../../model/media.enum';
 import {Subject} from 'rxjs/Subject';
 import {EntityService} from '../../../services/entities/entity.service';
 
+export enum AnimationState {ACTIVE, INACTIVE }
+
 @Component({
   selector: 'app-task-list-item',
   templateUrl: './task-list-item.component.html',
   styleUrls: ['./task-list-item.component.scss'],
   animations: [
     trigger('actionAnimation', [
-      state('inactive', style({
+      state(`${AnimationState.INACTIVE}`, style({
         opacity: '0',
         width: '0'
       })),
-      state('active', style({
+      state(`${AnimationState.ACTIVE}`, style({
         opacity: '0.6',
         width: '24px'
       })),
-      transition('inactive => active', animate('0ms ease-in')),
-      transition('active => inactive', animate('0ms ease-out'))
+      transition(`${AnimationState.INACTIVE} => ${AnimationState.ACTIVE}`, animate('0ms ease-in')),
+      transition(`${AnimationState.ACTIVE} => ${AnimationState.INACTIVE}`, animate('0ms ease-out'))
     ])
   ]
 })
@@ -47,7 +49,7 @@ export class TaskListItemComponent implements OnInit {
   media: MEDIA = MEDIA.UNDEFINED;
   mediaType = MEDIA;
 
-  state = 'inactive';
+  state = AnimationState.INACTIVE;
   taskDigest: TaskDigest;
 
   private unsubscribeSubject = new Subject();
@@ -115,7 +117,7 @@ export class TaskListItemComponent implements OnInit {
   }
 
   onHoverContainer(hovered: boolean) {
-    this.state = hovered ? 'active' : 'inactive';
+    this.state = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;
   }
 
   updateTask() {

@@ -21,7 +21,7 @@
       ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
     </span>
   </button>
-  <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="action-buttons">
+  <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flex-box">
     <button [@actionAnimation]="state"
             mat-icon-button
             matTooltip="Complete"
@@ -43,7 +43,7 @@
       <mat-icon svgIcon='reply'></mat-icon>
     </button>
   </div>
-  <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="action-buttons">
+  <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flex-box">
     <button [@actionAnimation]="state"
             mat-icon-button
             matTooltip="Re-open"
