@@ -6,14 +6,14 @@
   (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">
-  <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side" position="start" opened="true"
+  <mat-sidenav *ngIf="media > mediaType.MEDIUM" [@toolbarAnimation]="animationState" #sidenavStart mode="side" position="start" opened="true"
                class="sidenav sidenav-start">
     <app-filter-tag-list></app-filter-tag-list>
     <mat-divider></mat-divider>
     <app-filter-project-list></app-filter-project-list>
   </mat-sidenav>
 
-  <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavEnd mode="side" position="end" opened="true"
+  <mat-sidenav *ngIf="media > mediaType.MEDIUM" [@toolbarAnimation]="animationState" #sidenavEnd mode="side" position="end" opened="true"
                class="sidenav sidenav-end">
     <app-task-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-task-list>
     <mat-divider></mat-divider>
