@@ -26,34 +26,15 @@ import {Subject} from 'rxjs/Subject';
 import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialog/project-list-dialog.component';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-
-export enum AnimationState {ACTIVE, INACTIVE }
+import {Animations, AnimationState} from './timeline.animation';
 
 @Component({
   selector: 'app-tasklets',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
   animations: [
-    trigger('toolbarAnimation', [
-      state(`${AnimationState.INACTIVE}`, style({
-        transform: 'translateY(-75px)'
-      })),
-      state(`${AnimationState.ACTIVE}`, style({
-        transform: 'translateY(0px)'
-      })),
-      transition(`${AnimationState.INACTIVE} => ${AnimationState.ACTIVE}`, animate('300ms ease-in')),
-      transition(`${AnimationState.ACTIVE} => ${AnimationState.INACTIVE}`, animate('300ms ease-out'))
-    ]), trigger('fabAnimation', [
-      state(`${AnimationState.INACTIVE}`, style({
-        transform: 'translateY(75px)'
-      })),
-      state(`${AnimationState.ACTIVE}`, style({
-        transform: 'translateY(0px)'
-      })),
-      transition(`${AnimationState.INACTIVE} => ${AnimationState.ACTIVE}`, animate('300ms ease-in')),
-      transition(`${AnimationState.ACTIVE} => ${AnimationState.INACTIVE}`, animate('300ms ease-out'))
-    ])
+    Animations.toolbarAnimation,
+    Animations.fabAnimation,
   ]
 })
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {

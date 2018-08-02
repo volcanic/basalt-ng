@@ -9,7 +9,6 @@ import {Tasklet} from '../../../model/entities/tasklet.model';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
-import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DigestService} from '../../../services/digest.service';
 import {TaskDigest} from '../../../model/task-digest.model';
 import {FilterService} from '../../../services/filter.service';
@@ -19,26 +18,15 @@ import {takeUntil} from 'rxjs/internal/operators';
 import {MEDIA} from '../../../model/media.enum';
 import {Subject} from 'rxjs/Subject';
 import {EntityService} from '../../../services/entities/entity.service';
+import {Animations, AnimationState} from './task-list-item.animation';
 
-export enum AnimationState {ACTIVE, INACTIVE }
 
 @Component({
   selector: 'app-task-list-item',
   templateUrl: './task-list-item.component.html',
   styleUrls: ['./task-list-item.component.scss'],
   animations: [
-    trigger('actionAnimation', [
-      state(`${AnimationState.INACTIVE}`, style({
-        opacity: '0',
-        width: '0'
-      })),
-      state(`${AnimationState.ACTIVE}`, style({
-        opacity: '0.6',
-        width: '24px'
-      })),
-      transition(`${AnimationState.INACTIVE} => ${AnimationState.ACTIVE}`, animate('0ms ease-in')),
-      transition(`${AnimationState.ACTIVE} => ${AnimationState.INACTIVE}`, animate('0ms ease-out'))
-    ])
+    Animations.actionAnimation
   ]
 })
 export class TaskListItemComponent implements OnInit {
