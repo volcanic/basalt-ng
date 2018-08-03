@@ -7,6 +7,7 @@ import {SuggestionService} from '../suggestion.service';
 import {PouchDBService} from '../pouchdb.service';
 import {Project} from '../../model/entities/project.model';
 import {ProjectService} from './project.service';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -48,13 +49,17 @@ export class TaskService {
 
   public findTasks(limit: number) {
 
-    this.pouchDBService.find({fields: ['creationDate', 'entityType']},
-      {
+    const index = {fields: ['creationDate', 'entityType']};
+    const options = {
+      selector: {
         '$and': [
           {'entityType': {'$eq': EntityType.TASK}},
           {'creationDate': {'$gt': null}}
         ]
-      }, [{'creationDate': 'desc'}], limit).then(result => {
+      }, sort: [{'creationDate': 'desc'}], limit: environment.LIMIT_TASKS
+    };
+
+    this.pouchDBService.find(index, options).then(result => {
         result['docs'].forEach(element => {
           const task = element as Task;
           this.tasks.set(task.id, task);

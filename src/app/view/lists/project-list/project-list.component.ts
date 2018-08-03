@@ -1,4 +1,13 @@
-import {Component, EventEmitter, NgZone, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {ProjectService} from '../../../services/entities/project.service';
 import {takeUntil} from 'rxjs/internal/operators';
@@ -9,7 +18,8 @@ import {MatchService} from '../../../services/match.service';
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.scss']
+  styleUrls: ['./project-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
 
@@ -23,7 +33,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   constructor(private projectService: ProjectService,
               private matchService: MatchService,
               private filterService: FilterService,
-              public zone: NgZone) {
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -88,6 +98,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
       return matchesSearchItem && matchesProjects;
     });
 
-    this.zone.run(() => this.projects = JSON.parse(JSON.stringify(this.projects)));
+    this.changeDetector.markForCheck();
   }
 }

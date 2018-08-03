@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FilterService} from '../../../services/filter.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
@@ -8,7 +8,8 @@ import {MatchService} from '../../../services/match.service';
 @Component({
   selector: 'app-filter-tag-list',
   templateUrl: './filter-tag-list.component.html',
-  styleUrls: ['./filter-tag-list.component.scss']
+  styleUrls: ['./filter-tag-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterTagListComponent implements OnInit {
 
@@ -18,7 +19,8 @@ export class FilterTagListComponent implements OnInit {
   private unsubscribeSubject = new Subject();
 
   constructor(private filterService: FilterService,
-              private matchService: MatchService) {
+              private matchService: MatchService,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -63,6 +65,7 @@ export class FilterTagListComponent implements OnInit {
           return this.matchService.compare(t1.name, t2.name);
         });
         this.tagsNone = this.filterService.tagsNone;
+        this.changeDetector.markForCheck();
       }
     );
   }

@@ -13,6 +13,7 @@ import {Project} from '../../model/entities/project.model';
 import {Task} from '../../model/entities/task.model';
 import {TaskService} from './task.service';
 import {ProjectService} from './project.service';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class TaskletService {
@@ -28,7 +29,7 @@ export class TaskletService {
               private suggestionService: SuggestionService) {
 
     this.initializeSubscription();
-    this.findTasklets(100);
+    this.findTasklets(1000);
   }
 
   //
@@ -54,19 +55,23 @@ export class TaskletService {
 
   public findTasklets(limit: number) {
 
-    this.pouchDBService.find({fields: ['creationDate', 'entityType']},
-      {
+    const index = {fields: ['creationDate', 'entityType']};
+    const options = {
+      selector: {
         '$and': [
           {'entityType': {'$eq': EntityType.TASKLET}},
           {'creationDate': {'$gt': null}}
         ]
-      }, [{'creationDate': 'desc'}], limit).then(result => {
+      }, sort: [{'creationDate': 'desc'}], limit: environment.LIMIT_TASKLETS
+    };
+
+    this.pouchDBService.find(index, options).then(result => {
+
         result['docs'].forEach(element => {
           const tasklet = element as Tasklet;
           this.tasklets.set(tasklet.id, tasklet);
+          this.notify();
         });
-
-        this.notify();
       }, error => {
         if (isDevMode()) {
           console.error(error);
@@ -101,6 +106,7 @@ export class TaskletService {
    * Informs subscribers that something has changed
    */
   public notify() {
+    console.log('notify');
     this.taskletsSubject.next(Array.from(this.tasklets.values()));
   }
 

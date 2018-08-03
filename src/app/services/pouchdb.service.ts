@@ -19,16 +19,12 @@ export class PouchDBService {
     }
   }
 
-  public find(index: any, selector: any, sort: any, limit: number) {
+  public find(index: any, options) {
 
     return this.database.createIndex({
-      index: {fields: ['creationDate', 'entityType']}
+      index: index
     }).then(() => {
-      return this.database.find({
-        selector: selector,
-        sort: sort,
-        limit: limit
-      });
+      return this.database.find(options);
     });
   }
 

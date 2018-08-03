@@ -10,8 +10,10 @@ import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {Setting} from './model/settings/setting.model';
 import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MediaService} from './services/media.service';
 import {TaskService} from './services/entities/task.service';
+import {TaskletService} from './services/entities/tasklet.service';
+import {Tasklet} from './model/entities/tasklet.model';
+import {Description} from './model/description.model';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +25,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   constructor(private entityService: EntityService,
               private taskService: TaskService,
+              private taskletService: TaskletService,
               private snackbarService: SnackbarService,
               private pouchDBService: PouchDBService,
               private pouchDBSettingsService: PouchDBSettingsService,
@@ -30,13 +33,12 @@ export class AppComponent implements OnInit, AfterViewInit {
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               private iconRegistry: MatIconRegistry,
-              private sanitizer: DomSanitizer,
-              private mediaService: MediaService) {
+              private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
     // this.initializeSettings();
-    this.initializeEntities();
+    this.initializeSnackbar();
     this.initializeIcons();
   }
 
@@ -60,9 +62,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
-  initializeEntities() {
-    // this.entityService.fetch();
-
+  initializeSnackbar() {
     this.snackbarService.messageSubject.subscribe(snack => {
         this.openSnackBar(snack[0], snack[1]);
       }

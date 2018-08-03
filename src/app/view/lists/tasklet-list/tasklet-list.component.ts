@@ -1,15 +1,17 @@
-import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {FilterService} from '../../../services/filter.service';
 import {MatchService} from '../../../services/match.service';
+import {TaskService} from '../../../services/entities/task.service';
 
 @Component({
   selector: 'app-tasklet-list',
   templateUrl: './tasklet-list.component.html',
-  styleUrls: ['./tasklet-list.component.scss']
+  styleUrls: ['./tasklet-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskletListComponent implements OnInit, OnDestroy {
 
@@ -18,14 +20,17 @@ export class TaskletListComponent implements OnInit, OnDestroy {
 
   private unsubscribeSubject = new Subject();
 
-  constructor(private taskletService: TaskletService,
+  constructor(private taskService: TaskService,
+              private taskletService: TaskletService,
               private matchService: MatchService,
               private filterService: FilterService,
+              private changeDetector: ChangeDetectorRef,
               public zone: NgZone) {
   }
 
   ngOnInit() {
 
+    this.initializeTaskSubscription();
     this.initializeTaskletSubscription();
     this.initializeFilterSubscription();
   }
@@ -38,6 +43,18 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   //
   // Initialization
   //
+
+  /**
+   * Subscribes task changes
+   */
+  private initializeTaskSubscription() {
+
+    this.taskService.tasksSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.forceChangeDetection();
+    });
+  }
 
   /**
    * Subscribes tasklet changes
@@ -67,6 +84,14 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Enforces change detection
+   */
+  private forceChangeDetection() {
+    this.tasklets = JSON.parse(JSON.stringify(this.tasklets));
+    this.changeDetector.detectChanges();
+  }
+
+  /**
    * Filters original values
    */
   private update() {
@@ -84,6 +109,6 @@ export class TaskletListComponent implements OnInit, OnDestroy {
       return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
     });
 
-    this.zone.run(() => this.tasklets = JSON.parse(JSON.stringify(this.tasklets)));
+    this.changeDetector.markForCheck();
   }
 }

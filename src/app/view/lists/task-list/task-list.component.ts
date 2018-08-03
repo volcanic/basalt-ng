@@ -1,4 +1,13 @@
-import {Component, EventEmitter, NgZone, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import {TaskService} from '../../../services/entities/task.service';
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/internal/operators';
@@ -10,7 +19,8 @@ import {FilterService} from '../../../services/filter.service';
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskListComponent implements OnInit, OnDestroy {
 
@@ -28,15 +38,13 @@ export class TaskListComponent implements OnInit, OnDestroy {
   tasksNextBadgeColor = 'transparent';
   tasksInboxBadgeColor = 'transparent';
 
-  DISPLAY_LIMIT = 20;
-
   private unsubscribeSubject = new Subject();
 
   constructor(private taskService: TaskService,
               private dateService: DateService,
               private matchService: MatchService,
               private filterService: FilterService,
-              public zone: NgZone) {
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -126,12 +134,12 @@ export class TaskListComponent implements OnInit, OnDestroy {
       const date2 = new Date(t2.completionDate).getTime();
 
       return date2 - date1;
-    }).slice(0, this.DISPLAY_LIMIT);
+    });
 
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
     this.tasksNextBadgeColor = (this.tasksNext.length > 0) ? 'accent' : 'primary';
     this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
 
-    this.zone.run(() => this.tasks = JSON.parse(JSON.stringify(this.tasks)));
+    this.changeDetector.markForCheck();
   }
 }
