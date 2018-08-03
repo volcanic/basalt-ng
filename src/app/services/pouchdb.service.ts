@@ -1,6 +1,7 @@
 import {EventEmitter, Injectable, isDevMode} from '@angular/core';
-import PouchDB from 'pouchdb';
 import {environment} from '../../environments/environment';
+import PouchDB from 'pouchdb';
+import PouchdbFind from 'pouchdb-find';
 
 @Injectable()
 export class PouchDBService {
@@ -10,10 +11,25 @@ export class PouchDBService {
   private listener: EventEmitter<any> = new EventEmitter();
 
   public constructor() {
+    PouchDB.plugin(PouchdbFind);
+
     if (!this.isInstantiated) {
       this.database = new PouchDB(environment.DATABASE_ENTITIES);
       this.isInstantiated = true;
     }
+  }
+
+  public find(index: any, selector: any, sort: any, limit: number) {
+
+    return this.database.createIndex({
+      index: {fields: ['creationDate', 'entityType']}
+    }).then(() => {
+      return this.database.find({
+        selector: selector,
+        sort: sort,
+        limit: limit
+      });
+    });
   }
 
   /**
@@ -21,7 +37,6 @@ export class PouchDBService {
    * @returns {any}
    */
   public fetch() {
-    console.log(`DEBUG fetch ${environment.DATABASE_ENTITIES}`);
     return this.database.allDocs({include_docs: true});
   }
 
@@ -44,13 +59,12 @@ export class PouchDBService {
    * Inserts a document into the DATABASE_ENTITIES
    * @param id
    * @param document
-   * @returns {wdpromise.Promise<any>|Promise<any|Observable<AjaxResponse>|
+   * @returns {wdpromise.Promise<any>|Promise<any|Observable<>|
    * Observable<Response>|IDBRequest>|Promise<R>|webdriver.promise.Promise<any>|webdriver.promise.Promise<R>|Promise<U>|any}
    */
   public put(id: string, document: any) {
     document._id = id;
 
-    // console.log(`DEBUG put ${JSON.stringify(document)}`);
     return this.database.put(document);
   }
 
@@ -64,11 +78,10 @@ export class PouchDBService {
 
   /**
    * Remove a document by a given ID
-   * @param id
+   * @param id id of the document to remove
+   * @param document document to remove
    */
   public remove(id: string, document: any) {
-    console.log(`DEBUG remove ${document._id}`);
-    console.log(`DEBUG remove ${document._rev}`);
     return this.database.remove(document._id, document._rev);
   }
 
@@ -76,7 +89,6 @@ export class PouchDBService {
    * Deletes all documents from the DATABASE_ENTITIES
    */
   public clear() {
-    console.log(`DEBUG clear`);
     this.fetch().then(result => {
       result.rows.forEach(r => {
         this.database.remove(r.doc);
@@ -93,7 +105,6 @@ export class PouchDBService {
    * @param remote
    */
   public sync(remote: string) {
-    console.log(`DEBUG sync ${remote}`);
     const remoteDatabase = new PouchDB(remote);
     this.database.sync(remoteDatabase, {
       live: true

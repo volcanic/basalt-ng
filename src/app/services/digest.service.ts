@@ -7,7 +7,6 @@ import {Tasklet} from '../model/entities/tasklet.model';
 import {TaskletService} from './entities/tasklet.service';
 import {ProjectEffort} from '../model/project-effort.model';
 import {TaskEffort} from '../model/task-effort.model';
-import {EntityService} from './entities/entity.service';
 import {Project} from '../model/entities/project.model';
 import {PlaceholderValues} from '../model/placeholder-values.model';
 import {Task} from '../model/entities/task.model';
@@ -16,8 +15,7 @@ import {TaskDigest} from '../model/task-digest.model';
 @Injectable()
 export class DigestService {
 
-  constructor(private entityService: EntityService,
-              private taskletService: TaskletService,
+  constructor(private taskletService: TaskletService,
               private dateService: DateService) {
   }
 
@@ -25,15 +23,6 @@ export class DigestService {
     return tasklets.filter(t => {
       return new Date(t.creationDate) > new Date(this.dateService.getDayStart(date))
         && new Date(t.creationDate) < new Date(this.dateService.getDayEnd(date));
-    }).sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
-    });
-  }
-
-  private getTaskletsOfPeriod(startDate: Date, endDate: Date, tasklets: Tasklet[]): Tasklet[] {
-    return tasklets.filter(t => {
-      return new Date(t.creationDate) > new Date(this.dateService.getWeekStart(startDate))
-        && new Date(t.creationDate) < new Date(this.dateService.getWeekEnd(endDate));
     }).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     });
@@ -70,7 +59,7 @@ export class DigestService {
           const minutesNew = this.dateService.getRoundedMinutes((diff / 60000));
 
           // Get existing efforts (project)
-          let project = this.entityService.getProjectByTasklet(tasklet);
+          let project = this.taskletService.getProjectByTasklet(tasklet);
           if (project == null) {
             project = new Project(PlaceholderValues.UNSPECIFIED_PROJECT, false);
             project.id = PlaceholderValues.EMPTY_PROJECT_ID;
@@ -82,7 +71,7 @@ export class DigestService {
           }
 
           // Get existing efforts (task)
-          let task = this.entityService.getTaskByTasklet(tasklet);
+          let task = this.taskletService.getTaskByTasklet(tasklet);
           if (task == null) {
             task = new Task(PlaceholderValues.UNSPECIFIED_TASK);
             task.id = PlaceholderValues.EMPTY_TASK_ID;

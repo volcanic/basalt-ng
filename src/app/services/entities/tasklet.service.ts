@@ -1,42 +1,78 @@
-import {Injectable} from '@angular/core';
+import {Injectable, isDevMode} from '@angular/core';
 import {Tasklet} from '../../model/entities/tasklet.model';
 import {Subject} from 'rxjs';
 import {Person} from '../../model/person.model';
 import {TASKLET_TYPE} from '../../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../../model/tasklet-daily-scrum.model';
 import {DateService} from '../date.service';
-import {EntityService} from './entity.service';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {takeUntil} from 'rxjs/internal/operators';
-import {Entity} from '../../model/entities/entity.model';
 import {SuggestionService} from '../suggestion.service';
+import {PouchDBService} from '../pouchdb.service';
+import {Project} from '../../model/entities/project.model';
+import {Task} from '../../model/entities/task.model';
+import {TaskService} from './task.service';
+import {ProjectService} from './project.service';
 
 @Injectable()
 export class TaskletService {
   tasklets = new Map<string, Tasklet>();
   taskletsSubject = new Subject<Tasklet[]>();
 
-  private entitiesUnsubscribeSubject = new Subject();
+  private unsubscribeSubject = new Subject();
 
-  constructor(private entityService: EntityService,
+  constructor(private pouchDBService: PouchDBService,
+              private projectService: ProjectService,
+              private taskService: TaskService,
               private dateService: DateService,
               private suggestionService: SuggestionService) {
 
-    this.entityService.entitiesSubject.pipe(
-      takeUntil(this.entitiesUnsubscribeSubject)
-    ).subscribe((value) => {
-      (value as Entity[]).forEach(entity => {
+    this.initializeSubscription();
+    this.findTasklets(100);
+  }
 
-          if (entity.entityType === EntityType.TASKLET) {
-            const tasklet = entity as Tasklet;
-            this.tasklets.set(tasklet.id, tasklet);
-          }
+  //
+  // Initialization
+  //
+
+  private initializeSubscription() {
+    this.taskletsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      (value as Tasklet[]).forEach(tasklet => {
+          this.tasklets.set(tasklet.id, tasklet);
         }
       );
 
       this.suggestionService.updateByTasklets(Array.from(this.tasklets.values()));
-      this.notify();
     });
+  }
+
+  //
+  // Lookup
+  //
+
+  public findTasklets(limit: number) {
+
+    this.pouchDBService.find({fields: ['creationDate', 'entityType']},
+      {
+        '$and': [
+          {'entityType': {'$eq': EntityType.TASKLET}},
+          {'creationDate': {'$gt': null}}
+        ]
+      }, [{'creationDate': 'desc'}], limit).then(result => {
+        result['docs'].forEach(element => {
+          const tasklet = element as Tasklet;
+          this.tasklets.set(tasklet.id, tasklet);
+        });
+
+        this.notify();
+      }, error => {
+        if (isDevMode()) {
+          console.error(error);
+        }
+      }
+    );
   }
 
   //
@@ -44,19 +80,19 @@ export class TaskletService {
   //
 
   public createTasklet(tasklet: Tasklet) {
-    this.entityService.createEntity(tasklet);
+    this.pouchDBService.put(tasklet.id, tasklet);
     this.tasklets.set(tasklet.id, tasklet);
     this.notify();
   }
 
   public updateTasklet(tasklet: Tasklet) {
-    this.entityService.updateEntity(tasklet);
+    this.pouchDBService.put(tasklet.id, tasklet);
     this.tasklets.set(tasklet.id, tasklet);
     this.notify();
   }
 
   public deleteTasklet(tasklet: Tasklet) {
-    this.entityService.deleteEntity(tasklet);
+    this.pouchDBService.remove(tasklet.id, tasklet);
     this.tasklets.delete(tasklet.id);
     this.notify();
   }
@@ -65,17 +101,42 @@ export class TaskletService {
    * Informs subscribers that something has changed
    */
   public notify() {
-    this.taskletsSubject.next(Array.from(this.tasklets.values()).sort((t1: Tasklet, t2: Tasklet) => {
-      const date1 = new Date(t1.creationDate).getTime();
-      const date2 = new Date(t2.creationDate).getTime();
-
-      return date2 - date1;
-    }));
+    this.taskletsSubject.next(Array.from(this.tasklets.values()));
   }
 
   //
   // Lookup
   //
+
+  /**
+   * Retrieves a tasklet by a tasks
+   *
+   * @param tasklet
+   * @returns {any}
+   */
+  public getTaskByTasklet(tasklet: Tasklet): Task {
+    if (tasklet != null && tasklet.taskId != null) {
+      return this.taskService.tasks.get(tasklet.taskId);
+    }
+
+    return null;
+  }
+
+  /**
+   * Retrieves a project by a tasklet
+   *
+   * @param tasklet
+   * @returns {any}
+   */
+  public getProjectByTasklet(tasklet: Tasklet): Project {
+    const task = this.getTaskByTasklet(tasklet);
+
+    if (tasklet != null && task != null && task.projectId != null) {
+      return this.projectService.projects.get(task.projectId);
+    }
+
+    return null;
+  }
 
   /**
    * Returns a map of recent daily scrum activities of a given person

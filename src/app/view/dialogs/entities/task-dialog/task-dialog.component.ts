@@ -53,8 +53,7 @@ export class TaskDialogComponent implements OnInit {
   // Tags
   tags: Tag[] = [];
 
-  constructor(private entityService: EntityService,
-              private projectService: ProjectService,
+  constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
               private snackbarService: SnackbarService,
@@ -97,7 +96,7 @@ export class TaskDialogComponent implements OnInit {
   }
 
   initializeProject() {
-    this.project = this.entityService.getEntityById(this.task.projectId) as Project;
+    this.project = this.projectService.projects.get(this.task.projectId);
   }
 
   initializeTags() {

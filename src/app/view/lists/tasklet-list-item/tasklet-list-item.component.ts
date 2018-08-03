@@ -13,7 +13,6 @@ import {UUID} from '../../../model/util/uuid';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
 import {Project} from '../../../model/entities/project.model';
-import {EntityService} from '../../../services/entities/entity.service';
 import {ProjectService} from '../../../services/entities/project.service';
 import {ColorService} from '../../../services/color.service';
 import {Description} from '../../../model/description.model';
@@ -22,7 +21,7 @@ import {FilterService} from '../../../services/filter.service';
 import {MediaService} from '../../../services/media.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {MEDIA} from '../../../model/media.enum';
-import {Subject} from 'rxjs/index';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'app-tasklet-list-item',
@@ -52,8 +51,7 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
 
   private unsubscribeSubject = new Subject();
 
-  constructor(private entityService: EntityService,
-              private projectService: ProjectService,
+  constructor(private projectService: ProjectService,
               private taskletService: TaskletService,
               private colorService: ColorService,
               private snackbarService: SnackbarService,
@@ -165,7 +163,7 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         break;
       }
       default: {
-        const task = this.entityService.getTaskByTasklet(this.tasklet);
+        const task = this.taskletService.getTaskByTasklet(this.tasklet);
 
         if (task != null) {
           this.topic = task.name;
@@ -177,7 +175,7 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
   }
 
   private initializeProject() {
-    this.project = this.entityService.getProjectByTasklet(this.tasklet);
+    this.project = this.taskletService.getProjectByTasklet(this.tasklet);
     this.projectColor = this.colorService.getProjectColor(this.project);
   }
 
@@ -245,14 +243,6 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
-  }
-
-  onLongPress(event: any) {
-    console.log('LONG');
-
-    if (!this.contextMenuTrigger.menuOpen) {
-      this.contextMenuTrigger.openMenu();
-    }
   }
 
   private continueTasklet() {

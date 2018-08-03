@@ -11,6 +11,7 @@ import {Setting} from './model/settings/setting.model';
 import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MediaService} from './services/media.service';
+import {TaskService} from './services/entities/task.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   title = 'Basalt';
 
   constructor(private entityService: EntityService,
+              private taskService: TaskService,
               private snackbarService: SnackbarService,
               private pouchDBService: PouchDBService,
               private pouchDBSettingsService: PouchDBSettingsService,
@@ -59,7 +61,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   initializeEntities() {
-    this.entityService.fetch();
+    // this.entityService.fetch();
+
     this.snackbarService.messageSubject.subscribe(snack => {
         this.openSnackBar(snack[0], snack[1]);
       }

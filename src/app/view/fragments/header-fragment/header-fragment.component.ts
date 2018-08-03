@@ -3,7 +3,7 @@ import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {MatDialog} from '@angular/material';
 import {Project} from '../../../model/entities/project.model';
 import {Tasklet} from '../../../model/entities/tasklet.model';
-import {EntityService} from '../../../services/entities/entity.service';
+import {TaskletService} from '../../../services/entities/tasklet.service';
 
 @Component({
   selector: 'app-header-fragment',
@@ -17,10 +17,10 @@ export class HeaderFragmentComponent implements OnInit {
 
   taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
 
-  constructor(private entityService: EntityService,
+  constructor(private taskletService: TaskletService,
               public dialog: MatDialog) {
 
-    this.project = this.entityService.getProjectByTasklet(this.tasklet);
+    this.project = this.taskletService.getProjectByTasklet(this.tasklet);
   }
 
   ngOnInit() {

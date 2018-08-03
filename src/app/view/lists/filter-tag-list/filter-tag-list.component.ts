@@ -3,6 +3,7 @@ import {FilterService} from '../../../services/filter.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {Tag} from '../../../model/tag.model';
+import {MatchService} from '../../../services/match.service';
 
 @Component({
   selector: 'app-filter-tag-list',
@@ -16,7 +17,8 @@ export class FilterTagListComponent implements OnInit {
 
   private unsubscribeSubject = new Subject();
 
-  constructor(private filterService: FilterService) {
+  constructor(private filterService: FilterService,
+              private matchService: MatchService) {
   }
 
   ngOnInit() {
@@ -49,14 +51,16 @@ export class FilterTagListComponent implements OnInit {
    */
   private initializeTagSubscription() {
 
-    this.tags = Array.from(this.filterService.tags.values());
+    this.tags = Array.from(this.filterService.tags.values()).sort((t1: Tag, t2: Tag) => {
+      return this.matchService.compare(t1.name, t2.name);
+    });
     this.tagsNone = this.filterService.tagsNone;
 
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
         this.tags = Array.from(this.filterService.tags.values()).sort((t1: Tag, t2: Tag) => {
-          return t1.name > t2.name ? 1 : -1;
+          return this.matchService.compare(t1.name, t2.name);
         });
         this.tagsNone = this.filterService.tagsNone;
       }

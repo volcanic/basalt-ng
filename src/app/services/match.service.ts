@@ -1,17 +1,25 @@
 import {Injectable} from '@angular/core';
 import {Tasklet} from '../model/entities/tasklet.model';
-import {EntityService} from './entities/entity.service';
 import {Project} from '../model/entities/project.model';
 import {Task} from '../model/entities/task.model';
 import {Tag} from '../model/tag.model';
 import {Description} from '../model/description.model';
 import {Person} from '../model/person.model';
+import {ProjectService} from './entities/project.service';
+import {TaskletService} from './entities/tasklet.service';
+import {TaskService} from './entities/task.service';
 
 
 @Injectable()
 export class MatchService {
 
-  constructor(private entityService: EntityService) {
+  constructor(private projectService: ProjectService,
+              private taskService: TaskService,
+              private taskletService: TaskletService) {
+  }
+
+  public compare(value1: string, value2: string) {
+    return this.normalize(value1) > this.normalize(value2) ? 1 : -1;
   }
 
   //
@@ -80,7 +88,7 @@ export class MatchService {
    */
   public taskletMatchesProjects(tasklet: Tasklet, projects: Project[], projectsNone: boolean): boolean {
 
-    const project = this.entityService.getProjectByTasklet(tasklet);
+    const project = this.taskletService.getProjectByTasklet(tasklet);
 
     return this.projectMatchesProjects(project, projects, projectsNone);
   }
@@ -95,7 +103,7 @@ export class MatchService {
    */
   public taskMatchesProjects(task: Task, projects: Project[], projectsNone: boolean): boolean {
 
-    const project = this.entityService.getEntityById(task.projectId) as Project;
+    const project = this.projectService.projects.get(task.projectId);
 
     return this.projectMatchesProjects(project, projects, projectsNone);
   }
@@ -129,17 +137,17 @@ export class MatchService {
    */
   public taskletMatchesEveryItem(tasklet: Tasklet, items: string): boolean {
 
-    const task = this.entityService.getTaskByTasklet(tasklet) as Task;
-    const project = this.entityService.getProjectByTasklet(tasklet) as Project;
+    const task = this.taskletService.getTaskByTasklet(tasklet);
+    const project = this.taskletService.getProjectByTasklet(tasklet);
 
     return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
 
-        return this.taskNameMatchesSingleItem(task, item)
-          || this.projectNameMatchesSingleItem(project, item)
-          || this.descriptionMatchesSingleItem(tasklet.description, item)
-          || this.personsMatchesSingleItem(tasklet.persons, item)
-          || this.tagsMatchesSingleItem(tasklet.tags, item);
-      });
+      return this.taskNameMatchesSingleItem(task, item)
+        || this.projectNameMatchesSingleItem(project, item)
+        || this.descriptionMatchesSingleItem(tasklet.description, item)
+        || this.personsMatchesSingleItem(tasklet.persons, item)
+        || this.tagsMatchesSingleItem(tasklet.tags, item);
+    });
   }
 
   /**
@@ -151,14 +159,14 @@ export class MatchService {
    */
   public taskMatchesEveryItem(task: Task, items: string): boolean {
 
-    const project = this.entityService.getProjectByTask(task) as Project;
+    const project = this.taskService.getProjectByTask(task);
 
     return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
-        return this.taskNameMatchesSingleItem(task, item)
-          || this.projectNameMatchesSingleItem(project, item)
-          || this.descriptionMatchesSingleItem(task.description, item)
-          || this.tagsMatchesSingleItem(task.tags, item);
-      });
+      return this.taskNameMatchesSingleItem(task, item)
+        || this.projectNameMatchesSingleItem(project, item)
+        || this.descriptionMatchesSingleItem(task.description, item)
+        || this.tagsMatchesSingleItem(task.tags, item);
+    });
   }
 
   /**
@@ -171,8 +179,8 @@ export class MatchService {
   public projectMatchesEveryItem(project: Project, items: string): boolean {
 
     return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
-        return this.projectNameMatchesSingleItem(project, item);
-      });
+      return this.projectNameMatchesSingleItem(project, item);
+    });
   }
 
   //
@@ -192,29 +200,29 @@ export class MatchService {
   private descriptionMatchesSingleItem(description: Description, item: string): boolean {
 
     return description.value != null && description.value.split('\n').some(s => {
-        return this.textMatchesSingleItem(s, item);
-      });
+      return this.textMatchesSingleItem(s, item);
+    });
   }
 
   private personsMatchesSingleItem(persons: Person[], item: string): boolean {
 
     return persons != null && persons.some(p => {
-        return this.textMatchesSingleItem(p.name, item);
-      });
+      return this.textMatchesSingleItem(p.name, item);
+    });
   }
 
   private tagsMatchesSingleItem(tags: Tag[], item: string): boolean {
 
     return tags != null && tags.some(t => {
-        return this.textMatchesSingleItem(t.name, item);
-      });
+      return this.textMatchesSingleItem(t.name, item);
+    });
   }
 
   public textMatchesAnyItem(text: string, items: string): boolean {
 
     return items != null && items.toString().trim() !== '' && this.splitSearchItems(items).some(i => {
-        return this.textMatchesSingleItem(text, i);
-      });
+      return this.textMatchesSingleItem(text, i);
+    });
   }
 
   public textMatchesSingleItem(text: string, item: string): boolean {
@@ -233,8 +241,8 @@ export class MatchService {
   public valueMatchesAnyItem(value: string, items: string): boolean {
 
     return items != null && this.splitSearchItems(items).some(t => {
-        return this.valueMatchesSingleItem(value, t);
-      });
+      return this.valueMatchesSingleItem(value, t);
+    });
   }
 
   /**

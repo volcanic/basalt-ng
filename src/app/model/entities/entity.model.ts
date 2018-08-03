@@ -7,7 +7,7 @@ export class Entity {
   creationDate: Date;
 
   constructor() {
-    this.id = new UUID().toString();
+    this.id = new Date().toJSON() + Math.random();
     this.creationDate = new Date();
   }
 }

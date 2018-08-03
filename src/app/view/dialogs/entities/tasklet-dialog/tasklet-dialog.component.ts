@@ -33,8 +33,7 @@ export class TaskletDialogComponent implements OnInit {
   // Temporary
   task: Task;
 
-  constructor(private entityService: EntityService,
-              private taskService: TaskService,
+  constructor(private taskService: TaskService,
               private taskletService: TaskletService,
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
@@ -51,7 +50,7 @@ export class TaskletDialogComponent implements OnInit {
     this.tasklet = this.cloneService.cloneTasklet(this.data.tasklet);
     this.previousDescription = this.data.previousDescription;
 
-    this.task = this.entityService.getEntityById(this.tasklet.taskId) as Task;
+    this.task = this.taskService.tasks.get(this.tasklet.taskId);
   }
 
   //

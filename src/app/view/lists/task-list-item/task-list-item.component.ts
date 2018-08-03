@@ -12,14 +12,12 @@ import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
 import {DigestService} from '../../../services/digest.service';
 import {TaskDigest} from '../../../model/task-digest.model';
 import {FilterService} from '../../../services/filter.service';
-import {Project} from '../../../model/entities/project.model';
 import {MediaService} from '../../../services/media.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {MEDIA} from '../../../model/media.enum';
 import {Subject} from 'rxjs/Subject';
-import {EntityService} from '../../../services/entities/entity.service';
+import {ProjectService} from '../../../services/entities/project.service';
 import {Animations, AnimationState} from './task-list-item.animation';
-
 
 @Component({
   selector: 'app-task-list-item',
@@ -42,7 +40,7 @@ export class TaskListItemComponent implements OnInit {
 
   private unsubscribeSubject = new Subject();
 
-  constructor(private entityService: EntityService,
+  constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
               private digestService: DigestService,
@@ -120,7 +118,7 @@ export class TaskListItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         const task = result as Task;
-        const project = this.entityService.getEntityById(task.projectId) as Project;
+        const project = this.projectService.projects.get(task.projectId);
 
         this.taskService.updateTask(task);
         this.filterService.updateProjectsList([project], true);

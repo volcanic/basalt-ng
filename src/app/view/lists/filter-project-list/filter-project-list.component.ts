@@ -3,6 +3,7 @@ import {FilterService} from '../../../services/filter.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {Project} from '../../../model/entities/project.model';
+import {MatchService} from '../../../services/match.service';
 
 @Component({
   selector: 'app-filter-project-list',
@@ -16,7 +17,8 @@ export class FilterProjectListComponent implements OnInit {
 
   private unsubscribeSubject = new Subject();
 
-  constructor(private filterService: FilterService) {
+  constructor(private filterService: FilterService,
+              private matchService: MatchService) {
   }
 
   ngOnInit() {
@@ -49,14 +51,16 @@ export class FilterProjectListComponent implements OnInit {
    */
   private initializeProjectSubscription() {
 
-    this.projects = Array.from(this.filterService.projects.values());
+    this.projects = Array.from(this.filterService.projects.values()).sort((p1: Project, p2: Project) => {
+      return -this.matchService.compare(p1.creationDate.toString(), p2.creationDate.toString());
+    });
     this.projectsNone = this.filterService.projectsNone;
 
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
         this.projects = Array.from(this.filterService.projects.values()).sort((p1: Project, p2: Project) => {
-          return p1.name > p2.name ? 1 : -1;
+          return -this.matchService.compare(p1.creationDate.toString(), p2.creationDate.toString());
         });
         this.projectsNone = this.filterService.projectsNone;
       }

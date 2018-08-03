@@ -123,16 +123,18 @@ export class FilterService {
 
   private updateTagsListInternal(tags: Tag[], enable: boolean) {
 
-    tags.forEach((t: Tag) => {
-      // Deep copy
-      const tag = this.cloneService.cloneTag(t);
+    if (tags != null) {
+      tags.forEach((t: Tag) => {
+        // Deep copy
+        const tag = this.cloneService.cloneTag(t);
 
-      if (enable) {
-        tag.checked = true;
-      }
+        if (enable) {
+          tag.checked = true;
+        }
 
-      this.tags.set(tag.name, tag);
-    });
+        this.tags.set(tag.name, tag);
+      });
+    }
   }
 
   public updateTagsNone(tagsNone: boolean) {
