@@ -115,25 +115,28 @@ export class TaskListComponent implements OnInit, OnDestroy {
         && task.completionDate == null
         && task.dueDate != null
         && this.dateService.isBefore(task.dueDate, new Date());
+    }).sort((t1: Task, t2: Task) => {
+      return -this.matchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksNext = this.tasks.filter(task => {
       return task != null
         && task.completionDate == null
         && task.dueDate != null
         && this.dateService.isAfter(task.dueDate, new Date());
+    }).sort((t1: Task, t2: Task) => {
+      return -this.matchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksInbox = this.tasks.filter(task => {
       return task != null
         && task.completionDate == null
         && task.dueDate == null;
+    }).sort((t1: Task, t2: Task) => {
+      return -this.matchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksCompleted = this.tasks.filter(task => {
       return task != null && task.completionDate != null;
     }).sort((t1: Task, t2: Task) => {
-      const date1 = new Date(t1.completionDate).getTime();
-      const date2 = new Date(t2.completionDate).getTime();
-
-      return date2 - date1;
+      return -this.matchService.compare(t1.completionDate.toString(), t2.completionDate.toString());
     });
 
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';

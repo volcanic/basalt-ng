@@ -14,6 +14,7 @@ import {takeUntil} from 'rxjs/internal/operators';
 import {Project} from '../../../model/entities/project.model';
 import {FilterService} from '../../../services/filter.service';
 import {MatchService} from '../../../services/match.service';
+import {Task} from '../../../model/entities/task.model';
 
 @Component({
   selector: 'app-project-list',
@@ -96,6 +97,8 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         this.filterService.projectsNone);
 
       return matchesSearchItem && matchesProjects;
+    }).sort((p1: Project, p2: Project) => {
+      return -this.matchService.compare(p1.modificationDate.toString(), p2.modificationDate.toString());
     });
 
     this.changeDetector.markForCheck();

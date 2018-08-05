@@ -48,14 +48,14 @@ export class ProjectService {
 
   public findProjects(limit: number) {
 
-    const index = {fields: ['creationDate', 'entityType']};
+    const index = {fields: ['modificationDate', 'entityType']};
     const options = {
       selector: {
         '$and': [
           {'entityType': {'$eq': EntityType.PROJECT}},
-          {'creationDate': {'$gt': null}}
+          {'modificationDate': {'$gt': null}}
         ]
-      }, sort: [{'creationDate': 'desc'}], limit: environment.LIMIT_PROJECTS
+      }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_PROJECTS
     };
 
     this.pouchDBService.find(index, options).then(result => {
@@ -78,21 +78,29 @@ export class ProjectService {
   //
 
   public createProject(project: Project) {
-    this.pouchDBService.put(project.id, project);
-    this.projects.set(project.id, project);
-    this.notify();
+    if (project != null) {
+      this.pouchDBService.put(project.id, project);
+      this.projects.set(project.id, project);
+      this.notify();
+    }
   }
 
   public updateProject(project: Project) {
-    this.pouchDBService.put(project.id, project);
-    this.projects.set(project.id, project);
-    this.notify();
+    if (project != null) {
+      project.modificationDate = new Date();
+
+      this.pouchDBService.put(project.id, project);
+      this.projects.set(project.id, project);
+      this.notify();
+    }
   }
 
   public deleteProject(project: Project) {
-    this.pouchDBService.remove(project.id, project);
-    this.projects.delete(project.id);
-    this.notify();
+    if (project != null) {
+      this.pouchDBService.remove(project.id, project);
+      this.projects.delete(project.id);
+      this.notify();
+    }
   }
 
 

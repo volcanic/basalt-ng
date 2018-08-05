@@ -32,7 +32,7 @@ export class SuggestionService {
   public updateByTasklets(tasklets: Tasklet[]) {
 
     tasklets.sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
+      return (new Date(t1.modificationDate) > new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
       if (t != null) {
 
@@ -72,7 +72,7 @@ export class SuggestionService {
   public updateByTasks(tasks: Task[]) {
 
     tasks.sort((t1, t2) => {
-      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
+      return (new Date(t1.modificationDate) > new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
       if (t != null) {
 
@@ -110,7 +110,7 @@ export class SuggestionService {
   public updateByProjects(projects: Project[]) {
 
     projects.sort((p1, p2) => {
-      return (new Date(p1.creationDate) > new Date(p2.creationDate)) ? 1 : -1;
+      return (new Date(p1.modificationDate) > new Date(p2.modificationDate)) ? 1 : -1;
     }).forEach(p => {
       if (p != null) {
 

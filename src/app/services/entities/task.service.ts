@@ -49,14 +49,14 @@ export class TaskService {
 
   public findTasks(limit: number) {
 
-    const index = {fields: ['creationDate', 'entityType']};
+    const index = {fields: ['modificationDate', 'entityType']};
     const options = {
       selector: {
         '$and': [
           {'entityType': {'$eq': EntityType.TASK}},
-          {'creationDate': {'$gt': null}}
+          {'modificationDate': {'$gt': null}}
         ]
-      }, sort: [{'creationDate': 'desc'}], limit: environment.LIMIT_TASKS
+      }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_TASKS
     };
 
     this.pouchDBService.find(index, options).then(result => {
@@ -79,21 +79,33 @@ export class TaskService {
   //
 
   public createTask(task: Task) {
-    this.pouchDBService.put(task.id, task);
-    this.tasks.set(task.id, task);
-    this.notify();
+    if (task != null) {
+      this.projectService.updateProject(this.getProjectByTask(task));
+
+      this.pouchDBService.put(task.id, task);
+      this.tasks.set(task.id, task);
+      this.notify();
+    }
   }
 
   public updateTask(task: Task) {
-    this.pouchDBService.put(task.id, task);
-    this.tasks.set(task.id, task);
-    this.notify();
+    if (task != null) {
+      this.projectService.updateProject(this.getProjectByTask(task));
+
+      task.modificationDate = new Date();
+
+      this.pouchDBService.put(task.id, task);
+      this.tasks.set(task.id, task);
+      this.notify();
+    }
   }
 
   public deleteTask(task: Task) {
-    this.pouchDBService.remove(task.id, task);
-    this.tasks.delete(task.id);
-    this.notify();
+    if (task != null) {
+      this.pouchDBService.remove(task.id, task);
+      this.tasks.delete(task.id);
+      this.notify();
+    }
   }
 
   /**

@@ -85,28 +85,41 @@ export class TaskletService {
   //
 
   public createTasklet(tasklet: Tasklet) {
-    this.pouchDBService.put(tasklet.id, tasklet);
-    this.tasklets.set(tasklet.id, tasklet);
-    this.notify();
+    if (tasklet != null) {
+      this.projectService.updateProject(this.getProjectByTasklet(tasklet));
+      this.taskService.updateTask(this.getTaskByTasklet(tasklet));
+
+      this.pouchDBService.put(tasklet.id, tasklet);
+      this.tasklets.set(tasklet.id, tasklet);
+      this.notify();
+    }
   }
 
   public updateTasklet(tasklet: Tasklet) {
-    this.pouchDBService.put(tasklet.id, tasklet);
-    this.tasklets.set(tasklet.id, tasklet);
-    this.notify();
+    if (tasklet != null) {
+      this.projectService.updateProject(this.getProjectByTasklet(tasklet));
+      this.taskService.updateTask(this.getTaskByTasklet(tasklet));
+
+      tasklet.modificationDate = new Date();
+
+      this.pouchDBService.put(tasklet.id, tasklet);
+      this.tasklets.set(tasklet.id, tasklet);
+      this.notify();
+    }
   }
 
   public deleteTasklet(tasklet: Tasklet) {
-    this.pouchDBService.remove(tasklet.id, tasklet);
-    this.tasklets.delete(tasklet.id);
-    this.notify();
+      if (tasklet != null) {
+        this.pouchDBService.remove(tasklet.id, tasklet);
+        this.tasklets.delete(tasklet.id);
+        this.notify();
+      }
   }
 
   /**
    * Informs subscribers that something has changed
    */
   public notify() {
-    console.log('notify');
     this.taskletsSubject.next(Array.from(this.tasklets.values()));
   }
 

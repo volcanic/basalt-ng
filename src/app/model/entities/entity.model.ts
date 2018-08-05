@@ -5,9 +5,11 @@ export class Entity {
   entityType: EntityType;
   id: string;
   creationDate: Date;
+  modificationDate: Date;
 
   constructor() {
-    this.id = new Date().toJSON() + Math.random();
+    this.id = new UUID().toString();
     this.creationDate = new Date();
+    this.modificationDate = new Date();
   }
 }

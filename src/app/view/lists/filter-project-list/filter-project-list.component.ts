@@ -54,7 +54,7 @@ export class FilterProjectListComponent implements OnInit {
   private initializeProjectSubscription() {
 
     this.projects = Array.from(this.filterService.projects.values()).sort((p1: Project, p2: Project) => {
-      return -this.matchService.compare(p1.creationDate.toString(), p2.creationDate.toString());
+      return -this.matchService.compare(p1.modificationDate.toString(), p2.modificationDate.toString());
     });
     this.projectsNone = this.filterService.projectsNone;
 
@@ -62,7 +62,7 @@ export class FilterProjectListComponent implements OnInit {
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
         this.projects = Array.from(this.filterService.projects.values()).sort((p1: Project, p2: Project) => {
-          return -this.matchService.compare(p1.creationDate.toString(), p2.creationDate.toString());
+          return -this.matchService.compare(p1.modificationDate.toString(), p2.modificationDate.toString());
         });
         this.projectsNone = this.filterService.projectsNone;
         this.changeDetector.markForCheck();
