@@ -8,7 +8,7 @@ export const environment = {
   DATABASE_ENTITIES: 'basalt-dev',
   DATABASE_SETTINGS: 'basalt_settings-dev',
   LIMIT_PROJECTS: 50,
-  LIMIT_TASKS: 50,
+  LIMIT_TASKS: 500,
   LIMIT_TASKLETS: 100,
   NAME: require('../../package.json').name,
   VERSION: require('../../package.json').version,

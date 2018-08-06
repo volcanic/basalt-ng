@@ -29,7 +29,7 @@ export class TaskletService {
               private suggestionService: SuggestionService) {
 
     this.initializeSubscription();
-    this.findTasklets(1000);
+    this.findTasklets();
   }
 
   //
@@ -53,7 +53,7 @@ export class TaskletService {
   // Lookup
   //
 
-  public findTasklets(limit: number) {
+  public findTasklets() {
 
     const index = {fields: ['creationDate', 'entityType']};
     const options = {

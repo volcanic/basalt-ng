@@ -5,8 +5,6 @@ import {takeUntil} from 'rxjs/internal/operators';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {SuggestionService} from '../suggestion.service';
 import {PouchDBService} from '../pouchdb.service';
-import {Tasklet} from '../../model/entities/tasklet.model';
-import {Task} from '../../model/entities/task.model';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
@@ -22,7 +20,7 @@ export class ProjectService {
               private suggestionService: SuggestionService) {
 
     this.initializeSubscription();
-    this.findProjects(50);
+    this.findProjects();
   }
 
   //
@@ -46,7 +44,7 @@ export class ProjectService {
   // Lookup
   //
 
-  public findProjects(limit: number) {
+  public findProjects() {
 
     const index = {fields: ['modificationDate', 'entityType']};
     const options = {

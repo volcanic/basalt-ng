@@ -48,7 +48,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   initializeDatabaseSync() {
     this.pouchDBService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
-    this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
+    this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_SETTINGS}`);
   }
 
   initializeSettings() {

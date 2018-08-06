@@ -23,7 +23,7 @@ export class TaskService {
               private suggestionService: SuggestionService) {
 
     this.initializeSubscription();
-    this.findTasks(50);
+    this.findTasks();
   }
 
   //
@@ -47,7 +47,7 @@ export class TaskService {
   // Lookup
   //
 
-  public findTasks(limit: number) {
+  public findTasks() {
 
     const index = {fields: ['modificationDate', 'entityType']};
     const options = {
