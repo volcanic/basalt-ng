@@ -70,8 +70,6 @@ export class PouchDBService {
     document._id = id;
 
     return this.database.upsert(id, () => {
-      document.counter = document.counter || 0;
-      document.counter++;
       return document;
     });
   }
@@ -113,6 +111,7 @@ export class PouchDBService {
    * @param remote
    */
   public sync(remote: string) {
+    console.log(`DEBUG sync ${remote}`);
     const remoteDatabase = new PouchDB(remote);
     this.database.sync(remoteDatabase, {
       live: true
