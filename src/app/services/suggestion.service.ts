@@ -9,7 +9,11 @@ import {Task} from '../model/entities/task.model';
 })
 export class SuggestionService {
 
+  // Map of search items, key is creation date, value is actual value
   searchOptions: Map<string, string>;
+  // Used to differentiate between search options with the same timestamp
+  searchOptionsCounter = 0;
+
   taskOptions: Map<string, string>;
   projectOptions: Map<string, string>;
   personOptions: Map<string, string>;
@@ -32,17 +36,16 @@ export class SuggestionService {
   public updateByTasklets(tasklets: Tasklet[]) {
 
     tasklets.sort((t1, t2) => {
-      return (new Date(t1.modificationDate) > new Date(t2.modificationDate)) ? 1 : -1;
+      return (new Date(t1.modificationDate) < new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
       if (t != null) {
 
-        // Add description lines to search items
-        if (t.description.value != null) {
-          t.description.value.split('\n').forEach(v => {
-            if (v.trim() !== '') {
-              const value = v.trim().replace(/(^-)/g, '');
-              this.searchOptions.set(value, value);
-            }
+        // Add persons to search options
+        if (t.persons != null) {
+          t.persons.forEach(person => {
+            const value = person.name;
+            this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
+            this.personOptions.set(value, value);
           });
         }
 
@@ -50,17 +53,18 @@ export class SuggestionService {
         if (t.tags != null) {
           t.tags.forEach(tag => {
             const value = tag.name;
-            this.searchOptions.set(value, value);
+            this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
             this.tagOptions.set(value, value);
           });
         }
 
-        // Add persons to search options
-        if (t.persons != null) {
-          t.persons.forEach(person => {
-            const value = person.name;
-            this.searchOptions.set(value, value);
-            this.personOptions.set(value, value);
+        // Add description lines to search items
+        if (t.description.value != null) {
+          t.description.value.split('\n').forEach(v => {
+            if (v.trim() !== '') {
+              const value = v.trim().replace(/(^-)/g, '');
+              this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
+            }
           });
         }
       }
@@ -72,33 +76,33 @@ export class SuggestionService {
   public updateByTasks(tasks: Task[]) {
 
     tasks.sort((t1, t2) => {
-      return (new Date(t1.modificationDate) > new Date(t2.modificationDate)) ? 1 : -1;
+      return (new Date(t1.modificationDate) < new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
       if (t != null) {
+
+        // Add tags to search items
+        if (t.tags != null) {
+          t.tags.forEach(tag => {
+            const value = tag.name;
+            this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
+            this.tagOptions.set(value, value);
+          });
+        }
 
         // Add description lines to search items
         if (t.description.value != null) {
           t.description.value.split('\n').forEach(v => {
             if (v.trim() !== '') {
               const value = v.trim().replace(/(^-)/g, '');
-              this.searchOptions.set(value, value);
+              this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
             }
           });
         }
 
-        // Add tags to search items
-        if (t.tags != null) {
-          t.tags.forEach(tag => {
-            const value = tag.name;
-            this.searchOptions.set(value, value);
-            this.tagOptions.set(value, value);
-          });
-        }
-
-        // Add tasklet name to search options
+        // Add task name to search options
         if (t.name) {
           const value = t.name.trim();
-          this.searchOptions.set(value, value);
+          this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
           this.taskOptions.set(value, value);
         }
       }
@@ -110,14 +114,14 @@ export class SuggestionService {
   public updateByProjects(projects: Project[]) {
 
     projects.sort((p1, p2) => {
-      return (new Date(p1.modificationDate) > new Date(p2.modificationDate)) ? 1 : -1;
+      return (new Date(p1.modificationDate) < new Date(p2.modificationDate)) ? 1 : -1;
     }).forEach(p => {
       if (p != null) {
 
-        // Add tasklet name to search options
+        // Add project name to search options
         if (p.name) {
           const value = p.name.trim();
-          this.searchOptions.set(value, value);
+          this.searchOptions.set(p.creationDate.toString() + this.searchOptionsCounter++, value);
           this.projectOptions.set(value, value);
         }
       }
@@ -127,6 +131,13 @@ export class SuggestionService {
   }
 
   private notify() {
-    this.searchOptionsSubject.next(Array.from(this.searchOptions.values()));
+    this.searchOptions = new Map(Array.from(this.searchOptions).sort());
+
+    // Turns search options map into an array
+    const searchOptionsArrayReversed = new Set(Array.from(this.searchOptions.values()).reverse());
+    // Unreverse first array (reverse is necessary to have later appearances of tags at the beginning)
+    const searchOptionsArrayUnreversed = Array.from(searchOptionsArrayReversed).reverse();
+
+    this.searchOptionsSubject.next(searchOptionsArrayUnreversed);
   }
 }
