@@ -72,8 +72,8 @@ export class TaskletService {
         result['docs'].forEach(element => {
           const tasklet = element as Tasklet;
           this.tasklets.set(tasklet.id, tasklet);
-          this.notify();
         });
+        this.notify();
       }, error => {
         if (isDevMode()) {
           console.error(error);
@@ -116,14 +116,10 @@ export class TaskletService {
 
   public deleteTasklet(tasklet: Tasklet) {
     if (tasklet != null) {
-      this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
+      return this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
         this.snackbarService.showSnackbar('Deleted tasklet');
         this.tasklets.set(tasklet.id, tasklet);
         this.notify();
-      }).catch((err) => {
-        this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
-          this.deleteTasklet(tasklet);
-        });
       });
     }
   }
