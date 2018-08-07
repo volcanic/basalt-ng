@@ -6,7 +6,6 @@ import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {TaskService} from '../../../../services/entities/task.service';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
-import {SnackbarService} from '../../../../services/snackbar.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
 import {CloneService} from '../../../../services/util/clone.service';
@@ -30,7 +29,6 @@ export class ProjectDialogComponent implements OnInit {
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private dateService: DateService,
-              private snackbarService: SnackbarService,
               private filterService: FilterService,
               private cloneService: CloneService,
               public dialog: MatDialog,
@@ -88,7 +86,6 @@ export class ProjectDialogComponent implements OnInit {
         if (result != null) {
           this.projectService.deleteProject(result as Project);
           this.filterService.projects.delete((result as Project).id); // Delete project from filter list
-          this.snackbarService.showSnackbar('Deleted project', '');
           this.dialogRef.close(null);
         }
       });

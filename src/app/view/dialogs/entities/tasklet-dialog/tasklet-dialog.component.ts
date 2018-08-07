@@ -13,7 +13,6 @@ import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
 import {Task} from '../../../../model/entities/task.model';
-import {EntityService} from '../../../../services/entities/entity.service';
 import {Description} from '../../../../model/description.model';
 import {CloneService} from '../../../../services/util/clone.service';
 
@@ -149,7 +148,6 @@ export class TaskletDialogComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.taskletService.deleteTasklet(result as Tasklet);
-        this.snackbarService.showSnackbar('Deleted tasklet', '');
         this.dialogRef.close(null);
       }
     });

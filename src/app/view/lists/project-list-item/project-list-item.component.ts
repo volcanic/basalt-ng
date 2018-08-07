@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../model/entities/project.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
-import {SnackbarService} from '../../../services/snackbar.service';
 import {ProjectService} from '../../../services/entities/project.service';
 import {MatDialog} from '@angular/material';
 import {FilterService} from '../../../services/filter.service';
@@ -19,7 +18,6 @@ export class ProjectListItemComponent implements OnInit {
 
   constructor(private projectService: ProjectService,
               private filterService: FilterService,
-              private snackbarService: SnackbarService,
               public dialog: MatDialog) {
   }
 
@@ -43,9 +41,8 @@ export class ProjectListItemComponent implements OnInit {
       if (result != null) {
         const project = result as Project;
 
-        this.projectService.updateProject(project);
+        this.projectService.updateProject(project, true);
         this.filterService.updateProjectsList([project], true);
-        this.snackbarService.showSnackbar('Updated project', '');
       }
     });
   }

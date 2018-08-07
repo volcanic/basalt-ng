@@ -14,6 +14,7 @@ import {Task} from '../../model/entities/task.model';
 import {TaskService} from './task.service';
 import {ProjectService} from './project.service';
 import {environment} from '../../../environments/environment';
+import {SnackbarService} from '../snackbar.service';
 
 @Injectable()
 export class TaskletService {
@@ -26,7 +27,8 @@ export class TaskletService {
               private projectService: ProjectService,
               private taskService: TaskService,
               private dateService: DateService,
-              private suggestionService: SuggestionService) {
+              private suggestionService: SuggestionService,
+              private snackbarService: SnackbarService) {
 
     this.initializeSubscription();
     this.findTasklets();
@@ -86,34 +88,52 @@ export class TaskletService {
 
   public createTasklet(tasklet: Tasklet) {
     if (tasklet != null) {
-      this.projectService.updateProject(this.getProjectByTasklet(tasklet));
-      this.taskService.updateTask(this.getTaskByTasklet(tasklet));
+      this.projectService.updateProject(this.getProjectByTasklet(tasklet), false);
+      this.taskService.updateTask(this.getTaskByTasklet(tasklet), false);
 
-      this.pouchDBService.put(tasklet.id, tasklet);
-      this.tasklets.set(tasklet.id, tasklet);
-      this.notify();
+      this.pouchDBService.put(tasklet.id, tasklet).then(() => {
+        this.snackbarService.showSnackbar('Added tasklet');
+        this.tasklets.set(tasklet.id, tasklet);
+        this.notify();
+      }).catch((err) => {
+        this.snackbarService.showSnackbarWithAction('An error occurred during creation', 'RETRY', () => {
+          this.createTasklet(tasklet);
+        });
+      });
     }
   }
 
   public updateTasklet(tasklet: Tasklet) {
     if (tasklet != null) {
-      this.projectService.updateProject(this.getProjectByTasklet(tasklet));
-      this.taskService.updateTask(this.getTaskByTasklet(tasklet));
+      this.projectService.updateProject(this.getProjectByTasklet(tasklet), false);
+      this.taskService.updateTask(this.getTaskByTasklet(tasklet), false);
 
       tasklet.modificationDate = new Date();
 
-      this.pouchDBService.put(tasklet.id, tasklet);
-      this.tasklets.set(tasklet.id, tasklet);
-      this.notify();
+      this.pouchDBService.put(tasklet.id, tasklet).then(() => {
+        this.snackbarService.showSnackbar('Updated tasklet');
+        this.tasklets.set(tasklet.id, tasklet);
+        this.notify();
+      }).catch((err) => {
+        this.snackbarService.showSnackbarWithAction('An error occurred during update', 'RETRY', () => {
+          this.updateTasklet(tasklet);
+        });
+      });
     }
   }
 
   public deleteTasklet(tasklet: Tasklet) {
-      if (tasklet != null) {
-        this.pouchDBService.remove(tasklet.id, tasklet);
-        this.tasklets.delete(tasklet.id);
+    if (tasklet != null) {
+      this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
+        this.snackbarService.showSnackbar('Deleted tasklet');
+        this.tasklets.set(tasklet.id, tasklet);
         this.notify();
-      }
+      }).catch((err) => {
+        this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
+          this.deleteTasklet(tasklet);
+        });
+      });
+    }
   }
 
   /**

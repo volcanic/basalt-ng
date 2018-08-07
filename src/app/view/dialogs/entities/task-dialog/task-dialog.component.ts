@@ -4,14 +4,12 @@ import {Project} from '../../../../model/entities/project.model';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
 import {ProjectService} from '../../../../services/entities/project.service';
-import {EntityService} from '../../../../services/entities/entity.service';
 import {Tag} from '../../../../model/tag.model';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
 import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
-import {SnackbarService} from '../../../../services/snackbar.service';
 import {CloneService} from '../../../../services/util/clone.service';
 import {DateService} from '../../../../services/date.service';
 
@@ -56,7 +54,6 @@ export class TaskDialogComponent implements OnInit {
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
-              private snackbarService: SnackbarService,
               private cloneService: CloneService,
               public dateService: DateService,
               private adapter: DateAdapter<any>,
@@ -160,7 +157,6 @@ export class TaskDialogComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
           this.taskService.deleteTask(result as Task);
-          this.snackbarService.showSnackbar('Deleted task', '');
           this.dialogRef.close(null);
         }
       });

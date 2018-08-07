@@ -6,6 +6,7 @@ import {EntityType} from '../../model/entities/entity-type.enum';
 import {SuggestionService} from '../suggestion.service';
 import {PouchDBService} from '../pouchdb.service';
 import {environment} from '../../../environments/environment';
+import {SnackbarService} from '../snackbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class ProjectService {
   private unsubscribeSubject = new Subject();
 
   constructor(private pouchDBService: PouchDBService,
-              private suggestionService: SuggestionService) {
+              private suggestionService: SuggestionService,
+              private snackbarService: SnackbarService) {
 
     this.initializeSubscription();
     this.findProjects();
@@ -77,27 +79,50 @@ export class ProjectService {
 
   public createProject(project: Project) {
     if (project != null) {
-      this.pouchDBService.put(project.id, project);
-      this.projects.set(project.id, project);
-      this.notify();
+
+      this.pouchDBService.put(project.id, project).then(() => {
+        this.snackbarService.showSnackbar('Created project');
+        this.projects.set(project.id, project);
+        this.notify();
+      }).catch((err) => {
+        this.snackbarService.showSnackbarWithAction('An error occurred during creation', 'RETRY', () => {
+          this.createProject(project);
+        });
+      });
     }
   }
 
-  public updateProject(project: Project) {
+  public updateProject(project: Project, showSnack: boolean) {
     if (project != null) {
       project.modificationDate = new Date();
 
-      this.pouchDBService.put(project.id, project);
-      this.projects.set(project.id, project);
-      this.notify();
+      this.pouchDBService.put(project.id, project).then(() => {
+        if (showSnack) {
+          this.snackbarService.showSnackbar('Updated project');
+        }
+        this.projects.set(project.id, project);
+        this.notify();
+      }).catch((err) => {
+        if (showSnack) {
+          this.snackbarService.showSnackbarWithAction('An error occurred during update', 'RETRY', () => {
+            this.updateProject(project, showSnack);
+          });
+        }
+      });
     }
   }
 
   public deleteProject(project: Project) {
     if (project != null) {
-      this.pouchDBService.remove(project.id, project);
-      this.projects.delete(project.id);
-      this.notify();
+      this.pouchDBService.remove(project.id, project).then(() => {
+        this.snackbarService.showSnackbar('Deleted project');
+        this.projects.set(project.id, project);
+        this.notify();
+      }).catch((err) => {
+        this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
+          this.deleteProject(project);
+        });
+      });
     }
   }
 

@@ -50,7 +50,7 @@ export class UploadDialogComponent implements OnInit {
     if (result.result.toString().toUpperCase() === SUCCESS) {
       this.dropContent.next(result.payload);
     } else {
-      this.snackbarService.showSnackbar('ERROR: Failed to parse dropped file.', '');
+      this.snackbarService.showSnackbar('ERROR: Failed to parse dropped file.');
     }
   }
 

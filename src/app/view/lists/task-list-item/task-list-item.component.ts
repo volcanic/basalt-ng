@@ -120,10 +120,9 @@ export class TaskListItemComponent implements OnInit {
         const task = result as Task;
         const project = this.projectService.projects.get(task.projectId);
 
-        this.taskService.updateTask(task);
+        this.taskService.updateTask(task, true);
         this.filterService.updateProjectsList([project], true);
         this.filterService.updateTagsList(task.tags, true);
-        this.snackbarService.showSnackbar('Updated task', '');
       }
     });
   }
@@ -146,20 +145,19 @@ export class TaskListItemComponent implements OnInit {
 
         this.taskletService.createTasklet(tasklet);
         this.filterService.updateTagsList(tasklet.tags, true);
-        this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
   }
 
   completeTask() {
     this.task.completionDate = new Date();
-    this.taskService.updateTask(this.task);
-    this.snackbarService.showSnackbar('Completed task', '');
+    this.taskService.updateTask(this.task, false);
+    this.snackbarService.showSnackbar('Completed task');
   }
 
   reopenTask() {
     this.task.completionDate = null;
-    this.taskService.updateTask(this.task);
-    this.snackbarService.showSnackbar('Re-opened task', '');
+    this.taskService.updateTask(this.task, false);
+    this.snackbarService.showSnackbar('Re-opened task');
   }
 }

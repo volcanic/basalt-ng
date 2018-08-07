@@ -9,7 +9,11 @@ export class SnackbarService {
   constructor() {
   }
 
-  showSnackbar(message: string, action: string) {
-    this.messageSubject.next([message, action]);
+  showSnackbar(message: string) {
+    this.messageSubject.next([message, '', null]);
+  }
+
+  showSnackbarWithAction(message: string, actionName: string, action: any) {
+    this.messageSubject.next([message, actionName, action]);
   }
 }

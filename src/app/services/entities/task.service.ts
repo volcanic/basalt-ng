@@ -8,6 +8,7 @@ import {PouchDBService} from '../pouchdb.service';
 import {Project} from '../../model/entities/project.model';
 import {ProjectService} from './project.service';
 import {environment} from '../../../environments/environment';
+import {SnackbarService} from '../snackbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class TaskService {
 
   constructor(private pouchDBService: PouchDBService,
               private projectService: ProjectService,
-              private suggestionService: SuggestionService) {
+              private suggestionService: SuggestionService,
+              private snackbarService: SnackbarService) {
 
     this.initializeSubscription();
     this.findTasks();
@@ -80,31 +82,53 @@ export class TaskService {
 
   public createTask(task: Task) {
     if (task != null) {
-      this.projectService.updateProject(this.getProjectByTask(task));
+      this.projectService.updateProject(this.getProjectByTask(task), false);
 
-      this.pouchDBService.put(task.id, task);
-      this.tasks.set(task.id, task);
-      this.notify();
+      this.pouchDBService.put(task.id, task).then(() => {
+        this.snackbarService.showSnackbar('Created task');
+        this.tasks.set(task.id, task);
+        this.notify();
+      }).catch((err) => {
+        this.snackbarService.showSnackbarWithAction('An error occurred during creation', 'RETRY', () => {
+          this.createTask(task);
+        });
+      });
     }
   }
 
-  public updateTask(task: Task) {
+  public updateTask(task: Task, showSnack: boolean) {
     if (task != null) {
-      this.projectService.updateProject(this.getProjectByTask(task));
+      this.projectService.updateProject(this.getProjectByTask(task), false);
 
       task.modificationDate = new Date();
 
-      this.pouchDBService.put(task.id, task);
-      this.tasks.set(task.id, task);
-      this.notify();
+      this.pouchDBService.put(task.id, task).then(() => {
+        if (showSnack) {
+          this.snackbarService.showSnackbar('Updated task');
+        }
+        this.tasks.set(task.id, task);
+        this.notify();
+      }).catch((err) => {
+        if (showSnack) {
+          this.snackbarService.showSnackbarWithAction('An error occurred during update', 'RETRY', () => {
+            this.updateTask(task, showSnack);
+          });
+        }
+      });
     }
   }
 
   public deleteTask(task: Task) {
     if (task != null) {
-      this.pouchDBService.remove(task.id, task);
-      this.tasks.delete(task.id);
-      this.notify();
+      this.pouchDBService.remove(task.id, task).then(() => {
+        this.snackbarService.showSnackbar('Deleted task');
+        this.tasks.set(task.id, task);
+        this.notify();
+      }).catch((err) => {
+        this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
+          this.deleteTask(task);
+        });
+      });
     }
   }
 

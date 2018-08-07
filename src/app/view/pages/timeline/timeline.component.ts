@@ -118,7 +118,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'settings': {
-        this.snackbarService.showSnackbar('Clicked on menu item Setting', '');
+        this.snackbarService.showSnackbar('Clicked on menu item Setting');
         break;
       }
       case 'add-tasklet': {
@@ -136,7 +136,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.taskletService.createTasklet(tasklet);
             this.filterService.updateTagsList(tasklet.tags, true);
-            this.snackbarService.showSnackbar('Added tasklet', '');
           }
         });
         break;
@@ -198,7 +197,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case 'clear-filter': {
         this.filterService.clearAllFilters();
-        this.snackbarService.showSnackbar('Filters cleared', '');
+        this.snackbarService.showSnackbar('Filters cleared');
         break;
       }
       case 'filter-tags': {
@@ -216,7 +215,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const tagsNone = result.tagsNone as boolean;
 
             this.filterService.updateTags(tags, false, tagsNone);
-            this.snackbarService.showSnackbar('Tags selected', '');
+            this.snackbarService.showSnackbar('Tags selected');
           }
         });
         break;
@@ -237,7 +236,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.filterService.updateProjectsList(projects, false);
             this.filterService.updateProjectsNone(projectsNone);
-            this.snackbarService.showSnackbar('Projects selected', '');
+            this.snackbarService.showSnackbar('Projects selected');
           }
         });
         break;

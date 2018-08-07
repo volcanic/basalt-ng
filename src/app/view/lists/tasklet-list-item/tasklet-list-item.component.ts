@@ -2,7 +2,6 @@ import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatMenuTrigger} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Tasklet} from '../../../model/entities/tasklet.model';
-import {SnackbarService} from '../../../services/snackbar.service';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {DateService} from '../../../services/date.service';
@@ -54,7 +53,6 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
   constructor(private projectService: ProjectService,
               private taskletService: TaskletService,
               private colorService: ColorService,
-              private snackbarService: SnackbarService,
               private cloneService: CloneService,
               private filterService: FilterService,
               private mediaService: MediaService,
@@ -240,7 +238,6 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         const tasklet = result as Tasklet;
         this.taskletService.updateTasklet(tasklet);
         this.filterService.updateTagsList(tasklet.tags, true);
-        this.snackbarService.showSnackbar('Updated tasklet', '');
       }
     });
   }
@@ -274,7 +271,6 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         const tasklet = result as Tasklet;
         this.taskletService.createTasklet(result);
         this.filterService.updateTagsList(tasklet.tags, true);
-        this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
   }
@@ -306,7 +302,6 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         const tasklet = result as TaskletDailyScrum;
         this.taskletService.createTasklet(tasklet);
         this.filterService.updateTagsList(tasklet.tags, true);
-        this.snackbarService.showSnackbar('Added tasklet', '');
       }
     });
   }
@@ -324,7 +319,6 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
       if (result != null) {
         const tasklet = result as Tasklet;
         this.taskletService.updateTasklet(tasklet);
-        this.snackbarService.showSnackbar('Updated tasklet creation time', '');
       }
     });
   }
@@ -343,7 +337,6 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
       if (result != null) {
         this.taskletService.deleteTasklet(result as Tasklet);
         this.filterService.updateTagsList([], false);
-        this.snackbarService.showSnackbar('Deleted tasklet', '');
       }
     });
   }

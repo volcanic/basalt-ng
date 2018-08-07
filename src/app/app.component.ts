@@ -12,8 +12,6 @@ import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TaskService} from './services/entities/task.service';
 import {TaskletService} from './services/entities/tasklet.service';
-import {Tasklet} from './model/entities/tasklet.model';
-import {Description} from './model/description.model';
 
 @Component({
   selector: 'app-root',
@@ -64,7 +62,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   initializeSnackbar() {
     this.snackbarService.messageSubject.subscribe(snack => {
-        this.openSnackBar(snack[0], snack[1]);
+        this.openSnackBar(snack[0], snack[1], snack[2]);
       }
     );
   }
@@ -156,12 +154,17 @@ export class AppComponent implements OnInit, AfterViewInit {
   /**
    * Handles messages that shall be displayed in a snack bar
    * @param message
+   * @param actionName
    * @param action
    */
-  private openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, <MatSnackBarConfig>{
+  private openSnackBar(message: string, actionName: string, action: any) {
+    const snackbarRef = this.snackBar.open(message, actionName, <MatSnackBarConfig>{
       duration: 5000,
     });
+
+    if (action != null) {
+      snackbarRef.onAction().subscribe(action);
+    }
   }
 
   private showNewFeatures(currentVersion: string) {
