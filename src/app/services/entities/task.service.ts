@@ -84,14 +84,10 @@ export class TaskService {
     if (task != null) {
       this.projectService.updateProject(this.getProjectByTask(task), false);
 
-      this.pouchDBService.put(task.id, task).then(() => {
+      return this.pouchDBService.upsert(task.id, task).then(() => {
         this.snackbarService.showSnackbar('Created task');
         this.tasks.set(task.id, task);
         this.notify();
-      }).catch((err) => {
-        this.snackbarService.showSnackbarWithAction('An error occurred during creation', 'RETRY', () => {
-          this.createTask(task);
-        });
       });
     }
   }
@@ -102,18 +98,12 @@ export class TaskService {
 
       task.modificationDate = new Date();
 
-      this.pouchDBService.put(task.id, task).then(() => {
+      return this.pouchDBService.upsert(task.id, task).then(() => {
         if (showSnack) {
           this.snackbarService.showSnackbar('Updated task');
         }
         this.tasks.set(task.id, task);
         this.notify();
-      }).catch((err) => {
-        if (showSnack) {
-          this.snackbarService.showSnackbarWithAction('An error occurred during update', 'RETRY', () => {
-            this.updateTask(task, showSnack);
-          });
-        }
       });
     }
   }

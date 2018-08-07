@@ -91,14 +91,10 @@ export class TaskletService {
       this.projectService.updateProject(this.getProjectByTasklet(tasklet), false);
       this.taskService.updateTask(this.getTaskByTasklet(tasklet), false);
 
-      this.pouchDBService.put(tasklet.id, tasklet).then(() => {
+      return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
         this.snackbarService.showSnackbar('Added tasklet');
         this.tasklets.set(tasklet.id, tasklet);
         this.notify();
-      }).catch((err) => {
-        this.snackbarService.showSnackbarWithAction('An error occurred during creation', 'RETRY', () => {
-          this.createTasklet(tasklet);
-        });
       });
     }
   }
@@ -110,14 +106,10 @@ export class TaskletService {
 
       tasklet.modificationDate = new Date();
 
-      this.pouchDBService.put(tasklet.id, tasklet).then(() => {
+      return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
         this.snackbarService.showSnackbar('Updated tasklet');
         this.tasklets.set(tasklet.id, tasklet);
         this.notify();
-      }).catch((err) => {
-        this.snackbarService.showSnackbarWithAction('An error occurred during update', 'RETRY', () => {
-          this.updateTasklet(tasklet);
-        });
       });
     }
   }

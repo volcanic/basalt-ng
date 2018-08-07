@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
@@ -61,7 +61,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private mediaService: MediaService,
               public zone: NgZone,
               public dialog: MatDialog,
-              private scroll: ScrollDispatcher) {
+              private scroll: ScrollDispatcher,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -134,7 +135,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const tasklet = result as Tasklet;
 
-            this.taskletService.createTasklet(tasklet);
+            this.taskletService.createTasklet(tasklet).then(() => {
+              this.changeDetector.markForCheck();
+            });
             this.filterService.updateTagsList(tasklet.tags, true);
           }
         });
@@ -153,7 +156,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const task = result as Task;
 
-            this.taskService.createTask(task);
+            this.taskService.createTask(task).then(() => {
+              this.changeDetector.markForCheck();
+            });
             this.filterService.updateTagsList(task.tags, true);
           }
         });
@@ -172,7 +177,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const project = result as Project;
             this.filterService.updateProjectsList([project], true);
-            this.projectService.createProject(project);
+            this.projectService.createProject(project).then(() => {
+              this.changeDetector.markForCheck();
+            });
           }
         });
         break;

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/operators';
@@ -24,8 +24,7 @@ export class TaskletListComponent implements OnInit, OnDestroy {
               private taskletService: TaskletService,
               private matchService: MatchService,
               private filterService: FilterService,
-              private changeDetector: ChangeDetectorRef,
-              public zone: NgZone) {
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {

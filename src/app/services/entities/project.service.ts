@@ -80,14 +80,10 @@ export class ProjectService {
   public createProject(project: Project) {
     if (project != null) {
 
-      this.pouchDBService.put(project.id, project).then(() => {
+      return this.pouchDBService.put(project.id, project).then(() => {
         this.snackbarService.showSnackbar('Created project');
         this.projects.set(project.id, project);
         this.notify();
-      }).catch((err) => {
-        this.snackbarService.showSnackbarWithAction('An error occurred during creation', 'RETRY', () => {
-          this.createProject(project);
-        });
       });
     }
   }
@@ -96,18 +92,12 @@ export class ProjectService {
     if (project != null) {
       project.modificationDate = new Date();
 
-      this.pouchDBService.put(project.id, project).then(() => {
+      return this.pouchDBService.upsert(project.id, project).then(() => {
         if (showSnack) {
           this.snackbarService.showSnackbar('Updated project');
         }
         this.projects.set(project.id, project);
         this.notify();
-      }).catch((err) => {
-        if (showSnack) {
-          this.snackbarService.showSnackbarWithAction('An error occurred during update', 'RETRY', () => {
-            this.updateProject(project, showSnack);
-          });
-        }
       });
     }
   }

@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import {TaskDialogComponent} from '../../entities/task-dialog/task-dialog.component';
 import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
@@ -18,6 +18,7 @@ export class TaskListDialogComponent implements OnInit {
   constructor(private taskService: TaskService,
               private filterService: FilterService,
               public dialog: MatDialog,
+              private changeDetector: ChangeDetectorRef,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     this.dialogTitle = data.dialogTitle;
   }
@@ -44,7 +45,9 @@ export class TaskListDialogComponent implements OnInit {
           if (result != null) {
             const task = result as Task;
 
-            this.taskService.createTask(task);
+            this.taskService.createTask(task).then(() => {
+              this.changeDetector.markForCheck();
+            });
             this.filterService.updateTagsList(task.tags, true);
           }
         });

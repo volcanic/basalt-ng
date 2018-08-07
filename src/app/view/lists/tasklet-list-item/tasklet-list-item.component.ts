@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatMenuTrigger} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Tasklet} from '../../../model/entities/tasklet.model';
@@ -57,7 +57,8 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
               private filterService: FilterService,
               private mediaService: MediaService,
               public dateService: DateService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -212,7 +213,9 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save': {
-        this.taskletService.updateTasklet(this.tasklet);
+        this.taskletService.updateTasklet(this.tasklet).then(() => {
+          this.changeDetector.markForCheck();
+        });
         break;
       }
     }
@@ -236,7 +239,9 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         const tasklet = result as Tasklet;
-        this.taskletService.updateTasklet(tasklet);
+        this.taskletService.updateTasklet(tasklet).then(() => {
+          this.changeDetector.markForCheck();
+        });
         this.filterService.updateTagsList(tasklet.tags, true);
       }
     });
@@ -318,7 +323,9 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         const tasklet = result as Tasklet;
-        this.taskletService.updateTasklet(tasklet);
+        this.taskletService.updateTasklet(tasklet).then(() => {
+          this.changeDetector.markForCheck();
+        });
       }
     });
   }

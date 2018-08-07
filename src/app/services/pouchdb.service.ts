@@ -2,6 +2,7 @@ import {EventEmitter, Injectable, isDevMode} from '@angular/core';
 import {environment} from '../../environments/environment';
 import PouchDB from 'pouchdb';
 import PouchdbFind from 'pouchdb-find';
+import PouchdbUpsert from 'pouchdb-upsert';
 
 @Injectable()
 export class PouchDBService {
@@ -12,6 +13,7 @@ export class PouchDBService {
 
   public constructor() {
     PouchDB.plugin(PouchdbFind);
+    PouchDB.plugin(PouchdbUpsert);
 
     if (!this.isInstantiated) {
       this.database = new PouchDB(environment.DATABASE_ENTITIES);
@@ -62,6 +64,16 @@ export class PouchDBService {
     document._id = id;
 
     return this.database.put(document);
+  }
+
+  public upsert(id: string, document: any) {
+    document._id = id;
+
+    return this.database.upsert(id, () => {
+      document.counter = document.counter || 0;
+      document.counter++;
+      return document;
+    });
   }
 
   public bulk(documents: any[]) {

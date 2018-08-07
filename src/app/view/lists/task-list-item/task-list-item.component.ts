@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Task} from '../../../model/entities/task.model';
 import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
@@ -47,7 +47,8 @@ export class TaskListItemComponent implements OnInit {
               private snackbarService: SnackbarService,
               private filterService: FilterService,
               private mediaService: MediaService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -120,7 +121,9 @@ export class TaskListItemComponent implements OnInit {
         const task = result as Task;
         const project = this.projectService.projects.get(task.projectId);
 
-        this.taskService.updateTask(task, true);
+        this.taskService.updateTask(task, true).then(() => {
+          this.changeDetector.markForCheck();
+        });
         this.filterService.updateProjectsList([project], true);
         this.filterService.updateTagsList(task.tags, true);
       }
@@ -151,13 +154,17 @@ export class TaskListItemComponent implements OnInit {
 
   completeTask() {
     this.task.completionDate = new Date();
-    this.taskService.updateTask(this.task, false);
+    this.taskService.updateTask(this.task, false).then(() => {
+      this.changeDetector.markForCheck();
+    });
     this.snackbarService.showSnackbar('Completed task');
   }
 
   reopenTask() {
     this.task.completionDate = null;
-    this.taskService.updateTask(this.task, false);
+    this.taskService.updateTask(this.task, false).then(() => {
+      this.changeDetector.markForCheck();
+    });
     this.snackbarService.showSnackbar('Re-opened task');
   }
 }

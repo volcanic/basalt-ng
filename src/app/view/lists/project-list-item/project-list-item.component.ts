@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../model/entities/project.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
 import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
@@ -18,7 +18,8 @@ export class ProjectListItemComponent implements OnInit {
 
   constructor(private projectService: ProjectService,
               private filterService: FilterService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -41,7 +42,9 @@ export class ProjectListItemComponent implements OnInit {
       if (result != null) {
         const project = result as Project;
 
-        this.projectService.updateProject(project, true);
+        this.projectService.updateProject(project, true).then(() => {
+          this.changeDetector.markForCheck();
+        });
         this.filterService.updateProjectsList([project], true);
       }
     });
