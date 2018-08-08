@@ -4,7 +4,7 @@ import {PersonAutocompleteFragmentComponent} from './person-autocomplete-fragmen
 
 describe('PersonAutocompleteFragmentComponent', () => {
   let component: PersonAutocompleteFragmentComponent;
-  const fixture: ComponentFixture<PersonAutocompleteFragmentComponent>;
+  let fixture: ComponentFixture<PersonAutocompleteFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

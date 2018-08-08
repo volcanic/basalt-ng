@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {TaskletDialogDailyScrumParticipantComponent} from './daily-scrum-participant-fragment.component';
+import {DailyScrumParticipantFragmentComponent} from './daily-scrum-participant-fragment.component';
 
-describe('TaskletDialogDailyScrumParticipantComponent', () => {
-  let component: TaskletDialogDailyScrumParticipantComponent;
-  const fixture: ComponentFixture<TaskletDialogDailyScrumParticipantComponent>;
+describe('DailyScrumParticipantFragmentComponent', () => {
+  let component: DailyScrumParticipantFragmentComponent;
+  let fixture: ComponentFixture<DailyScrumParticipantFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletDialogDailyScrumParticipantComponent]
+      declarations: [DailyScrumParticipantFragmentComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskletDialogDailyScrumParticipantComponent);
+    fixture = TestBed.createComponent(DailyScrumParticipantFragmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

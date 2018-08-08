@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FilterProjectListItemComponent } from './filter-project-list-item.component';
+import {FilterProjectListItemComponent} from './filter-project-list-item.component';
 
 describe('FilterProjectListItemComponent', () => {
   let component: FilterProjectListItemComponent;
@@ -8,9 +8,9 @@ describe('FilterProjectListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FilterProjectListItemComponent ]
+      declarations: [FilterProjectListItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

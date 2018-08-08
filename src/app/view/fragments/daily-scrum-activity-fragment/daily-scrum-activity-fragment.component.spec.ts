@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {TaskletDialogDailyScrumActivityComponent} from './daily-scrum-activity-fragment.component';
+import {DailyScrumActivityFragmentComponent} from './daily-scrum-activity-fragment.component';
 
-describe('TaskletDialogDailyScrumActivityComponent', () => {
-  let component: TaskletDialogDailyScrumActivityComponent;
-  const fixture: ComponentFixture<TaskletDialogDailyScrumActivityComponent>;
+describe('DailyScrumActivityFragmentComponent', () => {
+  let component: DailyScrumActivityFragmentComponent;
+  let fixture: ComponentFixture<DailyScrumActivityFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletDialogDailyScrumActivityComponent]
+      declarations: [DailyScrumActivityFragmentComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskletDialogDailyScrumActivityComponent);
+    fixture = TestBed.createComponent(DailyScrumActivityFragmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

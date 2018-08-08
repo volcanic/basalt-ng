@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ProjectListItemComponent } from './project-list-item.component';
+import {ProjectListItemComponent} from './project-list-item.component';
 
 describe('ProjectListItemComponent', () => {
   let component: ProjectListItemComponent;
-  const fixture: ComponentFixture<ProjectListItemComponent>;
+  let fixture: ComponentFixture<ProjectListItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProjectListItemComponent ]
+      declarations: [ProjectListItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

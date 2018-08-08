@@ -3,7 +3,7 @@ import {TaskListComponent} from './task-list.component';
 
 describe('taskListComponent', () => {
   let component: TaskListComponent;
-  const fixture: ComponentFixture<TaskListComponent>;
+  let fixture: ComponentFixture<TaskListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

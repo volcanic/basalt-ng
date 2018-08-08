@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TagChipsFragmentComponent } from './tag-chips-fragment.component';
+import {TagChipsFragmentComponent} from './tag-chips-fragment.component';
 
 describe('TagChipsFragmentComponent', () => {
   let component: TagChipsFragmentComponent;
-  const fixture: ComponentFixture<TagChipsFragmentComponent>;
+  let fixture: ComponentFixture<TagChipsFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TagChipsFragmentComponent ]
+      declarations: [TagChipsFragmentComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HeaderFragmentComponent } from './header-fragment.component';
+import {HeaderFragmentComponent} from './header-fragment.component';
 
 describe('HeaderFragmentComponent', () => {
   let component: HeaderFragmentComponent;
-  const fixture: ComponentFixture<HeaderFragmentComponent>;
+  let fixture: ComponentFixture<HeaderFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderFragmentComponent ]
+      declarations: [HeaderFragmentComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

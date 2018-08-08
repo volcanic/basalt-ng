@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CalendarItemComponent } from './calendar-item.component';
+import {CalendarItemComponent} from './calendar-item.component';
 
 describe('CalendarItemComponent', () => {
   let component: CalendarItemComponent;
-  const fixture: ComponentFixture<CalendarItemComponent>;
+  let fixture: ComponentFixture<CalendarItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalendarItemComponent ]
+      declarations: [CalendarItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

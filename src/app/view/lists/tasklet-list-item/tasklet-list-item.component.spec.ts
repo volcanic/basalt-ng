@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TaskletListItemComponent } from './tasklet-list-item.component';
+import {TaskletListItemComponent} from './tasklet-list-item.component';
 
 describe('TaskletListItemComponent', () => {
   let component: TaskletListItemComponent;
@@ -8,9 +8,9 @@ describe('TaskletListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskletListItemComponent ]
+      declarations: [TaskletListItemComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

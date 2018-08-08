@@ -4,7 +4,7 @@ import {TaskletDialogComponent} from './tasklet-dialog.component';
 
 describe('TaskletDialogComponent', () => {
   let component: TaskletDialogComponent;
-  const fixture: ComponentFixture<TaskletDialogComponent>;
+  let fixture: ComponentFixture<TaskletDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TaskletDailyDigestComponent } from './tasklet-daily-digest.component';
+import {TaskletDailyDigestComponent} from './tasklet-daily-digest.component';
 
 describe('TaskletDailyDigestComponent', () => {
   let component: TaskletDailyDigestComponent;
-  const fixture: ComponentFixture<TaskletDailyDigestComponent>;
+  let fixture: ComponentFixture<TaskletDailyDigestComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskletDailyDigestComponent ]
+      declarations: [TaskletDailyDigestComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

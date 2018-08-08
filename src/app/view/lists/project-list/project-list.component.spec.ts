@@ -4,7 +4,7 @@ import {ProjectListComponent} from './project-list.component';
 
 describe('ProjectListComponent', () => {
   let component: ProjectListComponent;
-  const fixture: ComponentFixture<ProjectListComponent>;
+  let fixture: ComponentFixture<ProjectListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

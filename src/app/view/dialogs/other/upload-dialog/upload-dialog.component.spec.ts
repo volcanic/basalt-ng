@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UploadDialogComponent } from './upload-dialog.component';
+import {UploadDialogComponent} from './upload-dialog.component';
 
 describe('UploadDialogComponent', () => {
   let component: UploadDialogComponent;
-  const fixture: ComponentFixture<UploadDialogComponent>;
+  let fixture: ComponentFixture<UploadDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploadDialogComponent ]
+      declarations: [UploadDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

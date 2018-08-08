@@ -5,7 +5,7 @@ import {FileUploadModule} from 'ng2-file-upload';
 
 describe('FileDropComponent', () => {
   let component: FileDropComponent;
-  const fixture: ComponentFixture<FileDropComponent>;
+  let fixture: ComponentFixture<FileDropComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

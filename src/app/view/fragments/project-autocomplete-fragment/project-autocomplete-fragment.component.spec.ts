@@ -4,7 +4,7 @@ import {ProjectAutocompleteFragmentComponent} from './project-autocomplete-fragm
 
 describe('ProjectAutocompleteFragmentComponent', () => {
   let component: ProjectAutocompleteFragmentComponent;
-  const fixture: ComponentFixture<ProjectAutocompleteFragmentComponent>;
+  let fixture: ComponentFixture<ProjectAutocompleteFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

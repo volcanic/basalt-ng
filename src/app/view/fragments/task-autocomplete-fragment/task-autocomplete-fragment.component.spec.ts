@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TaskAutocompleteFragmentComponent } from './task-autocomplete-fragment.component';
+import {TaskAutocompleteFragmentComponent} from './task-autocomplete-fragment.component';
 
 describe('TaskAutocompleteFragmentComponent', () => {
   let component: TaskAutocompleteFragmentComponent;
-  const fixture: ComponentFixture<TaskAutocompleteFragmentComponent>;
+  let fixture: ComponentFixture<TaskAutocompleteFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskAutocompleteFragmentComponent ]
+      declarations: [TaskAutocompleteFragmentComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -4,7 +4,7 @@ import {ProjectsFilterDialogComponent} from './project-filter-dialog.component';
 
 xdescribe('ProjectsFilterDialogComponent', () => {
   let component: ProjectsFilterDialogComponent;
-  const fixture: ComponentFixture<ProjectsFilterDialogComponent>;
+  let fixture: ComponentFixture<ProjectsFilterDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PreviousDescriptionFragmentComponent } from './previousDescription-fragment.component';
+import {PreviousDescriptionFragmentComponent} from './previous-description-fragment.component';
 
 describe('PreviousDescriptionFragmentComponent', () => {
   let component: PreviousDescriptionFragmentComponent;
-  const fixture: ComponentFixture<PreviousDescriptionFragmentComponent>;
+  let fixture: ComponentFixture<PreviousDescriptionFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PreviousDescriptionFragmentComponent ]
+      declarations: [PreviousDescriptionFragmentComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

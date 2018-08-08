@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TaskListDialogComponent } from './task-list-dialog.component';
+import {TaskListDialogComponent} from './task-list-dialog.component';
 
 describe('TaskListDialogComponent', () => {
   let component: TaskListDialogComponent;
@@ -8,9 +8,9 @@ describe('TaskListDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskListDialogComponent ]
+      declarations: [TaskListDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

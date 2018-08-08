@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CalendarGridHourComponent } from './calendar-grid-quarter-hour.component';
+import {CalendarGridHourComponent} from './calendar-grid-quarter-hour.component';
 
 describe('CalendarGridHourComponent', () => {
   let component: CalendarGridHourComponent;
-  const fixture: ComponentFixture<CalendarGridHourComponent>;
+  let fixture: ComponentFixture<CalendarGridHourComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalendarGridHourComponent ]
+      declarations: [CalendarGridHourComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

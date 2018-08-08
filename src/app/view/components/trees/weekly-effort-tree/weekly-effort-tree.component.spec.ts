@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ProjectEffortTreeComponent } from './weekly-effort-tree.component';
+import {ProjectEffortTreeComponent} from './weekly-effort-tree.component';
 
 describe('ProjectEffortTreeComponent', () => {
   let component: ProjectEffortTreeComponent;
-  const fixture: ComponentFixture<ProjectEffortTreeComponent>;
+  let fixture: ComponentFixture<ProjectEffortTreeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProjectEffortTreeComponent ]
+      declarations: [ProjectEffortTreeComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

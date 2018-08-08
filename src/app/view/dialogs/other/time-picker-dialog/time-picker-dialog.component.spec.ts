@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TimePickerDialogComponent } from './time-picker-dialog.component';
+import {TimePickerDialogComponent} from './time-picker-dialog.component';
 
 describe('TimePickerDialogComponent', () => {
   let component: TimePickerDialogComponent;
-  const fixture: ComponentFixture<TimePickerDialogComponent>;
+  let fixture: ComponentFixture<TimePickerDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimePickerDialogComponent ]
+      declarations: [TimePickerDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

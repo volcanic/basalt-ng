@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AboutDialogComponent } from './about-dialog.component';
+import {AboutDialogComponent} from './about-dialog.component';
 
 describe('AboutDialogComponent', () => {
   let component: AboutDialogComponent;
-  const fixture: ComponentFixture<AboutDialogComponent>;
+  let fixture: ComponentFixture<AboutDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AboutDialogComponent ]
+      declarations: [AboutDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

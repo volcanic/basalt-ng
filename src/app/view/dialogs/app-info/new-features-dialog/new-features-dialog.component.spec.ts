@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NewFeaturesDialogComponent } from './new-features-dialog.component';
+import {NewFeaturesDialogComponent} from './new-features-dialog.component';
 
 describe('NewFeaturesDialogComponent', () => {
   let component: NewFeaturesDialogComponent;
-  const fixture: ComponentFixture<NewFeaturesDialogComponent>;
+  let fixture: ComponentFixture<NewFeaturesDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewFeaturesDialogComponent ]
+      declarations: [NewFeaturesDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

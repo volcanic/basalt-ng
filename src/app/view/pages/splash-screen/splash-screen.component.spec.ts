@@ -4,7 +4,7 @@ import {SplashScreenComponent} from './splash-screen.component';
 
 describe('SplashScreenComponent', () => {
   let component: SplashScreenComponent;
-  const fixture: ComponentFixture<SplashScreenComponent>;
+  let fixture: ComponentFixture<SplashScreenComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

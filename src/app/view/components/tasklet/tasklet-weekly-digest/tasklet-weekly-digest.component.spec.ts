@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TaskletWeeklyDigestComponent } from './tasklet-weekly-digest.component';
+import {TaskletWeeklyDigestComponent} from './tasklet-weekly-digest.component';
 
 describe('TaskletWeeklyDigestComponent', () => {
   let component: TaskletWeeklyDigestComponent;
-  const fixture: ComponentFixture<TaskletWeeklyDigestComponent>;
+  let fixture: ComponentFixture<TaskletWeeklyDigestComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskletWeeklyDigestComponent ]
+      declarations: [TaskletWeeklyDigestComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

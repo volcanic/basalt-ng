@@ -1,9 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {TimelineComponent} from './tasklets.component';
+import {TimelineComponent} from './timeline.component';
 
 describe('TimelineComponent', () => {
   let component: TimelineComponent;
-  const fixture: ComponentFixture<TimelineComponent>;
+  let fixture: ComponentFixture<TimelineComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
