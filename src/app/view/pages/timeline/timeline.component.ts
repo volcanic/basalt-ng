@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SnackbarService} from '../../../services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
@@ -26,7 +26,8 @@ import {Subject} from 'rxjs/Subject';
 import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialog/project-list-dialog.component';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
-import {Animations, AnimationState} from './timeline.animation';
+import {Animations, ScrollDirectionState, ScrollState} from './timeline.animation';
+import {DateService} from '../../../services/date.service';
 
 @Component({
   selector: 'app-tasklets',
@@ -35,10 +36,15 @@ import {Animations, AnimationState} from './timeline.animation';
   animations: [
     Animations.toolbarAnimation,
     Animations.fabAnimation,
+    Animations.dateIndicatorAnimation,
   ]
 })
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   title = 'Basalt';
+
+  public indicatedDate;
+  public indicatedDay;
+  public indicatedMonth;
 
   public mediaType = MEDIA;
   public media: MEDIA = MEDIA.UNDEFINED;
@@ -46,7 +52,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private unsubscribeSubject = new Subject();
 
   private scrollPosLast = 0;
-  public animationState: AnimationState = AnimationState.ACTIVE;
+  public scrollDirectionState: ScrollDirectionState = ScrollDirectionState.UP;
+  public scrollState: ScrollState = ScrollState.NON_SCROLLING;
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
@@ -55,17 +62,18 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
               private taskService: TaskService,
-              private taskletService: TaskletService,
+              public taskletService: TaskletService,
               private filterService: FilterService,
               private snackbarService: SnackbarService,
               private mediaService: MediaService,
+              public dateService: DateService,
               public zone: NgZone,
               public dialog: MatDialog,
-              private scroll: ScrollDispatcher,
-              private changeDetector: ChangeDetectorRef) {
+              private scroll: ScrollDispatcher) {
   }
 
   ngOnInit() {
+    this.initializeDateSubscription();
     this.initializeMediaSubscription();
   }
 
@@ -73,15 +81,21 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scroll.scrolled(0)
       .pipe(map(() => {
         const scrollPos = this.scrollable.getElementRef().nativeElement.scrollTop;
-        if (this.animationState === AnimationState.ACTIVE && scrollPos > this.scrollPosLast) {
-          this.animationState = AnimationState.INACTIVE;
+        if (this.scrollDirectionState === ScrollDirectionState.UP && scrollPos > this.scrollPosLast) {
+          this.scrollDirectionState = ScrollDirectionState.DOWN;
+          // Since scroll is run outside Angular zone change detection must be triggered manually
           this.zone.run(() => {
           });
-        } else if (this.animationState === AnimationState.INACTIVE && scrollPos < this.scrollPosLast) {
-          this.animationState = AnimationState.ACTIVE;
+        } else if (this.scrollDirectionState === ScrollDirectionState.DOWN && scrollPos < this.scrollPosLast) {
+          this.scrollDirectionState = ScrollDirectionState.UP;
+          // Since scroll is run outside Angular zone change detection must be triggered manually
           this.zone.run(() => {
           });
         }
+
+        this.scrollState = ScrollState.SCROLLING;
+
+        // TODO Find an effective way to set scrollState to NON_SCROLLING once the user is not scrolling anymore
 
         this.scrollPosLast = scrollPos;
       })).subscribe();
@@ -95,6 +109,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   // Initialization
   //
+
+  private initializeDateSubscription() {
+    this.taskletService.dateQueueSubject.subscribe(date => {
+      this.indicatedDate = date;
+      this.indicatedDay = this.dateService.getDay(date);
+      this.indicatedMonth = this.dateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
+    });
+  }
 
   private initializeMediaSubscription() {
     this.media = this.mediaService.media;
@@ -135,9 +157,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const tasklet = result as Tasklet;
 
-            this.taskletService.createTasklet(tasklet).then(() => {
-              this.changeDetector.markForCheck();
-            });
+            this.taskletService.createTasklet(tasklet);
             this.filterService.updateTagsList(tasklet.tags, true);
           }
         });
@@ -156,9 +176,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const task = result as Task;
 
-            this.taskService.createTask(task).then(() => {
-              this.changeDetector.markForCheck();
-            });
+            this.taskService.createTask(task);
             this.filterService.updateTagsList(task.tags, true);
           }
         });
@@ -177,9 +195,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const project = result as Project;
             this.filterService.updateProjectsList([project], true);
-            this.projectService.createProject(project).then(() => {
-              this.changeDetector.markForCheck();
-            });
+            this.projectService.createProject(project);
           }
         });
         break;
@@ -305,5 +321,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onSearchItemChanged(searchItem: string) {
     this.filterService.updateSearchItem(searchItem);
+  }
+
+  /**
+   * Handles click on date indicator
+   */
+  onDateIndicatorClicked() {
+    this.scrollState = ScrollState.NON_SCROLLING;
   }
 }

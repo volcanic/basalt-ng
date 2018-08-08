@@ -1,25 +1,36 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
-export enum AnimationState {ACTIVE, INACTIVE }
+export enum ScrollState {SCROLLING, NON_SCROLLING }
+
+export enum ScrollDirectionState {UP, DOWN }
 
 export const Animations = {
   toolbarAnimation: trigger('toolbarAnimation', [
-    state(`${AnimationState.INACTIVE}`, style({
+    state(`${ScrollDirectionState.DOWN}`, style({
       transform: 'translateY(-75px)'
     })),
-    state(`${AnimationState.ACTIVE}`, style({
+    state(`${ScrollDirectionState.UP}`, style({
       transform: 'translateY(0px)'
     })),
-    transition(`${AnimationState.INACTIVE} => ${AnimationState.ACTIVE}`, animate('300ms ease-in')),
-    transition(`${AnimationState.ACTIVE} => ${AnimationState.INACTIVE}`, animate('300ms ease-out'))
+    transition(`${ScrollDirectionState.DOWN} => ${ScrollDirectionState.UP}`, animate('300ms ease-in')),
+    transition(`${ScrollDirectionState.UP} => ${ScrollDirectionState.DOWN}`, animate('300ms ease-out'))
   ]), fabAnimation: trigger('fabAnimation', [
-    state(`${AnimationState.INACTIVE}`, style({
+    state(`${ScrollDirectionState.DOWN}`, style({
       transform: 'translateY(75px)'
     })),
-    state(`${AnimationState.ACTIVE}`, style({
+    state(`${ScrollDirectionState.UP}`, style({
       transform: 'translateY(0px)'
     })),
-    transition(`${AnimationState.INACTIVE} => ${AnimationState.ACTIVE}`, animate('300ms ease-in')),
-    transition(`${AnimationState.ACTIVE} => ${AnimationState.INACTIVE}`, animate('300ms ease-out'))
+    transition(`${ScrollDirectionState.DOWN} => ${ScrollDirectionState.UP}`, animate('300ms ease-in')),
+    transition(`${ScrollDirectionState.UP} => ${ScrollDirectionState.DOWN}`, animate('300ms ease-out'))
+  ]), dateIndicatorAnimation: trigger('dateIndicatorAnimation', [
+    state(`${ScrollState.NON_SCROLLING}`, style({
+      opacity: '0'
+    })),
+    state(`${ScrollState.SCROLLING}`, style({
+      opacity: '0.7'
+    })),
+    transition(`${ScrollState.NON_SCROLLING} => ${ScrollState.SCROLLING}`, animate('300ms ease-in')),
+    transition(`${ScrollState.SCROLLING} => ${ScrollState.NON_SCROLLING}`, animate('300ms ease-out'))
   ])
 };

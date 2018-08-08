@@ -1,19 +1,21 @@
 <app-timeline-toolbar
-  [@toolbarAnimation]="animationState"
+  [@toolbarAnimation]="scrollDirectionState"
   class="fixed"
   [title]="title"
   (searchItemChangedEmitter)="onSearchItemChanged($event)"
   (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">
-  <mat-sidenav *ngIf="media > mediaType.MEDIUM" [@toolbarAnimation]="animationState" #sidenavStart mode="side" position="start" opened="true"
+  <mat-sidenav *ngIf="media > mediaType.MEDIUM" [@toolbarAnimation]="scrollDirectionState" #sidenavStart mode="side"
+               position="start" opened="true"
                class="sidenav sidenav-start">
     <app-filter-tag-list></app-filter-tag-list>
     <mat-divider></mat-divider>
     <app-filter-project-list></app-filter-project-list>
   </mat-sidenav>
 
-  <mat-sidenav *ngIf="media > mediaType.MEDIUM" [@toolbarAnimation]="animationState" #sidenavEnd mode="side" position="end" opened="true"
+  <mat-sidenav *ngIf="media > mediaType.MEDIUM" [@toolbarAnimation]="scrollDirectionState" #sidenavEnd mode="side"
+               position="end" opened="true"
                class="sidenav sidenav-end">
     <app-task-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-task-list>
     <mat-divider></mat-divider>
@@ -27,6 +29,15 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<button mat-fab class="fab" [@fabAnimation]="animationState" (click)="onMenuItemClicked('add-tasklet')">
+<div class="date-indicator-wrapper" *ngIf="indicatedDate != null">
+  <div class="flex"></div>
+  <button mat-fab class="date-indicator" [@dateIndicatorAnimation]="scrollState" (click)="onDateIndicatorClicked()">
+    <div class="day">{{ indicatedDay }}</div>
+    <div class="month">{{ indicatedMonth }}</div>
+  </button>
+  <div class="flex"></div>
+</div>
+
+<button mat-fab class="fab" [@fabAnimation]="scrollDirectionState" (click)="onMenuItemClicked('add-tasklet')">
   <mat-icon svgIcon="add" class="white-icon"></mat-icon>
 </button>

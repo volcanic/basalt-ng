@@ -1,4 +1,5 @@
 @import '../../../../sizes';
+@import '../../../../theme';
 
 .fixed {
   width: 100%;
@@ -65,6 +66,50 @@
     padding-top: 88px;
     margin-left: 40px;
     margin-right: 40px;
+  }
+}
+
+.flex {
+  flex-grow: 1;
+}
+
+.date-indicator-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.date-indicator {
+  top: auto !important;
+  z-index: 2;
+
+  color: mat-color($mat-grey, 50);
+  background-color: mat-color($mat-grey, 800) !important;
+  opacity: 0.8;
+
+  @media #{$mat-small} {
+    width: 75px;
+    height: 75px;
+    margin-top: -10px !important;
+  }
+  @media #{$mat-medium} {
+    width: 90px;
+    height: 90px;
+    margin-top: -200px !important;
+  }
+  @media #{$mat-large} {
+    width: 90px;
+    height: 90px;
+    margin-top: -200px !important;
+  }
+
+  .day {
+    font-size: 2em;
+    font-weight: 800;
+  }
+
+  .month {
+    font-size: 1.5em;
+    font-weight: 400;
   }
 }
 

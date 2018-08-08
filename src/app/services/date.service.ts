@@ -43,6 +43,10 @@ export class DateService {
     return Math.ceil(minutes / DateService.MINUTES_INTERVAL) * DateService.MINUTES_INTERVAL;
   }
 
+  getDay(date: Date): string {
+    return new Date(date).getDate().toString();
+  }
+
   getDate(date: Date): string {
     const day = new Date(date).getDate();
     const month = this.getMonthString(new Date(date).getMonth());
@@ -115,6 +119,8 @@ export class DateService {
         return 'December';
       }
     }
+
+    return '';
   }
 
   isBefore(d1: Date, d2: Date) {
