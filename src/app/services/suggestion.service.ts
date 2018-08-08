@@ -41,7 +41,7 @@ export class SuggestionService {
       if (t != null) {
 
         // Add persons to search options
-        if (t.persons != null) {
+        if (t.persons != null && t.creationDate) {
           t.persons.forEach(person => {
             const value = person.name;
             this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
@@ -50,7 +50,7 @@ export class SuggestionService {
         }
 
         // Add tags to search items
-        if (t.tags != null) {
+        if (t.tags != null && t.creationDate) {
           t.tags.forEach(tag => {
             const value = tag.name;
             this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
@@ -59,7 +59,7 @@ export class SuggestionService {
         }
 
         // Add description lines to search items
-        if (t.description.value != null) {
+        if (t.description.value != null && t.creationDate) {
           t.description.value.split('\n').forEach(v => {
             if (v.trim() !== '') {
               const value = v.trim().replace(/(^-)/g, '');
@@ -81,7 +81,7 @@ export class SuggestionService {
       if (t != null) {
 
         // Add tags to search items
-        if (t.tags != null) {
+        if (t.tags != null && t.creationDate) {
           t.tags.forEach(tag => {
             const value = tag.name;
             this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
@@ -90,7 +90,7 @@ export class SuggestionService {
         }
 
         // Add description lines to search items
-        if (t.description.value != null) {
+        if (t.description.value != null && t.creationDate) {
           t.description.value.split('\n').forEach(v => {
             if (v.trim() !== '') {
               const value = v.trim().replace(/(^-)/g, '');
@@ -100,7 +100,7 @@ export class SuggestionService {
         }
 
         // Add task name to search options
-        if (t.name) {
+        if (t.name && t.creationDate) {
           const value = t.name.trim();
           this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
           this.taskOptions.set(value, value);
@@ -119,7 +119,7 @@ export class SuggestionService {
       if (p != null) {
 
         // Add project name to search options
-        if (p.name) {
+        if (p.name && p.creationDate) {
           const value = p.name.trim();
           this.searchOptions.set(p.creationDate.toString() + this.searchOptionsCounter++, value);
           this.projectOptions.set(value, value);
