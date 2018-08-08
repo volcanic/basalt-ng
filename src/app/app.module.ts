@@ -43,7 +43,7 @@ import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-d
 import {PouchDBSettingsService} from './services/pouchdb-settings.service';
 import {SettingsService} from './services/settings.service';
 import {ProjectsFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
-import {DailyScrumActivityFragmenComponent} from './view/fragments/daily-scrum-activity-fragment/daily-scrum-activity-fragment.component';
+import {DailyScrumActivityFragmentComponent} from './view/fragments/daily-scrum-activity-fragment/daily-scrum-activity-fragment.component';
 import {DailyScrumParticipantFragmentComponent} from './view/fragments/daily-scrum-participant-fragment/daily-scrum-participant-fragment.component';
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
 import {FileDropComponent} from './view/components/file-drop/file-drop.component';
@@ -92,6 +92,7 @@ import {MediaService} from './services/media.service';
 import {ProjectListDialogComponent} from './view/dialogs/lists/project-list-dialog/project-list-dialog.component';
 import {TaskListDialogComponent} from './view/dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
+import {InViewportModule} from 'ng-in-viewport';
 
 @NgModule({
   declarations: [
@@ -131,7 +132,7 @@ import {ScrollDispatchModule} from '@angular/cdk/scrolling';
     PreviousDescriptionFragmentComponent,
     WeeklyDigestFragmentComponent,
     DailyScrumFragmentComponent,
-    DailyScrumActivityFragmenComponent,
+    DailyScrumActivityFragmentComponent,
     DailyScrumParticipantFragmentComponent,
     HeaderFragmentComponent,
     TaskletDailyScrumComponent,
@@ -157,6 +158,7 @@ import {ScrollDispatchModule} from '@angular/cdk/scrolling';
     FormsModule,
     HttpModule,
     HttpClientModule,
+    InViewportModule,
     MatAutocompleteModule,
     MatBadgeModule,
     MatButtonModule,

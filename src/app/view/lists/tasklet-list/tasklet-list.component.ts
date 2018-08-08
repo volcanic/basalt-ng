@@ -39,6 +39,10 @@ export class TaskletListComponent implements OnInit, OnDestroy {
     this.unsubscribeSubject.complete();
   }
 
+  public onIntersection(tasklet: Tasklet): void {
+    this.taskletService.addElementToDateQueue(tasklet.creationDate);
+  }
+
   //
   // Initialization
   //
@@ -50,7 +54,7 @@ export class TaskletListComponent implements OnInit, OnDestroy {
 
     this.taskService.tasksSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.forceChangeDetection();
     });
   }

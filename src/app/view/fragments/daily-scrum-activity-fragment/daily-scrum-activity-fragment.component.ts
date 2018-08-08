@@ -13,7 +13,7 @@ import {Subject} from 'rxjs/Subject';
   templateUrl: './daily-scrum-activity-fragment.component.html',
   styleUrls: ['./daily-scrum-activity-fragment.component.scss']
 })
-export class DailyScrumActivityFragmenComponent implements OnInit {
+export class DailyScrumActivityFragmentComponent implements OnInit {
   @Input() person: Person;
   @Input() dailyScrumActivity: DailyScrumActivity;
   @Output() activityEditedEmitter = new EventEmitter<string>();

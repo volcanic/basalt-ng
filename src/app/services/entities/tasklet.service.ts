@@ -20,6 +20,9 @@ import {SnackbarService} from '../snackbar.service';
 export class TaskletService {
   tasklets = new Map<string, Tasklet>();
   taskletsSubject = new Subject<Tasklet[]>();
+  dateQueueSubject = new Subject<Date>();
+
+  dateQueue = [];
 
   private unsubscribeSubject = new Subject();
 
@@ -202,5 +205,31 @@ export class TaskletService {
   public matchesDate(tasklet: Tasklet, date: Date) {
     return new Date(tasklet.creationDate) > new Date(this.dateService.getDayStart(date))
       && new Date(tasklet.creationDate) < new Date(this.dateService.getDayEnd(date));
+  }
+
+  //
+  // Util
+  //
+
+  /**
+   * Adds a creation date of a tasklet to the queue and publishes the latest entry
+   * @param {Date} date
+   */
+  addElementToDateQueue(date: Date) {
+    const BUFFER = 7;
+
+    this.dateQueue.push(date);
+
+    // Evict queue
+    if (this.dateQueue.length > BUFFER) {
+      this.dateQueue = this.dateQueue.slice(this.dateQueue.length - BUFFER);
+    }
+
+    // Sort queue values
+    const sortedDateQueue = this.dateQueue.slice().sort((d1: Date, d2: Date) => {
+      return new Date(d2).getTime() - new Date(d1).getTime();
+    });
+
+    this.dateQueueSubject.next(sortedDateQueue[0]);
   }
 }
