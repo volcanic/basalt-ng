@@ -25,7 +25,8 @@ export class TaskService {
               private snackbarService: SnackbarService) {
 
     this.initializeSubscription();
-    this.findTasks();
+    // this.findTasks();
+    this.findOpenTasks();
   }
 
   //
@@ -57,6 +58,34 @@ export class TaskService {
         '$and': [
           {'entityType': {'$eq': EntityType.TASK}},
           {'modificationDate': {'$gt': null}}
+        ]
+      }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_TASKS
+    };
+
+    this.pouchDBService.find(index, options).then(result => {
+        result['docs'].forEach(element => {
+          const task = element as Task;
+          this.tasks.set(task.id, task);
+        });
+
+        this.notify();
+      }, error => {
+        if (isDevMode()) {
+          console.error(error);
+        }
+      }
+    );
+  }
+
+  public findOpenTasks() {
+
+    const index = {fields: ['completionDate', 'modificationDate', 'entityType']};
+    const options = {
+      selector: {
+        '$and': [
+          {'entityType': {'$eq': EntityType.TASK}},
+          {'modificationDate': {'$gt': null}},
+          {'completionDate': {'$eq': null}}
         ]
       }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_TASKS
     };
