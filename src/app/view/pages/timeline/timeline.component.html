@@ -1,5 +1,5 @@
 <app-timeline-toolbar
-  [@toolbarAnimation]="scrollDirectionState"
+  [@toolbarAnimation]="scrollDirection"
   class="fixed"
   [title]="title"
   (searchItemChangedEmitter)="onSearchItemChanged($event)"
@@ -9,7 +9,7 @@
   <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
                position="start" opened="true"
                class="sidenav sidenav-start">
-    <div [@toolbarAnimation]="scrollDirectionState">
+    <div [@toolbarAnimation]="scrollDirection">
       <app-filter-tag-list></app-filter-tag-list>
       <mat-divider></mat-divider>
       <app-filter-project-list></app-filter-project-list>
@@ -19,7 +19,7 @@
   <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavEnd mode="side"
                position="end" opened="true"
                class="sidenav sidenav-end">
-    <div [@toolbarAnimation]="scrollDirectionState">
+    <div [@toolbarAnimation]="scrollDirection">
       <app-task-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-task-list>
       <mat-divider></mat-divider>
       <app-project-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-project-list>
@@ -42,6 +42,6 @@
   <div class="flex"></div>
 </div>
 
-<button mat-fab class="fab" [@fabAnimation]="scrollDirectionState" (click)="onMenuItemClicked('add-tasklet')">
+<button mat-fab class="fab" [@fabAnimation]="scrollDirection" (click)="onMenuItemClicked('add-tasklet')">
   <mat-icon svgIcon="add" class="white-icon"></mat-icon>
 </button>

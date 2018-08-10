@@ -26,7 +26,7 @@ import {Subject} from 'rxjs/Subject';
 import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialog/project-list-dialog.component';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
-import {Animations, ScrollDirectionState, ScrollState} from './timeline.animation';
+import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
 import {DateService} from '../../../services/date.service';
 
 @Component({
@@ -52,7 +52,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private unsubscribeSubject = new Subject();
 
   private scrollPosLast = 0;
-  public scrollDirectionState: ScrollDirectionState = ScrollDirectionState.UP;
+  public scrollDirection: ScrollDirection = ScrollDirection.UP;
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
 
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
@@ -78,25 +78,33 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+
+    let scrollTimeout = null;
+
     this.scroll.scrolled(0)
       .pipe(map(() => {
+        // Update scroll state
+        this.scrollState = ScrollState.SCROLLING;
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          this.scrollState = ScrollState.NON_SCROLLING;
+        }, 500);
+
+        // Update scroll direction
         const scrollPos = this.scrollable.getElementRef().nativeElement.scrollTop;
-        if (this.scrollDirectionState === ScrollDirectionState.UP && scrollPos > this.scrollPosLast) {
-          this.scrollDirectionState = ScrollDirectionState.DOWN;
+        if (this.scrollDirection === ScrollDirection.UP && scrollPos > this.scrollPosLast) {
+          this.scrollDirection = ScrollDirection.DOWN;
           // Since scroll is run outside Angular zone change detection must be triggered manually
           this.zone.run(() => {
           });
-        } else if (this.scrollDirectionState === ScrollDirectionState.DOWN && scrollPos < this.scrollPosLast) {
-          this.scrollDirectionState = ScrollDirectionState.UP;
+        } else if (this.scrollDirection === ScrollDirection.DOWN && scrollPos < this.scrollPosLast) {
+          this.scrollDirection = ScrollDirection.UP;
           // Since scroll is run outside Angular zone change detection must be triggered manually
           this.zone.run(() => {
           });
         }
 
-        this.scrollState = ScrollState.SCROLLING;
-
-        // TODO Find an effective way to set scrollState to NON_SCROLLING once the user is not scrolling anymore
-
+        // Save current scroll position
         this.scrollPosLast = scrollPos;
       })).subscribe();
   }

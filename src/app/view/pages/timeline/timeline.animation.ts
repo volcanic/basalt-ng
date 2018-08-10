@@ -2,27 +2,27 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export enum ScrollState {SCROLLING, NON_SCROLLING }
 
-export enum ScrollDirectionState {UP, DOWN }
+export enum ScrollDirection {UP, DOWN }
 
 export const Animations = {
   toolbarAnimation: trigger('toolbarAnimation', [
-    state(`${ScrollDirectionState.DOWN}`, style({
+    state(`${ScrollDirection.DOWN}`, style({
       transform: 'translateY(-75px)'
     })),
-    state(`${ScrollDirectionState.UP}`, style({
+    state(`${ScrollDirection.UP}`, style({
       transform: 'translateY(0px)'
     })),
-    transition(`${ScrollDirectionState.DOWN} => ${ScrollDirectionState.UP}`, animate('300ms ease-in')),
-    transition(`${ScrollDirectionState.UP} => ${ScrollDirectionState.DOWN}`, animate('300ms ease-out'))
+    transition(`${ScrollDirection.DOWN} => ${ScrollDirection.UP}`, animate('300ms ease-in')),
+    transition(`${ScrollDirection.UP} => ${ScrollDirection.DOWN}`, animate('300ms ease-out'))
   ]), fabAnimation: trigger('fabAnimation', [
-    state(`${ScrollDirectionState.DOWN}`, style({
+    state(`${ScrollDirection.DOWN}`, style({
       transform: 'translateY(75px)'
     })),
-    state(`${ScrollDirectionState.UP}`, style({
+    state(`${ScrollDirection.UP}`, style({
       transform: 'translateY(0px)'
     })),
-    transition(`${ScrollDirectionState.DOWN} => ${ScrollDirectionState.UP}`, animate('300ms ease-in')),
-    transition(`${ScrollDirectionState.UP} => ${ScrollDirectionState.DOWN}`, animate('300ms ease-out'))
+    transition(`${ScrollDirection.DOWN} => ${ScrollDirection.UP}`, animate('300ms ease-in')),
+    transition(`${ScrollDirection.UP} => ${ScrollDirection.DOWN}`, animate('300ms ease-out'))
   ]), dateIndicatorAnimation: trigger('dateIndicatorAnimation', [
     state(`${ScrollState.NON_SCROLLING}`, style({
       opacity: '0'
