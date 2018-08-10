@@ -18,5 +18,7 @@
 { "annotation": "refs/tags/v0.17.0", "message": "Effort reports"},
 { "annotation": "refs/tags/v0.18.0", "message": "Top-level tasks"},
 { "annotation": "refs/tags/v0.19.0", "message": "Progressive Web App"},
-{ "annotation": "refs/tags/v0.20.0", "message": "Android App"}
+{ "annotation": "refs/tags/v0.20.0", "message": "Android App"},
+{ "annotation": "refs/tags/v0.21.0", "message": "Hidden toolbar"},
+{ "annotation": "refs/tags/v0.22.0", "message": "Date indicator"}
 ]}

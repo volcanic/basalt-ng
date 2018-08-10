@@ -52,6 +52,8 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.18 | Top-level tasks |
 | 0.19 | Progressive Web App |
 | 0.20 | Android App |
+| 0.21 | Hidden toolbar |
+| 0.22 | Date indicator |
 
 ### Planned features
 
