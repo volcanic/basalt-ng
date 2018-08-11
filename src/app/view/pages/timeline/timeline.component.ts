@@ -28,6 +28,8 @@ import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialo
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
 import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
 import {DateService} from '../../../services/date.service';
+import {ThemeService} from '../../../services/theme.service';
+import {THEME} from '../../../model/theme.enum';
 
 @Component({
   selector: 'app-tasklets',
@@ -66,6 +68,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private filterService: FilterService,
               private snackbarService: SnackbarService,
               private mediaService: MediaService,
+              private themeService: ThemeService,
               public dateService: DateService,
               public zone: NgZone,
               public dialog: MatDialog,
@@ -315,6 +318,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             homepage: environment.HOMEPAGE,
           }
         });
+        break;
+      }
+      case 'light-theme': {
+        this.themeService.switchTheme(THEME.LIGHT);
+        break;
+      }
+      case 'dark-theme': {
+        this.themeService.switchTheme(THEME.DARK);
         break;
       }
       default: {

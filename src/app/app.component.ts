@@ -12,6 +12,8 @@ import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TaskService} from './services/entities/task.service';
 import {TaskletService} from './services/entities/tasklet.service';
+import {ThemeService} from './services/theme.service';
+import {OverlayContainer} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +22,7 @@ import {TaskletService} from './services/entities/tasklet.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'Basalt';
+  themeClass = 'light-theme';
 
   constructor(private entityService: EntityService,
               private taskService: TaskService,
@@ -28,14 +31,18 @@ export class AppComponent implements OnInit, AfterViewInit {
               private pouchDBService: PouchDBService,
               private pouchDBSettingsService: PouchDBSettingsService,
               private settingsService: SettingsService,
+              private themeService: ThemeService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
+              private overlayContainer: OverlayContainer,
               private iconRegistry: MatIconRegistry,
               private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
-    // this.initializeSettings();
+    this.initializeSettings();
+    this.initializeTheme();
+    this.initializeThemeSubscription();
     this.initializeSnackbar();
     this.initializeIcons();
   }
@@ -44,10 +51,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.initializeDatabaseSync();
   }
 
-  initializeDatabaseSync() {
-    this.pouchDBService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
-    this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_SETTINGS}`);
-  }
+  //
+  // Initialization
+  //
 
   initializeSettings() {
     this.settingsService.fetch();
@@ -60,6 +66,26 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
+  initializeTheme() {
+    this.themeClass = this.themeService.theme;
+    this.overlayContainer.getContainerElement().classList.add(this.themeService.theme);
+  }
+
+  initializeThemeSubscription() {
+    this.themeService.themeSubject.subscribe(value => {
+
+      this.themeClass = value;
+
+      // Theme menus and dialogs
+      const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
+      const themeClassesToRemove = Array.from(overlayContainerClasses).filter((item: string) => item.includes('-theme'));
+      if (themeClassesToRemove.length) {
+        overlayContainerClasses.remove(...themeClassesToRemove);
+      }
+      overlayContainerClasses.add(value);
+    });
+  }
+
   initializeSnackbar() {
     this.snackbarService.messageSubject.subscribe(snack => {
         this.openSnackBar(snack[0], snack[1], snack[2]);
@@ -69,9 +95,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   initializeIcons() {
     const ICON_ROOT_DIR = 'assets/material-design-icons';
-    // const VARIANT_DESIGN = 'design';
-    const VARIANT_PRODUCTION = 'production';
-    const VARIANT = VARIANT_PRODUCTION;
+    const VARIANT = 'production';
 
     class Icon {
       topic: string;
@@ -154,6 +178,15 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
   }
 
+  initializeDatabaseSync() {
+    this.pouchDBService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
+    this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_SETTINGS}`);
+  }
+
+  //
+  // Actions
+  //
+
   /**
    * Handles messages that shall be displayed in a snack bar
    * @param message
@@ -209,7 +242,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           })
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe(() => {
         // Save latest version
         this.settingsService.updateSetting(new Setting('version', environment.VERSION));
       });

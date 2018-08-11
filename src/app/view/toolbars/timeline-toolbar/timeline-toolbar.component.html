@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <div class="toolbar-block">
-    <button mat-button class="toolbar-menu-item" (click)="onClickMenuItem('menu')">
+    <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('menu')">
       <mat-icon svgIcon="menu" class="white-icon"></mat-icon>
     </button>
     <span *ngIf="media != mediaType.SMALL" class="toolbar-title">{{ title }}</span>
@@ -32,53 +32,64 @@
   </div>
   <div class="flexbox"></div>
   <div class="toolbar-block">
+    <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item"
+            (click)="onMenuItemClicked('todo')">
+      <mat-icon svgIcon="timer" class="white-icon"></mat-icon>
+    </button>
+    <button mat-button class="toolbar-menu-item" [matMenuTriggerFor]="menuSwitcher">
+      <mat-icon svgIcon="brightness_3" class="white-icon"></mat-icon>
+    </button>
+    <mat-menu #menuSwitcher="matMenu">
+      <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('light-theme')">
+        <mat-icon svgIcon="brightness_low"></mat-icon>
+      </button>
+      <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('dark-theme')">
+        <mat-icon svgIcon="brightness_3"></mat-icon>
+      </button>
+    </mat-menu>
     <button mat-button class="toolbar-menu-item right" [matMenuTriggerFor]="menu">
       <mat-icon svgIcon="more_vert" class="white-icon"></mat-icon>
     </button>
-    <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item right"
-            (click)="onClickMenuItem('todo')">
-      <mat-icon svgIcon="timer" class="white-icon"></mat-icon>
-    </button>
     <mat-menu #menu="matMenu">
       <div class="toolbar-expanded" *ngIf="media < mediaType.LARGE">
-        <button mat-menu-item (click)="onClickMenuItem('task-list')">
+        <button mat-menu-item (click)="onMenuItemClicked('task-list')">
           <mat-icon svgIcon="turned_in_not"></mat-icon>
           <span>Tasks</span>
         </button>
-        <button mat-menu-item (click)="onClickMenuItem('project-list')">
+        <button mat-menu-item (click)="onMenuItemClicked('project-list')">
           <mat-icon svgIcon="agenda"></mat-icon>
           <span>Projects</span>
         </button>
         <mat-divider></mat-divider>
-        <button mat-menu-item (click)="onClickMenuItem('filter-tags')">
+        <button mat-menu-item (click)="onMenuItemClicked('filter-tags')">
           <mat-icon svgIcon="filter_list"></mat-icon>
           <span>Filter tags</span>
         </button>
-        <button mat-menu-item (click)="onClickMenuItem('filter-projects')">
+        <button mat-menu-item (click)="onMenuItemClicked('filter-projects')">
           <mat-icon svgIcon="filter_list"></mat-icon>
           <span>Filter projects</span>
         </button>
       </div>
-      <button mat-menu-item (click)="onClickMenuItem('clear-filter')">
+      <button mat-menu-item (click)="onMenuItemClicked('clear-filter')">
         <mat-icon svgIcon="layers_clear"></mat-icon>
         <span>Clear filters</span>
       </button>
       <mat-divider *ngIf="media < mediaType.LARGE"></mat-divider>
-      <button mat-menu-item (click)="onClickMenuItem('download')">
+      <button mat-menu-item (click)="onMenuItemClicked('download')">
         <mat-icon svgIcon="file_download"></mat-icon>
         <span>Export</span>
       </button>
-      <button mat-menu-item (click)="onClickMenuItem('upload')">
+      <button mat-menu-item (click)="onMenuItemClicked('upload')">
         <mat-icon svgIcon="file_upload"></mat-icon>
         <span>Import</span>
       </button>
       <mat-divider></mat-divider>
-      <button mat-menu-item (click)="onClickMenuItem('android-release')">
+      <button mat-menu-item (click)="onMenuItemClicked('android-release')">
         <mat-icon svgIcon="android"></mat-icon>
         <span>Download Android App</span>
       </button>
       <mat-divider></mat-divider>
-      <button mat-menu-item (click)="onClickMenuItem('about')">
+      <button mat-menu-item (click)="onMenuItemClicked('about')">
         <mat-icon svgIcon="blank"></mat-icon>
         <span>About</span>
       </button>

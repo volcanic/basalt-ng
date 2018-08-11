@@ -79,15 +79,15 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
     ).subscribe((value) => this.searchItemChangedEmitter.emit(value.toString()));
   }
 
-  onClickMenuItem(menuItem: string): void {
+  onMenuItemClicked(menuItem: string): void {
     this.menuItemClickedEmitter.emit(menuItem);
   }
 
-  onKeyUp(event: any) {
+  onKeyUp() {
     this.notifySearchItemChanged();
   }
 
-  onOptionSelected(event: any) {
+  onOptionSelected() {
     this.notifySearchItemChanged();
   }
 

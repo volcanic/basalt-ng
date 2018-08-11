@@ -43,6 +43,18 @@ body {
   fill: white;
 }
 
+.light-theme {
+  .icon-accent-contrast svg {
+    fill: mat-contrast($light-accent, 500);
+  }
+}
+
+.dark-theme {
+  .icon-accent-contrast svg {
+    fill: mat-contrast($dark-accent, 500);
+  }
+}
+
 app-root {
   display: block;
   height: 100%;
@@ -58,7 +70,7 @@ app-root {
   height: 56px !important;
 }
 
-.app-theme .mat-toolbar .mat-form-field-underline, .app-theme .mat-toolbar .mat-form-field-ripple, .app-theme .mat-toolbar .mat-focused .mat-form-field-ripple {
+.mat-toolbar .mat-form-field-underline, .mat-toolbar .mat-form-field-ripple, .mat-toolbar .mat-focused .mat-form-field-ripple {
   background-color: transparent !important;
 }
 
@@ -108,10 +120,6 @@ mat-list-item.text > .mat-list-item-content {
   .mat-button, .mat-fab, .mat-icon-button, .mat-mini-fab, .mat-raised-button {
     min-width: 0 !important;
   }
-}
-
-.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-  background-color: rgb(84, 110, 122) !important;
 }
 
 .mat-ripple-element {
