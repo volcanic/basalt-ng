@@ -1,9 +1,20 @@
+@import '../../../../../light-theme';
+@import '../../../../../dark-theme';
+
 .tag {
-  background-color: rgba(0, 0, 0, 0.08);
+  .light-theme {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, .87);
+  }
+
+  .dark-theme {
+    background-color: transparent;
+    color: rgba(255, 255, 255, .87);
+  }
+
   -webkit-border-radius: 2px;
   border-radius: 2px;
   margin: 6px 6px 0 0;
-  color: rgba(0, 0, 0, .87);
   direction: ltr;
   font-family: 'Roboto', arial, sans-serif;
   font-size: 15px;

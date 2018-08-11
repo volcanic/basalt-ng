@@ -12,6 +12,8 @@ import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TaskService} from './services/entities/task.service';
 import {TaskletService} from './services/entities/tasklet.service';
+import {ThemeService} from './services/theme.service';
+import {OverlayContainer} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +22,7 @@ import {TaskletService} from './services/entities/tasklet.service';
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'Basalt';
+  themeClass = 'light-theme';
 
   constructor(private entityService: EntityService,
               private taskService: TaskService,
@@ -28,14 +31,18 @@ export class AppComponent implements OnInit, AfterViewInit {
               private pouchDBService: PouchDBService,
               private pouchDBSettingsService: PouchDBSettingsService,
               private settingsService: SettingsService,
+              private themeService: ThemeService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
+              private overlayContainer: OverlayContainer,
               private iconRegistry: MatIconRegistry,
               private sanitizer: DomSanitizer) {
   }
 
   ngOnInit(): void {
-    // this.initializeSettings();
+    this.initializeSettings();
+    this.initializeTheme();
+    this.initializeThemeSubscription();
     this.initializeSnackbar();
     this.initializeIcons();
   }
@@ -44,10 +51,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.initializeDatabaseSync();
   }
 
-  initializeDatabaseSync() {
-    this.pouchDBService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
-    this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_SETTINGS}`);
-  }
+  //
+  // Initialization
+  //
 
   initializeSettings() {
     this.settingsService.fetch();
@@ -60,6 +66,26 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
+  initializeTheme() {
+    this.themeClass = this.themeService.theme;
+    this.overlayContainer.getContainerElement().classList.add(this.themeService.theme);
+  }
+
+  initializeThemeSubscription() {
+    this.themeService.themeSubject.subscribe(value => {
+
+      this.themeClass = value;
+
+      // Theme menus and dialogs
+      const overlayContainerClasses = this.overlayContainer.getContainerElement().classList;
+      const themeClassesToRemove = Array.from(overlayContainerClasses).filter((item: string) => item.includes('-theme'));
+      if (themeClassesToRemove.length) {
+        overlayContainerClasses.remove(...themeClassesToRemove);
+      }
+      overlayContainerClasses.add(value);
+    });
+  }
+
   initializeSnackbar() {
     this.snackbarService.messageSubject.subscribe(snack => {
         this.openSnackBar(snack[0], snack[1], snack[2]);
@@ -69,9 +95,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   initializeIcons() {
     const ICON_ROOT_DIR = 'assets/material-design-icons';
-    // const VARIANT_DESIGN = 'design';
-    const VARIANT_PRODUCTION = 'production';
-    const VARIANT = VARIANT_PRODUCTION;
+    const VARIANT = 'production';
 
     class Icon {
       topic: string;
@@ -90,6 +114,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     const AV = 'av';
     const CONTENT = 'content';
     const COMMUNICATION = 'communication';
+    const DEVICE = 'device';
     const EDITOR = 'editor';
     const FILE = 'file';
     const IMAGE = 'image';
@@ -109,9 +134,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(ACTION, 'search', 'ic_search_24px.svg'));
     icons.push(new Icon(ACTION, 'today', 'ic_today_24px.svg'));
     icons.push(new Icon(ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
+    icons.push(new Icon(ACTION, 'work', 'ic_work_24px.svg'));
     icons.push(new Icon(ALERT, 'warning', 'ic_warning_24px.svg'));
     icons.push(new Icon(AV, 'play_circle_filled', 'ic_play_circle_filled_24px.svg'));
     icons.push(new Icon(AV, 'replay', 'ic_replay_24px.svg'));
+    icons.push(new Icon(COMMUNICATION, 'business', 'ic_business_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'call', 'ic_call_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'chat', 'ic_chat_24px.svg'));
     icons.push(new Icon(CONTENT, 'add', 'ic_add_24px.svg'));
@@ -120,6 +147,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(CONTENT, 'mail', 'ic_mail_24px.svg'));
     icons.push(new Icon(CONTENT, 'people_18', 'ic_people_18px.svg'));
     icons.push(new Icon(CONTENT, 'reply', 'ic_reply_24px.svg'));
+    icons.push(new Icon(DEVICE, 'brightness_low', 'ic_brightness_low_24px.svg'));
     icons.push(new Icon(EDITOR, 'delete', 'ic_delete_24px.svg'));
     icons.push(new Icon(EDITOR, 'mode_edit', 'ic_mode_edit_24px.svg'));
     icons.push(new Icon(EDITOR, 'mode_edit_18', 'ic_mode_edit_18px.svg'));
@@ -127,6 +155,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(FILE, 'file_download', 'ic_file_download_24px.svg'));
     icons.push(new Icon(FILE, 'file_upload', 'ic_file_upload_24px.svg'));
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
+    icons.push(new Icon(IMAGE, 'brightness_3', 'ic_brightness_3_24px.svg'));
+    icons.push(new Icon(IMAGE, 'nature', 'ic_nature_24px.svg'));
     icons.push(new Icon(MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
     icons.push(new Icon(MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
     icons.push(new Icon(MAPS, 'layers_clear', 'ic_layers_clear_24px.svg'));
@@ -150,6 +180,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.iconRegistry.addSvgIcon('outlined_flag',
       this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
   }
+
+  initializeDatabaseSync() {
+    this.pouchDBService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
+    this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_SETTINGS}`);
+  }
+
+  //
+  // Actions
+  //
 
   /**
    * Handles messages that shall be displayed in a snack bar
@@ -206,7 +245,7 @@ export class AppComponent implements OnInit, AfterViewInit {
           })
         }
       });
-      dialogRef.afterClosed().subscribe(result => {
+      dialogRef.afterClosed().subscribe(() => {
         // Save latest version
         this.settingsService.updateSetting(new Setting('version', environment.VERSION));
       });

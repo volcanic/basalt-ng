@@ -15,6 +15,8 @@ import {TaskService} from './task.service';
 import {ProjectService} from './project.service';
 import {environment} from '../../../environments/environment';
 import {SnackbarService} from '../snackbar.service';
+import {ScopeService} from '../scope.service';
+import {Scope} from '../../model/scope.enum';
 
 @Injectable()
 export class TaskletService {
@@ -31,10 +33,11 @@ export class TaskletService {
               private taskService: TaskService,
               private dateService: DateService,
               private suggestionService: SuggestionService,
-              private snackbarService: SnackbarService) {
+              private snackbarService: SnackbarService,
+              private scopeService: ScopeService) {
 
     this.initializeSubscription();
-    this.findTasklets();
+    this.findTaskletsByScope(this.scopeService.scope);
   }
 
   //
@@ -59,7 +62,6 @@ export class TaskletService {
   //
 
   public findTasklets() {
-
     const index = {fields: ['creationDate', 'entityType']};
     const options = {
       selector: {
@@ -70,6 +72,31 @@ export class TaskletService {
       }, sort: [{'creationDate': 'desc'}], limit: environment.LIMIT_TASKLETS
     };
 
+    this.clearTasklets();
+    this.findTaskletsInternal(index, options);
+  }
+
+  public findTaskletsByScope(scope: Scope) {
+    const index = {fields: ['creationDate', 'scope', 'entityType']};
+    const options = {
+      selector: {
+        '$and': [
+          {'entityType': {'$eq': EntityType.TASKLET}},
+          {'scope': {'$eq': scope}},
+          {'creationDate': {'$gt': null}}
+        ]
+      }, sort: [{'creationDate': 'desc'}], limit: environment.LIMIT_TASKLETS
+    };
+
+    this.clearTasklets();
+    this.findTaskletsInternal(index, options);
+  }
+
+  private clearTasklets() {
+    this.tasklets = new Map<string, Tasklet>();
+  }
+
+  private findTaskletsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
 
         result['docs'].forEach(element => {
@@ -91,6 +118,8 @@ export class TaskletService {
 
   public createTasklet(tasklet: Tasklet) {
     if (tasklet != null) {
+      tasklet.scope = this.scopeService.scope;
+
       this.projectService.updateProject(this.getProjectByTasklet(tasklet), false);
       this.taskService.updateTask(this.getTaskByTasklet(tasklet), false);
 

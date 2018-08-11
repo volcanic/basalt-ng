@@ -7,6 +7,8 @@ import {SuggestionService} from '../suggestion.service';
 import {PouchDBService} from '../pouchdb.service';
 import {environment} from '../../../environments/environment';
 import {SnackbarService} from '../snackbar.service';
+import {ScopeService} from '../scope.service';
+import {Scope} from '../../model/scope.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +21,11 @@ export class ProjectService {
 
   constructor(private pouchDBService: PouchDBService,
               private suggestionService: SuggestionService,
-              private snackbarService: SnackbarService) {
+              private snackbarService: SnackbarService,
+              private scopeService: ScopeService) {
 
     this.initializeSubscription();
-    this.findProjects();
+    this.findProjectsByScope(this.scopeService.scope);
   }
 
   //
@@ -47,7 +50,6 @@ export class ProjectService {
   //
 
   public findProjects() {
-
     const index = {fields: ['modificationDate', 'entityType']};
     const options = {
       selector: {
@@ -58,6 +60,31 @@ export class ProjectService {
       }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_PROJECTS
     };
 
+    this.clearProjects();
+    this.findProjectsInternal(index, options);
+  }
+
+  public findProjectsByScope(scope: Scope) {
+    const index = {fields: ['modificationDate', 'scope', 'entityType']};
+    const options = {
+      selector: {
+        '$and': [
+          {'entityType': {'$eq': EntityType.PROJECT}},
+          {'scope': {'$eq': scope}},
+          {'modificationDate': {'$gt': null}}
+        ]
+      }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_PROJECTS
+    };
+
+    this.clearProjects();
+    this.findProjectsInternal(index, options);
+  }
+
+  private clearProjects() {
+    this.projects = new Map<string, Project>();
+  }
+
+  private findProjectsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         result['docs'].forEach(element => {
           const project = element as Project;
@@ -79,6 +106,7 @@ export class ProjectService {
 
   public createProject(project: Project) {
     if (project != null) {
+      project.scope = this.scopeService.scope;
 
       return this.pouchDBService.put(project.id, project).then(() => {
         this.snackbarService.showSnackbar('Created project');

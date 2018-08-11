@@ -28,6 +28,8 @@ import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialo
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
 import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
 import {DateService} from '../../../services/date.service';
+import {Scope} from '../../../model/scope.enum';
+import {ScopeService} from '../../../services/scope.service';
 
 @Component({
   selector: 'app-tasklets',
@@ -66,6 +68,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private filterService: FilterService,
               private snackbarService: SnackbarService,
               private mediaService: MediaService,
+              private scopeService: ScopeService,
               public dateService: DateService,
               public zone: NgZone,
               public dialog: MatDialog,
@@ -75,6 +78,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.initializeDateSubscription();
     this.initializeMediaSubscription();
+    this.initializeScopeSubscription();
   }
 
   ngAfterViewInit() {
@@ -132,6 +136,19 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       this.media = value as MEDIA;
+    });
+  }
+
+  private initializeScopeSubscription() {
+    this.scopeService.scopeSubject.subscribe(scope => {
+
+      this.filterService.clearSearchItem();
+      this.filterService.clearTags();
+      this.filterService.clearProjects();
+
+      this.taskletService.findTaskletsByScope(scope);
+      this.taskService.findOpenTasksByScope(scope);
+      this.projectService.findProjectsByScope(scope);
     });
   }
 
@@ -315,6 +332,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             homepage: environment.HOMEPAGE,
           }
         });
+        break;
+      }
+      case 'scope-work': {
+        this.scopeService.switchScope(Scope.WORK);
+        break;
+      }
+      case 'scope-freetime': {
+        this.scopeService.switchScope(Scope.FREETIME);
         break;
       }
       default: {

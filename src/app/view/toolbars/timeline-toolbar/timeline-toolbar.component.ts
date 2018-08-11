@@ -6,6 +6,8 @@ import {Subject} from 'rxjs/Subject';
 import {SuggestionService} from '../../../services/suggestion.service';
 import {MediaService} from '../../../services/media.service';
 import {MEDIA} from '../../../model/media.enum';
+import {Scope} from '../../../model/scope.enum';
+import {ScopeService} from '../../../services/scope.service';
 
 @Component({
   selector: 'app-timeline-toolbar',
@@ -29,14 +31,19 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
   searchOptionsFiltered: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
+  public scopeType = Scope;
+  public scope: Scope;
+
   constructor(private suggestionService: SuggestionService,
-              private mediaService: MediaService) {
+              private mediaService: MediaService,
+              private scopeService: ScopeService) {
   }
 
   ngOnInit() {
 
     this.initializeMediaSubscription();
     this.initializeSuggestionSubscription();
+    this.initializeScopeSubscription();
   }
 
   ngOnDestroy() {
@@ -79,15 +86,26 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
     ).subscribe((value) => this.searchItemChangedEmitter.emit(value.toString()));
   }
 
-  onClickMenuItem(menuItem: string): void {
+  private initializeScopeSubscription() {
+    this.scope = this.scopeService.scope;
+    this.scopeService.scopeSubject.subscribe(scope => {
+      this.scope = scope;
+    });
+  }
+
+  //
+  // Actions
+  //
+
+  onMenuItemClicked(menuItem: string): void {
     this.menuItemClickedEmitter.emit(menuItem);
   }
 
-  onKeyUp(event: any) {
+  onKeyUp() {
     this.notifySearchItemChanged();
   }
 
-  onOptionSelected(event: any) {
+  onOptionSelected() {
     this.notifySearchItemChanged();
   }
 
