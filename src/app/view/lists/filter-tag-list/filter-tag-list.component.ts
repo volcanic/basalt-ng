@@ -24,29 +24,12 @@ export class FilterTagListComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.initializeTagSubscription();
   }
 
-  selectAll() {
-    this.tags.forEach(t => {
-      t.checked = true;
-    });
-    this.tagsNone = true;
-    this.filterService.updateTags(this.tags, false, this.tagsNone);
-  }
-
-  selectNone() {
-    this.tags.forEach(t => {
-      t.checked = false;
-    });
-    this.tagsNone = false;
-    this.filterService.updateTags(this.tags, false, this.tagsNone);
-  }
-
-  changeSpecialTag(value: boolean) {
-    this.filterService.updateTags(this.tags, false, this.tagsNone);
-  }
+  //
+  // Initialization
+  //
 
   /**
    * Subscribes tag changes
@@ -68,5 +51,29 @@ export class FilterTagListComponent implements OnInit {
         this.changeDetector.markForCheck();
       }
     );
+  }
+
+  //
+  // Actions
+  //
+
+  onSelectAll() {
+    this.tags.forEach(t => {
+      t.checked = true;
+    });
+    this.tagsNone = true;
+    this.filterService.updateTags(this.tags, false, this.tagsNone);
+  }
+
+  onSelectNone() {
+    this.tags.forEach(t => {
+      t.checked = false;
+    });
+    this.tagsNone = false;
+    this.filterService.updateTags(this.tags, false, this.tagsNone);
+  }
+
+  onChangeSpecialTag(value: boolean) {
+    this.filterService.updateTags(this.tags, value, this.tagsNone);
   }
 }

@@ -134,9 +134,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(ACTION, 'search', 'ic_search_24px.svg'));
     icons.push(new Icon(ACTION, 'today', 'ic_today_24px.svg'));
     icons.push(new Icon(ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
+    icons.push(new Icon(ACTION, 'work', 'ic_work_24px.svg'));
     icons.push(new Icon(ALERT, 'warning', 'ic_warning_24px.svg'));
     icons.push(new Icon(AV, 'play_circle_filled', 'ic_play_circle_filled_24px.svg'));
     icons.push(new Icon(AV, 'replay', 'ic_replay_24px.svg'));
+    icons.push(new Icon(COMMUNICATION, 'business', 'ic_business_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'call', 'ic_call_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'chat', 'ic_chat_24px.svg'));
     icons.push(new Icon(CONTENT, 'add', 'ic_add_24px.svg'));
@@ -154,6 +156,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(FILE, 'file_upload', 'ic_file_upload_24px.svg'));
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
     icons.push(new Icon(IMAGE, 'brightness_3', 'ic_brightness_3_24px.svg'));
+    icons.push(new Icon(IMAGE, 'nature', 'ic_nature_24px.svg'));
     icons.push(new Icon(MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
     icons.push(new Icon(MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
     icons.push(new Icon(MAPS, 'layers_clear', 'ic_layers_clear_24px.svg'));

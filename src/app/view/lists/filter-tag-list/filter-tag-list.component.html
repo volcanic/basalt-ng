@@ -10,12 +10,12 @@
     <app-filter-tag-list-item *ngFor="let t of tags" [tag]="t">
     </app-filter-tag-list-item>
     <div>
-      <mat-checkbox class="special-tag" [(ngModel)]="tagsNone" (ngModelChange)="changeSpecialTag($event)">elements without tags</mat-checkbox>
+      <mat-checkbox class="special-tag" [(ngModel)]="tagsNone" (ngModelChange)="onChangeSpecialTag($event)">elements without tags</mat-checkbox>
     </div>
-    <button mat-button class="label headers-align" (click)="selectAll()">
+    <button mat-button class="label headers-align" (click)="onSelectAll()">
       <span>Select all</span>
     </button>
-    <button mat-button class="label headers-align" (click)="selectNone()">
+    <button mat-button class="label headers-align" (click)="onSelectNone()">
       <span>Select none</span>
     </button>
   </mat-expansion-panel>

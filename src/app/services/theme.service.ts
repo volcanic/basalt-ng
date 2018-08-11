@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {THEME} from '../model/theme.enum';
+import {Theme} from '../model/theme.enum';
 import {Subject} from 'rxjs/Subject';
 
 @Injectable({
@@ -7,13 +7,13 @@ import {Subject} from 'rxjs/Subject';
 })
 export class ThemeService {
 
-  theme: THEME = THEME.LIGHT;
-  themeSubject = new Subject<THEME>();
+  theme: Theme = Theme.LIGHT;
+  themeSubject = new Subject<Theme>();
 
   constructor() {
   }
 
-  switchTheme(theme: THEME) {
+  switchTheme(theme: Theme) {
     this.themeSubject.next(theme);
   }
 }

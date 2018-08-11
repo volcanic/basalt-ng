@@ -17,21 +17,19 @@ import {Task} from '../model/entities/task.model';
 export class FilterService {
 
   searchItem = '';
+
   tags: Map<string, Tag> = new Map<string, Tag>();
   tagsNone = true;
+
+  projects: Map<string, Project> = new Map<string, Project>();
+  projectsNone = true;
 
   initializedTagsOfTasklets = false;
   initializedTagsOfTasks = false;
   initializedProjects = false;
 
-  projects: Map<string, Project> = new Map<string, Project>();
-  projectsNone = true;
-
   filterSubject = new Subject();
-
-  private taskletUnsubscribeSubject = new Subject();
-  private taskUnsubscribeSubject = new Subject();
-  private projectUnsubscribeSubject = new Subject();
+  unsubscribeSubject = new Subject();
 
   constructor(private projectService: ProjectService,
               private cloneService: CloneService,
@@ -40,7 +38,7 @@ export class FilterService {
 
     // Subscribe tasklet changes
     this.taskletService.taskletsSubject.pipe(
-      takeUntil(this.taskletUnsubscribeSubject)
+      takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
         const tasklets = value as Tasklet[];
@@ -55,7 +53,7 @@ export class FilterService {
 
     // Subscribe task changes
     this.taskService.tasksSubject.pipe(
-      takeUntil(this.taskUnsubscribeSubject)
+      takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
         const tasks = value as Task[];
@@ -70,7 +68,7 @@ export class FilterService {
 
     // Subscribe project changes
     this.projectService.projectsSubject.pipe(
-      takeUntil(this.projectUnsubscribeSubject)
+      takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
         const projects = value as Project[];
@@ -87,6 +85,10 @@ export class FilterService {
   // Search item
   //
 
+  public clearSearchItem() {
+    this.searchItem = '';
+  }
+
   public updateSearchItem(searchItem: string) {
     this.searchItem = searchItem;
     this.notify();
@@ -95,6 +97,12 @@ export class FilterService {
   //
   // Tags
   //
+
+  public clearTags() {
+    this.initializedTagsOfTasklets = false;
+    this.initializedTagsOfTasks = false;
+    this.tags = new Map<string, Tag>();
+  }
 
   private updateTagsOfTasklets(tasklets: Tasklet[], enable: boolean) {
     tasklets.forEach(tasklet => {
@@ -158,7 +166,8 @@ export class FilterService {
             return innerTag.name === outerTag.name;
           });
         });
-      if (!(isContainedInTask || isContainedInTasklet)) { // If tag is not contained in tasklets or tasks, delete from tag list
+      // If tag is not contained in tasklets or tasks, delete from tag list
+      if (!(isContainedInTask || isContainedInTasklet)) {
         this.tags.delete(key);
       }
     });
@@ -167,6 +176,11 @@ export class FilterService {
   //
   // Projects
   //
+
+  public clearProjects() {
+    this.initializedProjects = false;
+    this.projects = new Map<string, Project>();
+  }
 
   public updateProjects(projects: Project[], enable: boolean, projectsNone: boolean) {
     this.updateProjectsList(projects, enable);

@@ -24,29 +24,12 @@ export class FilterProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.initializeProjectSubscription();
   }
 
-  selectAll() {
-    this.projects.forEach(t => {
-      t.checked = true;
-    });
-    this.projectsNone = true;
-    this.filterService.updateProjects(this.projects, false, this.projectsNone);
-  }
-
-  selectNone() {
-    this.projects.forEach(t => {
-      t.checked = false;
-    });
-    this.projectsNone = false;
-    this.filterService.updateProjects(this.projects, false, this.projectsNone);
-  }
-
-  changeSpecialProject(value: boolean) {
-    this.filterService.updateProjects(this.projects, false, this.projectsNone);
-  }
+  //
+  // Initialization
+  //
 
   /**
    * Subscribes project changes
@@ -68,5 +51,29 @@ export class FilterProjectListComponent implements OnInit {
         this.changeDetector.markForCheck();
       }
     );
+  }
+
+  //
+  // Actions
+  //
+
+  onSelectAll() {
+    this.projects.forEach(t => {
+      t.checked = true;
+    });
+    this.projectsNone = true;
+    this.filterService.updateProjects(this.projects, false, this.projectsNone);
+  }
+
+  onSelectNone() {
+    this.projects.forEach(t => {
+      t.checked = false;
+    });
+    this.projectsNone = false;
+    this.filterService.updateProjects(this.projects, false, this.projectsNone);
+  }
+
+  onChangeSpecialProject(value: boolean) {
+    this.filterService.updateProjects(this.projects, value, this.projectsNone);
   }
 }

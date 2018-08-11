@@ -9,6 +9,8 @@ import {Project} from '../../model/entities/project.model';
 import {ProjectService} from './project.service';
 import {environment} from '../../../environments/environment';
 import {SnackbarService} from '../snackbar.service';
+import {ScopeService} from '../scope.service';
+import {Scope} from '../../model/scope.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +24,11 @@ export class TaskService {
   constructor(private pouchDBService: PouchDBService,
               private projectService: ProjectService,
               private suggestionService: SuggestionService,
-              private snackbarService: SnackbarService) {
+              private snackbarService: SnackbarService,
+              private scopeService: ScopeService) {
 
     this.initializeSubscription();
-    // this.findTasks();
-    this.findOpenTasks();
+    this.findOpenTasksByScope(this.scopeService.scope);
   }
 
   //
@@ -51,7 +53,6 @@ export class TaskService {
   //
 
   public findTasks() {
-
     const index = {fields: ['modificationDate', 'entityType']};
     const options = {
       selector: {
@@ -62,23 +63,10 @@ export class TaskService {
       }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_TASKS
     };
 
-    this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const task = element as Task;
-          this.tasks.set(task.id, task);
-        });
-
-        this.notify();
-      }, error => {
-        if (isDevMode()) {
-          console.error(error);
-        }
-      }
-    );
+    this.findTasksInternal(index, options);
   }
 
   public findOpenTasks() {
-
     const index = {fields: ['completionDate', 'modificationDate', 'entityType']};
     const options = {
       selector: {
@@ -90,6 +78,32 @@ export class TaskService {
       }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_TASKS
     };
 
+    this.clearTasks();
+    this.findTasksInternal(index, options);
+  }
+
+  public findOpenTasksByScope(scope: Scope) {
+    const index = {fields: ['completionDate', 'modificationDate', 'scope', 'entityType']};
+    const options = {
+      selector: {
+        '$and': [
+          {'entityType': {'$eq': EntityType.TASK}},
+          {'scope': {'$eq': scope}},
+          {'modificationDate': {'$gt': null}},
+          {'completionDate': {'$eq': null}}
+        ]
+      }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_TASKS
+    };
+
+    this.clearTasks();
+    this.findTasksInternal(index, options);
+  }
+
+  private clearTasks() {
+    this.tasks = new Map<string, Task>();
+  }
+
+  private findTasksInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         result['docs'].forEach(element => {
           const task = element as Task;
@@ -111,6 +125,8 @@ export class TaskService {
 
   public createTask(task: Task) {
     if (task != null) {
+      task.scope = this.scopeService.scope;
+
       this.projectService.updateProject(this.getProjectByTask(task), false);
 
       return this.pouchDBService.upsert(task.id, task).then(() => {

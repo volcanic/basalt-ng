@@ -36,15 +36,16 @@
             (click)="onMenuItemClicked('todo')">
       <mat-icon svgIcon="timer" class="white-icon"></mat-icon>
     </button>
-    <button mat-button class="toolbar-menu-item" [matMenuTriggerFor]="menuSwitcher">
-      <mat-icon svgIcon="brightness_3" class="white-icon"></mat-icon>
+    <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item" [matMenuTriggerFor]="menuSwitcher">
+      <mat-icon svgIcon="business" *ngIf="scope === scopeType.WORK"></mat-icon>
+      <mat-icon svgIcon="nature" *ngIf="scope === scopeType.FREETIME"></mat-icon>
     </button>
     <mat-menu #menuSwitcher="matMenu">
-      <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('light-theme')">
-        <mat-icon svgIcon="brightness_low"></mat-icon>
+      <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('scope-work')">
+        <mat-icon svgIcon="business"></mat-icon>
       </button>
-      <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('dark-theme')">
-        <mat-icon svgIcon="brightness_3"></mat-icon>
+      <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('scope-freetime')">
+        <mat-icon svgIcon="nature"></mat-icon>
       </button>
     </mat-menu>
     <button mat-button class="toolbar-menu-item right" [matMenuTriggerFor]="menu">
@@ -52,6 +53,17 @@
     </button>
     <mat-menu #menu="matMenu">
       <div class="toolbar-expanded" *ngIf="media < mediaType.LARGE">
+        <button mat-menu-item *ngIf="scope === scopeType.FREETIME" class="toolbar-menu-item"
+                (click)="onMenuItemClicked('scope-work')">
+          <mat-icon svgIcon="business"></mat-icon>
+          <span>Switch to work</span>
+        </button>
+        <button mat-menu-item *ngIf="scope === scopeType.WORK" class="toolbar-menu-item"
+                (click)="onMenuItemClicked('scope-freetime')">
+          <mat-icon svgIcon="nature"></mat-icon>
+          <span>Switch to freetime</span>
+        </button>
+        <mat-divider></mat-divider>
         <button mat-menu-item (click)="onMenuItemClicked('task-list')">
           <mat-icon svgIcon="turned_in_not"></mat-icon>
           <span>Tasks</span>

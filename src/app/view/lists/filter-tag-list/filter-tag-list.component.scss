@@ -1,22 +1,16 @@
 @import '../../../../light-theme';
 @import '../../../../dark-theme';
 
-.light-theme {
-  .label {
+.label {
+  .light-theme {
     color: rgba(0, 0, 0, .54);
-    font-size: 14px;
-    font-weight: 500;
-    margin: 15px 16px 7px;
   }
-}
-
-.dark-theme {
-  .label {
+  .dark-theme {
     color: rgba(255, 255, 255, .54);
-    font-size: 14px;
-    font-weight: 500;
-    margin: 15px 16px 7px;
   }
+  font-size: 14px;
+  font-weight: 500;
+  margin: 15px 16px 7px;
 }
 
 .label-overdue {
