@@ -2,10 +2,12 @@ import {Tag} from '../tag.model';
 import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
 import {Description} from '../description.model';
+import {Scope} from '../scope.enum';
 
 export class Task extends Entity {
 
   name: string;
+  scope: Scope;
   description: Description;
   projectId: string;
   dueDate: Date;
@@ -18,6 +20,7 @@ export class Task extends Entity {
     super();
     this.entityType = EntityType.TASK;
     this.name = name;
+    this.scope = Scope.UNDEFINED;
     this.description = new Description();
     this.projectId = '';
     this.dueDate = null;
