@@ -141,7 +141,7 @@ export class TaskService {
     if (task != null) {
       this.pouchDBService.remove(task.id, task).then(() => {
         this.snackbarService.showSnackbar('Deleted task');
-        this.tasks.set(task.id, task);
+        this.tasks.delete(task.id);
         this.notify();
       }).catch((err) => {
         this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {

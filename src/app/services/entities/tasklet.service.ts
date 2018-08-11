@@ -121,7 +121,7 @@ export class TaskletService {
     if (tasklet != null) {
       return this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
         this.snackbarService.showSnackbar('Deleted tasklet');
-        this.tasklets.set(tasklet.id, tasklet);
+        this.tasklets.delete(tasklet.id);
         this.notify();
       });
     }

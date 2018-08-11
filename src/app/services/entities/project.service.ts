@@ -106,7 +106,7 @@ export class ProjectService {
     if (project != null) {
       this.pouchDBService.remove(project.id, project).then(() => {
         this.snackbarService.showSnackbar('Deleted project');
-        this.projects.set(project.id, project);
+        this.projects.delete(project.id);
         this.notify();
       }).catch((err) => {
         this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
