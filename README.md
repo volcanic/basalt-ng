@@ -54,6 +54,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.20 | Android App |
 | 0.21 | Hidden toolbar |
 | 0.22 | Date indicator |
+| 0.23 | Work life distinction |
 
 ### Planned features
 
