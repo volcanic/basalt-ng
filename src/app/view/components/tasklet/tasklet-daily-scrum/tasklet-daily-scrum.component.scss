@@ -1,4 +1,4 @@
-@import "../../../../../theme";
+@import "../../../../../light-theme";
 
 .participant {
   display: flex;
@@ -58,7 +58,7 @@
 }
 
 .done {
-  fill: mat-color($app-accent, 400);;
+  fill: mat-color($light-accent, 400);;
 }
 
 .topic {

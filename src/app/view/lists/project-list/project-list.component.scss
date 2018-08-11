@@ -1,4 +1,4 @@
-@import '../../../../theme';
+@import '../../../../light-theme';
 
 .label {
   color: rgba(0,0,0,.54);
@@ -8,7 +8,7 @@
 }
 
 .label-overdue {
-  color: mat-color($app-warn);
+  color: mat-color($light-warn);
 }
 
 .mat-expansion-panel {

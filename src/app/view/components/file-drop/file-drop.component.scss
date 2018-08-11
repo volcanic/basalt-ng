@@ -1,4 +1,4 @@
-@import '../../../../theme';
+@import '../../../../light-theme';
 
 $dropzone-border-with: 5px;
 
@@ -21,6 +21,6 @@ $dropzone-border-with: 5px;
 }
 
 .nv-file-over {
-  background: mat-color($app-accent, 200);
-  border: dashed 5px mat-color($app-accent, 600);
+  background: mat-color($light-accent, 200);
+  border: dashed 5px mat-color($light-accent, 600);
 }

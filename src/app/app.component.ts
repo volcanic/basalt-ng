@@ -90,6 +90,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     const AV = 'av';
     const CONTENT = 'content';
     const COMMUNICATION = 'communication';
+    const DEVICE = 'device';
     const EDITOR = 'editor';
     const FILE = 'file';
     const IMAGE = 'image';
@@ -120,6 +121,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(CONTENT, 'mail', 'ic_mail_24px.svg'));
     icons.push(new Icon(CONTENT, 'people_18', 'ic_people_18px.svg'));
     icons.push(new Icon(CONTENT, 'reply', 'ic_reply_24px.svg'));
+    icons.push(new Icon(DEVICE, 'brightness_low', 'ic_brightness_low_24px.svg'));
     icons.push(new Icon(EDITOR, 'delete', 'ic_delete_24px.svg'));
     icons.push(new Icon(EDITOR, 'mode_edit', 'ic_mode_edit_24px.svg'));
     icons.push(new Icon(EDITOR, 'mode_edit_18', 'ic_mode_edit_18px.svg'));
@@ -127,6 +129,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(FILE, 'file_download', 'ic_file_download_24px.svg'));
     icons.push(new Icon(FILE, 'file_upload', 'ic_file_upload_24px.svg'));
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
+    icons.push(new Icon(IMAGE, 'brightness_3', 'ic_brightness_3_24px.svg'));
     icons.push(new Icon(MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
     icons.push(new Icon(MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
     icons.push(new Icon(MAPS, 'layers_clear', 'ic_layers_clear_24px.svg'));

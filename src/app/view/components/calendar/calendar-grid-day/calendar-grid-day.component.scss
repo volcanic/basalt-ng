@@ -1,10 +1,10 @@
-@import '../../../../../theme';
+@import '../../../../../light-theme';
 
 // Header
 
 .day-header {
   border: #e0e0e0 1px solid;
-  color: mat-color($app-accent, 500);
+  color: mat-color($light-accent, 500);
 }
 
 .weekDay {
