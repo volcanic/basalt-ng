@@ -31,6 +31,7 @@ import {DateService} from '../../../services/util/date.service';
 import {Scope} from '../../../model/scope.enum';
 import {ScopeService} from '../../../services/entities/scope/scope.service';
 import {TagService} from '../../../services/entities/tag.service';
+import {TagDialogComponent} from '../../dialogs/entities/tag-dialog/tag-dialog.component';
 
 @Component({
   selector: 'app-tasklets',
@@ -231,6 +232,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const project = result as Project;
             this.filterService.updateProjectsList([project], true);
             this.projectService.createProject(project);
+          }
+        });
+        break;
+      }
+      case 'add-tag': {
+        const dialogRef = this.dialog.open(TagDialogComponent, {
+          disableClose: false,
+          data: {
+            mode: DIALOG_MODE.ADD,
+            dialogTitle: 'Add tag',
+            tag: new Tag('', true)
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const tag = result as Tag;
+            this.filterService.updateTagsList([tag], true);
+            this.tagService.createTag(tag);
           }
         });
         break;

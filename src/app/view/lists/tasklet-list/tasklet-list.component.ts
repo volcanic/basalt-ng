@@ -7,6 +7,7 @@ import {FilterService} from '../../../services/entities/filter/filter.service';
 import {MatchService} from '../../../services/entities/filter/match.service';
 import {TaskService} from '../../../services/entities/task.service';
 import {ProjectService} from '../../../services/entities/project.service';
+import {TagService} from '../../../services/entities/tag.service';
 
 @Component({
   selector: 'app-tasklet-list',
@@ -24,6 +25,7 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
+              private tagService: TagService,
               private matchService: MatchService,
               private filterService: FilterService,
               private changeDetector: ChangeDetectorRef) {
@@ -34,6 +36,7 @@ export class TaskletListComponent implements OnInit, OnDestroy {
     this.initializeProjectSubscription();
     this.initializeTaskSubscription();
     this.initializeTaskletSubscription();
+    this.initializeTagSubscription();
     this.initializeFilterSubscription();
   }
 
@@ -86,6 +89,18 @@ export class TaskletListComponent implements OnInit, OnDestroy {
         this.taskletsAll = (value as Tasklet[]);
         this.update();
       }
+    });
+  }
+
+  /**
+   * Subscribes tag changes
+   */
+  private initializeTagSubscription() {
+
+    this.tagService.tagsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.forceChangeDetection();
     });
   }
 

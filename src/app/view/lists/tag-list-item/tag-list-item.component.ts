@@ -3,6 +3,8 @@ import {MatDialog} from '@angular/material';
 import {FilterService} from '../../../services/entities/filter/filter.service';
 import {TagService} from '../../../services/entities/tag.service';
 import {Tag} from '../../../model/entities/tag.model';
+import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
+import {TagDialogComponent} from '../../dialogs/entities/tag-dialog/tag-dialog.component';
 
 @Component({
   selector: 'app-tag-list-item',
@@ -28,7 +30,6 @@ export class TagListItemComponent implements OnInit {
   }
 
   updateTag() {
-    /*
     const dialogRef = this.dialog.open(TagDialogComponent, {
       disableClose: false,
       data: {
@@ -47,6 +48,5 @@ export class TagListItemComponent implements OnInit {
         this.filterService.updateTagsList([tag], true);
       }
     });
-    */
   }
 }

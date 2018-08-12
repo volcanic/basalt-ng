@@ -152,7 +152,7 @@ export class FilterService {
           tag.checked = true;
         }
 
-        this.tags.set(tag.name, tag);
+        this.tags.set(tag.id, tag);
       });
     }
   }
