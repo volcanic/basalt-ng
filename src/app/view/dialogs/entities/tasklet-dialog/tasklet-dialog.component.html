@@ -37,13 +37,13 @@
       </app-daily-scrum-fragment>
       <app-weekly-digest-fragment [tasklet]="tasklet" *ngIf="tasklet.type == 'Weekly Digest'">
       </app-weekly-digest-fragment>
-      <app-person-chips-fragment [persons]="tasklet.persons" (personChangedEmitter)="onPersonChanged($event)"
+      <app-person-chips-fragment [persons]="persons" (personChangedEmitter)="onPersonChanged($event)"
                                  *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'">
       </app-person-chips-fragment>
-      <app-tag-chips-fragment [tags]="tasklet.tags" (tagChangedEmitter)="onTagChanged($event)">
+      <app-tag-chips-fragment [tags]="tags" (tagsChangedEmitter)="onTagsChanged($event)">
       </app-tag-chips-fragment>
     </form>
   </mat-dialog-content>

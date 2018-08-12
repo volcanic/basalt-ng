@@ -26,22 +26,22 @@ import {
   MatTooltipModule,
   MatTreeModule
 } from '@angular/material';
-import {PouchDBService} from './services/pouchdb.service';
+import {PouchDBService} from './services/persistence/pouchdb.service';
 import {ConfirmationDialogComponent} from './view/dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {TaskletDialogComponent} from './view/dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {AppRoutingModule} from './app-routing.module';
-import {SnackbarService} from './services/snackbar.service';
+import {SnackbarService} from './services/ui/snackbar.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {DateService} from './services/date.service';
+import {DateService} from './services/util/date.service';
 import {TagFilterDialogComponent} from './view/dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
-import {MatchService} from './services/match.service';
+import {MatchService} from './services/entities/filter/match.service';
 import {TimelineToolbarComponent} from './view/toolbars/timeline-toolbar/timeline-toolbar.component';
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
 import {TimePickerDialogComponent} from './view/dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {AboutDialogComponent} from './view/dialogs/app-info/about-dialog/about-dialog.component';
 import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-dialog/new-features-dialog.component';
-import {PouchDBSettingsService} from './services/pouchdb-settings.service';
-import {SettingsService} from './services/settings.service';
+import {PouchDBSettingsService} from './services/persistence/pouchdb-settings.service';
+import {SettingsService} from './services/persistence/settings.service';
 import {ProjectsFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {DailyScrumActivityFragmentComponent} from './view/fragments/daily-scrum-activity-fragment/daily-scrum-activity-fragment.component';
 import {DailyScrumParticipantFragmentComponent} from './view/fragments/daily-scrum-participant-fragment/daily-scrum-participant-fragment.component';
@@ -50,8 +50,8 @@ import {FileDropComponent} from './view/components/file-drop/file-drop.component
 import {FileUploadModule} from 'ng2-file-upload';
 import {TaskletWeeklyDigestComponent} from './view/components/tasklet/tasklet-weekly-digest/tasklet-weekly-digest.component';
 import {WeeklyDigestFragmentComponent} from './view/fragments/weekly-digest-fragment/weekly-digest-fragment.component';
-import {DigestService} from './services/digest.service';
-import {ColorService} from './services/color.service';
+import {DigestService} from './services/entities/digest/digest.service';
+import {ColorService} from './services/ui/color.service';
 import {HttpClientModule} from '@angular/common/http';
 import {ProjectEffortTreeComponent} from './view/components/trees/weekly-effort-tree/weekly-effort-tree.component';
 import {DailyEffortTreeComponent} from './view/components/trees/daily-effort-tree/daily-effort-tree.component';
@@ -88,7 +88,7 @@ import {FilterTagListComponent} from './view/lists/filter-tag-list/filter-tag-li
 import {FilterTagListItemComponent} from './view/lists/filter-tag-list-item/filter-tag-list-item.component';
 import {FilterProjectListComponent} from './view/lists/filter-project-list/filter-project-list.component';
 import {FilterProjectListItemComponent} from './view/lists/filter-project-list-item/filter-project-list-item.component';
-import {MediaService} from './services/media.service';
+import {MediaService} from './services/ui/media.service';
 import {ProjectListDialogComponent} from './view/dialogs/lists/project-list-dialog/project-list-dialog.component';
 import {TaskListDialogComponent} from './view/dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';

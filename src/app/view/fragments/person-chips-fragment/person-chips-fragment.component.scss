@@ -1,3 +1,20 @@
+@import '../../../../light-theme';
+@import '../../../../dark-theme';
+
+.light-theme {
+  mat-chip {
+    background: mat-color($mat-grey, 400) !important;
+    color: mat-contrast($mat-grey, 400) !important;
+  }
+}
+
+.dark-theme {
+  mat-chip {
+    background: mat-color($mat-grey, 600) !important;
+    color: mat-contrast($mat-grey, 600) !important;
+  }
+}
+
 .delete-button {
   height: 14px;
   width: 14px;
@@ -6,8 +23,6 @@
 }
 
 mat-chip {
-  background-color: #cfd8dc !important;
-
   &:hover .hidden {
     display: inline-block;
   }

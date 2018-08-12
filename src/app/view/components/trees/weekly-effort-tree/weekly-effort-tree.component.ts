@@ -2,9 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {Observable, of as observableOf} from 'rxjs';
-import {ColorService} from '../../../../services/color.service';
-import {WeeklyDigest} from '../../../../model/weekly-digest.model';
-import {DateService} from '../../../../services/date.service';
+import {ColorService} from '../../../../services/ui/color.service';
+import {WeeklyDigest} from '../../../../model/entities/digest/weekly-digest.model';
+import {DateService} from '../../../../services/util/date.service';
 
 export class EffortNode {
   children: EffortNode[];

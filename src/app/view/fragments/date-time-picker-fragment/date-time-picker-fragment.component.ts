@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DateService} from '../../../services/date.service';
+import {DateService} from '../../../services/util/date.service';
 
 @Component({
   selector: 'app-date-time-picker-fragment',

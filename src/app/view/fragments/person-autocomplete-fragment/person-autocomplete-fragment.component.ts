@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
-import {Person} from '../../../model/person.model';
+import {Person} from '../../../model/entities/person.model';
 import {map, startWith} from 'rxjs/internal/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {CloneService} from '../../../services/util/clone.service';
-import {SuggestionService} from '../../../services/suggestion.service';
+import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
 
 @Component({
   selector: 'app-person-autocomplete-fragment',

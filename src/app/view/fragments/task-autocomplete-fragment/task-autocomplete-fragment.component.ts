@@ -7,7 +7,7 @@ import {CloneService} from '../../../services/util/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
 import {TaskService} from '../../../services/entities/task.service';
-import {SuggestionService} from '../../../services/suggestion.service';
+import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
 
 @Component({
   selector: 'app-task-autocomplete-fragment',

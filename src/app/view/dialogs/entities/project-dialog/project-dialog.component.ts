@@ -1,15 +1,15 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Project} from '../../../../model/entities/project.model';
 import {Task} from '../../../../model/entities/task.model';
-import {DateService} from '../../../../services/date.service';
-import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
+import {DateService} from '../../../../services/util/date.service';
+import {DIALOG_MODE} from '../../../../model/ui/dialog-mode.enum';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {TaskService} from '../../../../services/entities/task.service';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
 import {CloneService} from '../../../../services/util/clone.service';
-import {FilterService} from '../../../../services/filter.service';
+import {FilterService} from '../../../../services/entities/filter/filter.service';
 
 @Component({
   selector: 'app-project-dialog',
@@ -45,7 +45,18 @@ export class ProjectDialogComponent implements OnInit {
   }
 
   //
-  // Action buttons
+  // Action
+  //
+
+  public onKeyDown(event: any) {
+    const KEY_CODE_ENTER = 13;
+    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+      this.updateProject();
+    }
+  }
+
+  //
+  // Buttons action
   //
 
   addProject() {
@@ -89,13 +100,6 @@ export class ProjectDialogComponent implements OnInit {
           this.dialogRef.close(null);
         }
       });
-    }
-  }
-
-  public onKeyDown(event: any) {
-    const KEY_CODE_ENTER = 13;
-    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      this.updateProject();
     }
   }
 }

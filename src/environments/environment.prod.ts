@@ -5,6 +5,8 @@ export const environment = {
   LIMIT_PROJECTS: 50,
   LIMIT_TASKS: 50,
   LIMIT_TASKLETS: 100,
+  LIMIT_PERSONS: 100,
+  LIMIT_TAGS: 100,
   NAME: require('../../package.json').name,
   VERSION: require('../../package.json').version,
   LICENSE: require('../../package.json').license,

@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  NgZone,
   OnDestroy,
   OnInit,
   Output
@@ -11,10 +10,10 @@ import {
 import {TaskService} from '../../../services/entities/task.service';
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/internal/operators';
-import {DateService} from '../../../services/date.service';
+import {DateService} from '../../../services/util/date.service';
 import {Task} from '../../../model/entities/task.model';
-import {MatchService} from '../../../services/match.service';
-import {FilterService} from '../../../services/filter.service';
+import {MatchService} from '../../../services/entities/filter/match.service';
+import {FilterService} from '../../../services/entities/filter/filter.service';
 
 @Component({
   selector: 'app-task-list',

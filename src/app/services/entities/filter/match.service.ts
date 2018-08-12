@@ -1,13 +1,16 @@
 import {Injectable} from '@angular/core';
-import {Tasklet} from '../model/entities/tasklet.model';
-import {Project} from '../model/entities/project.model';
-import {Task} from '../model/entities/task.model';
-import {Tag} from '../model/tag.model';
-import {Description} from '../model/description.model';
-import {Person} from '../model/person.model';
-import {ProjectService} from './entities/project.service';
-import {TaskletService} from './entities/tasklet.service';
-import {TaskService} from './entities/task.service';
+import {Tasklet} from '../../../model/entities/tasklet.model';
+import {Project} from '../../../model/entities/project.model';
+import {Task} from '../../../model/entities/task.model';
+import {Tag} from '../../../model/entities/tag.model';
+import {Description} from '../../../model/entities/fragments/description.model';
+import {Person} from '../../../model/entities/person.model';
+import {ProjectService} from '../project.service';
+import {TaskletService} from '../tasklet.service';
+import {TaskService} from '../task.service';
+import {DateService} from '../../util/date.service';
+import {TagService} from '../tag.service';
+import {PersonService} from '../person.service';
 
 
 @Injectable()
@@ -15,7 +18,10 @@ export class MatchService {
 
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
-              private taskletService: TaskletService) {
+              private taskletService: TaskletService,
+              private tagService: TagService,
+              private personService: PersonService,
+              private dateService: DateService) {
   }
 
   public compare(value1: string, value2: string) {
@@ -36,8 +42,12 @@ export class MatchService {
    */
   public taskletMatchesTags(tasklet: Tasklet, tags: Tag[], tagsNone: boolean): boolean {
 
-    return ((tasklet.tags == null || tasklet.tags.length === 0) && tagsNone)
-      || tasklet.tags.some(tag => {
+    return ((tasklet.tagIds == null || tasklet.tagIds.length === 0) && tagsNone)
+      || tasklet.tagIds.map(id => {
+      return this.tagService.getTagById(id);
+    }).filter(tag => {
+      return tag != null;
+    }).some(tag => {
         return this.tagMatchesTags(tag, tags, tagsNone);
       });
   }
@@ -52,8 +62,12 @@ export class MatchService {
    */
   public taskMatchesTags(task: Task, tags: Tag[], tagsNone: boolean): boolean {
 
-    return ((task.tags == null || task.tags.length === 0) && tagsNone)
-      || task.tags.some(tag => {
+    return ((task.tagIds == null || task.tagIds.length === 0) && tagsNone)
+      || task.tagIds.map(id => {
+      return this.tagService.getTagById(id);
+    }).filter(tag => {
+      return tag != null;
+    }).some(tag => {
         return this.tagMatchesTags(tag, tags, tagsNone);
       });
   }
@@ -72,6 +86,15 @@ export class MatchService {
       || tags.some(t => {
         return t.checked && tag != null && tag.name != null && t.name === tag.name;
       });
+  }
+
+  //
+  // Tasklets
+  //
+
+  public taskletMatchesDate(tasklet: Tasklet, date: Date) {
+    return new Date(tasklet.creationDate) > new Date(this.dateService.getDayStart(date))
+      && new Date(tasklet.creationDate) < new Date(this.dateService.getDayEnd(date));
   }
 
   //
@@ -145,8 +168,16 @@ export class MatchService {
       return this.taskNameMatchesSingleItem(task, item)
         || this.projectNameMatchesSingleItem(project, item)
         || this.descriptionMatchesSingleItem(tasklet.description, item)
-        || this.personsMatchesSingleItem(tasklet.persons, item)
-        || this.tagsMatchesSingleItem(tasklet.tags, item);
+        || this.personsMatchesSingleItem(tasklet.personIds.map(id => {
+          return this.personService.getPersonById(id);
+        }).filter(person => {
+          return person != null;
+        }), item)
+        || this.tagsMatchesSingleItem(tasklet.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), item);
     });
   }
 
@@ -165,7 +196,11 @@ export class MatchService {
       return this.taskNameMatchesSingleItem(task, item)
         || this.projectNameMatchesSingleItem(project, item)
         || this.descriptionMatchesSingleItem(task.description, item)
-        || this.tagsMatchesSingleItem(task.tags, item);
+        || this.tagsMatchesSingleItem(task.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), item);
     });
   }
 

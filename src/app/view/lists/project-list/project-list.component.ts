@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  NgZone,
   OnDestroy,
   OnInit,
   Output
@@ -12,9 +11,8 @@ import {Subject} from 'rxjs/Subject';
 import {ProjectService} from '../../../services/entities/project.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Project} from '../../../model/entities/project.model';
-import {FilterService} from '../../../services/filter.service';
-import {MatchService} from '../../../services/match.service';
-import {Task} from '../../../model/entities/task.model';
+import {FilterService} from '../../../services/entities/filter/filter.service';
+import {MatchService} from '../../../services/entities/filter/match.service';
 
 @Component({
   selector: 'app-project-list',

@@ -126,8 +126,8 @@
             </mat-panel-description>
             <mat-icon svgIcon="label_outline"></mat-icon>
           </mat-expansion-panel-header>
-          <app-tag-chips-fragment [tags]="task.tags" [disabled]="inputDisabled"
-                                  (tagChangedEmitter)="onTagChanged($event)">
+          <app-tag-chips-fragment [tags]="tags" [disabled]="inputDisabled"
+                                  (tagsChangedEmitter)="onTagsChanged($event)">
           </app-tag-chips-fragment>
         </mat-expansion-panel>
 

@@ -1,3 +1,20 @@
+@import '../../../../light-theme';
+@import '../../../../dark-theme';
+
+.light-theme {
+  mat-chip {
+    background: mat-color($mat-grey, 200) !important;
+    color: mat-contrast($mat-grey, 200) !important;
+  }
+}
+
+.dark-theme {
+  mat-chip {
+    background: mat-color($mat-grey, 400) !important;
+    color: mat-contrast($mat-grey, 400) !important;
+  }
+}
+
 .delete-button {
   height: 14px;
   width: 14px;

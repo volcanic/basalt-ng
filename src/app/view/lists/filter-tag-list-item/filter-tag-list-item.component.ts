@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tag} from '../../../model/tag.model';
-import {FilterService} from '../../../services/filter.service';
+import {Tag} from '../../../model/entities/tag.model';
+import {FilterService} from '../../../services/entities/filter/filter.service';
 
 @Component({
   selector: 'app-filter-tag-list-item',

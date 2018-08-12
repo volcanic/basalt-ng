@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DailyDigest} from '../../../../model/daily-digest.model';
+import {DailyDigest} from '../../../../model/entities/digest/daily-digest.model';
 import {MatDialog} from '@angular/material';
-import {DigestService} from '../../../../services/digest.service';
+import {DigestService} from '../../../../services/entities/digest/digest.service';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 
 @Component({

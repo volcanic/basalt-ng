@@ -1,10 +1,10 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../model/entities/project.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
-import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
+import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
 import {ProjectService} from '../../../services/entities/project.service';
 import {MatDialog} from '@angular/material';
-import {FilterService} from '../../../services/filter.service';
+import {FilterService} from '../../../services/entities/filter/filter.service';
 
 @Component({
   selector: 'app-project-list-item',

@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DailyScrumActivity} from '../../../model/daily-scrum-activity';
+import {DailyScrumActivity} from '../../../model/entities/scrum/daily-scrum-activity';
 import {Observable} from 'rxjs';
 import {debounceTime, map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
-import {Person} from '../../../model/person.model';
-import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../model/daily-scrum-activity-type.enum';
+import {Person} from '../../../model/entities/person.model';
+import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../model/entities/scrum/daily-scrum-activity-type.enum';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Subject} from 'rxjs/Subject';
 

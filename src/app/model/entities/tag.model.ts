@@ -1,14 +1,13 @@
-import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
+import {EntityType} from './entity-type.enum';
 
-export class Project extends Entity {
-
+export class Tag extends Entity {
   name: string;
-  checked: boolean;
+  checked = false;
 
   constructor(name: string, checked: boolean) {
     super();
-    this.entityType = EntityType.PROJECT;
+    this.entityType = EntityType.TAG;
     this.name = name;
     this.checked = checked;
   }

@@ -1,19 +1,35 @@
 import {EventEmitter, Injectable, isDevMode} from '@angular/core';
+import {environment} from '../../../environments/environment';
 import PouchDB from 'pouchdb';
-import {environment} from '../../environments/environment';
+import PouchdbFind from 'pouchdb-find';
+import PouchdbUpsert from 'pouchdb-upsert';
 
 @Injectable()
-export class PouchDBSettingsService {
+export class PouchDBService {
 
   private readonly isInstantiated: boolean;
   private database: any;
   private listener: EventEmitter<any> = new EventEmitter();
 
   public constructor() {
+    PouchDB.plugin(PouchdbFind);
+    PouchDB.plugin(PouchdbUpsert);
+
     if (!this.isInstantiated) {
-      this.database = new PouchDB(environment.DATABASE_SETTINGS);
+      this.database = new PouchDB(environment.DATABASE_ENTITIES);
       this.isInstantiated = true;
     }
+  }
+
+  public find(index: any, options) {
+    // console.log(`find index ${JSON.stringify(index)}`);
+    // console.log(`find options ${JSON.stringify(options)}`);
+
+    return this.database.createIndex({
+      index: index
+    }).then(() => {
+      return this.database.find(options);
+    });
   }
 
   /**
@@ -21,7 +37,6 @@ export class PouchDBSettingsService {
    * @returns {any}
    */
   public fetch() {
-    console.log(`DEBUG fetch`);
     return this.database.allDocs({include_docs: true});
   }
 
@@ -44,43 +59,44 @@ export class PouchDBSettingsService {
    * Inserts a document into the DATABASE_ENTITIES
    * @param id
    * @param document
-   * @returns {wdpromise.Promise<any>|Promise<any|Observable<AjaxResponse>|
+   * @returns {wdpromise.Promise<any>|Promise<any|Observable<>|
    * Observable<Response>|IDBRequest>|Promise<R>|webdriver.promise.Promise<any>|webdriver.promise.Promise<R>|Promise<U>|any}
    */
   public put(id: string, document: any) {
-    console.log(`DEBUG put ${id}`);
     document._id = id;
-    return this.get(id).then(result => {
-      document._rev = result._rev;
-      console.log(`DEBUG put ${JSON.stringify(document)}`);
-      return this.database.put(document);
-    }, error => {
-      console.log(`DEBUG error ${error}`);
-      if (error.status === 404) {
-        console.log(`DEBUG put document ${id}`);
-        return this.database.put(document);
-      } else {
-        return new Promise((resolve, reject) => {
-          reject(error);
-        });
-      }
+
+    return this.database.put(document);
+  }
+
+  public upsert(id: string, document: any) {
+    document._id = id;
+
+    return this.database.upsert(id, () => {
+      return document;
     });
+  }
+
+  public bulk(documents: any[]) {
+    documents.forEach(d => {
+      d._id = d.id;
+    });
+
+    return this.database.bulkDocs(documents);
   }
 
   /**
    * Remove a document by a given ID
-   * @param id
+   * @param id id of the document to remove
+   * @param document document to remove
    */
   public remove(id: string, document: any) {
-    console.log(`DEBUG remove ${id}`);
-    return this.database.remove(id);
+    return this.database.remove(document._id, document._rev);
   }
 
   /**
    * Deletes all documents from the DATABASE_ENTITIES
    */
   public clear() {
-    console.log(`DEBUG clear`);
     this.fetch().then(result => {
       result.rows.forEach(r => {
         this.database.remove(r.doc);

@@ -1,5 +1,5 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Setting} from '../model/settings/setting.model';
+import {Setting} from '../../model/settings/setting.model';
 import {PouchDBSettingsService} from './pouchdb-settings.service';
 import {Subject} from 'rxjs';
 

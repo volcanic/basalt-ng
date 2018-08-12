@@ -3,11 +3,11 @@ import {Project} from '../../model/entities/project.model';
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/internal/operators';
 import {EntityType} from '../../model/entities/entity-type.enum';
-import {SuggestionService} from '../suggestion.service';
-import {PouchDBService} from '../pouchdb.service';
+import {SuggestionService} from './filter/suggestion.service';
+import {PouchDBService} from '../persistence/pouchdb.service';
 import {environment} from '../../../environments/environment';
-import {SnackbarService} from '../snackbar.service';
-import {ScopeService} from '../scope.service';
+import {SnackbarService} from '../ui/snackbar.service';
+import {ScopeService} from './scope/scope.service';
 import {Scope} from '../../model/scope.enum';
 
 @Injectable({
@@ -32,6 +32,8 @@ export class ProjectService {
   // Initialization
   //
 
+  // <editor-fold desc="Initialization">
+
   private initializeSubscription() {
     this.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
@@ -45,35 +47,26 @@ export class ProjectService {
     });
   }
 
+  // </editor-fold>
+
   //
-  // Lookup
+  // Queries
   //
 
-  public findProjects() {
-    const index = {fields: ['modificationDate', 'entityType']};
-    const options = {
-      selector: {
-        '$and': [
-          {'entityType': {'$eq': EntityType.PROJECT}},
-          {'modificationDate': {'$gt': null}}
-        ]
-      }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_PROJECTS
-    };
-
-    this.clearProjects();
-    this.findProjectsInternal(index, options);
-  }
+  // <editor-fold desc="Queries">
 
   public findProjectsByScope(scope: Scope) {
-    const index = {fields: ['modificationDate', 'scope', 'entityType']};
+    const index = {fields: ['entityType', 'scope', 'modificationType']};
     const options = {
       selector: {
-        '$and': [
-          {'entityType': {'$eq': EntityType.PROJECT}},
-          {'scope': {'$eq': scope}},
-          {'modificationDate': {'$gt': null}}
+        $and: [
+          {entityType: {$eq: EntityType.PROJECT}},
+          {scope: {$eq: scope}},
+          {modificationDate: {$gt: null}}
         ]
-      }, sort: [{'modificationDate': 'desc'}], limit: environment.LIMIT_PROJECTS
+      },
+      // sort: [{'modificationDate': 'desc'}],
+      limit: environment.LIMIT_PROJECTS
     };
 
     this.clearProjects();
@@ -100,9 +93,13 @@ export class ProjectService {
     );
   }
 
+  // </editor-fold>
+
   //
   // Persistence
   //
+
+  // <editor-fold desc="Persistence">
 
   public createProject(project: Project) {
     if (project != null) {
@@ -136,7 +133,7 @@ export class ProjectService {
         this.snackbarService.showSnackbar('Deleted project');
         this.projects.delete(project.id);
         this.notify();
-      }).catch((err) => {
+      }).catch(() => {
         this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
           this.deleteProject(project);
         });
@@ -144,17 +141,30 @@ export class ProjectService {
     }
   }
 
+  // </editor-fold>
+
+  //
+  // Notification
+  //
+
+  // <editor-fold desc="Notification">
 
   /**
    * Informs subscribers that something has changed
    */
   public notify() {
-    this.projectsSubject.next(Array.from(this.projects.values()));
+    this.projectsSubject.next(Array.from(this.projects.values()).sort((p1, p2) => {
+      return new Date(p2.modificationDate).getTime() - new Date(p1.modificationDate).getTime();
+    }));
   }
+
+  // </editor-fold>
 
   //
   // Lookup
   //
+
+  // <editor-fold desc="Lookup">
 
   public getProjectByName(name: string): Project {
     let project: Project = null;
@@ -167,4 +177,6 @@ export class ProjectService {
 
     return project;
   }
+
+  // </editor-fold>
 }

@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {SnackbarService} from '../../../services/snackbar.service';
+import {SnackbarService} from '../../../services/ui/snackbar.service';
 import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {TagFilterDialogComponent} from '../../dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
-import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
+import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
 import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
 import {ProjectsFilterDialogComponent} from '../../dialogs/filters/project-filter-dialog/project-filter-dialog.component';
@@ -17,19 +17,20 @@ import {TaskService} from '../../../services/entities/task.service';
 import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
 import {Task} from '../../../model/entities/task.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
-import {FilterService} from '../../../services/filter.service';
-import {Tag} from '../../../model/tag.model';
-import {MediaService} from '../../../services/media.service';
-import {MEDIA} from '../../../model/media.enum';
+import {FilterService} from '../../../services/entities/filter/filter.service';
+import {Tag} from '../../../model/entities/tag.model';
+import {MediaService} from '../../../services/ui/media.service';
+import {MEDIA} from '../../../model/ui/media.enum';
 import {map, takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ProjectListDialogComponent} from '../../dialogs/lists/project-list-dialog/project-list-dialog.component';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
 import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
-import {DateService} from '../../../services/date.service';
+import {DateService} from '../../../services/util/date.service';
 import {Scope} from '../../../model/scope.enum';
-import {ScopeService} from '../../../services/scope.service';
+import {ScopeService} from '../../../services/entities/scope/scope.service';
+import {TagService} from '../../../services/entities/tag.service';
 
 @Component({
   selector: 'app-tasklets',
@@ -65,6 +66,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private projectService: ProjectService,
               private taskService: TaskService,
               public taskletService: TaskletService,
+              private tagService: TagService,
               private filterService: FilterService,
               private snackbarService: SnackbarService,
               private mediaService: MediaService,
@@ -183,7 +185,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const tasklet = result as Tasklet;
 
             this.taskletService.createTasklet(tasklet);
-            this.filterService.updateTagsList(tasklet.tags, true);
+            this.filterService.updateTagsList(tasklet.tagIds.map(id => {
+              return this.tagService.getTagById(id);
+            }).filter(tag => {
+              return tag != null;
+            }), true);
           }
         });
         break;
@@ -202,7 +208,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const task = result as Task;
 
             this.taskService.createTask(task);
-            this.filterService.updateTagsList(task.tags, true);
+            this.filterService.updateTagsList(task.tagIds.map(id => {
+              return this.tagService.getTagById(id);
+            }).filter(tag => {
+              return tag != null;
+            }), true);
           }
         });
         break;

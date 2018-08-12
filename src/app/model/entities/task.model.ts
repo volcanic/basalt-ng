@@ -1,8 +1,6 @@
-import {Tag} from './tag.model';
 import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
 import {Description} from './fragments/description.model';
-import {Scope} from '../scope.enum';
 
 export class Task extends Entity {
 
@@ -13,7 +11,7 @@ export class Task extends Entity {
   completionDate: Date;
   priority: number;
   effort: number;
-  tags: Tag[];
+  tagIds: string[];
 
   constructor(name: string) {
     super();
@@ -25,6 +23,6 @@ export class Task extends Entity {
     this.completionDate = null;
     this.priority = -1;
     this.effort = 0;
-    this.tags = [];
+    this.tagIds = [];
   }
 }

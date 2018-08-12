@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Tasklet} from '../../model/entities/tasklet.model';
 import {Task} from '../../model/entities/task.model';
 import {Project} from '../../model/entities/project.model';
-import {Person} from '../../model/person.model';
-import {Tag} from '../../model/tag.model';
+import {Person} from '../../model/entities/person.model';
+import {Tag} from '../../model/entities/tag.model';
 
 @Injectable({
   providedIn: 'root'

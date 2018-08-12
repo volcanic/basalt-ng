@@ -4,23 +4,25 @@ import {TaskletService} from '../../../services/entities/tasklet.service';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
-import {DateService} from '../../../services/date.service';
-import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
-import {Tag} from '../../../model/tag.model';
+import {DateService} from '../../../services/util/date.service';
+import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
+import {Tag} from '../../../model/entities/tag.model';
 import {TimePickerDialogComponent} from '../../dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {UUID} from '../../../model/util/uuid';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
-import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
+import {TaskletDailyScrum} from '../../../model/entities/scrum/tasklet-daily-scrum.model';
 import {Project} from '../../../model/entities/project.model';
 import {ProjectService} from '../../../services/entities/project.service';
-import {ColorService} from '../../../services/color.service';
-import {Description} from '../../../model/description.model';
+import {ColorService} from '../../../services/ui/color.service';
+import {Description} from '../../../model/entities/fragments/description.model';
 import {CloneService} from '../../../services/util/clone.service';
-import {FilterService} from '../../../services/filter.service';
-import {MediaService} from '../../../services/media.service';
+import {FilterService} from '../../../services/entities/filter/filter.service';
+import {MediaService} from '../../../services/ui/media.service';
 import {takeUntil} from 'rxjs/internal/operators';
-import {MEDIA} from '../../../model/media.enum';
+import {MEDIA} from '../../../model/ui/media.enum';
 import {Subject} from 'rxjs/Subject';
+import {TagService} from '../../../services/entities/tag.service';
+import {PersonService} from '../../../services/entities/person.service';
 
 @Component({
   selector: 'app-tasklet-list-item',
@@ -32,8 +34,10 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
   @Input() tasklet: Tasklet;
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
+  themeClass = 'light-theme';
+
   media: MEDIA = MEDIA.UNDEFINED;
-  mediaType = MEDIA;
+  public mediaType = MEDIA;
 
   tags: Tag[] = [];
   projects: Project[] = [];
@@ -52,6 +56,8 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
 
   constructor(private projectService: ProjectService,
               private taskletService: TaskletService,
+              public tagService: TagService,
+              public personService: PersonService,
               private colorService: ColorService,
               private cloneService: CloneService,
               private filterService: FilterService,
@@ -242,7 +248,11 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         this.taskletService.updateTasklet(tasklet).then(() => {
           this.changeDetector.markForCheck();
         });
-        this.filterService.updateTagsList(tasklet.tags, true);
+        this.filterService.updateTagsList(tasklet.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), true);
       }
     });
   }
@@ -255,7 +265,7 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     continueTasklet.id = new UUID().toString();
     continueTasklet.description = new Description();
     continueTasklet.creationDate = new Date();
-    continueTasklet.persons = []; // TODO: Depending on tasklet type, this might be worth keeping
+    continueTasklet.personIds = []; // TODO: Depending on tasklet type, this might be worth keeping
 
     if (this.tasklet.type === TASKLET_TYPE.IDEA) {
       continueTasklet.type = TASKLET_TYPE.ACTION;
@@ -275,7 +285,11 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
       if (result != null) {
         const tasklet = result as Tasklet;
         this.taskletService.createTasklet(result);
-        this.filterService.updateTagsList(tasklet.tags, true);
+        this.filterService.updateTagsList(tasklet.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), true);
       }
     });
   }
@@ -306,7 +320,11 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
       if (result != null) {
         const tasklet = result as TaskletDailyScrum;
         this.taskletService.createTasklet(tasklet);
-        this.filterService.updateTagsList(tasklet.tags, true);
+        this.filterService.updateTagsList(tasklet.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), true);
       }
     });
   }

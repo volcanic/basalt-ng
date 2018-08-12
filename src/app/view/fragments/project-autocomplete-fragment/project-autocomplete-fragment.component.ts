@@ -7,7 +7,7 @@ import {ProjectService} from '../../../services/entities/project.service';
 import {CloneService} from '../../../services/util/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
-import {SuggestionService} from '../../../services/suggestion.service';
+import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
 
 @Component({
   selector: 'app-project-autocomplete-fragment',

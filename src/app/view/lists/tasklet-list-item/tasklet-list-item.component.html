@@ -1,88 +1,91 @@
-<div class="card-wrapper">
-  <div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
-    {{ weekDay }}, {{ date }}
-    <div class="top-connection-line"></div>
-  </div>
-  <mat-card>
-    <mat-card-header (click)="onToggleExpansionPanel()">
-      <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
-      <mat-card-title class="topic">{{ topic }}</mat-card-title>
-      <mat-card-subtitle *ngIf="project != null">{{ project.name }}</mat-card-subtitle>
-    </mat-card-header>
+<div [class]="themeClass">
+  <div class="card-wrapper">
+    <div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
+      {{ weekDay }}, {{ date }}
+      <div class="top-connection-line"></div>
+    </div>
+    <mat-card>
+      <mat-card-header (click)="onToggleExpansionPanel()">
+        <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
+        <mat-card-title class="topic">{{ topic }}</mat-card-title>
+        <mat-card-subtitle *ngIf="project != null">{{ project.name }}</mat-card-subtitle>
+      </mat-card-header>
 
-    <mat-card-content class="content">
-      <mat-accordion class="headers-align" (click)="onActionFired('card')">
-        <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
-        <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
-          <div class="text">
-            <mat-list *ngIf="tasklet.description.value != null && tasklet.description.value.length > 0">
-              <mat-list-item class="text" *ngFor="let item of tasklet.description.value.split('\n')">{{ item }}
-              </mat-list-item>
-            </mat-list>
-          </div>
-          <app-tasklet-daily-scrum [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'">
-          </app-tasklet-daily-scrum>
-          <app-tasklet-daily-digest [tasklet]="tasklet" *ngIf="tasklet.type == 'Finishing Time'">
-          </app-tasklet-daily-digest>
-          <app-tasklet-weekly-digest [tasklet]="tasklet" *ngIf="tasklet.type == 'Weekly Digest'">
-          </app-tasklet-weekly-digest>
-        </mat-expansion-panel>
-      </mat-accordion>
-      <hr class="delimiter"/>
-    </mat-card-content>
+      <mat-card-content class="content">
+        <mat-accordion class="headers-align" (click)="onActionFired('card')">
+          <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
+          <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
+            <div class="text">
+              <mat-list *ngIf="tasklet.description.value != null && tasklet.description.value.length > 0">
+                <mat-list-item class="text" *ngFor="let item of tasklet.description.value.split('\n')">{{ item }}
+                </mat-list-item>
+              </mat-list>
+            </div>
+            <app-tasklet-daily-scrum [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'">
+            </app-tasklet-daily-scrum>
+            <app-tasklet-daily-digest [tasklet]="tasklet" *ngIf="tasklet.type == 'Finishing Time'">
+            </app-tasklet-daily-digest>
+            <app-tasklet-weekly-digest [tasklet]="tasklet" *ngIf="tasklet.type == 'Weekly Digest'">
+            </app-tasklet-weekly-digest>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <hr class="delimiter"/>
+      </mat-card-content>
 
-    <mat-card-footer>
-      <mat-menu #contextMenu="matMenu">
-        <button mat-menu-item (click)="onActionFired('update-tasklet')">Update tasklet</button>
-        <button mat-menu-item (click)="onActionFired('update-time')">Update creation time</button>
-        <button mat-menu-item (click)="onActionFired('continue-tasklet')" *ngIf="tasklet.type == 'Action'
+      <mat-card-footer>
+        <mat-menu #contextMenu="matMenu">
+          <button mat-menu-item (click)="onActionFired('update-tasklet')">Update tasklet</button>
+          <button mat-menu-item (click)="onActionFired('update-time')">Update creation time</button>
+          <button mat-menu-item (click)="onActionFired('continue-tasklet')" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'">Continue tasklet</button>
-      </mat-menu>
-      <div class="attachments">
-        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
-          <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
-               (click)="onActionFired('update-time')"
-               [matTooltip]=date
-               matTooltipPosition="above">
-            <span class="left-attached-content" *ngIf="dateService.isBeforeToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
-            <span class="left-attached-content">{{ time }}</span>
+                                       || tasklet.type == 'Idea'">Continue tasklet
+          </button>
+        </mat-menu>
+        <div class="attachments">
+          <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
+            <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
+                 (click)="onActionFired('update-time')"
+                 [matTooltip]=date
+                 matTooltipPosition="above">
+              <span class="left-attached-content" *ngIf="dateService.isBeforeToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
+              <span class="left-attached-content">{{ time }}</span>
+            </div>
           </div>
-        </div>
-        <div class="tags-holder" (click)="onActionFired('card')">
+          <div class="tags-holder" (click)="onActionFired('card')">
           <span class="time" *ngIf="media <= mediaType.MEDIUM">
             <label class="time-label">
              <span>{{ time }}</span>
               <span *ngIf="dateService.isBeforeToday(tasklet.creationDate)">, {{ date }}</span>
             </label>
           </span>
-          <span class="person" *ngFor="let p of tasklet.persons"><label class="person-label">{{ p.name }}</label></span>
-          <span class="tag" *ngFor="let t of tasklet.tags"><label class="tag-label">{{ t.name }}</label></span>
-        </div>
-        <div class="flexbox"></div>
-        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
-          <div *ngIf="tasklet.type == 'Action'
+            <span class="person" *ngFor="let p of tasklet.personIds"><label class="person-label">{{ personService.getPersonById(p).name }}</label></span>
+            <span class="tag" *ngFor="let t of tasklet.tagIds"><label class="tag-label">{{ tagService.getTagById(t).name }}</label></span>
+          </div>
+          <div class="flexbox"></div>
+          <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
+            <div *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea' "
-               class="side-attached right-attached hidden" (click)="onActionFired('continue-tasklet')"
-               matTooltip="Continue with tasklet"
-               matTooltipPosition="above">
-            <div class="right-attached-content">
-              <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+                 class="side-attached right-attached hidden" (click)="onActionFired('continue-tasklet')"
+                 matTooltip="Continue with tasklet"
+                 matTooltipPosition="above">
+              <div class="right-attached-content">
+                <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+              </div>
             </div>
-          </div>
-          <div *ngIf="tasklet.type == 'Daily Scrum'" class="side-attached right-attached hidden"
-               (click)="onActionFired('template')" matTooltip="Template this event" matTooltipPosition="above">
-            <div class="right-attached-content">
-              <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+            <div *ngIf="tasklet.type == 'Daily Scrum'" class="side-attached right-attached hidden"
+                 (click)="onActionFired('template')" matTooltip="Template this event" matTooltipPosition="above">
+              <div class="right-attached-content">
+                <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </mat-card-footer>
-  </mat-card>
+      </mat-card-footer>
+    </mat-card>
+  </div>
 </div>

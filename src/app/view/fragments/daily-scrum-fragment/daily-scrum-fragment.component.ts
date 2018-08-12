@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {TaskletDailyScrum} from '../../../model/tasklet-daily-scrum.model';
-import {DailyScrumParticipant} from '../../../model/daily-scrum-participant';
+import {TaskletDailyScrum} from '../../../model/entities/scrum/tasklet-daily-scrum.model';
+import {DailyScrumParticipant} from '../../../model/entities/scrum/daily-scrum-participant';
 import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 

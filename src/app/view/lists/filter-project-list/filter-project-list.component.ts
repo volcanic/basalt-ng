@@ -1,9 +1,9 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {FilterService} from '../../../services/filter.service';
+import {FilterService} from '../../../services/entities/filter/filter.service';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {Project} from '../../../model/entities/project.model';
-import {MatchService} from '../../../services/match.service';
+import {MatchService} from '../../../services/entities/filter/match.service';
 
 @Component({
   selector: 'app-filter-project-list',

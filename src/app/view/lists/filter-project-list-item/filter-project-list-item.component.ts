@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Tag} from '../../../model/tag.model';
-import {FilterService} from '../../../services/filter.service';
+import {FilterService} from '../../../services/entities/filter/filter.service';
 import {Project} from '../../../model/entities/project.model';
 
 @Component({

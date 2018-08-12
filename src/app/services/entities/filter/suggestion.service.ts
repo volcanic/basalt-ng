@@ -1,8 +1,12 @@
 import {Injectable} from '@angular/core';
-import {Tasklet} from '../model/entities/tasklet.model';
+import {Tasklet} from '../../../model/entities/tasklet.model';
 import {Subject} from 'rxjs/Subject';
-import {Project} from '../model/entities/project.model';
-import {Task} from '../model/entities/task.model';
+import {Project} from '../../../model/entities/project.model';
+import {Task} from '../../../model/entities/task.model';
+import {Person} from '../../../model/entities/person.model';
+import {Tag} from '../../../model/entities/tag.model';
+import {PersonService} from '../person.service';
+import {TagService} from '../tag.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,22 +45,34 @@ export class SuggestionService {
       if (t != null) {
 
         // Add persons to search options
-        if (t.persons != null && t.creationDate) {
-          t.persons.forEach(person => {
+        /*
+        if (t.personIds != null && t.creationDate) {
+          t.personIds.map(id => {
+            return this.personService.getPersonById(id);
+          }).filter(person => {
+            return person != null;
+          }).forEach(person => {
             const value = person.name;
             this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
             this.personOptions.set(value, value);
           });
         }
+        */
 
         // Add tags to search items
-        if (t.tags != null && t.creationDate) {
-          t.tags.forEach(tag => {
+        /*
+        if (t.tagIds != null && t.creationDate) {
+          t.tagIds.map(id => {
+            return this.tagService.getTagById(id);
+          }).filter(tag => {
+            return tag != null;
+          }).forEach(tag => {
             const value = tag.name;
             this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
             this.tagOptions.set(value, value);
           });
         }
+        */
 
         // Add description lines to search items
         if (t.description.value != null && t.creationDate) {
@@ -81,13 +97,19 @@ export class SuggestionService {
       if (t != null) {
 
         // Add tags to search items
-        if (t.tags != null && t.creationDate) {
-          t.tags.forEach(tag => {
+        /*
+        if (t.tagIds != null && t.creationDate) {
+          t.tagIds.map(id => {
+            return this.tagService.getTagById(id);
+          }).filter(tag => {
+            return tag != null;
+          }).forEach(tag => {
             const value = tag.name;
             this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
             this.tagOptions.set(value, value);
           });
         }
+        */
 
         // Add description lines to search items
         if (t.description.value != null && t.creationDate) {
@@ -123,6 +145,40 @@ export class SuggestionService {
           const value = p.name.trim();
           this.searchOptions.set(p.creationDate.toString() + this.searchOptionsCounter++, value);
           this.projectOptions.set(value, value);
+        }
+      }
+    });
+
+    this.notify();
+  }
+
+  public updateByPersons(persons: Person[]) {
+
+    persons.forEach(p => {
+      if (p != null) {
+
+        // Add person name to search options
+        if (p.name) {
+          const value = p.name.trim();
+          this.searchOptions.set(value, value);
+          this.personOptions.set(value, value);
+        }
+      }
+    });
+
+    this.notify();
+  }
+
+  public updateByTags(tags: Tag[]) {
+
+    tags.forEach(t => {
+      if (t != null) {
+
+        // Add person name to search options
+        if (t.name) {
+          const value = t.name.trim();
+          this.searchOptions.set(value, value);
+          this.tagOptions.set(value, value);
         }
       }
     });

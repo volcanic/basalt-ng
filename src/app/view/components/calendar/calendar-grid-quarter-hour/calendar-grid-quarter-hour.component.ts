@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DateService} from '../../../../services/date.service';
-import {QuarterHour} from '../../../../model/quarterhour.model';
+import {DateService} from '../../../../services/util/date.service';
+import {QuarterHour} from '../../../../model/ui/quarterhour.model';
 
 @Component({
   selector: 'app-calendar-grid-quarter-hour',

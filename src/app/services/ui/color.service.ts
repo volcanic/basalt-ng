@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Hash} from '../model/util/hash';
-import {Project} from '../model/entities/project.model';
+import {Hash} from '../../model/util/hash';
+import {Project} from '../../model/entities/project.model';
 
 @Injectable()
 export class ColorService {

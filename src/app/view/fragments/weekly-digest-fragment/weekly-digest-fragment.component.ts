@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TaskletWeeklyDigest} from '../../../model/tasklet-weekly-digest.model';
+import {TaskletWeeklyDigest} from '../../../model/entities/digest/tasklet-weekly-digest.model';
 
 @Component({
   selector: 'app-weekly-digest-fragment',

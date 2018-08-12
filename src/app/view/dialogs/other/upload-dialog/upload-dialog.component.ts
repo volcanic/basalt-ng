@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Subject} from 'rxjs';
 import {DropResult, SUCCESS} from '../../../components/file-drop/file-drop.component';
-import {SnackbarService} from '../../../../services/snackbar.service';
+import {SnackbarService} from '../../../../services/ui/snackbar.service';
 import {Entity} from '../../../../model/entities/entity.model';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {Project} from '../../../../model/entities/project.model';
@@ -12,7 +12,7 @@ import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {Task} from '../../../../model/entities/task.model';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {EntityService} from '../../../../services/entities/entity.service';
-import {PouchDBService} from '../../../../services/pouchdb.service';
+import {PouchDBService} from '../../../../services/persistence/pouchdb.service';
 
 @Component({
   selector: 'app-upload-dialog',

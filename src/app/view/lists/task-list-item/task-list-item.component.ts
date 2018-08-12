@@ -1,23 +1,24 @@
 import {ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Task} from '../../../model/entities/task.model';
 import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
-import {DIALOG_MODE} from '../../../model/dialog-mode.enum';
+import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
 import {MatDialog, MatMenuTrigger} from '@angular/material';
 import {TaskService} from '../../../services/entities/task.service';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {TaskletService} from '../../../services/entities/tasklet.service';
-import {SnackbarService} from '../../../services/snackbar.service';
+import {SnackbarService} from '../../../services/ui/snackbar.service';
 import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
-import {DigestService} from '../../../services/digest.service';
-import {TaskDigest} from '../../../model/task-digest.model';
-import {FilterService} from '../../../services/filter.service';
-import {MediaService} from '../../../services/media.service';
+import {DigestService} from '../../../services/entities/digest/digest.service';
+import {TaskDigest} from '../../../model/entities/digest/task-digest.model';
+import {FilterService} from '../../../services/entities/filter/filter.service';
+import {MediaService} from '../../../services/ui/media.service';
 import {takeUntil} from 'rxjs/internal/operators';
-import {MEDIA} from '../../../model/media.enum';
+import {MEDIA} from '../../../model/ui/media.enum';
 import {Subject} from 'rxjs/Subject';
 import {ProjectService} from '../../../services/entities/project.service';
 import {Animations, AnimationState} from './task-list-item.animation';
+import {TagService} from '../../../services/entities/tag.service';
 
 @Component({
   selector: 'app-task-list-item',
@@ -43,6 +44,7 @@ export class TaskListItemComponent implements OnInit {
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
+              private tagService: TagService,
               private digestService: DigestService,
               private snackbarService: SnackbarService,
               private filterService: FilterService,
@@ -107,7 +109,7 @@ export class TaskListItemComponent implements OnInit {
     this.state = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;
   }
 
-  updateTask() {
+  private updateTask() {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       disableClose: false,
       data: {
@@ -125,12 +127,16 @@ export class TaskListItemComponent implements OnInit {
           this.changeDetector.markForCheck();
         });
         this.filterService.updateProjectsList([project], true);
-        this.filterService.updateTagsList(task.tags, true);
+        this.filterService.updateTagsList(task.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), true);
       }
     });
   }
 
-  continueTask() {
+  private continueTask() {
     const newTasklet = new Tasklet();
     newTasklet.taskId = this.task.id;
     newTasklet.type = TASKLET_TYPE.ACTION;
@@ -147,12 +153,16 @@ export class TaskListItemComponent implements OnInit {
         const tasklet = result as Tasklet;
 
         this.taskletService.createTasklet(tasklet);
-        this.filterService.updateTagsList(tasklet.tags, true);
+        this.filterService.updateTagsList(tasklet.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), true);
       }
     });
   }
 
-  completeTask() {
+  private completeTask() {
     this.task.completionDate = new Date();
     this.taskService.updateTask(this.task, false).then(() => {
       this.changeDetector.markForCheck();
@@ -160,7 +170,7 @@ export class TaskListItemComponent implements OnInit {
     this.snackbarService.showSnackbar('Completed task');
   }
 
-  reopenTask() {
+  private reopenTask() {
     this.task.completionDate = null;
     this.taskService.updateTask(this.task, false).then(() => {
       this.changeDetector.markForCheck();

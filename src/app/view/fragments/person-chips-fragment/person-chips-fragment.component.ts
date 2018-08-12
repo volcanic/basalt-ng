@@ -1,12 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Person} from '../../../model/person.model';
+import {Person} from '../../../model/entities/person.model';
 import {Observable} from 'rxjs/Observable';
 import {FormControl} from '@angular/forms';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
-import {SuggestionService} from '../../../services/suggestion.service';
+import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
+import {PersonService} from '../../../services/entities/person.service';
 
 @Component({
   selector: 'app-person-chips-fragment',
@@ -17,7 +18,7 @@ export class PersonChipsFragmentComponent implements OnInit {
 
   @Input() persons: Person[] = [];
   @Input() disabled = false;
-  @Output() personChangedEmitter = new EventEmitter<Person[]>();
+  @Output() personsChangedEmitter = new EventEmitter<Person[]>();
 
   debouncer = new Subject();
 
@@ -27,11 +28,13 @@ export class PersonChipsFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private taskletService: TaskletService,
+  constructor(private personService: PersonService,
+              private taskletService: TaskletService,
               private suggestionService: SuggestionService) {
   }
 
   ngOnInit() {
+
     this.options = Array.from(this.suggestionService.personOptions.values());
 
     this.filteredOptions = this.formControl.valueChanges
@@ -42,7 +45,7 @@ export class PersonChipsFragmentComponent implements OnInit {
 
     this.debouncer.pipe(
       debounceTime(500)
-    ).subscribe((value: Person[]) => this.personChangedEmitter.emit(value));
+    ).subscribe((value: Person[]) => this.personsChangedEmitter.emit(value));
   }
 
   onDeletePerson(value: Person) {

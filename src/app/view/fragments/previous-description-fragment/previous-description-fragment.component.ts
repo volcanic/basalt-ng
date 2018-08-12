@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Description} from '../../../model/description.model';
+import {Description} from '../../../model/entities/fragments/description.model';
 
 @Component({
   selector: 'app-previous-description-fragment',

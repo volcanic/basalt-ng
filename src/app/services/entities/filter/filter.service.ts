@@ -1,14 +1,15 @@
 import {Injectable} from '@angular/core';
-import {Tag} from '../model/tag.model';
-import {Project} from '../model/entities/project.model';
-import {CloneService} from './util/clone.service';
+import {Tag} from '../../../model/entities/tag.model';
+import {Project} from '../../../model/entities/project.model';
+import {CloneService} from '../../util/clone.service';
 import {takeUntil} from 'rxjs/operators';
-import {ProjectService} from './entities/project.service';
+import {ProjectService} from '../project.service';
 import {Subject} from 'rxjs';
-import {TaskletService} from './entities/tasklet.service';
-import {TaskService} from './entities/task.service';
-import {Tasklet} from '../model/entities/tasklet.model';
-import {Task} from '../model/entities/task.model';
+import {TaskletService} from '../tasklet.service';
+import {TaskService} from '../task.service';
+import {Tasklet} from '../../../model/entities/tasklet.model';
+import {Task} from '../../../model/entities/task.model';
+import {TagService} from '../tag.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,8 @@ export class FilterService {
   constructor(private projectService: ProjectService,
               private cloneService: CloneService,
               private taskletService: TaskletService,
-              private taskService: TaskService) {
+              private taskService: TaskService,
+              private tagService: TagService) {
 
     // Subscribe tasklet changes
     this.taskletService.taskletsSubject.pipe(
@@ -106,14 +108,24 @@ export class FilterService {
 
   private updateTagsOfTasklets(tasklets: Tasklet[], enable: boolean) {
     tasklets.forEach(tasklet => {
-      this.updateTagsList(tasklet.tags, enable);
+      this.updateTagsList(tasklet.tagIds.map(id => {
+        return this.tagService.getTagById(id);
+      }).filter(tag => {
+        return tag != null;
+      }), enable);
     });
     this.notify();
   }
 
   private updateTagsOfTasks(tasks: Task[], enable: boolean) {
     tasks.forEach(task => {
-      this.updateTagsList(task.tags, enable);
+      if (task.tagIds != null) {
+        this.updateTagsList(task.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), enable);
+      }
     });
     this.notify();
   }
@@ -156,13 +168,21 @@ export class FilterService {
     this.tags.forEach((outerTag, key) => { // Iterate over all existing tags
       const isContainedInTasklet = Array.from(this.taskletService.tasklets.values())
         .some(tasklet => { // Check if tag is contained in tasklets
-          return tasklet.tags.some(innerTag => { // check if tag is contained in tasklet
+          return tasklet.tagIds.map(id => {
+            return this.tagService.getTagById(id);
+          }).filter(tag => {
+            return tag != null;
+          }).some(innerTag => { // check if tag is contained in tasklet
             return innerTag.name === outerTag.name;
           });
         });
       const isContainedInTask = Array.from(this.taskService.tasks.values())
         .some(task => { // Check if tag is contained in tasks
-          return task.tags.some(innerTag => { // check if tag is contained in task
+          return task.tagIds.map(id => {
+            return this.tagService.getTagById(id);
+          }).filter(tag => {
+            return tag != null;
+          }).some(innerTag => { // check if tag is contained in task
             return innerTag.name === outerTag.name;
           });
         });

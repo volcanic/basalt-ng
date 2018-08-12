@@ -3,9 +3,10 @@ import {Tasklet} from '../../../model/entities/tasklet.model';
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/operators';
 import {TaskletService} from '../../../services/entities/tasklet.service';
-import {FilterService} from '../../../services/filter.service';
-import {MatchService} from '../../../services/match.service';
+import {FilterService} from '../../../services/entities/filter/filter.service';
+import {MatchService} from '../../../services/entities/filter/match.service';
 import {TaskService} from '../../../services/entities/task.service';
+import {ProjectService} from '../../../services/entities/project.service';
 
 @Component({
   selector: 'app-tasklet-list',
@@ -20,7 +21,8 @@ export class TaskletListComponent implements OnInit, OnDestroy {
 
   private unsubscribeSubject = new Subject();
 
-  constructor(private taskService: TaskService,
+  constructor(private projectService: ProjectService,
+              private taskService: TaskService,
               private taskletService: TaskletService,
               private matchService: MatchService,
               private filterService: FilterService,
@@ -29,6 +31,7 @@ export class TaskletListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.initializeProjectSubscription();
     this.initializeTaskSubscription();
     this.initializeTaskletSubscription();
     this.initializeFilterSubscription();
@@ -46,6 +49,18 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   //
   // Initialization
   //
+
+  /**
+   * Subscribes project changes
+   */
+  private initializeProjectSubscription() {
+
+    this.projectService.projectsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe(() => {
+      this.forceChangeDetection();
+    });
+  }
 
   /**
    * Subscribes task changes

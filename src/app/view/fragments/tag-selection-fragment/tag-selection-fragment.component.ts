@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {Tag} from '../../../model/tag.model';
+import {Tag} from '../../../model/entities/tag.model';
 
 @Component({
   selector: 'app-tag-selection-fragment',

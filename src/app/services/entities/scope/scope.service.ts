@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
-import {Scope} from '../model/scope.enum';
-import {ThemeService} from './theme.service';
-import {Theme} from '../model/theme.enum';
+import {Scope} from '../../../model/scope.enum';
+import {ThemeService} from '../../ui/theme.service';
+import {Theme} from '../../../model/ui/theme.enum';
 
 @Injectable({
   providedIn: 'root'

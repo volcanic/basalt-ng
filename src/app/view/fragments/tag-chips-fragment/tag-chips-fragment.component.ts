@@ -1,12 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Tag} from '../../../model/tag.model';
+import {Tag} from '../../../model/entities/tag.model';
 import {Observable} from 'rxjs/Observable';
 import {FormControl} from '@angular/forms';
 import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
-import {FilterService} from '../../../services/filter.service';
-import {SuggestionService} from '../../../services/suggestion.service';
+import {FilterService} from '../../../services/entities/filter/filter.service';
+import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
+import {TagService} from '../../../services/entities/tag.service';
 
 @Component({
   selector: 'app-tag-chips-fragment',
@@ -17,7 +18,7 @@ export class TagChipsFragmentComponent implements OnInit {
 
   @Input() tags: Tag[] = [];
   @Input() disabled = false;
-  @Output() tagChangedEmitter = new EventEmitter<Tag[]>();
+  @Output() tagsChangedEmitter = new EventEmitter<Tag[]>();
 
   debouncer = new Subject();
 
@@ -27,11 +28,13 @@ export class TagChipsFragmentComponent implements OnInit {
   filteredOptions: Observable<string[]>;
   formControl: FormControl = new FormControl();
 
-  constructor(private filterService: FilterService,
+  constructor(private tagService: TagService,
+              private filterService: FilterService,
               private suggestionService: SuggestionService) {
   }
 
   ngOnInit() {
+
     this.options = Array.from(this.suggestionService.tagOptions.values());
 
     this.filteredOptions = this.formControl.valueChanges
@@ -42,7 +45,7 @@ export class TagChipsFragmentComponent implements OnInit {
 
     this.debouncer.pipe(
       debounceTime(500)
-    ).subscribe((value: Tag[]) => this.tagChangedEmitter.emit(value));
+    ).subscribe((value: Tag[]) => this.tagsChangedEmitter.emit(value));
   }
 
   onDeleteTag(value: Tag) {
@@ -88,6 +91,8 @@ export class TagChipsFragmentComponent implements OnInit {
   }
 
   notify() {
+    console.log(`notify ${this.tags.length}`);
+    console.log(`notify ${JSON.stringify(this.tags)}`);
     this.debouncer.next(this.tags);
   }
 }

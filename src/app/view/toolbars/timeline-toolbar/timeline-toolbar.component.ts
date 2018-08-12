@@ -3,11 +3,11 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs/Subject';
-import {SuggestionService} from '../../../services/suggestion.service';
-import {MediaService} from '../../../services/media.service';
-import {MEDIA} from '../../../model/media.enum';
+import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
+import {MediaService} from '../../../services/ui/media.service';
+import {MEDIA} from '../../../model/ui/media.enum';
 import {Scope} from '../../../model/scope.enum';
-import {ScopeService} from '../../../services/scope.service';
+import {ScopeService} from '../../../services/entities/scope/scope.service';
 
 @Component({
   selector: 'app-timeline-toolbar',

@@ -1,9 +1,9 @@
 import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import {Project} from '../../../../model/entities/project.model';
-import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
+import {DIALOG_MODE} from '../../../../model/ui/dialog-mode.enum';
 import {ProjectDialogComponent} from '../../entities/project-dialog/project-dialog.component';
-import {FilterService} from '../../../../services/filter.service';
+import {FilterService} from '../../../../services/entities/filter/filter.service';
 import {ProjectService} from '../../../../services/entities/project.service';
 
 @Component({

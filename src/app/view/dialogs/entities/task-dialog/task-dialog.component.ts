@@ -2,16 +2,17 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
 import {Project} from '../../../../model/entities/project.model';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
-import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
+import {DIALOG_MODE} from '../../../../model/ui/dialog-mode.enum';
 import {ProjectService} from '../../../../services/entities/project.service';
-import {Tag} from '../../../../model/tag.model';
+import {Tag} from '../../../../model/entities/tag.model';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
 import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
 import {CloneService} from '../../../../services/util/clone.service';
-import {DateService} from '../../../../services/date.service';
+import {DateService} from '../../../../services/util/date.service';
+import {TagService} from '../../../../services/entities/tag.service';
 
 @Component({
   selector: 'app-task-dialog',
@@ -45,15 +46,14 @@ export class TaskDialogComponent implements OnInit {
     '#cfd8dc'
   ];
 
-  // Project
+  // Temporary
   project: Project;
-
-  // Tags
   tags: Tag[] = [];
 
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
+              private tagService: TagService,
               private cloneService: CloneService,
               public dateService: DateService,
               private adapter: DateAdapter<any>,
@@ -97,22 +97,100 @@ export class TaskDialogComponent implements OnInit {
   }
 
   initializeTags() {
-    this.tags = this.task.tags;
+    this.tags = this.task.tagIds.map(id => {
+      return this.tagService.getTagById(id);
+    }).filter(tag => {
+      return tag != null;
+    });
   }
 
   //
-  // Action buttons
+  // Actions
+  //
+
+  public onKeyDown(event: any) {
+    const KEY_CODE_ENTER = 13;
+    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+      this.updateTask();
+    }
+  }
+
+  // Completion date
+
+  onCompletionDateChanged(value: Date) {
+    this.task.completionDate = value;
+  }
+
+  // Due date
+
+  onDueDateChanged(value: Date) {
+    this.task.dueDate = value;
+  }
+
+  // Priority
+
+  onHoverFlag(priority: number) {
+    if (!this.inputDisabled) {
+      this.colorsFlags.forEach((flagColor, index) => {
+        if (index <= priority) {
+          this.colorsFlags[index] = this.colorsPriorities[priority];
+        } else {
+          this.colorsFlags[index] = this.colorEmpty;
+        }
+      });
+    }
+  }
+
+  onLeaveFlag() {
+    if (!this.inputDisabled) {
+      this.initializePriority();
+    }
+  }
+
+  onClickFlag(priority: number) {
+    if (!this.inputDisabled) {
+      this.task.priority = priority;
+
+      if (priority === -1) {
+        this.colorsFlags = [
+          '#cfd8dc',
+          '#cfd8dc',
+          '#cfd8dc',
+          '#cfd8dc',
+          '#cfd8dc'
+        ];
+      }
+    }
+  }
+
+  // Project
+
+  onProjectChanged(project: Project) {
+    this.project = project;
+    this.task.projectId = project.id;
+  }
+
+  // Tags
+
+  onTagsChanged(tags: Tag[]) {
+    this.task.tagIds = tags.map(tag => {
+      return tag.id;
+    });
+  }
+
+  //
+  // Button actions
   //
 
   addTask() {
     this.evaluateProject();
-    this.task.tags = this.tags;
+    this.task.tagIds = this.aggregateTagIds(this.task);
     this.dialogRef.close(this.task);
   }
 
   updateTask() {
     this.evaluateProject();
-    this.task.tags = this.tags;
+    this.task.tagIds = this.aggregateTagIds(this.task);
     this.dialogRef.close(this.task);
   }
 
@@ -164,88 +242,13 @@ export class TaskDialogComponent implements OnInit {
   }
 
   //
-  // Completion date
-  //
-
-  onCompletionDateChanged(value: Date) {
-    this.task.completionDate = value;
-  }
-
-  //
-  // Due date
-  //
-
-  onDueDateChanged(value: Date) {
-    this.task.dueDate = value;
-  }
-
-  //
-  // Priority
-  //
-
-  onHoverFlag(priority: number) {
-    if (!this.inputDisabled) {
-      this.colorsFlags.forEach((flagColor, index) => {
-        if (index <= priority) {
-          this.colorsFlags[index] = this.colorsPriorities[priority];
-        } else {
-          this.colorsFlags[index] = this.colorEmpty;
-        }
-      });
-    }
-  }
-
-  onLeaveFlag() {
-    if (!this.inputDisabled) {
-      this.initializePriority();
-    }
-  }
-
-  onClickFlag(priority: number) {
-    if (!this.inputDisabled) {
-      this.task.priority = priority;
-
-      if (priority === -1) {
-        this.colorsFlags = [
-          '#cfd8dc',
-          '#cfd8dc',
-          '#cfd8dc',
-          '#cfd8dc',
-          '#cfd8dc'
-        ];
-      }
-    }
-  }
-
-  //
-  // Project
-  //
-
-  onProjectChanged(project: Project) {
-    this.project = project;
-    this.task.projectId = project.id;
-  }
-
-  compareProject(p1: Project, p2: Project) {
-    return p1 != null && p2 != null && p1.id === p2.id;
-  }
-
-  //
-  // Tags
-  //
-
-  onTagChanged(tags: Tag[]) {
-    this.tags = tags;
-  }
-
-  //
   // Helpers
   //
 
   /**
    * Determines whether the selected project already exists, otherwise creates a new one
    */
-  evaluateProject() {
+  private evaluateProject() {
     if (this.project != null) {
       let project = this.projectService.getProjectByName(this.project.name);
 
@@ -263,10 +266,37 @@ export class TaskDialogComponent implements OnInit {
     }
   }
 
-  public onKeyDown(event: any) {
-    const KEY_CODE_ENTER = 13;
-    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      this.updateTask();
+  /**
+   * Aggregates tag IDs
+   * @param {Task} task
+   * @returns {string[]}
+   */
+  private aggregateTagIds(task: Task): string[] {
+    const aggregatedTagIds = new Map<string, string>();
+
+    // Concatenate
+    this.tags.forEach(t => {
+      const tag = this.evaluateTag(t.name);
+      aggregatedTagIds.set(tag.id, tag.id);
+    });
+
+    return Array.from(aggregatedTagIds.values());
+  }
+
+  /**
+   * Gets an existing tag by name or creates a new one if it does not exist
+   * @param name tag name
+   */
+  private evaluateTag(name: string): Tag {
+    if (name != null) {
+      let tag = this.tagService.getTagByName(name);
+
+      if (tag == null) {
+        tag = new Tag(name, true);
+        this.tagService.createTag(tag);
+      }
+
+      return tag;
     }
   }
 }

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
-import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../../model/daily-scrum-activity-type.enum';
+import {TaskletDailyScrum} from '../../../../model/entities/scrum/tasklet-daily-scrum.model';
+import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../../model/entities/scrum/daily-scrum-activity-type.enum';
 
 @Component({
   selector: 'app-tasklet-daily-scrum',

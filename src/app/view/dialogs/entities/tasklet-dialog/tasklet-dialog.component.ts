@@ -2,19 +2,21 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {UUID} from '../../../../model/util/uuid';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
-import {DIALOG_MODE} from '../../../../model/dialog-mode.enum';
+import {DIALOG_MODE} from '../../../../model/ui/dialog-mode.enum';
 import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
-import {Tag} from '../../../../model/tag.model';
-import {TaskletDailyScrum} from '../../../../model/tasklet-daily-scrum.model';
-import {Person} from '../../../../model/person.model';
+import {Tag} from '../../../../model/entities/tag.model';
+import {TaskletDailyScrum} from '../../../../model/entities/scrum/tasklet-daily-scrum.model';
+import {Person} from '../../../../model/entities/person.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
-import {SnackbarService} from '../../../../services/snackbar.service';
-import {TaskletWeeklyDigest} from '../../../../model/tasklet-weekly-digest.model';
+import {SnackbarService} from '../../../../services/ui/snackbar.service';
+import {TaskletWeeklyDigest} from '../../../../model/entities/digest/tasklet-weekly-digest.model';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
 import {Task} from '../../../../model/entities/task.model';
-import {Description} from '../../../../model/description.model';
+import {Description} from '../../../../model/entities/fragments/description.model';
 import {CloneService} from '../../../../services/util/clone.service';
+import {TagService} from '../../../../services/entities/tag.service';
+import {PersonService} from '../../../../services/entities/person.service';
 
 @Component({
   selector: 'app-tasklet-dialog',
@@ -30,10 +32,14 @@ export class TaskletDialogComponent implements OnInit {
   previousDescription = new Description();
 
   // Temporary
+  tags: Tag[] = [];
+  persons: Person[] = [];
   task: Task;
 
   constructor(private taskService: TaskService,
               private taskletService: TaskletService,
+              private tagService: TagService,
+              private personService: PersonService,
               private snackbarService: SnackbarService,
               private cloneService: CloneService,
               public dialog: MatDialog,
@@ -49,11 +55,38 @@ export class TaskletDialogComponent implements OnInit {
     this.tasklet = this.cloneService.cloneTasklet(this.data.tasklet);
     this.previousDescription = this.data.previousDescription;
 
-    this.task = this.taskService.tasks.get(this.tasklet.taskId);
+    // Temporary
+    this.initializeTask();
+    this.initializeTags();
+    this.initializePersons();
   }
 
   //
-  // Listeners
+  // Initialization
+  //
+
+  initializeTask() {
+    this.task = this.taskService.tasks.get(this.tasklet.taskId);
+  }
+
+  initializeTags() {
+    this.tags = this.tasklet.tagIds.map(id => {
+      return this.tagService.getTagById(id);
+    }).filter(tag => {
+      return tag != null;
+    });
+  }
+
+  initializePersons() {
+    this.persons = this.tasklet.personIds.map(id => {
+      return this.personService.getPersonById(id);
+    }).filter(person => {
+      return person != null;
+    });
+  }
+
+  //
+  // Actions
   //
 
   onTaskChanged(task: Task) {
@@ -64,22 +97,31 @@ export class TaskletDialogComponent implements OnInit {
     this.tasklet.description = description;
   }
 
-  onTagChanged(tags: Tag[]) {
-    this.tasklet.tags = tags;
+  onTagsChanged(tags: Tag[]) {
+    this.tags = tags;
   }
 
   onPersonChanged(persons: Person[]) {
-    this.tasklet.persons = persons;
+    this.tasklet.personIds = persons.map(person => {
+      return person.id;
+    });
+  }
+
+  public onKeyDown(event: any) {
+    const KEY_CODE_ENTER = 13;
+    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+      this.updateTasklet();
+    }
   }
 
   //
-  // Action buttons
+  // Button actions
   //
 
   addTasklet() {
     this.evaluateTask();
-    this.tasklet.tags = this.aggregateTags(this.tasklet);
-    this.tasklet.persons = this.aggregatePersons(this.tasklet);
+    this.tasklet.tagIds = this.aggregateTagIds(this.tasklet);
+    this.tasklet.personIds = this.aggregatePersonIds(this.tasklet);
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
@@ -103,8 +145,8 @@ export class TaskletDialogComponent implements OnInit {
 
   updateTasklet() {
     this.evaluateTask();
-    this.tasklet.tags = this.aggregateTags(this.tasklet);
-    this.tasklet.persons = this.aggregatePersons(this.tasklet);
+    this.tasklet.tagIds = this.aggregateTagIds(this.tasklet);
+    this.tasklet.personIds = this.aggregatePersonIds(this.tasklet);
 
     switch (this.tasklet.type) {
       case TASKLET_TYPE.DAILY_SCRUM: {
@@ -164,10 +206,12 @@ export class TaskletDialogComponent implements OnInit {
   // Helpers
   //
 
+  // Tasks
+
   /**
    * Determines whether the selected task already exists, otherwise creates a new one
    */
-  evaluateTask() {
+  private evaluateTask() {
     if (this.task != null) {
       let task = this.taskService.getTaskByName(this.task.name);
 
@@ -185,29 +229,60 @@ export class TaskletDialogComponent implements OnInit {
     }
   }
 
-  aggregateTags(tasklet: Tasklet): Tag[] {
-    const aggregatedTags = new Map<string, Tag>();
+  // Tags
+
+  /**
+   * Aggregates tag IDs
+   * @param {Tasklet} tasklet
+   * @returns {string[]}
+   */
+  private aggregateTagIds(tasklet: Tasklet): string[] {
+    const aggregatedTagIds = new Map<string, string>();
 
     // Concatenate
-    this.tasklet.tags.forEach(tag => {
-      aggregatedTags.set(tag.name, tag);
+    this.tags.forEach(t => {
+      const tag = this.evaluateTag(t.name);
+      aggregatedTagIds.set(tag.id, tag.id);
     });
-    this.inferTags(tasklet).forEach((value, key) => {
-      aggregatedTags.set(key, value);
+    this.inferTags(tasklet).forEach(value => {
+      const tag = this.evaluateTag(value);
+      aggregatedTagIds.set(tag.id, tag.id);
     });
 
-    return Array.from(aggregatedTags.values());
+    return Array.from(aggregatedTagIds.values());
   }
 
-  inferTags(tasklet: Tasklet): Map<string, Tag> {
-    const inferredTags = new Map<string, Tag>();
+  /**
+   * Gets an existing tag by name or creates a new one if it does not exist
+   * @param name tag name
+   */
+  private evaluateTag(name: string): Tag {
+    if (name != null) {
+      let tag = this.tagService.getTagByName(name);
+
+      if (tag == null) {
+        tag = new Tag(name, true);
+        this.tagService.createTag(tag);
+      }
+
+      return tag;
+    }
+  }
+
+  /**
+   * Infers tags from a tasklet's description
+   * @param {Tasklet} tasklet
+   * @returns {Map<string, string>}
+   */
+  private inferTags(tasklet: Tasklet): Map<string, string> {
+    const inferredTags = new Map<string, string>();
 
     if (tasklet.description != null && tasklet.description.value != null) {
       tasklet.description.value.split('\n').forEach(line => {
         line.split(' ').forEach(word => {
           if (word.startsWith('#')) {
-            const tag = new Tag(word.replace('#', ''), true);
-            inferredTags.set(tag.name, tag);
+            const tag = word.replace('#', '');
+            inferredTags.set(tag, tag);
           }
         });
       });
@@ -216,41 +291,65 @@ export class TaskletDialogComponent implements OnInit {
     return inferredTags;
   }
 
-  aggregatePersons(tasklet: Tasklet): Person[] {
-    const aggregatedPersons = new Map<string, Person>();
+  // Person
+
+  /**
+   * Aggregates person IDs
+   * @param {Tasklet} tasklet
+   * @returns {string[]}
+   */
+  private aggregatePersonIds(tasklet: Tasklet): string[] {
+    const aggregatedPersonIds = new Map<string, string>();
 
     // Concatenate
-    tasklet.persons.forEach(p => {
-      aggregatedPersons.set(p.name, p);
+    this.persons.forEach(p => {
+      const person = this.evaluatePerson(p.name);
+      aggregatedPersonIds.set(person.id, person.id);
     });
-    this.inferPersons(tasklet).forEach((value, key) => {
-      aggregatedPersons.set(key, value);
+    this.inferPersons(tasklet).forEach(value => {
+      const person = this.evaluatePerson(value);
+      aggregatedPersonIds.set(person.id, person.id);
     });
 
-    return Array.from(aggregatedPersons.values());
+    return Array.from(aggregatedPersonIds.values());
   }
 
-  inferPersons(tasklet: Tasklet): Map<string, Person> {
-    const inferredPersons = new Map<string, Person>();
+  /**
+   * Gets an existing person by name or creates a new one if it does not exist
+   * @param name person name
+   */
+  private evaluatePerson(name: string): Person {
+    if (name != null) {
+      let person = this.personService.getPersonByName(name);
+
+      if (person == null) {
+        person = new Person(name);
+        this.personService.createPerson(person);
+      }
+
+      return person;
+    }
+  }
+
+  /**
+   * Infers persons from a tasklet's description
+   * @param {Tasklet} tasklet
+   * @returns {Map<string, string>}
+   */
+  inferPersons(tasklet: Tasklet): Map<string, string> {
+    const inferredPersons = new Map<string, string>();
 
     if (tasklet.description != null && tasklet.description.value != null) {
       tasklet.description.value.split('\n').forEach(line => {
         line.split(' ').forEach(word => {
           if (word.startsWith('@')) {
-            const person = new Person(word.replace('@', '').replace('_', ' '));
-            inferredPersons.set(person.name, person);
+            const mention = word.replace('@', '').replace('_', ' ');
+            inferredPersons.set(mention, mention);
           }
         });
       });
     }
 
     return inferredPersons;
-  }
-
-  public onKeyDown(event: any) {
-    const KEY_CODE_ENTER = 13;
-    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      this.updateTasklet();
-    }
   }
 }
