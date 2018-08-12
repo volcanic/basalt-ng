@@ -1,0 +1,8 @@
+<div class="container"
+     (mouseenter)="onHoverContainer(true)"
+     (mouseleave)="onHoverContainer(false)">
+  <button mat-button class="person flex" (click)="updatePerson()">
+    <mat-icon svgIcon="person" class="list-icon"></mat-icon>
+    <span>{{ person.name }}</span>
+  </button>
+</div>

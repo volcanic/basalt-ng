@@ -1,0 +1,18 @@
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="persons.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label" color="">
+          Persons
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-person-list-item *ngFor="let t of persons" [person]="t">
+    </app-person-list-item>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<button mat-button class="label headers-align" (click)="onMenuItemClicked('add-person')">
+  <mat-icon class="add-person-icon" svgIcon="add"></mat-icon>
+  <span>Add new person</span>
+</button>

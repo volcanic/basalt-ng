@@ -167,6 +167,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(NAVIGATION, 'menu', 'ic_menu_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'more_vert', 'ic_more_vert_24px.svg'));
     icons.push(new Icon(NAVIGATION, 'refresh', 'ic_refresh_24px.svg'));
+    icons.push(new Icon(SOCIAL, 'person', 'ic_person_24px.svg'));
     icons.push(new Icon(SOCIAL, 'people', 'ic_people_24px.svg'));
 
     icons.forEach(icon => {
