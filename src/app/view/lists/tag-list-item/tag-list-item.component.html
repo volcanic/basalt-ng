@@ -1,0 +1,8 @@
+<div class="container"
+     (mouseenter)="onHoverContainer(true)"
+     (mouseleave)="onHoverContainer(false)">
+  <button mat-button class="tag flex" (click)="updateTag()">
+    <mat-icon svgIcon="label_outline" class="list-icon"></mat-icon>
+    <span>{{ tag.name }}</span>
+  </button>
+</div>

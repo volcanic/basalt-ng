@@ -93,6 +93,8 @@ import {ProjectListDialogComponent} from './view/dialogs/lists/project-list-dial
 import {TaskListDialogComponent} from './view/dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 import {InViewportModule} from 'ng-in-viewport';
+import { TagListItemComponent } from './view/lists/tag-list-item/tag-list-item.component';
+import { TagListComponent } from './view/lists/tag-list/tag-list.component';
 
 @NgModule({
   declarations: [
@@ -148,7 +150,9 @@ import {InViewportModule} from 'ng-in-viewport';
     FilterProjectListComponent,
     FilterProjectListItemComponent,
     ProjectListDialogComponent,
-    TaskListDialogComponent
+    TaskListDialogComponent,
+    TagListItemComponent,
+    TagListComponent
   ],
   imports: [
     AppRoutingModule,

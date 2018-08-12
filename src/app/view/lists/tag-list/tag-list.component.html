@@ -1,0 +1,18 @@
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="tags.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label" color="">
+          Tags
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-tag-list-item *ngFor="let t of tags" [tag]="t">
+    </app-tag-list-item>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<button mat-button class="label headers-align" (click)="onMenuItemClicked('add-tag')">
+  <mat-icon class="add-tag-icon" svgIcon="add"></mat-icon>
+  <span>Add new tag</span>
+</button>
