@@ -190,7 +190,6 @@ export class TaskletService {
    * Informs subscribers that something has changed
    */
   public notify() {
-    console.log(`notify ${this.tasklets.size}`);
     this.taskletsSubject.next(Array.from(this.tasklets.values()).sort((t1, t2) => {
       return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
     }));

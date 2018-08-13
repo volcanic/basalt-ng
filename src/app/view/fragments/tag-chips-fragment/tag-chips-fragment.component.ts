@@ -91,8 +91,6 @@ export class TagChipsFragmentComponent implements OnInit {
   }
 
   notify() {
-    console.log(`notify ${this.tags.length}`);
-    console.log(`notify ${JSON.stringify(this.tags)}`);
     this.debouncer.next(this.tags);
   }
 }
