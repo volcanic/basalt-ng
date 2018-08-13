@@ -102,6 +102,9 @@ export class PersonService {
 
   public createPerson(person: Person) {
     if (person != null) {
+      // Remove transient attributes
+      person.checked = undefined;
+
       person.scope = this.scopeService.scope;
 
       return this.pouchDBService.upsert(person.id, person).then(() => {
@@ -114,6 +117,8 @@ export class PersonService {
 
   public updatePerson(person: Person, showSnack: boolean) {
     if (person != null) {
+      // Remove transient attributes
+      person.checked = undefined;
 
       person.modificationDate = new Date();
 

@@ -102,6 +102,9 @@ export class TagService {
 
   public createTag(tag: Tag) {
     if (tag != null) {
+      // Remove transient attributes
+      tag.checked = undefined;
+
       tag.scope = this.scopeService.scope;
 
       return this.pouchDBService.upsert(tag.id, tag).then(() => {
@@ -114,6 +117,8 @@ export class TagService {
 
   public updateTag(tag: Tag, showSnack: boolean) {
     if (tag != null) {
+      // Remove transient attributes
+      tag.checked = undefined;
 
       tag.modificationDate = new Date();
 

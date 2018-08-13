@@ -103,6 +103,9 @@ export class ProjectService {
 
   public createProject(project: Project) {
     if (project != null) {
+      // Remove transient attributes
+      project.checked = undefined;
+
       project.scope = this.scopeService.scope;
 
       return this.pouchDBService.put(project.id, project).then(() => {
@@ -115,6 +118,9 @@ export class ProjectService {
 
   public updateProject(project: Project, showSnack: boolean) {
     if (project != null) {
+      // Remove transient attributes
+      project.checked = undefined;
+
       project.modificationDate = new Date();
 
       return this.pouchDBService.upsert(project.id, project).then(() => {
