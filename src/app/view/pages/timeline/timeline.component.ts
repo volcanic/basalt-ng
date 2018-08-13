@@ -195,6 +195,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             }).filter(tag => {
               return tag != null;
             }), true);
+            this.filterService.updatePersonsList(tasklet.personIds.map(id => {
+              return this.personService.getPersonById(id);
+            }).filter(person => {
+              return person != null;
+            }), true);
           }
         });
         break;
@@ -264,14 +269,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           data: {
             mode: DIALOG_MODE.ADD,
             dialogTitle: 'Add person',
-            person: new Person('')
+            person: new Person('', true)
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             const person = result as Person;
-            // TODO Uncomment if person filter is implemented
-            // this.filterService.updatePersonsList([person], true);
+            this.filterService.updatePersonsList([person], true);
             this.personService.createPerson(person);
           }
         });

@@ -323,7 +323,7 @@ export class TaskletDialogComponent implements OnInit {
       let person = this.personService.getPersonByName(name);
 
       if (person == null) {
-        person = new Person(name);
+        person = new Person(name, true);
         this.personService.createPerson(person);
       }
 

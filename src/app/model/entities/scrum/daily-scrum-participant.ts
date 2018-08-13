@@ -6,7 +6,7 @@ export class DailyScrumParticipant {
   activities: DailyScrumActivity[];
 
   constructor() {
-    this.person = new Person('');
+    this.person = new Person('', true);
     this.activities = [];
   }
 }

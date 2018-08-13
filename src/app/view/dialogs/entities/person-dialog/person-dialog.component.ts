@@ -5,7 +5,6 @@ import {DateService} from '../../../../services/util/date.service';
 import {Person} from '../../../../model/entities/person.model';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
-import {Task} from '../../../../model/entities/task.model';
 import {DIALOG_MODE} from '../../../../model/ui/dialog-mode.enum';
 import {PersonService} from '../../../../services/entities/person.service';
 import {CloneService} from '../../../../services/util/clone.service';
@@ -99,8 +98,7 @@ export class PersonDialogComponent implements OnInit {
       dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
           this.personService.deletePerson(result as Person);
-          // TODO Uncomment if person filter is implemented
-          // this.filterService.persons.delete((result as Person).id); // Delete person from filter list
+          this.filterService.persons.delete((result as Person).id);
           this.dialogRef.close(null);
         }
       });

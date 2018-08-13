@@ -99,6 +99,8 @@ import { PersonListComponent } from './view/lists/person-list/person-list.compon
 import { PersonListItemComponent } from './view/lists/person-list-item/person-list-item.component';
 import { TagDialogComponent } from './view/dialogs/entities/tag-dialog/tag-dialog.component';
 import { PersonDialogComponent } from './view/dialogs/entities/person-dialog/person-dialog.component';
+import { FilterPersonListComponent } from './view/lists/filter-person-list/filter-person-list.component';
+import { FilterPersonListItemComponent } from './view/lists/filter-person-list-item/filter-person-list-item.component';
 
 @NgModule({
   declarations: [
@@ -160,7 +162,9 @@ import { PersonDialogComponent } from './view/dialogs/entities/person-dialog/per
     PersonListComponent,
     PersonListItemComponent,
     TagDialogComponent,
-    PersonDialogComponent
+    PersonDialogComponent,
+    FilterPersonListComponent,
+    FilterPersonListItemComponent
   ],
   imports: [
     AppRoutingModule,

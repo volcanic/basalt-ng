@@ -44,10 +44,10 @@ export class MatchService {
 
     return ((tasklet.tagIds == null || tasklet.tagIds.length === 0) && tagsNone)
       || tasklet.tagIds.map(id => {
-      return this.tagService.getTagById(id);
-    }).filter(tag => {
-      return tag != null;
-    }).some(tag => {
+        return this.tagService.getTagById(id);
+      }).filter(tag => {
+        return tag != null;
+      }).some(tag => {
         return this.tagMatchesTags(tag, tags, tagsNone);
       });
   }
@@ -64,10 +64,10 @@ export class MatchService {
 
     return ((task.tagIds == null || task.tagIds.length === 0) && tagsNone)
       || task.tagIds.map(id => {
-      return this.tagService.getTagById(id);
-    }).filter(tag => {
-      return tag != null;
-    }).some(tag => {
+        return this.tagService.getTagById(id);
+      }).filter(tag => {
+        return tag != null;
+      }).some(tag => {
         return this.tagMatchesTags(tag, tags, tagsNone);
       });
   }
@@ -144,6 +144,46 @@ export class MatchService {
       || projects.length === 0
       || projects.some(p => {
         return p.checked && project != null && project.id != null && p.id === project.id;
+      });
+  }
+
+  //
+  // Persons
+  //
+
+  /**
+   * Determines whether a tasklet matches a given set of persons
+   *
+   * @param tasklet
+   * @param persons
+   * @param personsNone
+   * @returns {boolean}
+   */
+  public taskletMatchesPersons(tasklet: Tasklet, persons: Person[], personsNone: boolean): boolean {
+
+    return ((tasklet.personIds == null || tasklet.personIds.length === 0) && personsNone)
+      || tasklet.personIds.map(id => {
+        return this.personService.getPersonById(id);
+      }).filter(person => {
+        return person != null;
+      }).some(person => {
+        return this.personMatchesPersons(person, persons, personsNone);
+      });
+  }
+
+  /**
+   * Determines whether a person matches a given set of persons
+   *
+   * @param person
+   * @param persons
+   * @param personsNone
+   * @returns {boolean}
+   */
+  private personMatchesPersons(person: Person, persons: Person[], personsNone: boolean) {
+    return (person == null && personsNone)
+      || persons.length === 0
+      || persons.some(p => {
+        return p.checked && person != null && person.name != null && p.name === person.name;
       });
   }
 

@@ -1,0 +1,22 @@
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="persons.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label" color="">
+          <span>Persons</span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-filter-person-list-item *ngFor="let t of persons" [person]="t">
+    </app-filter-person-list-item>
+    <div>
+      <mat-checkbox class="special-person" [(ngModel)]="personsNone" (ngModelChange)="onChangeSpecialPerson($event)">elements without persons</mat-checkbox>
+    </div>
+    <button mat-button class="label headers-align" (click)="onSelectAll()">
+      <span>Select all</span>
+    </button>
+    <button mat-button class="label headers-align" (click)="onSelectNone()">
+      <span>Select none</span>
+    </button>
+  </mat-expansion-panel>
+</mat-accordion>

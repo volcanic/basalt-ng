@@ -10,6 +10,8 @@ import {TaskService} from '../task.service';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {Task} from '../../../model/entities/task.model';
 import {TagService} from '../tag.service';
+import {Person} from '../../../model/entities/person.model';
+import {PersonService} from '../person.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +27,15 @@ export class FilterService {
   projects: Map<string, Project> = new Map<string, Project>();
   projectsNone = true;
 
+  persons: Map<string, Person> = new Map<string, Person>();
+  personsNone = true;
+
   initializedTagsOfTasklets = false;
   initializedTagsOfTasks = false;
+  initializedTags = false;
   initializedProjects = false;
+
+  initializedPersons = false;
 
   filterSubject = new Subject();
   unsubscribeSubject = new Subject();
@@ -36,7 +44,8 @@ export class FilterService {
               private cloneService: CloneService,
               private taskletService: TaskletService,
               private taskService: TaskService,
-              private tagService: TagService) {
+              private tagService: TagService,
+              private personService: PersonService) {
 
     // Subscribe tasklet changes
     this.taskletService.taskletsSubject.pipe(
@@ -45,6 +54,7 @@ export class FilterService {
       if (value != null) {
         const tasklets = value as Tasklet[];
 
+        // Initialize tags
         if (!this.initializedTagsOfTasklets) {
           this.updateTagsOfTasklets(tasklets, true);
         }
@@ -68,6 +78,20 @@ export class FilterService {
       }
     });
 
+    // Subscribe tag changes
+    this.tagService.tagsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        const tags = value as Tag[];
+
+        if (!this.initializedTags) {
+          this.updateTagsList(tags, true);
+          this.initializedTags = true;
+        }
+      }
+    });
+
     // Subscribe project changes
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
@@ -78,6 +102,20 @@ export class FilterService {
         if (!this.initializedProjects) {
           this.updateProjectsList(projects, true);
           this.initializedProjects = true;
+        }
+      }
+    });
+
+    // Subscribe person changes
+    this.personService.personsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        const persons = value as Person[];
+
+        if (!this.initializedPersons) {
+          this.updatePersonsList(persons, true);
+          this.initializedPersons = true;
         }
       }
     });
@@ -233,13 +271,64 @@ export class FilterService {
     this.notify();
   }
 
+  //
+  // Persons
+  //
+
+  public clearPersons() {
+    this.initializedPersons = false;
+    this.persons = new Map<string, Person>();
+  }
+
+  private updatePersonsOfTasklets(tasklets: Tasklet[], enable: boolean) {
+    tasklets.forEach(tasklet => {
+      this.updatePersonsList(tasklet.personIds.map(id => {
+        return this.personService.getPersonById(id);
+      }).filter(person => {
+        return person != null;
+      }), enable);
+    });
+    this.notify();
+  }
+
+  public updatePersons(persons: Person[], enable: boolean, personsNone: boolean) {
+    this.updatePersonsList(persons, enable);
+    this.updatePersonsNone(personsNone);
+    this.notify();
+  }
+
+  public updatePersonsList(persons: Person[], enable: boolean) {
+    this.updatePersonsListInternal(persons, enable);
+    this.notify();
+  }
+
+  private updatePersonsListInternal(persons: Person[], enable: boolean) {
+    persons.forEach((p: Person) => {
+      if (p != null) {
+        // Deep copy
+        const person = this.cloneService.clonePerson(p);
+
+        if (enable) {
+          person.checked = true;
+        }
+
+        this.persons.set(person.id, person);
+      }
+    });
+  }
+
+  public updatePersonsNone(personsNone: boolean) {
+    this.personsNone = personsNone;
+    this.notify();
+  }
+
   /**
    * Clears all currently set filters
    */
   public clearAllFilters() {
 
     this.clearTagFilter();
-    this.clearProjectFilter();
+    this.clearPersonFilter();
     this.notify();
   }
 
@@ -255,14 +344,14 @@ export class FilterService {
   }
 
   /**
-   * Clears all project-related filters
+   * Clears all person-related filters
    */
-  private clearProjectFilter() {
-    this.projects.forEach((value) => { // Iterate through projects
-      const currentProject = value as Project;
-      currentProject.checked = true; // Activate each project
+  private clearPersonFilter() {
+    this.persons.forEach((value) => { // Iterate through persons
+      const currentPerson = value as Person;
+      currentPerson.checked = true; // Activate each person
     });
-    this.projectsNone = true; // Select "elements without projects" checkbox
+    this.personsNone = true; // Select "elements without persons" checkbox
   }
 
   //

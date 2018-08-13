@@ -30,7 +30,7 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
 
   ngOnInit() {
     if (this.person == null) {
-      this.person = new Person('');
+      this.person = new Person('', true);
     }
 
     // Deep copy

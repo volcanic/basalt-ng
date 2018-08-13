@@ -61,7 +61,7 @@ export class PersonChipsFragmentComponent implements OnInit {
     const KEY_CODE_COMMA = 188;
 
     if (this.value !== '' && this.value !== ',' && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
-      this.persons.push(new Person(this.value.replace(/,/, '')));
+      this.persons.push(new Person(this.value.replace(/,/, ''), true));
       this.value = '';
       this.notify();
     }
@@ -73,7 +73,7 @@ export class PersonChipsFragmentComponent implements OnInit {
 
   onOptionSelected() {
     if (!this.disabled) {
-      this.persons.push(new Person(this.value.replace(/,/, '')));
+      this.persons.push(new Person(this.value.replace(/,/, ''), true));
       this.value = '';
       this.notify();
     }

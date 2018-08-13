@@ -45,8 +45,7 @@ export class PersonListItemComponent implements OnInit {
         this.personService.updatePerson(person, true).then(() => {
           this.changeDetector.markForCheck();
         });
-        // TODO Uncomment if person filter is implemented
-        // this.filterService.updatePersonsList([person], true);
+        this.filterService.updatePersonsList([person], true);
       }
     });
   }

@@ -150,8 +150,10 @@ export class TaskletListComponent implements OnInit, OnDestroy {
         Array.from(this.filterService.tags.values()), this.filterService.tagsNone);
       const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
         Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
+      const matchesPersons = this.matchService.taskletMatchesPersons(tasklet,
+        Array.from(this.filterService.persons.values()), this.filterService.personsNone);
 
-      return matchesSearchItem && matchesTags && matchesProjects;
+      return matchesSearchItem && matchesTags && matchesProjects && matchesPersons;
     }).sort((t1: Tasklet, t2: Tasklet) => {
 
       return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
