@@ -8,6 +8,7 @@ import {MatchService} from '../../../services/entities/filter/match.service';
 import {TaskService} from '../../../services/entities/task.service';
 import {ProjectService} from '../../../services/entities/project.service';
 import {TagService} from '../../../services/entities/tag.service';
+import {PersonService} from '../../../services/entities/person.service';
 
 @Component({
   selector: 'app-tasklet-list',
@@ -26,6 +27,7 @@ export class TaskletListComponent implements OnInit, OnDestroy {
               private taskService: TaskService,
               private taskletService: TaskletService,
               private tagService: TagService,
+              private personService: PersonService,
               private matchService: MatchService,
               private filterService: FilterService,
               private changeDetector: ChangeDetectorRef) {
@@ -37,6 +39,7 @@ export class TaskletListComponent implements OnInit, OnDestroy {
     this.initializeTaskSubscription();
     this.initializeTaskletSubscription();
     this.initializeTagSubscription();
+    this.initializePersonSubscription();
     this.initializeFilterSubscription();
   }
 
@@ -98,6 +101,18 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   private initializeTagSubscription() {
 
     this.tagService.tagsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.forceChangeDetection();
+    });
+  }
+
+  /**
+   * Subscribes person changes
+   */
+  private initializePersonSubscription() {
+
+    this.personService.personsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       this.forceChangeDetection();

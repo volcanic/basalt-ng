@@ -32,6 +32,9 @@ import {Scope} from '../../../model/scope.enum';
 import {ScopeService} from '../../../services/entities/scope/scope.service';
 import {TagService} from '../../../services/entities/tag.service';
 import {TagDialogComponent} from '../../dialogs/entities/tag-dialog/tag-dialog.component';
+import {PersonDialogComponent} from '../../dialogs/entities/person-dialog/person-dialog.component';
+import {Person} from '../../../model/entities/person.model';
+import {PersonService} from '../../../services/entities/person.service';
 
 @Component({
   selector: 'app-tasklets',
@@ -68,6 +71,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private taskService: TaskService,
               public taskletService: TaskletService,
               private tagService: TagService,
+              private personService: PersonService,
               private filterService: FilterService,
               private snackbarService: SnackbarService,
               private mediaService: MediaService,
@@ -250,6 +254,25 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const tag = result as Tag;
             this.filterService.updateTagsList([tag], true);
             this.tagService.createTag(tag);
+          }
+        });
+        break;
+      }
+      case 'add-person': {
+        const dialogRef = this.dialog.open(PersonDialogComponent, {
+          disableClose: false,
+          data: {
+            mode: DIALOG_MODE.ADD,
+            dialogTitle: 'Add person',
+            person: new Person('')
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const person = result as Person;
+            // TODO Uncomment if person filter is implemented
+            // this.filterService.updatePersonsList([person], true);
+            this.personService.createPerson(person);
           }
         });
         break;

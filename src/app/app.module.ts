@@ -98,6 +98,7 @@ import { TagListComponent } from './view/lists/tag-list/tag-list.component';
 import { PersonListComponent } from './view/lists/person-list/person-list.component';
 import { PersonListItemComponent } from './view/lists/person-list-item/person-list-item.component';
 import { TagDialogComponent } from './view/dialogs/entities/tag-dialog/tag-dialog.component';
+import { PersonDialogComponent } from './view/dialogs/entities/person-dialog/person-dialog.component';
 
 @NgModule({
   declarations: [
@@ -158,7 +159,8 @@ import { TagDialogComponent } from './view/dialogs/entities/tag-dialog/tag-dialo
     TagListComponent,
     PersonListComponent,
     PersonListItemComponent,
-    TagDialogComponent
+    TagDialogComponent,
+    PersonDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -206,7 +208,8 @@ import { TagDialogComponent } from './view/dialogs/entities/tag-dialog/tag-dialo
     InformationDialogComponent,
     ProjectListDialogComponent,
     TaskListDialogComponent,
-    TagDialogComponent
+    TagDialogComponent,
+    PersonDialogComponent
   ],
   providers: [
     MatIconRegistry,

@@ -3,6 +3,8 @@ import {MatDialog} from '@angular/material';
 import {FilterService} from '../../../services/entities/filter/filter.service';
 import {PersonService} from '../../../services/entities/person.service';
 import {Person} from '../../../model/entities/person.model';
+import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
+import {PersonDialogComponent} from '../../dialogs/entities/person-dialog/person-dialog.component';
 
 @Component({
   selector: 'app-person-list-item',
@@ -28,7 +30,6 @@ export class PersonListItemComponent implements OnInit {
   }
 
   updatePerson() {
-    /*
     const dialogRef = this.dialog.open(PersonDialogComponent, {
       disableClose: false,
       data: {
@@ -44,9 +45,9 @@ export class PersonListItemComponent implements OnInit {
         this.personService.updatePerson(person, true).then(() => {
           this.changeDetector.markForCheck();
         });
-        this.filterService.updatePersonsList([person], true);
+        // TODO Uncomment if person filter is implemented
+        // this.filterService.updatePersonsList([person], true);
       }
     });
-    */
   }
 }
