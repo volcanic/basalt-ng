@@ -73,7 +73,7 @@ export class FilterTagListComponent implements OnInit {
     this.filterService.updateTags(this.tags, false, this.tagsNone);
   }
 
-  onChangeSpecialTag(value: boolean) {
-    this.filterService.updateTags(this.tags, value, this.tagsNone);
+  onChangeSpecialTag() {
+    this.filterService.updateTags(this.tags, false, this.tagsNone);
   }
 }

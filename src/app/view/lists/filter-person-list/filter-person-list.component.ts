@@ -73,7 +73,7 @@ export class FilterPersonListComponent implements OnInit {
     this.filterService.updatePersons(this.persons, false, this.personsNone);
   }
 
-  onChangeSpecialPerson(value: boolean) {
-    this.filterService.updatePersons(this.persons, value, this.personsNone);
+  onChangeSpecialPerson() {
+    this.filterService.updatePersons(this.persons, false, this.personsNone);
   }
 }

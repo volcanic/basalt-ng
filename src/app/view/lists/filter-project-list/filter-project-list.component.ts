@@ -73,7 +73,7 @@ export class FilterProjectListComponent implements OnInit {
     this.filterService.updateProjects(this.projects, false, this.projectsNone);
   }
 
-  onChangeSpecialProject(value: boolean) {
-    this.filterService.updateProjects(this.projects, value, this.projectsNone);
+  onChangeSpecialProject() {
+    this.filterService.updateProjects(this.projects, false, this.projectsNone);
   }
 }

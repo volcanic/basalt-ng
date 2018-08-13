@@ -79,7 +79,14 @@ export class PersonListComponent implements OnInit, OnDestroy {
    * Filters original values
    */
   private update() {
-    this.persons = this.personsAll.sort((p1: Person, p2: Person) => {
+    this.persons = this.personsAll.filter(person => {
+      const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
+      const matchesPersons = this.matchService.personMatchesPersons(person,
+        Array.from(this.filterService.persons.values()),
+        this.filterService.personsNone);
+
+      return matchesSearchItem && matchesPersons;
+    }).sort((p1: Person, p2: Person) => {
       return p2 > p1 ? 1 : -1;
     });
 

@@ -80,7 +80,7 @@ export class MatchService {
    * @param tagsNone
    * @returns {boolean}
    */
-  private tagMatchesTags(tag: Tag, tags: Tag[], tagsNone: boolean) {
+  public tagMatchesTags(tag: Tag, tags: Tag[], tagsNone: boolean) {
     return (tag == null && tagsNone)
       || tags.length === 0
       || tags.some(t => {
@@ -179,7 +179,7 @@ export class MatchService {
    * @param personsNone
    * @returns {boolean}
    */
-  private personMatchesPersons(person: Person, persons: Person[], personsNone: boolean) {
+  public personMatchesPersons(person: Person, persons: Person[], personsNone: boolean) {
     return (person == null && personsNone)
       || persons.length === 0
       || persons.some(p => {
@@ -258,6 +258,34 @@ export class MatchService {
     });
   }
 
+  /**
+   * Determines whether a tag matches every of the specified items
+   *
+   * @param tag value to check
+   * @param items multiple words in one string
+   * @returns {boolean}
+   */
+  public tagMatchesEveryItem(tag: Tag, items: string): boolean {
+
+    return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
+      return this.tagNameMatchesSingleItem(tag, item);
+    });
+  }
+
+  /**
+   * Determines whether a person matches every of the specified items
+   *
+   * @param person value to check
+   * @param items multiple words in one string
+   * @returns {boolean}
+   */
+  public personMatchesEveryItem(person: Person, items: string): boolean {
+
+    return items == null || items.trim() === '' || this.splitSearchItems(items).every(item => {
+      return this.personNameMatchesSingleItem(person, item);
+    });
+  }
+
   //
   // Search item parts
   //
@@ -270,6 +298,16 @@ export class MatchService {
   private projectNameMatchesSingleItem(project: Project, item: string): boolean {
 
     return (project != null) ? this.textMatchesSingleItem(project.name, item) : false;
+  }
+
+  private tagNameMatchesSingleItem(tag: Tag, item: string): boolean {
+
+    return (tag != null) ? this.textMatchesSingleItem(tag.name, item) : false;
+  }
+
+  private personNameMatchesSingleItem(person: Person, item: string): boolean {
+
+    return (person != null) ? this.textMatchesSingleItem(person.name, item) : false;
   }
 
   private descriptionMatchesSingleItem(description: Description, item: string): boolean {
@@ -293,31 +331,9 @@ export class MatchService {
     });
   }
 
-  public textMatchesAnyItem(text: string, items: string): boolean {
-
-    return items != null && items.toString().trim() !== '' && this.splitSearchItems(items).some(i => {
-      return this.textMatchesSingleItem(text, i);
-    });
-  }
-
   public textMatchesSingleItem(text: string, item: string): boolean {
 
     return this.valueMatchesSingleItem(text, item);
-  }
-
-
-  /**
-   * Determines whether a value contains a specific item
-   *
-   * @param value value to check
-   * @param items multiple words in one string
-   * @returns {boolean}
-   */
-  public valueMatchesAnyItem(value: string, items: string): boolean {
-
-    return items != null && this.splitSearchItems(items).some(t => {
-      return this.valueMatchesSingleItem(value, t);
-    });
   }
 
   /**
