@@ -16,18 +16,20 @@ export class ScopeService {
   }
 
   switchScope(scope: Scope) {
-    this.scope = scope;
-    switch (scope) {
-      case Scope.WORK: {
-        this.themeService.switchTheme(Theme.LIGHT);
-        break;
+    if (scope !== this.scope) {
+      this.scope = scope;
+      switch (scope) {
+        case Scope.WORK: {
+          this.themeService.switchTheme(Theme.LIGHT);
+          break;
+        }
+        case Scope.FREETIME: {
+          this.themeService.switchTheme(Theme.DARK);
+          break;
+        }
       }
-      case Scope.FREETIME: {
-        this.themeService.switchTheme(Theme.DARK);
-        break;
-      }
-    }
 
-    this.scopeSubject.next(scope);
+      this.scopeSubject.next(scope);
+    }
   }
 }
