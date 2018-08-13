@@ -21,5 +21,6 @@
 { "annotation": "refs/tags/v0.20.0", "message": "Android App"},
 { "annotation": "refs/tags/v0.21.0", "message": "Hidden toolbar"},
 { "annotation": "refs/tags/v0.22.0", "message": "Date indicator"},
-{ "annotation": "refs/tags/v0.23.0", "message": "Work life distinction"}
+{ "annotation": "refs/tags/v0.23.0", "message": "Work life distinction"},
+{ "annotation": "refs/tags/v0.24.0", "message": "Top-level tags and persons"}
 ]}
