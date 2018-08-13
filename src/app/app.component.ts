@@ -141,6 +141,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(COMMUNICATION, 'business', 'ic_business_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'call', 'ic_call_24px.svg'));
     icons.push(new Icon(COMMUNICATION, 'chat', 'ic_chat_24px.svg'));
+    icons.push(new Icon(COMMUNICATION, 'email', 'ic_email_24px.svg'));
+    icons.push(new Icon(COMMUNICATION, 'phone', 'ic_phone_24px.svg'));
     icons.push(new Icon(CONTENT, 'add', 'ic_add_24px.svg'));
     icons.push(new Icon(CONTENT, 'flag', 'ic_flag_24px.svg'));
     icons.push(new Icon(CONTENT, 'filter_list', 'ic_filter_list_24px.svg'));

@@ -9,6 +9,43 @@
                  [(ngModel)]="person.name">
         </mat-form-field>
       </div>
+
+      <mat-accordion class="headers-align">
+
+        <mat-expansion-panel (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>E-Mail</mat-panel-title>
+            <mat-panel-description *ngIf="person.email != null" class="value-set">
+              {{ person.email }}
+            </mat-panel-description>
+            <mat-icon svgIcon="email"></mat-icon>
+          </mat-expansion-panel-header>
+          <input matInput name="email" type="email" placeholder="E-Mail" [(ngModel)]="person.email">
+        </mat-expansion-panel>
+
+        <mat-expansion-panel (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Phone number</mat-panel-title>
+            <mat-panel-description *ngIf="person.phone != null" class="value-set">
+              {{ person.phone }}
+            </mat-panel-description>
+            <mat-icon svgIcon="phone"></mat-icon>
+          </mat-expansion-panel-header>
+          <input matInput name="phone" type="tel" placeholder="Phone number" [(ngModel)]="person.phone">
+        </mat-expansion-panel>
+
+        <mat-expansion-panel (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Department</mat-panel-title>
+            <mat-panel-description *ngIf="person.department != null" class="value-set">
+              {{ person.department }}
+            </mat-panel-description>
+            <mat-icon svgIcon="business"></mat-icon>
+          </mat-expansion-panel-header>
+          <input matInput name="department" type="text" placeholder="Department" [(ngModel)]="person.department">
+        </mat-expansion-panel>
+
+      </mat-accordion>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
