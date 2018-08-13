@@ -152,10 +152,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.filterService.clearSearchItem();
       this.filterService.clearTags();
       this.filterService.clearProjects();
+      this.filterService.clearPersons();
 
       this.taskletService.findTaskletsByScope(scope);
       this.taskService.findOpenTasksByScope(scope);
       this.projectService.findProjectsByScope(scope);
+      this.tagService.findTagsByScope(scope);
+      this.personService.findPersonsByScope(scope);
     });
   }
 
