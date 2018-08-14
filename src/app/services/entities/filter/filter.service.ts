@@ -139,6 +139,7 @@ export class FilterService {
   //
 
   public clearTags() {
+    this.initializedTags = false;
     this.initializedTagsOfTasklets = false;
     this.initializedTagsOfTasks = false;
     this.tags = new Map<string, Tag>();
