@@ -17,53 +17,53 @@
   background: transparent;
   width: 350px;
 
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     padding-top: 88px;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     padding-top: 88px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     padding-top: 88px;
   }
 }
 
 .sidenav-start {
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     margin-right: 10px;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     margin-right: 20px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     margin-right: 40px;
   }
 }
 
 .sidenav-end {
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     margin-left: 10px;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     margin-left: 20px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     margin-left: 40px;
   }
 }
 
 .content {
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     padding-top: 88px;
     margin-left: 10px;
     margin-right: 10px;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     padding-top: 88px;
     margin-left: 20px;
     margin-right: 20px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     padding-top: 88px;
     margin-left: 40px;
     margin-right: 40px;
@@ -87,17 +87,17 @@
   background-color: mat-color($mat-grey, 800) !important;
   opacity: 0.8;
 
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     width: 75px;
     height: 75px;
     margin-top: -10px !important;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     width: 90px;
     height: 90px;
     margin-top: -200px !important;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     width: 90px;
     height: 90px;
     margin-top: -200px !important;
@@ -118,15 +118,15 @@
   top: auto !important;
   z-index: 2;
 
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     right: 20px !important;
     bottom: 10px !important;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     right: 40px !important;
     bottom: 20px !important;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     right: 40px !important;
     bottom: 20px !important;
   }

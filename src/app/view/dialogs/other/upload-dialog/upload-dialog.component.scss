@@ -1,13 +1,13 @@
 @import '../../../../../sizes';
 
 .dialog {
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     width: 100%;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     width: 600px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     width: 600px;
   }
 }

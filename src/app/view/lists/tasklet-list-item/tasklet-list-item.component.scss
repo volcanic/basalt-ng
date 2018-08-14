@@ -9,16 +9,16 @@
 mat-card {
   margin: 10px auto;
 
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     width: 100%;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box; /* Firefox, other Gecko */
     box-sizing: border-box; /* Opera/IE 8+ */
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     width: 450px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     width: 450px;
   }
 }

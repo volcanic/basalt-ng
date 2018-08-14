@@ -1,5 +1,6 @@
 @import '../../../../sizes';
 @import '../../../../light-theme';
+@import '../../../../dark-theme';
 
 mat-toolbar {
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
@@ -27,13 +28,13 @@ mat-toolbar {
   padding-left: 10px;
   padding-right: 10px;
 
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     width: 10%;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     width: 100px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     width: 250px;
   }
 }
@@ -51,13 +52,13 @@ mat-toolbar {
   padding-right: 24px;
   width: 100%;
 
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     width: 100%;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     width: 450px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     width: 450px;
   }
 

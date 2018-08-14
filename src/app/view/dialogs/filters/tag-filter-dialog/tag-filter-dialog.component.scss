@@ -1,40 +1,40 @@
 @import '../../../../../sizes';
 
 .dialog {
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     width: 100%;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     width: 600px;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     width: 600px;
   }
 }
 
 .single-column {
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     display: block;
     width: 100%;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     display: none;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     display: none;
   }
 }
 
 .double-column {
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     display: none;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     display: block;
     width: 45%;
     float: left;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     display: block;
     width: 45%;
     float: left;

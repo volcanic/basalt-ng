@@ -80,13 +80,13 @@ mat-toolbar .mat-form-field-infix {
 }
 
 mat-dialog-container {
-  @media #{$mat-small} {
+  @media #{$breakpoint-small} {
     width: 100%;
   }
-  @media #{$mat-medium} {
+  @media #{$breakpoint-medium} {
     width: 500px !important;
   }
-  @media #{$mat-large} {
+  @media #{$breakpoint-large} {
     width: 750px !important;
   }
 }
