@@ -341,8 +341,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const projects = result.projects as Project[];
             const projectsNone = result.projectsNone as boolean;
 
-            this.filterService.updateProjectsList(projects, false);
-            this.filterService.updateProjectsNone(projectsNone);
+            this.filterService.updateProjects(projects, false, projectsNone);
             this.snackbarService.showSnackbar('Projects selected');
           }
         });

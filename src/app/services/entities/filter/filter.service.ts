@@ -267,7 +267,7 @@ export class FilterService {
     });
   }
 
-  public updateProjectsNone(projectsNone: boolean) {
+  private updateProjectsNone(projectsNone: boolean) {
     this.projectsNone = projectsNone;
     this.notify();
   }
@@ -279,17 +279,6 @@ export class FilterService {
   public clearPersons() {
     this.initializedPersons = false;
     this.persons = new Map<string, Person>();
-  }
-
-  private updatePersonsOfTasklets(tasklets: Tasklet[], enable: boolean) {
-    tasklets.forEach(tasklet => {
-      this.updatePersonsList(tasklet.personIds.map(id => {
-        return this.personService.getPersonById(id);
-      }).filter(person => {
-        return person != null;
-      }), enable);
-    });
-    this.notify();
   }
 
   public updatePersons(persons: Person[], enable: boolean, personsNone: boolean) {
