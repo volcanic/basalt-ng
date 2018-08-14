@@ -37,6 +37,10 @@ export class CloneService {
     return JSON.parse(JSON.stringify(original));
   }
 
+  clonePersons(original: Person[]): Person[] {
+    return JSON.parse(JSON.stringify(original));
+  }
+
   cloneTag(original: Tag): Tag {
     return JSON.parse(JSON.stringify(original));
   }

@@ -42,7 +42,7 @@ import {AboutDialogComponent} from './view/dialogs/app-info/about-dialog/about-d
 import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-dialog/new-features-dialog.component';
 import {PouchDBSettingsService} from './services/persistence/pouchdb-settings.service';
 import {SettingsService} from './services/persistence/settings.service';
-import {ProjectsFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
+import {ProjectFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {DailyScrumActivityFragmentComponent} from './view/fragments/daily-scrum-activity-fragment/daily-scrum-activity-fragment.component';
 import {DailyScrumParticipantFragmentComponent} from './view/fragments/daily-scrum-participant-fragment/daily-scrum-participant-fragment.component';
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
@@ -101,6 +101,7 @@ import { TagDialogComponent } from './view/dialogs/entities/tag-dialog/tag-dialo
 import { PersonDialogComponent } from './view/dialogs/entities/person-dialog/person-dialog.component';
 import { FilterPersonListComponent } from './view/lists/filter-person-list/filter-person-list.component';
 import { FilterPersonListItemComponent } from './view/lists/filter-person-list-item/filter-person-list-item.component';
+import { PersonFilterDialogComponent } from './view/dialogs/filters/person-filter-dialog/person-filter-dialog.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,7 @@ import { FilterPersonListItemComponent } from './view/lists/filter-person-list-i
     DailyEffortTreeComponent,
     FileDropComponent,
     NewFeaturesDialogComponent,
-    ProjectsFilterDialogComponent,
+    ProjectFilterDialogComponent,
     SplashScreenComponent,
     TagFilterDialogComponent,
     TaskletDialogComponent,
@@ -164,7 +165,8 @@ import { FilterPersonListItemComponent } from './view/lists/filter-person-list-i
     TagDialogComponent,
     PersonDialogComponent,
     FilterPersonListComponent,
-    FilterPersonListItemComponent
+    FilterPersonListItemComponent,
+    PersonFilterDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -202,7 +204,7 @@ import { FilterPersonListItemComponent } from './view/lists/filter-person-list-i
     AboutDialogComponent,
     ConfirmationDialogComponent,
     NewFeaturesDialogComponent,
-    ProjectsFilterDialogComponent,
+    ProjectFilterDialogComponent,
     TagFilterDialogComponent,
     TaskletDialogComponent,
     TimePickerDialogComponent,
@@ -213,7 +215,8 @@ import { FilterPersonListItemComponent } from './view/lists/filter-person-list-i
     ProjectListDialogComponent,
     TaskListDialogComponent,
     TagDialogComponent,
-    PersonDialogComponent
+    PersonDialogComponent,
+    PersonFilterDialogComponent
   ],
   providers: [
     MatIconRegistry,

@@ -1,16 +1,16 @@
 <h2 mat-dialog-title>{{ dialogTitle }}</h2>
 <mat-dialog-content>
-  <div class="single-column" *ngFor="let p of projects">
+  <div class="single-column" *ngFor="let p of persons">
     <mat-checkbox [(ngModel)]="p.checked">{{ p.name}}</mat-checkbox>
   </div>
-  <div class="double-column" *ngFor="let p of projects.slice(0, projects.length / 2)">
+  <div class="double-column" *ngFor="let p of persons.slice(0, persons.length / 2)">
     <mat-checkbox [(ngModel)]="p.checked">{{ p.name}}</mat-checkbox>
   </div>
-  <div class="double-column" *ngFor="let p of projects.slice(projects.length / 2, projects.length)">
+  <div class="double-column" *ngFor="let p of persons.slice(persons.length / 2, persons.length)">
     <mat-checkbox [(ngModel)]="p.checked">{{ p.name}}</mat-checkbox>
   </div>
   <div>
-    <mat-checkbox class="special-project" [(ngModel)]=projectsNone>elements without projects</mat-checkbox>
+    <mat-checkbox class="special-person" [(ngModel)]=personsNone>elements without persons</mat-checkbox>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>

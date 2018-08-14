@@ -81,6 +81,10 @@
           <mat-icon svgIcon="filter_list"></mat-icon>
           <span>Filter projects</span>
         </button>
+        <button mat-menu-item (click)="onMenuItemClicked('filter-persons')">
+          <mat-icon svgIcon="filter_list"></mat-icon>
+          <span>Filter persons</span>
+        </button>
       </div>
       <button mat-menu-item (click)="onMenuItemClicked('clear-filter')">
         <mat-icon svgIcon="layers_clear"></mat-icon>

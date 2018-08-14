@@ -8,13 +8,13 @@ import {CloneService} from '../../../../services/util/clone.service';
   templateUrl: './project-filter-dialog.component.html',
   styleUrls: ['./project-filter-dialog.component.scss'],
 })
-export class ProjectsFilterDialogComponent implements OnInit {
+export class ProjectFilterDialogComponent implements OnInit {
   dialogTitle = '';
   projects: Project[] = [];
   projectsNone = false;
 
   constructor(private cloneService: CloneService,
-              public dialogRef: MatDialogRef<ProjectsFilterDialogComponent>,
+              public dialogRef: MatDialogRef<ProjectFilterDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
 
     this.dialogTitle = data.dialogTitle;

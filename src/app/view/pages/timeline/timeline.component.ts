@@ -7,7 +7,7 @@ import {TagFilterDialogComponent} from '../../dialogs/filters/tag-filter-dialog/
 import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
 import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
-import {ProjectsFilterDialogComponent} from '../../dialogs/filters/project-filter-dialog/project-filter-dialog.component';
+import {ProjectFilterDialogComponent} from '../../dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {UploadDialogComponent} from '../../dialogs/other/upload-dialog/upload-dialog.component';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {Project} from '../../../model/entities/project.model';
@@ -35,6 +35,7 @@ import {TagDialogComponent} from '../../dialogs/entities/tag-dialog/tag-dialog.c
 import {PersonDialogComponent} from '../../dialogs/entities/person-dialog/person-dialog.component';
 import {Person} from '../../../model/entities/person.model';
 import {PersonService} from '../../../services/entities/person.service';
+import {PersonFilterDialogComponent} from '../../dialogs/filters/person-filter-dialog/person-filter-dialog.component';
 
 @Component({
   selector: 'app-tasklets',
@@ -328,7 +329,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'filter-projects': {
-        const dialogRef = this.dialog.open(ProjectsFilterDialogComponent, {
+        const dialogRef = this.dialog.open(ProjectFilterDialogComponent, {
           disableClose: false,
           data: {
             dialogTitle: 'Select projects',
@@ -343,6 +344,26 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.filterService.updateProjects(projects, false, projectsNone);
             this.snackbarService.showSnackbar('Projects selected');
+          }
+        });
+        break;
+      }
+      case 'filter-persons': {
+        const dialogRef = this.dialog.open(PersonFilterDialogComponent, {
+          disableClose: false,
+          data: {
+            dialogTitle: 'Select persons',
+            persons: Array.from(this.filterService.persons.values()),
+            personsNone: this.filterService.personsNone
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const persons = result.persons as Person[];
+            const personsNone = result.personsNone as boolean;
+
+            this.filterService.updatePersons(persons, false, personsNone);
+            this.snackbarService.showSnackbar('Persons selected');
           }
         });
         break;
