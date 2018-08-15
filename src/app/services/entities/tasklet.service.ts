@@ -148,14 +148,18 @@ export class TaskletService {
       // Updated related objects
       this.projectService.updateProject(this.getProjectByTasklet(tasklet), false);
       this.taskService.updateTask(this.getTaskByTasklet(tasklet), false);
-      tasklet.tagIds.forEach(id => {
-        const tag = this.tagService.getTagById(id);
-        this.tagService.updateTag(tag, false);
-      });
-      tasklet.personIds.forEach(id => {
-        const person = this.personService.getPersonById(id);
-        this.personService.updatePerson(person, false);
-      });
+      if (tasklet.tagIds != null) {
+        tasklet.tagIds.forEach(id => {
+          const tag = this.tagService.getTagById(id);
+          this.tagService.updateTag(tag, false);
+        });
+      }
+      if (tasklet.personIds != null) {
+        tasklet.personIds.forEach(id => {
+          const person = this.personService.getPersonById(id);
+          this.personService.updatePerson(person, false);
+        });
+      }
 
       tasklet.modificationDate = new Date();
 

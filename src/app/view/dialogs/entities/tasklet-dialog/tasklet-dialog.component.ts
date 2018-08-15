@@ -70,19 +70,23 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   initializeTags() {
-    this.tags = this.tasklet.tagIds.map(id => {
-      return this.tagService.getTagById(id);
-    }).filter(tag => {
-      return tag != null;
-    });
+    if (this.tasklet.tagIds != null) {
+      this.tags = this.tasklet.tagIds.map(id => {
+        return this.tagService.getTagById(id);
+      }).filter(tag => {
+        return tag != null;
+      });
+    }
   }
 
   initializePersons() {
-    this.persons = this.tasklet.personIds.map(id => {
-      return this.personService.getPersonById(id);
-    }).filter(person => {
-      return person != null;
-    });
+    if (this.tasklet.personIds != null) {
+      this.persons = this.tasklet.personIds.map(id => {
+        return this.personService.getPersonById(id);
+      }).filter(person => {
+        return person != null;
+      });
+    }
   }
 
   //

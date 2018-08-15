@@ -66,7 +66,7 @@ export class TaskService {
       selector: {
         '$and': [
           {'entityType': {'$eq': EntityType.TASK}},
-          {'scope': {'$eq': scope}},
+          {scope: {$eq: scope}},
           {'modificationDate': {'$gt': null}},
           {'completionDate': {'$eq': null}}
         ]
@@ -87,6 +87,12 @@ export class TaskService {
     this.pouchDBService.find(index, options).then(result => {
         result['docs'].forEach(element => {
           const task = element as Task;
+
+          if (task.scope == null) {
+            task.scope = this.scopeService.scope;
+            this.updateTask(task, false);
+          }
+
           this.tasks.set(task.id, task);
         });
 
@@ -113,10 +119,12 @@ export class TaskService {
 
       // Update related objects
       this.projectService.updateProject(this.getProjectByTask(task), false);
-      task.tagIds.forEach(id => {
-        const tag = this.tagService.getTagById(id);
-        this.tagService.updateTag(tag, false);
-      });
+      if (task.tagIds != null) {
+        task.tagIds.forEach(id => {
+          const tag = this.tagService.getTagById(id);
+          this.tagService.updateTag(tag, false);
+        });
+      }
 
       // Create task
       return this.pouchDBService.upsert(task.id, task).then(() => {
@@ -131,10 +139,12 @@ export class TaskService {
     if (task != null) {
       // Update related objects
       this.projectService.updateProject(this.getProjectByTask(task), false);
-      task.tagIds.forEach(id => {
-        const tag = this.tagService.getTagById(id);
-        this.tagService.updateTag(tag, false);
-      });
+      if (task.tagIds != null) {
+        task.tagIds.forEach(id => {
+          const tag = this.tagService.getTagById(id);
+          this.tagService.updateTag(tag, false);
+        });
+      }
 
       task.modificationDate = new Date();
 
@@ -175,6 +185,7 @@ export class TaskService {
    * Informs subscribers that something has changed
    */
   public notify() {
+    console.log(`notifiy tasks ${this.tasks.size}`);
     this.tasksSubject.next(Array.from(this.tasks.values()).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() - new Date(t1.modificationDate).getTime();
     }));

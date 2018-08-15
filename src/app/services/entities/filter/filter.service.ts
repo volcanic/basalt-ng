@@ -147,11 +147,13 @@ export class FilterService {
 
   private updateTagsOfTasklets(tasklets: Tasklet[], enable: boolean) {
     tasklets.forEach(tasklet => {
-      this.updateTagsList(tasklet.tagIds.map(id => {
-        return this.tagService.getTagById(id);
-      }).filter(tag => {
-        return tag != null;
-      }), enable);
+      if (tasklet.tagIds != null) {
+        this.updateTagsList(tasklet.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), enable);
+      }
     });
     this.notify();
   }
@@ -207,7 +209,7 @@ export class FilterService {
     this.tags.forEach((outerTag, key) => { // Iterate over all existing tags
       const isContainedInTasklet = Array.from(this.taskletService.tasklets.values())
         .some(tasklet => { // Check if tag is contained in tasklets
-          return tasklet.tagIds.map(id => {
+          return tasklet.tagIds != null && tasklet.tagIds.map(id => {
             return this.tagService.getTagById(id);
           }).filter(tag => {
             return tag != null;
@@ -217,7 +219,7 @@ export class FilterService {
         });
       const isContainedInTask = Array.from(this.taskService.tasks.values())
         .some(task => { // Check if tag is contained in tasks
-          return task.tagIds.map(id => {
+          return task.tagIds != null && task.tagIds.map(id => {
             return this.tagService.getTagById(id);
           }).filter(tag => {
             return tag != null;
