@@ -36,6 +36,7 @@ import {PersonDialogComponent} from '../../dialogs/entities/person-dialog/person
 import {Person} from '../../../model/entities/person.model';
 import {PersonService} from '../../../services/entities/person.service';
 import {PersonFilterDialogComponent} from '../../dialogs/filters/person-filter-dialog/person-filter-dialog.component';
+import {TagListDialogComponent} from '../../dialogs/lists/tag-list-dialog/tag-list-dialog.component';
 
 @Component({
   selector: 'app-tasklets',
@@ -299,6 +300,15 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           disableClose: false,
           data: {
             dialogTitle: 'Projects',
+          }
+        });
+        break;
+      }
+      case 'tag-list': {
+        this.dialog.open(TagListDialogComponent, {
+          disableClose: false,
+          data: {
+            dialogTitle: 'Tags',
           }
         });
         break;

@@ -72,6 +72,10 @@
           <mat-icon svgIcon="agenda"></mat-icon>
           <span>Projects</span>
         </button>
+        <button mat-menu-item (click)="onMenuItemClicked('tag-list')">
+          <mat-icon svgIcon="label_outline"></mat-icon>
+          <span>Tags</span>
+        </button>
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="onMenuItemClicked('filter-tags')">
           <mat-icon svgIcon="filter_list"></mat-icon>

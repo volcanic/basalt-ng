@@ -102,6 +102,7 @@ import { PersonDialogComponent } from './view/dialogs/entities/person-dialog/per
 import { FilterPersonListComponent } from './view/lists/filter-person-list/filter-person-list.component';
 import { FilterPersonListItemComponent } from './view/lists/filter-person-list-item/filter-person-list-item.component';
 import { PersonFilterDialogComponent } from './view/dialogs/filters/person-filter-dialog/person-filter-dialog.component';
+import { TagListDialogComponent } from './view/dialogs/lists/tag-list-dialog/tag-list-dialog.component';
 
 @NgModule({
   declarations: [
@@ -166,7 +167,8 @@ import { PersonFilterDialogComponent } from './view/dialogs/filters/person-filte
     PersonDialogComponent,
     FilterPersonListComponent,
     FilterPersonListItemComponent,
-    PersonFilterDialogComponent
+    PersonFilterDialogComponent,
+    TagListDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -216,7 +218,8 @@ import { PersonFilterDialogComponent } from './view/dialogs/filters/person-filte
     TaskListDialogComponent,
     TagDialogComponent,
     PersonDialogComponent,
-    PersonFilterDialogComponent
+    PersonFilterDialogComponent,
+    TagListDialogComponent
   ],
   providers: [
     MatIconRegistry,
