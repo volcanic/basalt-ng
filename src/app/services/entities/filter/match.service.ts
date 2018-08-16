@@ -208,16 +208,16 @@ export class MatchService {
       return this.taskNameMatchesSingleItem(task, item)
         || this.projectNameMatchesSingleItem(project, item)
         || this.descriptionMatchesSingleItem(tasklet.description, item)
-        || this.personsMatchesSingleItem(tasklet.personIds.map(id => {
+        || (tasklet.personIds != null && this.personsMatchesSingleItem(tasklet.personIds.map(id => {
           return this.personService.getPersonById(id);
         }).filter(person => {
           return person != null;
-        }), item)
-        || this.tagsMatchesSingleItem(tasklet.tagIds.map(id => {
+        }), item))
+        || (tasklet.tagIds && this.tagsMatchesSingleItem(tasklet.tagIds.map(id => {
           return this.tagService.getTagById(id);
         }).filter(tag => {
           return tag != null;
-        }), item);
+        }), item));
     });
   }
 
