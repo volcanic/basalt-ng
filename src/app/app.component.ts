@@ -133,6 +133,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     icons.push(new Icon(ACTION, 'receipt', 'ic_receipt_24px.svg'));
     icons.push(new Icon(ACTION, 'search', 'ic_search_24px.svg'));
     icons.push(new Icon(ACTION, 'today', 'ic_today_24px.svg'));
+    icons.push(new Icon(ACTION, 'turned_in', 'ic_turned_in_24px.svg'));
     icons.push(new Icon(ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
     icons.push(new Icon(ACTION, 'work', 'ic_work_24px.svg'));
     icons.push(new Icon(ALERT, 'warning', 'ic_warning_24px.svg'));
