@@ -7,6 +7,9 @@
 /www
 /platforms/*
 
+# documentation
+/documentation
+
 # releases
 /release
 
