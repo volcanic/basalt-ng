@@ -63,7 +63,6 @@ import {TagFilterDialogComponent} from './view/dialogs/filters/tag-filter-dialog
 import {TagListComponent} from './view/lists/tag-list/tag-list.component';
 import {TagListDialogComponent} from './view/dialogs/lists/tag-list-dialog/tag-list-dialog.component';
 import {TagListItemComponent} from './view/lists/tag-list-item/tag-list-item.component';
-import {TagSelectionFragmentComponent} from './view/fragments/tag-selection-fragment/tag-selection-fragment.component';
 import {TaskAutocompleteFragmentComponent} from './view/fragments/task-autocomplete-fragment/task-autocomplete-fragment.component';
 import {TaskDialogComponent} from './view/dialogs/entities/task-dialog/task-dialog.component';
 import {TaskListComponent} from './view/lists/task-list/task-list.component';
@@ -130,7 +129,6 @@ import {WeeklyDigestFragmentComponent} from './view/fragments/weekly-digest-frag
     TagListComponent,
     TagListDialogComponent,
     TagListItemComponent,
-    TagSelectionFragmentComponent,
     TaskAutocompleteFragmentComponent,
     TaskDialogComponent,
     TaskListComponent,
