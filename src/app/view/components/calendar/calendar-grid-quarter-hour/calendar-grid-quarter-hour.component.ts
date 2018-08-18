@@ -2,22 +2,43 @@ import {Component, Input, OnInit} from '@angular/core';
 import {DateService} from '../../../../services/util/date.service';
 import {QuarterHour} from '../../../../model/ui/quarterhour.model';
 
+/**
+ * Displays calendar grid element for a quarter hour
+ */
 @Component({
   selector: 'app-calendar-grid-quarter-hour',
   templateUrl: './calendar-grid-quarter-hour.component.html',
   styleUrls: ['./calendar-grid-quarter-hour.component.scss']
 })
 export class CalendarGridQuarterHourComponent implements OnInit {
+
+  /** Quarter hour to be displayed */
   @Input() quarterHour: QuarterHour;
+
+  /** Start time */
   startTime = '';
 
-  constructor(private dateService: DateService) {
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
+    this.initializeStartTime();
   }
 
-  ngOnInit() {
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes start time
+   */
+  private initializeStartTime() {
     if (this.quarterHour.start.getMinutes() === 0) {
-      this.startTime = this.dateService.getTime(this.quarterHour.start);
+      this.startTime = DateService.getTimeString(this.quarterHour.start);
     }
   }
-
 }

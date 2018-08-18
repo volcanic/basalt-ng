@@ -4,17 +4,30 @@ import {Scope} from '../../../model/scope.enum';
 import {ThemeService} from '../../ui/theme.service';
 import {Theme} from '../../../model/ui/theme.enum';
 
+/**
+ * Handles scope
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class ScopeService {
 
+  /** Current scope */
   scope: Scope = Scope.WORK;
+  /** Subject that publishes scope */
   scopeSubject = new Subject<Scope>();
 
+  /**
+   * Constructor
+   * @param {ThemeService} themeService
+   */
   constructor(private themeService: ThemeService) {
   }
 
+  /**
+   * Switches scope
+   * @param {Scope} scope new scope
+   */
   switchScope(scope: Scope) {
     if (scope !== this.scope) {
       this.scope = scope;

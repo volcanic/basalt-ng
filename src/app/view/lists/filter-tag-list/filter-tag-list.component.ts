@@ -5,6 +5,9 @@ import {Subject} from 'rxjs/Subject';
 import {Tag} from '../../../model/entities/tag.model';
 import {MatchService} from '../../../services/entities/filter/match.service';
 
+/**
+ * Displays filter tag list
+ */
 @Component({
   selector: 'app-filter-tag-list',
   templateUrl: './filter-tag-list.component.html',
@@ -13,16 +16,32 @@ import {MatchService} from '../../../services/entities/filter/match.service';
 })
 export class FilterTagListComponent implements OnInit {
 
+  /** Tags to be displayed */
   tags = [];
+  /** Flag indicating whether entities without tag shall be displayed */
   tagsNone = false;
 
+  /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /**
+   * Constructor
+   * @param {FilterService} filterService
+   * @param {MatchService} matchService
+   * @param {ChangeDetectorRef} changeDetector
+   */
   constructor(private filterService: FilterService,
               private matchService: MatchService,
               private changeDetector: ChangeDetectorRef) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
   ngOnInit() {
     this.initializeTagSubscription();
   }
@@ -32,12 +51,11 @@ export class FilterTagListComponent implements OnInit {
   //
 
   /**
-   * Subscribes tag changes
+   * Initializes tag subscription
    */
   private initializeTagSubscription() {
-
     this.tags = Array.from(this.filterService.tags.values()).sort((t1: Tag, t2: Tag) => {
-      return this.matchService.compare(t1.name, t2.name);
+      return MatchService.compare(t1.name, t2.name);
     });
     this.tagsNone = this.filterService.tagsNone;
 
@@ -45,7 +63,7 @@ export class FilterTagListComponent implements OnInit {
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
         this.tags = Array.from(this.filterService.tags.values()).sort((t1: Tag, t2: Tag) => {
-          return this.matchService.compare(t1.name, t2.name);
+          return MatchService.compare(t1.name, t2.name);
         });
         this.tagsNone = this.filterService.tagsNone;
         this.changeDetector.markForCheck();
@@ -57,6 +75,9 @@ export class FilterTagListComponent implements OnInit {
   // Actions
   //
 
+  /**
+   * Handles click on select-all button
+   */
   onSelectAll() {
     this.tags.forEach(t => {
       t.checked = true;
@@ -65,6 +86,9 @@ export class FilterTagListComponent implements OnInit {
     this.filterService.updateTags(this.tags, false, this.tagsNone);
   }
 
+  /**
+   * Handles click on select-none button
+   */
   onSelectNone() {
     this.tags.forEach(t => {
       t.checked = false;
@@ -73,7 +97,10 @@ export class FilterTagListComponent implements OnInit {
     this.filterService.updateTags(this.tags, false, this.tagsNone);
   }
 
-  onChangeSpecialTag() {
+  /**
+   * Handles changes of tag-none flag
+   */
+  onTagNoneFlagChanged() {
     this.filterService.updateTags(this.tags, false, this.tagsNone);
   }
 }

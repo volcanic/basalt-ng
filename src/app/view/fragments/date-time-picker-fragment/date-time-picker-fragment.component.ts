@@ -1,6 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DateService} from '../../../services/util/date.service';
 
+/**
+ * Displays time picker dialog
+ */
 @Component({
   selector: 'app-date-time-picker-fragment',
   templateUrl: './date-time-picker-fragment.component.html',
@@ -8,39 +11,70 @@ import {DateService} from '../../../services/util/date.service';
 })
 export class DateTimePickerFragmentComponent implements OnInit {
 
+  /** Initial date to be displayed */
   @Input() date: Date;
-  @Input() disabled = false;
+
+  /** Event emitter indicating changes in date */
   @Output() dateChangedEmitter = new EventEmitter<Date>();
 
+  /** Date */
   day = new Date();
+  /** Hour */
   hour = 0;
+  /** Minute */
   minute = 0;
 
+  /** Array of selectable hours */
   hours = [];
+  /** Array of selectable minutes */
   minutes = [];
 
-  constructor(private dateService: DateService) {
+  /** Reference to static method */
+  addTrailingZero = DateTimePickerFragmentComponent.addTrailingZero;
+
+  /**
+   * Adds a trailing zero to one-digit numbers
+   * @param value
+   */
+  static addTrailingZero(value: number) {
+    if (value < 10) {
+      return `0${value}`;
+    }
+
+    return value;
   }
 
-  ngOnInit() {
+  //
+  // Lifecycle hooks
+  //
 
-    this.initComponents();
-    this.initOptions();
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
+    this.initializeComponents();
+    this.initializeOptions();
   }
 
   //
   // Initialization
   //
 
-  initComponents() {
+  /**
+   * Initializes components
+   */
+  private initializeComponents() {
     if (this.date != null) {
       this.day = JSON.parse(JSON.stringify(this.date));
       this.hour = new Date(this.date).getHours();
-      this.minute = this.dateService.getRoundedMinutes(new Date(this.date).getMinutes());
+      this.minute = DateService.getRoundedMinutes(new Date(this.date).getMinutes());
     }
   }
 
-  initOptions() {
+  /**
+   * Initializes options
+   */
+  private initializeOptions() {
     for (let h = 0; h < 24; h++) {
       this.hours.push(h);
     }
@@ -53,8 +87,11 @@ export class DateTimePickerFragmentComponent implements OnInit {
   // Actions
   //
 
+  /**
+   * Handles date changes
+   * @param value date inputFieldValue
+   */
   onDateChanged(value: Date) {
-
     this.date = new Date(
       new Date(value).getFullYear(),
       new Date(value).getMonth(),
@@ -62,10 +99,14 @@ export class DateTimePickerFragmentComponent implements OnInit {
       this.hour,
       this.minute);
 
-    this.initComponents();
+    this.initializeComponents();
     this.notify();
   }
 
+  /**
+   * Handles hour changes
+   * @param {number} value hour inputFieldValue
+   */
   onHourSelected(value: number) {
     this.date = new Date(
       new Date(this.date).getFullYear(),
@@ -74,11 +115,14 @@ export class DateTimePickerFragmentComponent implements OnInit {
       value,
       new Date(this.date).getMinutes());
 
-    this.initComponents();
+    this.initializeComponents();
     this.notify();
   }
 
-
+  /**
+   * Handles minute changes
+   * @param {number} value minute inputFieldValue
+   */
   onMinuteSelected(value: number) {
     this.date = new Date(
       new Date(this.date).getFullYear(),
@@ -88,18 +132,17 @@ export class DateTimePickerFragmentComponent implements OnInit {
       value
     );
 
-    this.initComponents();
+    this.initializeComponents();
     this.notify();
   }
 
-  addTrailingZero(value: number) {
-    if (value < 10) {
-      return `0${value}`;
-    }
+  //
+  // Notification
+  //
 
-    return value;
-  }
-
+  /**
+   * Informs subscribers that something has changed
+   */
   private notify() {
     this.dateChangedEmitter.emit(this.date);
   }

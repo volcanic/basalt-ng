@@ -1,4 +1,8 @@
-export enum TASKLET_TYPE {
+/**
+ * Enum containing tasklet types
+ */
+export enum TaskletType {
+
   UNSPECIFIED = '???',
   ACTION = 'Action',
   MEETING = 'Meeting',

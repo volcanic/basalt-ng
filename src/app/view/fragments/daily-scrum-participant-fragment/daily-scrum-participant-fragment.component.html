@@ -8,7 +8,7 @@
     <app-daily-scrum-activity-fragment *ngFor="let a of dailyScrumParticipant.activities"
                                              [person]="dailyScrumParticipant.person"
                                              [dailyScrumActivity]="a"
-                                       (activityEditedEmitter)="onActivityEdited($event)">
+                                       (activityEditedEmitter)="onActivityUpdated($event)">
     </app-daily-scrum-activity-fragment>
   </div>
 </div>

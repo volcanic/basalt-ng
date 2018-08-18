@@ -1,7 +1,13 @@
-import {TASKLET_TYPE} from '../../tasklet-type.enum';
+import {TaskletType} from '../../tasklet-type.enum';
 import {Tasklet} from '../tasklet.model';
 
+/**
+ * Represents a weekly digest which is a special kind of tasklet
+ */
 export class TaskletWeeklyDigest extends Tasklet {
-  type = TASKLET_TYPE.WEEKLY_DIGEST;
+
+  /** Tasklet type */
+  type = TaskletType.WEEKLY_DIGEST;
+  /** Focus date whose enclosing week shall be digest displayed for */
   focusDate: Date;
 }

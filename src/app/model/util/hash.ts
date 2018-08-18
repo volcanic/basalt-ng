@@ -1,4 +1,14 @@
+/* tslint:disable */
+/**
+ * Helper class that generates a hash inputFieldValue of string
+ */
 export class Hash {
+
+  /**
+   * Generates a hash inputFieldValue of a given string
+   * @param {string} value string inputFieldValue to hash
+   * @returns {number} hash inputFieldValue
+   */
   static hash(value: string) {
     let hash = 0;
     if (value == null || value.length === 0) {

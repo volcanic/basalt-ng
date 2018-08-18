@@ -1,6 +1,6 @@
-import { BasaltPage } from './app.po';
+import {BasaltPage} from './app.po';
 
-describe('basalt App', function() {
+describe('basalt App', function () {
   let page: BasaltPage;
 
   beforeEach(() => {
@@ -9,6 +9,6 @@ describe('basalt App', function() {
 
   it('should display message saying app works', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual(null);
   });
 });

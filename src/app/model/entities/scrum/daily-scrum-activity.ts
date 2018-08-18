@@ -1,7 +1,14 @@
-import {DAILY_SCRUM_ACTIVITY_TYPE} from './daily-scrum-activity-type.enum';
+import {DailyScrumActivityType} from './daily-scrum-activity-type.enum';
 
+/**
+ * Represents an activity done by a scrum participant
+ */
 export class DailyScrumActivity {
-  type = DAILY_SCRUM_ACTIVITY_TYPE.UNSPECIFIED;
+
+  /** Activity type */
+  type = DailyScrumActivityType.UNSPECIFIED;
+  /** Activity topic */
   topic = '';
+  /** Activity description */
   description = '';
 }

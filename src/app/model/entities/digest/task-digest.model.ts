@@ -1,6 +1,12 @@
+/**
+ * Represents a task digest
+ */
 export class TaskDigest {
-  start: Date;
-  end: Date;
 
+  /** Start time */
+  start: Date;
+  /** End time */
+  end: Date;
+  /** Effort */
   effort = 0;
 }

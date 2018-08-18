@@ -1,7 +1,7 @@
 <div class="dialog">
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
-    <app-file-drop (uploadedFilesEmitter)="uploadedFiles($event)"></app-file-drop>
+    <app-file-drop (uploadedFilesEmitter)="onFilesUploaded($event)"></app-file-drop>
   </mat-dialog-content>
   <mat-dialog-actions>
     <div class="flexbox"></div>

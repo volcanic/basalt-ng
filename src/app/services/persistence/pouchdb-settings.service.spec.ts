@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { PouchDBSettingsService } from './pouchdb-settings.service';
+import {PouchDBSettingsService} from './pouchdb-settings.service';
 
 describe('PouchDBSettingsService', () => {
   beforeEach(() => {

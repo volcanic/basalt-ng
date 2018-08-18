@@ -2,11 +2,10 @@ import {Injectable, isDevMode} from '@angular/core';
 import {Tasklet} from '../../model/entities/tasklet.model';
 import {Subject} from 'rxjs';
 import {Person} from '../../model/entities/person.model';
-import {TASKLET_TYPE} from '../../model/tasklet-type.enum';
+import {TaskletType} from '../../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../../model/entities/scrum/tasklet-daily-scrum.model';
 import {DateService} from '../util/date.service';
 import {EntityType} from '../../model/entities/entity-type.enum';
-import {takeUntil} from 'rxjs/internal/operators';
 import {SuggestionService} from './filter/suggestion.service';
 import {PouchDBService} from '../persistence/pouchdb.service';
 import {Project} from '../../model/entities/project.model';
@@ -20,16 +19,39 @@ import {Scope} from '../../model/scope.enum';
 import {TagService} from './tag.service';
 import {PersonService} from './person.service';
 
-@Injectable()
+/**
+ * Handles tasklets including
+ * <li> Queries
+ * <li> Persistence
+ * <li> Lookup
+ */
+@Injectable({
+  providedIn: 'root'
+})
 export class TaskletService {
+
+  /** Map of all tasklets */
   tasklets = new Map<string, Tasklet>();
+  /** Subject that publishes tasklets */
   taskletsSubject = new Subject<Tasklet[]>();
+
+  /** Queue containing recent dates scrolled by */
+  dateQueue = [];
+  /** Subject that publishes dates scrolled by */
   dateQueueSubject = new Subject<Date>();
 
-  dateQueue = [];
-
-  private unsubscribeSubject = new Subject();
-
+  /**
+   * Constructor
+   * @param {PouchDBService} pouchDBService
+   * @param {ProjectService} projectService
+   * @param {TaskService} taskService
+   * @param {TagService} tagService
+   * @param {PersonService} personService
+   * @param {DateService} dateService
+   * @param {SuggestionService} suggestionService
+   * @param {SnackbarService} snackbarService
+   * @param {ScopeService} scopeService
+   */
   constructor(private pouchDBService: PouchDBService,
               private projectService: ProjectService,
               private taskService: TaskService,
@@ -39,8 +61,7 @@ export class TaskletService {
               private suggestionService: SuggestionService,
               private snackbarService: SnackbarService,
               private scopeService: ScopeService) {
-
-    this.initializeSubscription();
+    this.initializeTaskletSubscription();
     this.findTaskletsByScope(this.scopeService.scope);
   }
 
@@ -50,10 +71,11 @@ export class TaskletService {
 
   // <editor-fold desc="Initialization">
 
-  private initializeSubscription() {
-    this.taskletsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+  /**
+   * Initializes tasklet subscription
+   */
+  private initializeTaskletSubscription() {
+    this.taskletsSubject.subscribe((value) => {
       (value as Tasklet[]).forEach(tasklet => {
           this.tasklets.set(tasklet.id, tasklet);
         }
@@ -71,14 +93,17 @@ export class TaskletService {
 
   // <editor-fold desc="Queries">
 
+  /**
+   * Loads tasklets by a given scope
+   * @param {Scope} scope scope to filter by
+   */
   public findTaskletsByScope(scope: Scope) {
     const index = {fields: ['entityType', 'scope', 'creationDate']};
     const options = {
       selector: {
         '$and': [
           {entityType: {$eq: EntityType.TASKLET}},
-          {scope: {$eq: scope}},
-          {creationDate: {$gt: null}}
+          {creationDate: {$gt: '2018-08-01T00:00:00.000Z'}}
         ]
       },
       // sort: [{creationDate: 'desc'}],
@@ -89,13 +114,20 @@ export class TaskletService {
     this.findTaskletsInternal(index, options);
   }
 
+  /**
+   * Clears tasklets
+   */
   private clearTasklets() {
-    this.tasklets = new Map<string, Tasklet>();
+    this.tasklets.clear();
   }
 
+  /**
+   * Index tasklets and queries them afterwards
+   * @param index index to be used
+   * @param options query options
+   */
   private findTaskletsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-
         result['docs'].forEach(element => {
           const tasklet = element as Tasklet;
           this.tasklets.set(tasklet.id, tasklet);
@@ -117,86 +149,96 @@ export class TaskletService {
 
   // <editor-fold desc="Persistence">
 
-  public createTasklet(tasklet: Tasklet) {
-    if (tasklet != null) {
-      tasklet.scope = this.scopeService.scope;
+  /**
+   * Creates a new tasklet
+   * @param {Tasklet} tasklet tasklet to be created
+   */
+  public createTasklet(tasklet: Tasklet): Promise<any> {
+    return new Promise(() => {
+        if (tasklet != null) {
+          tasklet.scope = this.scopeService.scope;
 
-      // Updated related objects
-      this.projectService.updateProject(this.getProjectByTasklet(tasklet), false);
-      this.taskService.updateTask(this.getTaskByTasklet(tasklet), false);
-      tasklet.tagIds.forEach(id => {
-        const tag = this.tagService.getTagById(id);
-        this.tagService.updateTag(tag, false);
-      });
-      tasklet.personIds.forEach(id => {
-        const person = this.personService.getPersonById(id);
-        this.personService.updatePerson(person, false);
-      });
+          // Updated related objects
+          this.projectService.updateProject(this.getProjectByTasklet(tasklet), false).then(() => {
+          });
+          this.taskService.updateTask(this.getTaskByTasklet(tasklet), false).then(() => {
+          });
+          tasklet.tagIds.forEach(id => {
+            const tag = this.tagService.getTagById(id);
+            this.tagService.updateTag(tag, false).then(() => {
+            });
+          });
+          tasklet.personIds.forEach(id => {
+            const person = this.personService.getPersonById(id);
+            this.personService.updatePerson(person, false).then(() => {
+            });
+          });
 
-      // Create tasklet
-      return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
-        this.snackbarService.showSnackbar('Added tasklet');
-        this.tasklets.set(tasklet.id, tasklet);
-        this.notify();
-      });
-    }
-  }
-
-  public updateTasklet(tasklet: Tasklet) {
-    if (tasklet != null) {
-
-      // Updated related objects
-      this.projectService.updateProject(this.getProjectByTasklet(tasklet), false);
-      this.taskService.updateTask(this.getTaskByTasklet(tasklet), false);
-      if (tasklet.tagIds != null) {
-        tasklet.tagIds.forEach(id => {
-          const tag = this.tagService.getTagById(id);
-          this.tagService.updateTag(tag, false);
-        });
+          // Create tasklet
+          return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
+            this.snackbarService.showSnackbar('Added tasklet');
+            this.tasklets.set(tasklet.id, tasklet);
+            this.notify();
+          });
+        }
       }
-      if (tasklet.personIds != null) {
-        tasklet.personIds.forEach(id => {
-          const person = this.personService.getPersonById(id);
-          this.personService.updatePerson(person, false);
-        });
-      }
-
-      tasklet.modificationDate = new Date();
-
-      // Update tasklet
-      return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
-        this.snackbarService.showSnackbar('Updated tasklet');
-        this.tasklets.set(tasklet.id, tasklet);
-        this.notify();
-      });
-    }
+    );
   }
-
-  public deleteTasklet(tasklet: Tasklet) {
-    if (tasklet != null) {
-      return this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
-        this.snackbarService.showSnackbar('Deleted tasklet');
-        this.tasklets.delete(tasklet.id);
-        this.notify();
-      });
-    }
-  }
-
-  // </editor-fold>
-
-  //
-  // Notification
-  //
-
-  // <editor-fold desc="Notification">
 
   /**
-   * Informs subscribers that something has changed
+   * Updates an existing tasklet
+   * @param {Tasklet} tasklet tasklet to be updated
    */
-  public notify() {
-    this.taskletsSubject.next(Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
-    }));
+  public updateTasklet(tasklet: Tasklet): Promise<any> {
+    return new Promise(() => {
+      if (tasklet != null) {
+
+        // Updated related objects
+        this.projectService.updateProject(this.getProjectByTasklet(tasklet), false).then(() => {
+        });
+        this.taskService.updateTask(this.getTaskByTasklet(tasklet), false).then(() => {
+        });
+        if (tasklet.tagIds != null) {
+          tasklet.tagIds.forEach(id => {
+            const tag = this.tagService.getTagById(id);
+            this.tagService.updateTag(tag, false).then(() => {
+            });
+          });
+        }
+        if (tasklet.personIds != null) {
+          tasklet.personIds.forEach(id => {
+            const person = this.personService.getPersonById(id);
+            this.personService.updatePerson(person, false).then(() => {
+            });
+          });
+        }
+
+        tasklet.modificationDate = new Date();
+
+        // Update tasklet
+        return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
+          this.snackbarService.showSnackbar('Updated tasklet');
+          this.tasklets.set(tasklet.id, tasklet);
+          this.notify();
+        });
+      }
+    });
+  }
+
+  /**
+   * Deletes a tasklet
+   * @param {Tasklet} tasklet tasklet to be deleted
+   */
+  public deleteTasklet(tasklet: Tasklet): Promise<any> {
+    return new Promise(() => {
+      if (tasklet != null) {
+        return this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
+          this.snackbarService.showSnackbar('Deleted tasklet');
+          this.tasklets.delete(tasklet.id);
+          this.notify();
+        });
+      }
+    });
   }
 
   // </editor-fold>
@@ -208,10 +250,9 @@ export class TaskletService {
   // <editor-fold desc="Lookup">
 
   /**
-   * Retrieves a tasklet by a tasks
-   *
-   * @param tasklet
-   * @returns {any}
+   * Retrieves a task by a given tasklet
+   * @param {Tasklet} tasklet tasklet to find task by
+   * @returns {Task} task referenced by given tasklet, null if no such task exists
    */
   public getTaskByTasklet(tasklet: Tasklet): Task {
     if (tasklet != null && tasklet.taskId != null) {
@@ -222,10 +263,9 @@ export class TaskletService {
   }
 
   /**
-   * Retrieves a project by a tasklet
-   *
-   * @param tasklet
-   * @returns {any}
+   * Retrieves a project by a given tasklet
+   * @param {Tasklet} tasklet tasklet to find project by
+   * @returns {Project} project referenced by given tasklet, null if no such project exists
    */
   public getProjectByTasklet(tasklet: Tasklet): Project {
     const task = this.getTaskByTasklet(tasklet);
@@ -239,15 +279,15 @@ export class TaskletService {
 
   /**
    * Returns a map of recent daily scrum activities of a given person
-   * @param person given person
-   * @returns {IterableIterator<string>}
+   * @param {Person} person person to get scrum activities for
+   * @returns {Map<string, string>} map of scrum activities
    */
   public getDailyScrumActivities(person: Person): Map<string, string> {
     const dailyScrumActivities = new Map<string, string>();
 
     if (person != null) {
       (Array.from(this.tasklets.values()).filter(t => {
-        return t.type === TASKLET_TYPE.DAILY_SCRUM;
+        return t.type === TaskletType.DAILY_SCRUM;
       }).sort((t1, t2) => {
         return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
       }) as TaskletDailyScrum[]).forEach(t => {
@@ -269,15 +309,15 @@ export class TaskletService {
   // </editor-fold>
 
   //
-  // Util
+  // Helpers
   //
 
   // <editor-fold desc="Util">
 
   /**
-   * Adds a creation date of a tasklet to the queue and publishes the latest entry
+   * Adds a creation date of a tasklet to the queue and publishes the latest entry.
    * This is used for the date indicator component
-   * @param {Date} date
+   * @param {Date} date element to be added
    */
   addElementToDateQueue(date: Date) {
     const BUFFER = 7;
@@ -295,6 +335,23 @@ export class TaskletService {
     });
 
     this.dateQueueSubject.next(sortedDateQueue[0]);
+  }
+
+  // </editor-fold>
+
+  //
+  // Notification
+  //
+
+  // <editor-fold desc="Notification">
+
+  /**
+   * Informs subscribers that something has changed
+   */
+  public notify() {
+    this.taskletsSubject.next(Array.from(this.tasklets.values()).sort((t1, t2) => {
+      return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
+    }));
   }
 
   // </editor-fold>

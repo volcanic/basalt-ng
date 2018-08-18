@@ -1,13 +1,31 @@
+/**
+ * Electron objects
+ */
 const {app, BrowserWindow} = require('electron');
+/**
+ * Path object
+ * @type {module:path}
+ */
 const path = require('path');
+/**
+ * URL object
+ * @type {module:url}
+ */
 const url = require('url');
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+/**
+ * Keeps a global reference of the window object, if you don't, the window will
+ * be closed automatically when the JavaScript object is garbage collected.
+ */
 let win;
 
-function createWindow () {
-  // Create the browser window.
+/**
+ * Creates window
+ */
+function createWindow() {
+  /**
+   * Browser window
+   */
   win = new BrowserWindow({width: 1080, height: 800});
 
   // and load the index.html of the app.

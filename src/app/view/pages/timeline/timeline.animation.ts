@@ -4,6 +4,9 @@ export enum ScrollState {SCROLLING, NON_SCROLLING }
 
 export enum ScrollDirection {UP, DOWN }
 
+/**
+ * Contains the animations for the component
+ */
 export const Animations = {
   toolbarAnimation: trigger('toolbarAnimation', [
     state(`${ScrollDirection.DOWN}`, style({

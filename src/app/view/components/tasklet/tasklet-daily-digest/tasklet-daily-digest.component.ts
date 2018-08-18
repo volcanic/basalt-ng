@@ -4,6 +4,9 @@ import {MatDialog} from '@angular/material';
 import {DigestService} from '../../../../services/entities/digest/digest.service';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 
+/**
+ * Displays daily tasklet part of tasklet
+ */
 @Component({
   selector: 'app-tasklet-daily-digest',
   templateUrl: './tasklet-daily-digest.component.html',
@@ -11,15 +14,40 @@ import {Tasklet} from '../../../../model/entities/tasklet.model';
 })
 export class TaskletDailyDigestComponent implements OnInit {
 
+  /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
 
+  /** Daily digest */
   dailyDigest: DailyDigest;
 
-  constructor(public dialog: MatDialog,
-              private digestService: DigestService) {
+  /**
+   * Constructor
+   * @param {DigestService} digestService
+   * @param {MatDialog} dialog dialog
+   */
+  constructor(private digestService: DigestService,
+              public dialog: MatDialog) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
   ngOnInit() {
+    this.initializeDailyDigest();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes daily digest
+   */
+  private initializeDailyDigest() {
     this.dailyDigest = this.digestService.getDailyDigest(new Date(this.tasklet.creationDate));
   }
 }

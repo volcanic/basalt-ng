@@ -1,5 +1,8 @@
-import construct = Reflect.construct;
-export enum DIALOG_MODE {
+/**
+ * Enum containing dialog modes
+ */
+export enum DialogMode {
+
   NONE,
   ADD,
   UPDATE,

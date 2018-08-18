@@ -5,11 +5,11 @@ import {Tasklet} from '../../../model/entities/tasklet.model';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {ConfirmationDialogComponent} from '../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {DateService} from '../../../services/util/date.service';
-import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
+import {DialogMode} from '../../../model/ui/dialog-mode.enum';
 import {Tag} from '../../../model/entities/tag.model';
 import {TimePickerDialogComponent} from '../../dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {UUID} from '../../../model/util/uuid';
-import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {TaskletType} from '../../../model/tasklet-type.enum';
 import {TaskletDailyScrum} from '../../../model/entities/scrum/tasklet-daily-scrum.model';
 import {Project} from '../../../model/entities/project.model';
 import {ProjectService} from '../../../services/entities/project.service';
@@ -19,11 +19,14 @@ import {CloneService} from '../../../services/util/clone.service';
 import {FilterService} from '../../../services/entities/filter/filter.service';
 import {MediaService} from '../../../services/ui/media.service';
 import {takeUntil} from 'rxjs/internal/operators';
-import {MEDIA} from '../../../model/ui/media.enum';
+import {Media} from '../../../model/ui/media.enum';
 import {Subject} from 'rxjs/Subject';
 import {TagService} from '../../../services/entities/tag.service';
 import {PersonService} from '../../../services/entities/person.service';
 
+/**
+ * Displays tasklet list item
+ */
 @Component({
   selector: 'app-tasklet-list-item',
   templateUrl: './tasklet-list-item.component.html',
@@ -31,42 +34,82 @@ import {PersonService} from '../../../services/entities/person.service';
 })
 export class TaskletListItemComponent implements OnInit, OnDestroy {
 
+  /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
+
+  /** Trigger for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
+  /** Default theme to be used */
   themeClass = 'light-theme';
 
-  media: MEDIA = MEDIA.UNDEFINED;
-  public mediaType = MEDIA;
+  /** Enum for media types */
+  mediaType = Media;
+  /** Current media */
+  media: Media = Media.UNDEFINED;
 
+  /** Array of tags */
   tags: Tag[] = [];
+  /** Array of projects */
   projects: Project[] = [];
-
+  /** Icon name */
   icon = '';
+  /** Topic (typically derived from task name */
   topic = '';
+  /** Project */
   project: Project;
+  /** Project color */
   projectColor = 'transparent';
+  /** Creation time */
   time = '';
+  /** Creation weekday */
   weekDay = '';
+  /** Creation date */
   date = '';
 
+  /** Expansion panel state */
   expansionPanelOpened = false;
 
+  /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /** Reference to static service methods */
+  isBeforeToday = DateService.isBeforeToday;
+
+  /**
+   * Constructor
+   * @param {ProjectService} projectService
+   * @param {TaskletService} taskletService
+   * @param {ColorService} colorService
+   * @param {CloneService} cloneService
+   * @param {FilterService} filterService
+   * @param {MediaService} mediaService
+   * @param {ChangeDetectorRef} changeDetector
+   * @param {TagService} tagService tag service
+   * @param {PersonService} personService person service
+   * @param {DateService} dateService date service
+   * @param {MatDialog} dialog dialog
+   */
   constructor(private projectService: ProjectService,
               private taskletService: TaskletService,
-              public tagService: TagService,
-              public personService: PersonService,
               private colorService: ColorService,
               private cloneService: CloneService,
               private filterService: FilterService,
               private mediaService: MediaService,
+              private changeDetector: ChangeDetectorRef,
+              public tagService: TagService,
+              public personService: PersonService,
               public dateService: DateService,
-              public dialog: MatDialog,
-              private changeDetector: ChangeDetectorRef) {
+              public dialog: MatDialog) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
   ngOnInit() {
     this.initializeMediaSubscription();
     this.initializeProjects();
@@ -77,7 +120,10 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     this.initializeExpansionPanel();
   }
 
-  ngOnDestroy(): void {
+  /**
+   * Handles on-destroy lifecycle hook
+   */
+  ngOnDestroy() {
     this.unsubscribeSubject.next();
     this.unsubscribeSubject.complete();
   }
@@ -86,6 +132,9 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
   // Initialization
   //
 
+  /**
+   * Initializes media subscription
+   */
   private initializeMediaSubscription() {
     this.media = this.mediaService.media;
     this.mediaService.mediaSubject.pipe(
@@ -95,75 +144,87 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Initializes projects
+   */
   private initializeProjects() {
     this.projects = Array.from(this.projectService.projects.values());
   }
 
+  /**
+   * Initializes icon
+   */
   private initializeIcon() {
     switch (this.tasklet.type) {
-      case TASKLET_TYPE.ACTION: {
+      case TaskletType.ACTION: {
         this.icon = 'turned_in_not';
         break;
       }
-      case TASKLET_TYPE.MEETING: {
+      case TaskletType.MEETING: {
         this.icon = 'people';
         break;
       }
-      case TASKLET_TYPE.CALL: {
+      case TaskletType.CALL: {
         this.icon = 'call';
         break;
       }
-      case TASKLET_TYPE.DAILY_SCRUM: {
+      case TaskletType.DAILY_SCRUM: {
         this.icon = 'scrum';
         break;
       }
-      case TASKLET_TYPE.MAIL: {
+      case TaskletType.MAIL: {
         this.icon = 'mail';
         break;
       }
-      case TASKLET_TYPE.CHAT: {
+      case TaskletType.CHAT: {
         this.icon = 'chat';
         break;
       }
-      case TASKLET_TYPE.DEVELOPMENT: {
+      case TaskletType.DEVELOPMENT: {
         this.icon = 'code';
         break;
       }
-      case TASKLET_TYPE.DEBUGGING: {
+      case TaskletType.DEBUGGING: {
         this.icon = 'bug_report';
         break;
       }
-      case TASKLET_TYPE.IDEA: {
+      case TaskletType.IDEA: {
         this.icon = 'lightbulb_outline';
         break;
       }
-      case TASKLET_TYPE.LUNCH_BREAK: {
+      case TaskletType.LUNCH_BREAK: {
         this.icon = 'local_dining';
         break;
       }
-      case TASKLET_TYPE.FINISHING_TIME: {
+      case TaskletType.FINISHING_TIME: {
         this.icon = 'directions_run';
         break;
       }
-      case TASKLET_TYPE.WEEKLY_DIGEST: {
+      case TaskletType.WEEKLY_DIGEST: {
         this.icon = 'receipt';
         break;
       }
     }
   }
 
+  /**
+   * Initializes date
+   */
   private initializeDate() {
-    this.time = this.dateService.getTime(new Date(this.tasklet.creationDate));
-    this.weekDay = this.dateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
-    this.date = this.dateService.getDate(new Date(this.tasklet.creationDate));
+    this.time = DateService.getTimeString(new Date(this.tasklet.creationDate));
+    this.weekDay = DateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
+    this.date = DateService.getDateString(new Date(this.tasklet.creationDate));
   }
 
+  /**
+   * Initializes topic
+   */
   private initializeTopic() {
     switch (this.tasklet.type) {
-      case TASKLET_TYPE.DAILY_SCRUM:
-      case TASKLET_TYPE.LUNCH_BREAK:
-      case TASKLET_TYPE.FINISHING_TIME:
-      case TASKLET_TYPE.WEEKLY_DIGEST: {
+      case TaskletType.DAILY_SCRUM:
+      case TaskletType.LUNCH_BREAK:
+      case TaskletType.FINISHING_TIME:
+      case TaskletType.WEEKLY_DIGEST: {
         this.topic = this.tasklet.type;
         break;
       }
@@ -179,24 +240,34 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Initializes project
+   */
   private initializeProject() {
     this.project = this.taskletService.getProjectByTasklet(this.tasklet);
     this.projectColor = this.colorService.getProjectColor(this.project);
   }
 
+  /**
+   * Initializes expansion panel
+   */
   private initializeExpansionPanel() {
-    this.expansionPanelOpened = !this.dateService.isBeforeToday(this.tasklet.creationDate);
+    this.expansionPanelOpened = !DateService.isBeforeToday(this.tasklet.creationDate);
   }
 
   //
   // Actions
   //
 
+  /**
+   * Handles actions
+   * @param {string} action action
+   */
   onActionFired(action: string) {
     switch (action) {
       case 'card': {
         if (this.media > this.mediaType.MEDIUM) {
-          this.onActionFired('update-tasklet');
+          this.onActionFired('notify-tasklet');
         } else {
           this.contextMenuTrigger.openMenu();
         }
@@ -227,15 +298,25 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     }
   }
 
-  onToggleExpansionPanel() {
+  /**
+   * Handles expansion panel toggle
+   */
+  onExpansionPanelToggled() {
     this.expansionPanelOpened = !this.expansionPanelOpened;
   }
 
+  //
+  // Actions
+  //
+
+  /**
+   * Handles click on update button
+   */
   private updateTasklet() {
     const dialogRef = this.dialog.open(TaskletDialogComponent, <MatDialogConfig>{
       disableClose: false,
       data: {
-        mode: DIALOG_MODE.UPDATE,
+        mode: DialogMode.UPDATE,
         dialogTitle: 'Update tasklet',
         tasklet: this.tasklet,
         projects: this.projects
@@ -257,24 +338,25 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Handles click on continue button
+   */
   private continueTasklet() {
-    // Deep copy
-    const continueTasklet = this.cloneService.cloneTasklet(this.tasklet);
+    const continueTasklet = CloneService.cloneTasklet(this.tasklet);
 
     continueTasklet['_rev'] = null;
     continueTasklet.id = new UUID().toString();
     continueTasklet.description = new Description();
     continueTasklet.creationDate = new Date();
-    continueTasklet.personIds = []; // TODO: Depending on tasklet type, this might be worth keeping
 
-    if (this.tasklet.type === TASKLET_TYPE.IDEA) {
-      continueTasklet.type = TASKLET_TYPE.ACTION;
+    if (this.tasklet.type === TaskletType.IDEA) {
+      continueTasklet.type = TaskletType.ACTION;
     }
 
     const dialogRef = this.dialog.open(TaskletDialogComponent, {
       disableClose: false,
       data: {
-        mode: DIALOG_MODE.CONTINUE,
+        mode: DialogMode.CONTINUE,
         dialogTitle: 'Continue tasklet',
         tasklet: continueTasklet,
         projects: this.projects,
@@ -284,7 +366,9 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         const tasklet = result as Tasklet;
-        this.taskletService.createTasklet(result);
+        this.taskletService.createTasklet(result).then(() => {
+          this.changeDetector.markForCheck();
+        });
         this.filterService.updateTagsList(tasklet.tagIds.map(id => {
           return this.tagService.getTagById(id);
         }).filter(tag => {
@@ -294,9 +378,11 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Handles click on template button
+   */
   private templateTasklet() {
-    // Deep copy
-    const template = this.cloneService.cloneTasklet(this.tasklet);
+    const template = CloneService.cloneTasklet(this.tasklet);
 
     template['_rev'] = null;
     template.id = new UUID().toString();
@@ -310,7 +396,7 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(TaskletDialogComponent, {
       disableClose: false,
       data: {
-        mode: DIALOG_MODE.CONTINUE,
+        mode: DialogMode.CONTINUE,
         dialogTitle: 'Continue tasklet',
         tasklet: template,
         projects: this.projects
@@ -319,7 +405,9 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         const tasklet = result as TaskletDailyScrum;
-        this.taskletService.createTasklet(tasklet);
+        this.taskletService.createTasklet(tasklet).then(() => {
+          this.changeDetector.markForCheck();
+        });
         this.filterService.updateTagsList(tasklet.tagIds.map(id => {
           return this.tagService.getTagById(id);
         }).filter(tag => {
@@ -329,6 +417,9 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Handles click on creation time
+   */
   private updateTaskletTime() {
     const dialogRef = this.dialog.open(TimePickerDialogComponent, <MatDialogConfig>{
       disableClose: false,
@@ -342,12 +433,15 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
       if (result != null) {
         const tasklet = result as Tasklet;
         this.taskletService.updateTasklet(tasklet).then(() => {
-          this.changeDetector.markForCheck();
+          this.changeDetector.detectChanges();
         });
       }
     });
   }
 
+  /**
+   * Handles click on delete button
+   */
   public deleteTasklet() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
       disableClose: false,
@@ -360,7 +454,9 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletService.deleteTasklet(result as Tasklet);
+        this.taskletService.deleteTasklet(result as Tasklet).then(() => {
+          this.changeDetector.markForCheck();
+        });
         this.filterService.updateTagsList([], false);
       }
     });

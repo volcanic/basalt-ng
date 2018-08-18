@@ -3,31 +3,67 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Person} from '../../../../model/entities/person.model';
 import {CloneService} from '../../../../services/util/clone.service';
 
+/**
+ * Displays person filter dialog
+ */
 @Component({
   selector: 'app-person-filter-dialog',
   templateUrl: './person-filter-dialog.component.html',
   styleUrls: ['./person-filter-dialog.component.scss']
 })
 export class PersonFilterDialogComponent implements OnInit {
+
+  /** Dialog title */
   dialogTitle = '';
+
+  /** Persons to be displayed */
   persons: Person[] = [];
+
+  /** Flag indicating whether entities without person shall be displayed */
   personsNone = false;
 
-  constructor(private cloneService: CloneService,
-              public dialogRef: MatDialogRef<PersonFilterDialogComponent>,
+  /**
+   * Constructor
+   * @param {MatDialogRef<PersonFilterDialogComponent>} dialogRef dialog reference
+   * @param data dialog data
+   */
+  constructor(public dialogRef: MatDialogRef<PersonFilterDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
 
-    this.dialogTitle = data.dialogTitle;
+  //
+  // Lifecycle hooks
+  //
 
-    this.persons = this.cloneService.clonePersons(this.data.persons).sort((p1, p2) => {
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
+    this.initializeData();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes data
+   */
+  private initializeData() {
+    this.dialogTitle = this.data.dialogTitle;
+    this.persons = CloneService.clonePersons(this.data.persons).sort((p1, p2) => {
       return p1.name > p2.name ? 1 : -1;
     });
     this.personsNone = this.data.personsNone;
   }
 
-  ngOnInit() {
-  }
+  //
+  // Button actions
+  //
 
+  /**
+   * Handles click on select-all button
+   */
   selectAll() {
     this.persons.forEach(p => {
       p.checked = true;
@@ -35,6 +71,9 @@ export class PersonFilterDialogComponent implements OnInit {
     this.personsNone = true;
   }
 
+  /**
+   * Handles click on select-none button
+   */
   selectNone() {
     this.persons.forEach(p => {
       p.checked = false;
@@ -42,6 +81,9 @@ export class PersonFilterDialogComponent implements OnInit {
     this.personsNone = false;
   }
 
+  /**
+   * Handles click on apply button
+   */
   apply() {
     this.dialogRef.close({persons: this.persons, personsNone: this.personsNone});
   }

@@ -1,39 +1,60 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {FilterService} from '../../../services/entities/filter/filter.service';
 import {PersonService} from '../../../services/entities/person.service';
 import {Person} from '../../../model/entities/person.model';
-import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
+import {DialogMode} from '../../../model/ui/dialog-mode.enum';
 import {PersonDialogComponent} from '../../dialogs/entities/person-dialog/person-dialog.component';
 
+/**
+ * Displays person list item
+ */
 @Component({
   selector: 'app-person-list-item',
   templateUrl: './person-list-item.component.html',
   styleUrls: ['./person-list-item.component.scss']
 })
-export class PersonListItemComponent implements OnInit {
+export class PersonListItemComponent {
+
+  /** Person to be displayed */
   @Input() person: Person;
 
+  /** Animation state */
   state = 'inactive';
 
+  /**
+   * Constructor
+   * @param {PersonService} personService
+   * @param {FilterService} filterService
+   * @param {ChangeDetectorRef} changeDetector
+   * @param {MatDialog} dialog dialog
+   */
   constructor(private personService: PersonService,
               private filterService: FilterService,
-              public dialog: MatDialog,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              public dialog: MatDialog) {
   }
 
-  ngOnInit() {
-  }
+  //
+  // Actions
+  //
 
+  /**
+   * Handles hover over container
+   * @param {boolean} hovered whether there is currently a hover event
+   */
   onHoverContainer(hovered: boolean) {
     this.state = hovered ? 'active' : 'inactive';
   }
 
+  /**
+   * Handles click on update button
+   */
   updatePerson() {
     const dialogRef = this.dialog.open(PersonDialogComponent, {
       disableClose: false,
       data: {
-        mode: DIALOG_MODE.UPDATE,
+        mode: DialogMode.UPDATE,
         dialogTitle: 'Update person',
         person: this.person
       }

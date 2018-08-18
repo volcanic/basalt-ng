@@ -4,7 +4,7 @@ import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {TagFilterDialogComponent} from '../../dialogs/filters/tag-filter-dialog/tag-filter-dialog.component';
-import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
+import {DialogMode} from '../../../model/ui/dialog-mode.enum';
 import {AboutDialogComponent} from '../../dialogs/app-info/about-dialog/about-dialog.component';
 import {environment} from '../../../../environments/environment';
 import {ProjectFilterDialogComponent} from '../../dialogs/filters/project-filter-dialog/project-filter-dialog.component';
@@ -20,7 +20,7 @@ import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/proj
 import {FilterService} from '../../../services/entities/filter/filter.service';
 import {Tag} from '../../../model/entities/tag.model';
 import {MediaService} from '../../../services/ui/media.service';
-import {MEDIA} from '../../../model/ui/media.enum';
+import {Media} from '../../../model/ui/media.enum';
 import {map, takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';
@@ -38,8 +38,11 @@ import {PersonService} from '../../../services/entities/person.service';
 import {PersonFilterDialogComponent} from '../../dialogs/filters/person-filter-dialog/person-filter-dialog.component';
 import {TagListDialogComponent} from '../../dialogs/lists/tag-list-dialog/tag-list-dialog.component';
 
+/**
+ * Displays timeline page
+ */
 @Component({
-  selector: 'app-tasklets',
+  selector: 'app-timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
   animations: [
@@ -49,49 +52,150 @@ import {TagListDialogComponent} from '../../dialogs/lists/tag-list-dialog/tag-li
   ]
 })
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  /** App title */
   title = 'Basalt';
 
+  /** Indicator date */
   public indicatedDate;
+  /** Indicator day */
   public indicatedDay;
+  /** Indicator month */
   public indicatedMonth;
 
-  public mediaType = MEDIA;
-  public media: MEDIA = MEDIA.UNDEFINED;
+  /** Enum of media types */
+  public mediaType = Media;
+  /** Current media */
+  public media: Media = Media.UNDEFINED;
 
+  /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /** Vertical scroll position */
   private scrollPosLast = 0;
+  /** Scroll direction */
   public scrollDirection: ScrollDirection = ScrollDirection.UP;
+  /** Scroll state */
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
 
+  /** Side navigation at start */
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
+  /** Side navigation at end */
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
+  /** Scrollable directive */
   @ViewChild(CdkScrollable) scrollable: CdkScrollable;
 
+  /**
+   * Constructor
+   * @param {EntityService} entityService
+   * @param {FilterService} filterService
+   * @param {MediaService} mediaService
+   * @param {PersonService} personService
+   * @param {ProjectService} projectService
+   * @param {ScopeService} scopeService
+   * @param {ScrollDispatcher} scroll
+   * @param {SnackbarService} snackbarService
+   * @param {TagService} tagService
+   * @param {TaskService} taskService
+   * @param {DateService} dateService date service
+   * @param {TaskletService} taskletService tasklet service
+   * @param {MatDialog} dialog dialog
+   * @param {NgZone} zone Angular zone
+   */
   constructor(private entityService: EntityService,
-              private projectService: ProjectService,
-              private taskService: TaskService,
-              public taskletService: TaskletService,
-              private tagService: TagService,
-              private personService: PersonService,
               private filterService: FilterService,
-              private snackbarService: SnackbarService,
               private mediaService: MediaService,
+              private personService: PersonService,
+              private projectService: ProjectService,
               private scopeService: ScopeService,
+              private scroll: ScrollDispatcher,
+              private snackbarService: SnackbarService,
+              private tagService: TagService,
+              private taskService: TaskService,
               public dateService: DateService,
-              public zone: NgZone,
+              public taskletService: TaskletService,
               public dialog: MatDialog,
-              private scroll: ScrollDispatcher) {
+              public zone: NgZone) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
   ngOnInit() {
     this.initializeDateSubscription();
     this.initializeMediaSubscription();
     this.initializeScopeSubscription();
   }
 
+  /**
+   * Handles after-view-init lifecycle hook
+   */
   ngAfterViewInit() {
+    this.initializeScrollDetection();
+  }
 
+  /**
+   * Handles on-destroy lifecycle hook
+   */
+  ngOnDestroy() {
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes date subscription
+   */
+  private initializeDateSubscription() {
+    this.taskletService.dateQueueSubject.subscribe(date => {
+      this.indicatedDate = date;
+      this.indicatedDay = DateService.getDayOfMonthString(date);
+      this.indicatedMonth = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
+    });
+  }
+
+  /**
+   * Initializes media subscription
+   */
+  private initializeMediaSubscription() {
+    this.media = this.mediaService.media;
+    this.mediaService.mediaSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.media = value as Media;
+    });
+  }
+
+  /**
+   * Initializes scope subscription
+   */
+  private initializeScopeSubscription() {
+    this.scopeService.scopeSubject.subscribe(scope => {
+
+      this.filterService.clearSearchItem();
+      this.filterService.clearTags();
+      this.filterService.clearProjects();
+      this.filterService.clearPersons();
+
+      this.taskletService.findTaskletsByScope(scope);
+      this.taskService.findOpenTasksByScope(scope);
+      this.projectService.findProjectsByScope(scope);
+      this.tagService.findTagsByScope(scope);
+      this.personService.findPersonsByScope(scope);
+    });
+  }
+
+  /**
+   * Initializes scroll detection
+   */
+  private initializeScrollDetection() {
     let scrollTimeout = null;
 
     this.scroll.scrolled(0)
@@ -122,55 +226,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       })).subscribe();
   }
 
-  ngOnDestroy() {
-    this.unsubscribeSubject.next();
-    this.unsubscribeSubject.complete();
-  }
-
   //
-  // Initialization
-  //
-
-  private initializeDateSubscription() {
-    this.taskletService.dateQueueSubject.subscribe(date => {
-      this.indicatedDate = date;
-      this.indicatedDay = this.dateService.getDay(date);
-      this.indicatedMonth = this.dateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
-    });
-  }
-
-  private initializeMediaSubscription() {
-    this.media = this.mediaService.media;
-    this.mediaService.mediaSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.media = value as MEDIA;
-    });
-  }
-
-  private initializeScopeSubscription() {
-    this.scopeService.scopeSubject.subscribe(scope => {
-
-      this.filterService.clearSearchItem();
-      this.filterService.clearTags();
-      this.filterService.clearProjects();
-      this.filterService.clearPersons();
-
-      this.taskletService.findTaskletsByScope(scope);
-      this.taskService.findOpenTasksByScope(scope);
-      this.projectService.findProjectsByScope(scope);
-      this.tagService.findTagsByScope(scope);
-      this.personService.findPersonsByScope(scope);
-    });
-  }
-
-  //
-  // Handlers
+  // Actions
   //
 
   /**
    * Handles click on menu items
-   * @param menuItem
+   * @param {string} menuItem menu item that has been clicked
    */
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
@@ -185,7 +247,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const dialogRef = this.dialog.open(TaskletDialogComponent, {
           disableClose: false,
           data: {
-            mode: DIALOG_MODE.ADD,
+            mode: DialogMode.ADD,
             dialogTitle: 'Add tasklet',
             tasklet: new Tasklet(),
           }
@@ -194,7 +256,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const tasklet = result as Tasklet;
 
-            this.taskletService.createTasklet(tasklet);
+            this.taskletService.createTasklet(tasklet).then(() => {
+            });
             this.filterService.updateTagsList(tasklet.tagIds.map(id => {
               return this.tagService.getTagById(id);
             }).filter(tag => {
@@ -213,7 +276,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const dialogRef = this.dialog.open(TaskDialogComponent, {
           disableClose: false,
           data: {
-            mode: DIALOG_MODE.ADD,
+            mode: DialogMode.ADD,
             dialogTitle: 'Add task',
             task: new Task('')
           }
@@ -222,7 +285,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const task = result as Task;
 
-            this.taskService.createTask(task);
+            this.taskService.createTask(task).then(() => {
+            });
             this.filterService.updateTagsList(task.tagIds.map(id => {
               return this.tagService.getTagById(id);
             }).filter(tag => {
@@ -236,7 +300,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const dialogRef = this.dialog.open(ProjectDialogComponent, {
           disableClose: false,
           data: {
-            mode: DIALOG_MODE.ADD,
+            mode: DialogMode.ADD,
             dialogTitle: 'Add project',
             project: new Project('', true)
           }
@@ -245,7 +309,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const project = result as Project;
             this.filterService.updateProjectsList([project], true);
-            this.projectService.createProject(project);
+            this.projectService.createProject(project).then(() => {
+            });
           }
         });
         break;
@@ -254,7 +319,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const dialogRef = this.dialog.open(TagDialogComponent, {
           disableClose: false,
           data: {
-            mode: DIALOG_MODE.ADD,
+            mode: DialogMode.ADD,
             dialogTitle: 'Add tag',
             tag: new Tag('', true)
           }
@@ -263,7 +328,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const tag = result as Tag;
             this.filterService.updateTagsList([tag], true);
-            this.tagService.createTag(tag);
+            this.tagService.createTag(tag).then(() => {
+            });
           }
         });
         break;
@@ -272,7 +338,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const dialogRef = this.dialog.open(PersonDialogComponent, {
           disableClose: false,
           data: {
-            mode: DIALOG_MODE.ADD,
+            mode: DialogMode.ADD,
             dialogTitle: 'Add person',
             person: new Person('', true)
           }
@@ -281,7 +347,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const person = result as Person;
             this.filterService.updatePersonsList([person], true);
-            this.personService.createPerson(person);
+            this.personService.createPerson(person).then(() => {
+            });
           }
         });
         break;
@@ -439,7 +506,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles search item typed into the search box
-   * @param searchItem
+   * @param {string} searchItem new search item
    */
   onSearchItemChanged(searchItem: string) {
     this.filterService.updateSearchItem(searchItem);

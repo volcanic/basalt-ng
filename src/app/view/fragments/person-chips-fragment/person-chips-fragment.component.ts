@@ -9,6 +9,9 @@ import {debounceTime} from 'rxjs/operators';
 import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
 import {PersonService} from '../../../services/entities/person.service';
 
+/**
+ * Displays person chip fragmemt
+ */
 @Component({
   selector: 'app-person-chips-fragment',
   templateUrl: './person-chips-fragment.component.html',
@@ -16,38 +19,79 @@ import {PersonService} from '../../../services/entities/person.service';
 })
 export class PersonChipsFragmentComponent implements OnInit {
 
+  /** Persons to be displayed */
   @Input() persons: Person[] = [];
-  @Input() disabled = false;
+  /** Whether the component is readonly */
+  @Input() readonly = false;
+
+  /** Event emitter indicating changes in persons */
   @Output() personsChangedEmitter = new EventEmitter<Person[]>();
 
-  debouncer = new Subject();
+  /** Debouncer for input field */
+  inputFieldDebouncer = new Subject();
 
-  value = '';
+  /** Current inputFieldValue of input field */
+  inputFieldValue = '';
 
-  options = [];
+  /** Array of options */
+  options: string[] = [];
+  /** Array of options filtered by currently typed inputFieldValue */
   filteredOptions: Observable<string[]>;
+
+  /** Form control */
   formControl: FormControl = new FormControl();
 
+  /**
+   * Constructor
+   * @param {PersonService} personService
+   * @param {TaskletService} taskletService
+   * @param {SuggestionService} suggestionService
+   */
   constructor(private personService: PersonService,
               private taskletService: TaskletService,
               private suggestionService: SuggestionService) {
   }
 
-  ngOnInit() {
+  //
+  // Lifecycle hooks
+  //
 
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
+    this.initializeOptions();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initialize auto-complete options
+   */
+  private initializeOptions() {
     this.options = Array.from(this.suggestionService.personOptions.values());
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => this.filterSearchItems(value))
+        map(value => this.filterAutoCompleteOptions(value))
       );
 
-    this.debouncer.pipe(
+    this.inputFieldDebouncer.pipe(
       debounceTime(500)
     ).subscribe((value: Person[]) => this.personsChangedEmitter.emit(value));
   }
 
+  //
+  // Actions
+  //
+
+  /**
+   * Handles deletion of a person
+   * @param {Person} value
+   */
   onDeletePerson(value: Person) {
     this.persons = this.persons.filter(person => {
       return person.name !== value.name;
@@ -56,36 +100,64 @@ export class PersonChipsFragmentComponent implements OnInit {
     this.notify();
   }
 
+  /**
+   * Handles key up event
+   * @param event
+   */
   onKeyUp(event: any) {
     const KEY_CODE_ENTER = 13;
     const KEY_CODE_COMMA = 188;
 
-    if (this.value !== '' && this.value !== ',' && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
-      this.persons.push(new Person(this.value.replace(/,/, ''), true));
-      this.value = '';
+    if (this.inputFieldValue !== ''
+      && this.inputFieldValue !== ','
+      && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
+      this.persons.push(new Person(this.inputFieldValue.replace(/,/, ''), true));
+      this.inputFieldValue = '';
       this.notify();
     }
   }
 
+  /**
+   * Handles key down event
+   */
   onKeyDown() {
-    this.value = this.value.replace(/,/, '');
+    this.inputFieldValue = this.inputFieldValue.replace(/,/, '');
   }
 
+  /**
+   * Handles selection of an auto-complete option
+   */
   onOptionSelected() {
-    if (!this.disabled) {
-      this.persons.push(new Person(this.value.replace(/,/, ''), true));
-      this.value = '';
+    if (!this.readonly) {
+      this.persons.push(new Person(this.inputFieldValue.replace(/,/, ''), true));
+      this.inputFieldValue = '';
       this.notify();
     }
   }
 
-  filterSearchItems(value: string): string[] {
+  //
+  // Helpers
+  //
+
+  /**
+   * Filters auto-complete options
+   * @param {string} value input inputFieldValue
+   * @returns {string[]} filtered options
+   */
+  filterAutoCompleteOptions(value: string): string[] {
     return this.options.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     ).reverse();
   }
 
-  notify() {
-    this.debouncer.next(this.persons);
+  //
+  // Notification
+  //
+
+  /**
+   * Informs subscribers that something has changed
+   */
+  private notify() {
+    this.inputFieldDebouncer.next(this.persons);
   }
 }

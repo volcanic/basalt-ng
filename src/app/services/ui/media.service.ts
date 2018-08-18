@@ -1,25 +1,58 @@
 import {Injectable} from '@angular/core';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {MEDIA} from '../../model/ui/media.enum';
+import {Media} from '../../model/ui/media.enum';
 import {Subject} from 'rxjs/index';
 
+/**
+ * Handles screen size and breakpoints
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class MediaService {
 
-  media: MEDIA;
-  mediaSubject = new Subject<MEDIA>();
+  /** Current medium */
+  media: Media;
+  /** Subject publishing medium */
+  mediaSubject = new Subject<Media>();
 
+  /**
+   * Constructor
+   * @param {BreakpointObserver} breakpointObserver breakpoint observer
+   */
   constructor(public breakpointObserver: BreakpointObserver) {
 
     this.initializeSize();
+    this.initializeBreakpoints();
+  }
 
+  /**
+   * Initializes size
+   */
+  private initializeSize() {
+    const innerWidth = window.innerWidth;
+
+    if (innerWidth < 960) {
+      this.media = Media.SMALL;
+      this.notify();
+    } else if (innerWidth >= 960 && innerWidth < 1280) {
+      this.media = Media.MEDIUM;
+      this.notify();
+    } else if (innerWidth > 1280) {
+      this.media = Media.LARGE;
+      this.notify();
+    }
+  }
+
+  /**
+   * Initializes breakpoints
+   */
+  private initializeBreakpoints() {
     this.breakpointObserver
       .observe([Breakpoints.Small, Breakpoints.HandsetPortrait])
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
-          this.media = MEDIA.SMALL;
+          this.media = Media.SMALL;
           this.notify();
         }
       });
@@ -27,7 +60,7 @@ export class MediaService {
       .observe([Breakpoints.Medium])
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
-          this.media = MEDIA.MEDIUM;
+          this.media = Media.MEDIUM;
           this.notify();
         }
       });
@@ -35,28 +68,19 @@ export class MediaService {
       .observe([Breakpoints.Large])
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
-          this.media = MEDIA.LARGE;
+          this.media = Media.LARGE;
           this.notify();
         }
       });
   }
 
-  private initializeSize() {
+  //
+  // Notification
+  //
 
-    const innerWidth = window.innerWidth;
-
-    if (innerWidth < 960) {
-      this.media = MEDIA.SMALL;
-      this.notify();
-    } else if (innerWidth >= 960 && innerWidth < 1280) {
-      this.media = MEDIA.MEDIUM;
-      this.notify();
-    } else if (innerWidth > 1280) {
-      this.media = MEDIA.LARGE;
-      this.notify();
-    }
-  }
-
+  /**
+   * Informs subscribers that something has changed
+   */
   private notify() {
     this.mediaSubject.next(this.media);
   }

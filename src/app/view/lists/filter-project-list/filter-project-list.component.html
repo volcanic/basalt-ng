@@ -10,7 +10,7 @@
     <app-filter-project-list-item *ngFor="let p of projects" [project]="p">
     </app-filter-project-list-item>
     <div>
-      <mat-checkbox class="special-project" [(ngModel)]="projectsNone" (ngModelChange)="onChangeSpecialProject()">elements without projects</mat-checkbox>
+      <mat-checkbox class="special-project" [(ngModel)]="projectsNone" (ngModelChange)="onProjectNoneFlagChanged()">elements without projects</mat-checkbox>
     </div>
     <button mat-button class="label headers-align" (click)="onSelectAll()">
       <span>Select all</span>

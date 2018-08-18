@@ -14,6 +14,9 @@ import {Project} from '../../../model/entities/project.model';
 import {FilterService} from '../../../services/entities/filter/filter.service';
 import {MatchService} from '../../../services/entities/filter/match.service';
 
+/**
+ * Displays project list
+ */
 @Component({
   selector: 'app-project-list',
   templateUrl: './project-list.component.html',
@@ -22,30 +25,58 @@ import {MatchService} from '../../../services/entities/filter/match.service';
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
 
+  /** Event emitter indicating menu items being clicked */
   @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
+  /** Projects to be displayed */
   projects = [];
+  /** Unfiltered projects */
   projectsAll = [];
 
+  /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /**
+   * Constructor
+   * @param {ProjectService} projectService
+   * @param {MatchService} matchService
+   * @param {FilterService} filterService
+   * @param {ChangeDetectorRef} changeDetector
+   */
   constructor(private projectService: ProjectService,
               private matchService: MatchService,
               private filterService: FilterService,
               private changeDetector: ChangeDetectorRef) {
   }
 
-  ngOnInit() {
+  //
+  // Lifecycle hooks
+  //
 
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
     this.initializeProjectSubscription();
     this.initializeFilterSubscription();
   }
 
   /**
-   * Subscribes project changes
+   * Handles on-destroy lifecycle hook
+   */
+  ngOnDestroy() {
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes projecct subscription
    */
   private initializeProjectSubscription() {
-
     this.projectsAll = Array.from(this.projectService.projects.values());
     this.update();
 
@@ -60,10 +91,9 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Subscribes filter changes
+   * Initializes filter subscription
    */
   private initializeFilterSubscription() {
-
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
@@ -71,14 +101,13 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribeSubject.next();
-    this.unsubscribeSubject.complete();
-  }
+  //
+  // Actions
+  //
 
   /**
    * Handles click on menu items
-   * @param menuItem
+   * @param menuItem menu item that has been clicked
    */
   onMenuItemClicked(menuItem: string) {
     this.menuItemClickedEmitter.emit(menuItem);
@@ -96,7 +125,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 
       return matchesSearchItem && matchesProjects;
     }).sort((p1: Project, p2: Project) => {
-      return -this.matchService.compare(p1.modificationDate.toString(), p2.modificationDate.toString());
+      return -MatchService.compare(p1.modificationDate.toString(), p2.modificationDate.toString());
     });
 
     this.changeDetector.markForCheck();

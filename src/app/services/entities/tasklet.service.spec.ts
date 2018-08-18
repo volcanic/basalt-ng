@@ -1,15 +1,15 @@
 import {inject, TestBed} from '@angular/core/testing';
 
-import {TaskletsService} from './tasklets.service';
+import {TaskletService} from './tasklet.service';
 
-describe('TaskletsService', () => {
+describe('TaskletService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TaskletsService]
+      providers: [TaskletService]
     });
   });
 
-  it('should ...', inject([TaskletsService], (service: TaskletsService) => {
+  it('should ...', inject([TaskletService], (service: TaskletService) => {
     expect(service).toBeTruthy();
   }));
 });

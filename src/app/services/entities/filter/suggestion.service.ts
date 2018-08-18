@@ -5,26 +5,35 @@ import {Project} from '../../../model/entities/project.model';
 import {Task} from '../../../model/entities/task.model';
 import {Person} from '../../../model/entities/person.model';
 import {Tag} from '../../../model/entities/tag.model';
-import {PersonService} from '../person.service';
-import {TagService} from '../tag.service';
 
+/**
+ * Service handling suggestions
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class SuggestionService {
 
-  // Map of search items, key is creation date, value is actual value
+  /** Map of search items, key is creation date, inputFieldValue is actual inputFieldValue */
   searchOptions: Map<string, string>;
-  // Used to differentiate between search options with the same timestamp
+  /** Counter used to differentiate between search options with the same timestamp */
   searchOptionsCounter = 0;
 
+  /** Map of task options */
   taskOptions: Map<string, string>;
+  /** Map of project options */
   projectOptions: Map<string, string>;
+  /** Map of person options */
   personOptions: Map<string, string>;
+  /** Map of tag options */
   tagOptions: Map<string, string>;
 
+  /** Subject that publishs search options */
   searchOptionsSubject = new Subject<string[]>();
 
+  /**
+   * Constructor
+   */
   constructor() {
     this.searchOptions = new Map<string, string>();
     this.taskOptions = new Map<string, string>();
@@ -37,43 +46,15 @@ export class SuggestionService {
   // Updates
   //
 
+  /**
+   * Adds tasklets information to suggestions
+   * @param {Tasklet[]} tasklets new array of tasklets
+   */
   public updateByTasklets(tasklets: Tasklet[]) {
-
     tasklets.sort((t1, t2) => {
       return (new Date(t1.modificationDate) < new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
       if (t != null) {
-
-        // Add persons to search options
-        /*
-        if (t.personIds != null && t.creationDate) {
-          t.personIds.map(id => {
-            return this.personService.getPersonById(id);
-          }).filter(person => {
-            return person != null;
-          }).forEach(person => {
-            const value = person.name;
-            this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
-            this.personOptions.set(value, value);
-          });
-        }
-        */
-
-        // Add tags to search items
-        /*
-        if (t.tagIds != null && t.creationDate) {
-          t.tagIds.map(id => {
-            return this.tagService.getTagById(id);
-          }).filter(tag => {
-            return tag != null;
-          }).forEach(tag => {
-            const value = tag.name;
-            this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
-            this.tagOptions.set(value, value);
-          });
-        }
-        */
-
         // Add description lines to search items
         if (t.description.value != null && t.creationDate) {
           t.description.value.split('\n').forEach(v => {
@@ -89,28 +70,15 @@ export class SuggestionService {
     this.notify();
   }
 
+  /**
+   * Adds tasks information to suggestions
+   * @param {Task[]} tasks new array of tasks
+   */
   public updateByTasks(tasks: Task[]) {
-
     tasks.sort((t1, t2) => {
       return (new Date(t1.modificationDate) < new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
       if (t != null) {
-
-        // Add tags to search items
-        /*
-        if (t.tagIds != null && t.creationDate) {
-          t.tagIds.map(id => {
-            return this.tagService.getTagById(id);
-          }).filter(tag => {
-            return tag != null;
-          }).forEach(tag => {
-            const value = tag.name;
-            this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
-            this.tagOptions.set(value, value);
-          });
-        }
-        */
-
         // Add description lines to search items
         if (t.description.value != null && t.creationDate) {
           t.description.value.split('\n').forEach(v => {
@@ -133,13 +101,15 @@ export class SuggestionService {
     this.notify();
   }
 
+  /**
+   * Adds projects information to suggestions
+   * @param {Project[]} projects new array of projects
+   */
   public updateByProjects(projects: Project[]) {
-
     projects.sort((p1, p2) => {
       return (new Date(p1.modificationDate) < new Date(p2.modificationDate)) ? 1 : -1;
     }).forEach(p => {
       if (p != null) {
-
         // Add project name to search options
         if (p.name && p.creationDate) {
           const value = p.name.trim();
@@ -152,11 +122,13 @@ export class SuggestionService {
     this.notify();
   }
 
+  /**
+   * Adds persons information to suggestions
+   * @param {Person[]} persons new array of persons
+   */
   public updateByPersons(persons: Person[]) {
-
     persons.forEach(p => {
       if (p != null) {
-
         // Add person name to search options
         if (p.name) {
           const value = p.name.trim();
@@ -169,11 +141,13 @@ export class SuggestionService {
     this.notify();
   }
 
+  /**
+   * Add tags information to suggestions
+   * @param {Tag[]} tags new array of tags
+   */
   public updateByTags(tags: Tag[]) {
-
     tags.forEach(t => {
       if (t != null) {
-
         // Add person name to search options
         if (t.name) {
           const value = t.name.trim();
@@ -186,6 +160,13 @@ export class SuggestionService {
     this.notify();
   }
 
+  //
+  // Notification
+  //
+
+  /**
+   * Notifies subscribers that something has changed
+   */
   private notify() {
     this.searchOptions = new Map(Array.from(this.searchOptions).sort());
 

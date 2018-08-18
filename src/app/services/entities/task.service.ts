@@ -13,15 +13,31 @@ import {ScopeService} from './scope/scope.service';
 import {Scope} from '../../model/scope.enum';
 import {TagService} from './tag.service';
 
+/**
+ * Handles tasks including
+ * <li> Queries
+ * <li> Persistence
+ * <li> Lookup
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
+
+  /** Map of all tasks */
   tasks = new Map<string, Task>();
+  /** Subject that can be subscribed by components that are interested in changes */
   tasksSubject = new Subject<Task[]>();
 
-  private unsubscribeSubject = new Subject();
-
+  /**
+   * Constructor
+   * @param {PouchDBService} pouchDBService
+   * @param {ProjectService} projectService
+   * @param {TagService} tagService
+   * @param {SuggestionService} suggestionService
+   * @param {SnackbarService} snackbarService
+   * @param {ScopeService} scopeService
+   */
   constructor(private pouchDBService: PouchDBService,
               private projectService: ProjectService,
               private tagService: TagService,
@@ -29,7 +45,7 @@ export class TaskService {
               private snackbarService: SnackbarService,
               private scopeService: ScopeService) {
 
-    this.initializeSubscription();
+    this.initializeTaskSubscription();
     this.findOpenTasksByScope(this.scopeService.scope);
   }
 
@@ -39,10 +55,11 @@ export class TaskService {
 
   // <editor-fold desc="Initialization">
 
-  private initializeSubscription() {
-    this.tasksSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+  /**
+   * Initializes task subscription
+   */
+  private initializeTaskSubscription() {
+    this.tasksSubject.subscribe((value) => {
       (value as Task[]).forEach(task => {
           this.tasks.set(task.id, task);
         }
@@ -60,6 +77,10 @@ export class TaskService {
 
   // <editor-fold desc="Queries">
 
+  /**
+   * Loads open tasks by a given scope
+   * @param {Scope} scope scope to filter by
+   */
   public findOpenTasksByScope(scope: Scope) {
     const index = {fields: ['entityType', 'scope', 'modificationDate', 'completionDate']};
     const options = {
@@ -79,10 +100,18 @@ export class TaskService {
     this.findTasksInternal(index, options);
   }
 
+  /**
+   * Clears tasks
+   */
   private clearTasks() {
-    this.tasks = new Map<string, Task>();
+    this.tasks.clear();
   }
 
+  /**
+   * Index tasks and queries them afterwards
+   * @param index index to be used
+   * @param options query options
+   */
   private findTasksInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         result['docs'].forEach(element => {
@@ -90,7 +119,8 @@ export class TaskService {
 
           if (task.scope == null) {
             task.scope = this.scopeService.scope;
-            this.updateTask(task, false);
+            this.updateTask(task, false).then(() => {
+            });
           }
 
           this.tasks.set(task.id, task);
@@ -113,82 +143,88 @@ export class TaskService {
 
   // <editor-fold desc="Persistence">
 
-  public createTask(task: Task) {
-    if (task != null) {
-      task.scope = this.scopeService.scope;
+  /**
+   * Creates a new task
+   * @param {Task} task tasak to be created
+   */
+  public createTask(task: Task): Promise<any> {
+    return new Promise(() => {
+      if (task != null) {
+        task.scope = this.scopeService.scope;
 
-      // Update related objects
-      this.projectService.updateProject(this.getProjectByTask(task), false);
-      if (task.tagIds != null) {
-        task.tagIds.forEach(id => {
-          const tag = this.tagService.getTagById(id);
-          this.tagService.updateTag(tag, false);
+        // Update related objects
+        this.projectService.updateProject(this.getProjectByTask(task), false).then(() => {
         });
-      }
-
-      // Create task
-      return this.pouchDBService.upsert(task.id, task).then(() => {
-        this.snackbarService.showSnackbar('Created task');
-        this.tasks.set(task.id, task);
-        this.notify();
-      });
-    }
-  }
-
-  public updateTask(task: Task, showSnack: boolean) {
-    if (task != null) {
-      // Update related objects
-      this.projectService.updateProject(this.getProjectByTask(task), false);
-      if (task.tagIds != null) {
-        task.tagIds.forEach(id => {
-          const tag = this.tagService.getTagById(id);
-          this.tagService.updateTag(tag, false);
-        });
-      }
-
-      task.modificationDate = new Date();
-
-      // Update task
-      return this.pouchDBService.upsert(task.id, task).then(() => {
-        if (showSnack) {
-          this.snackbarService.showSnackbar('Updated task');
+        if (task.tagIds != null) {
+          task.tagIds.forEach(id => {
+            const tag = this.tagService.getTagById(id);
+            this.tagService.updateTag(tag, false).then(() => {
+            });
+          });
         }
-        this.tasks.set(task.id, task);
-        this.notify();
-      });
-    }
-  }
 
-  public deleteTask(task: Task) {
-    if (task != null) {
-      this.pouchDBService.remove(task.id, task).then(() => {
-        this.snackbarService.showSnackbar('Deleted task');
-        this.tasks.delete(task.id);
-        this.notify();
-      }).catch(() => {
-        this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
-          this.deleteTask(task);
+        // Create task
+        return this.pouchDBService.upsert(task.id, task).then(() => {
+          this.snackbarService.showSnackbar('Created task');
+          this.tasks.set(task.id, task);
+          this.notify();
         });
-      });
-    }
+      }
+    });
   }
-
-  // </editor-fold>
-
-  //
-  // Notification
-  //
-
-  // <editor-fold desc="Notification">
 
   /**
-   * Informs subscribers that something has changed
+   * Updates existing task
+   * @param {Task} task task to be updated
+   * @param {boolean} showSnack shows snackbar if true
    */
-  public notify() {
-    console.log(`notifiy tasks ${this.tasks.size}`);
-    this.tasksSubject.next(Array.from(this.tasks.values()).sort((t1, t2) => {
-      return new Date(t2.modificationDate).getTime() - new Date(t1.modificationDate).getTime();
-    }));
+  public updateTask(task: Task, showSnack: boolean): Promise<any> {
+    return new Promise(() => {
+      if (task != null) {
+        // Update related objects
+        this.projectService.updateProject(this.getProjectByTask(task), false).then(() => {
+        });
+        if (task.tagIds != null) {
+          task.tagIds.forEach(id => {
+            const tag = this.tagService.getTagById(id);
+            this.tagService.updateTag(tag, false).then(() => {
+            });
+          });
+        }
+
+        task.modificationDate = new Date();
+
+        // Update task
+        return this.pouchDBService.upsert(task.id, task).then(() => {
+          if (showSnack) {
+            this.snackbarService.showSnackbar('Updated task');
+          }
+          this.tasks.set(task.id, task);
+          this.notify();
+        });
+      }
+    });
+  }
+
+  /**
+   * Deletes a task
+   * @param {Task} task task to be deleted
+   */
+  public deleteTask(task: Task): Promise<any> {
+    return new Promise(() => {
+      if (task != null) {
+        this.pouchDBService.remove(task.id, task).then(() => {
+          this.snackbarService.showSnackbar('Deleted task');
+          this.tasks.delete(task.id);
+          this.notify();
+        }).catch(() => {
+          this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
+            this.deleteTask(task).then(() => {
+            });
+          });
+        });
+      }
+    });
   }
 
   // </editor-fold>
@@ -199,6 +235,11 @@ export class TaskService {
 
   // <editor-fold desc="Lookup">
 
+  /**
+   * Retrieves a task by a given name
+   * @param {string} name name to find task by
+   * @returns {Task} task identified by given name, null if no such task exists
+   */
   public getTaskByName(name: string): Task {
     let task: Task = null;
 
@@ -212,18 +253,33 @@ export class TaskService {
   }
 
   /**
-   * Retrieves a project by a task
-   *
-   * @param task
-   * @returns {any}
+   * Retrieves a project by a given task
+   * @param {Task} task task to find project by
+   * @returns {Project} project referenced by given task, null if no such project exists
    */
   public getProjectByTask(task: Task): Project {
-
     if (task != null && task.projectId != null) {
       return this.projectService.projects.get(task.projectId);
     }
 
     return null;
+  }
+
+  // </editor-fold>
+
+  //
+  // Notification
+  //
+
+  // <editor-fold desc="Notification">
+
+  /**
+   * Informs subscribers that something has changed
+   */
+  private notify() {
+    this.tasksSubject.next(Array.from(this.tasks.values()).sort((t1, t2) => {
+      return new Date(t2.modificationDate).getTime() - new Date(t1.modificationDate).getTime();
+    }));
   }
 
   // </editor-fold>

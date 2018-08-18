@@ -2,17 +2,32 @@ import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
 import {Description} from './fragments/description.model';
 
+/**
+ * Represents a task
+ */
 export class Task extends Entity {
 
+  /** Name */
   name: string;
+  /** Description */
   description: Description;
+  /** Reference to project */
   projectId: string;
+  /** Due date */
   dueDate: Date;
+  /** Completion date */
   completionDate: Date;
+  /** Priority */
   priority: number;
+  /** Effort in minutes */
   effort: number;
+  /** References to tags */
   tagIds: string[];
 
+  /**
+   * Constructor
+   * @param {string} name name of the task
+   */
   constructor(name: string) {
     super();
     this.entityType = EntityType.TASK;

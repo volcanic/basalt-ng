@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {DailyDigest} from '../../../model/entities/digest/daily-digest.model';
 import {DateService} from '../../util/date.service';
-import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {TaskletType} from '../../../model/tasklet-type.enum';
 import {WeeklyDigest} from '../../../model/entities/digest/weekly-digest.model';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {TaskletService} from '../tasklet.service';
@@ -12,30 +12,44 @@ import {PlaceholderValues} from '../../../model/placeholder-values.model';
 import {Task} from '../../../model/entities/task.model';
 import {TaskDigest} from '../../../model/entities/digest/task-digest.model';
 
-@Injectable()
+/**
+ * Handles digests
+ */
+@Injectable({
+  providedIn: 'root'
+})
 export class DigestService {
 
-  constructor(private taskletService: TaskletService,
-              private dateService: DateService) {
+  /**
+   * Constructor
+   * @param {TaskletService} taskletService
+   */
+  constructor(private taskletService: TaskletService) {
   }
 
+  /**
+   * Retrieves all tasklets of a given day
+   * @param {Date} date date to get tasklets of
+   * @param {Tasklet[]} tasklets array of all tasklets
+   * @returns {Tasklet[]} array of tasklets that match the given date
+   */
   public getTaskletsOfDay(date: Date, tasklets: Tasklet[]): Tasklet[] {
     return tasklets.filter(t => {
-      return new Date(t.creationDate) > new Date(this.dateService.getDayStart(date))
-        && new Date(t.creationDate) < new Date(this.dateService.getDayEnd(date));
+      return new Date(t.creationDate) > new Date(DateService.getDayStart(date))
+        && new Date(t.creationDate) < new Date(DateService.getDayEnd(date));
     }).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     });
   }
 
   /**
-   * Generates a digest for certain day
+   * Generates a digest for given day
    * @param date day to create digest for
-   * @returns {DailyDigest}
+   * @returns {DailyDigest} daily digest for the given date
    */
   getDailyDigest(date: Date): DailyDigest {
     const tasklets = this.getTaskletsOfDay(date, Array.from(this.taskletService.tasklets.values())).filter(t => {
-      return t.type !== TASKLET_TYPE.WEEKLY_DIGEST;
+      return t.type !== TaskletType.WEEKLY_DIGEST;
     });
 
     if (tasklets.length !== 0) {
@@ -50,13 +64,13 @@ export class DigestService {
         const nextTasklet = tasklets[index + 1];
 
         if (nextTasklet != null && new Date(tasklet.creationDate).getDay() === new Date(nextTasklet.creationDate).getDay()
-          && tasklet.type !== TASKLET_TYPE.LUNCH_BREAK
-          && tasklet.type !== TASKLET_TYPE.FINISHING_TIME
-          && tasklet.type !== TASKLET_TYPE.WEEKLY_DIGEST) {
+          && tasklet.type !== TaskletType.LUNCH_BREAK
+          && tasklet.type !== TaskletType.FINISHING_TIME
+          && tasklet.type !== TaskletType.WEEKLY_DIGEST) {
 
           // Additional minutes
           const diff = new Date(nextTasklet.creationDate).getTime() - new Date(tasklet.creationDate).getTime();
-          const minutesNew = this.dateService.getRoundedMinutes((diff / 60000));
+          const minutesNew = DateService.getRoundedMinutes((diff / 60000));
 
           // Get existing efforts (project)
           let project = this.taskletService.getProjectByTasklet(tasklet);
@@ -99,15 +113,15 @@ export class DigestService {
 
   /**
    * Generates a digest for a whole week
-   * @param date
-   * @returns {WeeklyDigest}
+   * @param date one day in the week to create the digest for
+   * @returns {WeeklyDigest} weekly digest for the week determined by the given date
    */
   getWeeklyDigest(date: Date): WeeklyDigest {
     const weeklyDigest: WeeklyDigest = new WeeklyDigest();
-    const weekStart = this.dateService.getWeekStart(date);
+    const weekStart = DateService.getWeekStart(date);
 
-    weeklyDigest.start = this.dateService.getWeekStart(date);
-    weeklyDigest.end = this.dateService.getWeekEnd(date);
+    weeklyDigest.start = DateService.getWeekStart(date);
+    weeklyDigest.end = DateService.getWeekEnd(date);
 
     // Iterate over all weekdays
     [0, 1, 2, 3, 4].forEach(index => {
@@ -148,13 +162,13 @@ export class DigestService {
 
   /**
    * Generates a digest for specific task
-   * @param task
-   * @returns {TaskDigest}
+   * @param task task to create digest for
+   * @returns {TaskDigest} digest for the given task
    */
   getTaskDigest(task: Task): TaskDigest {
 
     const tasklets = Array.from(this.taskletService.tasklets.values()).filter(t => {
-      return t.type !== TASKLET_TYPE.WEEKLY_DIGEST;
+      return t.type !== TaskletType.WEEKLY_DIGEST;
     }).sort((t1: Tasklet, t2: Tasklet) => {
       const date1 = new Date(t1.creationDate).getTime();
       const date2 = new Date(t2.creationDate).getTime();
@@ -175,15 +189,15 @@ export class DigestService {
 
         if (nextTasklet != null && new Date(tasklet.creationDate).getDay() === new Date(nextTasklet.creationDate).getDay()
           && tasklet.taskId === task.id
-          && tasklet.type !== TASKLET_TYPE.LUNCH_BREAK
-          && tasklet.type !== TASKLET_TYPE.FINISHING_TIME
-          && tasklet.type !== TASKLET_TYPE.WEEKLY_DIGEST) {
+          && tasklet.type !== TaskletType.LUNCH_BREAK
+          && tasklet.type !== TaskletType.FINISHING_TIME
+          && tasklet.type !== TaskletType.WEEKLY_DIGEST) {
 
           // Additional minutes
           const diff = new Date(nextTasklet.creationDate).getTime() - new Date(tasklet.creationDate).getTime();
 
           // Add new efforts
-          taskDigest.effort += this.dateService.getRoundedMinutes((diff / 60000));
+          taskDigest.effort += DateService.getRoundedMinutes((diff / 60000));
         }
       }
 

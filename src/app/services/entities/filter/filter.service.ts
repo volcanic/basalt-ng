@@ -7,92 +7,76 @@ import {ProjectService} from '../project.service';
 import {Subject} from 'rxjs';
 import {TaskletService} from '../tasklet.service';
 import {TaskService} from '../task.service';
-import {Tasklet} from '../../../model/entities/tasklet.model';
-import {Task} from '../../../model/entities/task.model';
 import {TagService} from '../tag.service';
 import {Person} from '../../../model/entities/person.model';
 import {PersonService} from '../person.service';
 
+/**
+ * Handles filter values
+ */
 @Injectable({
   providedIn: 'root'
 })
-
 export class FilterService {
 
+  /** Current search item */
   searchItem = '';
 
+  /** Map of tags */
   tags: Map<string, Tag> = new Map<string, Tag>();
+  /** Flag indicating whether entities without tag shall be displayed */
   tagsNone = true;
 
+  /** Map of projects */
   projects: Map<string, Project> = new Map<string, Project>();
+  /** Flag indicating whether entities without project shall be displayed */
   projectsNone = true;
 
+  /** Map of persons */
   persons: Map<string, Person> = new Map<string, Person>();
+  /** Flag indicating whether entities without person shall be displayed */
   personsNone = true;
 
-  initializedTagsOfTasklets = false;
-  initializedTagsOfTasks = false;
+  /** Flag indicating that tags have been initialized */
   initializedTags = false;
+  /** Flag indicating that projects have been initialized */
   initializedProjects = false;
-
+  /** Flag indicating that persons have been initialized */
   initializedPersons = false;
 
+  /** Subject publishing filter subjects */
   filterSubject = new Subject();
+  /** Helper subject used to finish other subscriptions */
   unsubscribeSubject = new Subject();
 
+  /**
+   * Constructor
+   * @param {ProjectService} projectService
+   * @param {CloneService} cloneService
+   * @param {TaskletService} taskletService
+   * @param {TaskService} taskService
+   * @param {TagService} tagService
+   * @param {PersonService} personService
+   */
   constructor(private projectService: ProjectService,
               private cloneService: CloneService,
               private taskletService: TaskletService,
               private taskService: TaskService,
               private tagService: TagService,
               private personService: PersonService) {
+    this.initializeProjectSubscription();
+    this.initializeTagSubscription();
+    this.initializePersonSubscription();
+  }
 
-    // Subscribe tasklet changes
-    this.taskletService.taskletsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        const tasklets = value as Tasklet[];
+  //
+  // Initialization
+  //
 
-        // Initialize tags
-        if (!this.initializedTagsOfTasklets) {
-          this.updateTagsOfTasklets(tasklets, true);
-        }
-        this.deleteUnusedTags();
-        this.initializedTagsOfTasklets = true;
-      }
-    });
-
-    // Subscribe task changes
-    this.taskService.tasksSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        const tasks = value as Task[];
-
-        if (!this.initializedTagsOfTasks) {
-          this.updateTagsOfTasks(tasks, true);
-        }
-        this.deleteUnusedTags();
-        this.initializedTagsOfTasks = true;
-      }
-    });
-
-    // Subscribe tag changes
-    this.tagService.tagsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        const tags = value as Tag[];
-
-        if (!this.initializedTags) {
-          this.updateTagsList(tags, true);
-          this.initializedTags = true;
-        }
-      }
-    });
-
-    // Subscribe project changes
+  /**
+   * Initializes project subscription
+   */
+  private initializeProjectSubscription() {
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -105,8 +89,30 @@ export class FilterService {
         }
       }
     });
+  }
 
-    // Subscribe person changes
+  /**
+   * Initializes tag subscription
+   */
+  private initializeTagSubscription() {
+    this.tagService.tagsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        const tags = value as Tag[];
+
+        if (!this.initializedTags) {
+          this.updateTagsList(tags, true);
+          this.initializedTags = true;
+        }
+      }
+    });
+  }
+
+  /**
+   * Initializes person subscription
+   */
+  private initializePersonSubscription() {
     this.personService.personsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -125,10 +131,18 @@ export class FilterService {
   // Search item
   //
 
+  /**
+   * Clears the search item and notifies subscribers
+   */
   public clearSearchItem() {
     this.searchItem = '';
+    this.notify();
   }
 
+  /**
+   * Updates search item and notifies subscribers
+   * @param {string} searchItem new search item
+   */
   public updateSearchItem(searchItem: string) {
     this.searchItem = searchItem;
     this.notify();
@@ -138,56 +152,45 @@ export class FilterService {
   // Tags
   //
 
+  /**
+   * Clears tags
+   */
   public clearTags() {
     this.initializedTags = false;
-    this.initializedTagsOfTasklets = false;
-    this.initializedTagsOfTasks = false;
     this.tags = new Map<string, Tag>();
   }
 
-  private updateTagsOfTasklets(tasklets: Tasklet[], enable: boolean) {
-    tasklets.forEach(tasklet => {
-      if (tasklet.tagIds != null) {
-        this.updateTagsList(tasklet.tagIds.map(id => {
-          return this.tagService.getTagById(id);
-        }).filter(tag => {
-          return tag != null;
-        }), enable);
-      }
-    });
-    this.notify();
-  }
-
-  private updateTagsOfTasks(tasks: Task[], enable: boolean) {
-    tasks.forEach(task => {
-      if (task.tagIds != null) {
-        this.updateTagsList(task.tagIds.map(id => {
-          return this.tagService.getTagById(id);
-        }).filter(tag => {
-          return tag != null;
-        }), enable);
-      }
-    });
-    this.notify();
-  }
-
+  /**
+   * Updates tags and notifies subscribers
+   * @param {Tag[]} tags list of tags
+   * @param {boolean} enable enable all tags if true
+   * @param {boolean} tagsNone include entities without tags if true
+   */
   public updateTags(tags: Tag[], enable: boolean, tagsNone: boolean) {
-    this.updateTagsList(tags, enable);
-    this.updateTagsNone(tagsNone);
+    this.updateTagsListInternal(tags, enable);
+    this.updateTagsNoneInternal(tagsNone);
     this.notify();
   }
 
+  /**
+   * Updates tags and notifies subscribers
+   * @param {Tag[]} tags arry of tags
+   * @param {boolean} enable enable tags if true
+   */
   public updateTagsList(tags: Tag[], enable: boolean) {
     this.updateTagsListInternal(tags, enable);
     this.notify();
   }
 
+  /**
+   * Updates tags
+   * @param {Tag[]} tags array of tags
+   * @param {boolean} enable enable tags if true
+   */
   private updateTagsListInternal(tags: Tag[], enable: boolean) {
-
     if (tags != null) {
       tags.forEach((t: Tag) => {
-        // Deep copy
-        const tag = this.cloneService.cloneTag(t);
+        const tag = CloneService.cloneTag(t);
 
         if (enable) {
           tag.checked = true;
@@ -195,10 +198,16 @@ export class FilterService {
 
         this.tags.set(tag.id, tag);
       });
+
+      this.deleteUnusedTags();
     }
   }
 
-  public updateTagsNone(tagsNone: boolean) {
+  /**
+   * Updates flag which indicates that entities without tags shall be included during filtering
+   * @param {boolean} tagsNone include entities without tags if true
+   */
+  private updateTagsNoneInternal(tagsNone: boolean) {
     this.tagsNone = tagsNone;
   }
 
@@ -238,27 +247,45 @@ export class FilterService {
   // Projects
   //
 
+  /**
+   * Clears projects
+   */
   public clearProjects() {
     this.initializedProjects = false;
     this.projects = new Map<string, Project>();
   }
 
+  /**
+   * Update projects and notifies subscribers
+   * @param {Project[]} projects array of projects
+   * @param {boolean} enable enable projects if true
+   * @param {boolean} projectsNone include entities without projects if true
+   */
   public updateProjects(projects: Project[], enable: boolean, projectsNone: boolean) {
-    this.updateProjectsList(projects, enable);
-    this.updateProjectsNone(projectsNone);
+    this.updateProjectsListInternal(projects, enable);
+    this.updateProjectsNoneInternal(projectsNone);
     this.notify();
   }
 
+  /**
+   * Update projects and notifies subscribers
+   * @param {Project[]} projects array of projects
+   * @param {boolean} enable enable projects if true
+   */
   public updateProjectsList(projects: Project[], enable: boolean) {
     this.updateProjectsListInternal(projects, enable);
     this.notify();
   }
 
+  /**
+   * Update projects
+   * @param {Project[]} projects array of projects
+   * @param {boolean} enable enable projects if true
+   */
   private updateProjectsListInternal(projects: Project[], enable: boolean) {
     projects.forEach((p: Project) => {
       if (p != null) {
-        // Deep copy
-        const project = this.cloneService.cloneProject(p);
+        const project = CloneService.cloneProject(p);
 
         if (enable) {
           project.checked = true;
@@ -269,7 +296,11 @@ export class FilterService {
     });
   }
 
-  private updateProjectsNone(projectsNone: boolean) {
+  /**
+   * Updates flag which indicates that entities without projects shall be included during filtering
+   * @param {boolean} projectsNone include entities without projects if true
+   */
+  private updateProjectsNoneInternal(projectsNone: boolean) {
     this.projectsNone = projectsNone;
     this.notify();
   }
@@ -278,27 +309,45 @@ export class FilterService {
   // Persons
   //
 
+  /**
+   * Clears persons
+   */
   public clearPersons() {
     this.initializedPersons = false;
     this.persons = new Map<string, Person>();
   }
 
+  /**
+   * Updates persons and notifies subscribers
+   * @param {Person[]} persons array of persons
+   * @param {boolean} enable enables persons if true
+   * @param {boolean} personsNone include entities without persons if true
+   */
   public updatePersons(persons: Person[], enable: boolean, personsNone: boolean) {
     this.updatePersonsList(persons, enable);
     this.updatePersonsNone(personsNone);
     this.notify();
   }
 
+  /**
+   * Updates persons and notifies subscribers
+   * @param {Person[]} persons array of persons
+   * @param {boolean} enable enables persons if true
+   */
   public updatePersonsList(persons: Person[], enable: boolean) {
     this.updatePersonsListInternal(persons, enable);
     this.notify();
   }
 
+  /**
+   * Updates persons
+   * @param {Person[]} persons array of persons
+   * @param {boolean} enable enables persons if true
+   */
   private updatePersonsListInternal(persons: Person[], enable: boolean) {
     persons.forEach((p: Person) => {
       if (p != null) {
-        // Deep copy
-        const person = this.cloneService.clonePerson(p);
+        const person = CloneService.clonePerson(p);
 
         if (enable) {
           person.checked = true;
@@ -309,7 +358,11 @@ export class FilterService {
     });
   }
 
-  public updatePersonsNone(personsNone: boolean) {
+  /**
+   * Updates flag which indicates that entities without persons shall be included during filtering
+   * @param {boolean} personsNone include entities without persons if true
+   */
+  private updatePersonsNone(personsNone: boolean) {
     this.personsNone = personsNone;
     this.notify();
   }
@@ -318,7 +371,6 @@ export class FilterService {
    * Clears all currently set filters
    */
   public clearAllFilters() {
-
     this.clearTagFilter();
     this.clearPersonFilter();
     this.notify();
@@ -328,29 +380,32 @@ export class FilterService {
    * Clears all tag-related filters
    */
   private clearTagFilter() {
-    this.tags.forEach((value) => { // Iterate through tags
+    this.tags.forEach((value) => {
       const currentTag = value as Tag;
-      currentTag.checked = true; // Activate each tag
+      currentTag.checked = true;
     });
-    this.tagsNone = true; // Select "elements without tags" tag
+    this.tagsNone = true;
   }
 
   /**
    * Clears all person-related filters
    */
   private clearPersonFilter() {
-    this.persons.forEach((value) => { // Iterate through persons
+    this.persons.forEach((value) => {
       const currentPerson = value as Person;
-      currentPerson.checked = true; // Activate each person
+      currentPerson.checked = true;
     });
-    this.personsNone = true; // Select "elements without persons" checkbox
+    this.personsNone = true;
   }
 
   //
-  // Notifications
+  // Notification
   //
 
-  public notify() {
+  /**
+   * Notifies subscribers that something has changed
+   */
+  private notify() {
     this.filterSubject.next();
   }
 }

@@ -4,14 +4,14 @@
   </mat-chip>
   <div class="searchbox">
     <input class="search-input" matInput name="search" type="text" placeholder="New tag"
-           [(ngModel)]="value"
-           [disabled]="disabled"
+           [(ngModel)]="inputFieldValue"
+           [disabled]="readonly"
            [formControl]="formControl"
            [matAutocomplete]="auto"
            (keyup)="onKeyUp($event)"
-           (keydown)="onKeyDown($event)">
+           (keydown)="onKeyDown()">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="onOptionSelected($event)">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="onOptionSelected()">
         {{ option }}
       </mat-option>
     </mat-autocomplete>

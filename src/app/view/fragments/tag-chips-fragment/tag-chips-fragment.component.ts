@@ -9,6 +9,9 @@ import {FilterService} from '../../../services/entities/filter/filter.service';
 import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
 import {TagService} from '../../../services/entities/tag.service';
 
+/**
+ * Displays tag chips fragment
+ */
 @Component({
   selector: 'app-tag-chips-fragment',
   templateUrl: './tag-chips-fragment.component.html',
@@ -16,40 +19,81 @@ import {TagService} from '../../../services/entities/tag.service';
 })
 export class TagChipsFragmentComponent implements OnInit {
 
+  /** Tags to be displayed */
   @Input() tags: Tag[] = [];
-  @Input() disabled = false;
+  /** Whether the component is readonly */
+  @Input() readonly = false;
+
+  /** Event emitter indicating changes in tags */
   @Output() tagsChangedEmitter = new EventEmitter<Tag[]>();
 
-  debouncer = new Subject();
+  /** Debouncer for input field */
+  inputFieldDebouncer = new Subject();
 
-  value = '';
+  /** Current inputFieldValue of input field */
+  inputFieldValue = '';
 
-  options = [];
+  /** Array of options */
+  options: string[] = [];
+  /** Array of options filtered by currently typed inputFieldValue */
   filteredOptions: Observable<string[]>;
+
+  /** Form control */
   formControl: FormControl = new FormControl();
 
+  /**
+   * Constructor
+   * @param {TagService} tagService
+   * @param {FilterService} filterService
+   * @param {SuggestionService} suggestionService
+   */
   constructor(private tagService: TagService,
               private filterService: FilterService,
               private suggestionService: SuggestionService) {
   }
 
-  ngOnInit() {
+  //
+  // Lifecycle hooks
+  //
 
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
+    this.initializeOptions();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initialize auto-complete options
+   */
+  private initializeOptions() {
     this.options = Array.from(this.suggestionService.tagOptions.values());
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => this.filterSearchItems(value))
+        map(value => this.filterAutocompleteOptions(value))
       );
 
-    this.debouncer.pipe(
+    this.inputFieldDebouncer.pipe(
       debounceTime(500)
     ).subscribe((value: Tag[]) => this.tagsChangedEmitter.emit(value));
   }
 
+  //
+  // Actions
+  //
+
+  /**
+   * Handles deletion of a tag
+   * @param {Tag} value
+   */
   onDeleteTag(value: Tag) {
-    if (!this.disabled) {
+    if (!this.readonly) {
       this.tags = this.tags.filter(tag => {
         return tag.name !== value.name;
       });
@@ -58,39 +102,64 @@ export class TagChipsFragmentComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles key up event
+   * @param event
+   */
   onKeyUp(event: any) {
-    if (!this.disabled) {
+    if (!this.readonly) {
       const KEY_CODE_ENTER = 13;
       const KEY_CODE_COMMA = 188;
 
-      if (this.value !== '' && this.value !== ',' && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
-        this.tags.push(new Tag(this.value.replace(/,/, ''), true));
-        this.value = '';
+      if (this.inputFieldValue !== '' && this.inputFieldValue !== ',' && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
+        this.tags.push(new Tag(this.inputFieldValue.replace(/,/, ''), true));
+        this.inputFieldValue = '';
         this.notify();
       }
     }
   }
 
-  onKeyDown(event: any) {
-    this.value = this.value.replace(/,/, '');
-
+  /**
+   * Handles key down event
+   */
+  onKeyDown() {
+    this.inputFieldValue = this.inputFieldValue.replace(/,/, '');
   }
 
-  onOptionSelected(event: any) {
-    if (!this.disabled) {
-      this.tags.push(new Tag(this.value.replace(/,/, ''), true));
-      this.value = '';
+  /**
+   * Handles selection of an auto-complete option
+   */
+  onOptionSelected() {
+    if (!this.readonly) {
+      this.tags.push(new Tag(this.inputFieldValue.replace(/,/, ''), true));
+      this.inputFieldValue = '';
       this.notify();
     }
   }
 
-  filterSearchItems(value: string): string[] {
+  //
+  // Helpers
+  //
+
+  /**
+   * Filters auto-complete options
+   * @param {string} value input inputFieldValue
+   * @returns {string[]} filtered options
+   */
+  filterAutocompleteOptions(value: string): string[] {
     return this.options.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     );
   }
 
-  notify() {
-    this.debouncer.next(this.tags);
+  //
+  // Notifications
+  //
+
+  /**
+   * Informs subscribers that something has changed
+   */
+  private notify() {
+    this.inputFieldDebouncer.next(this.tags);
   }
 }

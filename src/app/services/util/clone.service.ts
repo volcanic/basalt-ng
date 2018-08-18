@@ -5,43 +5,83 @@ import {Project} from '../../model/entities/project.model';
 import {Person} from '../../model/entities/person.model';
 import {Tag} from '../../model/entities/tag.model';
 
+/**
+ * Creates deep copies of objects
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class CloneService {
 
-  constructor() {
-  }
-
-  cloneProject(original: Project): Project {
+  /**
+   * Clones a given project
+   * @param {Project} original
+   * @returns {Project} cloned object
+   */
+  static cloneProject(original: Project): Project {
     return JSON.parse(JSON.stringify(original));
   }
 
-  cloneProjects(original: Project[]): Project[] {
+  /**
+   * Clones a given array of projects
+   * @param {Project[]} original
+   * @returns {Project[]} cloned object
+   */
+  static cloneProjects(original: Project[]): Project[] {
     return JSON.parse(JSON.stringify(original));
   }
 
-  cloneTask(original: Task): Task {
+  /**
+   * Clones a given tasks
+   * @param {Task} original
+   * @returns {Task} cloned object
+   */
+  static cloneTask(original: Task): Task {
     return JSON.parse(JSON.stringify(original));
   }
 
-  cloneTasklet(original: Tasklet): Tasklet {
+  /**
+   * Clones a given tasklet
+   * @param {Tasklet} original
+   * @returns {Tasklet} cloned object
+   */
+  static cloneTasklet(original: Tasklet): Tasklet {
     return JSON.parse(JSON.stringify(original));
   }
 
-  cloneTasklets(original: Tasklet[]): Tasklet[] {
+  /**
+   * Clones a given array of projects
+   * @param {Tasklet[]} original
+   * @returns {Tasklet[]} cloned object
+   */
+  static cloneTasklets(original: Tasklet[]): Tasklet[] {
     return JSON.parse(JSON.stringify(original));
   }
 
-  clonePerson(original: Person): Person {
+  /**
+   * Clones a given person
+   * @param {Person} original
+   * @returns {Person}
+   */
+  static clonePerson(original: Person): Person {
     return JSON.parse(JSON.stringify(original));
   }
 
-  clonePersons(original: Person[]): Person[] {
+  /**
+   * Clones a given array of persons
+   * @param {Person[]} original
+   * @returns {Person[]} cloned object
+   */
+  static clonePersons(original: Person[]): Person[] {
     return JSON.parse(JSON.stringify(original));
   }
 
-  cloneTag(original: Tag): Tag {
+  /**
+   * Clones a given tag
+   * @param {Tag} original
+   * @returns {Tag} cloned object
+   */
+  static cloneTag(original: Tag): Tag {
     return JSON.parse(JSON.stringify(original));
   }
 }

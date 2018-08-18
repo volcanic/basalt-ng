@@ -10,6 +10,9 @@ import {ProjectService} from '../../../services/entities/project.service';
 import {TagService} from '../../../services/entities/tag.service';
 import {PersonService} from '../../../services/entities/person.service';
 
+/**
+ * Displays tasklet list
+ */
 @Component({
   selector: 'app-tasklet-list',
   templateUrl: './tasklet-list.component.html',
@@ -18,11 +21,25 @@ import {PersonService} from '../../../services/entities/person.service';
 })
 export class TaskletListComponent implements OnInit, OnDestroy {
 
+  /** Tasklets to be displayed */
   tasklets: Tasklet[] = [];
+  /** Unfiltered tasklets */
   taskletsAll: Tasklet[] = [];
 
+  /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /**
+   * Constructor
+   * @param {ProjectService} projectService
+   * @param {TaskService} taskService
+   * @param {TaskletService} taskletService
+   * @param {TagService} tagService
+   * @param {PersonService} personService
+   * @param {MatchService} matchService
+   * @param {FilterService} filterService
+   * @param {ChangeDetectorRef} changeDetector
+   */
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
@@ -33,8 +50,14 @@ export class TaskletListComponent implements OnInit, OnDestroy {
               private changeDetector: ChangeDetectorRef) {
   }
 
-  ngOnInit() {
+  //
+  // Lifecycle hooks
+  //
 
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
     this.initializeProjectSubscription();
     this.initializeTaskSubscription();
     this.initializeTaskletSubscription();
@@ -43,13 +66,12 @@ export class TaskletListComponent implements OnInit, OnDestroy {
     this.initializeFilterSubscription();
   }
 
+  /**
+   * Handles on-destroy lifecycle hook
+   */
   ngOnDestroy() {
     this.unsubscribeSubject.next();
     this.unsubscribeSubject.complete();
-  }
-
-  public onIntersection(tasklet: Tasklet): void {
-    this.taskletService.addElementToDateQueue(tasklet.creationDate);
   }
 
   //
@@ -57,10 +79,9 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   //
 
   /**
-   * Subscribes project changes
+   * Initializes project subscription
    */
   private initializeProjectSubscription() {
-
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
@@ -72,7 +93,6 @@ export class TaskletListComponent implements OnInit, OnDestroy {
    * Subscribes task changes
    */
   private initializeTaskSubscription() {
-
     this.taskService.tasksSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
@@ -81,10 +101,9 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Subscribes tasklet changes
+   * Initializes tasklet subscription
    */
   private initializeTaskletSubscription() {
-
     this.taskletService.taskletsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -96,39 +115,48 @@ export class TaskletListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Subscribes tag changes
+   * Initializes tag subscription
    */
   private initializeTagSubscription() {
-
     this.tagService.tagsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.forceChangeDetection();
     });
   }
 
   /**
-   * Subscribes person changes
+   * Initializes person subscription
    */
   private initializePersonSubscription() {
-
     this.personService.personsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.forceChangeDetection();
     });
   }
 
   /**
-   * Subscribes filter changes
+   * Initializes filter subscription
    */
   private initializeFilterSubscription() {
-
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
       this.update();
     });
+  }
+
+  //
+  // Actions
+  //
+
+  /**
+   * Handles new elements in the viewport
+   * @param {Tasklet} tasklet tasklet being in the viewport
+   */
+  public onIntersection(tasklet: Tasklet): void {
+    this.taskletService.addElementToDateQueue(tasklet.creationDate);
   }
 
   /**

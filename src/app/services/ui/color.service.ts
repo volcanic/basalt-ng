@@ -2,9 +2,15 @@ import {Injectable} from '@angular/core';
 import {Hash} from '../../model/util/hash';
 import {Project} from '../../model/entities/project.model';
 
-@Injectable()
+/**
+ * Handles derived colors
+ */
+@Injectable({
+  providedIn: 'root'
+})
 export class ColorService {
 
+  /** Array of available project colors */
   projectColors = [
     '#C8E6C9',
     '#A5D6A7',
@@ -17,9 +23,11 @@ export class ColorService {
     '#DCE775'
   ];
 
-  constructor() {
-  }
-
+  /**
+   * Returns a color picked by a hash inputFieldValue generated from a project's name
+   * @param {Project} project project to get color for
+   * @returns {string} color string derived from project name
+   */
   getProjectColor(project: Project) {
     if (project != null && project.name != null && project.name.trim().length > 0) {
       return this.projectColors[

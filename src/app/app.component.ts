@@ -15,15 +15,38 @@ import {TaskletService} from './services/entities/tasklet.service';
 import {ThemeService} from './services/ui/theme.service';
 import {OverlayContainer} from '@angular/cdk/overlay';
 
+/**
+ * Displays root element
+ */
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styles: [require('./app.component.scss')],
 })
 export class AppComponent implements OnInit, AfterViewInit {
+
+  /** App title */
   title = 'Basalt';
+
+  /** Default app theme */
   themeClass = 'light-theme';
 
+  /**
+   * Constructor
+   * @param {EntityService} entityService
+   * @param {TaskService} taskService
+   * @param {TaskletService} taskletService
+   * @param {SnackbarService} snackbarService
+   * @param {PouchDBService} pouchDBService
+   * @param {PouchDBSettingsService} pouchDBSettingsService
+   * @param {SettingsService} settingsService
+   * @param {ThemeService} themeService
+   * @param {OverlayContainer} overlayContainer
+   * @param {MatIconRegistry} iconRegistry
+   * @param {DomSanitizer} sanitizer
+   * @param {MatDialog} dialog dialog
+   * @param {MatSnackBar} snackBar snack bar
+   */
   constructor(private entityService: EntityService,
               private taskService: TaskService,
               private taskletService: TaskletService,
@@ -32,14 +55,21 @@ export class AppComponent implements OnInit, AfterViewInit {
               private pouchDBSettingsService: PouchDBSettingsService,
               private settingsService: SettingsService,
               private themeService: ThemeService,
-              public dialog: MatDialog,
-              public snackBar: MatSnackBar,
               private overlayContainer: OverlayContainer,
               private iconRegistry: MatIconRegistry,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              public dialog: MatDialog,
+              public snackBar: MatSnackBar,) {
   }
 
-  ngOnInit(): void {
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
     this.initializeSettings();
     this.initializeTheme();
     this.initializeThemeSubscription();
@@ -47,6 +77,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.initializeIcons();
   }
 
+  /**
+   * Handles after-view-init lifecycle hook
+   */
   ngAfterViewInit() {
     this.initializeDatabaseSync();
   }
@@ -55,7 +88,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   // Initialization
   //
 
-  initializeSettings() {
+  /**
+   * Initializes settings
+   */
+  private initializeSettings() {
     this.settingsService.fetch();
     this.settingsService.settingsSubject.subscribe(settings => {
 
@@ -66,12 +102,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
-  initializeTheme() {
+  /**
+   * Initializes theme
+   */
+  private initializeTheme() {
     this.themeClass = this.themeService.theme;
     this.overlayContainer.getContainerElement().classList.add(this.themeService.theme);
   }
 
-  initializeThemeSubscription() {
+  /**
+   * Initializes theme subscription
+   */
+  private initializeThemeSubscription() {
     this.themeService.themeSubject.subscribe(value => {
 
       this.themeClass = value;
@@ -86,22 +128,42 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
   }
 
-  initializeSnackbar() {
+  /**
+   * Initializes snack bar
+   */
+  private initializeSnackbar() {
     this.snackbarService.messageSubject.subscribe(snack => {
         this.openSnackBar(snack[0], snack[1], snack[2]);
       }
     );
   }
 
-  initializeIcons() {
+  /**
+   * Initializes icons
+   */
+  private initializeIcons() {
+    /** Root directory of material design icons */
     const ICON_ROOT_DIR = 'assets/material-design-icons';
+    /** Icon variant */
     const VARIANT = 'production';
 
+    /**
+     * Represents a material design icon
+     */
     class Icon {
+      /** Topic */
       topic: string;
+      /** Name */
       name: string;
+      /** File */
       file: string;
 
+      /**
+       * Constructor
+       * @param {string} topic
+       * @param {string} name
+       * @param {string} file
+       */
       constructor(topic: string, name: string, file: string) {
         this.topic = topic;
         this.name = name;
@@ -185,7 +247,10 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
   }
 
-  initializeDatabaseSync() {
+  /**
+   * Initializes database sync
+   */
+  private initializeDatabaseSync() {
     this.pouchDBService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
     this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_SETTINGS}`);
   }
@@ -196,9 +261,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   /**
    * Handles messages that shall be displayed in a snack bar
-   * @param message
-   * @param actionName
-   * @param action
+   * @param message message to be displayed
+   * @param actionName action name to be displayed
+   * @param action action to be triggered if action name is clicked
    */
   private openSnackBar(message: string, actionName: string, action: any) {
     const snackbarRef = this.snackBar.open(message, actionName, <MatSnackBarConfig>{
@@ -210,6 +275,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Handles display of new features dialog
+   * @param {string} currentVersion
+   */
   private showNewFeatures(currentVersion: string) {
     // Current version
     const currentMajor = Number.parseInt(environment.VERSION.split('.')[0]);
@@ -223,9 +292,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     if ((currentMajor > latestMajor)
       || (currentMajor === latestMajor && currentMinor > latestMinor)
-      || (currentMajor === latestMajor && currentMinor === latestMinor && currentPatch > latestPatch)
-    ) {
-
+      || (currentMajor === latestMajor && currentMinor === latestMinor && currentPatch > latestPatch)) {
       const dialogRef = this.dialog.open(NewFeaturesDialogComponent, {
         disableClose: false,
         data: {

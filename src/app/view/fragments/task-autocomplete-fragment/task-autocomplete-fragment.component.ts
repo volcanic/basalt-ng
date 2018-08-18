@@ -9,6 +9,9 @@ import {debounceTime} from 'rxjs/operators';
 import {TaskService} from '../../../services/entities/task.service';
 import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
 
+/**
+ * Displays task auto-complete fragment
+ */
 @Component({
   selector: 'app-task-autocomplete-fragment',
   templateUrl: './task-autocomplete-fragment.component.html',
@@ -16,59 +19,121 @@ import {SuggestionService} from '../../../services/entities/filter/suggestion.se
 })
 export class TaskAutocompleteFragmentComponent implements OnInit {
 
+  /** Task to be displayed */
   @Input() task: Task;
+
+  /** Event emitter indicating changes in task */
   @Output() taskChangedEmitter = new EventEmitter<Task>();
 
-  debouncer = new Subject();
+  /** Debouncer for input field */
+  inputFieldDebouncer = new Subject();
+  /** Current value of input field */
+  inputFieldValue = '';
 
-  value = '';
-
+  /** Array of options */
   options = [];
+  /** Array of options filtered by currently typed inputFieldValue */
   filteredOptions: Observable<string[]>;
+
+  /** Form control */
   formControl: FormControl = new FormControl();
 
+  /**
+   * Constructor
+   * @param {TaskService} taskService
+   * @param {CloneService} cloneService
+   * @param {SuggestionService} suggestionService
+   */
   constructor(private taskService: TaskService,
               private cloneService: CloneService,
               private suggestionService: SuggestionService) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
   ngOnInit() {
+    this.initializeTask();
+    this.initializeTaskOptions();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes task
+   */
+  private initializeTask() {
     if (this.task == null) {
       this.task = new Task('');
     }
 
-    // Cut ties with existing entity
-    this.task = this.cloneService.cloneTask(this.task);
+    this.task = CloneService.cloneTask(this.task);
+  }
 
+  /**
+   * Initializes task options
+   */
+  private initializeTaskOptions() {
     this.options = Array.from(this.suggestionService.taskOptions.values()).reverse();
 
     this.filteredOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => this.filterSearchItems(value))
+        map(value => this.filterOptions(value))
       );
 
-    this.debouncer.pipe(
+    this.inputFieldDebouncer.pipe(
       debounceTime(500)
     ).subscribe((value: Task) => this.taskChangedEmitter.emit(value));
   }
 
-  onKeyUp(event: any) {
+  //
+  // Actions
+  //
+
+  /**
+   * Handles key up event
+   */
+  onKeyUp() {
     this.notify();
   }
 
-  onOptionSelected(event: any) {
+  /**
+   * Handles option selection
+   */
+  onOptionSelected() {
     this.notify();
   }
 
-  filterSearchItems(value: string): string[] {
+  //
+  // Helpers
+  //
+
+  /**
+   * Filters options according to current value of input field
+   * @param {string} value input field value
+   * @returns {string[]} array of filtered options
+   */
+  private filterOptions(value: string): string[] {
     return this.options.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     ).reverse();
   }
 
-  notify() {
-    this.debouncer.next(this.task);
-  }
+  //
+  // Notification
+  //
 
+  /**
+   * Informs subscribers that something has changed
+   */
+  private notify() {
+    this.inputFieldDebouncer.next(this.task);
+  }
 }

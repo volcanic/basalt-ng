@@ -6,6 +6,9 @@ import {MatchService} from '../../../services/entities/filter/match.service';
 import {Tag} from '../../../model/entities/tag.model';
 import {TagService} from '../../../services/entities/tag.service';
 
+/**
+ * Displays tag list
+ */
 @Component({
   selector: 'app-tag-list',
   templateUrl: './tag-list.component.html',
@@ -13,30 +16,58 @@ import {TagService} from '../../../services/entities/tag.service';
 })
 export class TagListComponent implements OnInit, OnDestroy {
 
+  /** Event emitter indicating menu items being clicked */
   @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
+  /** Tags to be displayed */
   tags = [];
+  /** Unfiltered tags */
   tagsAll = [];
 
+  /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /**
+   * Constructor
+   * @param {TagService} tagService
+   * @param {MatchService} matchService
+   * @param {FilterService} filterService
+   * @param {ChangeDetectorRef} changeDetector
+   */
   constructor(private tagService: TagService,
               private matchService: MatchService,
               private filterService: FilterService,
               private changeDetector: ChangeDetectorRef) {
   }
 
-  ngOnInit() {
+  //
+  // Lifecycle hooks
+  //
 
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
     this.initializeTagSubscription();
     this.initializeFilterSubscription();
   }
 
   /**
-   * Subscribes tag changes
+   * Handles on-destroy lifecycle hook
+   */
+  ngOnDestroy() {
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes tag subscription
    */
   private initializeTagSubscription() {
-
     this.tagsAll = Array.from(this.tagService.tags.values());
     this.update();
 
@@ -51,10 +82,9 @@ export class TagListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Subscribes filter changes
+   * Initializes filter subscription
    */
   private initializeFilterSubscription() {
-
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
@@ -62,14 +92,13 @@ export class TagListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribeSubject.next();
-    this.unsubscribeSubject.complete();
-  }
+  //
+  // Actions
+  //
 
   /**
    * Handles click on menu items
-   * @param menuItem
+   * @param menuItem menu item that has been clicked
    */
   onMenuItemClicked(menuItem: string) {
     this.menuItemClickedEmitter.emit(menuItem);
@@ -92,5 +121,4 @@ export class TagListComponent implements OnInit, OnDestroy {
 
     this.changeDetector.markForCheck();
   }
-
 }

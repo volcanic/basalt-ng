@@ -5,7 +5,7 @@
   </mat-chip>
   <div class="searchbox">
     <input class="search-input" matInput name="search" type="text" placeholder="New person"
-           [(ngModel)]="value"
+           [(ngModel)]="inputFieldValue"
            [formControl]="formControl"
            [matAutocomplete]="auto"
            (keyup)="onKeyUp($event)"

@@ -3,27 +3,48 @@ import {Entity} from '../../model/entities/entity.model';
 import {ProjectService} from './project.service';
 import {TaskService} from './task.service';
 import {TaskletService} from './tasklet.service';
+import {TagService} from './tag.service';
+import {PersonService} from './person.service';
 
+/**
+ * Handles entities
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class EntityService {
 
-  entities = new Map<string, Entity>();
-
+  /**
+   * Constructor
+   * @param {ProjectService} projectService
+   * @param {TaskService} taskService
+   * @param {TaskletService} taskletService
+   * @param {TagService} tagService
+   * @param {PersonService} personService
+   */
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
-              private taskletService: TaskletService) {
+              private taskletService: TaskletService,
+              private tagService: TagService,
+              private personService: PersonService) {
   }
 
   //
   // Import/Export
   //
 
+  /**
+   * Downloads a file containing a JSON formatted array of all entities
+   */
   public downloadEntities() {
-    // this.entities = new Map([...Array.from(this.projectService.projects.entries()), ...Array.from(this.taskService.tasks.entries()), ...Array.from(this.taskletService.tasklets.entries())]);
+    const entities =
+      (Array.from(this.projectService.projects.values()) as Entity[]).concat(
+        (Array.from(this.taskService.tasks.values()) as Entity[]).concat(
+          (Array.from(this.taskletService.tasklets.values()) as Entity[]).concat(
+            (Array.from(this.tagService.tags.values()) as Entity[]).concat(
+              Array.from(this.personService.persons.values())))));
 
-    const fileContents = JSON.stringify(Array.from(this.entities.values()));
+    const fileContents = JSON.stringify(Array.from(entities.values()));
     const filename = 'entities.basalt';
     // const filetype = 'text/plain';
 

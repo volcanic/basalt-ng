@@ -2,13 +2,12 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
 import {UUID} from '../../../../model/util/uuid';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
-import {DIALOG_MODE} from '../../../../model/ui/dialog-mode.enum';
-import {TASKLET_TYPE} from '../../../../model/tasklet-type.enum';
+import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
+import {TaskletType} from '../../../../model/tasklet-type.enum';
 import {Tag} from '../../../../model/entities/tag.model';
 import {TaskletDailyScrum} from '../../../../model/entities/scrum/tasklet-daily-scrum.model';
 import {Person} from '../../../../model/entities/person.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
-import {SnackbarService} from '../../../../services/ui/snackbar.service';
 import {TaskletWeeklyDigest} from '../../../../model/entities/digest/tasklet-weekly-digest.model';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {TaskService} from '../../../../services/entities/task.service';
@@ -18,42 +17,65 @@ import {CloneService} from '../../../../services/util/clone.service';
 import {TagService} from '../../../../services/entities/tag.service';
 import {PersonService} from '../../../../services/entities/person.service';
 
+/**
+ * Displays tasklet dialog
+ */
 @Component({
   selector: 'app-tasklet-dialog',
   templateUrl: './tasklet-dialog.component.html',
   styleUrls: ['./tasklet-dialog.component.scss'],
 })
 export class TaskletDialogComponent implements OnInit {
-  DIALOG_MODE: typeof DIALOG_MODE = DIALOG_MODE;
 
-  mode = DIALOG_MODE.NONE;
+  /** Enum of dialog modes */
+  public modeType = DialogMode;
+  /** Current media */
+  public mode: DialogMode = DialogMode.NONE;
+
+  /** Dialog title */
   dialogTitle = '';
+
+  /** Tasklet to be displayed */
   tasklet: Tasklet;
+  /** Descsription of previous tasklet */
   previousDescription = new Description();
 
-  // Temporary
+  /** Temporarily displayed tags */
   tags: Tag[] = [];
+  /** Temporarily displayed persons */
   persons: Person[] = [];
+  /** Temporarily displayed task */
   task: Task;
 
+  /**
+   * Constructor
+   * @param {TaskService} taskService
+   * @param {TaskletService} taskletService
+   * @param {TagService} tagService
+   * @param {PersonService} personService
+   * @param {MatDialog} dialog dialog
+   * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
+   * @param data dialog data
+   */
   constructor(private taskService: TaskService,
               private taskletService: TaskletService,
               private tagService: TagService,
               private personService: PersonService,
-              private snackbarService: SnackbarService,
-              private cloneService: CloneService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
-  ngOnInit() {
-    this.mode = this.data.mode;
-    this.dialogTitle = this.data.dialogTitle;
+  //
+  // Lifecycle hooks
+  //
 
-    // Deep copy
-    this.tasklet = this.cloneService.cloneTasklet(this.data.tasklet);
-    this.previousDescription = this.data.previousDescription;
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
+    this.initializeData();
+    this.initializeTasklet();
 
     // Temporary
     this.initializeTask();
@@ -65,11 +87,33 @@ export class TaskletDialogComponent implements OnInit {
   // Initialization
   //
 
-  initializeTask() {
+  /**
+   * Initializes data
+   */
+  private initializeData() {
+    this.mode = this.data.mode;
+    this.dialogTitle = this.data.dialogTitle;
+  }
+
+  /**
+   * Initializes tasklet
+   */
+  private initializeTasklet() {
+    this.tasklet = CloneService.cloneTasklet(this.data.tasklet);
+    this.previousDescription = this.data.previousDescription;
+  }
+
+  /**
+   * Initializes task
+   */
+  private initializeTask() {
     this.task = this.taskService.tasks.get(this.tasklet.taskId);
   }
 
-  initializeTags() {
+  /**
+   * Initializes tags
+   */
+  private initializeTags() {
     if (this.tasklet.tagIds != null) {
       this.tags = this.tasklet.tagIds.map(id => {
         return this.tagService.getTagById(id);
@@ -79,7 +123,10 @@ export class TaskletDialogComponent implements OnInit {
     }
   }
 
-  initializePersons() {
+  /**
+   * Initializes persons
+   */
+  private initializePersons() {
     if (this.tasklet.personIds != null) {
       this.persons = this.tasklet.personIds.map(id => {
         return this.personService.getPersonById(id);
@@ -93,25 +140,45 @@ export class TaskletDialogComponent implements OnInit {
   // Actions
   //
 
+  /**
+   * Handles task changes
+   * @param task new task
+   */
   onTaskChanged(task: Task) {
     this.task = task;
   }
 
+  /**
+   * Handles description changes
+   * @param description new description
+   */
   onDescriptionChanged(description: Description) {
     this.tasklet.description = description;
   }
 
+  /**
+   * Handles tag changes
+   * @para tags new tags
+   */
   onTagsChanged(tags: Tag[]) {
     this.tags = tags;
   }
 
+  /**
+   * Handles person changes
+   * @para persons new persons
+   */
   onPersonChanged(persons: Person[]) {
     this.tasklet.personIds = persons.map(person => {
       return person.id;
     });
   }
 
-  public onKeyDown(event: any) {
+  /**
+   * Handles key down event
+   * @param event
+   */
+  onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
       this.updateTasklet();
@@ -122,22 +189,25 @@ export class TaskletDialogComponent implements OnInit {
   // Button actions
   //
 
+  /**
+   * Handles click on add button
+   */
   addTasklet() {
     this.evaluateTask();
     this.tasklet.tagIds = this.aggregateTagIds(this.tasklet);
     this.tasklet.personIds = this.aggregatePersonIds(this.tasklet);
 
     switch (this.tasklet.type) {
-      case TASKLET_TYPE.DAILY_SCRUM: {
+      case TaskletType.DAILY_SCRUM: {
         this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
         break;
       }
-      case TASKLET_TYPE.LUNCH_BREAK:
-      case TASKLET_TYPE.FINISHING_TIME: {
+      case TaskletType.LUNCH_BREAK:
+      case TaskletType.FINISHING_TIME: {
         this.dialogRef.close(this.tasklet as Tasklet);
         break;
       }
-      case TASKLET_TYPE.WEEKLY_DIGEST: {
+      case TaskletType.WEEKLY_DIGEST: {
         this.dialogRef.close(this.tasklet as TaskletWeeklyDigest);
         break;
       }
@@ -147,18 +217,21 @@ export class TaskletDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles click on update button
+   */
   updateTasklet() {
     this.evaluateTask();
     this.tasklet.tagIds = this.aggregateTagIds(this.tasklet);
     this.tasklet.personIds = this.aggregatePersonIds(this.tasklet);
 
     switch (this.tasklet.type) {
-      case TASKLET_TYPE.DAILY_SCRUM: {
+      case TaskletType.DAILY_SCRUM: {
         this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
         break;
       }
-      case TASKLET_TYPE.LUNCH_BREAK:
-      case TASKLET_TYPE.FINISHING_TIME: {
+      case TaskletType.LUNCH_BREAK:
+      case TaskletType.FINISHING_TIME: {
         this.dialogRef.close(this.tasklet as Tasklet);
         break;
       }
@@ -169,6 +242,9 @@ export class TaskletDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles click on update button for daily scrum tasklets
+   */
   updateTaskletDailyScrum(tasklet: TaskletDailyScrum) {
     tasklet.participants = tasklet.participants.filter(p => {
       return p.person != null && p.person.name.length > 0;
@@ -181,6 +257,9 @@ export class TaskletDialogComponent implements OnInit {
     this.dialogRef.close(this.tasklet);
   }
 
+  /**
+   * Handles click on delete button
+   */
   deleteTasklet() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
       disableClose: false,
@@ -193,12 +272,16 @@ export class TaskletDialogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.taskletService.deleteTasklet(result as Tasklet);
+        this.taskletService.deleteTasklet(result as Tasklet).then(() => {
+        });
         this.dialogRef.close(null);
       }
     });
   }
 
+  /**
+   * Handles click on continue button
+   */
   continueTasklet() {
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
@@ -226,7 +309,8 @@ export class TaskletDialogComponent implements OnInit {
         // New task
         task = new Task(this.task.name);
         this.tasklet.taskId = task.id;
-        this.taskService.createTask(task);
+        this.taskService.createTask(task).then(() => {
+        });
       } else {
         this.tasklet.taskId = null;
       }
@@ -266,7 +350,8 @@ export class TaskletDialogComponent implements OnInit {
 
       if (tag == null) {
         tag = new Tag(name, true);
-        this.tagService.createTag(tag);
+        this.tagService.createTag(tag).then(() => {
+        });
       }
 
       return tag;
@@ -328,7 +413,8 @@ export class TaskletDialogComponent implements OnInit {
 
       if (person == null) {
         person = new Person(name, true);
-        this.personService.createPerson(person);
+        this.personService.createPerson(person).then(() => {
+        });
       }
 
       return person;
@@ -340,7 +426,7 @@ export class TaskletDialogComponent implements OnInit {
    * @param {Tasklet} tasklet
    * @returns {Map<string, string>}
    */
-  inferPersons(tasklet: Tasklet): Map<string, string> {
+  private inferPersons(tasklet: Tasklet): Map<string, string> {
     const inferredPersons = new Map<string, string>();
 
     if (tasklet.description != null && tasklet.description.value != null) {

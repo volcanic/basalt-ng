@@ -2,7 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
 import {Project} from '../../../../model/entities/project.model';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
-import {DIALOG_MODE} from '../../../../model/ui/dialog-mode.enum';
+import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
 import {ProjectService} from '../../../../services/entities/project.service';
 import {Tag} from '../../../../model/entities/tag.model';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
@@ -14,6 +14,9 @@ import {CloneService} from '../../../../services/util/clone.service';
 import {DateService} from '../../../../services/util/date.service';
 import {TagService} from '../../../../services/entities/tag.service';
 
+/**
+ * Displays task dialog
+ */
 @Component({
   selector: 'app-task-dialog',
   templateUrl: './task-dialog.component.html',
@@ -21,16 +24,23 @@ import {TagService} from '../../../../services/entities/tag.service';
 })
 export class TaskDialogComponent implements OnInit {
 
-  DIALOG_MODE: typeof DIALOG_MODE = DIALOG_MODE;
+  /** Enum of dialog modes */
+  public modeType = DialogMode;
+  /** Current media */
+  public mode: DialogMode = DialogMode.NONE;
 
-  mode = DIALOG_MODE.NONE;
+  /** Dialog title */
   dialogTitle = '';
+
+  /** Task to be displayed */
   task: Task;
 
-  inputDisabled = false;
+  /** Readonly dialog if true */
+  readonly = false;
 
-  // Priority
+  /** Color for no priority */
   colorEmpty = '#cfd8dc';
+  /** Color for priorities */
   colorsPriorities = [
     '#90a4ae',
     '#78909c',
@@ -38,6 +48,7 @@ export class TaskDialogComponent implements OnInit {
     '#546e7a',
     '#455a64',
   ];
+  /** Color for flags */
   colorsFlags = [
     '#cfd8dc',
     '#cfd8dc',
@@ -46,33 +57,52 @@ export class TaskDialogComponent implements OnInit {
     '#cfd8dc'
   ];
 
-  // Temporary
+  /** Temporary project */
   project: Project;
+  /** Temporary tags */
   tags: Tag[] = [];
 
+  /** Reference to static method */
+  getTimeString = DateService.getTimeString;
+  /** Reference to static method */
+  getDateString = DateService.getDateString;
+
+  /**
+   * Constructor
+   * @param {ProjectService} projectService
+   * @param {TaskService} taskService
+   * @param {TaskletService} taskletService
+   * @param {TagService} tagService
+   * @param {CloneService} cloneService
+   * @param {DateAdapter<any>} adapter
+   * @param {DateService} dateService date service
+   * @param {MatDialog} dialog dialog
+   * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
+   * @param data dialog data
+   */
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
               private taskletService: TaskletService,
               private tagService: TagService,
               private cloneService: CloneService,
-              public dateService: DateService,
               private adapter: DateAdapter<any>,
+              public dateService: DateService,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
   ngOnInit() {
-    this.adapter.setLocale('en-GB');
-
-    this.mode = this.data.mode;
-    this.dialogTitle = this.data.dialogTitle;
-
-    // Deep copy
-    this.task = this.cloneService.cloneTask(this.data.task);
-
-    this.inputDisabled = this.task.completionDate != null;
-
+    this.initializeData();
+    this.initializeInput();
+    this.initializeTask();
     this.initializePriority();
     this.initializeProject();
     this.initializeTags();
@@ -82,7 +112,34 @@ export class TaskDialogComponent implements OnInit {
   // Initialization
   //
 
-  initializePriority() {
+  /**
+   * Initializes data
+   */
+  private initializeData() {
+    this.mode = this.data.mode;
+    this.dialogTitle = this.data.dialogTitle;
+    this.task = this.data.task;
+  }
+
+  /**
+   * Initializes input
+   */
+  private initializeInput() {
+    this.adapter.setLocale('en-GB');
+    this.readonly = this.task.completionDate != null;
+  }
+
+  /**
+   * Initializes task
+   */
+  private initializeTask() {
+    this.task = CloneService.cloneTask(this.data.task);
+  }
+
+  /**
+   * Initializes priority
+   */
+  private initializePriority() {
     this.colorsFlags.forEach((flagColor, index) => {
       if (index <= this.task.priority) {
         this.colorsFlags[index] = this.colorsPriorities[this.task.priority];
@@ -92,11 +149,17 @@ export class TaskDialogComponent implements OnInit {
     });
   }
 
-  initializeProject() {
+  /**
+   * Initializes project
+   */
+  private initializeProject() {
     this.project = this.projectService.projects.get(this.task.projectId);
   }
 
-  initializeTags() {
+  /**
+   * Initializes tags
+   */
+  private initializeTags() {
     this.tags = this.task.tagIds.map(id => {
       return this.tagService.getTagById(id);
     }).filter(tag => {
@@ -108,7 +171,11 @@ export class TaskDialogComponent implements OnInit {
   // Actions
   //
 
-  public onKeyDown(event: any) {
+  /**
+   * Handles key down event
+   * @param event event
+   */
+  onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
       this.updateTask();
@@ -117,20 +184,32 @@ export class TaskDialogComponent implements OnInit {
 
   // Completion date
 
+  /**
+   * Handles completion date changes
+   * @param {Date} value completion date
+   */
   onCompletionDateChanged(value: Date) {
     this.task.completionDate = value;
   }
 
   // Due date
 
+  /**
+   * Handles due date changes
+   * @param {Date} value due date
+   */
   onDueDateChanged(value: Date) {
     this.task.dueDate = value;
   }
 
   // Priority
 
+  /**
+   * Handles hover over priority flags
+   * @param {number} priority priority hovered over
+   */
   onHoverFlag(priority: number) {
-    if (!this.inputDisabled) {
+    if (!this.readonly) {
       this.colorsFlags.forEach((flagColor, index) => {
         if (index <= priority) {
           this.colorsFlags[index] = this.colorsPriorities[priority];
@@ -141,14 +220,21 @@ export class TaskDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles leave of priority flags
+   */
   onLeaveFlag() {
-    if (!this.inputDisabled) {
+    if (!this.readonly) {
       this.initializePriority();
     }
   }
 
+  /**
+   * Handles click on priority flags
+   * @param {number} priority priority clicked on
+   */
   onClickFlag(priority: number) {
-    if (!this.inputDisabled) {
+    if (!this.readonly) {
       this.task.priority = priority;
 
       if (priority === -1) {
@@ -165,6 +251,10 @@ export class TaskDialogComponent implements OnInit {
 
   // Project
 
+  /**
+   * Handles project changes
+   * @param {Project} project project inputFieldValue
+   */
   onProjectChanged(project: Project) {
     this.project = project;
     this.task.projectId = project.id;
@@ -172,6 +262,10 @@ export class TaskDialogComponent implements OnInit {
 
   // Tags
 
+  /**
+   * Handles tag changes
+   * @param {Tag[]} tags tags inputFieldValue
+   */
   onTagsChanged(tags: Tag[]) {
     this.task.tagIds = tags.map(tag => {
       return tag.id;
@@ -182,32 +276,46 @@ export class TaskDialogComponent implements OnInit {
   // Button actions
   //
 
+  /**
+   * Handles click on add button
+   */
   addTask() {
     this.evaluateProject();
     this.task.tagIds = this.aggregateTagIds(this.task);
     this.dialogRef.close(this.task);
   }
 
+  /**
+   * Handles click on update button
+   */
   updateTask() {
     this.evaluateProject();
     this.task.tagIds = this.aggregateTagIds(this.task);
     this.dialogRef.close(this.task);
   }
 
+  /**
+   * Handles click on complete button
+   */
   completeTask() {
     this.evaluateProject();
     this.task.completionDate = new Date();
     this.dialogRef.close(this.task);
   }
 
+  /**
+   * Handles click on re-open button
+   */
   reopenTask() {
     this.evaluateProject();
     this.task.completionDate = null;
     this.dialogRef.close(this.task);
   }
 
+  /**
+   * Handles click on delete button
+   */
   deleteTask() {
-
     const references = Array.from(this.taskletService.tasklets.values()).filter((tasklet: Tasklet) => {
       return tasklet.taskId === this.task.id;
     }).length;
@@ -234,7 +342,8 @@ export class TaskDialogComponent implements OnInit {
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result != null) {
-          this.taskService.deleteTask(result as Task);
+          this.taskService.deleteTask(result as Task).then(() => {
+          });
           this.dialogRef.close(null);
         }
       });
@@ -259,7 +368,8 @@ export class TaskDialogComponent implements OnInit {
         // New project
         project = new Project(this.project.name, true);
         this.task.projectId = project.id;
-        this.projectService.createProject(project);
+        this.projectService.createProject(project).then(() => {
+        });
       } else {
         this.task.projectId = null;
       }
@@ -268,7 +378,7 @@ export class TaskDialogComponent implements OnInit {
 
   /**
    * Aggregates tag IDs
-   * @param {Task} task
+   * @param {Task} task task to aggregate tag IDs of
    * @returns {string[]}
    */
   private aggregateTagIds(task: Task): string[] {
@@ -293,7 +403,8 @@ export class TaskDialogComponent implements OnInit {
 
       if (tag == null) {
         tag = new Tag(name, true);
-        this.tagService.createTag(tag);
+        this.tagService.createTag(tag).then(() => {
+        });
       }
 
       return tag;

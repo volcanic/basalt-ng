@@ -1,3 +1,10 @@
-export enum MEDIA {
-  UNDEFINED, SMALL, MEDIUM, LARGE
+/**
+ * Enum containing media sizes
+ */
+export enum Media {
+
+  UNDEFINED,
+  SMALL,
+  MEDIUM,
+  LARGE
 }

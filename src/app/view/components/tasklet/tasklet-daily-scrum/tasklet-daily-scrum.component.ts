@@ -1,21 +1,20 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TaskletDailyScrum} from '../../../../model/entities/scrum/tasklet-daily-scrum.model';
-import {DAILY_SCRUM_ACTIVITY_TYPE} from '../../../../model/entities/scrum/daily-scrum-activity-type.enum';
+import {DailyScrumActivityType} from '../../../../model/entities/scrum/daily-scrum-activity-type.enum';
 
+/**
+ * Displays daily scrum part of a tasklet
+ */
 @Component({
   selector: 'app-tasklet-daily-scrum',
   templateUrl: './tasklet-daily-scrum.component.html',
   styleUrls: ['./tasklet-daily-scrum.component.scss']
 })
-export class TaskletDailyScrumComponent implements OnInit {
+export class TaskletDailyScrumComponent {
+
+  /** Tasklet to be displayed */
   @Input() tasklet: TaskletDailyScrum;
 
-  type = DAILY_SCRUM_ACTIVITY_TYPE;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-
+  /** Reference to static method */
+  type = DailyScrumActivityType;
 }

@@ -5,29 +5,28 @@
       <div>
         <mat-form-field class="wide-box">
           <input matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
-                 [disabled]="inputDisabled"
+                 [disabled]="readonly"
                  [(ngModel)]="task.name">
         </mat-form-field>
       </div>
 
       <mat-accordion class="headers-align">
 
-        <mat-expansion-panel *ngIf="task.completionDate != null" [expanded]="step === 0" (opened)="false" hideToggle>
+        <mat-expansion-panel *ngIf="task.completionDate != null" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Completion date</mat-panel-title>
             <mat-panel-description *ngIf="task.completionDate != null" class="value-set">
-              {{ dateService.getTime(task.completionDate) }}, {{ dateService.getDate(task.completionDate) }}
+              {{ getTimeString(task.completionDate) }}, {{ getDateString(task.completionDate) }}
             </mat-panel-description>
             <mat-icon svgIcon="check"></mat-icon>
           </mat-expansion-panel-header>
           <app-date-time-picker-fragment
             [date]="task.completionDate"
-            [disabled]="inputDisabled"
             (dateChangedEmitter)="onCompletionDateChanged($event)">
           </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Description</mat-panel-title>
             <mat-panel-description *ngIf="task.description == null || task.description.value == ''">
@@ -39,26 +38,25 @@
             <mat-icon svgIcon="short_text"></mat-icon>
           </mat-expansion-panel-header>
           <app-description-fragment [description]="task.description"
-                                    [disabled]="inputDisabled"></app-description-fragment>
+                                    [readonly]="readonly"></app-description-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Due date</mat-panel-title>
             <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
             <mat-panel-description *ngIf="task.dueDate != null" class="value-set">
-              {{ dateService.getTime(task.dueDate) }}, {{ dateService.getDate(task.dueDate) }}
+              {{ getTimeString(task.dueDate) }}, {{ getDateString(task.dueDate) }}
             </mat-panel-description>
             <mat-icon svgIcon="today"></mat-icon>
           </mat-expansion-panel-header>
           <app-date-time-picker-fragment
             [date]="task.dueDate"
-            [disabled]="inputDisabled"
             (dateChangedEmitter)="onDueDateChanged($event)">
           </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Priority</mat-panel-title>
             <mat-panel-description *ngIf="task.priority < 0">Select a priority</mat-panel-description>
@@ -78,7 +76,7 @@
           </mat-icon>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Project
@@ -92,12 +90,12 @@
           <div>
             <app-project-autocomplete-fragment
               [project]="project"
-              [disabled]="inputDisabled"
+              [readonly]="readonly"
               (projectChangedEmitter)="onProjectChanged($event)"></app-project-autocomplete-fragment>
           </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Estimated effort</mat-panel-title>
             <mat-panel-description *ngIf="task.effort == null || task.effort <= 0">Estimate the effort
@@ -115,7 +113,7 @@
           </div>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [disabled]="inputDisabled" (opened)="false" hideToggle>
+        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Tags
@@ -126,7 +124,7 @@
             </mat-panel-description>
             <mat-icon svgIcon="label_outline"></mat-icon>
           </mat-expansion-panel-header>
-          <app-tag-chips-fragment [tags]="tags" [disabled]="inputDisabled"
+          <app-tag-chips-fragment [tags]="tags" [readonly]="readonly"
                                   (tagsChangedEmitter)="onTagsChanged($event)">
           </app-tag-chips-fragment>
         </mat-expansion-panel>
@@ -135,22 +133,22 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button color="warn" *ngIf="mode == DIALOG_MODE.UPDATE" (click)="deleteTask()">
+    <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteTask()">
       Delete task
     </button>
     <div class="flexbox"></div>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate != null" color="accent"
+    <button mat-button *ngIf="mode == modeType.UPDATE && task.completionDate != null" color="accent"
             (click)="reopenTask()">
       Re-open task
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE && task.completionDate == null" color="accent"
+    <button mat-button *ngIf="mode == modeType.UPDATE && task.completionDate == null" color="accent"
             (click)="completeTask()" [disabled]="!formCtrl.form.valid">
       Complete task
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addTask()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.ADD" (click)="addTask()" [disabled]="!formCtrl.form.valid">
       Add task
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updateTask()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTask()" [disabled]="!formCtrl.form.valid">
       Update task
     </button>
   </mat-dialog-actions>

@@ -48,7 +48,7 @@ import {PouchDBSettingsService} from './services/persistence/pouchdb-settings.se
 import {PreviousDescriptionFragmentComponent} from './view/fragments/previous-description-fragment/previous-description-fragment.component';
 import {ProjectAutocompleteFragmentComponent} from './view/fragments/project-autocomplete-fragment/project-autocomplete-fragment.component';
 import {ProjectDialogComponent} from './view/dialogs/entities/project-dialog/project-dialog.component';
-import {ProjectEffortTreeComponent} from './view/components/trees/weekly-effort-tree/weekly-effort-tree.component';
+import {WeeklyEffortTreeComponent} from './view/components/trees/weekly-effort-tree/weekly-effort-tree.component';
 import {ProjectFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {ProjectListComponent} from './view/lists/project-list/project-list.component';
 import {ProjectListDialogComponent} from './view/dialogs/lists/project-list-dialog/project-list-dialog.component';
@@ -117,7 +117,7 @@ import {WeeklyDigestFragmentComponent} from './view/fragments/weekly-digest-frag
     PreviousDescriptionFragmentComponent,
     ProjectAutocompleteFragmentComponent,
     ProjectDialogComponent,
-    ProjectEffortTreeComponent,
+    WeeklyEffortTreeComponent,
     ProjectFilterDialogComponent,
     ProjectListComponent,
     ProjectListDialogComponent,

@@ -15,6 +15,9 @@ import {Task} from '../../../model/entities/task.model';
 import {MatchService} from '../../../services/entities/filter/match.service';
 import {FilterService} from '../../../services/entities/filter/filter.service';
 
+/**
+ * Displays task list
+ */
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
@@ -23,22 +26,41 @@ import {FilterService} from '../../../services/entities/filter/filter.service';
 })
 export class TaskListComponent implements OnInit, OnDestroy {
 
+  /** Event emitter indicating menu items being clicked */
   @Output() menuItemClickedEmitter = new EventEmitter<string>();
 
+  /** Tasks to be displayed */
   tasks = [];
+  /** Unfiltered tasks */
   tasksAll = [];
 
+  /** Tasks having a due date before now */
   tasksOverdue = [];
+  /** Tasks having a due date after now */
   tasksNext = [];
+  /** Tasks not having a due date */
   tasksInbox = [];
+  /** Tasks with a completion date */
   tasksCompleted = [];
 
+  /** Background color for overdue badge */
   tasksOverdueBadgeColor = 'transparent';
+  /** Background color for next badge */
   tasksNextBadgeColor = 'transparent';
+  /** Background color for inbox badge */
   tasksInboxBadgeColor = 'transparent';
 
+  /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /**
+   * Constructor
+   * @param {TaskService} taskService
+   * @param {DateService} dateService
+   * @param {MatchService} matchService
+   * @param {FilterService} filterService
+   * @param {ChangeDetectorRef} changeDetector
+   */
   constructor(private taskService: TaskService,
               private dateService: DateService,
               private matchService: MatchService,
@@ -46,17 +68,34 @@ export class TaskListComponent implements OnInit, OnDestroy {
               private changeDetector: ChangeDetectorRef) {
   }
 
-  ngOnInit() {
+  //
+  // Lifecycle hooks
+  //
 
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
     this.initializeTaskSubscription();
     this.initializeFilterSubscription();
   }
 
   /**
-   * Subscribes task changes
+   * Handles on-destroy lifecycle hook
+   */
+  ngOnDestroy() {
+    this.unsubscribeSubject.next();
+    this.unsubscribeSubject.complete();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes task subscription
    */
   private initializeTaskSubscription() {
-
     this.tasksAll = Array.from(this.taskService.tasks.values());
     this.update();
 
@@ -70,29 +109,27 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribeSubject.next();
-    this.unsubscribeSubject.complete();
-  }
-
   /**
-   * Handles click on menu items
-   * @param menuItem
-   */
-  onMenuItemClicked(menuItem: string) {
-    this.menuItemClickedEmitter.emit(menuItem);
-  }
-
-  /**
-   * Subscribes filter changes
+   * Initializes filter subscription
    */
   private initializeFilterSubscription() {
-
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
       this.update();
     });
+  }
+
+  //
+  // Actions
+  //
+
+  /**
+   * Handles click on menu items
+   * @param menuItem menu item that has been clicked
+   */
+  onMenuItemClicked(menuItem: string) {
+    this.menuItemClickedEmitter.emit(menuItem);
   }
 
   /**
@@ -113,29 +150,29 @@ export class TaskListComponent implements OnInit, OnDestroy {
       return task != null
         && task.completionDate == null
         && task.dueDate != null
-        && this.dateService.isBefore(task.dueDate, new Date());
+        && DateService.isBefore(task.dueDate, new Date());
     }).sort((t1: Task, t2: Task) => {
-      return -this.matchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
+      return -MatchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksNext = this.tasks.filter(task => {
       return task != null
         && task.completionDate == null
         && task.dueDate != null
-        && this.dateService.isAfter(task.dueDate, new Date());
+        && DateService.isAfter(task.dueDate, new Date());
     }).sort((t1: Task, t2: Task) => {
-      return -this.matchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
+      return -MatchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksInbox = this.tasks.filter(task => {
       return task != null
         && task.completionDate == null
         && task.dueDate == null;
     }).sort((t1: Task, t2: Task) => {
-      return -this.matchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
+      return -MatchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksCompleted = this.tasks.filter(task => {
       return task != null && task.completionDate != null;
     }).sort((t1: Task, t2: Task) => {
-      return -this.matchService.compare(t1.completionDate.toString(), t2.completionDate.toString());
+      return -MatchService.compare(t1.completionDate.toString(), t2.completionDate.toString());
     });
 
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';

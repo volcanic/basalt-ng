@@ -2,6 +2,9 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export enum AnimationState {ACTIVE, INACTIVE }
 
+/**
+ * Contains animations for this component
+ */
 export const Animations = {
   actionAnimation: trigger('actionAnimation', [
     state(`${AnimationState.INACTIVE}`, style({

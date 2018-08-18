@@ -1,6 +1,6 @@
 import {inject, TestBed} from '@angular/core/testing';
 
-import {EntityService} from './projects.service';
+import {EntityService} from './entity.service';
 
 describe('EntityService', () => {
   beforeEach(() => {

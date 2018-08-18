@@ -5,6 +5,9 @@ import {takeUntil} from 'rxjs/internal/operators';
 import {Person} from '../../../model/entities/person.model';
 import {MatchService} from '../../../services/entities/filter/match.service';
 
+/**
+ * Displays filter person list
+ */
 @Component({
   selector: 'app-filter-person-list',
   templateUrl: './filter-person-list.component.html',
@@ -13,16 +16,32 @@ import {MatchService} from '../../../services/entities/filter/match.service';
 })
 export class FilterPersonListComponent implements OnInit {
 
+  /** Persons to be displayed */
   persons = [];
+  /** Flag indicating whether entities without person shall be displayed */
   personsNone = false;
 
+  /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /**
+   * Constructor
+   * @param {FilterService} filterService
+   * @param {MatchService} matchService
+   * @param {ChangeDetectorRef} changeDetector
+   */
   constructor(private filterService: FilterService,
               private matchService: MatchService,
               private changeDetector: ChangeDetectorRef) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
   ngOnInit() {
     this.initializePersonSubscription();
   }
@@ -32,12 +51,11 @@ export class FilterPersonListComponent implements OnInit {
   //
 
   /**
-   * Subscribes person changes
+   * Initializes person subscription
    */
   private initializePersonSubscription() {
-
     this.persons = Array.from(this.filterService.persons.values()).sort((t1: Person, t2: Person) => {
-      return this.matchService.compare(t1.name, t2.name);
+      return MatchService.compare(t1.name, t2.name);
     });
     this.personsNone = this.filterService.personsNone;
 
@@ -45,7 +63,7 @@ export class FilterPersonListComponent implements OnInit {
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
         this.persons = Array.from(this.filterService.persons.values()).sort((t1: Person, t2: Person) => {
-          return this.matchService.compare(t1.name, t2.name);
+          return MatchService.compare(t1.name, t2.name);
         });
         this.personsNone = this.filterService.personsNone;
         this.changeDetector.markForCheck();
@@ -57,6 +75,9 @@ export class FilterPersonListComponent implements OnInit {
   // Actions
   //
 
+  /**
+   * Handles click on select-all button
+   */
   onSelectAll() {
     this.persons.forEach(t => {
       t.checked = true;
@@ -65,6 +86,9 @@ export class FilterPersonListComponent implements OnInit {
     this.filterService.updatePersons(this.persons, false, this.personsNone);
   }
 
+  /**
+   * Handles click on select-none button
+   */
   onSelectNone() {
     this.persons.forEach(t => {
       t.checked = false;
@@ -73,7 +97,10 @@ export class FilterPersonListComponent implements OnInit {
     this.filterService.updatePersons(this.persons, false, this.personsNone);
   }
 
-  onChangeSpecialPerson() {
+  /**
+   * Handles changes of person-none flag
+   */
+  onPersonNoneFlagChanged() {
     this.filterService.updatePersons(this.persons, false, this.personsNone);
   }
 }

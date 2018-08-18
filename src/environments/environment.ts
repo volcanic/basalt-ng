@@ -3,6 +3,10 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
+/**
+ * Environment settings for development environment
+ * @type {{production: boolean; DATABASE_ENTITIES: string; DATABASE_SETTINGS: string; LIMIT_PROJECTS: number; LIMIT_TASKS: number; LIMIT_TASKLETS: number; LIMIT_PERSONS: number; LIMIT_TAGS: number; NAME: any; VERSION: any; LICENSE: string | any; HOMEPAGE: string | any; TAGS: any}}
+ */
 export const environment = {
   production: false,
   DATABASE_ENTITIES: 'basalt-dev',

@@ -5,7 +5,7 @@
       <div>
         <mat-form-field class="wide-box">
           <input matInput required name="person" type="text" placeholder="Person" ngControl="controlPerson"
-                 [disabled]="inputDisabled"
+                 [disabled]="readonly"
                  [(ngModel)]="person.name">
         </mat-form-field>
       </div>
@@ -49,14 +49,14 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button color="warn" *ngIf="mode == DIALOG_MODE.UPDATE" (click)="deletePerson()">
+    <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deletePerson()">
       Delete person
     </button>
     <div class="flexbox"></div>
-    <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addPerson()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.ADD" (click)="addPerson()" [disabled]="!formCtrl.form.valid">
       Add person
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updatePerson()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updatePerson()" [disabled]="!formCtrl.form.valid">
       Update person
     </button>
   </mat-dialog-actions>

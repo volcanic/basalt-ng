@@ -5,24 +5,38 @@ import {DropResult, SUCCESS} from '../../../components/file-drop/file-drop.compo
 import {SnackbarService} from '../../../../services/ui/snackbar.service';
 import {Entity} from '../../../../model/entities/entity.model';
 import {ProjectService} from '../../../../services/entities/project.service';
-import {Project} from '../../../../model/entities/project.model';
 import {TaskService} from '../../../../services/entities/task.service';
-import {EntityType} from '../../../../model/entities/entity-type.enum';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
-import {Task} from '../../../../model/entities/task.model';
-import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {EntityService} from '../../../../services/entities/entity.service';
 import {PouchDBService} from '../../../../services/persistence/pouchdb.service';
 
+/**
+ * Displays upload dialog
+ */
 @Component({
   selector: 'app-upload-dialog',
   templateUrl: './upload-dialog.component.html',
   styleUrls: ['./upload-dialog.component.scss']
 })
 export class UploadDialogComponent implements OnInit {
-  dialogTitle = '';
-  dropContent: Subject<Project[]> = new Subject();
 
+  /** Dialog title */
+  dialogTitle = '';
+
+  /** Entities retrieved from dropped file */
+  dropContent: Subject<Entity[]> = new Subject();
+
+  /**
+   * Constructor
+   * @param {EntityService} entityService
+   * @param {ProjectService} projectService
+   * @param {TaskService} taskService
+   * @param {TaskletService} taskletService
+   * @param {PouchDBService} pouchDBService
+   * @param {SnackbarService} snackbarService
+   * @param {MatDialogRef<UploadDialogComponent>} dialogRef dialog reference
+   * @param data dialog data
+   */
   constructor(private entityService: EntityService,
               private projectService: ProjectService,
               private taskService: TaskService,
@@ -33,6 +47,13 @@ export class UploadDialogComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
   ngOnInit() {
     this.dialogTitle = this.data.title;
 
@@ -46,12 +67,19 @@ export class UploadDialogComponent implements OnInit {
     });
   }
 
-  public uploadedFiles(result: DropResult) {
+  //
+  // Actions
+  //
+
+  /**
+   * Handles files dropped into the dropzone
+   * @param {DropResult} result drop result
+   */
+  public onFilesUploaded(result: DropResult) {
     if (result.result.toString().toUpperCase() === SUCCESS) {
       this.dropContent.next(result.payload);
     } else {
       this.snackbarService.showSnackbar('ERROR: Failed to parse dropped file.');
     }
   }
-
 }

@@ -1,28 +1,40 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Description} from '../../../model/entities/fragments/description.model';
 
+/**
+ * Displays description fragment
+ */
 @Component({
   selector: 'app-description-fragment',
   templateUrl: './description-fragment.component.html',
   styleUrls: ['./description-fragment.component.scss']
 })
-export class DescriptionFragmentComponent implements OnInit {
+export class DescriptionFragmentComponent {
 
+  /** Description of to be displayed */
   @Input() description: Description = new Description();
-  @Input() disabled = false;
+
+  /** Whether component is readonly or not */
+  @Input() readonly = false;
+
+  /** Event emitter indicating changes in description */
   @Output() descriptionChangedEmitter = new EventEmitter<Description>();
 
-  constructor() {
-  }
+  //
+  // Actions
+  //
 
-  ngOnInit() {
-  }
-
+  /**
+   * Handles click on clear button
+   */
   onClearButtonClicked() {
     this.description.value = '';
   }
 
-  onDescriptionChanged(value: string) {
+  /**
+   * Handles changes in description text
+   */
+  onDescriptionTextChanged() {
     this.descriptionChangedEmitter.emit(this.description);
   }
 }

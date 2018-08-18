@@ -7,8 +7,8 @@
                     matAutosizeMinRows="5"
                     matAutosizeMaxRows="5"
                     [(ngModel)]="description.value"
-                    [disabled]="disabled"
-                    (change)="onDescriptionChanged($event)">
+                    [disabled]="readonly"
+                    (change)="onDescriptionTextChanged()">
           </textarea>
   <button
     *ngIf="description.value"

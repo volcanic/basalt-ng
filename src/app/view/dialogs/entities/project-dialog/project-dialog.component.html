@@ -5,21 +5,21 @@
       <div>
         <mat-form-field class="wide-box">
           <input matInput required name="project" type="text" placeholder="Project" ngControl="controlProject"
-                 [disabled]="inputDisabled"
+                 [disabled]="readonly"
                  [(ngModel)]="project.name">
         </mat-form-field>
       </div>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button color="warn" *ngIf="mode == DIALOG_MODE.UPDATE" (click)="deleteProject()">
+    <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteProject()">
       Delete project
     </button>
     <div class="flexbox"></div>
-    <button mat-button *ngIf="mode == DIALOG_MODE.ADD" (click)="addProject()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.ADD" (click)="addProject()" [disabled]="!formCtrl.form.valid">
       Add project
     </button>
-    <button mat-button *ngIf="mode == DIALOG_MODE.UPDATE" (click)="updateProject()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateProject()" [disabled]="!formCtrl.form.valid">
       Update project
     </button>
   </mat-dialog-actions>

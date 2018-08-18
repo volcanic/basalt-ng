@@ -9,7 +9,7 @@
   <input matInput name="task" type="text" placeholder="Topic" [formControl]="formControl"
          [(ngModel)]="dailyScrumActivity.topic"
          [matAutocomplete]="auto"
-         (ngModelChange)="onTopicEdited()">
+         (ngModelChange)="onTopicUpdated()">
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of filteredDailyScrumActivityOptions | async" [value]="option">
       {{ option }}

@@ -1,15 +1,33 @@
+/* tslint:disable */
+/**
+ * Helper class to create UUIDs
+ */
 export class UUID {
-  private readonly str: string;
 
-  constructor(str?: string) {
-    this.str = str || this.getNewGUIDString();
+  /** String value to generate UUID for */
+  private readonly value: string;
+
+  /**
+   * Constructor
+   * @param {string} input existing UUID if available
+   */
+  constructor(input?: string) {
+    this.value = input || this.getNewUUIDString();
   }
 
+  /**
+   * Returns generated UUID string
+   * @returns {string} generated UUID string
+   */
   toString() {
-    return this.str;
+    return this.value;
   }
 
-  private getNewGUIDString() {
+  /**
+   * Creates a new UUID string
+   * @returns {string} UUID string
+   */
+  private getNewUUIDString(): string {
     // your favourite guid generation function could go here
     // ex: http://stackoverflow.com/a/8809472/188246
     let d = new Date().getTime();

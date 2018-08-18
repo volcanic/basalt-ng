@@ -5,7 +5,7 @@
       <div class="top-connection-line"></div>
     </div>
     <mat-card>
-      <mat-card-header (click)="onToggleExpansionPanel()">
+      <mat-card-header (click)="onExpansionPanelToggled()">
         <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
         <mat-card-title class="topic">{{ topic }}</mat-card-title>
         <mat-card-subtitle *ngIf="project != null">{{ project.name }}</mat-card-subtitle>
@@ -49,7 +49,7 @@
                  (click)="onActionFired('update-time')"
                  [matTooltip]=date
                  matTooltipPosition="above">
-              <span class="left-attached-content" *ngIf="dateService.isBeforeToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
+              <span class="left-attached-content" *ngIf="isBeforeToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
               <span class="left-attached-content">{{ time }}</span>
             </div>
           </div>
@@ -57,7 +57,7 @@
           <span class="time" *ngIf="media <= mediaType.MEDIUM">
             <label class="time-label">
              <span>{{ time }}</span>
-              <span *ngIf="dateService.isBeforeToday(tasklet.creationDate)">, {{ date }}</span>
+              <span *ngIf="isBeforeToday(tasklet.creationDate)">, {{ date }}</span>
             </label>
           </span>
             <span *ngFor="let p of tasklet.personIds">

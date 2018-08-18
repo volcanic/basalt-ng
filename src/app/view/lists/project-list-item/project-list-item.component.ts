@@ -1,39 +1,64 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {Project} from '../../../model/entities/project.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
-import {DIALOG_MODE} from '../../../model/ui/dialog-mode.enum';
+import {DialogMode} from '../../../model/ui/dialog-mode.enum';
 import {ProjectService} from '../../../services/entities/project.service';
 import {MatDialog} from '@angular/material';
 import {FilterService} from '../../../services/entities/filter/filter.service';
 
+/**
+ * Displays project list item
+ */
 @Component({
   selector: 'app-project-list-item',
   templateUrl: './project-list-item.component.html',
   styleUrls: ['./project-list-item.component.scss']
 })
-export class ProjectListItemComponent implements OnInit {
+export class ProjectListItemComponent {
+
+  /** Project to be displayed */
   @Input() project: Project;
 
+  /** Animation state */
   state = 'inactive';
 
+  /**
+   * Constructor
+   * @param {ProjectService} projectService
+   * @param {FilterService} filterService
+   * @param {ChangeDetectorRef} changeDetector
+   * @param {MatDialog} dialog dialog
+   */
   constructor(private projectService: ProjectService,
               private filterService: FilterService,
-              public dialog: MatDialog,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              public dialog: MatDialog) {
   }
 
-  ngOnInit() {
-  }
+  //
+  // Actions
+  //
 
+  /**
+   * Handles hover over container
+   * @param {boolean} hovered whether there is currently a hover event
+   */
   onHoverContainer(hovered: boolean) {
     this.state = hovered ? 'active' : 'inactive';
   }
 
+  //
+  // Button actions
+  //
+
+  /**
+   * Handles click on update button
+   */
   updateProject() {
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       disableClose: false,
       data: {
-        mode: DIALOG_MODE.UPDATE,
+        mode: DialogMode.UPDATE,
         dialogTitle: 'Update project',
         project: this.project
       }

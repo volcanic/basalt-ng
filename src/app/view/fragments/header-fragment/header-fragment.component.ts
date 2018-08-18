@@ -1,67 +1,83 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {TASKLET_TYPE} from '../../../model/tasklet-type.enum';
+import {Component, Input} from '@angular/core';
+import {TaskletType} from '../../../model/tasklet-type.enum';
 import {MatDialog} from '@angular/material';
 import {Project} from '../../../model/entities/project.model';
 import {Tasklet} from '../../../model/entities/tasklet.model';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 
+/**
+ * Displays header fragment
+ */
 @Component({
   selector: 'app-header-fragment',
   templateUrl: './header-fragment.component.html',
   styleUrls: ['./header-fragment.component.scss']
 })
-export class HeaderFragmentComponent implements OnInit {
+export class HeaderFragmentComponent {
+
+  /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
 
+  /** Project to be displayed */
   project: Project;
 
-  taskletTypes = Object.keys(TASKLET_TYPE).map(key => TASKLET_TYPE[key]);
+  /** Available tasklet types */
+  taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]);
 
+  /** Reference to static method */
+  selectIcon = HeaderFragmentComponent.selectIcon;
+
+  /**
+   * Constructor
+   * @param {TaskletService} taskletService
+   * @param {MatDialog} dialog dialog
+   */
   constructor(private taskletService: TaskletService,
               public dialog: MatDialog) {
 
     this.project = this.taskletService.getProjectByTasklet(this.tasklet);
   }
 
-  ngOnInit() {
-  }
-
-  selectIcon(type: TASKLET_TYPE) {
+  /**
+   * Retrieves an icon by tasklet type
+   * @param type tasklet type
+   */
+  static selectIcon(type: TaskletType) {
     switch (type) {
-      case TASKLET_TYPE.ACTION: {
+      case TaskletType.ACTION: {
         return 'turned_in_not';
       }
-      case TASKLET_TYPE.MEETING: {
+      case TaskletType.MEETING: {
         return 'people';
       }
-      case TASKLET_TYPE.CALL: {
+      case TaskletType.CALL: {
         return 'call';
       }
-      case TASKLET_TYPE.DAILY_SCRUM: {
+      case TaskletType.DAILY_SCRUM: {
         return 'scrum';
       }
-      case TASKLET_TYPE.MAIL: {
+      case TaskletType.MAIL: {
         return 'mail';
       }
-      case TASKLET_TYPE.CHAT: {
+      case TaskletType.CHAT: {
         return 'chat';
       }
-      case TASKLET_TYPE.DEVELOPMENT: {
+      case TaskletType.DEVELOPMENT: {
         return 'code';
       }
-      case TASKLET_TYPE.DEBUGGING: {
+      case TaskletType.DEBUGGING: {
         return 'bug_report';
       }
-      case TASKLET_TYPE.IDEA: {
+      case TaskletType.IDEA: {
         return 'lightbulb_outline';
       }
-      case TASKLET_TYPE.LUNCH_BREAK: {
+      case TaskletType.LUNCH_BREAK: {
         return 'local_dining';
       }
-      case TASKLET_TYPE.FINISHING_TIME: {
+      case TaskletType.FINISHING_TIME: {
         return 'directions_run';
       }
-      case TASKLET_TYPE.WEEKLY_DIGEST: {
+      case TaskletType.WEEKLY_DIGEST: {
         return 'receipt';
       }
     }
