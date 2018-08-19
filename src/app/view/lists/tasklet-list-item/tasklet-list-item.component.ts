@@ -264,10 +264,11 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
    * @param {string} action action
    */
   onActionFired(action: string) {
+    console.log(`action ${action}`);
     switch (action) {
       case 'card': {
         if (this.media > this.mediaType.MEDIUM) {
-          this.onActionFired('notify-tasklet');
+          this.onActionFired('update-tasklet');
         } else {
           this.contextMenuTrigger.openMenu();
         }

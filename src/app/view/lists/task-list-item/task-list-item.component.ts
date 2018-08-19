@@ -117,13 +117,13 @@ export class TaskListItemComponent implements OnInit {
     switch (action) {
       case 'task': {
         if (this.media > this.mediaType.MEDIUM) {
-          this.onActionFired('notify-task');
+          this.onActionFired('update-task');
         } else {
           this.contextMenuTrigger.openMenu();
         }
         break;
       }
-      case 'notify-task': {
+      case 'update-task': {
         this.updateTask();
         break;
       }

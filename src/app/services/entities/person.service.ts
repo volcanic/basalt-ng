@@ -1,7 +1,6 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Subject} from 'rxjs/index';
 import {Person} from '../../model/entities/person.model';
-import {takeUntil} from 'rxjs/internal/operators';
 import {SuggestionService} from './filter/suggestion.service';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {environment} from '../../../environments/environment';
@@ -235,6 +234,8 @@ export class PersonService {
    */
   private notify() {
     this.personsSubject.next(Array.from(this.persons.values()).sort((p1, p2) => {
+      return p2.name < p1.name ? 1 : -1;
+    }).sort((p1, p2) => {
       return new Date(p2.modificationDate).getTime() - new Date(p1.modificationDate).getTime();
     }));
   }

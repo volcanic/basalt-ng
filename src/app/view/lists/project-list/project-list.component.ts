@@ -124,8 +124,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         this.filterService.projectsNone);
 
       return matchesSearchItem && matchesProjects;
-    }).sort((p1: Project, p2: Project) => {
-      return -MatchService.compare(p1.modificationDate.toString(), p2.modificationDate.toString());
     });
 
     this.changeDetector.markForCheck();

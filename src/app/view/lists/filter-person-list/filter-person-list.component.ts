@@ -62,8 +62,8 @@ export class FilterPersonListComponent implements OnInit {
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
-        this.persons = Array.from(this.filterService.persons.values()).sort((t1: Person, t2: Person) => {
-          return MatchService.compare(t1.name, t2.name);
+        this.persons = Array.from(this.filterService.persons.values()).sort((p1, p2) => {
+          return p2.name < p1.name ? 1 : -1;
         });
         this.personsNone = this.filterService.personsNone;
         this.changeDetector.markForCheck();

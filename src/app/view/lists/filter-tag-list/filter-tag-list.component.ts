@@ -62,8 +62,8 @@ export class FilterTagListComponent implements OnInit {
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
-        this.tags = Array.from(this.filterService.tags.values()).sort((t1: Tag, t2: Tag) => {
-          return MatchService.compare(t1.name, t2.name);
+        this.tags = Array.from(this.filterService.tags.values()).sort((t1, t2) => {
+          return t2.name < t1.name ? 1 : -1;
         });
         this.tagsNone = this.filterService.tagsNone;
         this.changeDetector.markForCheck();

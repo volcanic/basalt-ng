@@ -96,7 +96,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.settingsService.settingsSubject.subscribe(settings => {
 
       if (settings.get('version') != null) {
-        console.log(`latest version ${settings.get('version').value}`);
         this.showNewFeatures(settings.get('version').value);
       }
     });

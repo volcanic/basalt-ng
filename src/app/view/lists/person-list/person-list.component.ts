@@ -111,8 +111,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
         this.filterService.personsNone);
 
       return matchesSearchItem && matchesPersons;
-    }).sort((p1: Person, p2: Person) => {
-      return p2 > p1 ? 1 : -1;
     });
 
     this.changeDetector.markForCheck();

@@ -1,7 +1,6 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Task} from '../../model/entities/task.model';
 import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/internal/operators';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {SuggestionService} from './filter/suggestion.service';
 import {PouchDBService} from '../persistence/pouchdb.service';
@@ -278,6 +277,8 @@ export class TaskService {
    */
   private notify() {
     this.tasksSubject.next(Array.from(this.tasks.values()).sort((t1, t2) => {
+      return t2.name < t1.name ? 1 : -1;
+    }).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() - new Date(t1.modificationDate).getTime();
     }));
   }

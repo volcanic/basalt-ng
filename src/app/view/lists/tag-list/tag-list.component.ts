@@ -111,12 +111,10 @@ export class TagListComponent implements OnInit, OnDestroy {
     this.tags = this.tagsAll.filter(tag => {
       const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
       const matchesTags = this.matchService.tagMatchesTags(tag,
-        Array.from(this.filterService.persons.values()),
-        this.filterService.personsNone);
+        Array.from(this.filterService.tags.values()),
+        this.filterService.tagsNone);
 
       return matchesSearchItem && matchesTags;
-    }).sort((t1: Tag, t2: Tag) => {
-      return t2 > t1 ? 1 : -1;
     });
 
     this.changeDetector.markForCheck();

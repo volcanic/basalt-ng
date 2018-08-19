@@ -2,7 +2,6 @@ import {Injectable, isDevMode} from '@angular/core';
 import {Subject} from 'rxjs/index';
 import {Tag} from '../../model/entities/tag.model';
 import {SuggestionService} from './filter/suggestion.service';
-import {takeUntil} from 'rxjs/internal/operators';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {environment} from '../../../environments/environment';
 import {Scope} from '../../model/scope.enum';
@@ -79,7 +78,7 @@ export class TagService {
       selector: {
         $and: [
           {entityType: {$eq: EntityType.TAG}},
-          {scope: {$eq: scope}},
+          {scope: {$eq: this.scopeService.scope}},
           {creationDate: {$gt: null}}
         ]
       },
@@ -105,7 +104,6 @@ export class TagService {
    */
   private findTagsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-
         result['docs'].forEach(element => {
           const tag = element as Tag;
           this.tags.set(tag.id, tag);
@@ -235,6 +233,8 @@ export class TagService {
    */
   private notify() {
     this.tagsSubject.next(Array.from(this.tags.values()).sort((t1, t2) => {
+      return t2.name < t1.name ? 1 : -1;
+    }).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() - new Date(t1.modificationDate).getTime();
     }));
   }

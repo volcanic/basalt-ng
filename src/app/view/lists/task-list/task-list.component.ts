@@ -151,28 +151,20 @@ export class TaskListComponent implements OnInit, OnDestroy {
         && task.completionDate == null
         && task.dueDate != null
         && DateService.isBefore(task.dueDate, new Date());
-    }).sort((t1: Task, t2: Task) => {
-      return -MatchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksNext = this.tasks.filter(task => {
       return task != null
         && task.completionDate == null
         && task.dueDate != null
         && DateService.isAfter(task.dueDate, new Date());
-    }).sort((t1: Task, t2: Task) => {
-      return -MatchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksInbox = this.tasks.filter(task => {
       return task != null
         && task.completionDate == null
         && task.dueDate == null;
-    }).sort((t1: Task, t2: Task) => {
-      return -MatchService.compare(t1.modificationDate.toString(), t2.modificationDate.toString());
     });
     this.tasksCompleted = this.tasks.filter(task => {
       return task != null && task.completionDate != null;
-    }).sort((t1: Task, t2: Task) => {
-      return -MatchService.compare(t1.completionDate.toString(), t2.completionDate.toString());
     });
 
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';

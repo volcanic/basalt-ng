@@ -198,8 +198,6 @@ export class FilterService {
 
         this.tags.set(tag.id, tag);
       });
-
-      this.deleteUnusedTags();
     }
   }
 

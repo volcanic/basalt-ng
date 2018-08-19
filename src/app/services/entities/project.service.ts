@@ -1,7 +1,6 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Project} from '../../model/entities/project.model';
 import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/internal/operators';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {SuggestionService} from './filter/suggestion.service';
 import {PouchDBService} from '../persistence/pouchdb.service';
@@ -231,6 +230,8 @@ export class ProjectService {
    */
   private notify() {
     this.projectsSubject.next(Array.from(this.projects.values()).sort((p1, p2) => {
+      return p2.name < p1.name ? 1 : -1;
+    }).sort((p1, p2) => {
       return new Date(p2.modificationDate).getTime() - new Date(p1.modificationDate).getTime();
     }));
   }
