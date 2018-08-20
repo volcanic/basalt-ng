@@ -152,7 +152,7 @@ export class PersonService {
    * @param {Person} person person to be updated
    * @param {boolean} showSnack shows snackbar if true
    */
-  public updatePerson(person: Person, showSnack: boolean): Promise<any> {
+  public updatePerson(person: Person, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (person != null) {
         // Remove transient attributes

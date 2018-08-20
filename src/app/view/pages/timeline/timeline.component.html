@@ -28,7 +28,7 @@
       <mat-divider></mat-divider>
       <app-tag-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-tag-list>
       <mat-divider></mat-divider>
-      <app-person-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-person-list>
+      <app-person-list [persons]="persons" (upsertPersonEventEmitter)="onUpsertPerson($event)"></app-person-list>
     </div>
   </mat-sidenav>
 

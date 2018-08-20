@@ -22,7 +22,7 @@ export class Person extends Entity {
    * @param {string} name person name
    * @param {boolean} checked whether person is checked in filter mechanism
    */
-  constructor(name: string, checked: boolean) {
+  constructor(name: string, checked: boolean = false) {
     super();
     this.entityType = EntityType.PERSON;
     this.name = name;

@@ -37,6 +37,7 @@ import {Person} from '../../../model/entities/person.model';
 import {PersonService} from '../../../services/entities/person.service';
 import {PersonFilterDialogComponent} from '../../dialogs/filters/person-filter-dialog/person-filter-dialog.component';
 import {TagListDialogComponent} from '../../dialogs/lists/tag-list-dialog/tag-list-dialog.component';
+import {MatchService} from '../../../services/entities/filter/match.service';
 
 /**
  * Displays timeline page
@@ -55,6 +56,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** App title */
   title = 'Basalt';
+
+  /** Array of persons */
+  public persons: Person[] = [];
 
   /** Indicator date */
   public indicatedDate;
@@ -89,6 +93,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Constructor
    * @param {EntityService} entityService
    * @param {FilterService} filterService
+   * @param {MatchService} matchService
    * @param {MediaService} mediaService
    * @param {PersonService} personService
    * @param {ProjectService} projectService
@@ -104,6 +109,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   constructor(private entityService: EntityService,
               private filterService: FilterService,
+              private matchService: MatchService,
               private mediaService: MediaService,
               private personService: PersonService,
               private projectService: ProjectService,
@@ -126,6 +132,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
+    this.initializePersonSubscription();
+    this.initializeFilterSubscription();
+
     this.initializeDateSubscription();
     this.initializeMediaSubscription();
     this.initializeScopeSubscription();
@@ -149,6 +158,46 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   // Initialization
   //
+
+  /**
+   * Initializes person subscription
+   */
+  private initializePersonSubscription() {
+    this.persons = Array.from(this.personService.persons.values());
+    this.personService.personsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        this.persons = (value as Person[]).filter(person => {
+          const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
+          const matchesPersons = this.matchService.personMatchesPersons(person,
+            Array.from(this.filterService.persons.values()),
+            this.filterService.personsNone);
+
+          return matchesSearchItem && matchesPersons;
+        });
+      }
+    });
+  }
+
+  /**
+   * Initializes filter subscription
+   */
+  private initializeFilterSubscription() {
+    this.filterService.filterSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe(() => {
+      // Filter persons
+      this.persons = Array.from(this.personService.persons.values()).filter(person => {
+        const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
+        const matchesPersons = this.matchService.personMatchesPersons(person,
+          Array.from(this.filterService.persons.values()),
+          this.filterService.personsNone);
+
+        return matchesSearchItem && matchesPersons;
+      });
+    });
+  }
 
   /**
    * Initializes date subscription
@@ -229,6 +278,61 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   // Actions
   //
+
+  /**
+   * Handles person upserts
+   * @param {Person} person
+   */
+  onUpsertPerson(person: Person) {
+    // Determine mode
+    const mode = (person != null) ? DialogMode.UPDATE : DialogMode.ADD;
+
+    // Assemble data to be passed
+    let data = {};
+    switch (mode) {
+      case DialogMode.ADD: {
+        data = {
+          mode: mode,
+          dialogTitle: 'Add person',
+          person: new Person('')
+        };
+        break;
+      }
+      case DialogMode.UPDATE: {
+        data = {
+          mode: mode,
+          dialogTitle: 'Update person',
+          person: person
+        };
+        break;
+      }
+    }
+
+    // Open dialog
+    const dialogRef = this.dialog.open(PersonDialogComponent, {
+      disableClose: false,
+      data: data
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        const resultingPerson = result as Person;
+        this.filterService.updatePersonsList([resultingPerson], true);
+
+        switch (mode) {
+          case DialogMode.ADD: {
+            this.personService.createPerson(resultingPerson).then(() => {
+            });
+            break;
+          }
+          case DialogMode.UPDATE: {
+            this.personService.updatePerson(resultingPerson, true).then(() => {
+            });
+            break;
+          }
+        }
+      }
+    });
+  }
 
   /**
    * Handles click on menu items
@@ -329,25 +433,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const tag = result as Tag;
             this.filterService.updateTagsList([tag], true);
             this.tagService.createTag(tag).then(() => {
-            });
-          }
-        });
-        break;
-      }
-      case 'add-person': {
-        const dialogRef = this.dialog.open(PersonDialogComponent, {
-          disableClose: false,
-          data: {
-            mode: DialogMode.ADD,
-            dialogTitle: 'Add person',
-            person: new Person('', true)
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const person = result as Person;
-            this.filterService.updatePersonsList([person], true);
-            this.personService.createPerson(person).then(() => {
             });
           }
         });
