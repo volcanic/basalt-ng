@@ -14,7 +14,10 @@
       <mat-divider></mat-divider>
       <app-filter-project-list></app-filter-project-list>
       <mat-divider></mat-divider>
-      <app-filter-person-list></app-filter-person-list>
+      <app-filter-person-list [persons]="personsFilter" [personsNone]="personsNone"
+                              (filterPersonsEventEmitter)="onFilterPersons($event)"
+                              (filterPersonsNoneEventEmitter)="onFilterPersonsNone($event)"
+      ></app-filter-person-list>
     </div>
   </mat-sidenav>
 

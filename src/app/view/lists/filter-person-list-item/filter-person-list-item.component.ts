@@ -1,5 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FilterService} from '../../../services/entities/filter/filter.service';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Person} from '../../../model/entities/person.model';
 
 /**
@@ -8,22 +7,18 @@ import {Person} from '../../../model/entities/person.model';
 @Component({
   selector: 'app-filter-person-list-item',
   templateUrl: './filter-person-list-item.component.html',
-  styleUrls: ['./filter-person-list-item.component.scss']
+  styleUrls: ['./filter-person-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterPersonListItemComponent {
 
   /** Person to be displayed */
   @Input() person: Person;
+  /** Event emitter indicating person filter to be updated */
+  @Output() updatePersonFilterEventEmitter = new EventEmitter<Person>();
 
   /** Animation state */
   state = 'inactive';
-
-  /**
-   * Constructor
-   * @param {FilterService} filterService
-   */
-  constructor(private filterService: FilterService) {
-  }
 
   //
   // Actions
@@ -35,12 +30,5 @@ export class FilterPersonListItemComponent {
    */
   onHoverContainer(hovered: boolean) {
     this.state = hovered ? 'active' : 'inactive';
-  }
-
-  /**
-   * Handles person changes
-   */
-  onPersonChanged() {
-    this.filterService.updatePersonsList([this.person], false);
   }
 }

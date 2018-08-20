@@ -59,6 +59,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** Array of persons */
   public persons: Person[] = [];
+  /** Array of persons with filter values */
+  public personsFilter: Person[] = [];
+  /** Flag indicating whether entities without person shall be displayed */
+  public personsNone = false;
 
   /** Indicator date */
   public indicatedDate;
@@ -196,6 +200,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         return matchesSearchItem && matchesPersons;
       });
+      this.personsFilter = Array.from(this.filterService.persons.values()).sort((p1, p2) => {
+        return p2.name < p1.name ? 1 : -1;
+      });
+      this.personsNone = this.filterService.personsNone;
     });
   }
 
@@ -281,7 +289,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles person upserts
-   * @param {Person} person
+   * @param {Person} person person to be upserted
    */
   onUpsertPerson(person: Person) {
     // Determine mode
@@ -332,6 +340,23 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
+  }
+
+  /**
+   * Handles filter person changes
+   * @param {Person[]} persons array of persons to be used for filtering
+   */
+  onFilterPersons(persons: Person[]) {
+    this.filterService.updatePersonsList(persons);
+  }
+
+  /**
+   * Handles filter person-none changes
+   * @param {boolean} personsNone whether entities without person shall be displayed
+   */
+  onFilterPersonsNone(personsNone: boolean) {
+    console.log(`onFilterPersonsNone ${personsNone}`);
+    this.filterService.updatePersonsNone(personsNone);
   }
 
   /**

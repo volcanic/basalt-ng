@@ -1,9 +1,6 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import {FilterService} from '../../../services/entities/filter/filter.service';
-import {takeUntil} from 'rxjs/internal/operators';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Person} from '../../../model/entities/person.model';
-import {MatchService} from '../../../services/entities/filter/match.service';
+import {CloneService} from '../../../services/util/clone.service';
 
 /**
  * Displays filter person list
@@ -14,93 +11,47 @@ import {MatchService} from '../../../services/entities/filter/match.service';
   styleUrls: ['./filter-person-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FilterPersonListComponent implements OnInit {
+export class FilterPersonListComponent {
 
   /** Persons to be displayed */
-  persons = [];
+  @Input() persons = [];
   /** Flag indicating whether entities without person shall be displayed */
-  personsNone = false;
-
-  /** Helper subject used to finish other subscriptions */
-  private unsubscribeSubject = new Subject();
-
-  /**
-   * Constructor
-   * @param {FilterService} filterService
-   * @param {MatchService} matchService
-   * @param {ChangeDetectorRef} changeDetector
-   */
-  constructor(private filterService: FilterService,
-              private matchService: MatchService,
-              private changeDetector: ChangeDetectorRef) {
-  }
-
-  //
-  // Lifecycle hooks
-  //
-
-  /**
-   * Handles on-init lifecycle hook
-   */
-  ngOnInit() {
-    this.initializePersonSubscription();
-  }
-
-  //
-  // Initialization
-  //
-
-  /**
-   * Initializes person subscription
-   */
-  private initializePersonSubscription() {
-    this.persons = Array.from(this.filterService.persons.values()).sort((t1: Person, t2: Person) => {
-      return MatchService.compare(t1.name, t2.name);
-    });
-    this.personsNone = this.filterService.personsNone;
-
-    this.filterService.filterSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe(() => {
-        this.persons = Array.from(this.filterService.persons.values()).sort((p1, p2) => {
-          return p2.name < p1.name ? 1 : -1;
-        });
-        this.personsNone = this.filterService.personsNone;
-        this.changeDetector.markForCheck();
-      }
-    );
-  }
+  @Input() personsNone = false;
+  /** Event emitter indicating person filter to be updated */
+  @Output() filterPersonsEventEmitter = new EventEmitter<Person[]>();
+  /** Event emitter indicating person none to be updated */
+  @Output() filterPersonsNoneEventEmitter = new EventEmitter<Boolean>();
 
   //
   // Actions
   //
 
   /**
-   * Handles click on select-all button
+   * Handles changes of single person
+   * @param {Person} person person that changed
    */
-  onSelectAll() {
-    this.persons.forEach(t => {
-      t.checked = true;
-    });
-    this.personsNone = true;
-    this.filterService.updatePersons(this.persons, false, this.personsNone);
-  }
-
-  /**
-   * Handles click on select-none button
-   */
-  onSelectNone() {
-    this.persons.forEach(t => {
-      t.checked = false;
-    });
-    this.personsNone = false;
-    this.filterService.updatePersons(this.persons, false, this.personsNone);
+  onPersonFilterUpdate(person: Person) {
+    this.filterPersonsEventEmitter.emit([person]);
   }
 
   /**
    * Handles changes of person-none flag
    */
   onPersonNoneFlagChanged() {
-    this.filterService.updatePersons(this.persons, false, this.personsNone);
+    this.filterPersonsNoneEventEmitter.emit(this.personsNone);
+  }
+
+  /**
+   * Handles click on button that sets all values to the same
+   */
+  onSetAll(checked: boolean) {
+    this.persons.forEach(t => {
+      t.checked = checked;
+    });
+    this.persons = CloneService.clonePersons(this.persons);
+    this.personsNone = checked;
+
+    this.filterPersonsEventEmitter.emit(this.persons);
+    this.filterPersonsNoneEventEmitter.emit(this.personsNone);
   }
 }

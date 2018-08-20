@@ -332,8 +332,17 @@ export class FilterService {
    * @param {Person[]} persons array of persons
    * @param {boolean} enable enables persons if true
    */
-  public updatePersonsList(persons: Person[], enable: boolean) {
+  public updatePersonsList(persons: Person[], enable: boolean = false) {
     this.updatePersonsListInternal(persons, enable);
+    this.notify();
+  }
+
+  /**
+   * Updates flag which indicates that entities without persons shall be included during filtering
+   * @param {boolean} personsNone include entities without persons if true
+   */
+  public updatePersonsNone(personsNone: boolean) {
+    this.personsNone = personsNone;
     this.notify();
   }
 
@@ -354,15 +363,6 @@ export class FilterService {
         this.persons.set(person.id, person);
       }
     });
-  }
-
-  /**
-   * Updates flag which indicates that entities without persons shall be included during filtering
-   * @param {boolean} personsNone include entities without persons if true
-   */
-  private updatePersonsNone(personsNone: boolean) {
-    this.personsNone = personsNone;
-    this.notify();
   }
 
   /**

@@ -284,13 +284,13 @@ export class MatchService {
    */
   public taskletMatchesPersons(tasklet: Tasklet, persons: Person[], personsNone: boolean): boolean {
     return ((tasklet.personIds == null || tasklet.personIds.length === 0) && personsNone)
-      || tasklet.personIds.map(id => {
+      || (tasklet.personIds != null && tasklet.personIds.map(id => {
         return this.personService.getPersonById(id);
       }).filter(person => {
         return person != null;
       }).some(person => {
         return this.personMatchesPersons(person, persons, personsNone);
-      });
+      }));
   }
 
   /**
