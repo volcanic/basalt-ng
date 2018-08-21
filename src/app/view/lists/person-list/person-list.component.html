@@ -7,12 +7,12 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-person-list-item *ngFor="let t of persons" [person]="t" (updatePersonEventEmitter)="onPersonUpdate($event)">
+    <app-person-list-item *ngFor="let p of persons" [person]="p" (updatePersonEventEmitter)="upsertPersonEventEmitter.emit(p)">
     </app-person-list-item>
   </mat-expansion-panel>
 </mat-accordion>
 
-<button mat-button class="label headers-align" (click)="onPersonAdd()">
+<button mat-button class="label headers-align" (click)="upsertPersonEventEmitter.emit(null)">
   <mat-icon class="add-person-icon" svgIcon="add"></mat-icon>
   <span>Add new person</span>
 </button>

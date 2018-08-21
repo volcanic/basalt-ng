@@ -16,23 +16,4 @@ export class PersonListComponent {
   @Input() persons = [];
   /** Event emitter indicating person to be updated */
   @Output() upsertPersonEventEmitter = new EventEmitter<Person>();
-
-  //
-  // Actions
-  //
-
-  /**
-   * Handles adding a new person
-   */
-  onPersonAdd() {
-    this.upsertPersonEventEmitter.emit(null);
-  }
-
-  /**
-   * Handles updating existing person
-   * @param {Person} person person to be updated
-   */
-  onPersonUpdate(person: Person) {
-    this.upsertPersonEventEmitter.emit(person);
-  }
 }

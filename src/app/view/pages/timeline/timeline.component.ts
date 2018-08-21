@@ -38,6 +38,9 @@ import {PersonService} from '../../../services/entities/person.service';
 import {PersonFilterDialogComponent} from '../../dialogs/filters/person-filter-dialog/person-filter-dialog.component';
 import {TagListDialogComponent} from '../../dialogs/lists/tag-list-dialog/tag-list-dialog.component';
 import {MatchService} from '../../../services/entities/filter/match.service';
+import {ConfirmationDialogComponent} from '../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
+import {InformationDialogComponent} from '../../dialogs/other/information-dialog/information-dialog.component';
+import {DialogAction} from '../../../model/ui/dialog-action.enum';
 
 /**
  * Displays timeline page
@@ -284,7 +287,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   //
-  // Actions
+  // Actions - Persons
   //
 
   /**
@@ -321,20 +324,60 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       disableClose: false,
       data: data
     });
+
+    // Handle dialog close
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        const resultingPerson = result as Person;
+        const resultingPerson = result.value as Person;
         this.filterService.updatePersonsList([resultingPerson], true);
 
-        switch (mode) {
-          case DialogMode.ADD: {
+        switch (result.action) {
+          case DialogAction.ADD: {
             this.personService.createPerson(resultingPerson).then(() => {
             });
             break;
           }
-          case DialogMode.UPDATE: {
+          case DialogAction.UPDATE: {
             this.personService.updatePerson(resultingPerson, true).then(() => {
             });
+            break;
+          }
+          case DialogAction.DELETE: {
+            const references = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
+              return tasklet.personIds.some(tagId => {
+                return tagId === resultingPerson.id;
+              });
+            });
+
+            if (references) {
+              this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+                disableClose: false,
+                data: {
+                  title: 'Cannot delete person',
+                  text: `There are still tasks associated with this person.`,
+                  action: 'Okay',
+                  value: resultingPerson
+                }
+              });
+            } else {
+              const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+                disableClose: false,
+                data: {
+                  title: 'Delete person',
+                  text: 'Do you want to delete this person?',
+                  action: 'Delete',
+                  value: resultingPerson
+                }
+              });
+              confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+                if (confirmationResult != null) {
+                  this.personService.deletePerson(confirmationResult as Person).then(() => {
+                  });
+                  this.filterService.persons.delete((confirmationResult as Person).id);
+                  dialogRef.close(null);
+                }
+              });
+            }
             break;
           }
         }
@@ -355,9 +398,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {boolean} personsNone whether entities without person shall be displayed
    */
   onFilterPersonsNone(personsNone: boolean) {
-    console.log(`onFilterPersonsNone ${personsNone}`);
     this.filterService.updatePersonsNone(personsNone);
   }
+
+  //
+  // Actions
+  //
 
   /**
    * Handles click on menu items
