@@ -16,7 +16,7 @@ export class Project extends Entity {
    * @param {string} name project name
    * @param {boolean} checked whether project is checked in filter mechanism
    */
-  constructor(name: string, checked: boolean) {
+  constructor(name: string, checked: boolean = false) {
     super();
     this.entityType = EntityType.PROJECT;
     this.name = name;

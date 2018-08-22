@@ -7,12 +7,12 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-project-list-item *ngFor="let p of projects" [project]="p">
+    <app-project-list-item *ngFor="let p of projects" [project]="p" (updateProjectEventEmitter)="upsertProjectEventEmitter.emit(p)">
     </app-project-list-item>
   </mat-expansion-panel>
 </mat-accordion>
 
-<button mat-button class="label headers-align" (click)="onMenuItemClicked('add-project')">
+<button mat-button class="label headers-align" (click)="upsertProjectEventEmitter.emit(null)">
   <mat-icon class="add-project-icon" svgIcon="add"></mat-icon>
   <span>Add new project</span>
 </button>

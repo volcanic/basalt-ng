@@ -60,6 +60,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /** App title */
   title = 'Basalt';
 
+  /** Array of projects */
+  public projects: Project[] = [];
+
   /** Array of persons */
   public persons: Person[] = [];
   /** Array of persons with filter values */
@@ -139,6 +142,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
+    this.initializeProjectSubscription();
     this.initializePersonSubscription();
     this.initializeFilterSubscription();
 
@@ -165,6 +169,27 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   // Initialization
   //
+
+  /**
+   * Initializes project subscription
+   */
+  private initializeProjectSubscription() {
+    this.projects = Array.from(this.projectService.projects.values());
+    this.projectService.projectsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        this.projects = (value as Project[]).filter(project => {
+          const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
+          const matchesProjects = this.matchService.projectMatchesProjects(project,
+            Array.from(this.filterService.projects.values()),
+            this.filterService.projectsNone);
+
+          return matchesSearchItem && matchesProjects;
+        });
+      }
+    });
+  }
 
   /**
    * Initializes person subscription
@@ -284,6 +309,66 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Save current scroll position
         this.scrollPosLast = scrollPos;
       })).subscribe();
+  }
+
+  //
+  // Actions - Projects
+  //
+
+  /**
+   * Handles project upserts
+   * @param {Project} project project to be upserted
+   */
+  onUpsertProject(project: Project) {
+    // Determine mode
+    const mode = (project != null) ? DialogMode.UPDATE : DialogMode.ADD;
+
+    // Assemble data to be passed
+    let data = {};
+    switch (mode) {
+      case DialogMode.ADD: {
+        data = {
+          mode: mode,
+          dialogTitle: 'Add project',
+          project: new Project('')
+        };
+        break;
+      }
+      case DialogMode.UPDATE: {
+        data = {
+          mode: mode,
+          dialogTitle: 'Update project',
+          project: project
+        };
+        break;
+      }
+    }
+
+    // Open dialog
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      disableClose: false,
+      data: data
+    });
+    // Handle dialog close
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        const resultingProject = result as Project;
+        this.filterService.updateProjectsList([resultingProject], true);
+
+        switch (mode) {
+          case DialogMode.ADD: {
+            this.projectService.createProject(resultingProject).then(() => {
+            });
+            break;
+          }
+          case DialogMode.UPDATE: {
+            this.projectService.updateProject(resultingProject, true).then(() => {
+            });
+            break;
+          }
+        }
+      }
+    });
   }
 
   //

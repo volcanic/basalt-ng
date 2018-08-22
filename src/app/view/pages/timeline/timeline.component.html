@@ -27,7 +27,7 @@
     <div [@toolbarAnimation]="scrollDirection">
       <app-task-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-task-list>
       <mat-divider></mat-divider>
-      <app-project-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-project-list>
+      <app-project-list [projects]="projects" (upsertProjectEventEmitter)="onUpsertProject($event)"></app-project-list>
       <mat-divider></mat-divider>
       <app-tag-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-tag-list>
       <mat-divider></mat-divider>

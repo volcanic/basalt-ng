@@ -152,7 +152,7 @@ export class ProjectService {
    * @param {Project} project project to be updated
    * @param {boolean} showSnack shows snackbar if true
    */
-  public updateProject(project: Project, showSnack: boolean): Promise<any> {
+  public updateProject(project: Project, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (project != null) {
         // Remove transient attributes
