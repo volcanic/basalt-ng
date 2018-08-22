@@ -261,7 +261,7 @@ export class FilterService {
    */
   public updateProjects(projects: Project[], enable: boolean, projectsNone: boolean) {
     this.updateProjectsListInternal(projects, enable);
-    this.updateProjectsNoneInternal(projectsNone);
+    this.updateProjectsNone(projectsNone);
     this.notify();
   }
 
@@ -270,8 +270,17 @@ export class FilterService {
    * @param {Project[]} projects array of projects
    * @param {boolean} enable enable projects if true
    */
-  public updateProjectsList(projects: Project[], enable: boolean) {
+  public updateProjectsList(projects: Project[], enable: boolean = false) {
     this.updateProjectsListInternal(projects, enable);
+    this.notify();
+  }
+
+  /**
+   * Updates flag which indicates that entities without projects shall be included during filtering
+   * @param {boolean} projectsNone include entities without projects if true
+   */
+  public updateProjectsNone(projectsNone: boolean) {
+    this.projectsNone = projectsNone;
     this.notify();
   }
 
@@ -292,15 +301,6 @@ export class FilterService {
         this.projects.set(project.id, project);
       }
     });
-  }
-
-  /**
-   * Updates flag which indicates that entities without projects shall be included during filtering
-   * @param {boolean} projectsNone include entities without projects if true
-   */
-  private updateProjectsNoneInternal(projectsNone: boolean) {
-    this.projectsNone = projectsNone;
-    this.notify();
   }
 
   //

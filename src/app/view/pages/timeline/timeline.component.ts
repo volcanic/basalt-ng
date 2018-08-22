@@ -62,6 +62,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** Array of projects */
   public projects: Project[] = [];
+  /** Array of projects with filter values */
+  public projectsFilter: Project[] = [];
+  /** Flag indicating whether entities without project shall be displayed */
+  public projectsNone = false;
 
   /** Array of persons */
   public persons: Person[] = [];
@@ -219,6 +223,21 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
+      // Filter projects
+      this.projects = Array.from(this.projectService.projects.values()).filter(project => {
+        const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
+        const matchesProjects = this.matchService.projectMatchesProjects(project,
+          Array.from(this.filterService.projects.values()),
+          this.filterService.projectsNone);
+
+        return matchesSearchItem && matchesProjects;
+      });
+      // Sort filter
+      this.projectsFilter = Array.from(this.filterService.projects.values()).sort((p1, p2) => {
+        return p2.name < p1.name ? 1 : -1;
+      });
+      this.projectsNone = this.filterService.projectsNone;
+
       // Filter persons
       this.persons = Array.from(this.personService.persons.values()).filter(person => {
         const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
@@ -228,6 +247,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         return matchesSearchItem && matchesPersons;
       });
+      // Sort filter
       this.personsFilter = Array.from(this.filterService.persons.values()).sort((p1, p2) => {
         return p2.name < p1.name ? 1 : -1;
       });
@@ -369,6 +389,22 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
+  }
+
+  /**
+   * Handles filter project changes
+   * @param {Project[]} projects array of projects to be used for filtering
+   */
+  onFilterProjects(projects: Project[]) {
+    this.filterService.updateProjectsList(projects);
+  }
+
+  /**
+   * Handles filter project-none changes
+   * @param {boolean} projectsNone whether entities without project shall be displayed
+   */
+  onFilterProjectsNone(projectsNone: boolean) {
+    this.filterService.updateProjectsNone(projectsNone);
   }
 
   //

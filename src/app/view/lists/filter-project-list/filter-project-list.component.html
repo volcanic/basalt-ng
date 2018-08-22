@@ -7,15 +7,15 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-filter-project-list-item *ngFor="let p of projects" [project]="p">
+    <app-filter-project-list-item *ngFor="let p of projects" [project]="p" (updateProjectFilterEventEmitter)="onProjectFilterUpdate($event)">
     </app-filter-project-list-item>
     <div>
       <mat-checkbox class="special-project" [(ngModel)]="projectsNone" (ngModelChange)="onProjectNoneFlagChanged()">elements without projects</mat-checkbox>
     </div>
-    <button mat-button class="label headers-align" (click)="onSelectAll()">
+    <button mat-button class="label headers-align" (click)="onSetAll(true)">
       <span>Select all</span>
     </button>
-    <button mat-button class="label headers-align" (click)="onSelectNone()">
+    <button mat-button class="label headers-align" (click)="onSetAll(false)">
       <span>Select none</span>
     </button>
   </mat-expansion-panel>

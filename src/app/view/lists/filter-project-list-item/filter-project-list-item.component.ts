@@ -1,5 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FilterService} from '../../../services/entities/filter/filter.service';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Project} from '../../../model/entities/project.model';
 
 /**
@@ -14,16 +13,11 @@ export class FilterProjectListItemComponent {
 
   /** Project to be displayed */
   @Input() project: Project;
+  /** Event emitter indicating project filter to be updated */
+  @Output() updateProjectFilterEventEmitter = new EventEmitter<Project>();
 
   /** Animation state */
   state = 'inactive';
-
-  /**
-   * Constructor
-   * @param {FilterService} filterService
-   */
-  constructor(private filterService: FilterService) {
-  }
 
   //
   // Actions
@@ -36,12 +30,4 @@ export class FilterProjectListItemComponent {
   onHoverContainer(hovered: boolean) {
     this.state = hovered ? 'active' : 'inactive';
   }
-
-  /**
-   * Handles tag project
-   */
-  onProjectChanged() {
-    this.filterService.updateProjectsList([this.project], false);
-  }
-
 }

@@ -12,7 +12,9 @@
     <div [@toolbarAnimation]="scrollDirection">
       <app-filter-tag-list></app-filter-tag-list>
       <mat-divider></mat-divider>
-      <app-filter-project-list></app-filter-project-list>
+      <app-filter-project-list [projects]="projectsFilter" [projectsNone]="projectsNone"
+                               (filterProjectsEventEmitter)="onFilterProjects($event)"
+                               (filterProjectsNoneEventEmitter)="onFilterProjectsNone($event)"></app-filter-project-list>
       <mat-divider></mat-divider>
       <app-filter-person-list [persons]="personsFilter" [personsNone]="personsNone"
                               (filterPersonsEventEmitter)="onFilterPersons($event)"
