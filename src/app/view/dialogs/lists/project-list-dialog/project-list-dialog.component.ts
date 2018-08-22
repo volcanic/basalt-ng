@@ -18,6 +18,8 @@ export class ProjectListDialogComponent {
 
   /** Dialog title */
   dialogTitle = '';
+  /** Array of projects to be displayed */
+  projects: Project[];
 
   /**
    * Constructor
@@ -32,7 +34,16 @@ export class ProjectListDialogComponent {
               private changeDetector: ChangeDetectorRef,
               public dialog: MatDialog,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.dialogTitle = data.dialogTitle;
+    this.initializeData();
+  }
+
+  //
+  // Initialization
+  //
+
+  private initializeData() {
+    this.dialogTitle = this.data.dialogTitle;
+    this.projects = this.data.projects;
   }
 
   //
@@ -40,31 +51,57 @@ export class ProjectListDialogComponent {
   //
 
   /**
-   * Handles click on menu items
-   * @param menuItem menu item that has been clicked
+   * Handles project upserts
+   * @param {Project} project project to be upserted
    */
-  onMenuItemClicked(menuItem: string) {
-    switch (menuItem) {
-      case 'add-project': {
-        const dialogRef = this.dialog.open(ProjectDialogComponent, {
-          disableClose: false,
-          data: {
-            mode: DialogMode.ADD,
-            dialogTitle: 'Add project',
-            project: new Project('', true)
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const project = result as Project;
-            this.filterService.updateProjectsList([project], true);
-            this.projectService.createProject(project).then(() => {
-              this.changeDetector.markForCheck();
-            });
-          }
-        });
+  onUpsertProject(project: Project) {
+    // Determine mode
+    const mode = (project != null) ? DialogMode.UPDATE : DialogMode.ADD;
+
+    // Assemble data to be passed
+    let data = {};
+    switch (mode) {
+      case DialogMode.ADD: {
+        data = {
+          mode: mode,
+          dialogTitle: 'Add project',
+          project: new Project('')
+        };
+        break;
+      }
+      case DialogMode.UPDATE: {
+        data = {
+          mode: mode,
+          dialogTitle: 'Update project',
+          project: project
+        };
         break;
       }
     }
+
+    // Open dialog
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      disableClose: false,
+      data: data
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        const resultingProject = result as Project;
+        this.filterService.updateProjectsList([resultingProject], true);
+
+        switch (mode) {
+          case DialogMode.ADD: {
+            this.projectService.createProject(resultingProject).then(() => {
+            });
+            break;
+          }
+          case DialogMode.UPDATE: {
+            this.projectService.updateProject(resultingProject, true).then(() => {
+            });
+            break;
+          }
+        }
+      }
+    });
   }
 }

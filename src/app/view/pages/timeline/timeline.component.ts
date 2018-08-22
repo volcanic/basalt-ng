@@ -369,21 +369,58 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       disableClose: false,
       data: data
     });
+
     // Handle dialog close
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        const resultingProject = result as Project;
+        const resultingProject = result.value as Project;
         this.filterService.updateProjectsList([resultingProject], true);
 
-        switch (mode) {
-          case DialogMode.ADD: {
+        switch (result.action) {
+          case DialogAction.ADD: {
             this.projectService.createProject(resultingProject).then(() => {
             });
             break;
           }
-          case DialogMode.UPDATE: {
+          case DialogAction.UPDATE: {
             this.projectService.updateProject(resultingProject, true).then(() => {
             });
+            break;
+          }
+          case DialogAction.DELETE: {
+            const references = Array.from(this.taskService.tasks.values()).some((task: Task) => {
+              return task.projectId === resultingProject.id;
+            });
+
+            if (references) {
+              this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+                disableClose: false,
+                data: {
+                  title: 'Cannot delete project',
+                  text: `There are still tasks associated with this project.`,
+                  action: 'Okay',
+                  value: resultingProject
+                }
+              });
+            } else {
+              const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+                disableClose: false,
+                data: {
+                  title: 'Delete project',
+                  text: 'Do you want to delete this project?',
+                  action: 'Delete',
+                  value: resultingProject
+                }
+              });
+              confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+                if (confirmationResult != null) {
+                  this.projectService.deleteProject(confirmationResult as Project).then(() => {
+                  });
+                  this.filterService.projects.delete((confirmationResult as Project).id);
+                  dialogRef.close(null);
+                }
+              });
+            }
             break;
           }
         }

@@ -1,15 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Project} from '../../../../model/entities/project.model';
-import {Task} from '../../../../model/entities/task.model';
-import {DateService} from '../../../../services/util/date.service';
 import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
-import {TaskService} from '../../../../services/entities/task.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
-import {ProjectService} from '../../../../services/entities/project.service';
-import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
-import {CloneService} from '../../../../services/util/clone.service';
-import {FilterService} from '../../../../services/entities/filter/filter.service';
+import {DialogAction} from '../../../../model/ui/dialog-action.enum';
 
 /**
  * Displays project dialog
@@ -29,7 +23,7 @@ export class ProjectDialogComponent implements OnInit {
   /** Dialog title */
   dialogTitle = '';
 
-  /** Person to be displayed */
+  /** Project to be displayed */
   project: Project;
 
   /** Readonly dialog if true */
@@ -37,22 +31,10 @@ export class ProjectDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {ProjectService} projectService
-   * @param {TaskService} taskService
-   * @param {DateService} dateService
-   * @param {FilterService} filterService
-   * @param {CloneService} cloneService
-   * @param {MatDialog} dialog dialog
    * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(private projectService: ProjectService,
-              private taskService: TaskService,
-              private dateService: DateService,
-              private filterService: FilterService,
-              private cloneService: CloneService,
-              public dialog: MatDialog,
-              public dialogRef: MatDialogRef<ProjectDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
@@ -65,7 +47,6 @@ export class ProjectDialogComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeData();
-    this.initializeProject();
   }
 
   //
@@ -78,13 +59,7 @@ export class ProjectDialogComponent implements OnInit {
   private initializeData() {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
-  }
-
-  /**
-   * Initializes project
-   */
-  private initializeProject() {
-    this.project = CloneService.cloneProject(this.data.project);
+    this.project = this.data.project;
   }
 
   //
@@ -110,51 +85,20 @@ export class ProjectDialogComponent implements OnInit {
    * Handles click on add button
    */
   addProject() {
-    this.dialogRef.close(this.project);
+    this.dialogRef.close({action: DialogAction.ADD, value: this.project});
   }
 
   /**
    * Handles click on update button
    */
   updateProject() {
-    this.dialogRef.close(this.project);
+    this.dialogRef.close({action: DialogAction.UPDATE, value: this.project});
   }
 
   /**
    * Handles click on delete button
    */
   deleteProject() {
-    const references = Array.from(this.taskService.tasks.values()).filter((task: Task) => {
-      return task.projectId === this.project.id;
-    }).length;
-
-    if (references > 0) {
-      this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
-        disableClose: false,
-        data: {
-          title: 'Cannot delete project',
-          text: `There are still ${references} tasks associated with this project.`,
-          action: 'Okay',
-          value: this.project
-        }
-      });
-    } else {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-        disableClose: false,
-        data: {
-          title: 'Delete project',
-          text: 'Do you want to delete this project?',
-          action: 'Delete',
-          value: this.project
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result != null) {
-          this.projectService.deleteProject(result as Project);
-          this.filterService.projects.delete((result as Project).id); // Delete project from filter list
-          this.dialogRef.close(null);
-        }
-      });
-    }
+    this.dialogRef.close({action: DialogAction.DELETE, value: this.project});
   }
 }
