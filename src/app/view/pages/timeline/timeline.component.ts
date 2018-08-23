@@ -630,22 +630,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'add-project': {
-        const dialogRef = this.dialog.open(ProjectDialogComponent, {
-          disableClose: false,
-          data: {
-            mode: DialogMode.ADD,
-            dialogTitle: 'Add project',
-            project: new Project('', true)
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const project = result as Project;
-            this.filterService.updateProjectsList([project], true);
-            this.projectService.createProject(project).then(() => {
-            });
-          }
-        });
+        this.onUpsertProject(null);
         break;
       }
       case 'add-tag': {
@@ -677,10 +662,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'project-list': {
-        this.dialog.open(ProjectListDialogComponent, {
+        const dialogRef = this.dialog.open(ProjectListDialogComponent, {
           disableClose: false,
           data: {
             dialogTitle: 'Projects',
+            projects: this.projects
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const project = result.value as Project;
+            this.onUpsertProject(project);
           }
         });
         break;

@@ -3,7 +3,8 @@
  */
 export enum DialogAction {
 
+  NONE,
   ADD,
   UPDATE,
-  DELETE,
+  DELETE
 }
