@@ -16,6 +16,7 @@ import {Description} from '../../../../model/entities/fragments/description.mode
 import {CloneService} from '../../../../services/util/clone.service';
 import {TagService} from '../../../../services/entities/tag.service';
 import {PersonService} from '../../../../services/entities/person.service';
+import {Action} from '../../../../model/ui/action.enum';
 
 /**
  * Displays tasklet dialog
@@ -181,7 +182,20 @@ export class TaskletDialogComponent implements OnInit {
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      this.updateTasklet();
+      switch (this.mode) {
+        case DialogMode.ADD: {
+          this.addTasklet();
+          break;
+        }
+        case DialogMode.UPDATE: {
+          this.updateTasklet();
+          break;
+        }
+        case DialogMode.CONTINUE: {
+          this.continueTasklet();
+          break;
+        }
+      }
     }
   }
 
@@ -286,7 +300,7 @@ export class TaskletDialogComponent implements OnInit {
     this.tasklet.id = new UUID().toString();
     this.tasklet.creationDate = new Date();
 
-    this.dialogRef.close(this.tasklet);
+    this.dialogRef.close({action: Action.ADD, value: this.tasklet});
   }
 
   //

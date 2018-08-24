@@ -98,7 +98,16 @@ export class TagDialogComponent implements OnInit {
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      this.updateTag();
+      switch (this.mode) {
+        case DialogMode.ADD: {
+          this.addTag();
+          break;
+        }
+        case DialogMode.UPDATE: {
+          this.updateTag();
+          break;
+        }
+      }
     }
   }
 

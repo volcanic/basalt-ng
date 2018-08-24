@@ -1,9 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Project} from '../../../../model/entities/project.model';
-import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
 import {ProjectDialogComponent} from '../../entities/project-dialog/project-dialog.component';
-import {DialogAction} from '../../../../model/ui/dialog-action.enum';
+import {Action} from '../../../../model/ui/action.enum';
 import {Person} from '../../../../model/entities/person.model';
 
 /**
@@ -45,6 +44,6 @@ export class ProjectListDialogComponent {
   //
 
   onUpsertProject(person: Person) {
-    this.dialogRef.close({action: DialogAction.NONE, value: person});
+    this.dialogRef.close({action: Action.NONE, value: person});
   }
 }

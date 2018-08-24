@@ -2,19 +2,19 @@
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <mat-menu #contextMenu="matMenu">
-    <button mat-menu-item (click)="onActionFired('update-task')">Update task</button>
-    <button mat-menu-item (click)="onActionFired('complete-task')" *ngIf="task.completionDate == null"
+    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, value: task})">Update task</button>
+    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.COMPLETE, value: task})" *ngIf="task.completionDate == null"
             class="action-buttons">Complete task
     </button>
-    <button mat-menu-item (click)="onActionFired('continue-task')" *ngIf="task.completionDate == null"
+    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, value: task})" *ngIf="task.completionDate == null"
             class="action-buttons">Continue task
     </button>
-    <button mat-menu-item (click)="onActionFired('reopen-task')" *ngIf="task.completionDate != null"
+    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.REOPEN, value: task})" *ngIf="task.completionDate != null"
             class="action-buttons">Re-open task
     </button>
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
-  <button mat-button class="task flex" (click)="onActionFired('task')">
+  <button mat-button class="task flex" (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, value: task})">
     <mat-icon *ngIf="task.projectId != ''" svgIcon="turned_in" class="list-icon"></mat-icon>
     <mat-icon *ngIf="task.projectId == ''" svgIcon="turned_in_not" class="list-icon"></mat-icon>
     <span>{{ task.name }}</span>
@@ -31,7 +31,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="onActionFired('complete-task')">
+            (click)="taskEventEmitter.emit({action: action.COMPLETE, value: task})">
       <mat-icon svgIcon='check'></mat-icon>
     </button>
     <button [@actionAnimation]="state"
@@ -41,7 +41,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="onActionFired('continue-task')">
+            (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, value: task})">
       <mat-icon svgIcon='reply'></mat-icon>
     </button>
   </div>
@@ -53,7 +53,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="onActionFired('reopen-task')">
+            (click)="taskEventEmitter.emit({action: action.REOPEN, value: task})">
       <mat-icon svgIcon='replay'></mat-icon>
     </button>
   </div>

@@ -1,19 +1,16 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
-  OnDestroy,
+  Input,
+  OnChanges,
   OnInit,
-  Output
+  Output,
+  SimpleChanges
 } from '@angular/core';
-import {TaskService} from '../../../services/entities/task.service';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/internal/operators';
 import {DateService} from '../../../services/util/date.service';
-import {Task} from '../../../model/entities/task.model';
-import {MatchService} from '../../../services/entities/filter/match.service';
-import {FilterService} from '../../../services/entities/filter/filter.service';
+import {Media} from '../../../model/ui/media.enum';
+import {Action} from '../../../model/ui/action.enum';
 
 /**
  * Displays task list
@@ -24,15 +21,14 @@ import {FilterService} from '../../../services/entities/filter/filter.service';
   styleUrls: ['./task-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskListComponent implements OnInit, OnDestroy {
-
-  /** Event emitter indicating menu items being clicked */
-  @Output() menuItemClickedEmitter = new EventEmitter<string>();
+export class TaskListComponent implements OnInit, OnChanges {
 
   /** Tasks to be displayed */
-  tasks = [];
-  /** Unfiltered tasks */
-  tasksAll = [];
+  @Input() tasks = [];
+  /** Current media */
+  @Input() media: Media;
+  /** Event emitter indicating task action */
+  @Output() taskEventEmitter = new EventEmitter<{ Action, Task }>();
 
   /** Tasks having a due date before now */
   tasksOverdue = [];
@@ -50,23 +46,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
   /** Background color for inbox badge */
   tasksInboxBadgeColor = 'transparent';
 
-  /** Helper subject used to finish other subscriptions */
-  private unsubscribeSubject = new Subject();
-
-  /**
-   * Constructor
-   * @param {TaskService} taskService
-   * @param {DateService} dateService
-   * @param {MatchService} matchService
-   * @param {FilterService} filterService
-   * @param {ChangeDetectorRef} changeDetector
-   */
-  constructor(private taskService: TaskService,
-              private dateService: DateService,
-              private matchService: MatchService,
-              private filterService: FilterService,
-              private changeDetector: ChangeDetectorRef) {
-  }
+  /** Enum for action types */
+  action = Action;
 
   //
   // Lifecycle hooks
@@ -75,77 +56,23 @@ export class TaskListComponent implements OnInit, OnDestroy {
   /**
    * Handles on-init lifecycle hook
    */
-  ngOnInit() {
-    this.initializeTaskSubscription();
-    this.initializeFilterSubscription();
+  ngOnInit(): void {
+    this.initializeTaskCategories();
   }
 
   /**
-   * Handles on-destroy lifecycle hook
+   * Handles on-changes lifecycle hook
+   * @param changes changes
    */
-  ngOnDestroy() {
-    this.unsubscribeSubject.next();
-    this.unsubscribeSubject.complete();
+  ngOnChanges(changes: SimpleChanges): void {
+    this.initializeTaskCategories();
   }
 
   //
   // Initialization
   //
 
-  /**
-   * Initializes task subscription
-   */
-  private initializeTaskSubscription() {
-    this.tasksAll = Array.from(this.taskService.tasks.values());
-    this.update();
-
-    this.taskService.tasksSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        this.tasksAll = value as Task[];
-        this.update();
-      }
-    });
-  }
-
-  /**
-   * Initializes filter subscription
-   */
-  private initializeFilterSubscription() {
-    this.filterService.filterSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe(() => {
-      this.update();
-    });
-  }
-
-  //
-  // Actions
-  //
-
-  /**
-   * Handles click on menu items
-   * @param menuItem menu item that has been clicked
-   */
-  onMenuItemClicked(menuItem: string) {
-    this.menuItemClickedEmitter.emit(menuItem);
-  }
-
-  /**
-   * Filters original values
-   */
-  private update() {
-    this.tasks = this.tasksAll.filter(task => {
-      const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
-      const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()),
-        this.filterService.tagsNone);
-      const matchesProjects = this.matchService.taskMatchesProjects(task,
-        Array.from(this.filterService.projects.values()), this.filterService.projectsNone);
-
-      return matchesSearchItem && matchesTags && matchesProjects;
-    });
-
+  initializeTaskCategories() {
     this.tasksOverdue = this.tasks.filter(task => {
       return task != null
         && task.completionDate == null
@@ -170,7 +97,5 @@ export class TaskListComponent implements OnInit, OnDestroy {
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
     this.tasksNextBadgeColor = (this.tasksNext.length > 0) ? 'accent' : 'primary';
     this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
-
-    this.changeDetector.markForCheck();
   }
 }

@@ -264,7 +264,6 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
    * @param {string} action action
    */
   onActionFired(action: string) {
-    console.log(`action ${action}`);
     switch (action) {
       case 'card': {
         if (this.media > this.mediaType.MEDIUM) {
@@ -406,6 +405,7 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         const tasklet = result as TaskletDailyScrum;
+        /*
         this.taskletService.createTasklet(tasklet).then(() => {
           this.changeDetector.markForCheck();
         });
@@ -414,6 +414,7 @@ export class TaskletListItemComponent implements OnInit, OnDestroy {
         }).filter(tag => {
           return tag != null;
         }), true);
+        */
       }
     });
   }

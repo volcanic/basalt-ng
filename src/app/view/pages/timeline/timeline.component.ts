@@ -14,7 +14,6 @@ import {Project} from '../../../model/entities/project.model';
 import {EntityService} from '../../../services/entities/entity.service';
 import {ProjectService} from '../../../services/entities/project.service';
 import {TaskService} from '../../../services/entities/task.service';
-import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
 import {Task} from '../../../model/entities/task.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
 import {FilterService} from '../../../services/entities/filter/filter.service';
@@ -40,7 +39,11 @@ import {TagListDialogComponent} from '../../dialogs/lists/tag-list-dialog/tag-li
 import {MatchService} from '../../../services/entities/filter/match.service';
 import {ConfirmationDialogComponent} from '../../dialogs/other/confirmation-dialog/confirmation-dialog.component';
 import {InformationDialogComponent} from '../../dialogs/other/information-dialog/information-dialog.component';
-import {DialogAction} from '../../../model/ui/dialog-action.enum';
+import {Action} from '../../../model/ui/action.enum';
+import {TaskDialogComponent} from '../../dialogs/entities/task-dialog/task-dialog.component';
+import {TaskletType} from '../../../model/tasklet-type.enum';
+import {UUID} from '../../../model/util/uuid';
+import {Description} from '../../../model/entities/fragments/description.model';
 
 /**
  * Displays timeline page
@@ -59,6 +62,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** App title */
   title = 'Basalt';
+
+  /** Array of tasks */
+  public tasks: Task[] = [];
 
   /** Array of projects */
   public projects: Project[] = [];
@@ -146,6 +152,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
+    this.initializeTaskSubscription();
     this.initializeProjectSubscription();
     this.initializePersonSubscription();
     this.initializeFilterSubscription();
@@ -173,6 +180,27 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   // Initialization
   //
+
+  /**
+   * Initializes task subscription
+   */
+  private initializeTaskSubscription() {
+    this.tasks = Array.from(this.taskService.tasks.values());
+    this.taskService.tasksSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        this.tasks = (value as Task[]).filter(task => {
+          const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
+          const matchesProjects = this.matchService.taskMatchesProjects(task,
+            Array.from(this.filterService.projects.values()),
+            this.filterService.projectsNone);
+
+          return matchesSearchItem && matchesProjects;
+        });
+      }
+    });
+  }
 
   /**
    * Initializes project subscription
@@ -331,6 +359,176 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       })).subscribe();
   }
 
+  onTaskletEvent(event: { action: Action, value: Tasklet }) {
+    const tasklet = event.value as Tasklet;
+
+    switch (event.action) {
+      case Action.OPEN_DIALOG_CONTINUE: {
+        tasklet['_rev'] = null;
+        tasklet.id = new UUID().toString();
+        tasklet.description = new Description();
+        tasklet.creationDate = new Date();
+        tasklet.participants.forEach(p => {
+            p.activities = [];
+          }
+        );
+
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.CONTINUE,
+          dialogTitle: 'Continue tasklet',
+          tasklet: tasklet
+        };
+
+        // Open dialog
+        const continueTaskletDialogRef = this.dialog.open(TaskletDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        continueTaskletDialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingTasklet = result.value as Tasklet;
+
+            switch (result.action) {
+              case Action.ADD: {
+                this.taskletService.createTasklet(resultingTasklet).then(() => {
+                });
+                break;
+              }
+            }
+          }
+        });
+        break;
+      }
+    }
+  }
+
+  onTaskEvent(event: { action: Action, value: Task }) {
+    const task = event.value as Task;
+
+    switch (event.action) {
+      case Action.COMPLETE: {
+        task.completionDate = new Date();
+        this.taskService.updateTask(task, false).then(() => {
+        });
+        this.snackbarService.showSnackbar('Completed task');
+        break;
+      }
+      case Action.REOPEN: {
+        task.completionDate = null;
+        this.taskService.updateTask(task, false).then(() => {
+        });
+        this.snackbarService.showSnackbar('Re-opened task');
+        break;
+      }
+      case Action.OPEN_DIALOG_ADD: {
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.ADD,
+          dialogTitle: 'Add task',
+          task: new Task('')
+        };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(TaskDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingTask = result.value as Task;
+
+            switch (result.action) {
+              case Action.ADD: {
+                this.taskService.createTask(resultingTask).then(() => {
+                });
+                break;
+              }
+            }
+          }
+        });
+        break;
+      }
+      case Action.OPEN_DIALOG_UPDATE: {
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.UPDATE,
+          dialogTitle: 'Update task',
+          task: task
+        };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(TaskDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingTask = result.value as Task;
+
+            switch (result.action) {
+              case Action.UPDATE: {
+                this.taskService.updateTask(resultingTask, true).then(() => {
+                });
+                break;
+              }
+              case Action.DELETE: {
+                const references = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
+                  return tasklet.taskId === resultingTask.id;
+                });
+
+                if (references) {
+                  this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+                    disableClose: false,
+                    data: {
+                      title: 'Cannot delete task',
+                      text: `There are still tasklets associated with this person.`,
+                      action: 'Okay',
+                      value: resultingTask
+                    }
+                  });
+                } else {
+                  const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+                    disableClose: false,
+                    data: {
+                      title: 'Delete person',
+                      text: 'Do you want to delete this task?',
+                      action: 'Delete',
+                      value: resultingTask
+                    }
+                  });
+                  confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+                    if (confirmationResult != null) {
+                      this.taskService.deleteTask(confirmationResult as Task).then(() => {
+                      });
+                      dialogRef.close(null);
+                    }
+                  });
+                }
+                break;
+              }
+            }
+          }
+        });
+        break;
+      }
+      case Action.OPEN_DIALOG_CONTINUE: {
+        const tasklet = new Tasklet();
+        tasklet.taskId = task.id;
+        tasklet.type = TaskletType.ACTION;
+
+        this.onTaskletEvent({action: Action.OPEN_DIALOG_CONTINUE, value: tasklet});
+        break;
+      }
+    }
+  }
+
   //
   // Actions - Projects
   //
@@ -377,17 +575,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.filterService.updateProjectsList([resultingProject], true);
 
         switch (result.action) {
-          case DialogAction.ADD: {
+          case Action.ADD: {
             this.projectService.createProject(resultingProject).then(() => {
             });
             break;
           }
-          case DialogAction.UPDATE: {
+          case Action.UPDATE: {
             this.projectService.updateProject(resultingProject, true).then(() => {
             });
             break;
           }
-          case DialogAction.DELETE: {
+          case Action.DELETE: {
             const references = Array.from(this.taskService.tasks.values()).some((task: Task) => {
               return task.projectId === resultingProject.id;
             });
@@ -490,17 +688,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.filterService.updatePersonsList([resultingPerson], true);
 
         switch (result.action) {
-          case DialogAction.ADD: {
+          case Action.ADD: {
             this.personService.createPerson(resultingPerson).then(() => {
             });
             break;
           }
-          case DialogAction.UPDATE: {
+          case Action.UPDATE: {
             this.personService.updatePerson(resultingPerson, true).then(() => {
             });
             break;
           }
-          case DialogAction.DELETE: {
+          case Action.DELETE: {
             const references = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
               return tasklet.personIds.some(tagId => {
                 return tagId === resultingPerson.id;
@@ -600,30 +798,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               return this.personService.getPersonById(id);
             }).filter(person => {
               return person != null;
-            }), true);
-          }
-        });
-        break;
-      }
-      case 'add-task': {
-        const dialogRef = this.dialog.open(TaskDialogComponent, {
-          disableClose: false,
-          data: {
-            mode: DialogMode.ADD,
-            dialogTitle: 'Add task',
-            task: new Task('')
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const task = result as Task;
-
-            this.taskService.createTask(task).then(() => {
-            });
-            this.filterService.updateTagsList(task.tagIds.map(id => {
-              return this.tagService.getTagById(id);
-            }).filter(tag => {
-              return tag != null;
             }), true);
           }
         });

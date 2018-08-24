@@ -13,6 +13,7 @@ import {TaskService} from '../../../../services/entities/task.service';
 import {CloneService} from '../../../../services/util/clone.service';
 import {DateService} from '../../../../services/util/date.service';
 import {TagService} from '../../../../services/entities/tag.service';
+import {Action} from '../../../../model/ui/action.enum';
 
 /**
  * Displays task dialog
@@ -178,7 +179,16 @@ export class TaskDialogComponent implements OnInit {
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      this.updateTask();
+      switch (this.mode) {
+        case DialogMode.ADD: {
+          this.addTask();
+          break;
+        }
+        case DialogMode.UPDATE: {
+          this.updateTask();
+          break;
+        }
+      }
     }
   }
 
@@ -282,7 +292,7 @@ export class TaskDialogComponent implements OnInit {
   addTask() {
     this.evaluateProject();
     this.task.tagIds = this.aggregateTagIds(this.task);
-    this.dialogRef.close(this.task);
+    this.dialogRef.close({action: Action.ADD, value: this.task});
   }
 
   /**
@@ -291,7 +301,8 @@ export class TaskDialogComponent implements OnInit {
   updateTask() {
     this.evaluateProject();
     this.task.tagIds = this.aggregateTagIds(this.task);
-    this.dialogRef.close(this.task);
+    console.log("updateTask");
+    this.dialogRef.close({action: Action.UPDATE, value: this.task});
   }
 
   /**
@@ -300,7 +311,7 @@ export class TaskDialogComponent implements OnInit {
   completeTask() {
     this.evaluateProject();
     this.task.completionDate = new Date();
-    this.dialogRef.close(this.task);
+    this.dialogRef.close({action: Action.COMPLETE, value: this.task});
   }
 
   /**
@@ -309,7 +320,7 @@ export class TaskDialogComponent implements OnInit {
   reopenTask() {
     this.evaluateProject();
     this.task.completionDate = null;
-    this.dialogRef.close(this.task);
+    this.dialogRef.close({action: Action.REOPEN, value: this.task});
   }
 
   /**

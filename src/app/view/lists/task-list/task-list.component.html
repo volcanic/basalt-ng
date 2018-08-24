@@ -9,7 +9,7 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t">
+    <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t" [media]="media" (taskEventEmitter)="taskEventEmitter.emit($event)">
     </app-task-list-item>
   </mat-expansion-panel>
 </mat-accordion>
@@ -25,7 +25,7 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksNext" [task]="t">
+    <app-task-list-item *ngFor="let t of tasksNext" [task]="t" [media]="media" (taskEventEmitter)="taskEventEmitter.emit($event)">
     </app-task-list-item>
   </mat-expansion-panel>
 </mat-accordion>
@@ -39,7 +39,7 @@
               [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
       </div>
     </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksInbox" [task]="t">
+    <app-task-list-item *ngFor="let t of tasksInbox" [task]="t" [media]="media" (taskEventEmitter)="taskEventEmitter.emit($event)">
     </app-task-list-item>
   </mat-expansion-panel>
 </mat-accordion>
@@ -51,12 +51,12 @@
         <span>Completed</span>
       </div>
     </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksCompleted" [task]="t">
+    <app-task-list-item *ngFor="let t of tasksCompleted" [task]="t" [media]="media" (taskEventEmitter)="taskEventEmitter.emit($event)">
     </app-task-list-item>
   </mat-expansion-panel>
 </mat-accordion>
 
-<button mat-button class="label headers-align" (click)="onMenuItemClicked('add-task')">
+<button mat-button class="label headers-align" (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_ADD, value: null})">
   <mat-icon class="add-task-icon" svgIcon="add"></mat-icon>
   <span>Add new task</span>
 </button>

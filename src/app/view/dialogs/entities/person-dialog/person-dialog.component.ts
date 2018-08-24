@@ -3,7 +3,7 @@ import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confi
 import {Person} from '../../../../model/entities/person.model';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
-import {DialogAction} from '../../../../model/ui/dialog-action.enum';
+import {Action} from '../../../../model/ui/action.enum';
 
 /**
  * Displays person dialog
@@ -73,7 +73,16 @@ export class PersonDialogComponent implements OnInit {
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      this.updatePerson();
+      switch (this.mode) {
+        case DialogMode.ADD: {
+          this.addPerson();
+          break;
+        }
+        case DialogMode.UPDATE: {
+          this.updatePerson();
+          break;
+        }
+      }
     }
   }
 
@@ -85,20 +94,20 @@ export class PersonDialogComponent implements OnInit {
    * Handles click on add button
    */
   addPerson() {
-    this.dialogRef.close({action: DialogAction.ADD, value: this.person});
+    this.dialogRef.close({action: Action.ADD, value: this.person});
   }
 
   /**
    * Handles click on update button
    */
   updatePerson() {
-    this.dialogRef.close({action: DialogAction.UPDATE, value: this.person});
+    this.dialogRef.close({action: Action.UPDATE, value: this.person});
   }
 
   /**
    * Handles click on delete button
    */
   deletePerson() {
-    this.dialogRef.close({action: DialogAction.DELETE, value: this.person});
+    this.dialogRef.close({action: Action.DELETE, value: this.person});
   }
 }

@@ -3,7 +3,7 @@ import {Project} from '../../../../model/entities/project.model';
 import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
-import {DialogAction} from '../../../../model/ui/dialog-action.enum';
+import {Action} from '../../../../model/ui/action.enum';
 
 /**
  * Displays project dialog
@@ -73,7 +73,16 @@ export class ProjectDialogComponent implements OnInit {
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      this.updateProject();
+      switch (this.mode) {
+        case DialogMode.ADD: {
+          this.addProject();
+          break;
+        }
+        case DialogMode.UPDATE: {
+          this.updateProject();
+          break;
+        }
+      }
     }
   }
 
@@ -85,20 +94,20 @@ export class ProjectDialogComponent implements OnInit {
    * Handles click on add button
    */
   addProject() {
-    this.dialogRef.close({action: DialogAction.ADD, value: this.project});
+    this.dialogRef.close({action: Action.ADD, value: this.project});
   }
 
   /**
    * Handles click on update button
    */
   updateProject() {
-    this.dialogRef.close({action: DialogAction.UPDATE, value: this.project});
+    this.dialogRef.close({action: Action.UPDATE, value: this.project});
   }
 
   /**
    * Handles click on delete button
    */
   deleteProject() {
-    this.dialogRef.close({action: DialogAction.DELETE, value: this.project});
+    this.dialogRef.close({action: Action.DELETE, value: this.project});
   }
 }

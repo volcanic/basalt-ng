@@ -149,6 +149,7 @@ export class TaskService {
   public createTask(task: Task): Promise<any> {
     return new Promise(() => {
       if (task != null) {
+        console.log(this.scopeService.scope);
         task.scope = this.scopeService.scope;
 
         // Update related objects
@@ -177,7 +178,7 @@ export class TaskService {
    * @param {Task} task task to be updated
    * @param {boolean} showSnack shows snackbar if true
    */
-  public updateTask(task: Task, showSnack: boolean): Promise<any> {
+  public updateTask(task: Task, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (task != null) {
         // Update related objects

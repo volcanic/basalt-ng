@@ -27,7 +27,7 @@
                position="end" opened="true"
                class="sidenav sidenav-end">
     <div [@toolbarAnimation]="scrollDirection">
-      <app-task-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-task-list>
+      <app-task-list [tasks]="tasks" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
       <mat-divider></mat-divider>
       <app-project-list [projects]="projects" (upsertProjectEventEmitter)="onUpsertProject($event)"></app-project-list>
       <mat-divider></mat-divider>
