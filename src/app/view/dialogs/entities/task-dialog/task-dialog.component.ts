@@ -1,18 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Task} from '../../../../model/entities/task.model';
 import {Project} from '../../../../model/entities/project.model';
-import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
-import {ProjectService} from '../../../../services/entities/project.service';
 import {Tag} from '../../../../model/entities/tag.model';
-import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
-import {InformationDialogComponent} from '../../other/information-dialog/information-dialog.component';
-import {TaskletService} from '../../../../services/entities/tasklet.service';
-import {TaskService} from '../../../../services/entities/task.service';
 import {CloneService} from '../../../../services/util/clone.service';
 import {DateService} from '../../../../services/util/date.service';
-import {TagService} from '../../../../services/entities/tag.service';
 import {Action} from '../../../../model/ui/action.enum';
 
 /**
@@ -58,9 +52,9 @@ export class TaskDialogComponent implements OnInit {
     '#cfd8dc'
   ];
 
-  /** Temporary project */
+  /** Project assigned to this task */
   project: Project;
-  /** Temporary tags */
+  /** Tags assigned to this task */
   tags: Tag[] = [];
 
   /** Reference to static method */
@@ -70,24 +64,12 @@ export class TaskDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {ProjectService} projectService
-   * @param {TaskService} taskService
-   * @param {TaskletService} taskletService
-   * @param {TagService} tagService
-   * @param {CloneService} cloneService
    * @param {DateAdapter<any>} adapter
-   * @param {DateService} dateService date service
    * @param {MatDialog} dialog dialog
    * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(private projectService: ProjectService,
-              private taskService: TaskService,
-              private taskletService: TaskletService,
-              private tagService: TagService,
-              private cloneService: CloneService,
-              private adapter: DateAdapter<any>,
-              public dateService: DateService,
+  constructor(private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -105,8 +87,6 @@ export class TaskDialogComponent implements OnInit {
     this.initializeInput();
     this.initializeTask();
     this.initializePriority();
-    this.initializeProject();
-    this.initializeTags();
   }
 
   //
@@ -120,6 +100,8 @@ export class TaskDialogComponent implements OnInit {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.task = this.data.task;
+    this.project = this.data.project;
+    this.tags = this.data.tags;
   }
 
   /**
@@ -150,24 +132,6 @@ export class TaskDialogComponent implements OnInit {
     });
   }
 
-  /**
-   * Initializes project
-   */
-  private initializeProject() {
-    this.project = this.projectService.projects.get(this.task.projectId);
-  }
-
-  /**
-   * Initializes tags
-   */
-  private initializeTags() {
-    this.tags = this.task.tagIds.map(id => {
-      return this.tagService.getTagById(id);
-    }).filter(tag => {
-      return tag != null;
-    });
-  }
-
   //
   // Actions
   //
@@ -189,6 +153,7 @@ export class TaskDialogComponent implements OnInit {
           break;
         }
       }
+
     }
   }
 
@@ -290,135 +255,36 @@ export class TaskDialogComponent implements OnInit {
    * Handles click on add button
    */
   addTask() {
-    this.evaluateProject();
-    this.task.tagIds = this.aggregateTagIds(this.task);
-    this.dialogRef.close({action: Action.ADD, value: this.task});
+    this.dialogRef.close({action: Action.ADD, value: this.task, project: this.project, tags: this.tags});
   }
 
   /**
    * Handles click on update button
    */
   updateTask() {
-    this.evaluateProject();
-    this.task.tagIds = this.aggregateTagIds(this.task);
-    console.log("updateTask");
-    this.dialogRef.close({action: Action.UPDATE, value: this.task});
-  }
-
-  /**
-   * Handles click on complete button
-   */
-  completeTask() {
-    this.evaluateProject();
-    this.task.completionDate = new Date();
-    this.dialogRef.close({action: Action.COMPLETE, value: this.task});
-  }
-
-  /**
-   * Handles click on re-open button
-   */
-  reopenTask() {
-    this.evaluateProject();
-    this.task.completionDate = null;
-    this.dialogRef.close({action: Action.REOPEN, value: this.task});
+    this.dialogRef.close({action: Action.UPDATE, value: this.task, project: this.project, tags: this.tags});
   }
 
   /**
    * Handles click on delete button
    */
   deleteTask() {
-    const references = Array.from(this.taskletService.tasklets.values()).filter((tasklet: Tasklet) => {
-      return tasklet.taskId === this.task.id;
-    }).length;
-
-    if (references > 0) {
-      this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
-        disableClose: false,
-        data: {
-          title: 'Cannot delete task',
-          text: `There are still ${references} tasklets associated with this task.`,
-          action: 'Okay',
-          value: this.task
-        }
-      });
-    } else {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-        disableClose: false,
-        data: {
-          title: 'Delete task',
-          text: 'Do you want to delete this task?',
-          action: 'Delete',
-          value: this.task
-        }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (result != null) {
-          this.taskService.deleteTask(result as Task).then(() => {
-          });
-          this.dialogRef.close(null);
-        }
-      });
-    }
-  }
-
-  //
-  // Helpers
-  //
-
-  /**
-   * Determines whether the selected project already exists, otherwise creates a new one
-   */
-  private evaluateProject() {
-    if (this.project != null) {
-      let project = this.projectService.getProjectByName(this.project.name);
-
-      if (project != null) {
-        // Existing project
-        this.task.projectId = project.id;
-      } else if (this.project.name != null && this.project.name !== '') {
-        // New project
-        project = new Project(this.project.name, true);
-        this.task.projectId = project.id;
-        this.projectService.createProject(project).then(() => {
-        });
-      } else {
-        this.task.projectId = null;
-      }
-    }
+    this.dialogRef.close({action: Action.DELETE, value: this.task});
   }
 
   /**
-   * Aggregates tag IDs
-   * @param {Task} task task to aggregate tag IDs of
-   * @returns {string[]}
+   * Handles click on complete button
    */
-  private aggregateTagIds(task: Task): string[] {
-    const aggregatedTagIds = new Map<string, string>();
-
-    // Concatenate
-    this.tags.forEach(t => {
-      const tag = this.evaluateTag(t.name);
-      aggregatedTagIds.set(tag.id, tag.id);
-    });
-
-    return Array.from(aggregatedTagIds.values());
+  completeTask() {
+    this.task.completionDate = new Date();
+    this.dialogRef.close({action: Action.COMPLETE, value: this.task, project: this.project});
   }
 
   /**
-   * Gets an existing tag by name or creates a new one if it does not exist
-   * @param name tag name
+   * Handles click on re-open button
    */
-  private evaluateTag(name: string): Tag {
-    if (name != null) {
-      let tag = this.tagService.getTagByName(name);
-
-      if (tag == null) {
-        tag = new Tag(name, true);
-        this.tagService.createTag(tag).then(() => {
-        });
-      }
-
-      return tag;
-    }
+  reopenTask() {
+    this.task.completionDate = null;
+    this.dialogRef.close({action: Action.REOPEN, value: this.task, project: this.project});
   }
 }

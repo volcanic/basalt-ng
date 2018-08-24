@@ -359,6 +359,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       })).subscribe();
   }
 
+  /**
+   * Handles events targeting a tasklet
+   * @param {any} event event parameters
+   */
   onTaskletEvent(event: { action: Action, value: Tasklet }) {
     const tasklet = event.value as Tasklet;
 
@@ -405,11 +409,81 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onTaskEvent(event: { action: Action, value: Task }) {
+  /**
+   * Handles events targeting a task
+   * @param {any} event event parameters
+   */
+  onTaskEvent(event: { action: Action, value: Task, project: Project, tags: Tag[] }) {
     const task = event.value as Task;
+    const project = event.project as Project;
+    const tags = event.tags as Tag[];
 
     switch (event.action) {
+      case Action.ADD: {
+        this.evaluateTaskProject(task, project);
+        this.evaluateTaskTags(task, tags);
+
+        this.taskService.createTask(task).then(() => {
+          this.snackbarService.showSnackbar('Added task');
+        });
+        this.filterService.updateTagsList(task.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), true);
+        break;
+      }
+      case Action.UPDATE: {
+        this.evaluateTaskProject(task, project);
+        this.evaluateTaskTags(task, tags);
+
+        this.taskService.updateTask(task).then(() => {
+          this.snackbarService.showSnackbar('Updated task');
+        });
+        this.filterService.updateTagsList(task.tagIds.map(id => {
+          return this.tagService.getTagById(id);
+        }).filter(tag => {
+          return tag != null;
+        }), true);
+        break;
+      }
+      case Action.DELETE: {
+        const references = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
+          return tasklet.taskId === task.id;
+        });
+
+        if (references) {
+          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+            disableClose: false,
+            data: {
+              title: 'Cannot delete task',
+              text: `There are still tasklets associated with this person.`,
+              action: 'Okay',
+              value: task
+            }
+          });
+        } else {
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+            disableClose: false,
+            data: {
+              title: 'Delete person',
+              text: 'Do you want to delete this task?',
+              action: 'Delete',
+              value: task
+            }
+          });
+          confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+            if (confirmationResult != null) {
+              this.taskService.deleteTask(confirmationResult as Task).then(() => {
+              });
+            }
+          });
+        }
+        break;
+      }
       case Action.COMPLETE: {
+        this.evaluateTaskProject(task, project);
+
         task.completionDate = new Date();
         this.taskService.updateTask(task, false).then(() => {
         });
@@ -417,6 +491,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.REOPEN: {
+        this.evaluateTaskProject(task, project);
+
         task.completionDate = null;
         this.taskService.updateTask(task, false).then(() => {
         });
@@ -428,7 +504,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.ADD,
           dialogTitle: 'Add task',
-          task: new Task('')
+          task: new Task(''),
+          project: null,
+          tags: []
         };
 
         // Open dialog
@@ -440,15 +518,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Handle dialog close
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
+            const resultingAction = result.action as Action;
             const resultingTask = result.value as Task;
+            const resultingProject = result.project as Project;
+            const resultingTags = result.tags as Tag[];
 
-            switch (result.action) {
-              case Action.ADD: {
-                this.taskService.createTask(resultingTask).then(() => {
-                });
-                break;
-              }
-            }
+            this.onTaskEvent({
+              action: resultingAction,
+              value: resultingTask,
+              project: resultingProject,
+              tags: resultingTags
+            });
           }
         });
         break;
@@ -458,7 +538,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update task',
-          task: task
+          task: task,
+          project: this.projectService.projects.get(task.projectId),
+          tags: task.tagIds.map(id => {
+            return this.tagService.tags.get(id);
+          }).filter(tag => {
+            return tag != null;
+          })
         };
 
         // Open dialog
@@ -470,50 +556,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Handle dialog close
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
+            const resultingAction = result.action as Action;
             const resultingTask = result.value as Task;
+            const resultingProject = result.project as Project;
+            const resultingTags = result.tags as Tag[];
 
-            switch (result.action) {
-              case Action.UPDATE: {
-                this.taskService.updateTask(resultingTask, true).then(() => {
-                });
-                break;
-              }
-              case Action.DELETE: {
-                const references = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
-                  return tasklet.taskId === resultingTask.id;
-                });
-
-                if (references) {
-                  this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
-                    disableClose: false,
-                    data: {
-                      title: 'Cannot delete task',
-                      text: `There are still tasklets associated with this person.`,
-                      action: 'Okay',
-                      value: resultingTask
-                    }
-                  });
-                } else {
-                  const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-                    disableClose: false,
-                    data: {
-                      title: 'Delete person',
-                      text: 'Do you want to delete this task?',
-                      action: 'Delete',
-                      value: resultingTask
-                    }
-                  });
-                  confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
-                    if (confirmationResult != null) {
-                      this.taskService.deleteTask(confirmationResult as Task).then(() => {
-                      });
-                      dialogRef.close(null);
-                    }
-                  });
-                }
-                break;
-              }
-            }
+            this.onTaskEvent({
+              action: resultingAction,
+              value: resultingTask,
+              project: resultingProject,
+              tags: resultingTags
+            });
           }
         });
         break;
@@ -997,5 +1050,57 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onDateIndicatorClicked() {
     this.scrollState = ScrollState.NON_SCROLLING;
+  }
+
+  //
+  // Helpers
+  //
+
+  /**
+   * Determines whether the project assigned to a given task already exists, otherwise creates a new one
+   * @param task task to assign project to
+   * @param p project to be checked
+   */
+  private evaluateTaskProject(task: Task, p: Project) {
+    if (p != null) {
+      let project = this.projectService.getProjectByName(p.name);
+
+      if (project != null) {
+        // Existing project
+        task.projectId = project.id;
+      } else if (project.name != null && project.name !== '') {
+        // New project
+        project = new Project(project.name, true);
+        task.projectId = project.id;
+        this.projectService.createProject(project).then(() => {
+        });
+      } else {
+        task.projectId = null;
+      }
+    }
+  }
+
+  /**
+   * Determines whether the tags assigned to a given task already exixst, otherwise creates new ones
+   * @param {Task} task task assign tags to
+   * @param {Tag[]} tags array of tags to be checked
+   */
+  private evaluateTaskTags(task: Task, tags: Tag[]) {
+    const aggregatedTagIds = new Map<string, string>();
+
+    // Concatenate
+    tags.forEach(t => {
+      let tag = this.tagService.getTagByName(t.name);
+
+      if (tag == null) {
+        tag = new Tag(t.name, true);
+        this.tagService.createTag(tag).then(() => {
+        });
+      }
+
+      aggregatedTagIds.set(tag.id, tag.id);
+    });
+
+    task.tagIds = Array.from(aggregatedTagIds.values());
   }
 }
