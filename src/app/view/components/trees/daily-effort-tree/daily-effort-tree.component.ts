@@ -25,7 +25,7 @@ export class EffortNode {
  */
 export class EffortFlatNode {
   /** Array of child nodes */
-  children: EffortNode[];
+  // children: EffortNode[];
   /** Topic of the node */
   topic: string;
   /** Effort of the node */
@@ -134,11 +134,11 @@ export class DailyEffortTreeComponent implements OnInit {
   private buildTree(): EffortNode[] {
     const data: any[] = [];
 
-    const week = new EffortNode();
-    week.topic = `Week [ ${DateService.getDateString(this.dailyDigest.start)
-      .replace(/[0-9]{4}/, '').trim()} - ${DateService.getDateString(this.dailyDigest.end)} ]`;
-    week.effort = this.dailyDigest.getProjectEffortSum();
-    week.children = [];
+    const day = new EffortNode();
+    day.topic = `${DateService.getWeekDayString(new Date(this.dailyDigest.start).getDay())}
+    [ ${DateService.getTimeString(this.dailyDigest.start)} - ${DateService.getTimeString(this.dailyDigest.end)} ]`;
+    day.effort = this.dailyDigest.getProjectEffortSum();
+    day.children = [];
 
     this.dailyDigest.getProjectEfforts().forEach(pe => {
       const taskNodes = [];
@@ -156,10 +156,10 @@ export class DailyEffortTreeComponent implements OnInit {
       projectEffortNode.color = this.colorService.getProjectColor(pe.project);
       projectEffortNode.children = taskNodes;
 
-      week.children.push(projectEffortNode);
+      day.children.push(projectEffortNode);
     });
 
-    data.push(week);
+    data.push(day);
 
     return data;
   }
