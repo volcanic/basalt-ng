@@ -43,7 +43,7 @@ export class ProjectListDialogComponent {
   // Actions
   //
 
-  onUpsertProject(person: Person) {
-    this.dialogRef.close({action: Action.NONE, value: person});
+  onUpsertProject(project: Project) {
+    this.dialogRef.close({action: Action.NONE, value: project});
   }
 }

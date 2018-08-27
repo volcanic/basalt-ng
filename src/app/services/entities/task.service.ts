@@ -149,7 +149,6 @@ export class TaskService {
   public createTask(task: Task): Promise<any> {
     return new Promise(() => {
       if (task != null) {
-        console.log(this.scopeService.scope);
         task.scope = this.scopeService.scope;
 
         // Update related objects

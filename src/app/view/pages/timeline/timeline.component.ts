@@ -413,7 +413,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a task
    * @param {any} event event parameters
    */
-  onTaskEvent(event: { action: Action, value: Task, project: Project, tags: Tag[] }) {
+  onTaskEvent(event: { action: Action, value: Task, project?: Project, tags?: Tag[] }) {
     const task = event.value as Task;
     const project = event.project as Project;
     const tags = event.tags as Tag[];
@@ -587,96 +587,117 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles project upserts
-   * @param {Project} project project to be upserted
+   * Handles events targeting a project
+   * @param {any} event event parameters
    */
-  onUpsertProject(project: Project) {
-    // Determine mode
-    const mode = (project != null) ? DialogMode.UPDATE : DialogMode.ADD;
+  onProjectEvent(event: { action: Action, value: Project }) {
+    const project = event.value as Project;
 
-    // Assemble data to be passed
-    let data = {};
-    switch (mode) {
-      case DialogMode.ADD: {
-        data = {
-          mode: mode,
+    switch (event.action) {
+      case Action.ADD: {
+        this.filterService.updateProjectsList([project], true);
+        this.projectService.createProject(project).then(() => {
+        });
+        break;
+      }
+      case Action.UPDATE: {
+        this.filterService.updateProjectsList([project], true);
+        this.projectService.updateProject(project).then(() => {
+        });
+        break;
+      }
+      case Action.DELETE: {
+        const references = Array.from(this.taskService.tasks.values()).some((task: Task) => {
+          return task.projectId === project.id;
+        });
+
+        if (references) {
+          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+            disableClose: false,
+            data: {
+              title: 'Cannot delete project',
+              text: `There are still tasks associated with this project.`,
+              action: 'Okay',
+              value: project
+            }
+          });
+        } else {
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+            disableClose: false,
+            data: {
+              title: 'Delete project',
+              text: 'Do you want to delete this project?',
+              action: 'Delete',
+              value: project
+            }
+          });
+          confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+            if (confirmationResult != null) {
+              this.projectService.deleteProject(confirmationResult as Project).then(() => {
+              });
+              this.filterService.projects.delete((confirmationResult as Project).id);
+            }
+          });
+        }
+        break;
+      }
+      case Action.OPEN_DIALOG_ADD: {
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.ADD,
           dialogTitle: 'Add project',
           project: new Project('')
         };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(ProjectDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingAction = result.action as Action;
+            const resultingProject = result.value as Project;
+
+            this.onProjectEvent({
+              action: resultingAction,
+              value: resultingProject
+            });
+          }
+        });
         break;
       }
-      case DialogMode.UPDATE: {
-        data = {
-          mode: mode,
+      case Action.OPEN_DIALOG_UPDATE: {
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.UPDATE,
           dialogTitle: 'Update project',
           project: project
         };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(ProjectDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingAction = result.action as Action;
+            const resultingProject = result.value as Project;
+
+            this.onProjectEvent({
+              action: resultingAction,
+              value: resultingProject
+            });
+          }
+        });
         break;
       }
     }
-
-    // Open dialog
-    const dialogRef = this.dialog.open(ProjectDialogComponent, {
-      disableClose: false,
-      data: data
-    });
-
-    // Handle dialog close
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        const resultingProject = result.value as Project;
-        this.filterService.updateProjectsList([resultingProject], true);
-
-        switch (result.action) {
-          case Action.ADD: {
-            this.projectService.createProject(resultingProject).then(() => {
-            });
-            break;
-          }
-          case Action.UPDATE: {
-            this.projectService.updateProject(resultingProject, true).then(() => {
-            });
-            break;
-          }
-          case Action.DELETE: {
-            const references = Array.from(this.taskService.tasks.values()).some((task: Task) => {
-              return task.projectId === resultingProject.id;
-            });
-
-            if (references) {
-              this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
-                disableClose: false,
-                data: {
-                  title: 'Cannot delete project',
-                  text: `There are still tasks associated with this project.`,
-                  action: 'Okay',
-                  value: resultingProject
-                }
-              });
-            } else {
-              const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-                disableClose: false,
-                data: {
-                  title: 'Delete project',
-                  text: 'Do you want to delete this project?',
-                  action: 'Delete',
-                  value: resultingProject
-                }
-              });
-              confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
-                if (confirmationResult != null) {
-                  this.projectService.deleteProject(confirmationResult as Project).then(() => {
-                  });
-                  this.filterService.projects.delete((confirmationResult as Project).id);
-                  dialogRef.close(null);
-                }
-              });
-            }
-            break;
-          }
-        }
-      }
-    });
   }
 
   /**
@@ -856,10 +877,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
-      case 'add-project': {
-        this.onUpsertProject(null);
-        break;
-      }
       case 'add-tag': {
         const dialogRef = this.dialog.open(TagDialogComponent, {
           disableClose: false,
@@ -880,10 +897,29 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'task-list': {
-        this.dialog.open(TaskListDialogComponent, {
+        const dialogRef = this.dialog.open(TaskListDialogComponent, {
           disableClose: false,
           data: {
             dialogTitle: 'Tasks',
+            tasks: this.tasks
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const task = result.value as Task;
+            const project = result.project as Project;
+            const tags = result.tags as Tag[];
+
+            switch (result.action) {
+              case Action.OPEN_DIALOG_ADD: {
+                this.onTaskEvent({action: Action.OPEN_DIALOG_ADD, value: task});
+                break;
+              }
+              case Action.OPEN_DIALOG_UPDATE: {
+                this.onTaskEvent({action: Action.OPEN_DIALOG_UPDATE, value: task, project: project, tags: tags});
+                break;
+              }
+            }
           }
         });
         break;
@@ -899,7 +935,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             const project = result.value as Project;
-            this.onUpsertProject(project);
+
+            switch (result.action) {
+              case Action.OPEN_DIALOG_ADD: {
+                this.onProjectEvent({action: Action.OPEN_DIALOG_ADD, value: project});
+                break;
+              }
+              case Action.OPEN_DIALOG_UPDATE: {
+                this.onProjectEvent({action: Action.OPEN_DIALOG_UPDATE, value: project});
+                break;
+              }
+            }
           }
         });
         break;

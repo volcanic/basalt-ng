@@ -1,11 +1,8 @@
-import {ChangeDetectorRef, Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {TaskDialogComponent} from '../../entities/task-dialog/task-dialog.component';
-import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
 import {Task} from '../../../../model/entities/task.model';
-import {FilterService} from '../../../../services/entities/filter/filter.service';
-import {TaskService} from '../../../../services/entities/task.service';
-import {TagService} from '../../../../services/entities/tag.service';
+import {Action} from '../../../../model/ui/action.enum';
 
 /**
  * Displays task list dialog
@@ -19,60 +16,33 @@ export class TaskListDialogComponent {
 
   /** Dialog title */
   dialogTitle = '';
+  /** Array of tasks to be displayed */
+  tasks: Task[];
 
   /**
    * Constructor
-   * @param {TaskService} taskService
-   * @param {TagService} tagService
-   * @param {FilterService} filterService
-   * @param {ChangeDetectorRef} changeDetector
-   * @param {MatDialog} dialog dialog
+   * @param {MatDialogRef<TaskDialogComponent>} dialogRef
    * @param data dialog data
    */
-  constructor(private taskService: TaskService,
-              private tagService: TagService,
-              private filterService: FilterService,
-              private changeDetector: ChangeDetectorRef,
-              public dialog: MatDialog,
+  constructor(public dialogRef: MatDialogRef<TaskDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.dialogTitle = data.dialogTitle;
+    this.initializeData();
+  }
+
+  //
+  // Initialization
+  //
+
+  private initializeData() {
+    this.dialogTitle = this.data.dialogTitle;
+    this.tasks = this.data.tasks;
   }
 
   //
   // Actions
   //
 
-  /**
-   * Handles click on menu items
-   * @param menuItem menu item that has been clicked
-   */
-  onMenuItemClicked(menuItem: string) {
-    switch (menuItem) {
-      case 'add-task': {
-        const dialogRef = this.dialog.open(TaskDialogComponent, {
-          disableClose: false,
-          data: {
-            mode: DialogMode.ADD,
-            dialogTitle: 'Add task',
-            task: new Task('')
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const task = result as Task;
-
-            this.taskService.createTask(task).then(() => {
-              this.changeDetector.markForCheck();
-            });
-            this.filterService.updateTagsList(task.tagIds.map(id => {
-              return this.tagService.getTagById(id);
-            }).filter(tag => {
-              return tag != null;
-            }), true);
-          }
-        });
-        break;
-      }
-    }
+  onTaskEvent(event: {action: Action, task: Task}) {
+    this.dialogRef.close(event);
   }
 }
