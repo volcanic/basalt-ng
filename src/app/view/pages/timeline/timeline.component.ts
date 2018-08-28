@@ -1342,6 +1342,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
 
+      this.filterService.updateTagsList([tag], true);
       aggregatedTagIds.set(tag.id, tag.id);
     });
 
