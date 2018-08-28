@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Person} from '../../../model/entities/person.model';
+import {Media} from '../../../model/ui/media.enum';
+import {Action} from '../../../model/ui/action.enum';
 
 /**
  * Displays person list
@@ -14,6 +15,9 @@ export class PersonListComponent {
 
   /** Persons to be displayed */
   @Input() persons = [];
-  /** Event emitter indicating person to be updated */
-  @Output() upsertPersonEventEmitter = new EventEmitter<Person>();
+  /** Event emitter indicating person action */
+  @Output() personEventEmitter = new EventEmitter<{ Action, Person }>();
+
+  /** Enum for action types */
+  action = Action;
 }

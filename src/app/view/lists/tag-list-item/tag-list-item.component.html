@@ -1,7 +1,7 @@
 <div class="container"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
-  <button mat-button class="tag flex" (click)="updateTag()">
+  <button mat-button class="tag flex" (click)="tagEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, value: tag})">
     <mat-icon svgIcon="label_outline" class="list-icon"></mat-icon>
     <span>{{ tag.name }}</span>
   </button>

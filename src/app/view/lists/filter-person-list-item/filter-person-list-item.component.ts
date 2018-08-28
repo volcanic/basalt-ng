@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Person} from '../../../model/entities/person.model';
+import {Action} from '../../../model/ui/action.enum';
 
 /**
  * Displays filter person list item
@@ -14,9 +15,11 @@ export class FilterPersonListItemComponent {
 
   /** Person to be displayed */
   @Input() person: Person;
-  /** Event emitter indicating person filter to be updated */
-  @Output() updatePersonFilterEventEmitter = new EventEmitter<Person>();
+  /** Event emitter indicating person action */
+  @Output() personEventEmitter = new EventEmitter<{ action: Action, value: Person }>();
 
+  /** Enum for action types */
+  action = Action;
   /** Animation state */
   state = 'inactive';
 

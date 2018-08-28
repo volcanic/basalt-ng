@@ -8,11 +8,15 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <app-filter-person-list-item *ngFor="let t of persons" [person]="t" (updatePersonFilterEventEmitter)="onPersonFilterUpdate($event)">
+    <app-filter-person-list-item *ngFor="let t of persons" [person]="t"
+                                 (personEventEmitter)="personEventEmitter.emit($event)">
     </app-filter-person-list-item>
 
     <div>
-      <mat-checkbox class="special-person" [(ngModel)]="personsNone" (ngModelChange)="onPersonNoneFlagChanged()">elements without persons</mat-checkbox>
+      <mat-checkbox class="special-person" [(ngModel)]="personsNone"
+                    (ngModelChange)="personEventEmitter.emit({action: action.FILTER_NONE, value: personsNone})">elements
+        without persons
+      </mat-checkbox>
     </div>
     <button mat-button class="label headers-align" (click)="onSetAll(true)">
       <span>Select all</span>

@@ -1,10 +1,6 @@
-import {ChangeDetectorRef, Component, Input} from '@angular/core';
-import {MatDialog} from '@angular/material';
-import {FilterService} from '../../../services/entities/filter/filter.service';
-import {TagService} from '../../../services/entities/tag.service';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Tag} from '../../../model/entities/tag.model';
-import {DialogMode} from '../../../model/ui/dialog-mode.enum';
-import {TagDialogComponent} from '../../dialogs/entities/tag-dialog/tag-dialog.component';
+import {Action} from '../../../model/ui/action.enum';
 
 /**
  * Displays tag list item
@@ -12,69 +8,30 @@ import {TagDialogComponent} from '../../dialogs/entities/tag-dialog/tag-dialog.c
 @Component({
   selector: 'app-tag-list-item',
   templateUrl: './tag-list-item.component.html',
-  styleUrls: ['./tag-list-item.component.scss']
+  styleUrls: ['./tag-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TagListItemComponent {
 
-  /** Tag to be rendered*/
+  /** Tag to be displayed */
   @Input() tag: Tag;
+  /** Event emitter indicating tag action */
+  @Output() tagEventEmitter = new EventEmitter<{ Action, Tag }>();
 
+  /** Enum for action types */
+  action = Action;
   /** Animation state */
   state = 'inactive';
 
-  /**
-   * Constructor
-   * @param {TagService} tagService
-   * @param {FilterService} filterService
-   * @param {ChangeDetectorRef} changeDetector
-   * @param {MatDialog} dialog dialog
-   */
-  constructor(private tagService: TagService,
-              private filterService: FilterService,
-              private changeDetector: ChangeDetectorRef,
-              public dialog: MatDialog) {
-  }
-
-//
-// Actions
-//
+  //
+  // Actions
+  //
 
   /**
    * Handles hover over container
    * @param {boolean} hovered whether there is currently a hover event
    */
-  onHoverContainer(hovered
-                     :
-                     boolean
-  ) {
+  onHoverContainer(hovered: boolean) {
     this.state = hovered ? 'active' : 'inactive';
-  }
-
-//
-// Button actions
-//
-
-  /**
-   * Handles click on update button
-   */
-  updateTag() {
-    const dialogRef = this.dialog.open(TagDialogComponent, {
-      disableClose: false,
-      data: {
-        mode: DialogMode.UPDATE,
-        dialogTitle: 'Update tag',
-        tag: this.tag
-      }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        const tag = result as Tag;
-
-        this.tagService.updateTag(tag, true).then(() => {
-          this.changeDetector.markForCheck();
-        });
-        this.filterService.updateTagsList([tag], true);
-      }
-    });
   }
 }

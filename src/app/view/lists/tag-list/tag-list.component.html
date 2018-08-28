@@ -7,12 +7,12 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-tag-list-item *ngFor="let t of tags" [tag]="t">
+    <app-tag-list-item *ngFor="let t of tags" [tag]="t" (tagEventEmitter)="tagEventEmitter.emit($event)">
     </app-tag-list-item>
   </mat-expansion-panel>
 </mat-accordion>
 
-<button mat-button class="label headers-align" (click)="onMenuItemClicked('add-tag')">
+<button mat-button class="label headers-align" (click)="tagEventEmitter.emit({action: action.OPEN_DIALOG_ADD, value: null})">
   <mat-icon class="add-tag-icon" svgIcon="add"></mat-icon>
   <span>Add new tag</span>
 </button>

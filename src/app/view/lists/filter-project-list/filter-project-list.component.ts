@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {CloneService} from '../../../services/util/clone.service';
-import {Project} from '../../../model/entities/project.model';
+import {Action} from '../../../model/ui/action.enum';
 
 /**
  * Displays filter project list
@@ -17,32 +17,19 @@ export class FilterProjectListComponent {
   @Input() projects = [];
   /** Flag indicating whether entities without project shall be displayed */
   @Input() projectsNone = false;
-  /** Event emitter indicating project filter to be updated */
-  @Output() filterProjectEventEmitter = new EventEmitter<Project[]>();
-  /** Event emitter indicating project none to be updated */
-  @Output() filterProjectNoneEventEmitter = new EventEmitter<Boolean>();
+  /** Event emitter indicating project actions */
+  @Output() projectEventEmitter = new EventEmitter<{ action: Action, value: any }>();
+
+  /** Enum for action types */
+  action = Action;
 
   //
   // Actions
   //
 
   /**
-   * Handles changes of single project
-   * @param {Project} project project that changed
-   */
-  onProjectFilterUpdate(project: Project) {
-    this.filterProjectEventEmitter.emit([project]);
-  }
-
-  /**
-   * Handles changes of project-none flag
-   */
-  onProjectNoneFlagChanged() {
-    this.filterProjectNoneEventEmitter.emit(this.projectsNone);
-  }
-
-  /**
    * Handles click on button that sets all values to the same
+   * @param checked whether to check all filter values or not
    */
   onSetAll(checked: boolean) {
     this.projects.forEach(t => {
@@ -51,7 +38,7 @@ export class FilterProjectListComponent {
     this.projects = CloneService.cloneProjects(this.projects);
     this.projectsNone = checked;
 
-    this.filterProjectEventEmitter.emit(this.projects);
-    this.filterProjectNoneEventEmitter.emit(this.projectsNone);
+    this.projectEventEmitter.emit({action: Action.FILTER_LIST, value: this.projects});
+    this.projectEventEmitter.emit({action: Action.FILTER_NONE, value: this.projectsNone});
   }
 }

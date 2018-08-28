@@ -73,6 +73,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Flag indicating whether entities without project shall be displayed */
   public projectsNone = false;
 
+  /** Array of tags */
+  public tags: Tag[] = [];
+  /** Array of tags with filter values */
+  public tagsFilter: Tag[] = [];
+  /** Flag indicating whether entities without tag shall be displayed */
+  public tagsNone = false;
+
   /** Array of persons */
   public persons: Person[] = [];
   /** Array of persons with filter values */
@@ -154,6 +161,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.initializeTaskSubscription();
     this.initializeProjectSubscription();
+    this.initializeTagSubscription();
     this.initializePersonSubscription();
     this.initializeFilterSubscription();
 
@@ -224,6 +232,27 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Initializes tag subscription
+   */
+  private initializeTagSubscription() {
+    this.tags = Array.from(this.tagService.tags.values());
+    this.tagService.tagsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        this.tags = (value as Tag[]).filter(tag => {
+          const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
+          const matchesTags = this.matchService.tagMatchesTags(tag,
+            Array.from(this.filterService.tags.values()),
+            this.filterService.tagsNone);
+
+          return matchesSearchItem && matchesTags;
+        });
+      }
+    });
+  }
+
+  /**
    * Initializes person subscription
    */
   private initializePersonSubscription() {
@@ -265,6 +294,21 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         return p2.name < p1.name ? 1 : -1;
       });
       this.projectsNone = this.filterService.projectsNone;
+
+      // Filter tags
+      this.tags = Array.from(this.tagService.tags.values()).filter(tag => {
+        const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
+        const matchesTags = this.matchService.tagMatchesTags(tag,
+          Array.from(this.filterService.tags.values()),
+          this.filterService.tagsNone);
+
+        return matchesSearchItem && matchesTags;
+      });
+      // Sort filter
+      this.tagsFilter = Array.from(this.filterService.tags.values()).sort((t1, t2) => {
+        return t2.name < t1.name ? 1 : -1;
+      });
+      this.tagsNone = this.filterService.tagsNone;
 
       // Filter persons
       this.persons = Array.from(this.personService.persons.values()).filter(person => {
@@ -590,23 +634,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a project
    * @param {any} event event parameters
    */
-  onProjectEvent(event: { action: Action, value: Project }) {
-    const project = event.value as Project;
-
+  onProjectEvent(event: { action: Action, value: any }) {
     switch (event.action) {
       case Action.ADD: {
+        const project = event.value as Project;
         this.filterService.updateProjectsList([project], true);
         this.projectService.createProject(project).then(() => {
         });
         break;
       }
       case Action.UPDATE: {
+        const project = event.value as Project;
         this.filterService.updateProjectsList([project], true);
         this.projectService.updateProject(project).then(() => {
         });
         break;
       }
       case Action.DELETE: {
+        const project = event.value as Project;
         const references = Array.from(this.taskService.tasks.values()).some((task: Task) => {
           return task.projectId === project.id;
         });
@@ -670,6 +715,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.OPEN_DIALOG_UPDATE: {
+        const project = event.value as Project;
+
         // Assemble data to be passed
         const data = {
           mode: DialogMode.UPDATE,
@@ -697,23 +744,155 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+      case Action.FILTER_LIST: {
+        const projects = event.value as Project[];
+        this.filterService.updateProjectsList(projects);
+        break;
+      }
+      case Action.FILTER_NONE: {
+        const projectsNone = event.value as boolean;
+        this.filterService.updateProjectsNone(projectsNone);
+        break;
+      }
     }
   }
 
-  /**
-   * Handles filter project changes
-   * @param {Project[]} projects array of projects to be used for filtering
-   */
-  onFilterProjects(projects: Project[]) {
-    this.filterService.updateProjectsList(projects);
-  }
+  //
+  // Actions - Tags
+  //
 
   /**
-   * Handles filter project-none changes
-   * @param {boolean} projectsNone whether entities without project shall be displayed
+   * Handles events targeting a tag
+   * @param {any} event event parameters
    */
-  onFilterProjectsNone(projectsNone: boolean) {
-    this.filterService.updateProjectsNone(projectsNone);
+  onTagEvent(event: { action: Action, value: any }) {
+    switch (event.action) {
+      case Action.ADD: {
+        const tag = event.value as Tag;
+        this.filterService.updateTagsList([tag], true);
+        this.tagService.createTag(tag).then(() => {
+        });
+        break;
+      }
+      case Action.UPDATE: {
+        const tag = event.value as Tag;
+        this.filterService.updateTagsList([tag], true);
+        this.tagService.updateTag(tag).then(() => {
+        });
+        break;
+      }
+      case Action.DELETE: {
+        const tag = event.value as Tag;
+        const referencesTasklets = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
+          return tasklet.tagIds.some(tagId => {
+            return tagId === tag.id;
+          });
+        });
+        const referencesTasks = Array.from(this.taskService.tasks.values()).some((task: Task) => {
+          return task.tagIds.some(tagId => {
+            return tagId === tag.id;
+          });
+        });
+
+        if (referencesTasklets || referencesTasks) {
+          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+            disableClose: false,
+            data: {
+              title: 'Cannot delete tag',
+              text: `There are still tasks associated with this tag.`,
+              action: 'Okay',
+              value: tag
+            }
+          });
+        } else {
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+            disableClose: false,
+            data: {
+              title: 'Delete tag',
+              text: 'Do you want to delete this tag?',
+              action: 'Delete',
+              value: tag
+            }
+          });
+          confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+            if (confirmationResult != null) {
+              this.tagService.deleteTag(confirmationResult as Tag).then(() => {
+              });
+              this.filterService.tags.delete((confirmationResult as Tag).id);
+            }
+          });
+        }
+        break;
+      }
+      case Action.OPEN_DIALOG_ADD: {
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.ADD,
+          dialogTitle: 'Add tag',
+          tag: new Tag('')
+        };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(TagDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingAction = result.action as Action;
+            const resultingTag = result.value as Tag;
+
+            this.onTagEvent({
+              action: resultingAction,
+              value: resultingTag
+            });
+          }
+        });
+        break;
+      }
+      case Action.OPEN_DIALOG_UPDATE: {
+        const tag = event.value as Tag;
+
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.UPDATE,
+          dialogTitle: 'Update tag',
+          tag: tag
+        };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(TagDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingAction = result.action as Action;
+            const resultingTag = result.value as Tag;
+
+            this.onTagEvent({
+              action: resultingAction,
+              value: resultingTag
+            });
+          }
+        });
+        break;
+      }
+      case Action.FILTER_LIST: {
+        const tags = event.value as Tag[];
+        this.filterService.updateTagsList(tags);
+        break;
+      }
+      case Action.FILTER_NONE: {
+        const tagsNone = event.value as boolean;
+        this.filterService.updateTagsNone(tagsNone);
+        break;
+      }
+    }
   }
 
   //
@@ -721,114 +900,132 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles person upserts
-   * @param {Person} person person to be upserted
+   * Handles events targeting a person
+   * @param {any} event event parameters
    */
-  onUpsertPerson(person: Person) {
-    // Determine mode
-    const mode = (person != null) ? DialogMode.UPDATE : DialogMode.ADD;
+  onPersonEvent(event: { action: Action, value: any }) {
+    switch (event.action) {
+      case Action.ADD: {
+        const person = event.value as Person;
+        this.filterService.updatePersonsList([person], true);
+        this.personService.createPerson(person).then(() => {
+        });
+        break;
+      }
+      case Action.UPDATE: {
+        const person = event.value as Person;
+        this.filterService.updatePersonsList([person], true);
+        this.personService.updatePerson(person).then(() => {
+        });
+        break;
+      }
+      case Action.DELETE: {
+        const person = event.value as Person;
+        const referencesTasklets = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
+          return tasklet.personIds.some(personId => {
+            return personId === person.id;
+          });
+        });
 
-    // Assemble data to be passed
-    let data = {};
-    switch (mode) {
-      case DialogMode.ADD: {
-        data = {
-          mode: mode,
+        if (referencesTasklets) {
+          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+            disableClose: false,
+            data: {
+              title: 'Cannot delete person',
+              text: `There are still tasks associated with this person.`,
+              action: 'Okay',
+              value: person
+            }
+          });
+        } else {
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+            disableClose: false,
+            data: {
+              title: 'Delete person',
+              text: 'Do you want to delete this person?',
+              action: 'Delete',
+              value: person
+            }
+          });
+          confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+            if (confirmationResult != null) {
+              this.personService.deletePerson(confirmationResult as Person).then(() => {
+              });
+              this.filterService.persons.delete((confirmationResult as Person).id);
+            }
+          });
+        }
+        break;
+      }
+      case Action.OPEN_DIALOG_ADD: {
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.ADD,
           dialogTitle: 'Add person',
           person: new Person('')
         };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(PersonDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingAction = result.action as Action;
+            const resultingPerson = result.value as Person;
+
+            this.onPersonEvent({
+              action: resultingAction,
+              value: resultingPerson
+            });
+          }
+        });
         break;
       }
-      case DialogMode.UPDATE: {
-        data = {
-          mode: mode,
+      case Action.OPEN_DIALOG_UPDATE: {
+        const person = event.value as Person;
+
+        // Assemble data to be passed
+        const data = {
+          mode: DialogMode.UPDATE,
           dialogTitle: 'Update person',
           person: person
         };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(PersonDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const resultingAction = result.action as Action;
+            const resultingPerson = result.value as Person;
+
+            this.onPersonEvent({
+              action: resultingAction,
+              value: resultingPerson
+            });
+          }
+        });
+        break;
+      }
+      case Action.FILTER_LIST: {
+        const persons = event.value as Person[];
+        this.filterService.updatePersonsList(persons);
+        break;
+      }
+      case Action.FILTER_NONE: {
+        const personsNone = event.value as boolean;
+        this.filterService.updatePersonsNone(personsNone);
         break;
       }
     }
-
-    // Open dialog
-    const dialogRef = this.dialog.open(PersonDialogComponent, {
-      disableClose: false,
-      data: data
-    });
-
-    // Handle dialog close
-    dialogRef.afterClosed().subscribe(result => {
-      if (result != null) {
-        const resultingPerson = result.value as Person;
-        this.filterService.updatePersonsList([resultingPerson], true);
-
-        switch (result.action) {
-          case Action.ADD: {
-            this.personService.createPerson(resultingPerson).then(() => {
-            });
-            break;
-          }
-          case Action.UPDATE: {
-            this.personService.updatePerson(resultingPerson, true).then(() => {
-            });
-            break;
-          }
-          case Action.DELETE: {
-            const references = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
-              return tasklet.personIds.some(tagId => {
-                return tagId === resultingPerson.id;
-              });
-            });
-
-            if (references) {
-              this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
-                disableClose: false,
-                data: {
-                  title: 'Cannot delete person',
-                  text: `There are still tasks associated with this person.`,
-                  action: 'Okay',
-                  value: resultingPerson
-                }
-              });
-            } else {
-              const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
-                disableClose: false,
-                data: {
-                  title: 'Delete person',
-                  text: 'Do you want to delete this person?',
-                  action: 'Delete',
-                  value: resultingPerson
-                }
-              });
-              confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
-                if (confirmationResult != null) {
-                  this.personService.deletePerson(confirmationResult as Person).then(() => {
-                  });
-                  this.filterService.persons.delete((confirmationResult as Person).id);
-                  dialogRef.close(null);
-                }
-              });
-            }
-            break;
-          }
-        }
-      }
-    });
-  }
-
-  /**
-   * Handles filter person changes
-   * @param {Person[]} persons array of persons to be used for filtering
-   */
-  onFilterPersons(persons: Person[]) {
-    this.filterService.updatePersonsList(persons);
-  }
-
-  /**
-   * Handles filter person-none changes
-   * @param {boolean} personsNone whether entities without person shall be displayed
-   */
-  onFilterPersonsNone(personsNone: boolean) {
-    this.filterService.updatePersonsNone(personsNone);
   }
 
   //

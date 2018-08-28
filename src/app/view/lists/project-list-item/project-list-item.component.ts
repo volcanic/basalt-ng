@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Project} from '../../../model/entities/project.model';
+import {Action} from '../../../model/ui/action.enum';
 
 /**
  * Displays project list item
@@ -14,8 +15,10 @@ export class ProjectListItemComponent {
   /** Project to be displayed */
   @Input() project: Project;
   /** Event emitter indicating project to be updated */
-  @Output() updateProjectEventEmitter = new EventEmitter<Project>();
+  @Output() projectEventEmitter = new EventEmitter<{ Action, Project }>();
 
+  /** Enum for action types */
+  action = Action;
   /** Animation state */
   state = 'inactive';
 

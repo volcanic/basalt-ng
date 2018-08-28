@@ -151,7 +151,7 @@ export class TagService {
    * @param {Tag} tag tag to be updated
    * @param {boolean} showSnack shows snackbar if true
    */
-  public updateTag(tag: Tag, showSnack: boolean): Promise<any> {
+  public updateTag(tag: Tag, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
         // Remove transient attributes

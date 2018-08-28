@@ -13,12 +13,10 @@
       <app-filter-tag-list></app-filter-tag-list>
       <mat-divider></mat-divider>
       <app-filter-project-list [projects]="projectsFilter" [projectsNone]="projectsNone"
-                               (filterProjectsEventEmitter)="onFilterProjects($event)"
-                               (filterProjectsNoneEventEmitter)="onFilterProjectsNone($event)"></app-filter-project-list>
+                               (projectEventEmitter)="onProjectEvent($event)"></app-filter-project-list>
       <mat-divider></mat-divider>
       <app-filter-person-list [persons]="personsFilter" [personsNone]="personsNone"
-                              (filterPersonsEventEmitter)="onFilterPersons($event)"
-                              (filterPersonsNoneEventEmitter)="onFilterPersonsNone($event)"
+                              (personEventEmitter)="onPersonEvent($event)"
       ></app-filter-person-list>
     </div>
   </mat-sidenav>
@@ -29,11 +27,11 @@
     <div [@toolbarAnimation]="scrollDirection">
       <app-task-list [tasks]="tasks" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
       <mat-divider></mat-divider>
-      <app-project-list [projects]="projects" (upsertProjectEventEmitter)="onUpsertProject($event)"></app-project-list>
+      <app-project-list [projects]="projects" (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
       <mat-divider></mat-divider>
-      <app-tag-list (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-tag-list>
+      <app-tag-list [tags]="tags" (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
       <mat-divider></mat-divider>
-      <app-person-list [persons]="persons" (upsertPersonEventEmitter)="onUpsertPerson($event)"></app-person-list>
+      <app-person-list [persons]="persons" (personEventEmitter)="onPersonEvent($event)"></app-person-list>
     </div>
   </mat-sidenav>
 

@@ -16,7 +16,7 @@ export class Tag extends Entity {
    * @param {string} name tag name
    * @param {boolean} checked whether tags is checked in filter mechanism
    */
-  constructor(name: string, checked: boolean) {
+  constructor(name: string, checked: boolean = false) {
     super();
     this.entityType = EntityType.TAG;
     this.name = name;

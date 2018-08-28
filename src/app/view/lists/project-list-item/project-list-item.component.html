@@ -1,7 +1,8 @@
 <div class="container"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
-  <button mat-button class="project flex" (click)="updateProjectEventEmitter.emit(project)">
+  <button mat-button class="project flex"
+          (click)="projectEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, value: project})">
     <mat-icon svgIcon="agenda" class="list-icon"></mat-icon>
     <span>{{ project.name }}</span>
   </button>
