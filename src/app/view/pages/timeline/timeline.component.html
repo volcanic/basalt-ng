@@ -10,7 +10,8 @@
                position="start" opened="true"
                class="sidenav sidenav-start">
     <div [@toolbarAnimation]="scrollDirection">
-      <app-filter-tag-list></app-filter-tag-list>
+      <app-filter-tag-list [tags]="tagsFilter" [tagsNone]="tagsNone"
+                           (tagEventEmitter)="onTagEvent($event)"></app-filter-tag-list>
       <mat-divider></mat-divider>
       <app-filter-project-list [projects]="projectsFilter" [projectsNone]="projectsNone"
                                (projectEventEmitter)="onProjectEvent($event)"></app-filter-project-list>

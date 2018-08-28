@@ -2,6 +2,9 @@
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <div>
-    <mat-checkbox color="accent" [(ngModel)]=tag.checked (ngModelChange)="onTagChanged()">{{ tag.name }}</mat-checkbox>
+    <mat-checkbox [(ngModel)]=tag.checked
+                  (ngModelChange)="tagEventEmitter.emit({action: action.FILTER_LIST, value: [tag]})">
+      {{ tag.name }}
+    </mat-checkbox>
   </div>
 </div>

@@ -84,4 +84,13 @@ export class CloneService {
   static cloneTag(original: Tag): Tag {
     return JSON.parse(JSON.stringify(original));
   }
+
+  /**
+   * Clones a given array of tags
+   * @param {Tag[]} original
+   * @returns {Tag[]} cloned object
+   */
+  static cloneTags(original: Tag[]): Tag[] {
+    return JSON.parse(JSON.stringify(original));
+  }
 }

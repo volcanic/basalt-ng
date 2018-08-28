@@ -889,6 +889,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.FILTER_NONE: {
         const tagsNone = event.value as boolean;
+        console.log(`tagsNone ${JSON.stringify(event)}`);
         this.filterService.updateTagsNone(tagsNone);
         break;
       }

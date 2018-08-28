@@ -7,15 +7,19 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-filter-tag-list-item *ngFor="let t of tags" [tag]="t">
+    <app-filter-tag-list-item *ngFor="let t of tags" [tag]="t"
+                                  (tagEventEmitter)="tagEventEmitter.emit($event)">
     </app-filter-tag-list-item>
     <div>
-      <mat-checkbox class="special-tag" [(ngModel)]="tagsNone" (ngModelChange)="onTagNoneFlagChanged()">elements without tags</mat-checkbox>
+      <mat-checkbox class="special-tag" [(ngModel)]="tagsNone"
+                    (ngModelChange)="tagEventEmitter.emit({action: action.FILTER_NONE, value: tagsNone})">
+        elements without tags
+      </mat-checkbox>
     </div>
-    <button mat-button class="label headers-align" (click)="onSelectAll()">
+    <button mat-button class="label headers-align" (click)="onSetAll(true)">
       <span>Select all</span>
     </button>
-    <button mat-button class="label headers-align" (click)="onSelectNone()">
+    <button mat-button class="label headers-align" (click)="onSetAll(false)">
       <span>Select none</span>
     </button>
   </mat-expansion-panel>

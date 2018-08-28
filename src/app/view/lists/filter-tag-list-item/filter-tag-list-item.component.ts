@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Tag} from '../../../model/entities/tag.model';
-import {FilterService} from '../../../services/entities/filter/filter.service';
+import {Action} from '../../../model/ui/action.enum';
 
 /**
  * Displays tag list item
@@ -14,16 +14,13 @@ export class FilterTagListItemComponent {
 
   /** Tag to be displayed */
   @Input() tag: Tag;
+  /** Event emitter indicating tag action */
+  @Output() tagEventEmitter = new EventEmitter<{ action: Action, value: Tag[] }>();
 
+  /** Enum for action types */
+  action = Action;
   /** Animation state */
   state = 'inactive';
-
-  /**
-   * Constructor
-   * @param {FilterService} filterService
-   */
-  constructor(private filterService: FilterService) {
-  }
 
   //
   // Actions
@@ -35,12 +32,5 @@ export class FilterTagListItemComponent {
    */
   onHoverContainer(hovered: boolean) {
     this.state = hovered ? 'active' : 'inactive';
-  }
-
-  /**
-   * Handles tag changes
-   */
-  onTagChanged() {
-    this.filterService.updateTagsList([this.tag], false);
   }
 }
