@@ -468,12 +468,16 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
     switch (event.action) {
       case Action.ADD: {
+        // Create new entities if necessary
         this.evaluateTaskProject(task, project);
         this.evaluateTaskTags(task, tags);
 
+        // Create task itselt
         this.taskService.createTask(task).then(() => {
           this.snackbarService.showSnackbar('Added task');
         });
+
+        // Enable filters contained in this task
         this.filterService.updateTagsList(task.tagIds.map(id => {
           return this.tagService.getTagById(id);
         }).filter(tag => {
@@ -639,7 +643,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.ADD: {
         const project = event.value as Project;
         this.filterService.updateProjectsList([project], true);
-        this.projectService.createProject(project).then(() => {
+        this.projectService.createProject(project, true).then(() => {
         });
         break;
       }
@@ -1298,24 +1302,25 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Determines whether the project assigned to a given task already exists, otherwise creates a new one
    * @param task task to assign project to
-   * @param p project to be checked
+   * @param project project to be checked
    */
-  private evaluateTaskProject(task: Task, p: Project) {
-    if (p != null) {
-      let project = this.projectService.getProjectByName(p.name);
+  private evaluateTaskProject(task: Task, project: Project) {
+    if (project != null && project.name != null && project.name !== '') {
+      // Assign project
+      let p = this.projectService.getProjectByName(project.name);
 
-      if (project != null) {
-        // Existing project
-        task.projectId = project.id;
-      } else if (project.name != null && project.name !== '') {
-        // New project
-        project = new Project(project.name, true);
-        task.projectId = project.id;
-        this.projectService.createProject(project).then(() => {
+      // New project
+      if (p == null && project.name != null && project.name !== '') {
+        p = new Project(project.name, true);
+        this.projectService.createProject(p, false).then(() => {
         });
-      } else {
-        task.projectId = null;
       }
+
+      this.filterService.updateProjectsList([p], true);
+      task.projectId = p.id;
+    } else {
+      // Unassign project
+      task.projectId = null;
     }
   }
 
@@ -1327,7 +1332,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private evaluateTaskTags(task: Task, tags: Tag[]) {
     const aggregatedTagIds = new Map<string, string>();
 
-    // Concatenate
+    // New tag
     tags.forEach(t => {
       let tag = this.tagService.getTagByName(t.name);
 

@@ -129,8 +129,9 @@ export class ProjectService {
   /**
    * Creates a new project
    * @param {Project} project project to be created
+   * @param {boolean} showSnack shows snackbar if true
    */
-  public createProject(project: Project): Promise<any> {
+  public createProject(project: Project, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (project != null) {
         // Remove transient attributes
@@ -139,7 +140,9 @@ export class ProjectService {
         project.scope = this.scopeService.scope;
 
         return this.pouchDBService.put(project.id, project).then(() => {
-          this.snackbarService.showSnackbar('Created project');
+          if (showSnack) {
+            this.snackbarService.showSnackbar('Created project');
+          }
           this.projects.set(project.id, project);
           this.notify();
         });
