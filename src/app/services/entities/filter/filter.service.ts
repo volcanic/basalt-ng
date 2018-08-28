@@ -168,7 +168,7 @@ export class FilterService {
    */
   public updateTags(tags: Tag[], enable: boolean, tagsNone: boolean) {
     this.updateTagsListInternal(tags, enable);
-    this.updateTagsNoneInternal(tagsNone);
+    this.updateTagsNone(tagsNone);
     this.notify();
   }
 
@@ -177,9 +177,17 @@ export class FilterService {
    * @param {Tag[]} tags arry of tags
    * @param {boolean} enable enable tags if true
    */
-  public updateTagsList(tags: Tag[], enable: boolean) {
+  public updateTagsList(tags: Tag[], enable: boolean = false) {
     this.updateTagsListInternal(tags, enable);
     this.notify();
+  }
+
+  /**
+   * Updates flag which indicates that entities without tags shall be included during filtering
+   * @param {boolean} tagsNone include entities without tags if true
+   */
+  public updateTagsNone(tagsNone: boolean) {
+    this.tagsNone = tagsNone;
   }
 
   /**
@@ -199,14 +207,6 @@ export class FilterService {
         this.tags.set(tag.id, tag);
       });
     }
-  }
-
-  /**
-   * Updates flag which indicates that entities without tags shall be included during filtering
-   * @param {boolean} tagsNone include entities without tags if true
-   */
-  private updateTagsNoneInternal(tagsNone: boolean) {
-    this.tagsNone = tagsNone;
   }
 
   /**

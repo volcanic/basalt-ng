@@ -403,6 +403,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       })).subscribe();
   }
 
+  //
+  // Actions
+  //
+
   /**
    * Handles events targeting a tasklet
    * @param {any} event event parameters
@@ -626,10 +630,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  //
-  // Actions - Projects
-  //
-
   /**
    * Handles events targeting a project
    * @param {any} event event parameters
@@ -756,10 +756,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-
-  //
-  // Actions - Tags
-  //
 
   /**
    * Handles events targeting a tag
