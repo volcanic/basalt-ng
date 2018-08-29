@@ -23,7 +23,7 @@ export class ProjectListDialogComponent {
 
   /**
    * Constructor
-   * @param {MatDialogRef<ProjectDialogComponent>} dialogRef
+   * @param {MatDialogRef<ProjectDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,

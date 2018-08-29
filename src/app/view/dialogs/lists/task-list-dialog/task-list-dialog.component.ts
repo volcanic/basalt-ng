@@ -21,7 +21,7 @@ export class TaskListDialogComponent {
 
   /**
    * Constructor
-   * @param {MatDialogRef<TaskDialogComponent>} dialogRef
+   * @param {MatDialogRef<TaskDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<TaskDialogComponent>,

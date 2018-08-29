@@ -72,6 +72,9 @@ export class TaskListComponent implements OnInit, OnChanges {
   // Initialization
   //
 
+  /**
+   * Initializes task categories
+   */
   initializeTaskCategories() {
     this.tasksOverdue = this.tasks.filter(task => {
       return task != null

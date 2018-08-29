@@ -15,7 +15,7 @@ import {Person} from '../../../model/entities/person.model';
   styleUrls: ['./tasklet-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskletListComponent implements OnChanges {
+export class TaskletListComponent {
 
   /** Tasklets to be displayed */
   @Input() tasklets = [];
@@ -35,10 +35,6 @@ export class TaskletListComponent implements OnChanges {
   @Output() taskletEventEmitter = new EventEmitter<{ Action, Tasklet }>();
   /** Event emitter indicating new creation date to queue */
   @Output() taskletCreationDateEventEmitter = new EventEmitter<Date>();
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.tasks = new Map(this.tasks);
-  }
 
   //
   // Actions

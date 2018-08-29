@@ -133,13 +133,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {FilterService} filterService
    * @param {MatchService} matchService
    * @param {MediaService} mediaService
-   * @param {PersonService} personService
-   * @param {ProjectService} projectService
    * @param {ScopeService} scopeService
    * @param {ScrollDispatcher} scroll
    * @param {SnackbarService} snackbarService
-   * @param {TagService} tagService
-   * @param {TaskService} taskService
+   * @param {PersonService} personService person service
+   * @param {ProjectService} projectService project service
+   * @param {TagService} tagService tag service
+   * @param {TaskService} taskService task service
    * @param {DateService} dateService date service
    * @param {TaskletService} taskletService tasklet service
    * @param {MatDialog} dialog dialog
