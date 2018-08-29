@@ -11,7 +11,7 @@ import {Project} from '../../model/entities/project.model';
 export class ColorService {
 
   /** Array of available project colors */
-  projectColors = [
+  static projectColors = [
     '#C8E6C9',
     '#A5D6A7',
     '#81C784',
@@ -28,7 +28,7 @@ export class ColorService {
    * @param {Project} project project to get color for
    * @returns {string} color string derived from project name
    */
-  getProjectColor(project: Project) {
+  static getProjectColor(project: Project) {
     if (project != null && project.name != null && project.name.trim().length > 0) {
       return this.projectColors[
       Math.abs(Hash.hash(project.name.toLowerCase().replace(' ', ''))) % this.projectColors.length];

@@ -61,13 +61,6 @@ export class WeeklyEffortTreeComponent implements OnInit {
   dataSource: MatTreeFlatDataSource<EffortNode, EffortFlatNode>;
 
   /**
-   * Constructor
-   * @param {ColorService} colorService
-   */
-  constructor(private colorService: ColorService) {
-  }
-
-  /**
    * Transforms an effort node into a effort flat node
    * @param {EffortNode} node effort node
    * @param {number} level level of the node
@@ -155,7 +148,7 @@ export class WeeklyEffortTreeComponent implements OnInit {
       const projectEffortNode = new EffortNode();
       projectEffortNode.topic = pe.project.name;
       projectEffortNode.effort = pe.effort;
-      projectEffortNode.color = this.colorService.getProjectColor(pe.project);
+      projectEffortNode.color = ColorService.getProjectColor(pe.project);
       projectEffortNode.children = taskNodes;
 
       week.children.push(projectEffortNode);

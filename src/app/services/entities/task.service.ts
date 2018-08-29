@@ -275,7 +275,7 @@ export class TaskService {
   /**
    * Informs subscribers that something has changed
    */
-  private notify() {
+  public notify() {
     this.tasksSubject.next(Array.from(this.tasks.values()).sort((t1, t2) => {
       return t2.name < t1.name ? 1 : -1;
     }).sort((t1, t2) => {

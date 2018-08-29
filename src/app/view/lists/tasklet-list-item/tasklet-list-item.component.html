@@ -12,7 +12,7 @@
       </mat-card-header>
 
       <mat-card-content class="content">
-        <mat-accordion class="headers-align" (click)="onActionFired('card')">
+        <mat-accordion class="headers-align" (click)="onTaskletClicked()">
           <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
           <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
             <div class="text">
@@ -34,9 +34,15 @@
 
       <mat-card-footer>
         <mat-menu #contextMenu="matMenu">
-          <button mat-menu-item (click)="onActionFired('update-tasklet')">Update tasklet</button>
-          <button mat-menu-item (click)="onActionFired('update-time')">Update creation time</button>
-          <button mat-menu-item (click)="onActionFired('continue-tasklet')" *ngIf="tasklet.type == 'Action'
+          <button mat-menu-item (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, value: tasklet})">
+            Update tasklet
+          </button>
+          <button mat-menu-item
+                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, value: tasklet})">Update
+            creation time
+          </button>
+          <button mat-menu-item
+                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, value: tasklet})" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
@@ -46,14 +52,15 @@
         <div class="attachments">
           <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
             <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
-                 (click)="onActionFired('update-time')"
+                 (click)="onTaskletClicked('update-time')"
                  [matTooltip]=date
                  matTooltipPosition="above">
-              <span class="left-attached-content" *ngIf="isBeforeToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
+              <span class="left-attached-content"
+                    *ngIf="isBeforeToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
               <span class="left-attached-content">{{ time }}</span>
             </div>
           </div>
-          <div class="tags-holder" (click)="onActionFired('card')">
+          <div class="tags-holder" (click)="onTaskletClicked('card')">
           <span class="time" *ngIf="media <= mediaType.MEDIUM">
             <label class="time-label">
              <span>{{ time }}</span>
@@ -61,10 +68,10 @@
             </label>
           </span>
             <span *ngFor="let p of tasklet.personIds">
-            <span class="person" *ngIf="personService.getPersonById(p) != null"><label class="person-label">{{ personService.getPersonById(p).name }}</label></span>
+            <span class="person" *ngIf="persons.get(p) != null"><label class="person-label">{{ persons.get(p).name }}</label></span>
             </span>
             <span *ngFor="let t of tasklet.tagIds">
-            <span class="tag" *ngIf="tagService.getTagById(t) != null"><label class="tag-label">{{ tagService.getTagById(t).name }}</label></span>
+            <span class="tag" *ngIf="tags.get(t) != null"><label class="tag-label">{{ tags.get(t).name }}</label></span>
             </span>
           </div>
           <div class="flexbox"></div>
@@ -74,7 +81,7 @@
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea' "
-                 class="side-attached right-attached hidden" (click)="onActionFired('continue-tasklet')"
+                 class="side-attached right-attached hidden" (click)="onTaskletClicked('continue-tasklet')"
                  matTooltip="Continue with tasklet"
                  matTooltipPosition="above">
               <div class="right-attached-content">
@@ -82,7 +89,8 @@
               </div>
             </div>
             <div *ngIf="tasklet.type == 'Daily Scrum'" class="side-attached right-attached hidden"
-                 (click)="onActionFired('template')" matTooltip="Template this event" matTooltipPosition="above">
+                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_TEMPLATE, value: tasklet})"
+                 matTooltip="Template this event" matTooltipPosition="above">
               <div class="right-attached-content">
                 <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
               </div>

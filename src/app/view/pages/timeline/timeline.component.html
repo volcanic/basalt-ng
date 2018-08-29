@@ -38,7 +38,11 @@
 
   <mat-sidenav-content cdkScrollable>
     <div class="content">
-      <app-tasklet-list></app-tasklet-list>
+      <app-tasklet-list [tasklets]="tasklets" [media]="media" [tasks]="tasksMap" [projects]="projectsMap"
+                        [tags]="tagsMap"
+                        [persons]="personService.persons"
+                        (taskletEventEmitter)="onTaskletEvent($event)"
+                        (taskletCreationDateEventEmitter)="onTaskletCreationDateEvent($event)"></app-tasklet-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
