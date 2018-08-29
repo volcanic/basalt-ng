@@ -1389,10 +1389,27 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'tag-list': {
-        this.dialog.open(TagListDialogComponent, {
+        const dialogRef = this.dialog.open(TagListDialogComponent, {
           disableClose: false,
           data: {
             dialogTitle: 'Tags',
+            tags: this.tags
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const tag = result.value as Tag;
+
+            switch (result.action) {
+              case Action.OPEN_DIALOG_ADD: {
+                this.onTagEvent({action: Action.OPEN_DIALOG_ADD, value: tag});
+                break;
+              }
+              case Action.OPEN_DIALOG_UPDATE: {
+                this.onTagEvent({action: Action.OPEN_DIALOG_UPDATE, value: tag});
+                break;
+              }
+            }
           }
         });
         break;

@@ -4,6 +4,7 @@ import {Project} from '../../../../model/entities/project.model';
 import {ProjectDialogComponent} from '../../entities/project-dialog/project-dialog.component';
 import {Action} from '../../../../model/ui/action.enum';
 import {Person} from '../../../../model/entities/person.model';
+import {Task} from '../../../../model/entities/task.model';
 
 /**
  * Displays project list dialog
@@ -34,6 +35,9 @@ export class ProjectListDialogComponent {
   // Initialization
   //
 
+  /**
+   * Initializes data
+   */
   private initializeData() {
     this.dialogTitle = this.data.dialogTitle;
     this.projects = this.data.projects;
@@ -43,7 +47,11 @@ export class ProjectListDialogComponent {
   // Actions
   //
 
-  onUpsertProject(project: Project) {
-    this.dialogRef.close({action: Action.NONE, value: project});
+  /**
+   * Handles project events
+   * @param {any} event project event
+   */
+  onProjectEvent(event: {action: Action, project: Project}) {
+    this.dialogRef.close(event);
   }
 }

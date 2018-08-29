@@ -33,6 +33,9 @@ export class TaskListDialogComponent {
   // Initialization
   //
 
+  /**
+   * Initializes data
+   */
   private initializeData() {
     this.dialogTitle = this.data.dialogTitle;
     this.tasks = this.data.tasks;
@@ -42,6 +45,10 @@ export class TaskListDialogComponent {
   // Actions
   //
 
+  /**
+   * Handles task events
+   * @param {any} event task event
+   */
   onTaskEvent(event: {action: Action, task: Task}) {
     this.dialogRef.close(event);
   }

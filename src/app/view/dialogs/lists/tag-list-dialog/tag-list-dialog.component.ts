@@ -4,7 +4,11 @@ import {DialogMode} from '../../../../model/ui/dialog-mode.enum';
 import {FilterService} from '../../../../services/entities/filter/filter.service';
 import {Tag} from '../../../../model/entities/tag.model';
 import {TagService} from '../../../../services/entities/tag.service';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {Task} from '../../../../model/entities/task.model';
+import {Action} from '../../../../model/ui/action.enum';
+import {ProjectDialogComponent} from '../../entities/project-dialog/project-dialog.component';
+import {Project} from '../../../../model/entities/project.model';
 
 /**
  * Displays tag list dialog
@@ -18,21 +22,29 @@ export class TagListDialogComponent {
 
   /** Dialog title */
   dialogTitle = '';
+  /** Array of tags to be displayed */
+  tags: Tag[];
 
   /**
    * Constructor
-   * @param {TagService} tagService
-   * @param {FilterService} filterService
-   * @param {ChangeDetectorRef} changeDetector
-   * @param {MatDialog} dialog dialog
+   * @param {MatDialogRef<ProjectDialogComponent>} dialogRef
    * @param data dialog data
    */
-  constructor(private tagService: TagService,
-              private filterService: FilterService,
-              private changeDetector: ChangeDetectorRef,
-              public dialog: MatDialog,
+  constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.dialogTitle = data.dialogTitle;
+    this.initializeData();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes data
+   */
+  private initializeData() {
+    this.dialogTitle = this.data.dialogTitle;
+    this.tags = this.data.tags;
   }
 
   //
@@ -40,32 +52,11 @@ export class TagListDialogComponent {
   //
 
   /**
-   * Handles click on menu items
-   * @param menuItem menu item that has been clicked
+   * Handles tag events
+   * @param {any} event tag event
    */
-  onMenuItemClicked(menuItem: string) {
-    switch (menuItem) {
-      case 'add-tag': {
-        const dialogRef = this.dialog.open(TagDialogComponent, {
-          disableClose: false,
-          data: {
-            mode: DialogMode.ADD,
-            dialogTitle: 'Add tag',
-            tag: new Tag('', true)
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const tag = result as Tag;
-            this.filterService.updateTagsList([tag], true);
-            this.tagService.createTag(tag).then(() => {
-              this.changeDetector.markForCheck();
-            });
-          }
-        });
-        break;
-      }
-    }
+  onTagEvent(event: {action: Action, tag: Tag}) {
+    this.dialogRef.close(event);
   }
 }
 
