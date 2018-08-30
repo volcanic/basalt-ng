@@ -13,12 +13,12 @@ import {CloneService} from '../../../services/util/clone.service';
 })
 export class FilterTagListComponent {
 
-  /** Tag to be displayed */
-  @Input() tags = [];
-  /** Flag indicating whether entities without tag shall be displayed */
-  @Input() tagsNone = false;
-  /** Event emitter indicating tag actions */
-  @Output() tagEventEmitter = new EventEmitter<{ action: Action, value: any }>();
+  /** Project to be displayed */
+  @Input() projects = [];
+  /** Flag indicating whether entities without project shall be displayed */
+  @Input() projectsNone = false;
+  /** Event emitter indicating project actions */
+  @Output() projectEventEmitter = new EventEmitter<{ action: Action, value: any }>();
 
   /** Enum for action types */
   action = Action;
@@ -32,13 +32,13 @@ export class FilterTagListComponent {
    * @param checked whether to check all filter values or not
    */
   onSetAll(checked: boolean) {
-    this.tags.forEach(t => {
+    this.projects.forEach(t => {
       t.checked = checked;
     });
-    this.tags = CloneService.cloneTags(this.tags);
-    this.tagsNone = checked;
+    this.projects = CloneService.cloneProjects(this.projects);
+    this.projectsNone = checked;
 
-    this.tagEventEmitter.emit({action: Action.FILTER_LIST, value: this.tags});
-    this.tagEventEmitter.emit({action: Action.FILTER_NONE, value: this.tagsNone});
+    this.projectEventEmitter.emit({action: Action.FILTER_LIST, value: this.projects});
+    this.projectEventEmitter.emit({action: Action.FILTER_NONE, value: this.projectsNone});
   }
 }

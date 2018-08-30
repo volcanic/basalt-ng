@@ -146,7 +146,7 @@ export class TaskService {
    * Creates a new task
    * @param {Task} task tasak to be created
    */
-  public createTask(task: Task): Promise<any> {
+  public createTask(task: Task, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (task != null) {
         task.scope = this.scopeService.scope;
@@ -164,7 +164,9 @@ export class TaskService {
 
         // Create task
         return this.pouchDBService.upsert(task.id, task).then(() => {
-          this.snackbarService.showSnackbar('Created task');
+          if (showSnack) {
+            this.snackbarService.showSnackbar('Created task');
+          }
           this.tasks.set(task.id, task);
           this.notify();
         });
