@@ -15,7 +15,7 @@ export class FilterTagListItemComponent {
   /** Tag to be displayed */
   @Input() tag: Tag;
   /** Event emitter indicating tag action */
-  @Output() tagEventEmitter = new EventEmitter<{ action: Action, value: Tag[] }>();
+  @Output() tagEventEmitter = new EventEmitter<{ action: Action, list: Tag[], none: boolean }>();
 
   /** Enum for action types */
   action = Action;

@@ -188,6 +188,7 @@ export class FilterService {
    */
   public updateTagsNone(tagsNone: boolean) {
     this.tagsNone = tagsNone;
+    this.notify();
   }
 
   /**

@@ -17,8 +17,8 @@ export class FilterProjectListComponent {
   @Input() projects = [];
   /** Flag indicating whether entities without project shall be displayed */
   @Input() projectsNone = false;
-  /** Event emitter indicating project actions */
-  @Output() projectEventEmitter = new EventEmitter<{ action: Action, value: any }>();
+  /** Event emitter indicating project action */
+  @Output() projectEventEmitter = new EventEmitter<{ action: Action, list: any[], none: boolean }>();
 
   /** Enum for action types */
   action = Action;
@@ -38,7 +38,6 @@ export class FilterProjectListComponent {
     this.projects = CloneService.cloneProjects(this.projects);
     this.projectsNone = checked;
 
-    this.projectEventEmitter.emit({action: Action.FILTER_LIST, value: this.projects});
-    this.projectEventEmitter.emit({action: Action.FILTER_NONE, value: this.projectsNone});
+    this.projectEventEmitter.emit({action: Action.FILTER_ALL, list: this.projects, none: this.projectsNone});
   }
 }

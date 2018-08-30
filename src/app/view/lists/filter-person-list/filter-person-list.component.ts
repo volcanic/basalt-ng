@@ -18,7 +18,7 @@ export class FilterPersonListComponent {
   /** Flag indicating whether entities without person shall be displayed */
   @Input() personsNone = false;
   /** Event emitter indicating person action */
-  @Output() personEventEmitter = new EventEmitter<{ action: Action, value: any }>();
+  @Output() personEventEmitter = new EventEmitter<{ action: Action, list: any[], none: boolean }>();
 
   /** Enum for action types */
   action = Action;
@@ -37,7 +37,6 @@ export class FilterPersonListComponent {
     this.persons = CloneService.clonePersons(this.persons);
     this.personsNone = checked;
 
-    this.personEventEmitter.emit({action: Action.FILTER_LIST, value: this.persons});
-    this.personEventEmitter.emit({action: Action.FILTER_NONE, value: this.personsNone});
+    this.personEventEmitter.emit({action: Action.FILTER_ALL, list: this.persons, none: this.personsNone});
   }
 }

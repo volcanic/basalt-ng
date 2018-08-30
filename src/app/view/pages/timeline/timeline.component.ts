@@ -941,7 +941,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a project
    * @param {any} event event parameters
    */
-  onProjectEvent(event: { action: Action, value: any }) {
+  onProjectEvent(event: { action: Action, value: any, none?: boolean }) {
     switch (event.action) {
       case Action.ADD: {
         const project = event.value as Project;
@@ -1051,13 +1051,19 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+      case Action.FILTER_ALL: {
+        const projects = event.value as Project[];
+        const projectsNone = event.none as boolean;
+        this.filterService.updateProjects(projects, false, projectsNone);
+        break;
+      }
       case Action.FILTER_LIST: {
         const projects = event.value as Project[];
         this.filterService.updateProjectsList(projects);
         break;
       }
       case Action.FILTER_NONE: {
-        const projectsNone = event.value as boolean;
+        const projectsNone = event.none as boolean;
         this.filterService.updateProjectsNone(projectsNone);
         break;
       }
@@ -1068,7 +1074,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a tag
    * @param {any} event event parameters
    */
-  onTagEvent(event: { action: Action, value: any }) {
+  onTagEvent(event: { action: Action, value: any, none: boolean }) {
     switch (event.action) {
       case Action.ADD: {
         const tag = event.value as Tag;
@@ -1149,7 +1155,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.onTagEvent({
               action: resultingAction,
-              value: resultingTag
+              value: resultingTag,
+              none: null
             });
           }
         });
@@ -1179,10 +1186,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.onTagEvent({
               action: resultingAction,
-              value: resultingTag
+              value: resultingTag,
+              none: null
             });
           }
         });
+        break;
+      }
+      case Action.FILTER_ALL: {
+        const tags = event.value as Tag[];
+        const tagsNone = event.none as boolean;
+        this.filterService.updateTags(tags, false, tagsNone);
         break;
       }
       case Action.FILTER_LIST: {
@@ -1191,7 +1205,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FILTER_NONE: {
-        const tagsNone = event.value as boolean;
+        const tagsNone = event.none as boolean;
         this.filterService.updateTagsNone(tagsNone);
         break;
       }
@@ -1202,7 +1216,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a person
    * @param {any} event event parameters
    */
-  onPersonEvent(event: { action: Action, value: any }) {
+  onPersonEvent(event: { action: Action, value: any, none?: boolean }) {
     switch (event.action) {
       case Action.ADD: {
         const person = event.value as Person;
@@ -1314,13 +1328,19 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+      case Action.FILTER_ALL: {
+        const persons = event.value as Person[];
+        const personsNone = event.none as boolean;
+        this.filterService.updatePersons(persons, false, personsNone);
+        break;
+      }
       case Action.FILTER_LIST: {
         const persons = event.value as Person[];
         this.filterService.updatePersonsList(persons);
         break;
       }
       case Action.FILTER_NONE: {
-        const personsNone = event.value as boolean;
+        const personsNone = event.none as boolean;
         this.filterService.updatePersonsNone(personsNone);
         break;
       }
@@ -1412,11 +1432,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
             switch (result.action) {
               case Action.OPEN_DIALOG_ADD: {
-                this.onTagEvent({action: Action.OPEN_DIALOG_ADD, value: tag});
+                this.onTagEvent({action: Action.OPEN_DIALOG_ADD, value: tag, none: null});
                 break;
               }
               case Action.OPEN_DIALOG_UPDATE: {
-                this.onTagEvent({action: Action.OPEN_DIALOG_UPDATE, value: tag});
+                this.onTagEvent({action: Action.OPEN_DIALOG_UPDATE, value: tag, none: null});
                 break;
               }
             }

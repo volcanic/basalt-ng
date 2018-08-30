@@ -14,7 +14,7 @@ export class ProjectListComponent {
 
   /** Projects to be displayed */
   @Input() projects = [];
-  /** Event emitter indicating project actions */
+  /** Event emitter indicating project action */
   @Output() projectEventEmitter = new EventEmitter<{ Action, Project }>();
 
   /** Enum for action types */
