@@ -9,10 +9,10 @@
       <span ngSwitch="{{ dailyScrumActivity.type }}"
             matTooltip="{{ dailyScrumActivity.type }}"
             matTooltipPosition="above">
-        <mat-icon *ngSwitchCase="type.DONE" svgIcon="check_circle" class="tasklet-type done"></mat-icon>
-        <mat-icon *ngSwitchCase="type.DOING" svgIcon="refresh" class="tasklet-type"></mat-icon>
-        <mat-icon *ngSwitchCase="type.WILL_DO" svgIcon="today" class="tasklet-type"></mat-icon>
-        <mat-icon *ngSwitchCase="type.IMPEDIMENT" svgIcon="warning" class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="dailyScrumActivityType.DONE" svgIcon="check_circle" class="tasklet-type done"></mat-icon>
+        <mat-icon *ngSwitchCase="dailyScrumActivityType.DOING" svgIcon="refresh" class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="dailyScrumActivityType.WILL_DO" svgIcon="today" class="tasklet-type"></mat-icon>
+        <mat-icon *ngSwitchCase="dailyScrumActivityType.IMPEDIMENT" svgIcon="warning" class="tasklet-type"></mat-icon>
       </span>
       <label class="topic">{{ dailyScrumActivity.topic }}</label>
     </div>
