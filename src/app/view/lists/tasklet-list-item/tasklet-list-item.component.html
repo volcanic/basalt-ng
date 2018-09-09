@@ -23,10 +23,6 @@
             </div>
             <app-tasklet-daily-scrum [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'">
             </app-tasklet-daily-scrum>
-            <app-tasklet-daily-digest [tasklet]="tasklet" *ngIf="tasklet.type == 'Finishing Time'">
-            </app-tasklet-daily-digest>
-            <app-tasklet-weekly-digest [tasklet]="tasklet" *ngIf="tasklet.type == 'Weekly Digest'">
-            </app-tasklet-weekly-digest>
           </mat-expansion-panel>
         </mat-accordion>
         <hr class="delimiter"/>
@@ -52,7 +48,7 @@
         <div class="attachments">
           <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
             <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
-                 (click)="onTaskletClicked('update-time')"
+                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, value: tasklet})"
                  [matTooltip]=date
                  matTooltipPosition="above">
               <span class="left-attached-content"
@@ -60,7 +56,7 @@
               <span class="left-attached-content">{{ time }}</span>
             </div>
           </div>
-          <div class="tags-holder" (click)="onTaskletClicked('card')">
+          <div class="tags-holder" (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, value: tasklet})">
           <span class="time" *ngIf="media <= mediaType.MEDIUM">
             <label class="time-label">
              <span>{{ time }}</span>
@@ -68,7 +64,8 @@
             </label>
           </span>
             <span *ngFor="let p of tasklet.personIds">
-            <span class="person" *ngIf="persons.get(p) != null"><label class="person-label">{{ persons.get(p).name }}</label></span>
+            <span class="person" *ngIf="persons.get(p) != null"><label
+              class="person-label">{{ persons.get(p).name }}</label></span>
             </span>
             <span *ngFor="let t of tasklet.tagIds">
             <span class="tag" *ngIf="tags.get(t) != null"><label class="tag-label">{{ tags.get(t).name }}</label></span>
@@ -81,7 +78,8 @@
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea' "
-                 class="side-attached right-attached hidden" (click)="onTaskletClicked('continue-tasklet')"
+                 class="side-attached right-attached hidden"
+                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, value: tasklet})"
                  matTooltip="Continue with tasklet"
                  matTooltipPosition="above">
               <div class="right-attached-content">
