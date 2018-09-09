@@ -1,13 +1,10 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {debounceTime, map, startWith, takeUntil} from 'rxjs/operators';
+import {debounceTime, map, startWith} from 'rxjs/operators';
 import {Subject} from 'rxjs/Subject';
-import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
-import {MediaService} from '../../../services/ui/media.service';
 import {Media} from '../../../model/ui/media.enum';
 import {Scope} from '../../../model/scope.enum';
-import {ScopeService} from '../../../services/entities/scope/scope.service';
 
 /**
  * Displays timeline toolbar
@@ -15,71 +12,40 @@ import {ScopeService} from '../../../services/entities/scope/scope.service';
 @Component({
   selector: 'app-timeline-toolbar',
   templateUrl: './timeline-toolbar.component.html',
-  styleUrls: ['./timeline-toolbar.component.scss']
+  styleUrls: ['./timeline-toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TimelineToolbarComponent implements OnInit, OnDestroy {
+export class TimelineToolbarComponent implements OnInit {
 
   /** Title displayed in the toolbar */
   @Input() title;
-
+  /** Current media */
+  @Input() media: Media;
+  /** Current scope */
+  @Input() scope: Scope;
+  /** Search items options for auto-complete */
+  @Input() searchOptions = [];
   /** Event emitter indicating changes in search bar */
-  @Output() searchItemChangedEmitter = new EventEmitter<string>();
-
+  @Output() searchItemEventEmitter = new EventEmitter<string>();
   /** Event emitter indicating menu items being clicked */
-  @Output() menuItemClickedEmitter = new EventEmitter<string>();
+  @Output() menuItemEventEmitter = new EventEmitter<string>();
 
   /** Enum for media types */
   mediaType = Media;
-  /** Current media */
-  media: Media = Media.UNDEFINED;
+  /** Scope type enum */
+  scopeType = Scope;
 
-  /** Helper subject used to finish other subscriptions */
-  private unsubscribeSubject = new Subject();
+  /** Filtered search items options for auto-complete */
+  searchOptionsFiltered: Observable<string[]>;
 
   /** Debouncer for search field */
   seachFieldDebouncer = new Subject();
 
-  /**
-   * Current search item
-   * @type {string}
-   */
+  /** Current search item */
   searchItem = '';
-
-  /**
-   * Search items options for auto-complete
-   * @type {any[]}
-   */
-  searchOptions = [];
-
-  /**
-   * Filtered search items options for auto-complete
-   */
-  searchOptionsFiltered: Observable<string[]>;
 
   /** Form control */
   formControl: FormControl = new FormControl();
-
-  /**
-   * Scope type enum
-   * @type {Scope}
-   */
-  public scopeType = Scope;
-
-  /**
-   * Current scope
-   */
-  public scope: Scope;
-
-  /**
-   * Constructor
-   * @param {MediaService} mediaService
-   * @param {ScopeService} scopeService
-   * @param {SuggestionService} suggestionService
-   */
-  constructor(private mediaService: MediaService,
-              private scopeService: ScopeService,
-              private suggestionService: SuggestionService) {
-  }
 
   //
   // Lifecycle hooks
@@ -89,17 +55,7 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
-    this.initializeMediaSubscription();
-    this.initializeSuggestionSubscription();
-    this.initializeScopeSubscription();
-  }
-
-  /**
-   * Handles on-destroy lifecycle hook
-   */
-  ngOnDestroy() {
-    this.unsubscribeSubject.next();
-    this.unsubscribeSubject.complete();
+    this.initializeSearchOptionsFilter();
   }
 
   //
@@ -107,31 +63,9 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
   //
 
   /**
-   * Initializes media subscription
+   * Initializes search options filter
    */
-  private initializeMediaSubscription() {
-    this.media = this.mediaService.media;
-    this.mediaService.mediaSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.media = value as Media;
-    });
-  }
-
-  /**
-   * Initializes suggestion subscription
-   */
-  private initializeSuggestionSubscription() {
-    this.suggestionService.searchOptionsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        this.searchOptions = (value as string[]).reverse();
-        this.formControl.setValue(this.formControl.value);
-      }
-    });
-
-    this.searchOptions = Array.from(this.suggestionService.searchOptions.values()).reverse();
+  private initializeSearchOptionsFilter() {
     this.searchOptionsFiltered = this.formControl.valueChanges
       .pipe(
         startWith(''),
@@ -140,17 +74,7 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
 
     this.seachFieldDebouncer.pipe(
       debounceTime(500)
-    ).subscribe((value) => this.searchItemChangedEmitter.emit(value.toString()));
-  }
-
-  /**
-   * Initializes scope subscription
-   */
-  private initializeScopeSubscription() {
-    this.scope = this.scopeService.scope;
-    this.scopeService.scopeSubject.subscribe(scope => {
-      this.scope = scope;
-    });
+    ).subscribe((value) => this.searchItemEventEmitter.emit(value.toString()));
   }
 
   //
@@ -162,21 +86,28 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
    * @param {string} menuItem
    */
   onMenuItemClicked(menuItem: string): void {
-    this.menuItemClickedEmitter.emit(menuItem);
+    this.menuItemEventEmitter.emit(menuItem);
+  }
+
+  /**
+   * Handles click on search field
+   */
+  onSearchFieldClicked() {
+    this.filterOptions(this.searchItem);
   }
 
   /**
    * Handles key up event
    */
   onKeyUp() {
-    this.notifySearchItemChanged();
+    this.seachFieldDebouncer.next(this.searchItem);
   }
 
   /**
    * Handles option selection
    */
   onOptionSelected() {
-    this.notifySearchItemChanged();
+    this.seachFieldDebouncer.next(this.searchItem);
   }
 
   /**
@@ -184,7 +115,7 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
    */
   onClearButtonClicked() {
     this.searchItem = '';
-    this.notifySearchItemChanged();
+    this.seachFieldDebouncer.next(this.searchItem);
   }
 
   //
@@ -200,16 +131,5 @@ export class TimelineToolbarComponent implements OnInit, OnDestroy {
     return this.searchOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     );
-  }
-
-  //
-  // Notifications
-  //
-
-  /**
-   * Notitfies subscribers that something has changed
-   */
-  private notifySearchItemChanged() {
-    this.seachFieldDebouncer.next(this.searchItem);
   }
 }

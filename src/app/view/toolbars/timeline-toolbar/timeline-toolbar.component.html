@@ -16,7 +16,8 @@
              [(ngModel)]="searchItem"
              [formControl]="formControl"
              [matAutocomplete]="auto"
-             (keyup)="onKeyUp()">
+             (keyup)="onKeyUp()"
+             (click)="onSearchFieldClicked()">
       <button mat-button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
               (click)="onClearButtonClicked()">
         <mat-icon svgIcon="close_18" class="icon-white"></mat-icon>

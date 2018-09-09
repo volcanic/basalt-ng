@@ -2,8 +2,11 @@
   [@toolbarAnimation]="scrollDirection"
   class="fixed"
   [title]="title"
-  (searchItemChangedEmitter)="onSearchItemChanged($event)"
-  (menuItemClickedEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
+  [media]="media"
+  [scope]="scope"
+  [searchOptions]="searchOptions"
+  (searchItemEventEmitter)="onSearchItemChanged($event)"
+  (menuItemEventEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">
   <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"

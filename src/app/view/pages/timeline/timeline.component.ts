@@ -46,6 +46,7 @@ import {UUID} from '../../../model/util/uuid';
 import {Description} from '../../../model/entities/fragments/description.model';
 import {TimePickerDialogComponent} from '../../dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {TaskletDailyScrum} from '../../../model/entities/scrum/tasklet-daily-scrum.model';
+import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
 
 /**
  * Displays timeline page
@@ -100,6 +101,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Flag indicating whether entities without person shall be displayed */
   public personsNone = false;
 
+  /** Search items options for auto-complete */
+  public searchOptions = [];
+
   /** Indicator date */
   public indicatedDate;
   /** Indicator day */
@@ -111,6 +115,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public mediaType = Media;
   /** Current media */
   public media: Media = Media.UNDEFINED;
+
+  /** Enum of scope types */
+  public scopeType = Scope;
+  /** Current scope */
+  public scope: Scope = Scope.UNDEFINED;
 
   /** Enum for action types */
   action = Action;
@@ -141,6 +150,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {ScopeService} scopeService
    * @param {ScrollDispatcher} scroll
    * @param {SnackbarService} snackbarService
+   * @param {SuggestionService} suggestionService
    * @param {PersonService} personService person service
    * @param {ProjectService} projectService project service
    * @param {TagService} tagService tag service
@@ -157,6 +167,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private scopeService: ScopeService,
               private scroll: ScrollDispatcher,
               private snackbarService: SnackbarService,
+              private suggestionService: SuggestionService,
               public personService: PersonService,
               public projectService: ProjectService,
               public tagService: TagService,
@@ -182,6 +193,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializePersonSubscription();
 
     this.initializeFilterSubscription();
+    this.initializeSuggestionSubscription();
 
     this.initializeDateSubscription();
     this.initializeMediaSubscription();
@@ -411,6 +423,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Initializes suggestion subscription
+   */
+  private initializeSuggestionSubscription() {
+    this.searchOptions = Array.from(this.suggestionService.searchOptions.values()).reverse();
+    this.suggestionService.searchOptionsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        this.searchOptions = (value as string[]).reverse();
+      }
+    });
+  }
+
+  /**
    * Initializes date subscription
    */
   private initializeDateSubscription() {
@@ -438,6 +464,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeScopeSubscription() {
     this.scopeService.scopeSubject.subscribe(scope => {
+      this.scope = scope;
+
       this.filterService.clearSearchItem();
       this.filterService.clearTags();
       this.filterService.clearProjects();
@@ -1569,7 +1597,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles search item typed into the search box
+   * Handles search item typed into the search field
    * @param {string} searchItem new search item
    */
   onSearchItemChanged(searchItem: string) {
