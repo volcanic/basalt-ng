@@ -13,6 +13,11 @@
                position="start" opened="true"
                class="sidenav sidenav-start">
     <div [@toolbarAnimation]="scrollDirection">
+      <app-project-effort-tree [projectDigest]="weeklyDigest"></app-project-effort-tree>
+      <div *ngFor="let dailyDigest of dailyDigests">
+        <app-project-effort-tree [projectDigest]="dailyDigest"></app-project-effort-tree>
+      </div>
+      <mat-divider></mat-divider>
       <app-filter-tag-list [tags]="tagsFilter" [tagsNone]="tagsNone"
                            (tagEventEmitter)="onTagEvent($event)"></app-filter-tag-list>
       <mat-divider></mat-divider>

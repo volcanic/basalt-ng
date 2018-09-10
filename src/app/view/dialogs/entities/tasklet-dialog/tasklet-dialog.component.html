@@ -35,8 +35,6 @@
                                        || tasklet.type == 'Idea'"></app-description-fragment>
       <app-daily-scrum-fragment [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'">
       </app-daily-scrum-fragment>
-      <app-weekly-digest-fragment [tasklet]="tasklet" *ngIf="tasklet.type == 'Weekly Digest'">
-      </app-weekly-digest-fragment>
       <app-person-chips-fragment [persons]="persons" (personChangedEmitter)="onPersonChanged($event)"
                                  *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'

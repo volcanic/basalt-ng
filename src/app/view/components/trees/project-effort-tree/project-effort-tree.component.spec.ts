@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {TaskletDailyDigestComponent} from './tasklet-daily-digest.component';
+import {ProjectEffortTreeComponent} from './project-effort-tree.component';
 
-describe('TaskletDailyDigestComponent', () => {
-  let component: TaskletDailyDigestComponent;
-  let fixture: ComponentFixture<TaskletDailyDigestComponent>;
+describe('ProjectEffortTreeComponent', () => {
+  let component: ProjectEffortTreeComponent;
+  let fixture: ComponentFixture<ProjectEffortTreeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletDailyDigestComponent]
+      declarations: [ProjectEffortTreeComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskletDailyDigestComponent);
+    fixture = TestBed.createComponent(ProjectEffortTreeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,6 +1,10 @@
 @import '../../../../../light-theme';
 @import '../../../../../dark-theme';
 
+mat-tree {
+  background: transparent !important;
+}
+
 .tag {
   .light-theme {
     background-color: rgba(0, 0, 0, 0.08);

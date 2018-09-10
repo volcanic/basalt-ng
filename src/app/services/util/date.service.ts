@@ -175,6 +175,18 @@ export class DateService {
   }
 
   /**
+   * Returns the date component of a given date object as a string where the month is shortened
+   * @param {Date} date date to get string for
+   * @returns {string} date string of the given date
+   */
+  static getSimpleDateString(date: Date): string {
+    const day = new Date(date).getDate();
+    const month = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
+    const year = new Date(date).getFullYear();
+    return `${day} ${month} ${year}`;
+  }
+
+  /**
    * Returns the time component of a given date object as a string
    * @param {Date} date date to get string for
    * @returns {string} time string of the given date

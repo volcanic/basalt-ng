@@ -77,9 +77,6 @@ export class HeaderFragmentComponent {
       case TaskletType.FINISHING_TIME: {
         return 'directions_run';
       }
-      case TaskletType.WEEKLY_DIGEST: {
-        return 'receipt';
-      }
     }
   }
 }

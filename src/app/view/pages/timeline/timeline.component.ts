@@ -47,6 +47,8 @@ import {Description} from '../../../model/entities/fragments/description.model';
 import {TimePickerDialogComponent} from '../../dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {TaskletDailyScrum} from '../../../model/entities/scrum/tasklet-daily-scrum.model';
 import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
+import {DigestService} from '../../../services/entities/digest/digest.service';
+import {ProjectDigest} from '../../../model/entities/digest/project-digest.model';
 
 /**
  * Displays timeline page
@@ -105,7 +107,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public searchOptions = [];
 
   /** Indicator date */
-  public indicatedDate;
+  public indicatedDate = new Date();
   /** Indicator day */
   public indicatedDay;
   /** Indicator month */
@@ -120,6 +122,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public scopeType = Scope;
   /** Current scope */
   public scope: Scope = Scope.UNDEFINED;
+
+  /** Weekly digest */
+  public weeklyDigest: ProjectDigest;
+  /** Daily digests */
+  public dailyDigests: ProjectDigest[];
 
   /** Enum for action types */
   action = Action;
@@ -143,6 +150,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Constructor
+   * @param {DigestService} digestService
    * @param {EntityService} entityService
    * @param {FilterService} filterService
    * @param {MatchService} matchService
@@ -160,7 +168,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {MatDialog} dialog dialog
    * @param {NgZone} zone Angular zone
    */
-  constructor(private entityService: EntityService,
+  constructor(private digestService: DigestService,
+              private entityService: EntityService,
               private filterService: FilterService,
               private matchService: MatchService,
               private mediaService: MediaService,
@@ -196,6 +205,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeSuggestionSubscription();
 
     this.initializeDateSubscription();
+    this.initializeWeeklyDigest();
+    this.initializeDailyDigests();
+
     this.initializeMediaSubscription();
     this.initializeScopeSubscription();
   }
@@ -223,7 +235,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes tasklet subscription
    */
   private initializeTaskletSubscription() {
-    this.tasklets = Array.from(this.taskletService.tasklets.values());
+    this.tasklets = Array.from(this.taskletService.tasklets.values()).sort((t1, t2) => {
+      return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
+    });
+
     this.taskletService.taskletsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -235,7 +250,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             this.filterService.projectsNone);
 
           return matchesSearchItem && matchesProjects;
+        }).sort((t1, t2) => {
+          return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
         });
+
+        // Digests
+        this.generateWeeklyDigest(this.indicatedDate);
+        this.generateDailyDigests(this.indicatedDate);
       }
     });
   }
@@ -441,10 +462,29 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeDateSubscription() {
     this.taskletService.dateQueueSubject.subscribe(date => {
+      // Date indicator
       this.indicatedDate = date;
       this.indicatedDay = DateService.getDayOfMonthString(date);
       this.indicatedMonth = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
+
+      // Digests
+      this.generateWeeklyDigest(this.indicatedDate);
+      this.generateDailyDigests(this.indicatedDate);
     });
+  }
+
+  /**
+   * Initializes weekly digest
+   */
+  private initializeWeeklyDigest() {
+    this.generateWeeklyDigest(new Date());
+  }
+
+  /**
+   * Initializes daily digest
+   */
+  private initializeDailyDigests() {
+    this.generateDailyDigests(new Date());
   }
 
   /**
@@ -665,15 +705,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.OPEN_DIALOG_CONTINUE: {
         const tasklet = event.value as Tasklet;
-        const tags = event.tags as Tag[];
 
         tasklet['_rev'] = null;
         tasklet.id = new UUID().toString();
         tasklet.description = new Description();
         tasklet.creationDate = new Date();
-        tasklet.tagIds = tags.map(tag => {
-          return tag.id;
-        });
 
         // Assemble data to be passed
         const data = {
@@ -1737,5 +1773,33 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     tasklet.personIds = Array.from(aggregatedPersonIds.values());
+  }
+
+  /**
+   * Generates weekly digest
+   * @param {Date} date focus date
+   */
+  private generateWeeklyDigest(date: Date) {
+    this.weeklyDigest = this.digestService.getWeeklyDigest(date);
+  }
+
+  /**
+   * Generates daily digests
+   * @param {Date} date focus date
+   */
+  private generateDailyDigests(date: Date) {
+    this.dailyDigests = [];
+    const weekStart = DateService.getWeekStart(date);
+    const day = new Date(weekStart);
+
+    // Iterate over all weekdays
+    [0, 1, 2, 3, 4, 5, 6].forEach(index => {
+      const focusDate = new Date(day.setDate(weekStart.getDate() + index));
+      const dailyDigest = this.digestService.getDailyDigest(focusDate);
+
+      if (dailyDigest.getProjectEffortSum() > 0) {
+        this.dailyDigests.push(dailyDigest);
+      }
+    });
   }
 }

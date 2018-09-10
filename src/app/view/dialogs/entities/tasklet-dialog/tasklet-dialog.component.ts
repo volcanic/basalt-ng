@@ -7,7 +7,6 @@ import {Tag} from '../../../../model/entities/tag.model';
 import {TaskletDailyScrum} from '../../../../model/entities/scrum/tasklet-daily-scrum.model';
 import {Person} from '../../../../model/entities/person.model';
 import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confirmation-dialog.component';
-import {TaskletWeeklyDigest} from '../../../../model/entities/digest/tasklet-weekly-digest.model';
 import {Task} from '../../../../model/entities/task.model';
 import {Description} from '../../../../model/entities/fragments/description.model';
 import {Action} from '../../../../model/ui/action.enum';
@@ -157,12 +156,14 @@ export class TaskletDialogComponent implements OnInit {
         this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
         break;
       }
-      case TaskletType.WEEKLY_DIGEST: {
-        this.dialogRef.close(this.tasklet as TaskletWeeklyDigest);
-        break;
-      }
       default: {
-        this.dialogRef.close({action: Action.ADD, value: this.tasklet, task: this.task, tags: this.tags, persons: this.persons});
+        this.dialogRef.close({
+          action: Action.ADD,
+          value: this.tasklet,
+          task: this.task,
+          tags: this.tags,
+          persons: this.persons
+        });
       }
     }
   }
@@ -180,7 +181,13 @@ export class TaskletDialogComponent implements OnInit {
         break;
       }
       default: {
-        this.dialogRef.close({action: Action.UPDATE, value: this.tasklet, task: this.task, tags: this.tags, persons: this.persons});
+        this.dialogRef.close({
+          action: Action.UPDATE,
+          value: this.tasklet,
+          task: this.task,
+          tags: this.tags,
+          persons: this.persons
+        });
         break;
       }
     }

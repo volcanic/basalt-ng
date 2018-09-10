@@ -1,10 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {Observable, of as observableOf} from 'rxjs';
 import {ColorService} from '../../../../services/ui/color.service';
-import {DailyDigest} from '../../../../model/entities/digest/daily-digest.model';
-import {DateService} from '../../../../services/util/date.service';
+import {ProjectDigest} from '../../../../model/entities/digest/project-digest.model';
 
 /**
  * Represents a tree node
@@ -42,14 +41,15 @@ export class EffortFlatNode {
  * Displays daily effort tree
  */
 @Component({
-  selector: 'app-daily-effort-tree',
-  templateUrl: './daily-effort-tree.component.html',
-  styleUrls: ['./daily-effort-tree.component.scss']
+  selector: 'app-project-effort-tree',
+  templateUrl: './project-effort-tree.component.html',
+  styleUrls: ['./project-effort-tree.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DailyEffortTreeComponent implements OnInit {
+export class ProjectEffortTreeComponent implements OnInit, OnChanges {
 
-  /** Daily digest to be displayed */
-  @Input() dailyDigest: DailyDigest;
+  /** Project digest to be displayed */
+  @Input() projectDigest: ProjectDigest;
 
   /** Tree control */
   treeControl: FlatTreeControl<EffortFlatNode>;
@@ -57,13 +57,6 @@ export class DailyEffortTreeComponent implements OnInit {
   treeFlattener: MatTreeFlattener<EffortNode, EffortFlatNode>;
   /** Data source */
   dataSource: MatTreeFlatDataSource<EffortNode, EffortFlatNode>;
-
-  /**
-   * Constructor
-   * @param {ColorService} colorService
-   */
-  constructor(private colorService: ColorService) {
-  }
 
   /**
    * Transforms an effort node into a effort flat node
@@ -102,6 +95,14 @@ export class DailyEffortTreeComponent implements OnInit {
     this.initializeTreeData();
   }
 
+  /**
+   * Handles on-change lifecycle hook
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    this.initializeTree();
+    this.initializeTreeData();
+  }
+
   //
   // Initialization
   //
@@ -110,8 +111,8 @@ export class DailyEffortTreeComponent implements OnInit {
    * Initializes tree
    */
   private initializeTree() {
-    this.treeFlattener = new MatTreeFlattener(DailyEffortTreeComponent.transformer, this.getLevel,
-      this.isExpandable, DailyEffortTreeComponent.getChildren);
+    this.treeFlattener = new MatTreeFlattener(ProjectEffortTreeComponent.transformer, this.getLevel,
+      this.isExpandable, ProjectEffortTreeComponent.getChildren);
     this.treeControl = new FlatTreeControl<EffortFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   }
@@ -134,32 +135,33 @@ export class DailyEffortTreeComponent implements OnInit {
   private buildTree(): EffortNode[] {
     const data: any[] = [];
 
-    const day = new EffortNode();
-    day.topic = `${DateService.getWeekDayString(new Date(this.dailyDigest.start).getDay())}
-    [ ${DateService.getTimeString(this.dailyDigest.start)} - ${DateService.getTimeString(this.dailyDigest.end)} ]`;
-    day.effort = this.dailyDigest.getProjectEffortSum();
-    day.children = [];
+    if (this.projectDigest != null) {
+      const node = new EffortNode();
+      node.topic = this.projectDigest.topic;
+      node.effort = this.projectDigest.getProjectEffortSum();
+      node.children = [];
 
-    this.dailyDigest.getProjectEfforts().forEach(pe => {
-      const taskNodes = [];
+      this.projectDigest.getProjectEfforts().forEach(pe => {
+        const taskNodes = [];
 
-      pe.getTaskEfforts().forEach(te => {
-        const taskEffortNode = new EffortNode();
-        taskEffortNode.topic = te.task.name;
-        taskEffortNode.effort = te.effort;
-        taskNodes.push(taskEffortNode);
+        pe.getTaskEfforts().forEach(te => {
+          const taskEffortNode = new EffortNode();
+          taskEffortNode.topic = te.task.name;
+          taskEffortNode.effort = te.effort;
+          taskNodes.push(taskEffortNode);
+        });
+
+        const projectEffortNode = new EffortNode();
+        projectEffortNode.topic = pe.project.name;
+        projectEffortNode.effort = pe.effort;
+        projectEffortNode.color = ColorService.getProjectColor(pe.project);
+        projectEffortNode.children = taskNodes;
+
+        node.children.push(projectEffortNode);
       });
 
-      const projectEffortNode = new EffortNode();
-      projectEffortNode.topic = pe.project.name;
-      projectEffortNode.effort = pe.effort;
-      projectEffortNode.color = ColorService.getProjectColor(pe.project);
-      projectEffortNode.children = taskNodes;
-
-      day.children.push(projectEffortNode);
-    });
-
-    data.push(day);
+      data.push(node);
+    }
 
     return data;
   }

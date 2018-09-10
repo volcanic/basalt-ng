@@ -145,6 +145,7 @@ export class TaskService {
   /**
    * Creates a new task
    * @param {Task} task tasak to be created
+   * @param {boolean} showSnack shows snackbar if true
    */
   public createTask(task: Task, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {

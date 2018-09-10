@@ -152,10 +152,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
         this.icon = 'directions_run';
         break;
       }
-      case TaskletType.WEEKLY_DIGEST: {
-        this.icon = 'receipt';
-        break;
-      }
     }
   }
 
@@ -176,10 +172,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
       case TaskletType.DAILY_SCRUM:
       case TaskletType.LUNCH_BREAK:
       case TaskletType.FINISHING_TIME:
-      case TaskletType.WEEKLY_DIGEST: {
-        this.topic = this.tasklet.type;
-        break;
-      }
       default: {
         const task = this.getTaskByTasklet(this.tasklet);
 

@@ -1,23 +1,18 @@
-import {DailyDigest} from './daily-digest.model';
 import {ProjectEffort} from './project-effort.model';
-import {TaskEffort} from './task-effort.model';
 
 /**
- * Represents a weekly digest
+ * Represents a project digest of a given period
  */
-export class WeeklyDigest {
+export class ProjectDigest {
 
-  /** Start of the week */
-  start = new Date();
-  /** End of the week */
-  end = new Date();
-  /** Array of daily digests */
-  dailyDigests: DailyDigest[] = [];
-
+  /** Start of the period */
+  start: Date;
+  /** End of the period */
+  end: Date;
+  /** Topic to be displayed as root node */
+  topic: string;
   /** Map of project efforts */
   projectEfforts = new Map<String, ProjectEffort>();
-  /** Map of task efforts */
-  taskEfforts = new Map<String, TaskEffort>();
 
   /**
    * Returns a sorted array of project efforts
@@ -31,7 +26,7 @@ export class WeeklyDigest {
   }
 
   /**
-   * Sums up the efforts of this week's project efforts
+   * Sums up the efforts of this period's project efforts
    * @returns {number} sum of efforts
    */
   getProjectEffortSum(): number {

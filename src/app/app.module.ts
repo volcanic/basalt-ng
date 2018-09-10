@@ -11,7 +11,7 @@ import {CalendarGridQuarterHourComponent} from './view/components/calendar/calen
 import {CalendarItemComponent} from './view/components/calendar/calendar-item/calendar-item.component';
 import {ColorService} from './services/ui/color.service';
 import {ConfirmationDialogComponent} from './view/dialogs/other/confirmation-dialog/confirmation-dialog.component';
-import {DailyEffortTreeComponent} from './view/components/trees/daily-effort-tree/daily-effort-tree.component';
+import {ProjectEffortTreeComponent} from './view/components/trees/project-effort-tree/project-effort-tree.component';
 import {DailyScrumActivityFragmentComponent} from './view/fragments/daily-scrum-activity-fragment/daily-scrum-activity-fragment.component';
 import {DailyScrumFragmentComponent} from './view/fragments/daily-scrum-fragment/daily-scrum-fragment.component';
 import {DailyScrumParticipantFragmentComponent} from './view/fragments/daily-scrum-participant-fragment/daily-scrum-participant-fragment.component';
@@ -48,7 +48,6 @@ import {PouchDBSettingsService} from './services/persistence/pouchdb-settings.se
 import {PreviousDescriptionFragmentComponent} from './view/fragments/previous-description-fragment/previous-description-fragment.component';
 import {ProjectAutocompleteFragmentComponent} from './view/fragments/project-autocomplete-fragment/project-autocomplete-fragment.component';
 import {ProjectDialogComponent} from './view/dialogs/entities/project-dialog/project-dialog.component';
-import {WeeklyEffortTreeComponent} from './view/components/trees/weekly-effort-tree/weekly-effort-tree.component';
 import {ProjectFilterDialogComponent} from './view/dialogs/filters/project-filter-dialog/project-filter-dialog.component';
 import {ProjectListComponent} from './view/lists/project-list/project-list.component';
 import {ProjectListDialogComponent} from './view/dialogs/lists/project-list-dialog/project-list-dialog.component';
@@ -68,18 +67,15 @@ import {TaskDialogComponent} from './view/dialogs/entities/task-dialog/task-dial
 import {TaskListComponent} from './view/lists/task-list/task-list.component';
 import {TaskListDialogComponent} from './view/dialogs/lists/task-list-dialog/task-list-dialog.component';
 import {TaskListItemComponent} from './view/lists/task-list-item/task-list-item.component';
-import {TaskletDailyDigestComponent} from './view/components/tasklet/tasklet-daily-digest/tasklet-daily-digest.component';
 import {TaskletDailyScrumComponent} from './view/components/tasklet/tasklet-daily-scrum/tasklet-daily-scrum.component';
 import {TaskletDialogComponent} from './view/dialogs/entities/tasklet-dialog/tasklet-dialog.component';
 import {TaskletListComponent} from './view/lists/tasklet-list/tasklet-list.component';
 import {TaskletListItemComponent} from './view/lists/tasklet-list-item/tasklet-list-item.component';
 import {TaskletService} from './services/entities/tasklet.service';
-import {TaskletWeeklyDigestComponent} from './view/components/tasklet/tasklet-weekly-digest/tasklet-weekly-digest.component';
 import {TimePickerDialogComponent} from './view/dialogs/other/time-picker-dialog/time-picker-dialog.component';
 import {TimelineComponent} from './view/pages/timeline/timeline.component';
 import {TimelineToolbarComponent} from './view/toolbars/timeline-toolbar/timeline-toolbar.component';
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
-import {WeeklyDigestFragmentComponent} from './view/fragments/weekly-digest-fragment/weekly-digest-fragment.component';
 
 @NgModule({
   declarations: [
@@ -91,8 +87,7 @@ import {WeeklyDigestFragmentComponent} from './view/fragments/weekly-digest-frag
     CalendarGridQuarterHourComponent,
     CalendarItemComponent,
     ConfirmationDialogComponent,
-    DailyEffortTreeComponent,
-    DailyEffortTreeComponent,
+    ProjectEffortTreeComponent,
     DailyScrumActivityFragmentComponent,
     DailyScrumFragmentComponent,
     DailyScrumParticipantFragmentComponent,
@@ -117,7 +112,6 @@ import {WeeklyDigestFragmentComponent} from './view/fragments/weekly-digest-frag
     PreviousDescriptionFragmentComponent,
     ProjectAutocompleteFragmentComponent,
     ProjectDialogComponent,
-    WeeklyEffortTreeComponent,
     ProjectFilterDialogComponent,
     ProjectListComponent,
     ProjectListDialogComponent,
@@ -134,17 +128,14 @@ import {WeeklyDigestFragmentComponent} from './view/fragments/weekly-digest-frag
     TaskListComponent,
     TaskListDialogComponent,
     TaskListItemComponent,
-    TaskletDailyDigestComponent,
     TaskletDailyScrumComponent,
     TaskletDialogComponent,
     TaskletListComponent,
     TaskletListItemComponent,
-    TaskletWeeklyDigestComponent,
     TimePickerDialogComponent,
     TimelineComponent,
     TimelineToolbarComponent,
-    UploadDialogComponent,
-    WeeklyDigestFragmentComponent
+    UploadDialogComponent
   ],
   imports: [
     AppRoutingModule,
