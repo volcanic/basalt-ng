@@ -33,10 +33,23 @@ export class DigestService {
   getDailyDigest(date: Date): ProjectDigest {
     const start = DateService.getDayStart(date);
     const end = DateService.getDayEnd(date);
-    const topic = DateService.getWeekDayString(new Date(start).getDay()) +
-      ' [ ' + DateService.getTimeString(start) + ' - ' + DateService.getTimeString(end) + ' ]';
 
-    return this.getProjectDigest(start, end, topic);
+    const tasklets = this.getTaskletsOfPeriod(start, end, Array.from(this.taskletService.tasklets.values()));
+    const firstTasklet = tasklets[0];
+    const lastTasklet = tasklets[tasklets.length - 1];
+
+    if (firstTasklet != null && lastTasklet != null) {
+      const firstTaskletStart = firstTasklet.creationDate;
+      const lastTaskletEnd = tasklets[tasklets.length - 1].creationDate;
+      const topic = DateService.getWeekDayString(new Date(start).getDay()) +
+        ' [ ' + DateService.getTimeString(firstTaskletStart) + ' - ' + DateService.getTimeString(lastTaskletEnd) + ' ]';
+
+      return this.getProjectDigest(tasklets, start, end, topic);
+    } else {
+      const topic = DateService.getWeekDayString(new Date(start).getDay());
+
+      return this.getProjectDigest(tasklets, start, end, topic);
+    }
   }
 
   /**
@@ -47,20 +60,22 @@ export class DigestService {
   getWeeklyDigest(date: Date): ProjectDigest {
     const start = DateService.getWeekStart(date);
     const end = DateService.getWeekEnd(date);
+
+    const tasklets = this.getTaskletsOfPeriod(start, end, Array.from(this.taskletService.tasklets.values()));
     const topic = 'Week ' + DateService.getSimpleDateString(new Date(start)) +
       ' - ' + DateService.getSimpleDateString(new Date(end));
 
-    return this.getProjectDigest(start, end, topic);
+    return this.getProjectDigest(tasklets, start, end, topic);
   }
 
   /**
    * Generates a project digest for a given period of time
+   * @param {Tasklet[]} tasklets
    * @param {Date} start start date
    * @param {Date} end end date
    * @param {string} topic to be displayed as root node
    */
-  getProjectDigest(start: Date, end: Date, topic: string): ProjectDigest {
-    const tasklets = this.getTaskletsOfPeriod(start, end, Array.from(this.taskletService.tasklets.values()));
+  getProjectDigest(tasklets: Tasklet[], start: Date, end: Date, topic: string): ProjectDigest {
     const projectDigest = new ProjectDigest();
 
     if (tasklets.length !== 0) {
