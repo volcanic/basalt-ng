@@ -212,14 +212,14 @@ export class TaskletDialogComponent implements OnInit {
    * Handles click on delete button
    */
   deleteTasklet() {
-    this.dialogRef.close({action: Action.DELETE, tasklet: this.tasklet});
+    this.dialogRef.close({action: Action.DELETE, value: this.tasklet});
   }
 
   /**
    * Handles click on continue button
    */
   continueTasklet() {
-    this.dialogRef.close({action: Action.ADD, tasklet: this.tasklet, tags: this.tags, task: this.task});
+    this.dialogRef.close({action: Action.ADD, value: this.tasklet, tags: this.tags, task: this.task});
   }
 
   //
