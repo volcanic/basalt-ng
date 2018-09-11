@@ -187,6 +187,32 @@ export class DateService {
   }
 
   /**
+   * Returns a date string of a given range (omits du
+   * @param {Date} start start date
+   * @param {Date} end end date
+   * @returns {string} string of the given range
+   */
+  static getDateRangeString(start: Date, end: Date): string {
+    const sameMonth = start.getMonth() === end.getMonth();
+    const sameYear = start.getFullYear() === end.getFullYear();
+
+    let dateStringStart = DateService.getSimpleDateString(start);
+    const dateStringEnd = DateService.getSimpleDateString(end);
+
+    if (sameMonth) {
+      const month = DateService.getMonthString(new Date(start).getMonth()).slice(0, 3);
+      dateStringStart = dateStringStart.replace(month, '').trim();
+    }
+
+    if (sameYear) {
+      const year = new Date(start).getFullYear().toString();
+      dateStringStart = dateStringStart.replace(year, '').trim();
+    }
+
+    return dateStringStart + ' - ' + dateStringEnd;
+  }
+
+  /**
    * Returns the time component of a given date object as a string
    * @param {Date} date date to get string for
    * @returns {string} time string of the given date
@@ -309,6 +335,14 @@ export class DateService {
     }
 
     return '';
+  }
+
+  static getWeekNumber(date: Date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
   }
 
   //

@@ -62,8 +62,8 @@ export class DigestService {
     const end = DateService.getWeekEnd(date);
 
     const tasklets = this.getTaskletsOfPeriod(start, end, Array.from(this.taskletService.tasklets.values()));
-    const topic = 'Week ' + DateService.getSimpleDateString(new Date(start)) +
-      ' - ' + DateService.getSimpleDateString(new Date(end));
+    const topic = 'Week ' + DateService.getWeekNumber(new Date(start))
+      + ' (' + DateService.getDateRangeString(new Date(start), new Date(end)) + ')';
 
     return this.getProjectDigest(tasklets, start, end, topic);
   }
