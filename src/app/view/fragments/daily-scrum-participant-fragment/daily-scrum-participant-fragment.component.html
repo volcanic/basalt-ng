@@ -6,8 +6,9 @@
   <div class="flexbox"></div>
   <div class="activities">
     <app-daily-scrum-activity-fragment *ngFor="let a of dailyScrumParticipant.activities"
-                                             [person]="dailyScrumParticipant.person"
-                                             [dailyScrumActivity]="a"
+                                       [person]="dailyScrumParticipant.person"
+                                       [dailyScrumActivity]="a"
+                                       [dailyScrumActivityOptions]="dailyScrumActivityOptions"
                                        (activityEditedEmitter)="onActivityUpdated($event)">
     </app-daily-scrum-activity-fragment>
   </div>

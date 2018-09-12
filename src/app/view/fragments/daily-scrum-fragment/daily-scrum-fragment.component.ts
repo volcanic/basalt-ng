@@ -1,7 +1,6 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {TaskletDailyScrum} from '../../../model/entities/scrum/tasklet-daily-scrum.model';
 import {DailyScrumParticipant} from '../../../model/entities/scrum/daily-scrum-participant';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 
 /**
  * Displays daily scrum fragment
@@ -9,21 +8,13 @@ import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 @Component({
   selector: 'app-daily-scrum-fragment',
   templateUrl: './daily-scrum-fragment.component.html',
-  styleUrls: ['./daily-scrum-fragment.component.scss']
+  styleUrls: ['./daily-scrum-fragment.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DailyScrumFragmentComponent implements OnInit {
 
   /** Tasklet to be displayed */
   @Input() tasklet: TaskletDailyScrum;
-
-  /**
-   * Constructor
-   * @param {MatDialog} dialog dialog
-   * @param data dialog data
-   */
-  constructor(public dialog: MatDialog,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
 
   //
   // Lifecycle hooks

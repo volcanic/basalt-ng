@@ -16,9 +16,11 @@ export class DailyScrumParticipantFragmentComponent implements OnInit {
 
   /** Daily scrum participant to be displayed */
   @Input() dailyScrumParticipant: DailyScrumParticipant;
-
   /** Event emitter indicating changes in person */
   @Output() personSelectedEmitter = new EventEmitter<string>();
+
+  /** Array of daily scrum activities */
+  dailyScrumActivityOptions = [];
 
   /**
    * Constructor
@@ -36,6 +38,7 @@ export class DailyScrumParticipantFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeActivities();
+    this.initializeActivityOptions();
   }
 
   //
@@ -47,6 +50,14 @@ export class DailyScrumParticipantFragmentComponent implements OnInit {
    */
   private initializeActivities() {
     this.ensureEmptyActivity();
+  }
+
+  /**
+   * Initializes activity taskOptions
+   */
+  private initializeActivityOptions() {
+    this.dailyScrumActivityOptions = Array.from(this.taskletService
+      .getDailyScrumActivities(this.dailyScrumParticipant.person).values()).reverse();
   }
 
   //
