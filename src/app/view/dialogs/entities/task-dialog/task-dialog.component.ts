@@ -8,6 +8,7 @@ import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confi
 import {CloneService} from '../../../../services/util/clone.service';
 import {DateService} from '../../../../services/util/date.service';
 import {Action} from '../../../../model/ui/action.enum';
+import {SuggestionService} from '../../../../services/entities/filter/suggestion.service';
 
 /**
  * Displays task dialog
@@ -57,6 +58,9 @@ export class TaskDialogComponent implements OnInit {
   /** Tags assigned to this task */
   tags: Tag[] = [];
 
+  /** Project options */
+  projectOptions: string[];
+
   /** Reference to static method */
   getTimeString = DateService.getTimeString;
   /** Reference to static method */
@@ -64,12 +68,14 @@ export class TaskDialogComponent implements OnInit {
 
   /**
    * Constructor
+   * @param suggestionService suggestion service
    * @param {DateAdapter<any>} adapter
    * @param {MatDialog} dialog dialog
    * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(private adapter: DateAdapter<any>,
+  constructor(private suggestionService: SuggestionService,
+              private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -84,6 +90,7 @@ export class TaskDialogComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeData();
+    this.initializeOptions();
     this.initializeInput();
     this.initializeTask();
     this.initializePriority();
@@ -102,6 +109,13 @@ export class TaskDialogComponent implements OnInit {
     this.task = this.data.task;
     this.project = this.data.project;
     this.tags = this.data.tags;
+  }
+
+  /**
+   * Initializes options
+   */
+  private initializeOptions() {
+    this.projectOptions = Array.from(this.suggestionService.projectOptions.values()).reverse();
   }
 
   /**

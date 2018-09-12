@@ -10,6 +10,7 @@ import {ConfirmationDialogComponent} from '../../other/confirmation-dialog/confi
 import {Task} from '../../../../model/entities/task.model';
 import {Description} from '../../../../model/entities/fragments/description.model';
 import {Action} from '../../../../model/ui/action.enum';
+import {SuggestionService} from '../../../../services/entities/filter/suggestion.service';
 
 /**
  * Displays tasklet dialog
@@ -31,22 +32,31 @@ export class TaskletDialogComponent implements OnInit {
 
   /** Tasklet to be displayed */
   tasklet: Tasklet;
-  /** Descsription of previous tasklet */
+  /** Description of previous tasklet */
   previousDescription = new Description();
 
+  /** Temporarily displayed task */
+  task: Task;
   /** Temporarily displayed tags */
   tags: Tag[] = [];
   /** Temporarily displayed persons */
   persons: Person[] = [];
-  /** Temporarily displayed task */
-  task: Task;
+
+  /** Task options */
+  taskOptions: string[];
+  /** Tag options */
+  tagOptions: string[];
+  /** Person options */
+  personOptions: string[];
 
   /**
    * Constructor
+   * @param suggestionService suggestion service
    * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(public dialogRef: MatDialogRef<TaskletDialogComponent>,
+  constructor(private suggestionService: SuggestionService,
+              public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
@@ -59,6 +69,7 @@ export class TaskletDialogComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeData();
+    this.initializeOptions();
   }
 
   //
@@ -76,6 +87,15 @@ export class TaskletDialogComponent implements OnInit {
     this.tags = this.data.tags;
     this.persons = this.data.persons;
     this.previousDescription = this.data.previousDescription;
+  }
+
+  /**
+   * Initializes options
+   */
+  private initializeOptions() {
+    this.taskOptions = Array.from(this.suggestionService.taskOptions.values()).reverse();
+    this.tagOptions = Array.from(this.suggestionService.tagOptions.values());
+    this.personOptions = Array.from(this.suggestionService.personOptions.values());
   }
 
   //

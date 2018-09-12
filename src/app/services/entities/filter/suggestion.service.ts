@@ -28,7 +28,7 @@ export class SuggestionService {
   /** Map of tag options */
   tagOptions: Map<string, string>;
 
-  /** Subject that publishs search options */
+  /** Subject that publishes search options */
   searchOptionsSubject = new Subject<string[]>();
 
   /**

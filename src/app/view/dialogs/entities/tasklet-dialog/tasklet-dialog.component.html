@@ -5,7 +5,7 @@
       <app-header-fragment [tasklet]="tasklet">
       </app-header-fragment>
       <app-task-autocomplete-fragment
-        [task]="task" (taskChangedEmitter)="onTaskChanged($event)" *ngIf="tasklet.type == 'Action'
+        [task]="task" [taskOptions]="taskOptions" (taskChangedEmitter)="onTaskChanged($event)" *ngIf="tasklet.type == 'Action'
           || tasklet.type == 'Meeting'
           || tasklet.type == 'Call'
           || tasklet.type == 'Mail'
@@ -35,13 +35,13 @@
                                        || tasklet.type == 'Idea'"></app-description-fragment>
       <app-daily-scrum-fragment [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'">
       </app-daily-scrum-fragment>
-      <app-person-chips-fragment [persons]="persons" (personChangedEmitter)="onPersonChanged($event)"
+      <app-person-chips-fragment [persons]="persons" [personOptions]="personOptions" (personChangedEmitter)="onPersonChanged($event)"
                                  *ngIf="tasklet.type == 'Meeting'
                                        || tasklet.type == 'Call'
                                        || tasklet.type == 'Mail'
                                        || tasklet.type == 'Chat'">
       </app-person-chips-fragment>
-      <app-tag-chips-fragment [tags]="tags" (tagsChangedEmitter)="onTagsChanged($event)">
+      <app-tag-chips-fragment [tags]="tags" [tagOptions]="tagOptions" (tagsChangedEmitter)="onTagsChanged($event)">
       </app-tag-chips-fragment>
     </form>
   </mat-dialog-content>
