@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
 
 /**
  * Displays calendar item
@@ -6,8 +7,11 @@ import {Component, OnInit} from '@angular/core';
 @Component({
   selector: 'app-calendar-item',
   templateUrl: './calendar-item.component.html',
-  styleUrls: ['./calendar-item.component.scss']
+  styleUrls: ['./calendar-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalendarItemComponent {
 
+  /** Tasklet to be displayed */
+  @Input() tasklet: Tasklet;
 }

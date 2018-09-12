@@ -10,6 +10,6 @@
     </app-calendar-grid-quarter-hour>
   </div>
   <div class="overlay">
-    <app-calendar-item *ngFor="let tasklet of tasklets"></app-calendar-item>
+    <app-calendar-item *ngFor="let tasklet of tasklets" [tasklet]="tasklet"></app-calendar-item>
   </div>
 </div>

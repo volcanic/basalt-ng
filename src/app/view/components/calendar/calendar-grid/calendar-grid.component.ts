@@ -1,4 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Tasklet} from '../../../../model/entities/tasklet.model';
+import {MatchService} from '../../../../services/entities/filter/match.service';
 
 /**
  * Displays calender grid
@@ -8,8 +10,26 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './calendar-grid.component.html',
   styleUrls: ['./calendar-grid.component.scss']
 })
-export class CalendarGridComponent {
+export class CalendarGridComponent implements OnChanges {
 
   /** Focus day to be displayed */
   @Input() focusDay = new Date();
+  /** Array of tasklets */
+  @Input() tasklets: Tasklet[] = [];
+
+  /** Tasklets that match focus day */
+  filteredTasklets: Tasklet[] = [];
+
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-changes lifecycle hook
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    this.filteredTasklets = this.tasklets.filter(tasklet => {
+      MatchService.taskletMatchesDate(tasklet, new Date(this.focusDay));
+    });
+  }
 }
