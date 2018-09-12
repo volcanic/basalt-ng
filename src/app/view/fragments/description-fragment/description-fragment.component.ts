@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Description} from '../../../model/entities/fragments/description.model';
 
 /**
@@ -7,13 +7,13 @@ import {Description} from '../../../model/entities/fragments/description.model';
 @Component({
   selector: 'app-description-fragment',
   templateUrl: './description-fragment.component.html',
-  styleUrls: ['./description-fragment.component.scss']
+  styleUrls: ['./description-fragment.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DescriptionFragmentComponent {
 
   /** Description of to be displayed */
   @Input() description: Description = new Description();
-
   /** Whether component is readonly or not */
   @Input() readonly = false;
 
