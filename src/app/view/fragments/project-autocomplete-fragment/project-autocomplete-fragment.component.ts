@@ -23,6 +23,8 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   @Input() project: Project;
   /** Readonly dialog if true */
   @Input() readonly: false;
+  /** Array of project options */
+  @Input() projectOptions: string[] = [];
 
   /** Event emitter indicating changes in project */
   @Output() projectChangedEmitter = new EventEmitter<Project>();
@@ -32,8 +34,6 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   /** Current inputFieldValue of input field */
   inputFieldValue = '';
 
-  /** Array of options */
-  options: string[] = [];
   /** Array of options filtered by currently typed inputFieldValue */
   filteredOptions: Observable<string[]>;
 
@@ -82,8 +82,6 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
    * Initializes project options
    */
   private initializeProjectOptions() {
-    this.options = Array.from(this.suggestionService.projectOptions.values()).reverse();
-
     this.filteredOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),
@@ -127,7 +125,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
    * @returns {string[]} array of filtered options
    */
   private filterOptions(value: string): string[] {
-    return this.options.filter(option =>
+    return this.projectOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     );
   }
