@@ -1,13 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Person} from '../../../model/entities/person.model';
 import {Observable} from 'rxjs/Observable';
 import {FormControl} from '@angular/forms';
-import {TaskletService} from '../../../services/entities/tasklet.service';
 import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
-import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
-import {PersonService} from '../../../services/entities/person.service';
 
 /**
  * Displays person chip fragmemt
@@ -15,7 +12,8 @@ import {PersonService} from '../../../services/entities/person.service';
 @Component({
   selector: 'app-person-chips-fragment',
   templateUrl: './person-chips-fragment.component.html',
-  styleUrls: ['./person-chips-fragment.component.scss']
+  styleUrls: ['./person-chips-fragment.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PersonChipsFragmentComponent implements OnInit {
 
@@ -23,7 +21,8 @@ export class PersonChipsFragmentComponent implements OnInit {
   @Input() persons: Person[] = [];
   /** Whether the component is readonly */
   @Input() readonly = false;
-
+  /** Array of taskOptions */
+  @Input() personOptions: string[] = [];
   /** Event emitter indicating changes in persons */
   @Output() personsChangedEmitter = new EventEmitter<Person[]>();
 
@@ -40,17 +39,6 @@ export class PersonChipsFragmentComponent implements OnInit {
 
   /** Form control */
   formControl: FormControl = new FormControl();
-
-  /**
-   * Constructor
-   * @param {PersonService} personService
-   * @param {TaskletService} taskletService
-   * @param {SuggestionService} suggestionService
-   */
-  constructor(private personService: PersonService,
-              private taskletService: TaskletService,
-              private suggestionService: SuggestionService) {
-  }
 
   //
   // Lifecycle hooks
@@ -71,8 +59,6 @@ export class PersonChipsFragmentComponent implements OnInit {
    * Initialize auto-complete options
    */
   private initializeOptions() {
-    this.options = Array.from(this.suggestionService.personOptions.values());
-
     this.filteredOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),
@@ -145,7 +131,7 @@ export class PersonChipsFragmentComponent implements OnInit {
    * @returns {string[]} filtered options
    */
   filterAutoCompleteOptions(value: string): string[] {
-    return this.options.filter(option =>
+    return this.personOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     ).reverse();
   }
