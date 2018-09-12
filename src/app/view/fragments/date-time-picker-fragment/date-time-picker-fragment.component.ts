@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DateService} from '../../../services/util/date.service';
 
 /**
@@ -7,7 +7,8 @@ import {DateService} from '../../../services/util/date.service';
 @Component({
   selector: 'app-date-time-picker-fragment',
   templateUrl: './date-time-picker-fragment.component.html',
-  styleUrls: ['./date-time-picker-fragment.component.scss']
+  styleUrls: ['./date-time-picker-fragment.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateTimePickerFragmentComponent implements OnInit {
 
