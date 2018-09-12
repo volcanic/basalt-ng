@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Subject} from 'rxjs';
-import {DropResult, SUCCESS} from '../../../components/file-drop/file-drop.component';
+import {DropResult, SUCCESS} from '../../../fragments/file-drop-fragment/file-drop-fragment.component';
 import {SnackbarService} from '../../../../services/ui/snackbar.service';
 import {Entity} from '../../../../model/entities/entity.model';
 import {ProjectService} from '../../../../services/entities/project.service';

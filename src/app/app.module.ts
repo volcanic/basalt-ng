@@ -19,7 +19,7 @@ import {DateService} from './services/util/date.service';
 import {DateTimePickerFragmentComponent} from './view/fragments/date-time-picker-fragment/date-time-picker-fragment.component';
 import {DescriptionFragmentComponent} from './view/fragments/description-fragment/description-fragment.component';
 import {DigestService} from './services/entities/digest/digest.service';
-import {FileDropComponent} from './view/components/file-drop/file-drop.component';
+import {FileDropFragmentComponent} from './view/fragments/file-drop-fragment/file-drop-fragment.component';
 import {FileUploadModule} from 'ng2-file-upload';
 import {FilterPersonListComponent} from './view/lists/filter-person-list/filter-person-list.component';
 import {FilterPersonListItemComponent} from './view/lists/filter-person-list-item/filter-person-list-item.component';
@@ -93,7 +93,7 @@ import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-d
     DailyScrumParticipantFragmentComponent,
     DateTimePickerFragmentComponent,
     DescriptionFragmentComponent,
-    FileDropComponent,
+    FileDropFragmentComponent,
     FilterPersonListComponent,
     FilterPersonListItemComponent,
     FilterProjectListComponent,

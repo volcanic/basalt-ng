@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {FileDropComponent} from './file-drop.component';
+import {FileDropFragmentComponent} from './file-drop-fragment.component';
 import {FileUploadModule} from 'ng2-file-upload';
 
-describe('FileDropComponent', () => {
-  let component: FileDropComponent;
-  let fixture: ComponentFixture<FileDropComponent>;
+describe('FileDropFragmentComponent', () => {
+  let component: FileDropFragmentComponent;
+  let fixture: ComponentFixture<FileDropFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        FileDropComponent
+        FileDropFragmentComponent
       ],
       imports: [
         FileUploadModule
@@ -20,7 +20,7 @@ describe('FileDropComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileDropComponent);
+    fixture = TestBed.createComponent(FileDropFragmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

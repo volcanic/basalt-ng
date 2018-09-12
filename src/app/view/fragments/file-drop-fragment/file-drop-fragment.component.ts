@@ -26,11 +26,11 @@ export interface DropResult {
  */
 @Component({
   selector: 'app-file-drop',
-  templateUrl: './file-drop.component.html',
-  styleUrls: ['./file-drop.component.scss'],
+  templateUrl: './file-drop-fragment.component.html',
+  styleUrls: ['./file-drop-fragment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileDropComponent implements OnInit, OnDestroy {
+export class FileDropFragmentComponent implements OnInit, OnDestroy {
 
   /** File uploader */
   public uploader: FileUploader = new FileUploader({url: URL});
@@ -104,7 +104,7 @@ export class FileDropComponent implements OnInit, OnDestroy {
           };
         });
       }), map((value: string) => {
-        return FileDropComponent.parseBasaltFile(value);
+        return FileDropFragmentComponent.parseBasaltFile(value);
       }), map((results: any) => {
         return {result: SUCCESS, payload: results};
       }));
