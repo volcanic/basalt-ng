@@ -1,13 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tag} from '../../../model/entities/tag.model';
 import {Observable} from 'rxjs/Observable';
 import {FormControl} from '@angular/forms';
 import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
-import {FilterService} from '../../../services/entities/filter/filter.service';
-import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
-import {TagService} from '../../../services/entities/tag.service';
 
 /**
  * Displays tag chips fragment
@@ -15,7 +12,8 @@ import {TagService} from '../../../services/entities/tag.service';
 @Component({
   selector: 'app-tag-chips-fragment',
   templateUrl: './tag-chips-fragment.component.html',
-  styleUrls: ['./tag-chips-fragment.component.scss']
+  styleUrls: ['./tag-chips-fragment.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TagChipsFragmentComponent implements OnInit {
 
@@ -23,7 +21,8 @@ export class TagChipsFragmentComponent implements OnInit {
   @Input() tags: Tag[] = [];
   /** Whether the component is readonly */
   @Input() readonly = false;
-
+  /** Array of taskOptions */
+  @Input() tagOptions: string[] = [];
   /** Event emitter indicating changes in tags */
   @Output() tagsChangedEmitter = new EventEmitter<Tag[]>();
 
@@ -33,24 +32,11 @@ export class TagChipsFragmentComponent implements OnInit {
   /** Current inputFieldValue of input field */
   inputFieldValue = '';
 
-  /** Array of options */
-  options: string[] = [];
   /** Array of options filtered by currently typed inputFieldValue */
   filteredOptions: Observable<string[]>;
 
   /** Form control */
   formControl: FormControl = new FormControl();
-
-  /**
-   * Constructor
-   * @param {TagService} tagService
-   * @param {FilterService} filterService
-   * @param {SuggestionService} suggestionService
-   */
-  constructor(private tagService: TagService,
-              private filterService: FilterService,
-              private suggestionService: SuggestionService) {
-  }
 
   //
   // Lifecycle hooks
@@ -71,8 +57,6 @@ export class TagChipsFragmentComponent implements OnInit {
    * Initialize auto-complete options
    */
   private initializeOptions() {
-    this.options = Array.from(this.suggestionService.tagOptions.values());
-
     this.filteredOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),
@@ -111,7 +95,8 @@ export class TagChipsFragmentComponent implements OnInit {
       const KEY_CODE_ENTER = 13;
       const KEY_CODE_COMMA = 188;
 
-      if (this.inputFieldValue !== '' && this.inputFieldValue !== ',' && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
+      if (this.inputFieldValue !== '' && this.inputFieldValue !== ','
+        && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
         this.tags.push(new Tag(this.inputFieldValue.replace(/,/, ''), true));
         this.inputFieldValue = '';
         this.notify();
@@ -147,7 +132,7 @@ export class TagChipsFragmentComponent implements OnInit {
    * @returns {string[]} filtered options
    */
   filterAutocompleteOptions(value: string): string[] {
-    return this.options.filter(option =>
+    return this.tagOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     );
   }
