@@ -25,7 +25,7 @@ export interface DropResult {
  * Displays file drop zone
  */
 @Component({
-  selector: 'app-file-drop',
+  selector: 'app-file-drop-fragment',
   templateUrl: './file-drop-fragment.component.html',
   styleUrls: ['./file-drop-fragment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
