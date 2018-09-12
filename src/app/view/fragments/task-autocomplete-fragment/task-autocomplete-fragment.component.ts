@@ -6,8 +6,6 @@ import {map, startWith} from 'rxjs/internal/operators';
 import {CloneService} from '../../../services/util/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
-import {TaskService} from '../../../services/entities/task.service';
-import {SuggestionService} from '../../../services/entities/filter/suggestion.service';
 
 /**
  * Displays task auto-complete fragment
@@ -21,6 +19,8 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
 
   /** Task to be displayed */
   @Input() task: Task;
+  /** Array of taskOptions */
+  @Input() taskOptions: string[];
 
   /** Event emitter indicating changes in task */
   @Output() taskChangedEmitter = new EventEmitter<Task>();
@@ -30,24 +30,11 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   /** Current value of input field */
   inputFieldValue = '';
 
-  /** Array of options */
-  options = [];
   /** Array of options filtered by currently typed inputFieldValue */
   filteredOptions: Observable<string[]>;
 
   /** Form control */
   formControl: FormControl = new FormControl();
-
-  /**
-   * Constructor
-   * @param {TaskService} taskService
-   * @param {CloneService} cloneService
-   * @param {SuggestionService} suggestionService
-   */
-  constructor(private taskService: TaskService,
-              private cloneService: CloneService,
-              private suggestionService: SuggestionService) {
-  }
 
   //
   // Lifecycle hooks
@@ -58,7 +45,6 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeTask();
-    this.initializeTaskOptions();
   }
 
   //
@@ -80,8 +66,6 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    * Initializes task options
    */
   private initializeTaskOptions() {
-    this.options = Array.from(this.suggestionService.taskOptions.values()).reverse();
-
     this.filteredOptions = this.formControl.valueChanges
       .pipe(
         startWith(''),
@@ -121,7 +105,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    * @returns {string[]} array of filtered options
    */
   private filterOptions(value: string): string[] {
-    return this.options.filter(option =>
+    return this.taskOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     ).reverse();
   }
