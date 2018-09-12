@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {QuarterHour} from '../../../../model/ui/quarterhour.model';
 import {DateService} from '../../../../services/util/date.service';
 
@@ -8,7 +8,8 @@ import {DateService} from '../../../../services/util/date.service';
 @Component({
   selector: 'app-calendar-grid-day',
   templateUrl: './calendar-grid-day.component.html',
-  styleUrls: ['./calendar-grid-day.component.scss']
+  styleUrls: ['./calendar-grid-day.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalendarGridDayComponent implements OnInit {
 

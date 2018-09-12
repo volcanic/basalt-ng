@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
 import {MatchService} from '../../../../services/entities/filter/match.service';
 
@@ -8,7 +8,8 @@ import {MatchService} from '../../../../services/entities/filter/match.service';
 @Component({
   selector: 'app-calendar-grid',
   templateUrl: './calendar-grid.component.html',
-  styleUrls: ['./calendar-grid.component.scss']
+  styleUrls: ['./calendar-grid.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CalendarGridComponent implements OnChanges {
 
