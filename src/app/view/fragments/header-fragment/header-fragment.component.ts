@@ -1,9 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {TaskletType} from '../../../model/tasklet-type.enum';
-import {MatDialog} from '@angular/material';
-import {Project} from '../../../model/entities/project.model';
 import {Tasklet} from '../../../model/entities/tasklet.model';
-import {TaskletService} from '../../../services/entities/tasklet.service';
 
 /**
  * Displays header fragment
@@ -11,32 +8,19 @@ import {TaskletService} from '../../../services/entities/tasklet.service';
 @Component({
   selector: 'app-header-fragment',
   templateUrl: './header-fragment.component.html',
-  styleUrls: ['./header-fragment.component.scss']
+  styleUrls: ['./header-fragment.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderFragmentComponent {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
 
-  /** Project to be displayed */
-  project: Project;
-
   /** Available tasklet types */
   taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]);
 
   /** Reference to static method */
   selectIcon = HeaderFragmentComponent.selectIcon;
-
-  /**
-   * Constructor
-   * @param {TaskletService} taskletService
-   * @param {MatDialog} dialog dialog
-   */
-  constructor(private taskletService: TaskletService,
-              public dialog: MatDialog) {
-
-    this.project = this.taskletService.getProjectByTasklet(this.tasklet);
-  }
 
   /**
    * Retrieves an icon by tasklet type
