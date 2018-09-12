@@ -15,7 +15,7 @@ export class FilterProjectListItemComponent {
   /** Project to be displayed */
   @Input() project: Project;
   /** Event emitter indicating project action */
-  @Output() projectEventEmitter = new EventEmitter<{ action: Action, value: Project[] }>();
+  @Output() projectEventEmitter = new EventEmitter<{ action: Action, project: Project[] }>();
 
   /** Enum for action types */
   action = Action;

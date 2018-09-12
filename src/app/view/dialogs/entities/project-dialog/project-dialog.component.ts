@@ -94,20 +94,20 @@ export class ProjectDialogComponent implements OnInit {
    * Handles click on add button
    */
   addProject() {
-    this.dialogRef.close({action: Action.ADD, value: this.project});
+    this.dialogRef.close({action: Action.ADD, project: this.project});
   }
 
   /**
    * Handles click on update button
    */
   updateProject() {
-    this.dialogRef.close({action: Action.UPDATE, value: this.project});
+    this.dialogRef.close({action: Action.UPDATE, project: this.project});
   }
 
   /**
    * Handles click on delete button
    */
   deleteProject() {
-    this.dialogRef.close({action: Action.DELETE, value: this.project});
+    this.dialogRef.close({action: Action.DELETE, project: this.project});
   }
 }

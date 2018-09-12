@@ -30,15 +30,15 @@
 
       <mat-card-footer>
         <mat-menu #contextMenu="matMenu">
-          <button mat-menu-item (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, value: tasklet})">
+          <button mat-menu-item (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
             Update tasklet
           </button>
           <button mat-menu-item
-                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, value: tasklet})">Update
+                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">Update
             creation time
           </button>
           <button mat-menu-item
-                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, value: tasklet})" *ngIf="tasklet.type == 'Action'
+                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, tasklet: tasklet})" *ngIf="tasklet.type == 'Action'
                                        || tasklet.type == 'Meeting'
                                        || tasklet.type == 'Development'
                                        || tasklet.type == 'Debugging'
@@ -48,7 +48,7 @@
         <div class="attachments">
           <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
             <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
-                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, value: tasklet})"
+                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})"
                  [matTooltip]=date
                  matTooltipPosition="above">
               <span class="left-attached-content"
@@ -56,7 +56,7 @@
               <span class="left-attached-content">{{ time }}</span>
             </div>
           </div>
-          <div class="tags-holder" (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, value: tasklet})">
+          <div class="tags-holder" (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
           <span class="time" *ngIf="media <= mediaType.MEDIUM">
             <label class="time-label">
              <span>{{ time }}</span>
@@ -79,7 +79,7 @@
                                        || tasklet.type == 'Debugging'
                                        || tasklet.type == 'Idea' "
                  class="side-attached right-attached hidden"
-                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, value: tasklet})"
+                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, tasklet: tasklet})"
                  matTooltip="Continue with tasklet"
                  matTooltipPosition="above">
               <div class="right-attached-content">
@@ -87,7 +87,7 @@
               </div>
             </div>
             <div *ngIf="tasklet.type == 'Daily Scrum'" class="side-attached right-attached hidden"
-                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_TEMPLATE, value: tasklet})"
+                 (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_TEMPLATE, tasklet: tasklet})"
                  matTooltip="Template this event" matTooltipPosition="above">
               <div class="right-attached-content">
                 <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>

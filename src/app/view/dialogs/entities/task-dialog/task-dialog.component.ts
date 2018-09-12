@@ -255,21 +255,21 @@ export class TaskDialogComponent implements OnInit {
    * Handles click on add button
    */
   addTask() {
-    this.dialogRef.close({action: Action.ADD, value: this.task, project: this.project, tags: this.tags});
+    this.dialogRef.close({action: Action.ADD, task: this.task, project: this.project, tags: this.tags});
   }
 
   /**
    * Handles click on update button
    */
   updateTask() {
-    this.dialogRef.close({action: Action.UPDATE, value: this.task, project: this.project, tags: this.tags});
+    this.dialogRef.close({action: Action.UPDATE, task: this.task, project: this.project, tags: this.tags});
   }
 
   /**
    * Handles click on delete button
    */
   deleteTask() {
-    this.dialogRef.close({action: Action.DELETE, value: this.task});
+    this.dialogRef.close({action: Action.DELETE, task: this.task});
   }
 
   /**
@@ -277,7 +277,7 @@ export class TaskDialogComponent implements OnInit {
    */
   completeTask() {
     this.task.completionDate = new Date();
-    this.dialogRef.close({action: Action.COMPLETE, value: this.task, project: this.project});
+    this.dialogRef.close({action: Action.COMPLETE, task: this.task, project: this.project});
   }
 
   /**
@@ -285,6 +285,6 @@ export class TaskDialogComponent implements OnInit {
    */
   reopenTask() {
     this.task.completionDate = null;
-    this.dialogRef.close({action: Action.REOPEN, value: this.task, project: this.project});
+    this.dialogRef.close({action: Action.REOPEN, task: this.task, project: this.project});
   }
 }

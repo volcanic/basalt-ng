@@ -14,7 +14,7 @@
 
     <div>
       <mat-checkbox class="special-person" [(ngModel)]="personsNone"
-                    (ngModelChange)="personEventEmitter.emit({action: action.FILTER_NONE, value: personsNone})">elements
+                    (ngModelChange)="personEventEmitter.emit({action: action.FILTER_NONE, personsNone: personsNone})">elements
         without persons
       </mat-checkbox>
     </div>

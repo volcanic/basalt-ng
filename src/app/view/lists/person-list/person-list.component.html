@@ -13,7 +13,7 @@
 </mat-accordion>
 
 <button mat-button class="label headers-align"
-        (click)="personEventEmitter.emit({action: action.OPEN_DIALOG_ADD, value: null})">
+        (click)="personEventEmitter.emit({action: action.OPEN_DIALOG_ADD, person: null})">
   <mat-icon class="add-person-icon" svgIcon="add"></mat-icon>
   <span>Add new person</span>
 </button>

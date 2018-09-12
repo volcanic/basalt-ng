@@ -19,7 +19,7 @@ export class CloneService {
    * @returns {Project} cloned object
    */
   static cloneProject(original: Project): Project {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 
   /**
@@ -28,7 +28,7 @@ export class CloneService {
    * @returns {Project[]} cloned object
    */
   static cloneProjects(original: Project[]): Project[] {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 
   /**
@@ -37,7 +37,7 @@ export class CloneService {
    * @returns {Task} cloned object
    */
   static cloneTask(original: Task): Task {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 
   /**
@@ -46,7 +46,7 @@ export class CloneService {
    * @returns {Tasklet} cloned object
    */
   static cloneTasklet(original: Tasklet): Tasklet {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 
   /**
@@ -55,7 +55,7 @@ export class CloneService {
    * @returns {Tasklet[]} cloned object
    */
   static cloneTasklets(original: Tasklet[]): Tasklet[] {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 
   /**
@@ -64,7 +64,7 @@ export class CloneService {
    * @returns {Person}
    */
   static clonePerson(original: Person): Person {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 
   /**
@@ -73,7 +73,7 @@ export class CloneService {
    * @returns {Person[]} cloned object
    */
   static clonePersons(original: Person[]): Person[] {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 
   /**
@@ -82,7 +82,7 @@ export class CloneService {
    * @returns {Tag} cloned object
    */
   static cloneTag(original: Tag): Tag {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 
   /**
@@ -91,6 +91,6 @@ export class CloneService {
    * @returns {Tag[]} cloned object
    */
   static cloneTags(original: Tag[]): Tag[] {
-    return JSON.parse(JSON.stringify(original));
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 }

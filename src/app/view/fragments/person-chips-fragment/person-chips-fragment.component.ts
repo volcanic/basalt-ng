@@ -90,7 +90,7 @@ export class PersonChipsFragmentComponent implements OnInit {
 
   /**
    * Handles deletion of a person
-   * @param {Person} value
+   * @param {Person} value person to be deleted
    */
   onDeletePerson(value: Person) {
     this.persons = this.persons.filter(person => {

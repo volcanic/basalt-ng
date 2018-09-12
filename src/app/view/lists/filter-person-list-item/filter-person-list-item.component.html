@@ -2,7 +2,7 @@
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <div>
-    <mat-checkbox [(ngModel)]=person.checked (ngModelChange)="personEventEmitter.emit({action: action.FILTER_LIST, value: [person]})">{{ person.name }}
+    <mat-checkbox [(ngModel)]=person.checked (ngModelChange)="personEventEmitter.emit({action: action.FILTER_LIST, persons: [person]})">{{ person.name }}
     </mat-checkbox>
   </div>
 </div>

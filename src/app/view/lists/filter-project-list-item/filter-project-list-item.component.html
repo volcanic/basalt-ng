@@ -3,7 +3,7 @@
      (mouseleave)="onHoverContainer(false)">
   <div>
     <mat-checkbox [(ngModel)]=project.checked
-                  (ngModelChange)="projectEventEmitter.emit({action: action.FILTER_LIST, value: [project]})">{{
+                  (ngModelChange)="projectEventEmitter.emit({action: action.FILTER_LIST, projects: [project]})">{{
       project.name }}
     </mat-checkbox>
   </div>

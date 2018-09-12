@@ -1,6 +1,7 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Tasklet} from '../../../../model/entities/tasklet.model';
+import {Action} from '../../../../model/ui/action.enum';
 
 /**
  * Displays time picker
@@ -10,7 +11,7 @@ import {Tasklet} from '../../../../model/entities/tasklet.model';
   templateUrl: './time-picker-dialog.component.html',
   styleUrls: ['./time-picker-dialog.component.scss']
 })
-export class TimePickerDialogComponent {
+export class TimePickerDialogComponent implements OnInit {
 
   /** Dialog title */
   dialogTitle = '';
@@ -25,7 +26,28 @@ export class TimePickerDialogComponent {
    */
   constructor(public dialogRef: MatDialogRef<TimePickerDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    this.dialogTitle = data.dialogTitle;
+  }
+
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle hook
+   */
+  ngOnInit() {
+    this.initializeData();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes data
+   */
+  private initializeData() {
+    this.dialogTitle = this.data.dialogTitle;
     this.tasklet = this.data.tasklet;
   }
 
@@ -49,6 +71,6 @@ export class TimePickerDialogComponent {
    * Handles click on update button
    */
   updateCreationTime() {
-    this.dialogRef.close(this.tasklet);
+    this.dialogRef.close({action: Action.UPDATE, tasklet: this.tasklet});
   }
 }

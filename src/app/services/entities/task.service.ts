@@ -280,9 +280,7 @@ export class TaskService {
    */
   public notify() {
     this.tasksSubject.next(Array.from(this.tasks.values()).sort((t1, t2) => {
-      return t2.name < t1.name ? 1 : -1;
-    }).sort((t1, t2) => {
-      return new Date(t2.modificationDate).getTime() - new Date(t1.modificationDate).getTime();
+      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     }));
   }
 

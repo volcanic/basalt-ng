@@ -90,7 +90,7 @@ export class TagChipsFragmentComponent implements OnInit {
 
   /**
    * Handles deletion of a tag
-   * @param {Tag} value
+   * @param {Tag} value tag to be deleted
    */
   onDeleteTag(value: Tag) {
     if (!this.readonly) {

@@ -94,20 +94,20 @@ export class TagDialogComponent implements OnInit {
    * Handles click on add button
    */
   addTag() {
-    this.dialogRef.close({action: Action.ADD, value: this.tag});
+    this.dialogRef.close({action: Action.ADD, tag: this.tag});
   }
 
   /**
    * Handles click on update button
    */
   updateTag() {
-    this.dialogRef.close({action: Action.UPDATE, value: this.tag});
+    this.dialogRef.close({action: Action.UPDATE, tag: this.tag});
   }
 
   /**
    * Handles click on delete button
    */
   deleteTag() {
-    this.dialogRef.close({action: Action.DELETE, value: this.tag});
+    this.dialogRef.close({action: Action.DELETE, tag: this.tag});
   }
 }

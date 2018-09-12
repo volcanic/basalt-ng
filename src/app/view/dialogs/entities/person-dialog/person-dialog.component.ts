@@ -94,20 +94,20 @@ export class PersonDialogComponent implements OnInit {
    * Handles click on add button
    */
   addPerson() {
-    this.dialogRef.close({action: Action.ADD, value: this.person});
+    this.dialogRef.close({action: Action.ADD, person: this.person});
   }
 
   /**
    * Handles click on update button
    */
   updatePerson() {
-    this.dialogRef.close({action: Action.UPDATE, value: this.person});
+    this.dialogRef.close({action: Action.UPDATE, person: this.person});
   }
 
   /**
    * Handles click on delete button
    */
   deletePerson() {
-    this.dialogRef.close({action: Action.DELETE, value: this.person});
+    this.dialogRef.close({action: Action.DELETE, person: this.person});
   }
 }

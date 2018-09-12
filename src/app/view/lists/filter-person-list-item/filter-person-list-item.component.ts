@@ -16,7 +16,7 @@ export class FilterPersonListItemComponent {
   /** Person to be displayed */
   @Input() person: Person;
   /** Event emitter indicating person action */
-  @Output() personEventEmitter = new EventEmitter<{ action: Action, value: Person }>();
+  @Output() personEventEmitter = new EventEmitter<{ action: Action, person: Person }>();
 
   /** Enum for action types */
   action = Action;

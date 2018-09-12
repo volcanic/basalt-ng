@@ -47,7 +47,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   @Input() persons = new Map<string, Person>();
 
   /** Event emitter indicating tasklet action */
-  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, value: Tasklet }>();
+  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
   /** Trigger for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
@@ -208,7 +208,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   onTaskletClicked() {
     if (this.media > this.mediaType.MEDIUM) {
-      this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, value: this.tasklet});
+      this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, tasklet: this.tasklet});
     } else {
       this.contextMenuTrigger.openMenu();
     }

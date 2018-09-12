@@ -11,6 +11,7 @@ import {
 import {DateService} from '../../../services/util/date.service';
 import {Media} from '../../../model/ui/media.enum';
 import {Action} from '../../../model/ui/action.enum';
+import {Task} from '../../../model/entities/task.model';
 
 /**
  * Displays task list
