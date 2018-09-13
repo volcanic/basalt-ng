@@ -1164,12 +1164,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.DELETE: {
         const referencesTasklets = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
-          return tasklet.tagIds.some(tagId => {
+          return tasklet.tagIds != null && tasklet.tagIds.some(tagId => {
             return tagId === tag.id;
           });
         });
         const referencesTasks = Array.from(this.taskService.tasks.values()).some((task: Task) => {
-          return task.tagIds.some(tagId => {
+          return task.tagIds != null && task.tagIds.some(tagId => {
             return tagId === tag.id;
           });
         });
@@ -1299,7 +1299,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.DELETE: {
         const referencesTasklets = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
-          return tasklet.personIds.some(personId => {
+          return tasklet.personIds != null && tasklet.personIds.some(personId => {
             return personId === person.id;
           });
         });

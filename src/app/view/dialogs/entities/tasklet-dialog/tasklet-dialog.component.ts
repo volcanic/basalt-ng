@@ -142,10 +142,8 @@ export class TaskletDialogComponent implements OnInit {
    * Handles person changes
    * @para persons new persons
    */
-  onPersonChanged(persons: Person[]) {
-    this.tasklet.personIds = persons.map(person => {
-      return person.id;
-    });
+  onPersonsChanged(persons: Person[]) {
+    this.persons = persons;
   }
 
   /**

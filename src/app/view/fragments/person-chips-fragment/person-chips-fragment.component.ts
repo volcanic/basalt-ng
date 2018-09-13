@@ -32,8 +32,6 @@ export class PersonChipsFragmentComponent implements OnInit {
   /** Current inputFieldValue of input field */
   inputFieldValue = '';
 
-  /** Array of options */
-  options: string[] = [];
   /** Array of options filtered by currently typed inputFieldValue */
   filteredOptions: Observable<string[]>;
 
@@ -79,11 +77,13 @@ export class PersonChipsFragmentComponent implements OnInit {
    * @param {Person} value person to be deleted
    */
   onDeletePerson(value: Person) {
-    this.persons = this.persons.filter(person => {
-      return person.name !== value.name;
-    });
+    if (!this.readonly) {
+      this.persons = this.persons.filter(person => {
+        return person.name !== value.name;
+      });
 
-    this.notify();
+      this.notify();
+    }
   }
 
   /**
