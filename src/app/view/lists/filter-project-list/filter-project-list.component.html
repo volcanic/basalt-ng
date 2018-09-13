@@ -12,7 +12,7 @@
     </app-filter-project-list-item>
     <div>
       <mat-checkbox class="special-project" [(ngModel)]="projectsNone"
-                    (ngModelChange)="projectEventEmitter.emit({action: action.FILTER_NONE, projectsNone: projectsNone})">
+                    (ngModelChange)="onFilterNone(projectsNone)">
         elements without projects
       </mat-checkbox>
     </div>

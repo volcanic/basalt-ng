@@ -16,22 +16,16 @@ export class FilterPersonListItemComponent {
   /** Person to be displayed */
   @Input() person: Person;
   /** Event emitter indicating person action */
-  @Output() personEventEmitter = new EventEmitter<{ action: Action, person: Person }>();
-
-  /** Enum for action types */
-  action = Action;
-  /** Animation state */
-  state = 'inactive';
+  @Output() personEventEmitter = new EventEmitter<{ action: Action, persons: Person[] }>();
 
   //
   // Actions
   //
 
   /**
-   * Handles hover over container
-   * @param {boolean} hovered whether there is currently a hover event
+   * Handles (un-)selecting a person
    */
-  onHoverContainer(hovered: boolean) {
-    this.state = hovered ? 'active' : 'inactive';
+  onPersonChanged(person: Person) {
+    this.personEventEmitter.emit({action: Action.FILTER_LIST, persons: [person]});
   }
 }

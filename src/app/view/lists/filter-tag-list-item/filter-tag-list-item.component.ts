@@ -15,22 +15,16 @@ export class FilterTagListItemComponent {
   /** Tag to be displayed */
   @Input() tag: Tag;
   /** Event emitter indicating tag action */
-  @Output() tagEventEmitter = new EventEmitter<{ action: Action, list: Tag[], none: boolean }>();
-
-  /** Enum for action types */
-  action = Action;
-  /** Animation state */
-  state = 'inactive';
+  @Output() tagEventEmitter = new EventEmitter<{ action: Action, tags: Tag[] }>();
 
   //
   // Actions
   //
 
   /**
-   * Handles hover over container
-   * @param {boolean} hovered whether there is currently a hover event
+   * Handles (un-)selecting a tag
    */
-  onHoverContainer(hovered: boolean) {
-    this.state = hovered ? 'active' : 'inactive';
+  onTagChanged(tag: Tag) {
+    this.tagEventEmitter.emit({action: Action.FILTER_LIST, tags: [tag]});
   }
 }

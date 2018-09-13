@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {CloneService} from '../../../services/util/clone.service';
 import {Action} from '../../../model/ui/action.enum';
+import {Person} from '../../../model/entities/person.model';
 
 /**
  * Displays filter person list
@@ -18,7 +19,7 @@ export class FilterPersonListComponent {
   /** Flag indicating whether entities without person shall be displayed */
   @Input() personsNone = false;
   /** Event emitter indicating person action */
-  @Output() personEventEmitter = new EventEmitter<{ action: Action, list: any[], none: boolean }>();
+  @Output() personEventEmitter = new EventEmitter<{ action: Action, persons?: Person[], personsNone?: boolean }>();
 
   /** Enum for action types */
   action = Action;
@@ -26,6 +27,14 @@ export class FilterPersonListComponent {
   //
   // Actions
   //
+
+  /**
+   * Handles (de-)selection of none
+   * @param personsNone persons none flag
+   */
+  onFilterNone(personsNone: boolean) {
+    this.personEventEmitter.emit({action: Action.FILTER_NONE, personsNone: personsNone});
+  }
 
   /**
    * Handles click on button that sets all values to the same
@@ -37,6 +46,6 @@ export class FilterPersonListComponent {
     this.persons = CloneService.clonePersons(this.persons);
     this.personsNone = checked;
 
-    this.personEventEmitter.emit({action: Action.FILTER_ALL, list: this.persons, none: this.personsNone});
+    this.personEventEmitter.emit({action: Action.FILTER_ALL, persons: this.persons, personsNone: this.personsNone});
   }
 }

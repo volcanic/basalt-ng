@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {CloneService} from '../../../services/util/clone.service';
 import {Action} from '../../../model/ui/action.enum';
+import {Project} from '../../../model/entities/project.model';
 
 /**
  * Displays filter project list
@@ -18,14 +19,19 @@ export class FilterProjectListComponent {
   /** Flag indicating whether entities without project shall be displayed */
   @Input() projectsNone = false;
   /** Event emitter indicating project action */
-  @Output() projectEventEmitter = new EventEmitter<{ action: Action, list: any[], none: boolean }>();
-
-  /** Enum for action types */
-  action = Action;
+  @Output() projectEventEmitter = new EventEmitter<{ action: Action, projects?: Project[], projectsNone?: boolean }>();
 
   //
   // Actions
   //
+
+  /**
+   * Handles (de-)selection of none
+   * @param projectsNone projects none flag
+   */
+  onFilterNone(projectsNone: boolean) {
+    this.projectEventEmitter.emit({action: Action.FILTER_NONE, projectsNone: projectsNone});
+  }
 
   /**
    * Handles click on button that sets all values to the same
@@ -38,6 +44,10 @@ export class FilterProjectListComponent {
     this.projects = CloneService.cloneProjects(this.projects);
     this.projectsNone = checked;
 
-    this.projectEventEmitter.emit({action: Action.FILTER_ALL, list: this.projects, none: this.projectsNone});
+    this.projectEventEmitter.emit({
+      action: Action.FILTER_ALL,
+      projects: this.projects,
+      projectsNone: this.projectsNone
+    });
   }
 }

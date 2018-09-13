@@ -12,7 +12,7 @@
     </app-filter-tag-list-item>
     <div>
       <mat-checkbox class="special-tag" [(ngModel)]="tagsNone"
-                    (ngModelChange)="tagEventEmitter.emit({action: action.FILTER_NONE, none: tagsNone})">
+                    (ngModelChange)="onFilterNone(tagsNone)">
         elements without tags
       </mat-checkbox>
     </div>

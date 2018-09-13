@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Project} from '../../../model/entities/project.model';
 import {Action} from '../../../model/ui/action.enum';
 
@@ -8,29 +8,24 @@ import {Action} from '../../../model/ui/action.enum';
 @Component({
   selector: 'app-filter-project-list-item',
   templateUrl: './filter-project-list-item.component.html',
-  styleUrls: ['./filter-project-list-item.component.scss']
+  styleUrls: ['./filter-project-list-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FilterProjectListItemComponent {
 
   /** Project to be displayed */
   @Input() project: Project;
   /** Event emitter indicating project action */
-  @Output() projectEventEmitter = new EventEmitter<{ action: Action, project: Project[] }>();
-
-  /** Enum for action types */
-  action = Action;
-  /** Animation state */
-  state = 'inactive';
+  @Output() projectEventEmitter = new EventEmitter<{ action: Action, projects: Project[] }>();
 
   //
   // Actions
   //
 
   /**
-   * Handles hover over container
-   * @param {boolean} hovered whether there is currently a hover event
+   * Handles (un-)selecting a project
    */
-  onHoverContainer(hovered: boolean) {
-    this.state = hovered ? 'active' : 'inactive';
+  onProjectChanged(project: Project) {
+    this.projectEventEmitter.emit({action: Action.FILTER_LIST, projects: [project]});
   }
 }
