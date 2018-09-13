@@ -379,7 +379,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         return matchesSearchItem && matchesProjects && matchesTags && matchesPersons;
       }).sort((t1, t2) => {
-        return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+        return new Date(t2.creationDate).getTime() > new Date(t1.creationDate).getTime() ? 1 : -1;
       });
 
       // Filter tasks
