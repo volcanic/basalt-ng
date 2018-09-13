@@ -337,6 +337,11 @@ export class DateService {
     return '';
   }
 
+  /**
+   * Returns the calendar week number of a given date
+   * @param {Date} date date to get calendar week number for
+   * @returns {number} calendar week number
+   */
   static getWeekNumber(date: Date) {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     const dayNum = d.getUTCDay() || 7;
