@@ -93,9 +93,21 @@ export class TaskletDialogComponent implements OnInit {
    * Initializes options
    */
   private initializeOptions() {
-    this.taskOptions = Array.from(this.suggestionService.taskOptions.values()).reverse();
-    this.tagOptions = Array.from(this.suggestionService.tagOptions.values());
-    this.personOptions = Array.from(this.suggestionService.personOptions.values());
+    this.taskOptions = Array.from(this.suggestionService.taskOptions.values()).sort((t1, t2) => {
+      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+    }).map(t => {
+      return t.name;
+    });
+    this.tagOptions = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
+      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+    }).map(t => {
+      return t.name;
+    });
+    this.personOptions = Array.from(this.suggestionService.personOptions.values()).sort((p1, p2) => {
+      return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
+    }).map(p => {
+      return p.name;
+    });
   }
 
   //

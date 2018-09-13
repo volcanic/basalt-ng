@@ -235,8 +235,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes tasklet subscription
    */
   private initializeTaskletSubscription() {
-    this.tasklets = Array.from(this.taskletService.tasklets.values());
-
     this.taskletService.taskletsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -261,9 +259,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes task subscription
    */
   private initializeTaskSubscription() {
-    // this.tasksMap = this.taskService.tasks;
-    // this.tasks = Array.from(this.taskService.tasks.values());
-
     this.taskService.tasksSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -289,7 +284,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes project subscription
    */
   private initializeProjectSubscription() {
-    this.projects = Array.from(this.projectService.projects.values());
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -315,7 +309,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes tag subscription
    */
   private initializeTagSubscription() {
-    this.tags = Array.from(this.tagService.tags.values());
     this.tagService.tagsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -339,7 +332,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes person subscription
    */
   private initializePersonSubscription() {
-    this.persons = Array.from(this.personService.persons.values());
     this.personService.personsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {

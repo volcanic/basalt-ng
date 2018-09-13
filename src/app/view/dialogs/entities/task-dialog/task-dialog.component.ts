@@ -115,7 +115,11 @@ export class TaskDialogComponent implements OnInit {
    * Initializes options
    */
   private initializeOptions() {
-    this.projectOptions = Array.from(this.suggestionService.projectOptions.values()).reverse();
+    this.projectOptions = Array.from(this.suggestionService.projectOptions.values()).sort((p1, p2) => {
+      return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
+    }).map(p => {
+      return p.name;
+    });
   }
 
   /**

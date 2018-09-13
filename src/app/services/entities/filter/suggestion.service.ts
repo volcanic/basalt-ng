@@ -20,13 +20,13 @@ export class SuggestionService {
   searchOptionsCounter = 0;
 
   /** Map of task options */
-  taskOptions: Map<string, string>;
+  taskOptions: Map<string, Task>;
   /** Map of project options */
-  projectOptions: Map<string, string>;
+  projectOptions: Map<string, Project>;
   /** Map of person options */
-  personOptions: Map<string, string>;
+  personOptions: Map<string, Person>;
   /** Map of tag options */
-  tagOptions: Map<string, string>;
+  tagOptions: Map<string, Tag>;
 
   /** Subject that publishes search options */
   searchOptionsSubject = new Subject<string[]>();
@@ -36,10 +36,10 @@ export class SuggestionService {
    */
   constructor() {
     this.searchOptions = new Map<string, string>();
-    this.taskOptions = new Map<string, string>();
-    this.projectOptions = new Map<string, string>();
-    this.personOptions = new Map<string, string>();
-    this.tagOptions = new Map<string, string>();
+    this.taskOptions = new Map<string, Task>();
+    this.projectOptions = new Map<string, Project>();
+    this.personOptions = new Map<string, Person>();
+    this.tagOptions = new Map<string, Tag>();
   }
 
   //
@@ -93,7 +93,7 @@ export class SuggestionService {
         if (t.name && t.creationDate) {
           const value = t.name.trim();
           this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
-          this.taskOptions.set(value, value);
+          this.taskOptions.set(value, t);
         }
       }
     });
@@ -114,7 +114,7 @@ export class SuggestionService {
         if (p.name && p.creationDate) {
           const value = p.name.trim();
           this.searchOptions.set(p.creationDate.toString() + this.searchOptionsCounter++, value);
-          this.projectOptions.set(value, value);
+          this.projectOptions.set(value, p);
         }
       }
     });
@@ -133,7 +133,7 @@ export class SuggestionService {
         if (p.name) {
           const value = p.name.trim();
           this.searchOptions.set(value, value);
-          this.personOptions.set(value, value);
+          this.personOptions.set(value, p);
         }
       }
     });
@@ -152,7 +152,7 @@ export class SuggestionService {
         if (t.name) {
           const value = t.name.trim();
           this.searchOptions.set(value, value);
-          this.tagOptions.set(value, value);
+          this.tagOptions.set(value, t);
         }
       }
     });

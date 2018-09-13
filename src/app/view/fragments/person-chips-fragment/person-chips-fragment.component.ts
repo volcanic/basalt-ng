@@ -133,7 +133,7 @@ export class PersonChipsFragmentComponent implements OnInit {
   filterAutoCompleteOptions(value: string): string[] {
     return this.personOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
-    ).reverse();
+    );
   }
 
   //

@@ -45,6 +45,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeTask();
+    this.initializeTaskOptions();
   }
 
   //
@@ -107,7 +108,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   private filterOptions(value: string): string[] {
     return this.taskOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
-    ).reverse();
+    );
   }
 
   //
