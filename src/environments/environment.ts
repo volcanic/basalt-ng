@@ -5,15 +5,16 @@
 
 /**
  * Environment settings for development environment
- * @type {{production: boolean; DATABASE_ENTITIES: string; DATABASE_SETTINGS: string; LIMIT_PROJECTS: number; LIMIT_TASKS: number; LIMIT_TASKLETS: number; LIMIT_PERSONS: number; LIMIT_TAGS: number; NAME: any; VERSION: any; LICENSE: string | any; HOMEPAGE: string | any; TAGS: any}}
+ * @type {{production: boolean; APP_NAME: string; DATABASE_ENTITIES: string; DATABASE_SETTINGS: string; LIMIT_PROJECTS: number; LIMIT_TASKS: number; LIMIT_TASKLETS: number; LIMIT_PERSONS: number; LIMIT_TAGS: number; NAME: any; VERSION: any; LICENSE: string | any; HOMEPAGE: string | any; TAGS: any}}
  */
 export const environment = {
   production: false,
+  APP_NAME: 'Basalt Dev',
   DATABASE_ENTITIES: 'basalt-dev',
   DATABASE_SETTINGS: 'basalt_settings-dev',
   LIMIT_PROJECTS: 50,
   LIMIT_TASKS: 500,
-  LIMIT_TASKLETS: 100,
+  LIMIT_TASKLETS: 500,
   LIMIT_PERSONS: 100,
   LIMIT_TAGS: 100,
   NAME: require('../../package.json').name,

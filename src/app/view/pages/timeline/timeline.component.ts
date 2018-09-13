@@ -66,7 +66,7 @@ import {CloneService} from '../../../services/util/clone.service';
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** App title */
-  title = 'Basalt';
+  title = environment.APP_NAME;
 
   /** Array of tasklets */
   public tasklets: Tasklet[] = [];
