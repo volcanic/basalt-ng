@@ -19,7 +19,7 @@ export class Project extends Entity {
   constructor(name: string, checked: boolean = false) {
     super();
     this.entityType = EntityType.PROJECT;
-    this.name = name;
+    this.name = name.trim();
     this.checked = checked;
   }
 }

@@ -25,7 +25,7 @@ export class Person extends Entity {
   constructor(name: string, checked: boolean = false) {
     super();
     this.entityType = EntityType.PERSON;
-    this.name = name;
+    this.name = name.trim();
 
     this.checked = checked;
   }

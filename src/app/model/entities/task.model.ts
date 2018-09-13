@@ -31,7 +31,7 @@ export class Task extends Entity {
   constructor(name: string) {
     super();
     this.entityType = EntityType.TASK;
-    this.name = name;
+    this.name = name.trim();
     this.description = new Description();
     this.projectId = '';
     this.dueDate = null;
