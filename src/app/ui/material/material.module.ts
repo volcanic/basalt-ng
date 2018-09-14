@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {
-  MatAutocompleteModule, MatBadgeModule,
+  MatAutocompleteModule,
+  MatBadgeModule,
   MatButtonModule,
   MatCardModule,
   MatCheckboxModule,
@@ -9,7 +10,9 @@ import {
   MatDatepickerModule,
   MatDialogModule,
   MatExpansionModule,
-  MatIconModule, MatIconRegistry, MatInputModule,
+  MatIconModule,
+  MatIconRegistry,
+  MatInputModule,
   MatListModule,
   MatMenuModule,
   MatNativeDateModule,
@@ -72,4 +75,5 @@ import {
     MatTreeModule
   ]
 })
-export class AppMaterialModule { }
+export class MaterialModule {
+}

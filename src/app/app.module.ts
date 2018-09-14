@@ -1,6 +1,5 @@
 import {AboutDialogComponent} from './view/dialogs/app-info/about-dialog/about-dialog.component';
 import {AppComponent} from './app.component';
-import {AppMaterialModule} from './app-material/app-material.module';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
@@ -76,6 +75,7 @@ import {TimePickerDialogComponent} from './view/dialogs/other/time-picker-dialog
 import {TimelineComponent} from './view/pages/timeline/timeline.component';
 import {TimelineToolbarComponent} from './view/toolbars/timeline-toolbar/timeline-toolbar.component';
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
+import {MaterialModule} from './ui/material/material.module';
 
 @NgModule({
   declarations: [
@@ -139,7 +139,7 @@ import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-d
   ],
   imports: [
     AppRoutingModule,
-    AppMaterialModule,
+    MaterialModule,
     BrowserAnimationsModule,
     BrowserModule,
     FileUploadModule,
