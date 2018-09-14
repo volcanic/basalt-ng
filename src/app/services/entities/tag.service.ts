@@ -7,7 +7,7 @@ import {environment} from '../../../environments/environment';
 import {Scope} from '../../model/scope.enum';
 import {ScopeService} from './scope/scope.service';
 import {PouchDBService} from '../persistence/pouchdb.service';
-import {SnackbarService} from '../ui/snackbar.service';
+import {SnackbarService} from '../../core/ui/services/snackbar.service';
 
 /**
  * Handles tags including

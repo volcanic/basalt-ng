@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {SnackbarService} from '../../../services/ui/snackbar.service';
+import {SnackbarService} from '../../../core/ui/services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
 import {TaskletService} from '../../../services/entities/tasklet.service';
 import {TaskletDialogComponent} from '../../dialogs/entities/tasklet-dialog/tasklet-dialog.component';
@@ -18,8 +18,8 @@ import {Task} from '../../../model/entities/task.model';
 import {ProjectDialogComponent} from '../../dialogs/entities/project-dialog/project-dialog.component';
 import {FilterService} from '../../../services/entities/filter/filter.service';
 import {Tag} from '../../../model/entities/tag.model';
-import {MediaService} from '../../../services/ui/media.service';
-import {Media} from '../../../model/ui/media.enum';
+import {MediaService} from '../../../core/ui/services/media.service';
+import {Media} from '../../../core/ui/model/media.enum';
 import {map, takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {TaskListDialogComponent} from '../../dialogs/lists/task-list-dialog/task-list-dialog.component';

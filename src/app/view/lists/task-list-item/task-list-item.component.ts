@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChi
 import {Task} from '../../../model/entities/task.model';
 import {MatMenuTrigger} from '@angular/material';
 import {Animations, AnimationState} from './task-list-item.animation';
-import {Media} from '../../../model/ui/media.enum';
+import {Media} from '../../../core/ui/model/media.enum';
 import {TaskDigest} from '../../../model/entities/digest/task-digest.model';
 import {Action} from '../../../model/ui/action.enum';
 

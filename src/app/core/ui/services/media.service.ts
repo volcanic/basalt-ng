@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
-import {Media} from '../../model/ui/media.enum';
+import {Media} from '../model/media.enum';
 import {Subject} from 'rxjs/index';
 
 /**

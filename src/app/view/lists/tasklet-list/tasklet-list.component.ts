@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {Tasklet} from '../../../model/entities/tasklet.model';
-import {Media} from '../../../model/ui/media.enum';
+import {Media} from '../../../core/ui/model/media.enum';
 import {Task} from '../../../model/entities/task.model';
 import {Project} from '../../../model/entities/project.model';
 import {Tag} from '../../../model/entities/tag.model';

@@ -5,7 +5,7 @@ import {EntityType} from '../../model/entities/entity-type.enum';
 import {SuggestionService} from './filter/suggestion.service';
 import {PouchDBService} from '../persistence/pouchdb.service';
 import {environment} from '../../../environments/environment';
-import {SnackbarService} from '../ui/snackbar.service';
+import {SnackbarService} from '../../core/ui/services/snackbar.service';
 import {ScopeService} from './scope/scope.service';
 import {Scope} from '../../model/scope.enum';
 

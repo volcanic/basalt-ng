@@ -3,7 +3,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {debounceTime, map, startWith} from 'rxjs/operators';
 import {Subject} from 'rxjs/Subject';
-import {Media} from '../../../model/ui/media.enum';
+import {Media} from '../../../core/ui/model/media.enum';
 import {Scope} from '../../../model/scope.enum';
 
 /**

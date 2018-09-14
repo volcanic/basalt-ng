@@ -7,7 +7,7 @@ import {environment} from '../../../environments/environment';
 import {Scope} from '../../model/scope.enum';
 import {PouchDBService} from '../persistence/pouchdb.service';
 import {ScopeService} from './scope/scope.service';
-import {SnackbarService} from '../ui/snackbar.service';
+import {SnackbarService} from '../../core/ui/services/snackbar.service';
 
 /**
  * Handles persons including

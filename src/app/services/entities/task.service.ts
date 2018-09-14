@@ -7,7 +7,7 @@ import {PouchDBService} from '../persistence/pouchdb.service';
 import {Project} from '../../model/entities/project.model';
 import {ProjectService} from './project.service';
 import {environment} from '../../../environments/environment';
-import {SnackbarService} from '../ui/snackbar.service';
+import {SnackbarService} from '../../core/ui/services/snackbar.service';
 import {ScopeService} from './scope/scope.service';
 import {Scope} from '../../model/scope.enum';
 import {TagService} from './tag.service';

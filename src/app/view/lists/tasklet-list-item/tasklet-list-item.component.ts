@@ -15,7 +15,7 @@ import {DateService} from '../../../services/util/date.service';
 import {TaskletType} from '../../../model/tasklet-type.enum';
 import {Project} from '../../../model/entities/project.model';
 import {Task} from '../../../model/entities/task.model';
-import {Media} from '../../../model/ui/media.enum';
+import {Media} from '../../../core/ui/model/media.enum';
 import {ColorService} from '../../../services/ui/color.service';
 import {Action} from '../../../model/ui/action.enum';
 import {Tag} from '../../../model/entities/tag.model';

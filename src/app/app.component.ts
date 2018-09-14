@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {SnackbarService} from './services/ui/snackbar.service';
+import {SnackbarService} from './core/ui/services/snackbar.service';
 import {PouchDBService} from './services/persistence/pouchdb.service';
 import {MatDialog, MatIconRegistry, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {environment} from '../environments/environment';
@@ -12,7 +12,7 @@ import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TaskService} from './services/entities/task.service';
 import {TaskletService} from './services/entities/tasklet.service';
-import {ThemeService} from './services/ui/theme.service';
+import {ThemeService} from './core/ui/services/theme.service';
 import {OverlayContainer} from '@angular/cdk/overlay';
 
 /**

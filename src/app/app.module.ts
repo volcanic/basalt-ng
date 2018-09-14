@@ -33,7 +33,6 @@ import {HttpModule} from '@angular/http';
 import {InViewportModule} from 'ng-in-viewport';
 import {InformationDialogComponent} from './view/dialogs/other/information-dialog/information-dialog.component';
 import {MatchService} from './services/entities/filter/match.service';
-import {MediaService} from './services/ui/media.service';
 import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-dialog/new-features-dialog.component';
 import {NgModule} from '@angular/core';
 import {PersonAutocompleteFragmentComponent} from './view/fragments/person-autocomplete-fragment/person-autocomplete-fragment.component';
@@ -53,7 +52,6 @@ import {ProjectListDialogComponent} from './view/dialogs/lists/project-list-dial
 import {ProjectListItemComponent} from './view/lists/project-list-item/project-list-item.component';
 import {ScrollDispatchModule} from '@angular/cdk/scrolling';
 import {SettingsService} from './services/persistence/settings.service';
-import {SnackbarService} from './services/ui/snackbar.service';
 import {SplashScreenComponent} from './view/pages/splash-screen/splash-screen.component';
 import {TagChipsFragmentComponent} from './view/fragments/tag-chips-fragment/tag-chips-fragment.component';
 import {TagDialogComponent} from './view/dialogs/entities/tag-dialog/tag-dialog.component';
@@ -76,6 +74,7 @@ import {TimelineComponent} from './view/pages/timeline/timeline.component';
 import {TimelineToolbarComponent} from './view/toolbars/timeline-toolbar/timeline-toolbar.component';
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
 import {MaterialModule} from './ui/material/material.module';
+import {UiModule} from './core/ui/ui.module';
 
 @NgModule({
   declarations: [
@@ -148,7 +147,8 @@ import {MaterialModule} from './ui/material/material.module';
     HttpClientModule,
     InViewportModule,
     ReactiveFormsModule,
-    ScrollDispatchModule
+    ScrollDispatchModule,
+    UiModule
   ],
   entryComponents: [
     AboutDialogComponent,
@@ -174,11 +174,9 @@ import {MaterialModule} from './ui/material/material.module';
     DateService,
     DigestService,
     MatchService,
-    MediaService,
     PouchDBService,
     PouchDBSettingsService,
     SettingsService,
-    SnackbarService,
     TaskletService,
   ],
   bootstrap: [AppComponent]

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {Media} from '../../../model/ui/media.enum';
+import {Media} from '../../../core/ui/model/media.enum';
 import {Action} from '../../../model/ui/action.enum';
 
 /**
