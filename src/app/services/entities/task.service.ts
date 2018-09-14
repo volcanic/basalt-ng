@@ -3,7 +3,7 @@ import {Task} from '../../model/entities/task.model';
 import {Subject} from 'rxjs/Subject';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {SuggestionService} from './filter/suggestion.service';
-import {PouchDBService} from '../persistence/pouchdb.service';
+import {PouchDBService} from '../../core/persistence/services/pouchdb.service';
 import {Project} from '../../model/entities/project.model';
 import {ProjectService} from './project.service';
 import {environment} from '../../../environments/environment';

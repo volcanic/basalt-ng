@@ -3,7 +3,7 @@ import {Project} from '../../model/entities/project.model';
 import {Subject} from 'rxjs/Subject';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {SuggestionService} from './filter/suggestion.service';
-import {PouchDBService} from '../persistence/pouchdb.service';
+import {PouchDBService} from '../../core/persistence/services/pouchdb.service';
 import {environment} from '../../../environments/environment';
 import {SnackbarService} from '../../core/ui/services/snackbar.service';
 import {ScopeService} from './scope/scope.service';

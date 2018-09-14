@@ -8,7 +8,7 @@ import {ProjectService} from '../../../../services/entities/project.service';
 import {TaskService} from '../../../../services/entities/task.service';
 import {TaskletService} from '../../../../services/entities/tasklet.service';
 import {EntityService} from '../../../../services/entities/entity.service';
-import {PouchDBService} from '../../../../services/persistence/pouchdb.service';
+import {PouchDBService} from '../../../../core/persistence/services/pouchdb.service';
 
 /**
  * Displays upload dialog

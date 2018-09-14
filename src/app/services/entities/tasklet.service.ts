@@ -7,7 +7,7 @@ import {TaskletDailyScrum} from '../../model/entities/scrum/tasklet-daily-scrum.
 import {DateService} from '../util/date.service';
 import {EntityType} from '../../model/entities/entity-type.enum';
 import {SuggestionService} from './filter/suggestion.service';
-import {PouchDBService} from '../persistence/pouchdb.service';
+import {PouchDBService} from '../../core/persistence/services/pouchdb.service';
 import {Project} from '../../model/entities/project.model';
 import {Task} from '../../model/entities/task.model';
 import {TaskService} from './task.service';

@@ -41,8 +41,8 @@ import {PersonDialogComponent} from './view/dialogs/entities/person-dialog/perso
 import {PersonFilterDialogComponent} from './view/dialogs/filters/person-filter-dialog/person-filter-dialog.component';
 import {PersonListComponent} from './view/lists/person-list/person-list.component';
 import {PersonListItemComponent} from './view/lists/person-list-item/person-list-item.component';
-import {PouchDBService} from './services/persistence/pouchdb.service';
-import {PouchDBSettingsService} from './services/persistence/pouchdb-settings.service';
+import {PouchDBService} from './core/persistence/services/pouchdb.service';
+import {PouchDBSettingsService} from './core/persistence/services/pouchdb-settings.service';
 import {PreviousDescriptionFragmentComponent} from './view/fragments/previous-description-fragment/previous-description-fragment.component';
 import {ProjectAutocompleteFragmentComponent} from './view/fragments/project-autocomplete-fragment/project-autocomplete-fragment.component';
 import {ProjectDialogComponent} from './view/dialogs/entities/project-dialog/project-dialog.component';
@@ -75,6 +75,7 @@ import {TimelineToolbarComponent} from './view/toolbars/timeline-toolbar/timelin
 import {UploadDialogComponent} from './view/dialogs/other/upload-dialog/upload-dialog.component';
 import {MaterialModule} from './ui/material/material.module';
 import {UiModule} from './core/ui/ui.module';
+import {PersistenceModule} from './core/persistence/persistence.module';
 
 @NgModule({
   declarations: [
@@ -148,7 +149,8 @@ import {UiModule} from './core/ui/ui.module';
     InViewportModule,
     ReactiveFormsModule,
     ScrollDispatchModule,
-    UiModule
+    UiModule,
+    PersistenceModule
   ],
   entryComponents: [
     AboutDialogComponent,

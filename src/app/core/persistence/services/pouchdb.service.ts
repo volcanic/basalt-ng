@@ -1,14 +1,16 @@
 import {EventEmitter, Injectable, isDevMode} from '@angular/core';
+import {environment} from '../../../../environments/environment';
 import PouchDB from 'pouchdb';
-import {environment} from '../../../environments/environment';
+import PouchdbFind from 'pouchdb-find';
+import PouchdbUpsert from 'pouchdb-upsert';
 
 /**
- * Handles pouchdb operations for settings database
+ * Handles pouchdb operations for entity database
  */
 @Injectable({
   providedIn: 'root'
 })
-export class PouchDBSettingsService {
+export class PouchDBService {
 
   /** Indicates of PouchDB connection is instantiated */
   private readonly isInstantiated: boolean;
@@ -21,15 +23,32 @@ export class PouchDBSettingsService {
    * Constructor
    */
   public constructor() {
+    PouchDB.plugin(PouchdbFind);
+    PouchDB.plugin(PouchdbUpsert);
+
     if (!this.isInstantiated) {
-      this.database = new PouchDB(environment.DATABASE_SETTINGS);
+      this.database = new PouchDB(environment.DATABASE_ENTITIES);
       this.isInstantiated = true;
     }
   }
 
   /**
+   * Finds documents by a given index and options
+   * @param index index used to index documents
+   * @param options options to query documents by
+   * @returns {any} array of documents
+   */
+  public find(index: any, options) {
+    return this.database.createIndex({
+      index: index
+    }).then(() => {
+      return this.database.find(options);
+    });
+  }
+
+  /**
    * Returns all documents from the DATABASE_ENTITIES
-   * @returns {any}
+   * @returns {any} array of documents
    */
   public fetch() {
     return this.database.allDocs({include_docs: true});
@@ -44,7 +63,7 @@ export class PouchDBSettingsService {
 
   /**
    * Returns a document by a given ID
-   * @param id
+   * @param id ID of a document to be found
    */
   public get(id: string) {
     return this.database.get(id);
@@ -54,31 +73,49 @@ export class PouchDBSettingsService {
    * Inserts a document into the DATABASE_ENTITIES
    * @param id ID of the document to be put
    * @param document document to be put
-   * @returns {wdpromise.Promise<any>|Promise<any|Observable<AjaxResponse>|
+   * @returns {wdpromise.Promise<any>|Promise<any|Observable<>|
    * Observable<Response>|IDBRequest>|Promise<R>|webdriver.promise.Promise<any>|webdriver.promise.Promise<R>|Promise<U>|any}
    */
   public put(id: string, document: any) {
     document._id = id;
-    return this.get(id).then(result => {
-      document._rev = result._rev;
-      return this.database.put(document);
-    }, error => {
-      if (error.status === 404) {
-        return this.database.put(document);
-      } else {
-        return new Promise((resolve, reject) => {
-          reject(error);
-        });
-      }
+
+    return this.database.put(document);
+  }
+
+  /**
+   * Updates a given document and creates it if it does not exist
+   * @param {string} id ID of the document to be updated or created
+   * @param document document to be updated or created
+   * @returns {any}
+   */
+  public upsert(id: string, document: any) {
+    document._id = id;
+
+    return this.database.upsert(id, () => {
+      return document;
     });
   }
 
   /**
-   * Remove a document by a given ID
-   * @param id ID of the document to be removed
+   * Updates an array of documents
+   * @param {any[]} documents
+   * @returns {any}
    */
-  public remove(id: string) {
-    return this.database.remove(id);
+  public bulk(documents: any[]) {
+    documents.forEach(d => {
+      d._id = d.id;
+    });
+
+    return this.database.bulkDocs(documents);
+  }
+
+  /**
+   * Removes a document by a given ID
+   * @param id ID of the document to be removed
+   * @param document document to be removed
+   */
+  public remove(id: string, document: any) {
+    return this.database.remove(document._id, document._rev);
   }
 
   /**
@@ -97,8 +134,8 @@ export class PouchDBSettingsService {
   }
 
   /**
-   * Synchronizes local DATABASE_ENTITIES with a remote DATABASE_SETTINGS
-   * @param remote
+   * Synchronizes local DATABASE_ENTITIES with a remote DATABASE_ENTITIES
+   * @param remote remote string
    */
   public sync(remote: string) {
     const remoteDatabase = new PouchDB(remote);
@@ -112,10 +149,10 @@ export class PouchDBSettingsService {
   }
 
   /**
-   * Synchronizes local DATABASE_ENTITIES with a remote DATABASE_SETTINGS
-   * @param {string} remote
-   * @param {string} username
-   * @param {string} password
+   * Synchronizes local DATABASE_ENTITIES with a remote DATABASE_ENTITIES
+   * @param {string} remote remote string
+   * @param {string} username username used for authentication
+   * @param {string} password password used for authentication
    */
   public syncWithUser(remote: string, username: string, password: string) {
     const remoteDatabase = new PouchDB(remote);

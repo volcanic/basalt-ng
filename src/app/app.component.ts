@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {SnackbarService} from './core/ui/services/snackbar.service';
-import {PouchDBService} from './services/persistence/pouchdb.service';
+import {PouchDBService} from './core/persistence/services/pouchdb.service';
 import {MatDialog, MatIconRegistry, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {environment} from '../environments/environment';
 import {GitTag} from './model/util/git-tag.model';
 import {NewFeaturesDialogComponent} from './view/dialogs/app-info/new-features-dialog/new-features-dialog.component';
 import {SettingsService} from './services/persistence/settings.service';
-import {PouchDBSettingsService} from './services/persistence/pouchdb-settings.service';
+import {PouchDBSettingsService} from './core/persistence/services/pouchdb-settings.service';
 import {Setting} from './model/settings/setting.model';
 import {EntityService} from './services/entities/entity.service';
 import {DomSanitizer} from '@angular/platform-browser';
