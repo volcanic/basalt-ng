@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content>
+  <app-date-time-picker-fragment
+    [date]="date"
+    (dateChangedEmitter)="onDateChanged($event)">
+  </app-date-time-picker-fragment>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]=null>
+    Cancel
+  </button>
+  <div class="flexbox"></div>
+  <button mat-button (click)="updateCreationTime()">
+    Update creation time
+  </button>
+</mat-dialog-actions>

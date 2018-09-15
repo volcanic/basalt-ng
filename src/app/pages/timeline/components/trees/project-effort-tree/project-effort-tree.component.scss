@@ -1,0 +1,41 @@
+@import '../../../../../../light-theme';
+@import '../../../../../../dark-theme';
+
+mat-tree {
+  background: transparent !important;
+}
+
+.tag {
+  .light-theme {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, .87);
+  }
+
+  .dark-theme {
+    background-color: transparent;
+    color: rgba(255, 255, 255, .87);
+  }
+
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  margin: 6px 6px 0 0;
+  direction: ltr;
+  font-family: 'Roboto', arial, sans-serif;
+  font-size: 15px;
+  float: left;
+  align-items: center;
+  height: 18px;
+  padding: 3px 5px;
+  text-align: left;
+}
+
+.tag-label {
+  padding-right: 10px;
+}
+
+.effort {
+  display: inline-block;
+  width: 50px;
+  font-weight: 700;
+  margin-right: 15px;
+}

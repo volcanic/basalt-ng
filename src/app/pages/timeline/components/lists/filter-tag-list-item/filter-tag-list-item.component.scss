@@ -1,0 +1,7 @@
+@import '../../../../../../../node_modules/@angular/material/theming';
+@include mat-core();
+
+.container {
+  display: flex;
+  width: 100%;
+}

@@ -13,5 +13,8 @@ import {PouchDBSettingsService} from './services/pouchdb-settings.service';
     PouchDBSettingsService
   ]
 })
+/**
+ * Contains services related to persistence
+ */
 export class PersistenceModule {
 }

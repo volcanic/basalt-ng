@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {CalendarComponent} from './view/pages/calendar/calendar.component';
-import {TimelineComponent} from './view/pages/timeline/timeline.component';
+import {CalendarComponent} from './pages/calendar/pages/calendar/calendar.component';
+import {TimelineComponent} from './pages/timeline/pages/timeline/timeline.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/timeline', pathMatch: 'full'},

@@ -1,0 +1,100 @@
+@import '../../../../../../sizes';
+@import '../../../../../../light-theme';
+@import '../../../../../../dark-theme';
+
+mat-toolbar {
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+  color: #fff !important;
+  font-weight: bolder;
+}
+
+.mat-form-field-infix {
+  display: block;
+  position: relative;
+  flex: auto;
+  min-width: 0;
+  width: 100% !important;
+}
+
+.toolbar-menu-item {
+  padding: 0 20px;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
+
+.toolbar-block {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  @media #{$breakpoint-small} {
+    width: 10%;
+  }
+  @media #{$breakpoint-medium} {
+    width: 100px;
+  }
+  @media #{$breakpoint-large} {
+    width: 250px;
+  }
+}
+
+.search-form-field {
+  width: 100%;
+}
+
+.searchbox {
+  height: 40px;
+
+  background: rgba(255, 255, 255, .15);
+
+  padding-left: 24px;
+  padding-right: 24px;
+  width: 100%;
+
+  @media #{$breakpoint-small} {
+    width: 100%;
+  }
+  @media #{$breakpoint-medium} {
+    width: 450px;
+  }
+  @media #{$breakpoint-large} {
+    width: 450px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, .25);
+  }
+
+  .search-input {
+    background-color: transparent;
+    border: 0;
+    border-radius: 2px;
+    color: white;
+    width: 100%;
+
+    font-size: 90%;
+    font-weight: 400;
+
+    &:focus {
+      outline-width: 0;
+    }
+  }
+
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #E0E0E0;
+    opacity: 1; /* Firefox */
+  }
+
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #E0E0E0;
+  }
+
+  :-ms-input-placeholder { /* Microsoft Edge */
+    color: #E0E0E0;
+  }
+}
+
+.icon-white {
+  fill: white;
+}

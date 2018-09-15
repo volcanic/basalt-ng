@@ -1,0 +1,59 @@
+@import '../../../../../../sizes';
+
+.dialog {
+  @media #{$breakpoint-small} {
+    width: 100%;
+  }
+  @media #{$breakpoint-medium} {
+    width: 600px;
+  }
+  @media #{$breakpoint-large} {
+    width: 600px;
+  }
+}
+
+.single-column {
+  @media #{$breakpoint-small} {
+    display: block;
+    width: 100%;
+  }
+  @media #{$breakpoint-medium} {
+    display: none;
+  }
+  @media #{$breakpoint-large} {
+    display: none;
+  }
+}
+
+.double-column {
+  @media #{$breakpoint-small} {
+    display: none;
+  }
+  @media #{$breakpoint-medium} {
+    display: block;
+    width: 45%;
+    float: left;
+  }
+  @media #{$breakpoint-large} {
+    display: block;
+    width: 45%;
+    float: left;
+  }
+}
+
+.special-tag {
+  font-style: italic;
+}
+
+.action-buttons {
+  display: inline;
+}
+
+.closing-buttons {
+  display: inline;
+  float: right;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
