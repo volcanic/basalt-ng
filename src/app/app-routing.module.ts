@@ -1,12 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {CalendarComponent} from './pages/calendar/pages/calendar/calendar.component';
-import {TimelineComponent} from './pages/timeline/pages/timeline/timeline.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/timeline', pathMatch: 'full'},
-    {path: 'timeline', component: TimelineComponent},
-    {path: 'calendar', component: CalendarComponent}
+    {path: '', redirectTo: '/timeline', pathMatch: 'full'},
+    {path: 'timeline', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
+    {path: 'calendar', loadChildren: './pages/calendar/calendar.module#CalendarModule'}
   ]
 ;
 

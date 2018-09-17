@@ -6,11 +6,13 @@ import {CalendarGridDayComponent} from './components/calendar-grid-day/calendar-
 import {CalendarGridQuarterHourComponent} from './components/calendar-grid-quarter-hour/calendar-grid-quarter-hour.component';
 import {CalendarItemComponent} from './components/calendar-item/calendar-item.component';
 import {MaterialModule} from '../../ui/material/material.module';
+import {CalendarRoutingModule} from './calendar-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    CalendarRoutingModule
   ],
   declarations: [
     CalendarComponent,

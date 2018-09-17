@@ -54,6 +54,7 @@ import {TimelineComponent} from './pages/timeline/timeline.component';
 import {DateTimePickerDialogModule} from '../../ui/date-time-picker-dialog/date-time-picker-dialog.module';
 import {DateTimePickerFragmentModule} from '../../ui/date-time-picker-fragment/date-time-picker-fragment.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {TimelineRoutingModule} from './timeline-routing.module';
 
 @NgModule({
   imports: [
@@ -62,8 +63,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule,
     InViewportModule,
     ScrollDispatchModule,
-
     MaterialModule,
+
+    TimelineRoutingModule,
 
     AboutDialogModule,
     ConfirmationDialogModule,
