@@ -617,7 +617,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes scope subscription
    */
   private initializeScopeSubscription() {
-    this.scope = this.scopeService.scope;
     this.scopeService.scopeSubject.subscribe(scope => {
       this.scope = scope;
 
