@@ -15,8 +15,7 @@
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
   <button mat-button class="task flex" (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, task: task})">
-    <mat-icon *ngIf="task.projectId !== null" svgIcon="turned_in" class="list-icon"></mat-icon>
-    <mat-icon *ngIf="task.projectId === null" svgIcon="turned_in_not" class="list-icon"></mat-icon>
+    <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
     <span>{{ task.name }}</span>
     <span [@actionAnimation]="state"
           *ngIf="task.effort > 0" class="effort">

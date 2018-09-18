@@ -11,6 +11,7 @@ import {
 import {DateService} from 'app/core/entity/services/date.service';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Action} from 'app/core/entity/model/action.enum';
+import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 
 /**
  * Displays task list
@@ -30,6 +31,8 @@ export class TaskListComponent implements OnInit, OnChanges {
   /** Event emitter indicating task action */
   @Output() taskEventEmitter = new EventEmitter<{ Action, Task }>();
 
+  /** Recurring tasks */
+  tasksRecurring = [];
   /** Tasks having a due date before now */
   tasksOverdue = [];
   /** Tasks having a due date after now */
@@ -43,6 +46,8 @@ export class TaskListComponent implements OnInit, OnChanges {
   tasksOverdueBadgeColor = 'transparent';
   /** Background color for next badge */
   tasksNextBadgeColor = 'transparent';
+  /** Background color for recurring badge */
+  tasksRecurringBadgeColor = 'transparent';
   /** Background color for inbox badge */
   tasksInboxBadgeColor = 'transparent';
 
@@ -76,20 +81,35 @@ export class TaskListComponent implements OnInit, OnChanges {
    * Initializes task categories
    */
   initializeTaskCategories() {
+    this.tasksRecurring = this.tasks.filter(task => {
+      return task != null
+        && task.completionDate == null
+        && task.recurrenceInterval != null
+        && (task.recurrenceInterval !== RecurrenceInterval.UNSPECIFIED && task.recurrenceInterval !== RecurrenceInterval.NONE);
+    });
     this.tasksOverdue = this.tasks.filter(task => {
       return task != null
+        && (task.recurrenceInterval == null
+          || task.recurrenceInterval == RecurrenceInterval.UNSPECIFIED
+          || task.recurrenceInterval == RecurrenceInterval.NONE)
         && task.completionDate == null
         && task.dueDate != null
         && DateService.isBefore(task.dueDate, new Date());
     });
     this.tasksNext = this.tasks.filter(task => {
       return task != null
+        && (task.recurrenceInterval == null
+          || task.recurrenceInterval == RecurrenceInterval.UNSPECIFIED
+          || task.recurrenceInterval == RecurrenceInterval.NONE)
         && task.completionDate == null
         && task.dueDate != null
         && DateService.isAfter(task.dueDate, new Date());
     });
     this.tasksInbox = this.tasks.filter(task => {
       return task != null
+        && (task.recurrenceInterval == null
+          || task.recurrenceInterval == RecurrenceInterval.UNSPECIFIED
+          || task.recurrenceInterval == RecurrenceInterval.NONE)
         && task.completionDate == null
         && task.dueDate == null;
     });
@@ -99,6 +119,7 @@ export class TaskListComponent implements OnInit, OnChanges {
 
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
     this.tasksNextBadgeColor = (this.tasksNext.length > 0) ? 'accent' : 'primary';
+    this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
     this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
   }
 }

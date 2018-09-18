@@ -31,6 +31,22 @@
 </mat-accordion>
 
 <mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="tasksRecurring.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label">
+          <span matBadge="{{ tasksRecurring.length }}"
+                matBadgeOverlap="false"
+                [matBadgeColor]="tasksRecurringBadgeColor">Recurring</span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-task-list-item *ngFor="let t of tasksRecurring" [task]="t" [media]="media" (taskEventEmitter)="taskEventEmitter.emit($event)">
+    </app-task-list-item>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<mat-accordion class="headers-align">
   <mat-expansion-panel [expanded]="tasksInbox.length > 0" (opened)="false" hideToggle>
     <mat-expansion-panel-header>
       <div class="label">

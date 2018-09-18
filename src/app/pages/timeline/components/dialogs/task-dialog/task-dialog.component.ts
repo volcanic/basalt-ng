@@ -146,8 +146,9 @@ export class TaskDialogComponent implements OnInit {
    * Initializes recurring flag
    */
   private initializeRecurring() {
-    this.recurring = this.task.recurrenceInterval == null || (this.task.recurrenceInterval !== RecurrenceInterval.UNSPECIFIED
-      && this.task.recurrenceInterval !== RecurrenceInterval.NONE);
+    this.recurring = this.task.recurrenceInterval != null
+      && this.task.recurrenceInterval != RecurrenceInterval.UNSPECIFIED
+      && this.task.recurrenceInterval != RecurrenceInterval.NONE;
   }
 
   /**

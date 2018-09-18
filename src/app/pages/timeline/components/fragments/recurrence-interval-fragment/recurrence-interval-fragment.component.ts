@@ -24,7 +24,7 @@ export class RecurrenceIntervalFragmentComponent {
   selectIcon = RecurrenceIntervalFragmentComponent.selectIcon;
 
   /**
-   * Retrieves an icon by tasklet type
+   * Retrieves an icon by recurrence interval
    * @param recurrenceInterval recurrence interval
    */
   static selectIcon(recurrenceInterval: RecurrenceInterval) {
