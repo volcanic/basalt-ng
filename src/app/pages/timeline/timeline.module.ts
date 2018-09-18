@@ -24,7 +24,7 @@ import {DailyScrumActivityFragmentComponent} from './components/fragments/daily-
 import {DailyScrumFragmentComponent} from './components/fragments/daily-scrum-fragment/daily-scrum-fragment.component';
 import {DailyScrumParticipantFragmentComponent} from './components/fragments/daily-scrum-participant-fragment/daily-scrum-participant-fragment.component';
 import {DescriptionFragmentComponent} from './components/fragments/description-fragment/description-fragment.component';
-import {HeaderFragmentComponent} from './components/fragments/header-fragment/header-fragment.component';
+import {TaskletTypeFragmentComponent} from './components/fragments/tasklet-type-fragment/tasklet-type-fragment.component';
 import {PersonAutocompleteFragmentComponent} from './components/fragments/person-autocomplete-fragment/person-autocomplete-fragment.component';
 import {PersonChipsFragmentComponent} from './components/fragments/person-chips-fragment/person-chips-fragment.component';
 import {PreviousDescriptionFragmentComponent} from './components/fragments/previous-description-fragment/previous-description-fragment.component';
@@ -55,6 +55,7 @@ import {DateTimePickerDialogModule} from '../../ui/date-time-picker-dialog/date-
 import {DateTimePickerFragmentModule} from '../../ui/date-time-picker-fragment/date-time-picker-fragment.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TimelineRoutingModule} from './timeline-routing.module';
+import {RecurrenceIntervalFragmentComponent} from './components/fragments/recurrence-interval-fragment/recurrence-interval-fragment.component';
 
 @NgModule({
   imports: [
@@ -130,13 +131,14 @@ import {TimelineRoutingModule} from './timeline-routing.module';
     DailyScrumFragmentComponent,
     DailyScrumParticipantFragmentComponent,
     DescriptionFragmentComponent,
-    HeaderFragmentComponent,
     PersonAutocompleteFragmentComponent,
     PersonChipsFragmentComponent,
     PreviousDescriptionFragmentComponent,
     ProjectAutocompleteFragmentComponent,
+    RecurrenceIntervalFragmentComponent,
     TagChipsFragmentComponent,
     TaskAutocompleteFragmentComponent,
+    TaskletTypeFragmentComponent,
 
     // Other
     TaskletDailyScrumComponent,

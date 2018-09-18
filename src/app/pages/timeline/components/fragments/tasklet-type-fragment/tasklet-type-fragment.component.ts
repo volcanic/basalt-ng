@@ -3,15 +3,15 @@ import {TaskletType} from 'app/core/entity/model/tasklet-type.enum';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 
 /**
- * Displays header fragment
+ * Displays tasklet type fragment
  */
 @Component({
   selector: 'app-header-fragment',
-  templateUrl: './header-fragment.component.html',
-  styleUrls: ['./header-fragment.component.scss'],
+  templateUrl: './tasklet-type-fragment.component.html',
+  styleUrls: ['./tasklet-type-fragment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderFragmentComponent {
+export class TaskletTypeFragmentComponent {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
@@ -20,7 +20,7 @@ export class HeaderFragmentComponent {
   taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]);
 
   /** Reference to static method */
-  selectIcon = HeaderFragmentComponent.selectIcon;
+  selectIcon = TaskletTypeFragmentComponent.selectIcon;
 
   /**
    * Retrieves an icon by tasklet type

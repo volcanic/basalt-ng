@@ -1,0 +1,9 @@
+<mat-form-field color="primary">
+  <mat-select name="type" placeholder="Recurrence Interval" [(ngModel)]="recurrenceInterval"
+              (selectionChange)="onSelectionChanged()">
+    <mat-option *ngFor="let item of recurrenceIntervals" [value]="item">
+      <mat-icon [svgIcon]=selectIcon(item)></mat-icon>
+      {{ item }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
