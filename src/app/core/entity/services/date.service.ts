@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {RecurrenceInterval} from '../model/recurrence-interval.enum';
 
 /**
  * Handles dates comparison and arithmetic
@@ -335,6 +336,15 @@ export class DateService {
     }
 
     return '';
+  }
+
+  /**
+   * Returns a string of a given recurrence interval
+   * @param {RecurrenceInterval} recurrenceInterval recurrence interval
+   * @returns {string} string of the given recurrence interval
+   */
+  static getRecurrenceIntervalString(recurrenceInterval: RecurrenceInterval): string {
+    return recurrenceInterval.toString();
   }
 
   /**

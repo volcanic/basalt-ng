@@ -12,7 +12,17 @@
 
       <mat-accordion class="headers-align">
 
-        <mat-expansion-panel *ngIf="task.completionDate != null" (opened)="false" hideToggle>
+        <mat-slide-toggle
+          [color]="accent"
+          [checked]="recurring"
+          [disabled]="readonly"
+          (change)="onRecurringChanged($event)">
+          Recurring task
+        </mat-slide-toggle>
+
+        <mat-expansion-panel
+          *ngIf="!recurring && task.completionDate != null" (opened)="false"
+          hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Completion date</mat-panel-title>
             <mat-panel-description *ngIf="task.completionDate != null" class="value-set">
@@ -41,7 +51,8 @@
                                     [readonly]="readonly"></app-description-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
+        <mat-expansion-panel *ngIf="!recurring" [disabled]="readonly"
+                             (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Due date</mat-panel-title>
             <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
@@ -54,6 +65,22 @@
             [date]="task.dueDate"
             (dateChangedEmitter)="onDueDateChanged($event)">
           </app-date-time-picker-fragment>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel *ngIf="recurring" [disabled]="readonly"
+                             (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Recurrence interval</mat-panel-title>
+            <mat-panel-description *ngIf="task.recurrenceInterval == null">Select a recurrence interval
+            </mat-panel-description>
+            <mat-panel-description *ngIf="task.recurrenceInterval != null" class="value-set">
+              {{ getRecurrenceIntervalString(task.recurrenceInterval) }}
+            </mat-panel-description>
+            <mat-icon svgIcon="loop"></mat-icon>
+          </mat-expansion-panel-header>
+          <app-recurrence-interval-fragment [recurrenceInterval]="task.recurrenceInterval"
+                                            (recurrenceIntervalChangedEmitter)="onRecurrenceIntervalChanged($event)">
+          </app-recurrence-interval-fragment>
         </mat-expansion-panel>
 
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>

@@ -1,13 +1,14 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Task} from 'app/core/entity/model/task.model';
 import {Project} from 'app/core/entity/model/project.model';
-import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSlideToggleChange} from '@angular/material';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {DateService} from 'app/core/entity/services/date.service';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
 import {SuggestionService} from 'app/core/entity/services/suggestion.service';
 import {CloneService} from 'app/core/entity/services/clone.service';
 import {Action} from 'app/core/entity/model/action.enum';
+import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 
 /**
  * Displays task dialog
@@ -29,6 +30,8 @@ export class TaskDialogComponent implements OnInit {
 
   /** Task to be displayed */
   task: Task;
+  /** Recurring */
+  recurring = false;
 
   /** Readonly dialog if true */
   readonly = false;
@@ -64,6 +67,8 @@ export class TaskDialogComponent implements OnInit {
   getTimeString = DateService.getTimeString;
   /** Reference to static method */
   getDateString = DateService.getDateString;
+  /** Reference to static method */
+  getRecurrenceIntervalString = DateService.getRecurrenceIntervalString;
 
   /**
    * Constructor
@@ -92,6 +97,7 @@ export class TaskDialogComponent implements OnInit {
     this.initializeOptions();
     this.initializeInput();
     this.initializeTask();
+    this.initializeRecurring();
     this.initializePriority();
   }
 
@@ -137,6 +143,14 @@ export class TaskDialogComponent implements OnInit {
   }
 
   /**
+   * Initializes recurring flag
+   */
+  private initializeRecurring() {
+    this.recurring = this.task.recurrenceInterval == null || (this.task.recurrenceInterval !== RecurrenceInterval.UNSPECIFIED
+      && this.task.recurrenceInterval !== RecurrenceInterval.NONE);
+  }
+
+  /**
    * Initializes priority
    */
   private initializePriority() {
@@ -174,6 +188,19 @@ export class TaskDialogComponent implements OnInit {
     }
   }
 
+  // Recurring
+
+  /**
+   * Handles changes in recurring flag
+   * @param {MatSlideToggleChange} event event
+   */
+  onRecurringChanged(event: MatSlideToggleChange) {
+    this.recurring = event.checked;
+    if (!this.recurring) {
+      this.task.recurrenceInterval = RecurrenceInterval.NONE;
+    }
+  }
+
   // Completion date
 
   /**
@@ -192,6 +219,16 @@ export class TaskDialogComponent implements OnInit {
    */
   onDueDateChanged(value: Date) {
     this.task.dueDate = value;
+  }
+
+  // Recurrence interval
+
+  /**
+   * Handles recurrence interval changes
+   * @param {RecurrenceInterval} value recurrence interval
+   */
+  onRecurrenceIntervalChanged(value: RecurrenceInterval) {
+    this.task.recurrenceInterval = value;
   }
 
   // Priority

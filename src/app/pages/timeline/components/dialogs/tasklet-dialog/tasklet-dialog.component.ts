@@ -24,7 +24,7 @@ export class TaskletDialogComponent implements OnInit {
 
   /** Enum of dialog modes */
   public modeType = DialogMode;
-  /** Current media */
+  /** Current dialog mode */
   public mode: DialogMode = DialogMode.NONE;
 
   /** Dialog title */

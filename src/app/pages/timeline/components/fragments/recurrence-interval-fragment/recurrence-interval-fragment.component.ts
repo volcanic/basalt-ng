@@ -44,6 +44,9 @@ export class RecurrenceIntervalFragmentComponent {
   // Actions
   //
 
+  /**
+   * Handles selection change
+   */
   onSelectionChanged() {
     this.recurrenceIntervalChangedEmitter.emit(this.recurrenceInterval);
   }
