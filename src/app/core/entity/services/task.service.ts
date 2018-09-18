@@ -45,7 +45,7 @@ export class TaskService {
               private scopeService: ScopeService) {
 
     this.initializeTaskSubscription();
-    this.findOpenTasksByScope(this.scopeService.scope);
+    this.findTasksByScope(this.scopeService.scope);
   }
 
   //
@@ -77,6 +77,28 @@ export class TaskService {
   // <editor-fold desc="Queries">
 
   /**
+   * Loads tasks by a given scope
+   * @param {Scope} scope scope to filter by
+   */
+  public findTasksByScope(scope: Scope) {
+    const index = {fields: ['entityType', 'scope', 'modificationDate', 'completionDate']};
+    const options = {
+      selector: {
+        '$and': [
+          {'entityType': {'$eq': EntityType.TASK}},
+          {scope: {$eq: scope}},
+          {'modificationDate': {'$gt': null}}
+        ]
+      },
+      // sort: [{'modificationDate': 'desc'}],
+      limit: environment.LIMIT_TASKS
+    };
+
+    this.clearTasks();
+    this.findTasksInternal(index, options);
+  }
+
+  /**
    * Loads open tasks by a given scope
    * @param {Scope} scope scope to filter by
    */
@@ -89,6 +111,29 @@ export class TaskService {
           {scope: {$eq: scope}},
           {'modificationDate': {'$gt': null}},
           {'completionDate': {'$eq': null}}
+        ]
+      },
+      // sort: [{'modificationDate': 'desc'}],
+      limit: environment.LIMIT_TASKS
+    };
+
+    this.clearTasks();
+    this.findTasksInternal(index, options);
+  }
+
+  /**
+   * Loads closed tasks by a given scope
+   * @param {Scope} scope scope to filter by
+   */
+  public findClosedTasksByScope(scope: Scope) {
+    const index = {fields: ['entityType', 'scope', 'modificationDate', 'completionDate']};
+    const options = {
+      selector: {
+        '$and': [
+          {'entityType': {'$eq': EntityType.TASK}},
+          {scope: {$eq: scope}},
+          {'modificationDate': {'$gt': null}},
+          {'completionDate': {'$ne': null}}
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
