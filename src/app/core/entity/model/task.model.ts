@@ -1,6 +1,7 @@
 import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
 import {Description} from './description.model';
+import {RecurrenceInterval} from './recurrence-interval.enum';
 
 /**
  * Represents a task
@@ -23,6 +24,8 @@ export class Task extends Entity {
   effort: number;
   /** References to tags */
   tagIds: string[];
+  /** Recurrence interval */
+  recurrenceInterval: RecurrenceInterval;
 
   /**
    * Constructor
@@ -39,5 +42,6 @@ export class Task extends Entity {
     this.priority = -1;
     this.effort = 0;
     this.tagIds = [];
+    this.recurrenceInterval = RecurrenceInterval.NONE;
   }
 }
