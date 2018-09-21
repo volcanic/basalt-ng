@@ -21,14 +21,14 @@ import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-in
 })
 export class TaskListItemComponent implements OnInit {
 
-  /** Task to be display */
+  /** Task to be displayed */
   @Input() task: Task;
   /** Task digest */
   @Input() taskDigest: TaskDigest;
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */
-  @Output() taskEventEmitter = new EventEmitter<{ Action, Task }>();
+  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, omitReferenceEvaluation?: boolean }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
@@ -36,8 +36,6 @@ export class TaskListItemComponent implements OnInit {
   mediaType = Media;
   /** Icon name */
   icon = '';
-  /** Enum for action types */
-  action = Action;
   /** Animation state */
   state = AnimationState.INACTIVE;
 
@@ -82,5 +80,35 @@ export class TaskListItemComponent implements OnInit {
    */
   onHoverContainer(hovered: boolean) {
     this.state = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;
+  }
+
+  /**
+   * Handles clicks on task item
+   */
+  onTaskClicked() {
+    this.taskEventEmitter.emit({
+      action: Action.OPEN_DIALOG_UPDATE, task: this.task
+    })
+  }
+
+  /**
+   * Handles clicks on complete button
+   */
+  onCompleteClicked() {
+    this.taskEventEmitter.emit({action: Action.COMPLETE, task: this.task, omitReferenceEvaluation: true});
+  }
+
+  /**
+   * Handles clicks on continue button
+   */
+  onContinueClicked() {
+    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: this.task});
+  }
+
+  /**
+   * Handles clicks on re-open button
+   */
+  onReopenClicked() {
+    this.taskEventEmitter.emit({action: Action.REOPEN, task: this.task});
   }
 }

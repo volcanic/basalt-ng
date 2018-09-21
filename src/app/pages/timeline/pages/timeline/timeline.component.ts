@@ -958,10 +958,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a task
    * @param {any} event event parameters
    */
-  onTaskEvent(event: { action: Action, task: Task, project?: Project, tags?: Tag[] }) {
+  onTaskEvent(event: { action: Action, task: Task, project?: Project, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
     const task = CloneService.cloneTask(event.task as Task);
     const project = CloneService.cloneProject(event.project as Project);
     const tags = CloneService.cloneTags(event.tags as Tag[]);
+    const omitReferenceEvaluation = event.omitReferenceEvaluation;
 
     switch (event.action) {
       case Action.ADD: {
@@ -1021,21 +1022,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.COMPLETE: {
-        this.evaluateTaskProject(task, project);
+        if (!omitReferenceEvaluation) {
+          // Create new entities if necessary
+          this.evaluateTaskProject(task, project);
+          this.evaluateTaskTags(task, tags);
+        }
 
         task.completionDate = new Date();
         this.taskService.updateTask(task, false).then(() => {
+          this.snackbarService.showSnackbar('Completed task');
         });
-        this.snackbarService.showSnackbar('Completed task');
         break;
       }
       case Action.REOPEN: {
-        this.evaluateTaskProject(task, project);
-
         task.completionDate = null;
         this.taskService.updateTask(task, false).then(() => {
+          this.snackbarService.showSnackbar('Re-opened task');
         });
-        this.snackbarService.showSnackbar('Re-opened task');
+
         break;
       }
       case Action.OPEN_DIALOG_ADD: {
@@ -1776,23 +1780,28 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {Tag[]} tags array of tags to be checked
    */
   private evaluateTaskTags(task: Task, tags: Tag[]) {
-    const aggregatedTagIds = new Map<string, string>();
+    if (tags != null) {
+      const aggregatedTagIds = new Map<string, string>();
 
-    // New tag
-    tags.forEach(t => {
-      let tag = this.tagService.getTagByName(t.name);
+      // New tag
+      tags.forEach(t => {
+        let tag = this.tagService.getTagByName(t.name);
 
-      if (tag == null) {
-        tag = new Tag(t.name, true);
-        this.tagService.createTag(tag).then(() => {
-        });
-      }
+        if (tag == null) {
+          tag = new Tag(t.name, true);
+          this.tagService.createTag(tag).then(() => {
+          });
+        }
 
-      this.filterService.updateTagsList([tag], true);
-      aggregatedTagIds.set(tag.id, tag.id);
-    });
+        this.filterService.updateTagsList([tag], true);
+        aggregatedTagIds.set(tag.id, tag.id);
+      });
 
-    task.tagIds = Array.from(aggregatedTagIds.values());
+      task.tagIds = Array.from(aggregatedTagIds.values());
+    } else {
+      // Unassign tags
+      task.tagIds = [];
+    }
   }
 
   /**
