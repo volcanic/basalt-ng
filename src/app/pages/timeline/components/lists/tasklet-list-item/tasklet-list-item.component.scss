@@ -315,7 +315,7 @@ $side-attached-distance: 50px;
   content: '\00a0';
   width: $side-attached-distance;
   margin-top: 0;
-  border-bottom: 2px solidmat-color($mat-grey, 500);
+  border-bottom: 2px solid mat-color($mat-grey, 500);
   z-index: 0;
 }
 
