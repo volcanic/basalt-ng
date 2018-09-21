@@ -22,16 +22,16 @@
 }
 
 .label {
-  color: rgba(0, 0, 0, .54);
+  color: mat-color($mat-grey, 600);
   font-size: 12px;
 }
 
 .person {
-  background-color: #cfd8dc;
+  background-color: mat-color($mat-grey, 300);
   -webkit-border-radius: 2px;
   border-radius: 2px;
   margin: 6px 6px 0 0;
-  color: rgba(0, 0, 0, .87);
+  color: mat-color($mat-grey, 700);
   direction: ltr;
   font-family: 'Roboto', arial, sans-serif;
   font-size: 15px;

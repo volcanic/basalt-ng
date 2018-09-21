@@ -4,7 +4,7 @@
 
 mat-toolbar {
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
-  color: #fff !important;
+  // color: #fff !important;
   font-weight: bolder;
 }
 
@@ -82,16 +82,16 @@ mat-toolbar {
   }
 
   ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #E0E0E0;
+    color: mat-color($mat-grey, 300);
     opacity: 1; /* Firefox */
   }
 
   :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #E0E0E0;
+    color: mat-color($mat-grey, 300);
   }
 
   :-ms-input-placeholder { /* Microsoft Edge */
-    color: #E0E0E0;
+    color: mat-color($mat-grey, 300);
   }
 }
 

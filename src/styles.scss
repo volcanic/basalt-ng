@@ -30,8 +30,8 @@ html {
 
 body {
   height: 100%;
-  background: #f7f7f7;
-  color: #808080;
+  background: mat-color($mat-grey, 100);
+  color: mat-color($mat-grey, 600);
   font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 0;
 
