@@ -7,8 +7,10 @@
                (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})"
                [matTooltip]=date
                matTooltipPosition="above">
-              <span class="left-attached-content"
-                    *ngIf="!isInThisWeek(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
+            <span class="left-attached-content"
+                  *ngIf="isWithinNextDays(tasklet.creationDate, 7)">{{ weekDay.slice(0, 3) }},</span>
+            <span class="left-attached-content"
+                  *ngIf="!isWithinNextDays(tasklet.creationDate, 7)">{{ simpleDate }},</span>
             <span class="left-attached-content">{{ time }}</span>
           </div>
         </div>
@@ -72,7 +74,9 @@
                  [matTooltip]=date
                  matTooltipPosition="above">
               <span class="left-attached-content"
-                    *ngIf="isBeforeToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
+                    *ngIf="isInCurrentWeek(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
+              <span class="left-attached-content"
+                    *ngIf="!isInCurrentWeek(tasklet.creationDate)">{{ simpleDate }},</span>
               <span class="left-attached-content">{{ time }}</span>
             </div>
           </div>

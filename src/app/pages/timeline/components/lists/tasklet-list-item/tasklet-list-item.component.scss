@@ -270,7 +270,7 @@ $side-attached-height: 40px;
   display: none;
 }
 
-$side-attached-width: 50px;
+$side-attached-width: 55px;
 $side-attached-distance: 50px;
 
 // Top
@@ -296,7 +296,7 @@ $side-attached-distance: 50px;
 .left-attached, .left-attached-without-connector {
   color: #9e9e9e;
   width: $side-attached-width + $side-attached-distance;
-  margin-left: -150px;
+  margin-left: -(2 * $side-attached-distance + $side-attached-width);
   text-align: right;
   vertical-align: middle;
 }

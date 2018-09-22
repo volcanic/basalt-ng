@@ -72,6 +72,8 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   weekDay = '';
   /** Creation date */
   date = '';
+  /** Simple creation date */
+  simpleDate = '';
 
   /** Expansion panel state */
   expansionPanelOpened = false;
@@ -80,7 +82,11 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   /** Reference to static service methods */
   isBeforeToday = DateService.isBeforeToday;
   /** Reference to static service methods */
-  isInThisWeek = DateService.isInThisWeek;
+  isWithinNextDays = DateService.isWithinNextDays;
+  /** Reference to static service methods */
+  isWithinLastDays = DateService.isWithinLastDays;
+  /** Reference to static service methods */
+  isInCurrentWeek = DateService.isInCurrentWeek;
 
   //
   // Lifecycle hooks
@@ -166,6 +172,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     this.time = DateService.getTimeString(new Date(this.tasklet.creationDate));
     this.weekDay = DateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
     this.date = DateService.getDateString(new Date(this.tasklet.creationDate));
+    this.simpleDate = DateService.getSimpleDateWithoutYearString(new Date(this.tasklet.creationDate));
   }
 
   /**

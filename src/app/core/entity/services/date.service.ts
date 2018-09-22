@@ -80,10 +80,30 @@ export class DateService {
   /**
    * Determines if a given date is inside the current week
    * @param {Date} date date to check
-   * @returns {boolean} true if given date is inside the current week
+   * @returns {boolean} true if given date is inside current week
    */
-  static isInThisWeek(date: Date) {
+  static isInCurrentWeek(date: Date) {
     return DateService.isInWeek(date, new Date());
+  }
+
+  /**
+   * Determines whether a given date is within a certain amount of days in the past
+   * @param {Date} date date to be checked
+   * @param {number} days number of days in range
+   */
+  static isWithinNextDays(date: Date, days: number): boolean {
+    const rangeEnd = new Date().setDate(new Date(date).getDate() + days);
+    return new Date(date) < new Date(rangeEnd);
+  }
+
+  /**
+   * Determines whether a given date is within a certain amount of days in the past
+   * @param {Date} date date to be checked
+   * @param {number} days number of days in range
+   */
+  static isWithinLastDays(date: Date, days: number): boolean {
+    const rangeStart = new Date().setDate(new Date(date).getDate() - days);
+    return new Date(date) > new Date(rangeStart);
   }
 
   //
@@ -203,6 +223,17 @@ export class DateService {
     const month = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
     const year = new Date(date).getFullYear();
     return `${day} ${month} ${year}`;
+  }
+
+  /**
+   * Returns the date component of a given date object as a string where the month is shortened and the year is omitted
+   * @param {Date} date date to get string for
+   * @returns {string} date string of the given date
+   */
+  static getSimpleDateWithoutYearString(date: Date): string {
+    const day = new Date(date).getDate();
+    const month = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
+    return `${day} ${month}`;
   }
 
   /**
