@@ -47,6 +47,15 @@ export class DateService {
   }
 
   /**
+   * Determines if a given date is before now
+   * @param {Date} date date to check
+   * @returns {boolean} true if given date is before now
+   */
+  static isBeforeNow(date: Date) {
+    return DateService.isBefore(date, new Date());
+  }
+
+  /**
    * Determines if a given date is before today
    * @param {Date} date date to check
    * @returns {boolean} true if given date is before start of today
@@ -56,16 +65,25 @@ export class DateService {
   }
 
   /**
-   * Determines if a given date is inside the current week
+   * Determines if a given date is inside a week
    * @param {Date} date date to check
-   * @param {Date} now reference date
+   * @param {Date} referenceDate reference date
    * @returns {boolean} true if given date is inside week of reference date
    */
-  static isThisWeek(date: Date, now: Date) {
-    const beginningOfTheWeek = DateService.getBeginningOfTheWeek(new Date(now));
-    const endOfTheWeek = DateService.getEndOfTheWeek(new Date(now));
+  static isInWeek(date: Date, referenceDate: Date) {
+    const beginningOfTheWeek = DateService.getBeginningOfTheWeek(new Date(referenceDate));
+    const endOfTheWeek = DateService.getEndOfTheWeek(new Date(referenceDate));
 
     return new Date(date) >= beginningOfTheWeek && new Date(date) <= endOfTheWeek;
+  }
+
+  /**
+   * Determines if a given date is inside the current week
+   * @param {Date} date date to check
+   * @returns {boolean} true if given date is inside the current week
+   */
+  static isInThisWeek(date: Date) {
+    return DateService.isInWeek(date, new Date());
   }
 
   //

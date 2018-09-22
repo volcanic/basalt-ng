@@ -54,20 +54,20 @@ describe('DateService', () => {
   it('should determine given day is its own week', inject([DateService], (service: DateService) => {
     const d1 = new Date('2018-01-07');
 
-    expect(DateService.isThisWeek(d1, d1)).toBeTruthy();
+    expect(DateService.isInWeek(d1, d1)).toBeTruthy();
   }));
 
   it('should determine given day is in current week', inject([DateService], (service: DateService) => {
     const d1 = new Date('2018-01-07');
     const today = new Date('2018-01-01');
 
-    expect(DateService.isThisWeek(d1, today)).toBeTruthy();
+    expect(DateService.isInWeek(d1, today)).toBeTruthy();
   }));
 
   it('should determine given day is outside the current week', inject([DateService], (service: DateService) => {
     const d1 = new Date('2018-01-08');
     const today = new Date('2018-01-01');
 
-    expect(DateService.isThisWeek(d1, today)).toBeFalsy();
+    expect(DateService.isInWeek(d1, today)).toBeFalsy();
   }));
 });

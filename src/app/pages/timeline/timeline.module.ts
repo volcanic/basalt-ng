@@ -56,6 +56,7 @@ import {DateTimePickerFragmentModule} from '../../ui/date-time-picker-fragment/d
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TimelineRoutingModule} from './timeline-routing.module';
 import {RecurrenceIntervalFragmentComponent} from './components/fragments/recurrence-interval-fragment/recurrence-interval-fragment.component';
+import {FutureTaskletFragmentComponent} from './components/fragments/future-tasklet-fragment/future-tasklet-fragment.component';
 
 @NgModule({
   imports: [
@@ -131,6 +132,7 @@ import {RecurrenceIntervalFragmentComponent} from './components/fragments/recurr
     DailyScrumFragmentComponent,
     DailyScrumParticipantFragmentComponent,
     DescriptionFragmentComponent,
+    FutureTaskletFragmentComponent,
     PersonAutocompleteFragmentComponent,
     PersonChipsFragmentComponent,
     PreviousDescriptionFragmentComponent,

@@ -1,5 +1,23 @@
 <div [class]="themeClass">
-  <div class="card-wrapper">
+  <div *ngIf="!isBeforeNow(tasklet.creationDate)">
+    <div class="future-tasklet">
+      <div class="attachments">
+        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
+          <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached-without-connector"
+               (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})"
+               [matTooltip]=date
+               matTooltipPosition="above">
+              <span class="left-attached-content"
+                    *ngIf="!isInThisWeek(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
+            <span class="left-attached-content">{{ time }}</span>
+          </div>
+        </div>
+      </div>
+      <app-future-tasklet-fragment [tasklet]="tasklet" [topic]="topic"
+                                   (click)="onTaskletClicked()"></app-future-tasklet-fragment>
+    </div>
+  </div>
+  <div class="card-wrapper" *ngIf="isBeforeNow(tasklet.creationDate)">
     <div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
       {{ weekDay }}, {{ date }}
       <div class="top-connection-line"></div>
@@ -30,11 +48,13 @@
 
       <mat-card-footer>
         <mat-menu #contextMenu="matMenu">
-          <button mat-menu-item (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
+          <button mat-menu-item
+                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
             Update tasklet
           </button>
           <button mat-menu-item
-                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">Update
+                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">
+            Update
             creation time
           </button>
           <button mat-menu-item
@@ -56,7 +76,8 @@
               <span class="left-attached-content">{{ time }}</span>
             </div>
           </div>
-          <div class="tags-holder" (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
+          <div class="tags-holder"
+               (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
           <span class="time" *ngIf="media <= mediaType.MEDIUM">
             <label class="time-label">
              <span>{{ time }}</span>
@@ -90,7 +111,7 @@
                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_TEMPLATE, tasklet: tasklet})"
                  matTooltip="Template this event" matTooltipPosition="above">
               <div class="right-attached-content">
-                <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+                <mat-icon class="continue-icon" svgIcon="le_filled"></mat-icon>
               </div>
             </div>
           </div>

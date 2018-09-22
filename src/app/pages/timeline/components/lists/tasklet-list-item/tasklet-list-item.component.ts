@@ -76,7 +76,11 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   /** Expansion panel state */
   expansionPanelOpened = false;
   /** Reference to static service methods */
+  isBeforeNow = DateService.isBeforeNow;
+  /** Reference to static service methods */
   isBeforeToday = DateService.isBeforeToday;
+  /** Reference to static service methods */
+  isInThisWeek = DateService.isInThisWeek;
 
   //
   // Lifecycle hooks
