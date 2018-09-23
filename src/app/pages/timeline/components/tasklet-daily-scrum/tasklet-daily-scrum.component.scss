@@ -1,12 +1,8 @@
 @import "../../../../../light-theme";
+@import '../../../../../flex';
 
 .participant {
-  display: flex;
   margin-bottom: 15px;
-}
-
-.flexbox {
-  flex-grow: 1;
 }
 
 .person {

@@ -1,6 +1,4 @@
-mat-dialog-actions {
-  display: flex;
-}
+@import '../../../../../../flex';
 
 .wide-box {
   width: 100%;
@@ -15,10 +13,6 @@ mat-dialog-actions {
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 300px;
-}
-
-.flexbox {
-  flex-grow: 1;
 }
 
 .mat-expansion-panel {

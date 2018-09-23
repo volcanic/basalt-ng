@@ -1,4 +1,5 @@
 @import '../../../../../../sizes';
+@import '../../../../../../flex';
 
 .dialog {
   @media #{$breakpoint-small} {
@@ -52,8 +53,4 @@
 .closing-buttons {
   display: inline;
   float: right;
-}
-
-.flexbox {
-  flex-grow: 1;
 }

@@ -1,6 +1,7 @@
 @import '../../../../../../sizes';
 @import '../../../../../../light-theme';
 @import '../../../../../../dark-theme';
+@import '../../../../../../flex';
 
 //
 // Card
@@ -231,10 +232,6 @@ mat-card {
   display: none;
 }
 
-.attachments {
-  display: flex;
-}
-
 $side-attached-height: 40px;
 
 .attachment-holder {
@@ -245,10 +242,6 @@ $side-attached-height: 40px;
 .side-attached {
   height: $side-attached-height;
   vertical-align: middle;
-}
-
-.flexbox {
-  flex-grow: 1;
 }
 
 .hidden {

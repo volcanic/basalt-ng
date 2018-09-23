@@ -1,12 +1,5 @@
 @import '../../../../../../sizes';
-
-mat-dialog-actions {
-  display: flex;
-}
-
-.flexbox {
-  flex-grow: 1;
-}
+@import '../../../../../../flex';
 
 .label {
   color: rgba(0, 0, 0, .54);

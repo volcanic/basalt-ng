@@ -1,13 +1,7 @@
-mat-dialog-actions {
-  display: flex;
-}
+@import '../../../../../../flex';
 
 .value-set {
   color: rgba(0, 0, 0, .87);
-}
-
-.flexbox {
-  flex-grow: 1;
 }
 
 .mat-expansion-panel {
