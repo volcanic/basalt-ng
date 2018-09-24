@@ -1,20 +1,33 @@
 @import '../../../../../../light-theme';
 @import '../../../../../../dark-theme';
 
-.label {
-  .light-theme {
+.light-theme {
+  .label {
     color: rgba(0, 0, 0, .54);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 15px 16px 7px;
   }
-  .dark-theme {
+}
+
+.dark-theme {
+  .label {
     color: rgba(255, 255, 255, .54);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 15px 16px 7px;
   }
-  font-size: 14px;
-  font-weight: 500;
-  margin: 15px 16px 7px;
 }
 
 .label-overdue {
   color: mat-color($light-warn);
+}
+
+.mat-content {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  overflow: visible;
 }
 
 .mat-expansion-panel {
@@ -41,6 +54,6 @@
   align-items: center;
 }
 
-.add-task-icon {
+.icon-add {
   margin-right: 16px;
 }
