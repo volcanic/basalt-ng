@@ -1,26 +1,20 @@
-<div class="container"
+<div class="flexcontainer"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <mat-menu #contextMenu="matMenu">
-    <button mat-menu-item (click)=onTaskClicked()>Update task
-    </button>
-    <button mat-menu-item
-            (click)="onCompleteClicked()"
-            *ngIf="task.completionDate == null"
+    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, task: task})">Update task</button>
+    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.COMPLETE, task: task})" *ngIf="task.completionDate == null"
             class="action-buttons">Complete task
     </button>
-    <button mat-menu-item
-            (click)="onContinueClicked()"
-            *ngIf="task.completionDate == null"
+    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, task: task})" *ngIf="task.completionDate == null"
             class="action-buttons">Continue task
     </button>
-    <button mat-menu-item (click)="onReopenClicked()"
-            *ngIf="task.completionDate != null"
+    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.REOPEN, task: task})" *ngIf="task.completionDate != null"
             class="action-buttons">Re-open task
     </button>
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
-  <button mat-button class="task flex" (click)="onTaskClicked()">
+  <button mat-button class="entity flexbox" (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, task: task})">
     <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
     <span>{{ task.name }}</span>
     <span [@actionAnimation]="state"
@@ -28,7 +22,7 @@
       ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
     </span>
   </button>
-  <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flex-box">
+  <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"
             mat-icon-button
             matTooltip="Complete"
@@ -36,7 +30,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="onCompleteClicked()">
+            (click)="taskEventEmitter.emit({action: action.COMPLETE, task: task})">
       <mat-icon svgIcon='check'></mat-icon>
     </button>
     <button [@actionAnimation]="state"
@@ -46,11 +40,11 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="onContinueClicked()">
+            (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, task: task})">
       <mat-icon svgIcon='reply'></mat-icon>
     </button>
   </div>
-  <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flex-box">
+  <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"
             mat-icon-button
             matTooltip="Re-open"
@@ -58,7 +52,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="onReopenClicked()">
+            (click)="taskEventEmitter.emit({action: action.REOPEN, task: task})">
       <mat-icon svgIcon='replay'></mat-icon>
     </button>
   </div>

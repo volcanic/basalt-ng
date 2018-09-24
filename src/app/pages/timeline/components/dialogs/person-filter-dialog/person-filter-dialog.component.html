@@ -10,10 +10,10 @@
     <mat-checkbox [(ngModel)]="p.checked">{{ p.name}}</mat-checkbox>
   </div>
   <div>
-    <mat-checkbox class="special-person" [(ngModel)]=personsNone>elements without persons</mat-checkbox>
+    <mat-checkbox class="filter-none" [(ngModel)]=personsNone>elements without persons</mat-checkbox>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions class="flexcontainer">
   <div class="action-buttons">
     <button mat-button (click)="selectAll()">
       Select all

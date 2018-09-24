@@ -13,7 +13,7 @@
     </app-filter-person-list-item>
 
     <div>
-      <mat-checkbox class="special-person" [(ngModel)]="personsNone"
+      <mat-checkbox class="filter-none" [(ngModel)]="personsNone"
                     (ngModelChange)="personEventEmitter.emit({action: action.FILTER_NONE, personsNone: personsNone})">elements
         without persons
       </mat-checkbox>

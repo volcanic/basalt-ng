@@ -1,4 +1,9 @@
 @import '../../../../../../sizes';
+@import '../../../../../../flex';
+
+//
+// Custom
+//
 
 .dialog {
   @media #{$breakpoint-small} {
@@ -10,12 +15,4 @@
   @media #{$breakpoint-large} {
     width: 600px;
   }
-}
-
-mat-dialog-actions {
-  display: flex;
-}
-
-.flexbox {
-  flex-grow: 1;
 }

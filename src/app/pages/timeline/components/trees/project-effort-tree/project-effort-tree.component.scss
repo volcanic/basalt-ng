@@ -1,21 +1,24 @@
-@import '../../../../../../light-theme';
-@import '../../../../../../dark-theme';
+@import '../../../../../../theme';
 
-mat-tree {
-  background: transparent !important;
+//
+// Custom
+//
+
+.light-theme {
+  .tag {
+    background-color: mat-color($mat-grey, 300);
+    color: mat-color($mat-grey, 800);
+  }
+}
+
+.dark-theme {
+  .tag {
+    background-color: transparent;
+    color: mat-color($mat-grey, 50);
+  }
 }
 
 .tag {
-  .light-theme {
-    background-color: rgba(0, 0, 0, 0.08);
-    color: rgba(0, 0, 0, .87);
-  }
-
-  .dark-theme {
-    background-color: transparent;
-    color: rgba(255, 255, 255, .87);
-  }
-
   -webkit-border-radius: 2px;
   border-radius: 2px;
   margin: 6px 6px 0 0;
@@ -38,4 +41,12 @@ mat-tree {
   width: 50px;
   font-weight: 700;
   margin-right: 15px;
+}
+
+//
+// Material
+//
+
+mat-tree {
+  background: transparent !important;
 }

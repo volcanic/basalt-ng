@@ -4,7 +4,6 @@ import {NgModule} from '@angular/core';
 import {InViewportModule} from 'ng-in-viewport';
 import {AboutDialogModule} from '../../ui/about-dialog/about-dialog.module';
 import {ConfirmationDialogModule} from '../../ui/confirmation-dialog/confirmation-dialog.module';
-import {FileDropFragmentModule} from '../../ui/file-drop-fragment/file-drop-fragment.module';
 import {InformationDialogModule} from '../../ui/information-dialog/information-dialog.module';
 import {MaterialModule} from '../../ui/material/material.module';
 import {NewFeaturesDialogModule} from '../../ui/new-features-dialog/new-features-dialog.module';
@@ -56,7 +55,8 @@ import {DateTimePickerFragmentModule} from '../../ui/date-time-picker-fragment/d
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TimelineRoutingModule} from './timeline-routing.module';
 import {RecurrenceIntervalFragmentComponent} from './components/fragments/recurrence-interval-fragment/recurrence-interval-fragment.component';
-import {FutureTaskletFragmentComponent} from './components/fragments/future-tasklet-fragment/future-tasklet-fragment.component';
+import {FileDropFragmentComponent} from './components/fragments/file-drop-fragment/file-drop-fragment.component';
+import {FileUploadModule} from 'ng2-file-upload';
 
 @NgModule({
   imports: [
@@ -66,12 +66,12 @@ import {FutureTaskletFragmentComponent} from './components/fragments/future-task
     InViewportModule,
     ScrollDispatchModule,
     MaterialModule,
+    FileUploadModule,
 
     TimelineRoutingModule,
 
     AboutDialogModule,
     ConfirmationDialogModule,
-    FileDropFragmentModule,
     InformationDialogModule,
     NewFeaturesDialogModule,
     DateTimePickerDialogModule,
@@ -132,7 +132,7 @@ import {FutureTaskletFragmentComponent} from './components/fragments/future-task
     DailyScrumFragmentComponent,
     DailyScrumParticipantFragmentComponent,
     DescriptionFragmentComponent,
-    FutureTaskletFragmentComponent,
+    FileDropFragmentComponent,
     PersonAutocompleteFragmentComponent,
     PersonChipsFragmentComponent,
     PreviousDescriptionFragmentComponent,

@@ -1,32 +1,15 @@
-@import '../../../../../../../node_modules/@angular/material/theming';
-@include mat-core();
+@import '../../../../../../theme';
+@import '../../../../../../flex';
 
-.container {
-  display: flex;
-  width: 100%;
-}
+//
+// Custom
+//
 
-.flex {
-  flex-grow: 1;
-}
-
-.project {
+.entity {
   overflow: hidden;
   text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.effort {
-  color: mat-color($mat-grey, 500);
-}
-
-.action{
-  margin-left: 8px;
-}
-
-.action-buttons {
-  min-width: 65px;
 }
 
 .list-icon {

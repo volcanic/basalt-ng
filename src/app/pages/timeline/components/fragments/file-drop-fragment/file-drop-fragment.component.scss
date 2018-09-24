@@ -1,6 +1,10 @@
-@import '../../../../light-theme';
+@import '../../../../../../theme';
 
 $dropzone-border-with: 5px;
+
+//
+// Custom
+//
 
 .dropzone {
   border: dashed $dropzone-border-with lightgray;
@@ -13,7 +17,7 @@ $dropzone-border-with: 5px;
 }
 
 .dropzone-label {
-  color: #808080;
+  color: mat-color($mat-grey, 600);;
   font-size: 20px;
   font-weight: 700;
   display: table-cell;

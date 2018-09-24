@@ -1,9 +1,9 @@
-@import '../../../../../light-theme';
+@import '../../../../../theme';
 
 // Header
 
 .day-header {
-  border: #e0e0e0 1px solid;
+  border: mat-color($mat-grey, 300) 1px solid;
   color: mat-color($light-accent, 500);
 }
 

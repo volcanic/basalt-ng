@@ -67,7 +67,7 @@
                                        || tasklet.type == 'Idea'">Continue tasklet
           </button>
         </mat-menu>
-        <div class="attachments">
+        <div class="flexcontainer">
           <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
             <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
                  (click)="taskletEventEmitter.emit({action: action.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})"

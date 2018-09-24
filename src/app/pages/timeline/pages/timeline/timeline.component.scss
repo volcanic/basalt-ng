@@ -1,6 +1,10 @@
 @import '../../../../../sizes';
-@import '../../../../../light-theme';
-@import '../../../../../dark-theme';
+@import '../../../../../flex';
+@import '../../../../../theme';
+
+//
+// Custom
+//
 
 .fixed {
   width: 100%;
@@ -70,12 +74,7 @@
   }
 }
 
-.flex {
-  flex-grow: 1;
-}
-
 .date-indicator-wrapper {
-  display: flex;
   width: 100%;
 }
 

@@ -1,21 +1,36 @@
-@import '../../../../../../light-theme';
-@import '../../../../../../dark-theme';
+@import '../../../../../../theme';
+@import '../../../../../../filter';
 
-.label {
-  .light-theme {
-    color: rgba(0, 0, 0, .54);
+//
+// Custom
+//
+
+.light-theme {
+  .label {
+    color: mat-color($mat-grey, 300);
+
+    font-size: 14px;
+    font-weight: 500;
+    margin: 15px 16px 7px;
   }
-  .dark-theme {
-    color: rgba(255, 255, 255, .54);
+}
+
+.dark-theme {
+  .label {
+    color: mat-color($mat-grey, 50);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 15px 16px 7px;
   }
-  font-size: 14px;
-  font-weight: 500;
-  margin: 15px 16px 7px;
 }
 
 .label-overdue {
   color: mat-color($light-warn);
 }
+
+//
+// Material
+//
 
 .mat-expansion-panel {
   display: inherit;
@@ -39,8 +54,4 @@
 .headers-align .mat-expansion-panel-header-description {
   justify-content: space-between;
   align-items: center;
-}
-
-.special-person {
-  font-style: italic;
 }

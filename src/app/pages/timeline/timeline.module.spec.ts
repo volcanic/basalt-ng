@@ -1,4 +1,4 @@
-import { TimelineModule } from './timeline.module';
+import {TimelineModule} from './timeline.module';
 
 describe('TimelineModule', () => {
   let timelineModule: TimelineModule;

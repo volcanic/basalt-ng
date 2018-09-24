@@ -1,30 +1,34 @@
-@import '../../../../../../light-theme';
-@import '../../../../../../dark-theme';
+@import '../../../../../../theme';
 
-.label {
-  .light-theme {
-    color: rgba(0, 0, 0, .54);
-  }
-  .dark-theme {
-    color: rgba(255, 255, 255, .54);
-  }
-  font-size: 14px;
-  font-weight: 500;
-  margin: 15px 16px 7px;
-}
+//
+// Custom
+//
 
-.dark-theme {
+.light-theme {
   .label {
-    color: rgba(255, 255, 255, .54);
+    color: mat-color($mat-grey, 300);
     font-size: 14px;
     font-weight: 500;
     margin: 15px 16px 7px;
   }
 }
 
-.label-overdue {
-  color: mat-color($light-warn);
+.dark-theme {
+  .label {
+    color: mat-color($mat-grey, 50);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 15px 16px 7px;
+  }
 }
+
+.icon-add {
+  margin-right: 16px;
+}
+
+//
+// Material
+//
 
 .mat-expansion-panel {
   display: inherit;
@@ -48,8 +52,4 @@
 .headers-align .mat-expansion-panel-header-description {
   justify-content: space-between;
   align-items: center;
-}
-
-.add-project-icon {
-  margin-right: 16px;
 }
