@@ -1,5 +1,6 @@
 @import '../../../../../../sizes';
 @import '../../../../../../flex';
+@import '../../../../../../filter';
 
 .single-column {
   @media #{$breakpoint-small} {
@@ -28,17 +29,4 @@
     width: 45%;
     float: left;
   }
-}
-
-.special-project {
-  font-style: italic;
-}
-
-.action-buttons {
-  display: inline;
-}
-
-.closing-buttons {
-  display: inline;
-  float: right;
 }

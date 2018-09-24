@@ -1,5 +1,6 @@
 @import '../../../../../../sizes';
 @import '../../../../../../flex';
+@import '../../../../../../filter';
 
 .dialog {
   @media #{$breakpoint-small} {
@@ -40,17 +41,4 @@
     width: 45%;
     float: left;
   }
-}
-
-.special-tag {
-  font-style: italic;
-}
-
-.action-buttons {
-  display: inline;
-}
-
-.closing-buttons {
-  display: inline;
-  float: right;
 }
