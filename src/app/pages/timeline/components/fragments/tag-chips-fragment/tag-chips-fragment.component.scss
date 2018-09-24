@@ -1,5 +1,24 @@
 @import '../../../../../../theme';
 
+//
+// Custom
+//
+
+.delete-button {
+  height: 14px;
+  width: 14px;
+  margin-top: -14px;
+  margin-left: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+//
+// Material
+//
+
 .light-theme {
   mat-chip {
     background: mat-color($mat-grey, 200) !important;
@@ -14,19 +33,8 @@
   }
 }
 
-.delete-button {
-  height: 14px;
-  width: 14px;
-  margin-top: -14px;
-  margin-left: 10px;
-}
-
 mat-chip {
   &:hover .hidden {
     display: inline-block;
   }
-}
-
-.hidden {
-  display: none;
 }

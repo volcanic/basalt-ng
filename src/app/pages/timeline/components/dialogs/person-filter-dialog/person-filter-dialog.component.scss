@@ -2,6 +2,10 @@
 @import '../../../../../../flex';
 @import '../../../../../../filter';
 
+//
+// Custom
+//
+
 .single-column {
   @media #{$breakpoint-small} {
     display: block;

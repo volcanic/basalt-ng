@@ -1,4 +1,9 @@
 @import '../../../../../../theme';
+@import '../../../../../../filter';
+
+//
+// Custom
+//
 
 .light-theme {
   .label {
@@ -23,6 +28,10 @@
   color: mat-color($light-warn);
 }
 
+//
+// Material
+//
+
 .mat-expansion-panel {
   display: inherit;
 }
@@ -45,8 +54,4 @@
 .headers-align .mat-expansion-panel-header-description {
   justify-content: space-between;
   align-items: center;
-}
-
-.special-tag {
-  font-style: italic;
 }

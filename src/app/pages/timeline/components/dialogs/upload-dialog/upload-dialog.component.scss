@@ -1,6 +1,10 @@
 @import '../../../../../../sizes';
 @import '../../../../../../flex';
 
+//
+// Custom
+//
+
 .dialog {
   @media #{$breakpoint-small} {
     width: 100%;

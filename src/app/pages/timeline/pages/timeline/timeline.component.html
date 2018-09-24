@@ -55,13 +55,13 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 
-<div class="date-indicator-wrapper" *ngIf="indicatedDate != null">
-  <div class="flex"></div>
+<div class="date-indicator-wrapper flexcontainer" *ngIf="indicatedDate != null">
+  <div class="flexbox"></div>
   <button mat-fab class="date-indicator" [@dateIndicatorAnimation]="scrollState" (click)="onDateIndicatorClicked()">
     <div class="day">{{ indicatedDay }}</div>
     <div class="month">{{ indicatedMonth }}</div>
   </button>
-  <div class="flex"></div>
+  <div class="flexbox"></div>
 </div>
 
 <button mat-fab class="fab" [@fabAnimation]="scrollDirection"

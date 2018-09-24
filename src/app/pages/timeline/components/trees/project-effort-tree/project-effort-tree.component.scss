@@ -1,8 +1,8 @@
 @import '../../../../../../theme';
 
-mat-tree {
-  background: transparent !important;
-}
+//
+// Custom
+//
 
 .light-theme {
   .tag {
@@ -41,4 +41,12 @@ mat-tree {
   width: 50px;
   font-weight: 700;
   margin-right: 15px;
+}
+
+//
+// Material
+//
+
+mat-tree {
+  background: transparent !important;
 }

@@ -3,83 +3,10 @@
 @import '../../../../../../flex';
 
 //
-// Card
+// Custom
 //
 
-mat-card {
-  margin: 10px auto;
-
-  @media #{$breakpoint-small} {
-    width: 100%;
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box; /* Firefox, other Gecko */
-    box-sizing: border-box; /* Opera/IE 8+ */
-  }
-  @media #{$breakpoint-medium} {
-    width: 450px;
-  }
-  @media #{$breakpoint-large} {
-    width: 450px;
-  }
-}
-
-mat-card-header {
-  font-weight: 700;
-
-  display: flex;
-  box-sizing: border-box;
-  width: 100%;
-}
-
-mat-card-header {
-  margin-left: 0;
-  cursor: pointer;
-}
-
-.mat-card-header-text {
-  margin: 0 !important;
-}
-
-mat-card-content {
-  display: inline-block;
-  margin-bottom: 0;
-}
-
-mat-card-actions {
-  padding: 0;
-  margin: 0;
-}
-
-.mat-expansion-panel {
-  display: inherit;
-}
-
-.mat-expansion-panel:not([class*=mat-elevation-z]) {
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0),
-  0 2px 2px 0 rgba(0, 0, 0, .14),
-  0 1px 5px 0 rgba(0, 0, 0, 0);
-}
-
-.headers-align .mat-expansion-panel-header-title,
-.headers-align .mat-expansion-panel-header-description {
-  flex-basis: 0;
-}
-
-.headers-align .mat-expansion-panel-header-description {
-  justify-content: space-between;
-  align-items: center;
-}
-
-.mat-card-actions .mat-button:first-child, .mat-card-actions .mat-raised-button:first-child {
-  margin-left: 0;
-  margin-right: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-//
 // Content
-//
 
 .content {
   width: 100%;
@@ -217,15 +144,7 @@ mat-card-actions {
   padding: 0 24px 24px;
 }
 
-//
 // Attachment
-//
-
-mat-card {
-  &:hover .hidden {
-    display: inline-block;
-  }
-}
 
 .hidden {
   display: none;
@@ -241,10 +160,6 @@ $side-attached-height: 40px;
 .side-attached {
   height: $side-attached-height;
   vertical-align: middle;
-}
-
-.hidden {
-  display: none;
 }
 
 $side-attached-width: 50px;
@@ -318,4 +233,85 @@ $side-attached-distance: 50px;
 .continue-icon {
   height: 36px;
   width: 36px;
+}
+
+//
+// Material
+//
+
+mat-card {
+  margin: 10px auto;
+
+  @media #{$breakpoint-small} {
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+  @media #{$breakpoint-medium} {
+    width: 450px;
+  }
+  @media #{$breakpoint-large} {
+    width: 450px;
+  }
+}
+
+mat-card-header {
+  font-weight: 700;
+
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+mat-card-header {
+  margin-left: 0;
+  cursor: pointer;
+}
+
+.mat-card-header-text {
+  margin: 0 !important;
+}
+
+mat-card-content {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+mat-card-actions {
+  padding: 0;
+  margin: 0;
+}
+
+.mat-expansion-panel {
+  display: inherit;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0),
+  0 2px 2px 0 rgba(0, 0, 0, .14),
+  0 1px 5px 0 rgba(0, 0, 0, 0);
+}
+
+.headers-align .mat-expansion-panel-header-title,
+.headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mat-card-actions .mat-button:first-child, .mat-card-actions .mat-raised-button:first-child {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+mat-card {
+  &:hover .hidden {
+    display: inline-block;
+  }
 }

@@ -1,5 +1,9 @@
 @import '../../../../../../theme';
 
+//
+// Custom
+//
+
 .light-theme {
   .label {
     color: mat-color($mat-grey, 300);
@@ -21,6 +25,14 @@
 .label-overdue {
   color: mat-color($light-warn);
 }
+
+.icon-add {
+  margin-right: 16px;
+}
+
+//
+// Material
+//
 
 .mat-expansion-panel {
   display: inherit;
@@ -44,8 +56,4 @@
 .headers-align .mat-expansion-panel-header-description {
   justify-content: space-between;
   align-items: center;
-}
-
-.icon-add {
-  margin-right: 16px;
 }
