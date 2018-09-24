@@ -57,6 +57,7 @@ import {TimelineRoutingModule} from './timeline-routing.module';
 import {RecurrenceIntervalFragmentComponent} from './components/fragments/recurrence-interval-fragment/recurrence-interval-fragment.component';
 import {FileDropFragmentComponent} from './components/fragments/file-drop-fragment/file-drop-fragment.component';
 import {FileUploadModule} from 'ng2-file-upload';
+import {FutureTaskletFragmentComponent} from './components/fragments/future-tasklet-fragment/future-tasklet-fragment.component';
 
 @NgModule({
   imports: [
@@ -133,6 +134,7 @@ import {FileUploadModule} from 'ng2-file-upload';
     DailyScrumParticipantFragmentComponent,
     DescriptionFragmentComponent,
     FileDropFragmentComponent,
+    FutureTaskletFragmentComponent,
     PersonAutocompleteFragmentComponent,
     PersonChipsFragmentComponent,
     PreviousDescriptionFragmentComponent,

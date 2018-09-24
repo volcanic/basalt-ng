@@ -12,6 +12,23 @@
   width: 100%;
 }
 
+.future-tasklet {
+  margin: 10px auto;
+
+  @media #{$breakpoint-small} {
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+  @media #{$breakpoint-medium} {
+    width: 450px + 48px;
+  }
+  @media #{$breakpoint-large} {
+    width: 450px + 48px;
+  }
+}
+
 .card-wrapper {
   &:hover .hidden {
     display: inline-block;
@@ -185,7 +202,7 @@ $side-attached-distance: 50px;
 
 // Left
 
-.left-attached {
+.left-attached, .left-attached-without-connector {
   color: mat-color($mat-grey, 500);
   width: $side-attached-width + $side-attached-distance;
   margin-left: -150px;
@@ -233,6 +250,23 @@ $side-attached-distance: 50px;
 .continue-icon {
   height: 36px;
   width: 36px;
+}
+
+app-future-tasklet-fragment {
+  margin: 10px auto;
+
+  @media #{$breakpoint-small} {
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+  @media #{$breakpoint-medium} {
+    width: 450px;
+  }
+  @media #{$breakpoint-large} {
+    width: 450px;
+  }
 }
 
 //

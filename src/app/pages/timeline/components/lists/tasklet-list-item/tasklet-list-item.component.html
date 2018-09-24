@@ -1,6 +1,6 @@
 <div [class]="themeClass">
   <div *ngIf="!isBeforeNow(tasklet.creationDate)">
-    <div class="future-tasklet">
+    <div class="future-tasklet flexcontainer">
       <div class="attachments">
         <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
           <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached-without-connector"
