@@ -1,28 +1,16 @@
-@import '../../../../../../../node_modules/@angular/material/theming';
-@include mat-core();
+@import '../../../../../../light-theme';
+@import '../../../../../../dark-theme';
+@import '../../../../../../flex';
 
-.container {
-  display: flex;
-  width: 100%;
-}
-
-.flex-box {
-  display: flex;
-}
-
-.flex {
-  flex-grow: 1;
-}
-
-.task {
+.entity {
   overflow: hidden;
   text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.effort {
-  color: mat-color($mat-grey, 500);
+.list-icon {
+  margin-right: 16px;
 }
 
 .action{
@@ -31,8 +19,4 @@
 
 .action-buttons {
   min-width: 65px;
-}
-
-.list-icon {
-  margin-right: 16px;
 }

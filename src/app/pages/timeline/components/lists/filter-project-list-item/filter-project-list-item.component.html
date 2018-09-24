@@ -1,6 +1,5 @@
-<div class="container">
-  <mat-checkbox [(ngModel)]=project.checked
-                (ngModelChange)="onProjectChanged(project)">
+<div>
+  <mat-checkbox [(ngModel)]=project.checked (ngModelChange)="onProjectChanged(project)">
     {{ project.name }}
   </mat-checkbox>
 </div>

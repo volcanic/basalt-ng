@@ -1,4 +1,4 @@
-<div class="container"
+<div class="flexcontainer"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <mat-menu #contextMenu="matMenu">
@@ -14,7 +14,7 @@
     </button>
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
-  <button mat-button class="task flex" (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, task: task})">
+  <button mat-button class="entity flexbox" (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, task: task})">
     <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
     <span>{{ task.name }}</span>
     <span [@actionAnimation]="state"
@@ -22,7 +22,7 @@
       ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
     </span>
   </button>
-  <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flex-box">
+  <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"
             mat-icon-button
             matTooltip="Complete"
@@ -44,7 +44,7 @@
       <mat-icon svgIcon='reply'></mat-icon>
     </button>
   </div>
-  <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flex-box">
+  <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"
             mat-icon-button
             matTooltip="Re-open"
