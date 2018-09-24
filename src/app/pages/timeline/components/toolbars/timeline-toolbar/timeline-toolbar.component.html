@@ -1,7 +1,7 @@
 <mat-toolbar class="flexcontainer" color="primary">
   <div class="toolbar-block">
     <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('menu')">
-      <mat-icon svgIcon="menu" class="white-icon"></mat-icon>
+      <mat-icon svgIcon="menu"></mat-icon>
     </button>
     <span *ngIf="media != mediaType.SMALL" class="toolbar-title">{{ title }}</span>
   </div>
@@ -9,7 +9,7 @@
   <div class="searchbox">
     <mat-form-field floatLabel="never" class="search-form-field">
       <button mat-button *ngIf="!searchItem" matSuffix mat-icon-button aria-label="Search">
-        <mat-icon svgIcon="search" class="icon-white"></mat-icon>
+        <mat-icon svgIcon="search"></mat-icon>
       </button>
       <mat-label>Search</mat-label>
       <input class="search-input" matInput #search name="search" type="text"
@@ -20,7 +20,7 @@
              (click)="onSearchFieldClicked()">
       <button mat-button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
               (click)="onClearButtonClicked()">
-        <mat-icon svgIcon="close_18" class="icon-white"></mat-icon>
+        <mat-icon svgIcon="close_18"></mat-icon>
       </button>
     </mat-form-field>
     <mat-autocomplete #auto="matAutocomplete">
@@ -35,7 +35,7 @@
   <div class="toolbar-block">
     <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item"
             (click)="onMenuItemClicked('todo')">
-      <mat-icon svgIcon="timer" class="white-icon"></mat-icon>
+      <mat-icon svgIcon="timer"></mat-icon>
     </button>
     <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item" [matMenuTriggerFor]="menuSwitcher">
       <mat-icon svgIcon="business" *ngIf="scope === scopeType.WORK"></mat-icon>
@@ -50,7 +50,7 @@
       </button>
     </mat-menu>
     <button mat-button class="toolbar-menu-item right" [matMenuTriggerFor]="menu">
-      <mat-icon svgIcon="more_vert" class="white-icon"></mat-icon>
+      <mat-icon svgIcon="more_vert"></mat-icon>
     </button>
     <mat-menu #menu="matMenu">
       <div class="toolbar-expanded" *ngIf="media < mediaType.LARGE">

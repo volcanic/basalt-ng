@@ -1,5 +1,9 @@
-@import '../calendar-grid-day/calendar-grid-day.component';
+@import '../../../../../theme';
 
 .quarter-hour {
   border: mat-color($mat-grey, 300) 1px solid;
+}
+
+.time-step {
+  height: 20px;
 }
