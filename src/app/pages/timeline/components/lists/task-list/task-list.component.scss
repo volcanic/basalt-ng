@@ -3,7 +3,7 @@
 
 .light-theme {
   .label {
-    color: rgba(0, 0, 0, .54);
+    color: mat-color($mat-grey, 300);
     font-size: 14px;
     font-weight: 500;
     margin: 15px 16px 7px;
@@ -12,7 +12,7 @@
 
 .dark-theme {
   .label {
-    color: rgba(255, 255, 255, .54);
+    color: mat-color($mat-grey, 50);
     font-size: 14px;
     font-weight: 500;
     margin: 15px 16px 7px;
