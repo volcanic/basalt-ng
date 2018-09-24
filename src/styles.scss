@@ -62,6 +62,13 @@ app-root {
   flex: 1;
 }
 
+.mat-content {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  overflow: visible !important;
+}
+
 .mat-toolbar {
   min-height: 56px !important;
 }

@@ -23,13 +23,6 @@
   color: mat-color($light-warn);
 }
 
-.mat-content {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  overflow: visible;
-}
-
 .mat-expansion-panel {
   display: inherit;
 }
