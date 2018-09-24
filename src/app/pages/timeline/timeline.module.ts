@@ -56,6 +56,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TimelineRoutingModule} from './timeline-routing.module';
 import {RecurrenceIntervalFragmentComponent} from './components/fragments/recurrence-interval-fragment/recurrence-interval-fragment.component';
 import {FileDropFragmentComponent} from './components/fragments/file-drop-fragment/file-drop-fragment.component';
+import {FileUploadModule} from 'ng2-file-upload';
 
 @NgModule({
   imports: [
@@ -65,6 +66,7 @@ import {FileDropFragmentComponent} from './components/fragments/file-drop-fragme
     InViewportModule,
     ScrollDispatchModule,
     MaterialModule,
+    FileUploadModule,
 
     TimelineRoutingModule,
 

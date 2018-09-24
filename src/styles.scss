@@ -2,8 +2,7 @@
 @import '~@angular/material/theming';
 
 @include mat-core();
-@import 'light-theme';
-@import 'dark-theme';
+@import 'theme.scss';
 @import 'sizes.scss';
 
 .light-theme {
