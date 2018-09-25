@@ -23,5 +23,6 @@
 { "annotation": "refs/tags/v0.22.0", "message": "Date indicator"},
 { "annotation": "refs/tags/v0.23.0", "message": "Work life distinction"},
 { "annotation": "refs/tags/v0.24.0", "message": "Top-level tags and persons"},
-{ "annotation": "refs/tags/v0.25.0", "message": "Recurring tasks"}
+{ "annotation": "refs/tags/v0.25.0", "message": "Recurring tasks"},
+{ "annotation": "refs/tags/v0.26.0", "message": "Future tasklets"}
 ]}

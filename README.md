@@ -57,6 +57,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.23 | Work life distinction |
 | 0.24 | Top-level tags and persons |
 | 0.25 | Recurring tasks |
+| 0.26 | Future tasklets |
 
 ### Planned features
 
