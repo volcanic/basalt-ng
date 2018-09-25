@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Tasklet} from '../../../../../core/entity/model/tasklet.model';
 import {TaskletType} from '../../../../../core/entity/model/tasklet-type.enum';
+import {Media} from '../../../../../core/ui/model/media.enum';
+import {DateService} from '../../../../../core/entity/services/date.service';
 
 /**
  * Displays future tasklet
@@ -16,9 +18,26 @@ export class FutureTaskletFragmentComponent implements OnInit {
   @Input() tasklet: Tasklet;
   /** Topic (typically derived from task name */
   @Input() topic = '';
+  /** Current media */
+  @Input() media: Media;
 
   /** Icon name */
   icon = '';
+
+  /** Enum for media types */
+  mediaType = Media;
+
+  /** Creation time */
+  time = '';
+  /** Creation weekday */
+  weekDay = '';
+  /** Simple creation date */
+  simpleDate = '';
+
+  /** Reference to static service methods */
+  isToday = DateService.isToday;
+  /** Reference to static service methods */
+  isWithinNextDays = DateService.isWithinNextDays;
 
   //
   // Lifecycle hooks
@@ -29,6 +48,16 @@ export class FutureTaskletFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeIcon();
+    this.initializeDate();
+  }
+
+  /**
+   * Initializes date
+   */
+  private initializeDate() {
+    this.time = DateService.getTimeString(new Date(this.tasklet.creationDate));
+    this.weekDay = DateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
+    this.simpleDate = DateService.getSimpleDateWithoutYearString(new Date(this.tasklet.creationDate));
   }
 
   //

@@ -27,6 +27,16 @@
   height: 16px;
 }
 
+.date{
+  color: mat-color($mat-grey, 500);
+  margin-right: 15px;
+  width: 90px;
+}
+
+.date-component {
+  margin-right: 5px;
+}
+
 .topic {
   color: mat-color($mat-grey, 500);
 }
