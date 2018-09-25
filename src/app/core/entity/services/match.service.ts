@@ -186,13 +186,13 @@ export class MatchService {
    */
   public taskletMatchesTags(tasklet: Tasklet, tags: Tag[], tagsNone: boolean): boolean {
     return ((tasklet.tagIds == null || tasklet.tagIds.length === 0) && tagsNone)
-      || tasklet.tagIds.map(id => {
+      || (tasklet.tagIds != null && tasklet.tagIds.map(id => {
         return this.tagService.getTagById(id);
       }).filter(tag => {
         return tag != null;
       }).some(tag => {
         return this.tagMatchesTags(tag, tags, tagsNone);
-      });
+      }));
   }
 
   /**
@@ -204,13 +204,13 @@ export class MatchService {
    */
   public taskMatchesTags(task: Task, tags: Tag[], tagsNone: boolean): boolean {
     return ((task.tagIds == null || task.tagIds.length === 0) && tagsNone)
-      || task.tagIds.map(id => {
+      || (task.tagIds != null && task.tagIds.map(id => {
         return this.tagService.getTagById(id);
       }).filter(tag => {
         return tag != null;
       }).some(tag => {
         return this.tagMatchesTags(tag, tags, tagsNone);
-      });
+      }));
   }
 
   /**
