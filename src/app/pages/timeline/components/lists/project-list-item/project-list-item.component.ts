@@ -15,16 +15,21 @@ export class ProjectListItemComponent {
   /** Project to be displayed */
   @Input() project: Project;
   /** Event emitter indicating project to be updated */
-  @Output() projectEventEmitter = new EventEmitter<{ Action, Project }>();
+  @Output() projectEventEmitter = new EventEmitter<{ action: Action, project: Project }>();
 
-  /** Enum for action types */
-  action = Action;
   /** Animation state */
   state = 'inactive';
 
   //
   // Actions
   //
+
+  /**
+   * Handles click on project
+   */
+  onProjectClicked() {
+    this.projectEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, project: this.project})
+  }
 
   /**
    * Handles hover over container

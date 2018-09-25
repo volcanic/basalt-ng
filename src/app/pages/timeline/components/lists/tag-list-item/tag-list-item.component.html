@@ -1,7 +1,7 @@
 <div class="flexcontainer"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
-  <button mat-button class="entity flexbox" (click)="tagEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, tag: tag})">
+  <button mat-button class="entity flexbox" (click)="onTagClicked()">
     <mat-icon svgIcon="label_outline" class="list-icon"></mat-icon>
     <span>{{ tag.name }}</span>
   </button>

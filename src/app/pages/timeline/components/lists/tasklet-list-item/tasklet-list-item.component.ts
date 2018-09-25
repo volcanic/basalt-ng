@@ -54,8 +54,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   /** Default theme to be used */
   themeClass = 'light-theme';
 
-  /** Enum for action types */
-  action = Action;
   /** Enum for media types */
   mediaType = Media;
   /** Icon name */
@@ -223,6 +221,27 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     } else {
       this.contextMenuTrigger.openMenu();
     }
+  }
+
+  /**
+   * Handles click on tasklet creation time
+   */
+  onTaskletCreationTimeClicked() {
+    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_CREATION_TIME, tasklet: this.tasklet});
+  }
+
+  /**
+   * Handles click on continue button
+   */
+  onContinueClicked() {
+    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, tasklet: this.tasklet})
+  }
+
+  /**
+   * Handles click on template button
+   */
+  onTemplateClicked() {
+    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_TEMPLATE, tasklet: this.tasklet})
   }
 
   /**

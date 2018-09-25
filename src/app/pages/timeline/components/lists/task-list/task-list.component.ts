@@ -8,6 +8,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
+import {Task} from '../../../../../core/entity/model/task.model';
 import {DateService} from 'app/core/entity/services/date.service';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Action} from 'app/core/entity/model/action.enum';
@@ -29,7 +30,7 @@ export class TaskListComponent implements OnInit, OnChanges {
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */
-  @Output() taskEventEmitter = new EventEmitter<{ Action, Task }>();
+  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task }>();
 
   /** Recurring tasks */
   tasksRecurring = [];
@@ -50,9 +51,6 @@ export class TaskListComponent implements OnInit, OnChanges {
   tasksRecurringBadgeColor = 'transparent';
   /** Background color for inbox badge */
   tasksInboxBadgeColor = 'transparent';
-
-  /** Enum for action types */
-  action = Action;
 
   //
   // Lifecycle hooks
@@ -121,5 +119,24 @@ export class TaskListComponent implements OnInit, OnChanges {
     this.tasksNextBadgeColor = (this.tasksNext.length > 0) ? 'accent' : 'primary';
     this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
     this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
+  }
+
+  //
+  // Actions
+  //
+
+  /**
+   * Handles task event
+   * @param event event
+   */
+  onTaskEvent(event: any) {
+    this.taskEventEmitter.emit(event);
+  }
+
+  /**
+   * Handles click on add button
+   */
+  onAddClicked() {
+    this.onTaskEvent({action: Action.OPEN_DIALOG_ADD, task: null})
   }
 }

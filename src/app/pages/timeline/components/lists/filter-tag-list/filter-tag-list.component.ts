@@ -21,12 +21,17 @@ export class FilterTagListComponent {
   /** Event emitter indicating tag action */
   @Output() tagEventEmitter = new EventEmitter<{ action: Action, tags?: Tag[], tagsNone: boolean }>();
 
-  /** Enum for action types */
-  action = Action;
-
   //
   // Actions
   //
+
+  /**
+   * Handles tag event
+   * @param event event
+   */
+  onTagEvent(event: any) {
+    this.tagEventEmitter.emit(event);
+  }
 
   /**
    * Handles (de-)selection of none

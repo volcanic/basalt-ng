@@ -21,12 +21,17 @@ export class FilterPersonListComponent {
   /** Event emitter indicating person action */
   @Output() personEventEmitter = new EventEmitter<{ action: Action, persons?: Person[], personsNone?: boolean }>();
 
-  /** Enum for action types */
-  action = Action;
-
   //
   // Actions
   //
+
+  /**
+   * Handles person event
+   * @param event event
+   */
+  onPersonEvent(event: any) {
+    this.personEventEmitter.emit(event);
+  }
 
   /**
    * Handles (de-)selection of none

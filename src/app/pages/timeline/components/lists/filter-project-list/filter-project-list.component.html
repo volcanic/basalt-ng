@@ -8,7 +8,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <app-filter-project-list-item *ngFor="let p of projects" [project]="p"
-                                  (projectEventEmitter)="projectEventEmitter.emit($event)">
+                                  (projectEventEmitter)="onProjectEvent($event)">
     </app-filter-project-list-item>
     <div>
       <mat-checkbox class="filter-none" [(ngModel)]="projectsNone"

@@ -8,7 +8,7 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <app-filter-tag-list-item *ngFor="let t of tags" [tag]="t"
-                                  (tagEventEmitter)="tagEventEmitter.emit($event)">
+                                  (tagEventEmitter)="onTagEvent($event)">
     </app-filter-tag-list-item>
     <div>
       <mat-checkbox class="filter-none" [(ngModel)]="tagsNone"

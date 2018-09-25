@@ -2,7 +2,7 @@
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <button mat-button class="entity flexbox"
-          (click)="personEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, person: person})">
+          (click)="onPersonClicked()">
     <mat-icon svgIcon="person" class="list-icon"></mat-icon>
     <span>{{ person.name }}</span>
   </button>

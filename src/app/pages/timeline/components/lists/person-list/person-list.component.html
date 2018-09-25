@@ -7,13 +7,13 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-person-list-item *ngFor="let p of persons" [person]="p" (personEventEmitter)="personEventEmitter.emit($event)">
+    <app-person-list-item *ngFor="let p of persons" [person]="p" (personEventEmitter)="onPersonEvent($event)">
     </app-person-list-item>
   </mat-expansion-panel>
 </mat-accordion>
 
 <button mat-button class="label headers-align"
-        (click)="personEventEmitter.emit({action: action.OPEN_DIALOG_ADD, person: null})">
+        (click)="onAddClicked()">
   <mat-icon class="icon-add" svgIcon="add"></mat-icon>
   <span>Add new person</span>
 </button>

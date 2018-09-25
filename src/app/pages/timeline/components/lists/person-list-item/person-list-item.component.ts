@@ -16,16 +16,21 @@ export class PersonListItemComponent {
   /** Person to be displayed */
   @Input() person: Person;
   /** Event emitter indicating person to be updated */
-  @Output() personEventEmitter = new EventEmitter<Person>();
+  @Output() personEventEmitter = new EventEmitter<{ action: Action, person: Person }>();
 
-  /** Enum for action types */
-  action = Action;
   /** Animation state */
   state = 'inactive';
 
   //
   // Actions
   //
+
+  /**
+   * Handles click on person
+   */
+  onPersonClicked() {
+    this.personEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, person: this.person})
+  }
 
   /**
    * Handles hover over container

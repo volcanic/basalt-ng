@@ -9,12 +9,12 @@
     </mat-expansion-panel-header>
 
     <app-filter-person-list-item *ngFor="let t of persons" [person]="t"
-                                 (personEventEmitter)="personEventEmitter.emit($event)">
+                                 (personEventEmitter)="onPersonEvent($event)">
     </app-filter-person-list-item>
 
     <div>
       <mat-checkbox class="filter-none" [(ngModel)]="personsNone"
-                    (ngModelChange)="personEventEmitter.emit({action: action.FILTER_NONE, personsNone: personsNone})">elements
+                    (ngModelChange)="onFilterNone(personsNone)">
         without persons
       </mat-checkbox>
     </div>

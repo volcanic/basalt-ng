@@ -2,19 +2,19 @@
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
   <mat-menu #contextMenu="matMenu">
-    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, task: task})">Update task</button>
-    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.COMPLETE, task: task})" *ngIf="task.completionDate == null"
+    <button mat-menu-item (click)="onTaskClicked()">Update task</button>
+    <button mat-menu-item (click)="onCompleteClicked()" *ngIf="task.completionDate == null"
             class="action-buttons">Complete task
     </button>
-    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, task: task})" *ngIf="task.completionDate == null"
+    <button mat-menu-item (click)="onContinueClicked()" *ngIf="task.completionDate == null"
             class="action-buttons">Continue task
     </button>
-    <button mat-menu-item (click)="taskEventEmitter.emit({action: action.REOPEN, task: task})" *ngIf="task.completionDate != null"
+    <button mat-menu-item (click)="onReopenClicked()" *ngIf="task.completionDate != null"
             class="action-buttons">Re-open task
     </button>
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
-  <button mat-button class="entity flexbox" (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_UPDATE, task: task})">
+  <button mat-button class="entity flexbox" (click)="onTaskClicked()">
     <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
     <span>{{ task.name }}</span>
     <span [@actionAnimation]="state"
@@ -30,7 +30,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="taskEventEmitter.emit({action: action.COMPLETE, task: task})">
+            (click)="onCompleteClicked()">
       <mat-icon svgIcon='check'></mat-icon>
     </button>
     <button [@actionAnimation]="state"
@@ -40,7 +40,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="taskEventEmitter.emit({action: action.OPEN_DIALOG_CONTINUE, task: task})">
+            (click)="onContinueClicked()">
       <mat-icon svgIcon='reply'></mat-icon>
     </button>
   </div>
@@ -52,7 +52,7 @@
             matTooltipShowDelay="250"
             class="action"
             [disableRipple]="true"
-            (click)="taskEventEmitter.emit({action: action.REOPEN, task: task})">
+            (click)="onReopenClicked()">
       <mat-icon svgIcon='replay'></mat-icon>
     </button>
   </div>

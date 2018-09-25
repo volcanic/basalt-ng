@@ -16,16 +16,21 @@ export class TagListItemComponent {
   /** Tag to be displayed */
   @Input() tag: Tag;
   /** Event emitter indicating tag action */
-  @Output() tagEventEmitter = new EventEmitter<{ Action, Tag }>();
+  @Output() tagEventEmitter = new EventEmitter<{ action: Action, tag: Tag }>();
 
-  /** Enum for action types */
-  action = Action;
   /** Animation state */
   state = 'inactive';
 
   //
   // Actions
   //
+
+  /**
+   * Handles click on tag
+   */
+  onTagClicked() {
+    this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, tag: this.tag})
+  }
 
   /**
    * Handles hover over container

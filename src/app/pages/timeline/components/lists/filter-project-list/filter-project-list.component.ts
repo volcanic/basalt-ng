@@ -26,6 +26,14 @@ export class FilterProjectListComponent {
   //
 
   /**
+   * Handles project event
+   * @param event event
+   */
+  onProjectEvent(event: any) {
+    this.projectEventEmitter.emit(event);
+  }
+
+  /**
    * Handles (de-)selection of none
    * @param projectsNone projects none flag
    */

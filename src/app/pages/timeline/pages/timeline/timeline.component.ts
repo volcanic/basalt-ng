@@ -129,9 +129,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Daily digests */
   public dailyDigests: ProjectDigest[];
 
-  /** Enum for action types */
-  action = Action;
-
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
@@ -674,10 +671,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
+   * Handles click on add button
+   */
+  onAddClicked() {
+    this.onTaskletEvent({action: Action.OPEN_DIALOG_ADD, tasklet: null});
+  }
+
+  /**
    * Handles events targeting a tasklet
    * @param {any} event event parameters
    */
-  onTaskletEvent(event: { action: Action, tasklet: Tasklet, task: Task, tags: Tag[], persons: Person[] }) {
+  onTaskletEvent(event: { action: Action, tasklet: Tasklet, task?: Task, tags?: Tag[], persons?: Person[] }) {
     const tasklet = CloneService.cloneTasklet(event.tasklet as Tasklet);
     const task = CloneService.cloneTask(event.task as Task);
     const tags = CloneService.cloneTags(event.tags as Tag[]);

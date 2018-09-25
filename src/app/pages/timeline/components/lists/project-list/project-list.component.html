@@ -8,13 +8,13 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <app-project-list-item *ngFor="let p of projects" [project]="p"
-                           (projectEventEmitter)="projectEventEmitter.emit($event)">
+                           (projectEventEmitter)="onProjectEvent($event)">
     </app-project-list-item>
   </mat-expansion-panel>
 </mat-accordion>
 
 <button mat-button class="label headers-align"
-        (click)="projectEventEmitter.emit({action: action.OPEN_DIALOG_ADD, project: null})">
+        (click)="onAddClicked()">
   <mat-icon class="icon-add" svgIcon="add"></mat-icon>
   <span>Add new project</span>
 </button>
