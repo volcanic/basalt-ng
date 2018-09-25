@@ -2,6 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Tasklet} from '../../../../../core/entity/model/tasklet.model';
 import {TaskletType} from '../../../../../core/entity/model/tasklet-type.enum';
 
+/**
+ * Displays future tasklet
+ */
 @Component({
   selector: 'app-future-tasklet-fragment',
   templateUrl: './future-tasklet-fragment.component.html',
