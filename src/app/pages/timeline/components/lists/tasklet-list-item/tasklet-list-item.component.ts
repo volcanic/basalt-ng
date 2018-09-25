@@ -76,6 +76,8 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   /** Expansion panel state */
   expansionPanelOpened = false;
   /** Reference to static service methods */
+  isToday = DateService.isToday;
+  /** Reference to static service methods */
   isBeforeNow = DateService.isBeforeNow;
   /** Reference to static service methods */
   isBeforeToday = DateService.isBeforeToday;
@@ -221,6 +223,13 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     } else {
       this.contextMenuTrigger.openMenu();
     }
+  }
+
+  /**
+   * Handles click on update button
+   */
+  onUpdateClicked() {
+    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, tasklet: this.tasklet});
   }
 
   /**

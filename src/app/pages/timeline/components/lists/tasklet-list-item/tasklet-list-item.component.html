@@ -8,7 +8,7 @@
                [matTooltip]=date
                matTooltipPosition="above">
             <span class="left-attached-content"
-                  *ngIf="isWithinNextDays(tasklet.creationDate, 7)">{{ weekDay.slice(0, 3) }},</span>
+                  *ngIf="isWithinNextDays(tasklet.creationDate, 7) && !isToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
             <span class="left-attached-content"
                   *ngIf="!isWithinNextDays(tasklet.creationDate, 7)">{{ simpleDate }},</span>
             <span class="left-attached-content">{{ time }}</span>
@@ -51,7 +51,7 @@
       <mat-card-footer>
         <mat-menu #contextMenu="matMenu">
           <button mat-menu-item
-                  (click)="onTaskletClicked()">
+                  (click)="onUpdateClicked()">
             Update tasklet
           </button>
           <button mat-menu-item
@@ -74,7 +74,7 @@
                  [matTooltip]=date
                  matTooltipPosition="above">
               <span class="left-attached-content"
-                    *ngIf="isInCurrentWeek(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
+                    *ngIf="isInCurrentWeek(tasklet.creationDate) && !isToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
               <span class="left-attached-content"
                     *ngIf="!isInCurrentWeek(tasklet.creationDate)">{{ simpleDate }},</span>
               <span class="left-attached-content">{{ time }}</span>
