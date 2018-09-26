@@ -331,7 +331,7 @@ export class MatchService {
         }).filter(person => {
           return person != null;
         }), item))
-        || (tasklet.tagIds && this.tagsMatchesSingleItem(tasklet.tagIds.map(id => {
+        || (tasklet.tagIds != null && this.tagsMatchesSingleItem(tasklet.tagIds.map(id => {
           return this.tagService.getTagById(id);
         }).filter(tag => {
           return tag != null;
@@ -351,11 +351,11 @@ export class MatchService {
       return MatchService.taskNameMatchesSingleItem(task, item)
         || MatchService.projectNameMatchesSingleItem(project, item)
         || this.descriptionMatchesSingleItem(task.description, item)
-        || this.tagsMatchesSingleItem(task.tagIds.map(id => {
+        || (task.tagIds != null && this.tagsMatchesSingleItem(task.tagIds.map(id => {
           return this.tagService.getTagById(id);
         }).filter(tag => {
           return tag != null;
-        }), item);
+        }), item));
     });
   }
 
