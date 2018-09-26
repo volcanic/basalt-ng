@@ -41,7 +41,7 @@
                 </mat-list-item>
               </mat-list>
             </div>
-            <app-tasklet-daily-scrum [tasklet]="tasklet" *ngIf="tasklet.type == 'Daily Scrum'">
+            <app-tasklet-daily-scrum [tasklet]="tasklet" *ngIf="tasklet.type == taskletType.DAILY_SCRUM">
             </app-tasklet-daily-scrum>
           </mat-expansion-panel>
         </mat-accordion>
@@ -50,21 +50,17 @@
 
       <mat-card-footer>
         <mat-menu #contextMenu="matMenu">
-          <button mat-menu-item
-                  (click)="onUpdateClicked()">
+          <button mat-menu-item (click)="onUpdateClicked()">
             Update tasklet
           </button>
-          <button mat-menu-item
-                  (click)="onTaskletCreationTimeClicked()">
-            Update
-            creation time
+          <button mat-menu-item (click)="onTaskletCreationTimeClicked()">
+            Update creation time
           </button>
-          <button mat-menu-item
-                  (click)="onContinueClicked()" *ngIf="tasklet.type == 'Action'
-                                       || tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Development'
-                                       || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'">Continue tasklet
+          <button mat-menu-item (click)="onContinueClicked()" *ngIf="isContinuable()">
+            Continue tasklet
+          </button>
+          <button mat-menu-item (click)="onTemplateClicked()" *ngIf="isTemplatable()">
+            Template tasklet
           </button>
         </mat-menu>
         <div class="flexcontainer">
@@ -98,11 +94,7 @@
           </div>
           <div class="flexbox"></div>
           <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
-            <div *ngIf="tasklet.type == 'Action'
-                                       || tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Development'
-                                       || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea' "
+            <div *ngIf="isContinuable()"
                  class="side-attached right-attached hidden"
                  (click)="onContinueClicked()"
                  matTooltip="Continue with tasklet"
@@ -111,7 +103,7 @@
                 <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
               </div>
             </div>
-            <div *ngIf="tasklet.type == 'Daily Scrum'" class="side-attached right-attached hidden"
+            <div *ngIf="isTemplatable()" class="side-attached right-attached hidden"
                  (click)="onTemplateClicked()"
                  matTooltip="Template this event" matTooltipPosition="above">
               <div class="right-attached-content">

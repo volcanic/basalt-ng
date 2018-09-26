@@ -56,6 +56,8 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
 
   /** Enum for media types */
   mediaType = Media;
+  /** Enum for tasklet types */
+  taskletType = TaskletType;
   /** Icon name */
   icon = '';
   /** Topic (typically derived from task name */
@@ -83,8 +85,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   isBeforeToday = DateService.isBeforeToday;
   /** Reference to static service methods */
   isWithinNextDays = DateService.isWithinNextDays;
-  /** Reference to static service methods */
-  isWithinLastDays = DateService.isWithinLastDays;
   /** Reference to static service methods */
   isInCurrentWeek = DateService.isInCurrentWeek;
 
@@ -290,5 +290,23 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     }
 
     return null;
+  }
+
+  /**
+   * Determines whether the displayed tasklet is continuable
+   */
+  public isContinuable() {
+    return this.tasklet.type == TaskletType.ACTION
+      || this.tasklet.type == TaskletType.MEETING
+      || this.tasklet.type == TaskletType.DEVELOPMENT
+      || this.tasklet.type == TaskletType.DEBUGGING
+      || this.tasklet.type == TaskletType.IDEA;
+  }
+
+  /**
+   * Determines whether the displayed tasklet is templatable
+   */
+  public isTemplatable() {
+    return this.tasklet.type == TaskletType.DAILY_SCRUM;
   }
 }
