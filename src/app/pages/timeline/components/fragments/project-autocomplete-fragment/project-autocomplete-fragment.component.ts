@@ -8,6 +8,7 @@ import {CloneService} from 'app/core/entity/services/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
 import {SuggestionService} from 'app/core/entity/services/suggestion.service';
+import {Task} from '../../../../../core/entity/model/task.model';
 
 /**
  * Displays project auto-complete fragment
@@ -25,31 +26,13 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   @Input() readonly: false;
   /** Array of project options */
   @Input() projectOptions: string[] = [];
-
   /** Event emitter indicating changes in project */
   @Output() projectChangedEmitter = new EventEmitter<Project>();
 
   /** Debouncer for input field */
-  inputFieldDebouncer = new Subject();
-  /** Current inputFieldValue of input field */
-  inputFieldValue = '';
-
-  /** Array of options filtered by currently typed inputFieldValue */
-  filteredOptions: Observable<string[]>;
-
-  /** Form control */
-  formControl: FormControl = new FormControl();
-
-  /**
-   * Constructor
-   * @param {ProjectService} projectService
-   * @param {CloneService} cloneService
-   * @param {SuggestionService} suggestionService
-   */
-  constructor(private projectService: ProjectService,
-              private cloneService: CloneService,
-              private suggestionService: SuggestionService) {
-  }
+  debouncer = new Subject();
+  /** Array of options filtered by currently typed value */
+  optionsFiltered: string[];
 
   //
   // Lifecycle hooks
@@ -60,7 +43,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeProject();
-    this.initializeProjectOptions();
+    this.initializeDebouncer();
   }
 
   //
@@ -79,16 +62,10 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   }
 
   /**
-   * Initializes project options
+   * Initializes debouncer
    */
-  private initializeProjectOptions() {
-    this.filteredOptions = this.formControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this.filterOptions(value))
-      );
-
-    this.inputFieldDebouncer.pipe(
+  private initializeDebouncer() {
+    this.debouncer.pipe(
       debounceTime(500)
     ).subscribe((value: Project) => this.projectChangedEmitter.emit(value));
   }
@@ -97,6 +74,16 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
   // Actions
   //
 
+  /**
+   * Handles project name changes
+   * @param projectName project name
+   */
+  onProjectNameChanged(projectName: string) {
+    this.project.name = projectName;
+    this.optionsFiltered = this.filterOptions(this.project.name);
+    this.debouncer.next(this.project);
+  }
+  
   /**
    * Handles key up event
    */
@@ -138,6 +125,6 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
    * Informs subscribers that something has changed
    */
   private notify() {
-    this.inputFieldDebouncer.next(this.project);
+    this.debouncer.next(this.project);
   }
 }

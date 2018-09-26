@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DailyScrumParticipant} from 'app/core/entity/model/daily-scrum-participant';
 import {DailyScrumActivity} from 'app/core/entity/model/daily-scrum-activity';
-import {TaskletService} from 'app/core/entity/services/tasklet.service';
 import {Person} from 'app/core/entity/model/person.model';
+import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
 
 /**
  * Displays daily scrum participant fragment
@@ -16,11 +16,13 @@ export class DailyScrumParticipantFragmentComponent implements OnInit {
 
   /** Daily scrum participant to be displayed */
   @Input() dailyScrumParticipant: DailyScrumParticipant;
+  /** Array of person options */
+  @Input() personOptions: string[] = [];
   /** Event emitter indicating changes in person */
   @Output() personSelectedEmitter = new EventEmitter<string>();
 
-  /** Array of daily scrum activities */
-  dailyScrumActivityOptions = [];
+  /** Array of activity options */
+  activityOptions: string[] = [];
 
   /**
    * Constructor
@@ -56,7 +58,7 @@ export class DailyScrumParticipantFragmentComponent implements OnInit {
    * Initializes activity taskOptions
    */
   private initializeActivityOptions() {
-    this.dailyScrumActivityOptions = Array.from(this.taskletService
+    this.activityOptions = Array.from(this.taskletService
       .getDailyScrumActivities(this.dailyScrumParticipant.person).values()).reverse();
   }
 

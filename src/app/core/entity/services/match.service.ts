@@ -35,7 +35,7 @@ export class MatchService {
 
   /**
    * Normalizes a string in order to make comparison less prone to errors
-   * @param {string} value input inputFieldValue
+   * @param {string} value input value
    * @returns {string} normalized string
    */
   static normalize(value: string): string {
@@ -57,8 +57,8 @@ export class MatchService {
 
   /**
    * Compares two string values
-   * @param {string} value1 first inputFieldValue
-   * @param {string} value2 second inputFieldValue
+   * @param {string} value1 first value
+   * @param {string} value2 second value
    * @returns {number} 1 if the first values comes after the second one, otherwise -1
    */
   static compare(value1: string, value2: string) {
@@ -70,10 +70,10 @@ export class MatchService {
   //
 
   /**
-   * Determines whether a inputFieldValue contains a specific item
-   * @param value inputFieldValue to check
+   * Determines whether a value contains a specific item
+   * @param value value to check
    * @param item single word
-   * @returns {boolean} true if inputFieldValue includes word
+   * @returns {boolean} true if value includes word
    */
   static valueMatchesSingleItem(value: string, item: string): boolean {
     return value != null
@@ -385,7 +385,7 @@ export class MatchService {
 
   /**
    * Determines whether a person matches every of the specified items
-   * @param person inputFieldValue to check
+   * @param person value to check
    * @param items multiple words in one string
    * @returns {boolean}
    */

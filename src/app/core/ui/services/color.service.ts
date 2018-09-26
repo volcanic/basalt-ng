@@ -24,7 +24,7 @@ export class ColorService {
   ];
 
   /**
-   * Returns a color picked by a hash inputFieldValue generated from a project's name
+   * Returns a color picked by a hash value generated from a project's name
    * @param {Project} project project to get color for
    * @returns {string} color string derived from project name
    */

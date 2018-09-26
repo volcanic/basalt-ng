@@ -15,6 +15,8 @@ export class DailyScrumFragmentComponent implements OnInit {
 
   /** Tasklet to be displayed */
   @Input() tasklet: TaskletDailyScrum;
+  /** Array of person options */
+  @Input() personOptions: string[] = [];
 
   //
   // Lifecycle hooks

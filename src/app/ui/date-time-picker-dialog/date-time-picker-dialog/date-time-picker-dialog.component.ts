@@ -56,7 +56,7 @@ export class DateTimePickerDialogComponent implements OnInit {
 
   /**
    * Handles date changes
-   * @param {Date} value date inputFieldValue
+   * @param {Date} value date value
    */
   onDateChanged(value: Date) {
     this.date = value;

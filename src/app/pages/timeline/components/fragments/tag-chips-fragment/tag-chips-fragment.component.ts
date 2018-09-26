@@ -1,8 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tag} from 'app/core/entity/model/tag.model';
-import {Observable} from 'rxjs/Observable';
-import {FormControl} from '@angular/forms';
-import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
 
@@ -26,17 +23,12 @@ export class TagChipsFragmentComponent implements OnInit {
   /** Event emitter indicating changes in tags */
   @Output() tagsChangedEmitter = new EventEmitter<Tag[]>();
 
+  /** Current value of input field */
+  inputFieldValue = '';
   /** Debouncer for input field */
   inputFieldDebouncer = new Subject();
-
-  /** Current inputFieldValue of input field */
-  inputFieldValue = '';
-
-  /** Array of options filtered by currently typed inputFieldValue */
-  filteredOptions: Observable<string[]>;
-
-  /** Form control */
-  formControl: FormControl = new FormControl();
+  /** Array of options filtered by currently typed value */
+  optionsFiltered: string[];
 
   //
   // Lifecycle hooks
@@ -57,12 +49,6 @@ export class TagChipsFragmentComponent implements OnInit {
    * Initialize auto-complete options
    */
   private initializeOptions() {
-    this.filteredOptions = this.formControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this.filterAutocompleteOptions(value))
-      );
-
     this.inputFieldDebouncer.pipe(
       debounceTime(500)
     ).subscribe((value: Tag[]) => this.tagsChangedEmitter.emit(value));
@@ -71,6 +57,17 @@ export class TagChipsFragmentComponent implements OnInit {
   //
   // Actions
   //
+
+  /**
+   * Handles changes in input field value
+   * @param inputFieldValue input field value
+   */
+  onInputFieldValueChanged(inputFieldValue: string) {
+    this.inputFieldValue = inputFieldValue;
+    this.optionsFiltered = this.filterAutoCompleteOptions(this.inputFieldValue);
+  }
+
+
 
   /**
    * Handles deletion of a tag
@@ -128,10 +125,10 @@ export class TagChipsFragmentComponent implements OnInit {
 
   /**
    * Filters auto-complete options
-   * @param {string} value input inputFieldValue
+   * @param {string} value input value
    * @returns {string[]} filtered options
    */
-  filterAutocompleteOptions(value: string): string[] {
+  filterAutoCompleteOptions(value: string): string[] {
     return this.tagOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     );

@@ -13,8 +13,8 @@
       </button>
       <mat-label>Search</mat-label>
       <input class="search-input" matInput #search name="search" type="text"
-             [(ngModel)]="searchItem"
-             [formControl]="formControl"
+             [ngModel]="searchItem"
+             (ngModelChange)="onSearchItemChanged($event)"
              [matAutocomplete]="auto"
              (keyup)="onKeyUp()"
              (click)="onSearchFieldClicked()">
@@ -24,7 +24,7 @@
       </button>
     </mat-form-field>
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of searchOptionsFiltered | async" [value]="option"
+      <mat-option *ngFor="let option of searchOptionsFiltered" [value]="option"
                   (click)="onOptionSelected($event)">
         {{ option }}
       </mat-option>

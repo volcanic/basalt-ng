@@ -5,13 +5,14 @@
   </mat-chip>
   <div class="searchbox">
     <input class="search-input" matInput name="search" type="text" placeholder="New person"
-           [(ngModel)]="inputFieldValue"
-           [formControl]="formControl"
+           [ngModel]="value"
+           (ngModelChange)="onValueChanged($event)"
+           [disabled]="readonly"
            [matAutocomplete]="auto"
            (keyup)="onKeyUp($event)"
            (keydown)="onKeyDown()">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="onOptionSelected($event)">
+      <mat-option *ngFor="let option of optionsFiltered" [value]="option" (click)="onOptionSelected($event)">
         {{ option }}
       </mat-option>
     </mat-autocomplete>

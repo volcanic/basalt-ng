@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {debounceTime, map, startWith} from 'rxjs/operators';
+import {debounceTime} from 'rxjs/operators';
+import 'rxjs/add/observable/from';
 import {Subject} from 'rxjs/Subject';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Scope} from 'app/core/entity/model/scope.enum';
@@ -35,17 +34,14 @@ export class TimelineToolbarComponent implements OnInit {
   /** Scope type enum */
   scopeType = Scope;
 
-  /** Filtered search items options for auto-complete */
-  searchOptionsFiltered: Observable<string[]>;
-
-  /** Debouncer for search field */
-  seachFieldDebouncer = new Subject();
-
   /** Current search item */
   searchItem = '';
 
-  /** Form control */
-  formControl: FormControl = new FormControl();
+  /** Debouncer for search field */
+  searchItemDebouncer = new Subject();
+
+  /** Filtered search items options for auto-complete */
+  searchOptionsFiltered: string[];
 
   //
   // Lifecycle hooks
@@ -66,27 +62,32 @@ export class TimelineToolbarComponent implements OnInit {
    * Initializes search options filter
    */
   private initializeSearchOptionsFilter() {
-    this.searchOptionsFiltered = this.formControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this.filterOptions(value))
-      );
-
-    this.seachFieldDebouncer.pipe(
+    this.searchItemDebouncer.pipe(
       debounceTime(500)
-    ).subscribe((value) => this.searchItemEventEmitter.emit(value.toString()));
+    ).subscribe((value) => {
+      this.searchItemEventEmitter.emit(value.toString())
+    });
   }
 
   //
   // Actions
   //
 
-  /**
-   * Handles click on menu item
+  /** Handles click on menu item
    * @param {string} menuItem
    */
   onMenuItemClicked(menuItem: string): void {
     this.menuItemEventEmitter.emit(menuItem);
+  }
+
+  /**
+   * Handles changes in search item
+   * @param searchItem search item
+   */
+  onSearchItemChanged(searchItem: string) {
+    this.searchItem = searchItem;
+    this.searchOptionsFiltered = this.filterOptions(this.searchItem);
+    this.searchItemDebouncer.next(this.searchItem);
   }
 
   /**
@@ -100,14 +101,14 @@ export class TimelineToolbarComponent implements OnInit {
    * Handles key up event
    */
   onKeyUp() {
-    this.seachFieldDebouncer.next(this.searchItem);
+    this.searchItemDebouncer.next(this.searchItem);
   }
 
   /**
    * Handles option selection
    */
   onOptionSelected() {
-    this.seachFieldDebouncer.next(this.searchItem);
+    this.searchItemDebouncer.next(this.searchItem);
   }
 
   /**
@@ -115,7 +116,7 @@ export class TimelineToolbarComponent implements OnInit {
    */
   onClearButtonClicked() {
     this.searchItem = '';
-    this.seachFieldDebouncer.next(this.searchItem);
+    this.searchItemDebouncer.next(this.searchItem);
   }
 
   //

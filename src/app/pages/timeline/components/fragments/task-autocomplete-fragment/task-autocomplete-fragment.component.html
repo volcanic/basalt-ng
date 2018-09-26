@@ -1,11 +1,12 @@
 <div class="searchbox">
   <input class="search-input" matInput name="search" type="text" placeholder="Task"
-         [(ngModel)]="task.name"
-         [formControl]="formControl"
+         [ngModel]="task.name"
+         (ngModelChange)="onTaskNameChanged($event)"
+         [disabled]="readonly"
          [matAutocomplete]="auto"
          (keyup)="onKeyUp()">
   <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-    <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (click)="onOptionSelected()">
+    <mat-option *ngFor="let option of optionsFiltered" [value]="option" (click)="onOptionSelected()">
       {{ option }}
     </mat-option>
   </mat-autocomplete>

@@ -1,8 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Person} from 'app/core/entity/model/person.model';
-import {Observable} from 'rxjs/Observable';
-import {FormControl} from '@angular/forms';
-import {map, startWith} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
 
@@ -21,22 +18,17 @@ export class PersonChipsFragmentComponent implements OnInit {
   @Input() persons: Person[] = [];
   /** Whether the component is readonly */
   @Input() readonly = false;
-  /** Array of taskOptions */
+  /** Array of person options */
   @Input() personOptions: string[] = [];
   /** Event emitter indicating changes in persons */
   @Output() personsChangedEmitter = new EventEmitter<Person[]>();
 
+  /** Current value of input field */
+  value = '';
   /** Debouncer for input field */
-  inputFieldDebouncer = new Subject();
-
-  /** Current inputFieldValue of input field */
-  inputFieldValue = '';
-
-  /** Array of options filtered by currently typed inputFieldValue */
-  filteredOptions: Observable<string[]>;
-
-  /** Form control */
-  formControl: FormControl = new FormControl();
+  debouncer = new Subject();
+  /** Array of options filtered by currently typed value */
+  optionsFiltered: string[];
 
   //
   // Lifecycle hooks
@@ -46,7 +38,7 @@ export class PersonChipsFragmentComponent implements OnInit {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
-    this.initializeOptions();
+    this.initializeDebouncer();
   }
 
   //
@@ -54,16 +46,10 @@ export class PersonChipsFragmentComponent implements OnInit {
   //
 
   /**
-   * Initialize auto-complete options
+   * Initializes debouncer
    */
-  private initializeOptions() {
-    this.filteredOptions = this.formControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this.filterAutoCompleteOptions(value))
-      );
-
-    this.inputFieldDebouncer.pipe(
+  private initializeDebouncer() {
+    this.debouncer.pipe(
       debounceTime(500)
     ).subscribe((value: Person[]) => this.personsChangedEmitter.emit(value));
   }
@@ -71,6 +57,15 @@ export class PersonChipsFragmentComponent implements OnInit {
   //
   // Actions
   //
+
+  /**
+   * Handles changes in input field value
+   * @param value input field value
+   */
+  onValueChanged(value: string) {
+    this.value = value;
+    this.optionsFiltered = this.filterAutoCompleteOptions(this.value);
+  }
 
   /**
    * Handles deletion of a person
@@ -94,11 +89,11 @@ export class PersonChipsFragmentComponent implements OnInit {
     const KEY_CODE_ENTER = 13;
     const KEY_CODE_COMMA = 188;
 
-    if (this.inputFieldValue !== ''
-      && this.inputFieldValue !== ','
+    if (this.value !== ''
+      && this.value !== ','
       && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
-      this.persons.push(new Person(this.inputFieldValue.replace(/,/, ''), true));
-      this.inputFieldValue = '';
+      this.persons.push(new Person(this.value.replace(/,/, ''), true));
+      this.value = '';
       this.notify();
     }
   }
@@ -107,7 +102,7 @@ export class PersonChipsFragmentComponent implements OnInit {
    * Handles key down event
    */
   onKeyDown() {
-    this.inputFieldValue = this.inputFieldValue.replace(/,/, '');
+    this.value = this.value.replace(/,/, '');
   }
 
   /**
@@ -115,8 +110,8 @@ export class PersonChipsFragmentComponent implements OnInit {
    */
   onOptionSelected() {
     if (!this.readonly) {
-      this.persons.push(new Person(this.inputFieldValue.replace(/,/, ''), true));
-      this.inputFieldValue = '';
+      this.persons.push(new Person(this.value.replace(/,/, ''), true));
+      this.value = '';
       this.notify();
     }
   }
@@ -127,7 +122,7 @@ export class PersonChipsFragmentComponent implements OnInit {
 
   /**
    * Filters auto-complete options
-   * @param {string} value input inputFieldValue
+   * @param {string} value input value
    * @returns {string[]} filtered options
    */
   filterAutoCompleteOptions(value: string): string[] {
@@ -144,6 +139,6 @@ export class PersonChipsFragmentComponent implements OnInit {
    * Informs subscribers that something has changed
    */
   private notify() {
-    this.inputFieldDebouncer.next(this.persons);
+    this.debouncer.next(this.persons);
   }
 }

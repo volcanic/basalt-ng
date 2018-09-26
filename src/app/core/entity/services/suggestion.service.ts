@@ -14,7 +14,7 @@ import {Tag} from '../model/tag.model';
 })
 export class SuggestionService {
 
-  /** Map of search items, key is creation date, inputFieldValue is actual inputFieldValue */
+  /** Map of search items, key is creation date, value is actual value */
   searchOptions: Map<string, string>;
   /** Counter used to differentiate between search options with the same timestamp */
   searchOptionsCounter = 0;

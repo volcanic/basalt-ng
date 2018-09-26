@@ -1,8 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
 import {Task} from 'app/core/entity/model/task.model';
-import {map, startWith} from 'rxjs/internal/operators';
 import {CloneService} from 'app/core/entity/services/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
@@ -19,22 +16,17 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
 
   /** Task to be displayed */
   @Input() task: Task;
+  /** Readonly dialog if true */
+  @Input() readonly: false;
   /** Array of taskOptions */
   @Input() taskOptions: string[];
-
   /** Event emitter indicating changes in task */
   @Output() taskChangedEmitter = new EventEmitter<Task>();
 
   /** Debouncer for input field */
-  inputFieldDebouncer = new Subject();
-  /** Current value of input field */
-  inputFieldValue = '';
-
-  /** Array of options filtered by currently typed inputFieldValue */
-  filteredOptions: Observable<string[]>;
-
-  /** Form control */
-  formControl: FormControl = new FormControl();
+  debouncer = new Subject();
+  /** Array of options filtered by currently typed value */
+  optionsFiltered: string[];
 
   //
   // Lifecycle hooks
@@ -45,7 +37,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeTask();
-    this.initializeTaskOptions();
+    this.initializeDebouncer();
   }
 
   //
@@ -64,16 +56,10 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   }
 
   /**
-   * Initializes task options
+   * Initializes debouncer
    */
-  private initializeTaskOptions() {
-    this.filteredOptions = this.formControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this.filterOptions(value))
-      );
-
-    this.inputFieldDebouncer.pipe(
+  private initializeDebouncer() {
+    this.debouncer.pipe(
       debounceTime(500)
     ).subscribe((value: Task) => this.taskChangedEmitter.emit(value));
   }
@@ -81,6 +67,16 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   //
   // Actions
   //
+
+  /**
+   * Handles task name changes
+   * @param taskName task name
+   */
+  onTaskNameChanged(taskName: string) {
+    this.task.name = taskName;
+    this.optionsFiltered = this.filterOptions(this.task.name);
+    this.debouncer.next(this.task);
+  }
 
   /**
    * Handles key up event
@@ -119,6 +115,6 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    * Informs subscribers that something has changed
    */
   private notify() {
-    this.inputFieldDebouncer.next(this.task);
+    this.debouncer.next(this.task);
   }
 }

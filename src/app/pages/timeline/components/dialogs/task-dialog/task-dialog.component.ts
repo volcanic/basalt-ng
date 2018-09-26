@@ -283,7 +283,7 @@ export class TaskDialogComponent implements OnInit {
 
   /**
    * Handles project changes
-   * @param {Project} project project inputFieldValue
+   * @param {Project} project project value
    */
   onProjectChanged(project: Project) {
     this.project = project;
@@ -294,7 +294,7 @@ export class TaskDialogComponent implements OnInit {
 
   /**
    * Handles tag changes
-   * @param {Tag[]} tags tags inputFieldValue
+   * @param {Tag[]} tags tags value
    */
   onTagsChanged(tags: Tag[]) {
     this.task.tagIds = tags.map(tag => {

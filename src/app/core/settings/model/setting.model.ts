@@ -1,5 +1,5 @@
 /**
- * Represents a key-inputFieldValue pair of a persisted setting
+ * Represents a key-value pair of a persisted setting
  */
 export class Setting {
 
@@ -11,7 +11,7 @@ export class Setting {
   /**
    * Constructor
    * @param {string} id key of the setting
-   * @param {string} value inputFieldValue of the setting
+   * @param {string} value value of the setting
    */
   constructor(id: string, value: string) {
     this.id = id;

@@ -1,11 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
 import {Person} from 'app/core/entity/model/person.model';
-import {map, startWith} from 'rxjs/internal/operators';
-import {TaskletService} from 'app/core/entity/services/tasklet.service';
 import {CloneService} from 'app/core/entity/services/clone.service';
-import {SuggestionService} from 'app/core/entity/services/suggestion.service';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 /**
  * Display person auto-complete fragment
@@ -19,31 +16,15 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
 
   /** Person to be displayed */
   @Input() person: Person;
-
+  /** Array of person options */
+  @Input() personOptions: string[] = [];
   /** Event emitter indicating changes in person */
   @Output() personChangedEmitter = new EventEmitter<Person>();
 
-  /** Current value of input field */
-  inputFieldValue = '';
-
-  /** Array of options */
-  options = [];
-  /** Array of options filtered by currently typed inputFieldValue */
-  filteredOptions: Observable<string[]>;
-
-  /** Form control */
-  formControl: FormControl = new FormControl();
-
-  /**
-   * Constructor
-   * @param {TaskletService} taskletService
-   * @param {CloneService} cloneService
-   * @param {SuggestionService} suggestionService
-   */
-  constructor(private taskletService: TaskletService,
-              private cloneService: CloneService,
-              private suggestionService: SuggestionService) {
-  }
+  /** Debouncer for input field */
+  debouncer = new Subject();
+  /** Array of options filtered by currently typed value */
+  optionsFiltered: string[];
 
   //
   // Lifecycle hooks
@@ -54,7 +35,7 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializePerson();
-    this.initializePersonOptions();
+    this.initializeDebouncer();
   }
 
   //
@@ -73,21 +54,27 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
   }
 
   /**
-   * Initializes person options
+   * Initializes debouncer
    */
-  private initializePersonOptions() {
-    this.options = Array.from(this.suggestionService.personOptions.values()).reverse();
-
-    this.filteredOptions = this.formControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this.filterOptions(value))
-      );
+  private initializeDebouncer() {
+    this.debouncer.pipe(
+      debounceTime(500)
+    ).subscribe((value: Person) => this.personChangedEmitter.emit(value));
   }
 
   //
   // Actions
   //
+
+  /**
+   * Handles person name changes
+   * @param personName person name
+   */
+  onPersonNameChanged(personName: string) {
+    this.person.name = personName;
+    this.optionsFiltered = this.filterOptions(this.person.name);
+    this.debouncer.next(this.person);
+  }
 
   /**
    * Handles key up event
@@ -113,7 +100,7 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
    * @returns {string[]} array of filtered options
    */
   private filterOptions(value: string): string[] {
-    return this.options.filter(option =>
+    return this.personOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     );
   }
@@ -128,5 +115,4 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
   private notify() {
     this.personChangedEmitter.emit(this.person);
   }
-
 }

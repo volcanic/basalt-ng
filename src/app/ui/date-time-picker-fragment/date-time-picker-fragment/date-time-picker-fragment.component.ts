@@ -90,7 +90,7 @@ export class DateTimePickerFragmentComponent implements OnInit {
 
   /**
    * Handles date changes
-   * @param value date inputFieldValue
+   * @param value date value
    */
   onDateChanged(value: Date) {
     this.date = new Date(
@@ -106,7 +106,7 @@ export class DateTimePickerFragmentComponent implements OnInit {
 
   /**
    * Handles hour changes
-   * @param {number} value hour inputFieldValue
+   * @param {number} value hour value
    */
   onHourSelected(value: number) {
     this.date = new Date(
@@ -122,7 +122,7 @@ export class DateTimePickerFragmentComponent implements OnInit {
 
   /**
    * Handles minute changes
-   * @param {number} value minute inputFieldValue
+   * @param {number} value minute value
    */
   onMinuteSelected(value: number) {
     this.date = new Date(
