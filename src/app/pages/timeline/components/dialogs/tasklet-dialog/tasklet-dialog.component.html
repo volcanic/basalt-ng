@@ -5,44 +5,26 @@
       <app-header-fragment [tasklet]="tasklet">
       </app-header-fragment>
       <app-task-autocomplete-fragment
-        [task]="task" [taskOptions]="taskOptions" (taskChangedEmitter)="onTaskChanged($event)" *ngIf="tasklet.type == 'Action'
-          || tasklet.type == 'Meeting'
-          || tasklet.type == 'Call'
-          || tasklet.type == 'Mail'
-          || tasklet.type == 'Chat'
-          || tasklet.type == 'Development'
-          || tasklet.type == 'Debugging'
-          || tasklet.type == 'Idea'">
+        [task]="task" [taskOptions]="taskOptions" (taskChangedEmitter)="onTaskChanged($event)"
+        *ngIf="canBeAssignedToTask(tasklet)">
       </app-task-autocomplete-fragment>
-      <app-previous-description-fragment
-        [previousDescription]="previousDescription" *ngIf="tasklet.type == 'Action'
-                                       || tasklet.type == 'Call'
-                                       || tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Mail'
-                                       || tasklet.type == 'Chat'
-                                       || tasklet.type == 'Development'
-                                       || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'"></app-previous-description-fragment>
-      <app-description-fragment [description]="tasklet.description"
-                                (descriptionChangedEmitter)="onDescriptionChanged($event)"
-                                *ngIf="tasklet.type == 'Action'
-                                       || tasklet.type == 'Call'
-                                       || tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Mail'
-                                       || tasklet.type == 'Chat'
-                                       || tasklet.type == 'Development'
-                                       || tasklet.type == 'Debugging'
-                                       || tasklet.type == 'Idea'"></app-description-fragment>
-      <app-daily-scrum-fragment [tasklet]="tasklet" [personOptions]="personOptions" *ngIf="tasklet.type == 'Daily Scrum'">
+      <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
+                                         [previousDescription]="previousDescription"></app-previous-description-fragment>
+      <app-description-fragment *ngIf="containsDescription(tasklet)"
+                                [description]="tasklet.description"
+                                (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
+      <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM" [tasklet]="tasklet"
+                                [personOptions]="personOptions">
       </app-daily-scrum-fragment>
-      <app-person-chips-fragment [persons]="persons" [personOptions]="personOptions"
-                                 (personsChangedEmitter)="onPersonsChanged($event)"
-                                 *ngIf="tasklet.type == 'Meeting'
-                                       || tasklet.type == 'Call'
-                                       || tasklet.type == 'Mail'
-                                       || tasklet.type == 'Chat'">
+      <app-person-chips-fragment *ngIf="containsPersons(tasklet)"
+                                 [persons]="persons"
+                                 [personOptions]="personOptions"
+                                 (personsChangedEmitter)="onPersonsChanged($event)">
       </app-person-chips-fragment>
-      <app-tag-chips-fragment [tags]="tags" [tagOptions]="tagOptions" (tagsChangedEmitter)="onTagsChanged($event)">
+      <app-tag-chips-fragment
+        [tags]="tags"
+        [tagOptions]="tagOptions"
+        (tagsChangedEmitter)="onTagsChanged($event)">
       </app-tag-chips-fragment>
     </form>
   </mat-dialog-content>

@@ -48,6 +48,9 @@ export class TaskletDialogComponent implements OnInit {
   /** Person options */
   personOptions: string[];
 
+  /** Enum of dialog modes */
+  taskletType = TaskletType;
+
   /**
    * Constructor
    * @param suggestionService suggestion service
@@ -181,7 +184,7 @@ export class TaskletDialogComponent implements OnInit {
     this.persons = this.aggregatePersons(this.tasklet);
 
     // Remove empty placeholders
-    this.removePlaceholders(this.tasklet);
+    TaskletDialogComponent.removePlaceholders(this.tasklet);
 
     this.dialogRef.close({
       action: Action.ADD,
@@ -200,7 +203,7 @@ export class TaskletDialogComponent implements OnInit {
     this.persons = this.aggregatePersons(this.tasklet);
 
     // Remove empty placeholders
-    this.removePlaceholders(this.tasklet);
+    TaskletDialogComponent.removePlaceholders(this.tasklet);
 
     this.dialogRef.close({
       action: Action.UPDATE,
@@ -229,13 +232,61 @@ export class TaskletDialogComponent implements OnInit {
   // Helpers
   //
 
+  /**
+   * Determines whether the displayed tasklet can be assigned to a task
+   * @param tasklet tasklet
+   */
+  public canBeAssignedToTask(tasklet: Tasklet): boolean {
+    return tasklet.type == TaskletType.ACTION
+      || tasklet.type == TaskletType.MEETING
+      || tasklet.type == TaskletType.CALL
+      || tasklet.type == TaskletType.MAIL
+      || tasklet.type == TaskletType.CHAT
+      || tasklet.type == TaskletType.DEVELOPMENT
+      || tasklet.type == TaskletType.DEBUGGING
+      || tasklet.type == TaskletType.IDEA;
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains a description
+   * @param tasklet tasklet
+   */
+  public containsDescription(tasklet: Tasklet): boolean {
+    return tasklet.type == TaskletType.ACTION
+      || tasklet.type == TaskletType.MEETING
+      || tasklet.type == TaskletType.CALL
+      || tasklet.type == TaskletType.MAIL
+      || tasklet.type == TaskletType.CHAT
+      || tasklet.type == TaskletType.DEVELOPMENT
+      || tasklet.type == TaskletType.DEBUGGING;
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains persons
+   * @param tasklet tasklet
+   */
+  public containsPersons(tasklet: Tasklet): boolean {
+    return tasklet.type == TaskletType.MEETING
+      || tasklet.type == TaskletType.CALL
+      || tasklet.type == TaskletType.MAIL
+      || tasklet.type == TaskletType.CHAT;
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains a previous description
+   * @param tasklet tasklet
+   */
+  public containsPreviousDescription(tasklet: Tasklet): boolean {
+    return this.previousDescription != null;
+  }
+
   // Daily Scrum
 
   /**
    * Removes empty placeholder in a daily scrum tasklet
    * @param tasklet tasklet
    */
-  private removePlaceholders(tasklet: Tasklet) {
+  private static removePlaceholders(tasklet: Tasklet) {
     if (tasklet.type == TaskletType.DAILY_SCRUM) {
       tasklet.participants = tasklet.participants.filter(p => {
         return p.person != null && p.person.name.length > 0;
