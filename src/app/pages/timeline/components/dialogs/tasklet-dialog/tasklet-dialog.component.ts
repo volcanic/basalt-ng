@@ -4,7 +4,6 @@ import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
 import {TaskletType} from 'app/core/entity/model/tasklet-type.enum';
 import {Tag} from 'app/core/entity/model/tag.model';
-import {TaskletDailyScrum} from 'app/core/entity/model/tasklet-daily-scrum.model';
 import {Person} from 'app/core/entity/model/person.model';
 import {ConfirmationDialogComponent} from 'app/ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {Task} from 'app/core/entity/model/task.model';
@@ -181,21 +180,16 @@ export class TaskletDialogComponent implements OnInit {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
-    switch (this.tasklet.type) {
-      case TaskletType.DAILY_SCRUM: {
-        this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
-        break;
-      }
-      default: {
-        this.dialogRef.close({
-          action: Action.ADD,
-          tasklet: this.tasklet,
-          task: this.task,
-          tags: this.tags,
-          persons: this.persons
-        });
-      }
-    }
+    // Remove empty placeholders
+    this.removePlaceholders(this.tasklet);
+
+    this.dialogRef.close({
+      action: Action.ADD,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
   }
 
   /**
@@ -205,37 +199,16 @@ export class TaskletDialogComponent implements OnInit {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
-    switch (this.tasklet.type) {
-      case TaskletType.DAILY_SCRUM: {
-        this.updateTaskletDailyScrum(this.tasklet as TaskletDailyScrum);
-        break;
-      }
-      default: {
-        this.dialogRef.close({
-          action: Action.UPDATE,
-          tasklet: this.tasklet,
-          task: this.task,
-          tags: this.tags,
-          persons: this.persons
-        });
-        break;
-      }
-    }
-  }
+    // Remove empty placeholders
+    this.removePlaceholders(this.tasklet);
 
-  /**
-   * Handles click on update button for daily scrum tasklets
-   */
-  updateTaskletDailyScrum(tasklet: TaskletDailyScrum) {
-    tasklet.participants = tasklet.participants.filter(p => {
-      return p.person != null && p.person.name.length > 0;
+    this.dialogRef.close({
+      action: Action.UPDATE,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
     });
-    tasklet.participants.forEach(p => {
-      p.activities = p.activities.filter(a => {
-        return a.topic.length > 0;
-      });
-    });
-    this.dialogRef.close(this.tasklet);
   }
 
   /**
@@ -255,6 +228,25 @@ export class TaskletDialogComponent implements OnInit {
   //
   // Helpers
   //
+
+  // Daily Scrum
+
+  /**
+   * Removes empty placeholder in a daily scrum tasklet
+   * @param tasklet tasklet
+   */
+  private removePlaceholders(tasklet: Tasklet) {
+    if (tasklet.type == TaskletType.DAILY_SCRUM) {
+      tasklet.participants = tasklet.participants.filter(p => {
+        return p.person != null && p.person.name.length > 0;
+      });
+      tasklet.participants.forEach(p => {
+        p.activities = p.activities.filter(a => {
+          return a.topic.length > 0;
+        });
+      });
+    }
+  }
 
   // Tags
 

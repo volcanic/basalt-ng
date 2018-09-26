@@ -877,9 +877,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         tasklet.id = new UUID().toString();
         tasklet.description = new Description();
         tasklet.creationDate = new Date();
-        tasklet.tagIds = tags.map(tag => {
-          return tag.id;
-        });
         tasklet.participants.forEach(p => {
             p.activities = [];
           }
@@ -888,8 +885,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Assemble data to be passed
         const data = {
           mode: DialogMode.CONTINUE,
-          dialogTitle: 'Continue tasklet',
-          tasklet: tasklet
+          dialogTitle: 'Template tasklet',
+          tasklet: tasklet,
+          tags: tasklet.tagIds.map(id => {
+            return this.tagService.tags.get(id);
+          }).filter(tag => {
+            return tag != null;
+          }),
         };
 
         // Open dialog
