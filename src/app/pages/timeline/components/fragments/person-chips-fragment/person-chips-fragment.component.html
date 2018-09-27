@@ -6,9 +6,9 @@
   <div class="searchbox">
     <input class="search-input" matInput name="search" type="text" placeholder="New person"
            [ngModel]="value"
-           (ngModelChange)="onValueChanged($event)"
            [disabled]="readonly"
            [matAutocomplete]="auto"
+           (ngModelChange)="onValueChanged($event)"
            (keyup)="onKeyUp($event)"
            (keydown)="onKeyDown()">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">

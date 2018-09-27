@@ -38,12 +38,20 @@ export class PersonChipsFragmentComponent implements OnInit {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
+    this.initializeOptions();
     this.initializeDebouncer();
   }
 
   //
   // Initialization
   //
+
+  /**
+   * Initialize auto-complete options
+   */
+  private initializeOptions() {
+    this.optionsFiltered = this.personOptions;
+  }
 
   /**
    * Initializes debouncer

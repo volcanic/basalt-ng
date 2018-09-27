@@ -24,9 +24,9 @@ export class TagChipsFragmentComponent implements OnInit {
   @Output() tagsChangedEmitter = new EventEmitter<Tag[]>();
 
   /** Current value of input field */
-  inputFieldValue = '';
+  value = '';
   /** Debouncer for input field */
-  inputFieldDebouncer = new Subject();
+  debouncer = new Subject();
   /** Array of options filtered by currently typed value */
   optionsFiltered: string[];
 
@@ -39,6 +39,7 @@ export class TagChipsFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeOptions();
+    this.initializeDebouncer();
   }
 
   //
@@ -49,7 +50,14 @@ export class TagChipsFragmentComponent implements OnInit {
    * Initialize auto-complete options
    */
   private initializeOptions() {
-    this.inputFieldDebouncer.pipe(
+    this.optionsFiltered = this.tagOptions;
+  }
+
+  /**
+   * Initializes debouncer
+   */
+  private initializeDebouncer() {
+    this.debouncer.pipe(
       debounceTime(500)
     ).subscribe((value: Tag[]) => this.tagsChangedEmitter.emit(value));
   }
@@ -60,11 +68,11 @@ export class TagChipsFragmentComponent implements OnInit {
 
   /**
    * Handles changes in input field value
-   * @param inputFieldValue input field value
+   * @param value input field value
    */
-  onInputFieldValueChanged(inputFieldValue: string) {
-    this.inputFieldValue = inputFieldValue;
-    this.optionsFiltered = this.filterAutoCompleteOptions(this.inputFieldValue);
+  onValueChanged(value: string) {
+    this.value = value;
+    this.optionsFiltered = this.filterAutoCompleteOptions(this.value);
   }
 
 
@@ -92,10 +100,10 @@ export class TagChipsFragmentComponent implements OnInit {
       const KEY_CODE_ENTER = 13;
       const KEY_CODE_COMMA = 188;
 
-      if (this.inputFieldValue !== '' && this.inputFieldValue !== ','
+      if (this.value !== '' && this.value !== ','
         && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
-        this.tags.push(new Tag(this.inputFieldValue.replace(/,/, ''), true));
-        this.inputFieldValue = '';
+        this.tags.push(new Tag(this.value.replace(/,/, ''), true));
+        this.value = '';
         this.notify();
       }
     }
@@ -105,7 +113,7 @@ export class TagChipsFragmentComponent implements OnInit {
    * Handles key down event
    */
   onKeyDown() {
-    this.inputFieldValue = this.inputFieldValue.replace(/,/, '');
+    this.value = this.value.replace(/,/, '');
   }
 
   /**
@@ -113,8 +121,8 @@ export class TagChipsFragmentComponent implements OnInit {
    */
   onOptionSelected() {
     if (!this.readonly) {
-      this.tags.push(new Tag(this.inputFieldValue.replace(/,/, ''), true));
-      this.inputFieldValue = '';
+      this.tags.push(new Tag(this.value.replace(/,/, ''), true));
+      this.value = '';
       this.notify();
     }
   }
@@ -142,6 +150,6 @@ export class TagChipsFragmentComponent implements OnInit {
    * Informs subscribers that something has changed
    */
   private notify() {
-    this.inputFieldDebouncer.next(this.tags);
+    this.debouncer.next(this.tags);
   }
 }

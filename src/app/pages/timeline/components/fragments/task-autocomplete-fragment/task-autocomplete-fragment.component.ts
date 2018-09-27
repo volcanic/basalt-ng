@@ -37,6 +37,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeTask();
+    this.initializeOptions();
     this.initializeDebouncer();
   }
 
@@ -53,6 +54,13 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
     }
 
     this.task = CloneService.cloneTask(this.task);
+  }
+
+  /**
+   * Initialize auto-complete options
+   */
+  private initializeOptions() {
+    this.optionsFiltered = this.taskOptions;
   }
 
   /**

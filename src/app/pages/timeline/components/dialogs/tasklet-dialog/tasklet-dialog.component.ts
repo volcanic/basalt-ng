@@ -262,7 +262,7 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   /**
-   * Determines whether the displayed tasklet contains persons
+   * Determines whether a given tasklet contains persons
    * @param tasklet tasklet
    */
   public containsPersons(tasklet: Tasklet): boolean {
@@ -270,6 +270,24 @@ export class TaskletDialogComponent implements OnInit {
       || tasklet.type == TaskletType.CALL
       || tasklet.type == TaskletType.MAIL
       || tasklet.type == TaskletType.CHAT;
+  }
+
+  /**
+   * Determines whether a given tasklet can be created
+   * @param tasklet tasklet
+   */
+  public canBeCreated(tasklet: Tasklet): boolean {
+    return tasklet.type != TaskletType.LUNCH_BREAK
+    && tasklet.type != TaskletType.FINISHING_TIME;
+  }
+
+  /**
+   * Determines whether a given tasklet can be updated
+   * @param tasklet tasklet
+   */
+  public canBeUpdated(tasklet: Tasklet): boolean {
+    return tasklet.type != TaskletType.LUNCH_BREAK
+      && tasklet.type != TaskletType.FINISHING_TIME;
   }
 
   /**

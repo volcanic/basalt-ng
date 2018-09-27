@@ -34,13 +34,11 @@
     </button>
     <div class="flexbox"></div>
     <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
-        && tasklet.type != 'Lunch Break'
-        && tasklet.type != 'Finishing Time'">
+        && canBeCreated()">
       Add tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTasklet()" [disabled]="!formCtrl.form.valid
-        && tasklet.type != 'Lunch Break'
-        && tasklet.type != 'Finishing Time'">
+        && canBeUpdated()">
       Update tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.CONTINUE" (click)="continueTasklet()"

@@ -43,6 +43,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeProject();
+    this.initializeOptions();
     this.initializeDebouncer();
   }
 
@@ -59,6 +60,13 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
     }
 
     this.project = CloneService.cloneProject(this.project);
+  }
+
+  /**
+   * Initialize auto-complete options
+   */
+  private initializeOptions() {
+    this.optionsFiltered = this.projectOptions;
   }
 
   /**

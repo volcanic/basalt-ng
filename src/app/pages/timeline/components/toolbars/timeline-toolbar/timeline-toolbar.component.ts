@@ -36,10 +36,8 @@ export class TimelineToolbarComponent implements OnInit {
 
   /** Current search item */
   searchItem = '';
-
   /** Debouncer for search field */
   searchItemDebouncer = new Subject();
-
   /** Filtered search items options for auto-complete */
   searchOptionsFiltered: string[];
 
@@ -51,7 +49,8 @@ export class TimelineToolbarComponent implements OnInit {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
-    this.initializeSearchOptionsFilter();
+    this.initializeOptions();
+    this.initializeDebouncer();
   }
 
   //
@@ -59,9 +58,16 @@ export class TimelineToolbarComponent implements OnInit {
   //
 
   /**
+   * Initialize auto-complete options
+   */
+  private initializeOptions() {
+    this.searchOptionsFiltered = this.searchOptions;
+  }
+
+  /**
    * Initializes search options filter
    */
-  private initializeSearchOptionsFilter() {
+  private initializeDebouncer() {
     this.searchItemDebouncer.pipe(
       debounceTime(500)
     ).subscribe((value) => {

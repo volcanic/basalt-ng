@@ -35,6 +35,7 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializePerson();
+    this.initializeOptions();
     this.initializeDebouncer();
   }
 
@@ -51,6 +52,13 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
     }
 
     this.person = CloneService.clonePerson(this.person);
+  }
+
+  /**
+   * Initialize auto-complete options
+   */
+  private initializeOptions() {
+    this.optionsFiltered = this.personOptions;
   }
 
   /**
