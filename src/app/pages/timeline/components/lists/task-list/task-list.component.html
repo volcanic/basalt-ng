@@ -31,6 +31,20 @@
 </mat-accordion>
 
 <mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="tasksInbox.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <div class="label">
+        <span matBadge="{{ tasksInbox.length }}"
+              matBadgeOverlap="false"
+              [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
+      </div>
+    </mat-expansion-panel-header>
+    <app-task-list-item *ngFor="let t of tasksInbox" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
+    </app-task-list-item>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<mat-accordion class="headers-align">
   <mat-expansion-panel [expanded]="tasksRecurring.length > 0" (opened)="false" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -42,20 +56,6 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <app-task-list-item *ngFor="let t of tasksRecurring" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
-    </app-task-list-item>
-  </mat-expansion-panel>
-</mat-accordion>
-
-<mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="tasksInbox.length > 0" (opened)="false" hideToggle>
-    <mat-expansion-panel-header>
-      <div class="label">
-        <span matBadge="{{ tasksInbox.length }}"
-              matBadgeOverlap="false"
-              [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
-      </div>
-    </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksInbox" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
     </app-task-list-item>
   </mat-expansion-panel>
 </mat-accordion>
