@@ -964,9 +964,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a task
    * @param {any} event event parameters
    */
-  onTaskEvent(event: { action: Action, task: Task, project?: Project, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
+  onTaskEvent(event: { action: Action, task: Task, project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
     const task = CloneService.cloneTask(event.task as Task);
     const project = CloneService.cloneProject(event.project as Project);
+    const delegatedTo = CloneService.clonePerson(event.delegatedTo as Person);
     const tags = CloneService.cloneTags(event.tags as Tag[]);
     const omitReferenceEvaluation = event.omitReferenceEvaluation;
 
@@ -974,6 +975,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.ADD: {
         // Create new entities if necessary
         this.evaluateTaskProject(task, project);
+        this.evaluateTaskDelegatedTo(task, delegatedTo);
         this.evaluateTaskTags(task, tags);
 
         // Create task itself
@@ -985,6 +987,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.UPDATE: {
         // Create new entities if necessary
         this.evaluateTaskProject(task, project);
+        this.evaluateTaskDelegatedTo(task, delegatedTo);
         this.evaluateTaskTags(task, tags);
 
         // Update task itself
@@ -1031,6 +1034,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!omitReferenceEvaluation) {
           // Create new entities if necessary
           this.evaluateTaskProject(task, project);
+          this.evaluateTaskDelegatedTo(task, delegatedTo);
           this.evaluateTaskTags(task, tags);
         }
 
@@ -1055,6 +1059,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           dialogTitle: 'Add task',
           task: new Task(''),
           project: null,
+          delegatedTo: null,
           tags: []
         };
 
@@ -1070,12 +1075,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const resultingAction = result.action as Action;
             const resultingTask = result.task as Task;
             const resultingProject = result.project as Project;
+            const resultingDelegatedTo = result.delegatedTo as Person;
             const resultingTags = result.tags as Tag[];
 
             this.onTaskEvent({
               action: resultingAction,
               task: resultingTask,
               project: resultingProject,
+              delegatedTo: resultingDelegatedTo,
               tags: resultingTags
             });
           }
@@ -1089,6 +1096,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           dialogTitle: 'Update task',
           task: task,
           project: this.projectService.projects.get(task.projectId),
+          delegatedTo: this.personService.persons.get(task.delegatedToId),
           tags: task.tagIds.map(id => {
             return this.tagService.tags.get(id);
           }).filter(tag => {
@@ -1108,12 +1116,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             const resultingAction = result.action as Action;
             const resultingTask = result.task as Task;
             const resultingProject = result.project as Project;
+            const resultingDelegatedTo = result.delegatedTo as Person;
             const resultingTags = result.tags as Tag[];
 
             this.onTaskEvent({
               action: resultingAction,
               task: resultingTask,
               project: resultingProject,
+              delegatedTo: resultingDelegatedTo,
               tags: resultingTags
             });
           }
@@ -1777,6 +1787,31 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       // Unassign project
       task.projectId = null;
+    }
+  }
+
+  /**
+   * Determines whether the delegated-to assigned to a given task already exists, otherwise creates a new person
+   * @param task task to be delegated
+   * @param delegatedTo person to delegate a task to
+   */
+  private evaluateTaskDelegatedTo(task: Task, delegatedTo: Person) {
+    if (delegatedTo != null && delegatedTo.name != null && delegatedTo.name !== '') {
+      // Assign delegatedTo
+      let p = this.personService.getPersonByName(delegatedTo.name);
+
+      // New person
+      if (p == null && delegatedTo.name != null && delegatedTo.name !== '') {
+        p = new Person(delegatedTo.name, true);
+        this.personService.createPerson(p).then(() => {
+        });
+      }
+
+      this.filterService.updatePersonsList([p], true);
+      task.delegatedToId = p.id;
+    } else {
+      // Unassign delegated-to
+      task.delegatedToId = null;
     }
   }
 

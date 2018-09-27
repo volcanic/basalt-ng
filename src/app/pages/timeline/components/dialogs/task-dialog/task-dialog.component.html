@@ -143,6 +143,24 @@
 
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
+            <mat-panel-title>Delegated to</mat-panel-title>
+            <mat-panel-description *ngIf="delegatedTo == null">Delegate to someone else
+            </mat-panel-description>
+            <mat-panel-description *ngIf="delegatedTo != null">
+              <span class="value-set">{{ delegatedTo.name }}</span>
+            </mat-panel-description>
+            <mat-icon svgIcon="person"></mat-icon>
+          </mat-expansion-panel-header>
+          <div>
+            <app-person-autocomplete-fragment
+              [person]="delegatedTo"
+              [personOptions]="personOptions"
+              (personChangedEmitter)="onDelegatedToChanged($event)"></app-person-autocomplete-fragment>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
             <mat-panel-title>
               Tags
             </mat-panel-title>

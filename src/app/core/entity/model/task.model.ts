@@ -26,6 +26,8 @@ export class Task extends Entity {
   tagIds: string[];
   /** Recurrence interval */
   recurrenceInterval: RecurrenceInterval;
+  /** Reference to person */
+  delegatedToId: string;
 
   /**
    * Constructor
@@ -43,5 +45,6 @@ export class Task extends Entity {
     this.effort = 0;
     this.tagIds = [];
     this.recurrenceInterval = RecurrenceInterval.NONE;
+    this.delegatedToId = '';
   }
 }

@@ -9,6 +9,7 @@ import {SuggestionService} from 'app/core/entity/services/suggestion.service';
 import {CloneService} from 'app/core/entity/services/clone.service';
 import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
+import {Person} from '../../../../../core/entity/model/person.model';
 
 /**
  * Displays task dialog
@@ -57,11 +58,15 @@ export class TaskDialogComponent implements OnInit {
 
   /** Project assigned to this task */
   project: Project;
+  /** Delegated to affiliated to this task */
+  delegatedTo: Person;
   /** Tags assigned to this task */
   tags: Tag[] = [];
 
   /** Project options */
   projectOptions: string[];
+  /** Person options */
+  personOptions: string[];
 
   /** Reference to static method */
   getTimeString = DateService.getTimeString;
@@ -113,6 +118,7 @@ export class TaskDialogComponent implements OnInit {
     this.dialogTitle = this.data.dialogTitle;
     this.task = this.data.task;
     this.project = this.data.project;
+    this.delegatedTo = this.data.delegatedTo;
     this.tags = this.data.tags;
   }
 
@@ -121,6 +127,12 @@ export class TaskDialogComponent implements OnInit {
    */
   private initializeOptions() {
     this.projectOptions = Array.from(this.suggestionService.projectOptions.values()).sort((p1, p2) => {
+      return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
+    }).map(p => {
+      return p.name;
+    });
+
+    this.personOptions = Array.from(this.suggestionService.personOptions.values()).sort((p1, p2) => {
       return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
     }).map(p => {
       return p.name;
@@ -290,6 +302,17 @@ export class TaskDialogComponent implements OnInit {
     this.task.projectId = project.id;
   }
 
+  // Delegated to
+
+  /**
+   * Handles delegated to changes
+   * @param delegatedTo delegated to value
+   */
+  onDelegatedToChanged(delegatedTo: Person) {
+    this.delegatedTo = delegatedTo;
+    this.task.delegatedToId = delegatedTo.id;
+  }
+
   // Tags
 
   /**
@@ -310,14 +333,14 @@ export class TaskDialogComponent implements OnInit {
    * Handles click on add button
    */
   addTask() {
-    this.dialogRef.close({action: Action.ADD, task: this.task, project: this.project, tags: this.tags});
+    this.dialogRef.close({action: Action.ADD, task: this.task, project: this.project, delegatedTo: this.delegatedTo, tags: this.tags});
   }
 
   /**
    * Handles click on update button
    */
   updateTask() {
-    this.dialogRef.close({action: Action.UPDATE, task: this.task, project: this.project, tags: this.tags});
+    this.dialogRef.close({action: Action.UPDATE, task: this.task, project: this.project, delegatedTo: this.delegatedTo, tags: this.tags});
   }
 
   /**
