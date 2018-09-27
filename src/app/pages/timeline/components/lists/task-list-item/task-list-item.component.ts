@@ -63,6 +63,8 @@ export class TaskListItemComponent implements OnInit {
       && this.task.recurrenceInterval != null
       && (this.task.recurrenceInterval != RecurrenceInterval.UNSPECIFIED && this.task.recurrenceInterval != RecurrenceInterval.NONE)) {
       this.icon = 'loop';
+    } else if (this.task != null && this.task.delegatedToId != null && this.task.delegatedToId != '') {
+      this.icon = 'person';
     } else if (this.task != null && this.task.projectId != null && this.task.projectId != '') {
       this.icon = 'turned_in';
     } else {

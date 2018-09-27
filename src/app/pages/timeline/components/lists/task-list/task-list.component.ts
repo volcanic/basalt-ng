@@ -32,14 +32,16 @@ export class TaskListComponent implements OnInit, OnChanges {
   /** Event emitter indicating task action */
   @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task }>();
 
-  /** Recurring tasks */
-  tasksRecurring = [];
   /** Tasks having a due date before now */
   tasksOverdue = [];
   /** Tasks having a due date after now */
   tasksNext = [];
   /** Tasks not having a due date */
   tasksInbox = [];
+  /** Delegated tasks */
+  tasksDelegated = [];
+  /** Recurring tasks */
+  tasksRecurring = [];
   /** Tasks with a completion date */
   tasksCompleted = [];
 
@@ -47,11 +49,12 @@ export class TaskListComponent implements OnInit, OnChanges {
   tasksOverdueBadgeColor = 'transparent';
   /** Background color for next badge */
   tasksNextBadgeColor = 'transparent';
-  /** Background color for recurring badge */
-  tasksRecurringBadgeColor = 'transparent';
   /** Background color for inbox badge */
   tasksInboxBadgeColor = 'transparent';
-
+  /** Background color for delegated badge */
+  tasksDelegatedBadgeColor = 'transparent';
+  /** Background color for recurring badge */
+  tasksRecurringBadgeColor = 'transparent';
   //
   // Lifecycle hooks
   //
@@ -59,7 +62,7 @@ export class TaskListComponent implements OnInit, OnChanges {
   /**
    * Handles on-init lifecycle hook
    */
-  ngOnInit(): void {
+  ngOnInit() {
     this.initializeTaskCategories();
   }
 
@@ -79,37 +82,46 @@ export class TaskListComponent implements OnInit, OnChanges {
    * Initializes task categories
    */
   initializeTaskCategories() {
-    this.tasksRecurring = this.tasks.filter(task => {
-      return task != null
-        && task.completionDate == null
-        && task.recurrenceInterval != null
-        && (task.recurrenceInterval !== RecurrenceInterval.UNSPECIFIED && task.recurrenceInterval !== RecurrenceInterval.NONE);
-    });
     this.tasksOverdue = this.tasks.filter(task => {
       return task != null
+        && task.completionDate == null
+        && task.dueDate != null
+        && (task.delegatedToId == null || task.delegatedToId == '')
         && (task.recurrenceInterval == null
           || task.recurrenceInterval == RecurrenceInterval.UNSPECIFIED
           || task.recurrenceInterval == RecurrenceInterval.NONE)
-        && task.completionDate == null
-        && task.dueDate != null
         && DateService.isBefore(task.dueDate, new Date());
     });
     this.tasksNext = this.tasks.filter(task => {
       return task != null
+        && task.completionDate == null
+        && task.dueDate != null
+        && (task.delegatedToId == null || task.delegatedToId == '')
         && (task.recurrenceInterval == null
           || task.recurrenceInterval == RecurrenceInterval.UNSPECIFIED
           || task.recurrenceInterval == RecurrenceInterval.NONE)
-        && task.completionDate == null
-        && task.dueDate != null
         && DateService.isAfter(task.dueDate, new Date());
     });
     this.tasksInbox = this.tasks.filter(task => {
       return task != null
+        && task.completionDate == null
+        && task.dueDate == null
+        && (task.delegatedToId == null || task.delegatedToId == '')
         && (task.recurrenceInterval == null
           || task.recurrenceInterval == RecurrenceInterval.UNSPECIFIED
-          || task.recurrenceInterval == RecurrenceInterval.NONE)
+          || task.recurrenceInterval == RecurrenceInterval.NONE);
+    });
+    this.tasksDelegated = this.tasks.filter(task => {
+      return task != null
         && task.completionDate == null
-        && task.dueDate == null;
+        && (task.delegatedToId != null && task.delegatedToId != '');
+    });
+    this.tasksRecurring = this.tasks.filter(task => {
+      return task != null
+        && task.completionDate == null
+        && (task.delegatedToId == null || task.delegatedToId == '')
+        && task.recurrenceInterval != null
+        && (task.recurrenceInterval !== RecurrenceInterval.UNSPECIFIED && task.recurrenceInterval !== RecurrenceInterval.NONE);
     });
     this.tasksCompleted = this.tasks.filter(task => {
       return task != null && task.completionDate != null;

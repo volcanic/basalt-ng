@@ -38,13 +38,13 @@ export class Task extends Entity {
     this.entityType = EntityType.TASK;
     this.name = name.trim();
     this.description = new Description();
-    this.projectId = '';
+    this.projectId = null;
     this.dueDate = null;
     this.completionDate = null;
     this.priority = -1;
     this.effort = 0;
     this.tagIds = [];
     this.recurrenceInterval = RecurrenceInterval.NONE;
-    this.delegatedToId = '';
+    this.delegatedToId = null;
   }
 }
