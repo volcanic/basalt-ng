@@ -8,6 +8,7 @@ import {HttpModule} from '@angular/http';
 import {NgModule} from '@angular/core';
 import {CoreModule} from './core/core.module';
 import {MaterialModule} from './ui/material/material.module';
+import {NewFeaturesDialogModule} from './ui/new-features-dialog/new-features-dialog.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,8 @@ import {MaterialModule} from './ui/material/material.module';
 
     // Core service
     CoreModule,
+
+    NewFeaturesDialogModule
 
     // Pages (loaded via lazy loading)
     // TimelineModule,
