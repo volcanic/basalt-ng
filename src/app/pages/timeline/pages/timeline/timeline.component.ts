@@ -530,6 +530,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const DEVICE = 'device';
     const EDITOR = 'editor';
     const FILE = 'file';
+    const HARDWARE = 'hardware';
     const IMAGE = 'image';
     const MAPS = 'maps';
     const NAVIGATION = 'navigation';
@@ -546,6 +547,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     icons.push(new Icon(ACTION, 'receipt', 'ic_receipt_24px.svg'));
     icons.push(new Icon(ACTION, 'search', 'ic_search_24px.svg'));
     icons.push(new Icon(ACTION, 'today', 'ic_today_24px.svg'));
+    icons.push(new Icon(ACTION, 'restore', 'ic_restore_24px.svg'));
     icons.push(new Icon(ACTION, 'turned_in', 'ic_turned_in_24px.svg'));
     icons.push(new Icon(ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
     icons.push(new Icon(ACTION, 'work', 'ic_work_24px.svg'));
@@ -571,6 +573,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     icons.push(new Icon(EDITOR, 'short_text', 'ic_short_text_24px.svg'));
     icons.push(new Icon(FILE, 'file_download', 'ic_file_download_24px.svg'));
     icons.push(new Icon(FILE, 'file_upload', 'ic_file_upload_24px.svg'));
+    icons.push(new Icon(HARDWARE, 'keyboard_arrow_up', 'ic_keyboard_arrow_up_24px.svg'));
     icons.push(new Icon(IMAGE, 'timer', 'ic_timer_24px.svg'));
     icons.push(new Icon(IMAGE, 'brightness_3', 'ic_brightness_3_24px.svg'));
     icons.push(new Icon(IMAGE, 'nature', 'ic_nature_24px.svg'));
@@ -671,10 +674,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles click on add button
+   * Handles click on add tasklet button
    */
-  onAddClicked() {
+  onAddTaskletClicked() {
     this.onTaskletEvent({action: Action.OPEN_DIALOG_ADD, tasklet: null});
+  }
+
+  /**
+   * Handles click on add task button
+   */
+  onAddTaskClicked(){
+    this.onTaskEvent({action: Action.OPEN_DIALOG_ADD, task: null});
   }
 
   /**

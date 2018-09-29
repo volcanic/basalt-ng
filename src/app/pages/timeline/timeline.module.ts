@@ -58,6 +58,8 @@ import {RecurrenceIntervalFragmentComponent} from './components/fragments/recurr
 import {FileDropFragmentComponent} from './components/fragments/file-drop-fragment/file-drop-fragment.component';
 import {FileUploadModule} from 'ng2-file-upload';
 import {FutureTaskletFragmentComponent} from './components/fragments/future-tasklet-fragment/future-tasklet-fragment.component';
+import {EcoFabSpeedDialModule} from '@ecodev/fab-speed-dial';
+
 
 @NgModule({
   imports: [
@@ -76,7 +78,8 @@ import {FutureTaskletFragmentComponent} from './components/fragments/future-task
     InformationDialogModule,
     NewFeaturesDialogModule,
     DateTimePickerDialogModule,
-    DateTimePickerFragmentModule
+    DateTimePickerFragmentModule,
+    EcoFabSpeedDialModule
   ],
   declarations: [
     // Page

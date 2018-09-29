@@ -64,7 +64,37 @@
   <div class="flexbox"></div>
 </div>
 
+<eco-fab-speed-dial #myFab class="fab" [open]=false direction="up" (mouseenter)="myFab.open = true"
+                    (mouseleave)="myFab.open = false">
+  <eco-fab-speed-dial-trigger
+    [spin]="true">
+    <button class="spin180" mat-fab (click)="onAddTaskletClicked()">
+      <mat-icon
+        svgIcon="restore"
+        class="icon-accent-contrast">
+      </mat-icon>
+    </button>
+  </eco-fab-speed-dial-trigger>
+
+  <eco-fab-speed-dial-actions>
+    <button
+      mat-mini-fab
+      (click)="onAddTaskClicked()">
+      <mat-icon
+        svgIcon="add"
+        class="icon-accent-contrast">
+      </mat-icon>
+    </button>
+  </eco-fab-speed-dial-actions>
+</eco-fab-speed-dial>
+
+<!-- Old Floating Action Button
 <button mat-fab class="fab" [@fabAnimation]="scrollDirection"
-        (click)="onAddClicked()">
+        (click)="onAddTaskletClicked()">
   <mat-icon svgIcon="add" class="icon-accent-contrast"></mat-icon>
 </button>
+    matTooltip="Start working on..."
+    matTooltipPosition="left"
+    matTooltipShowDelay="250"
+-->
+
