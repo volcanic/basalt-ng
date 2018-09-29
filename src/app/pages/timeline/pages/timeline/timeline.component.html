@@ -68,22 +68,24 @@
                     (mouseleave)="myFab.open = false">
   <eco-fab-speed-dial-trigger
     [spin]="true">
-    <button class="spin180" mat-fab (click)="onAddTaskletClicked()">
-      <mat-icon
-        svgIcon="restore"
-        class="icon-accent-contrast">
-      </mat-icon>
+    <button mat-fab class="spin180"
+            (click)="onAddTaskletClicked()"
+            matTooltip="Start working on..." matTooltipPosition="left" matTooltipShowDelay="250">
+      <mat-icon svgIcon="restore" class="icon-accent-contrast"></mat-icon>
     </button>
   </eco-fab-speed-dial-trigger>
 
   <eco-fab-speed-dial-actions>
-    <button
-      mat-mini-fab
-      (click)="onAddTaskClicked()">
-      <mat-icon
-        svgIcon="add"
-        class="icon-accent-contrast">
-      </mat-icon>
+    <button mat-mini-fab
+            (click)="onAddTaskClicked()"
+            matTooltip="Create new task" matTooltipPosition="left" matTooltipShowDelay="250">
+      <mat-icon svgIcon="add" class="icon-accent-contrast"></mat-icon>
+    </button>
+
+    <button mat-mini-fab
+            (click)="onAddProjectClicked()"
+            matTooltip="Create new project" matTooltipPosition="left" matTooltipShowDelay="250">
+      <mat-icon svgIcon="agenda" class="icon-accent-contrast"></mat-icon>
     </button>
   </eco-fab-speed-dial-actions>
 </eco-fab-speed-dial>
@@ -93,8 +95,5 @@
         (click)="onAddTaskletClicked()">
   <mat-icon svgIcon="add" class="icon-accent-contrast"></mat-icon>
 </button>
-    matTooltip="Start working on..."
-    matTooltipPosition="left"
-    matTooltipShowDelay="250"
 -->
 
