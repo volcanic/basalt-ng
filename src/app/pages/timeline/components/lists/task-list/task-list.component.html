@@ -1,94 +1,113 @@
 <mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="tasksOverdue.length > 0" (opened)="false" hideToggle>
+  <mat-expansion-panel [expanded]="true" (opened)="true" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <div class="label">
+        <div class="label" color="">
+          Tasks
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-accordion class="headers-align">
+      <mat-expansion-panel [expanded]="tasksOverdue.length > 0" (opened)="false" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="label">
           <span matBadge="{{ tasksOverdue.length }}"
                 matBadgeOverlap="false"
                 [matBadgeColor]="tasksOverdueBadgeColor">Overdue</span>
-        </div>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
-    </app-task-list-item>
-  </mat-expansion-panel>
-</mat-accordion>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t" [media]="media"
+                            (taskEventEmitter)="onTaskEvent($event)">
+        </app-task-list-item>
+      </mat-expansion-panel>
 
-<mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="tasksNext.length > 0" (opened)="false" hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <div class="label">
+      <mat-accordion class="headers-align">
+        <mat-expansion-panel [expanded]="tasksNext.length > 0" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="label">
           <span matBadge="{{ tasksNext.length }}"
                 matBadgeOverlap="false"
                 [matBadgeColor]="tasksNextBadgeColor">Next</span>
-        </div>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksNext" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
-    </app-task-list-item>
-  </mat-expansion-panel>
-</mat-accordion>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-task-list-item *ngFor="let t of tasksNext" [task]="t" [media]="media"
+                              (taskEventEmitter)="onTaskEvent($event)">
+          </app-task-list-item>
+        </mat-expansion-panel>
+      </mat-accordion>
 
-<mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="tasksInbox.length > 0" (opened)="false" hideToggle>
-    <mat-expansion-panel-header>
-      <div class="label">
+      <mat-accordion class="headers-align">
+        <mat-expansion-panel [expanded]="tasksInbox.length > 0" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <div class="label">
         <span matBadge="{{ tasksInbox.length }}"
               matBadgeOverlap="false"
               [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
-      </div>
-    </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksInbox" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
-    </app-task-list-item>
-  </mat-expansion-panel>
-</mat-accordion>
+            </div>
+          </mat-expansion-panel-header>
+          <app-task-list-item *ngFor="let t of tasksInbox" [task]="t" [media]="media"
+                              (taskEventEmitter)="onTaskEvent($event)">
+          </app-task-list-item>
+        </mat-expansion-panel>
+      </mat-accordion>
 
-<mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="tasksDelegated.length > 0" (opened)="false" hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <div class="label">
+      <mat-accordion class="headers-align">
+        <mat-expansion-panel [expanded]="tasksDelegated.length > 0" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="label">
           <span matBadge="{{ tasksDelegated.length }}"
                 matBadgeOverlap="false"
                 [matBadgeColor]="tasksDelegatedBadgeColor">Delegated</span>
-        </div>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksDelegated" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
-    </app-task-list-item>
-  </mat-expansion-panel>
-</mat-accordion>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-task-list-item *ngFor="let t of tasksDelegated" [task]="t" [media]="media"
+                              (taskEventEmitter)="onTaskEvent($event)">
+          </app-task-list-item>
+        </mat-expansion-panel>
+      </mat-accordion>
 
-<mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="tasksRecurring.length > 0" (opened)="false" hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <div class="label">
+      <mat-accordion class="headers-align">
+        <mat-expansion-panel [expanded]="tasksRecurring.length > 0" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div class="label">
           <span matBadge="{{ tasksRecurring.length }}"
                 matBadgeOverlap="false"
                 [matBadgeColor]="tasksRecurringBadgeColor">Recurring</span>
-        </div>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksRecurring" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
-    </app-task-list-item>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-task-list-item *ngFor="let t of tasksRecurring" [task]="t" [media]="media"
+                              (taskEventEmitter)="onTaskEvent($event)">
+          </app-task-list-item>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-accordion class="headers-align">
+        <mat-expansion-panel [expanded]="false" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <div class="label">
+              <span>Completed</span>
+            </div>
+          </mat-expansion-panel-header>
+          <app-task-list-item *ngFor="let t of tasksCompleted" [task]="t" [media]="media"
+                              (taskEventEmitter)="onTaskEvent($event)">
+          </app-task-list-item>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-accordion>
   </mat-expansion-panel>
 </mat-accordion>
-
-<mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="false" (opened)="false" hideToggle>
-    <mat-expansion-panel-header>
-      <div class="label">
-        <span>Completed</span>
-      </div>
-    </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksCompleted" [task]="t" [media]="media" (taskEventEmitter)="onTaskEvent($event)">
-    </app-task-list-item>
-  </mat-expansion-panel>
-</mat-accordion>
-
+<!--
 <button mat-button class="label headers-align" (click)="onAddClicked()">
   <mat-icon class="icon-add" svgIcon="add"></mat-icon>
   <span>Add new task</span>
 </button>
+-->
