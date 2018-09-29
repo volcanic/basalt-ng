@@ -87,6 +87,20 @@
             matTooltip="Create new project" matTooltipPosition="left" matTooltipShowDelay="250">
       <mat-icon svgIcon="agenda" class="icon-accent-contrast"></mat-icon>
     </button>
+
+    <button mat-mini-fab
+            (click)="onAddTagClicked()"
+            matTooltip="Create new tag" matTooltipPosition="left" matTooltipShowDelay="250">
+      <mat-icon svgIcon="label_outline" class="icon-accent-contrast"></mat-icon>
+    </button>
+
+    <button mat-mini-fab
+            (click)="onAddPersonClicked()"
+            matTooltip="Create new person" matTooltipPosition="left" matTooltipShowDelay="250">
+      <mat-icon svgIcon="person" class="icon-accent-contrast"></mat-icon>
+    </button>
+
+
   </eco-fab-speed-dial-actions>
 </eco-fab-speed-dial>
 

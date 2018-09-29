@@ -695,6 +695,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Handles click on add project button
+   */
+  onAddTagClicked(){
+    this.onTagEvent({action: Action.OPEN_DIALOG_ADD, tag: null});
+  }
+
+  /**
+   * Handles click on add project button
+   */
+  onAddPersonClicked(){
+    this.onPersonEvent({action: Action.OPEN_DIALOG_ADD, person: null});
+  }
+
+  /**
    * Handles events targeting a tasklet
    * @param {any} event event parameters
    */
