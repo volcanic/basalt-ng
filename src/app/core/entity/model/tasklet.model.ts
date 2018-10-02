@@ -2,7 +2,8 @@ import {TaskletType} from './tasklet-type.enum';
 import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
 import {Description} from './description.model';
-import {DailyScrumParticipant} from './daily-scrum-participant';
+import {DailyScrumParticipant} from './daily-scrum/daily-scrum-participant';
+import {MeetingMinuteItem} from './meeting-minutes/meeting-minute-item';
 
 /**
  * Represents a tasklet which is a fraction of a task
@@ -17,6 +18,8 @@ export class Tasklet extends Entity {
   description: Description;
   /** References to persons */
   personIds: string[];
+  /** Array of meeting minute items */
+  meetingMinuteItems: MeetingMinuteItem[];
   /** Array of daily scrum participants */
   participants: DailyScrumParticipant[];
   /** References to tags */
@@ -32,6 +35,7 @@ export class Tasklet extends Entity {
     this.taskId = '';
     this.description = new Description();
     this.personIds = [];
+    this.meetingMinuteItems = [];
     this.participants = [];
     this.tagIds = [];
   }

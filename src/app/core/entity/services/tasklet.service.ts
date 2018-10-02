@@ -3,7 +3,7 @@ import {Tasklet} from '../model/tasklet.model';
 import {Subject} from 'rxjs';
 import {Person} from '../model/person.model';
 import {TaskletType} from '../model/tasklet-type.enum';
-import {TaskletDailyScrum} from '../model/tasklet-daily-scrum.model';
+import {TaskletDailyScrum} from '../model/daily-scrum/tasklet-daily-scrum.model';
 import {DateService} from './date.service';
 import {EntityType} from '../model/entity-type.enum';
 import {SuggestionService} from './suggestion.service';

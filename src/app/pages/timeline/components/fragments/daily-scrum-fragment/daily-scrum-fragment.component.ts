@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {TaskletDailyScrum} from 'app/core/entity/model/tasklet-daily-scrum.model';
-import {DailyScrumParticipant} from 'app/core/entity/model/daily-scrum-participant';
+import {TaskletDailyScrum} from 'app/core/entity/model/daily-scrum/tasklet-daily-scrum.model';
+import {DailyScrumParticipant} from 'app/core/entity/model/daily-scrum/daily-scrum-participant';
 
 /**
  * Displays daily scrum fragment

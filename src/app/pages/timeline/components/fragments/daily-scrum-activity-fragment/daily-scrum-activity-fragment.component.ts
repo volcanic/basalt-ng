@@ -1,8 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DailyScrumActivity} from 'app/core/entity/model/daily-scrum-activity';
+import {DailyScrumActivity} from 'app/core/entity/model/daily-scrum/daily-scrum-activity';
 import {debounceTime} from 'rxjs/operators';
 import {Person} from 'app/core/entity/model/person.model';
-import {DailyScrumActivityType} from 'app/core/entity/model/daily-scrum-activity-type.enum';
+import {DailyScrumActivityType} from 'app/core/entity/model/daily-scrum/daily-scrum-activity-type.enum';
 import {Subject} from 'rxjs/Subject';
 
 /**
