@@ -184,7 +184,7 @@ export class TaskletDialogComponent implements OnInit {
     this.persons = this.aggregatePersons(this.tasklet);
 
     // Remove empty placeholders
-    TaskletDialogComponent.removePlaceholders(this.tasklet);
+    this.removePlaceholders(this.tasklet);
 
     this.dialogRef.close({
       action: Action.ADD,
@@ -203,7 +203,7 @@ export class TaskletDialogComponent implements OnInit {
     this.persons = this.aggregatePersons(this.tasklet);
 
     // Remove empty placeholders
-    TaskletDialogComponent.removePlaceholders(this.tasklet);
+    this.removePlaceholders(this.tasklet);
 
     this.dialogRef.close({
       action: Action.UPDATE,
@@ -237,14 +237,14 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeAssignedToTask(tasklet: Tasklet): boolean {
-    return tasklet.type == TaskletType.ACTION
-      || tasklet.type == TaskletType.MEETING
-      || tasklet.type == TaskletType.CALL
-      || tasklet.type == TaskletType.MAIL
-      || tasklet.type == TaskletType.CHAT
-      || tasklet.type == TaskletType.DEVELOPMENT
-      || tasklet.type == TaskletType.DEBUGGING
-      || tasklet.type == TaskletType.IDEA;
+    return tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.CALL
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.CHAT
+      || tasklet.type === TaskletType.DEVELOPMENT
+      || tasklet.type === TaskletType.DEBUGGING
+      || tasklet.type === TaskletType.IDEA;
   }
 
   /**
@@ -252,13 +252,13 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public containsDescription(tasklet: Tasklet): boolean {
-    return tasklet.type == TaskletType.ACTION
-      || tasklet.type == TaskletType.MEETING
-      || tasklet.type == TaskletType.CALL
-      || tasklet.type == TaskletType.MAIL
-      || tasklet.type == TaskletType.CHAT
-      || tasklet.type == TaskletType.DEVELOPMENT
-      || tasklet.type == TaskletType.DEBUGGING;
+    return tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.CALL
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.CHAT
+      || tasklet.type === TaskletType.DEVELOPMENT
+      || tasklet.type === TaskletType.DEBUGGING;
   }
 
   /**
@@ -266,10 +266,10 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public containsPersons(tasklet: Tasklet): boolean {
-    return tasklet.type == TaskletType.MEETING
-      || tasklet.type == TaskletType.CALL
-      || tasklet.type == TaskletType.MAIL
-      || tasklet.type == TaskletType.CHAT;
+    return tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.CALL
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.CHAT;
   }
 
   /**
@@ -277,8 +277,8 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeCreated(tasklet: Tasklet): boolean {
-    return tasklet.type != TaskletType.LUNCH_BREAK
-    && tasklet.type != TaskletType.FINISHING_TIME;
+    return tasklet.type !== TaskletType.LUNCH_BREAK
+      && tasklet.type !== TaskletType.FINISHING_TIME;
   }
 
   /**
@@ -286,8 +286,8 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeUpdated(tasklet: Tasklet): boolean {
-    return tasklet.type != TaskletType.LUNCH_BREAK
-      && tasklet.type != TaskletType.FINISHING_TIME;
+    return tasklet.type !== TaskletType.LUNCH_BREAK
+      && tasklet.type !== TaskletType.FINISHING_TIME;
   }
 
   /**
@@ -304,8 +304,8 @@ export class TaskletDialogComponent implements OnInit {
    * Removes empty placeholder in a daily scrum tasklet
    * @param tasklet tasklet
    */
-  private static removePlaceholders(tasklet: Tasklet) {
-    if (tasklet.type == TaskletType.DAILY_SCRUM) {
+  private removePlaceholders(tasklet: Tasklet) {
+    if (tasklet.type === TaskletType.DAILY_SCRUM) {
       tasklet.participants = tasklet.participants.filter(p => {
         return p.person != null && p.person.name.length > 0;
       });

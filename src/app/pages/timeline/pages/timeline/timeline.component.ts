@@ -541,6 +541,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     icons.push(new Icon(ACTION, 'bug_report', 'ic_bug_report_24px.svg'));
     icons.push(new Icon(ACTION, 'check_circle', 'ic_check_circle_24px.svg'));
     icons.push(new Icon(ACTION, 'code', 'ic_code_24px.svg'));
+    icons.push(new Icon(ACTION, 'gavel', 'ic_gavel_24px.svg'));
+    icons.push(new Icon(ACTION, 'info', 'ic_info_24px.svg'));
     icons.push(new Icon(ACTION, 'label_outline', 'ic_label_outline_24px.svg'));
     icons.push(new Icon(ACTION, 'lightbulb_outline', 'ic_lightbulb_outline_24px.svg'));
     icons.push(new Icon(ACTION, 'receipt', 'ic_receipt_24px.svg'));
