@@ -50,6 +50,7 @@ import {ProjectDigest} from 'app/core/digest/model/project-digest.model';
 import {CloneService} from 'app/core/entity/services/clone.service';
 import {DateTimePickerDialogComponent} from 'app/ui/date-time-picker-dialog/date-time-picker-dialog/date-time-picker-dialog.component';
 import {DomSanitizer} from '@angular/platform-browser';
+import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 
 /**
  * Displays timeline page
@@ -172,6 +173,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private filterService: FilterService,
               private iconRegistry: MatIconRegistry,
               private matchService: MatchService,
+              private materialColorService: MaterialColorService,
               private mediaService: MediaService,
               private sanitizer: DomSanitizer,
               private scopeService: ScopeService,

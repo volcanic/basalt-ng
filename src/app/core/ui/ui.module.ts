@@ -4,6 +4,7 @@ import {ThemeService} from './services/theme.service';
 import {SnackbarService} from './services/snackbar.service';
 import {MediaService} from './services/media.service';
 import {ColorService} from './services/color.service';
+import {MaterialColorService} from './services/material-color.service';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import {ColorService} from './services/color.service';
   declarations: [],
   providers: [
     ColorService,
+    MaterialColorService,
     MediaService,
     SnackbarService,
     ThemeService
