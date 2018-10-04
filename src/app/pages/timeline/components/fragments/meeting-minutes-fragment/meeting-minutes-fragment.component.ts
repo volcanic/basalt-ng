@@ -1,8 +1,11 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item';
+import {MeetingMinuteItemModel} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
 
+/**
+ * Displays meeting minutes
+ */
 @Component({
   selector: 'app-meeting-minutes-fragment',
   templateUrl: './meeting-minutes-fragment.component.html',
@@ -12,10 +15,10 @@ import {Person} from '../../../../../core/entity/model/person.model';
 export class MeetingMinutesFragmentComponent implements OnInit {
 
   /** Array of meeting minute items */
-  @Input() meetingMinuteItems: MeetingMinuteItem[] = [];
+  @Input() meetingMinuteItems: MeetingMinuteItemModel[] = [];
   /** Array of person options */
   @Input() personOptions: string[] = [];
-
+  /** Input text */
   text = '';
 
   //
@@ -107,7 +110,7 @@ export class MeetingMinutesFragmentComponent implements OnInit {
    */
   private addInformation(topic: string) {
     if (topic.trim() !== '') {
-      const item = new MeetingMinuteItem();
+      const item = new MeetingMinuteItemModel();
       item.type = MeetingMinuteItemType.INFORMATION;
       item.topic = topic;
       this.meetingMinuteItems.push(item);
@@ -121,7 +124,7 @@ export class MeetingMinutesFragmentComponent implements OnInit {
    */
   private addDecision(topic: string) {
     if (topic.trim() !== '') {
-      const item = new MeetingMinuteItem();
+      const item = new MeetingMinuteItemModel();
       item.type = MeetingMinuteItemType.DECISION;
       item.topic = topic;
       this.meetingMinuteItems.push(item);
@@ -136,7 +139,7 @@ export class MeetingMinutesFragmentComponent implements OnInit {
    */
   private addAction(topic: string, person: Person) {
     if (topic.trim() !== '') {
-      const item = new MeetingMinuteItem();
+      const item = new MeetingMinuteItemModel();
       item.type = MeetingMinuteItemType.ACTION;
       item.topic = topic;
       item.person = person;

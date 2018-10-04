@@ -1,10 +1,10 @@
-/**
- * Represents a meeting minute action item
- */
 import {Person} from '../person.model';
 import {MeetingMinuteItemType} from './meeting-minute-item-type.enum';
 
-export class MeetingMinuteItem {
+/**
+ * Represents a meeting minute action item
+ */
+export class MeetingMinuteItemModel {
 
   /** Type of meeting minute */
   type: MeetingMinuteItemType;

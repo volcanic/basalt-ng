@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Hash} from '../../../core/entity/model/hash';
 
+/**
+ * Displays round indicator containing a person's initials
+ */
 @Component({
   selector: 'app-person-indicator-button',
   templateUrl: './person-indicator-button.component.html',
@@ -41,7 +43,6 @@ export class PersonIndicatorButtonComponent implements OnInit {
       return w[0];
     }).join('').toUpperCase();
   }
-
 
 
   //

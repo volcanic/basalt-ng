@@ -1,9 +1,12 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item';
+import {MeetingMinuteItemModel} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
 import {Hash} from '../../../../../core/entity/model/hash';
 
+/**
+ * Displays meeting minute item
+ */
 @Component({
   selector: 'app-meeting-minutes-item-fragment',
   templateUrl: './meeting-minute-item-fragment.component.html',
@@ -26,7 +29,7 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   ];
 
   /** Meeting minute item */
-  @Input() meetingMinuteItem: MeetingMinuteItem;
+  @Input() meetingMinuteItem: MeetingMinuteItemModel;
   /** Event emitter indicating changes in meeting minute item type */
   @Output() meetingMinuteItemTypeSelectedEmitter = new EventEmitter<string>();
 
@@ -41,6 +44,13 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   /** Enum for meeting minute item types */
   meetingMinuteItemType = MeetingMinuteItemType;
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle phase
+   */
   ngOnInit() {
     this.initializeColor();
     this.initializeAlignment();

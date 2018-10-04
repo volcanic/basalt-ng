@@ -1,5 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
+/**
+ * Displays a chat message
+ */
 @Component({
   selector: 'app-chat-bubble',
   templateUrl: './chat-bubble.component.html',

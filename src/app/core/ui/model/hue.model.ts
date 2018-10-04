@@ -7,9 +7,9 @@ export class Hue {
 
   /** Hue type */
   type: HueType;
-  /* Color value */
+  /** Color value */
   color: string;
-  /* Contrast value */
+  /** Contrast value */
   contrast: string;
 
   /**
