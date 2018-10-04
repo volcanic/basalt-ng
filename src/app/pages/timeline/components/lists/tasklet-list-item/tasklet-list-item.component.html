@@ -35,14 +35,23 @@
         <mat-accordion class="headers-align" (click)="onTaskletClicked()">
           <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
           <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
+            <!-- Regular text -->
             <div class="text">
               <mat-list *ngIf="tasklet.description.value != null && tasklet.description.value.length > 0">
                 <mat-list-item class="text" *ngFor="let item of tasklet.description.value.split('\n')">{{ item }}
                 </mat-list-item>
               </mat-list>
             </div>
-            <app-tasklet-daily-scrum [tasklet]="tasklet" *ngIf="tasklet.type == taskletType.DAILY_SCRUM">
-            </app-tasklet-daily-scrum>
+            <!-- Meeting minutes -->
+            <app-tasklet-meeting-minutes-fragment
+              *ngIf="tasklet.type == taskletType.CALL || tasklet.type == taskletType.MEETING"
+              [tasklet]="tasklet">
+            </app-tasklet-meeting-minutes-fragment>
+            <!-- Daily Scrum -->
+            <app-tasklet-daily-scrum-fragment
+              *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
+              [tasklet]="tasklet">
+            </app-tasklet-daily-scrum-fragment>
           </mat-expansion-panel>
         </mat-accordion>
         <hr class="delimiter"/>

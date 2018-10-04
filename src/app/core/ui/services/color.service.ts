@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Hash} from '../../entity/model/hash';
 import {Project} from '../../entity/model/project.model';
+import {Hue, MaterialColorService, Palette} from './material-color.service';
 
 /**
  * Handles derived colors
@@ -12,15 +13,15 @@ export class ColorService {
 
   /** Array of available project colors */
   static projectColors = [
-    '#C8E6C9',
-    '#A5D6A7',
-    '#81C784',
-    '#DCEDC8',
-    '#C5E1A5',
-    '#AED581',
-    '#F0F4C3',
-    '#E6EE9C',
-    '#DCE775'
+    MaterialColorService.color(Palette.GREEN, Hue._100),
+    MaterialColorService.color(Palette.GREEN, Hue._200),
+    MaterialColorService.color(Palette.GREEN, Hue._300),
+    MaterialColorService.color(Palette.LIGHT_GREEN, Hue._100),
+    MaterialColorService.color(Palette.LIGHT_GREEN, Hue._200),
+    MaterialColorService.color(Palette.LIGHT_GREEN, Hue._300),
+    MaterialColorService.color(Palette.LIME, Hue._100),
+    MaterialColorService.color(Palette.LIME, Hue._200),
+    MaterialColorService.color(Palette.LIME, Hue._300),
   ];
 
   /**

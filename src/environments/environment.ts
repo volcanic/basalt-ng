@@ -10,8 +10,8 @@
 export const environment = {
   production: false,
   APP_NAME: 'Basalt Dev',
-  DATABASE_ENTITIES: 'basalt-dev',
-  DATABASE_SETTINGS: 'basalt_settings-dev',
+  DATABASE_ENTITIES: 'basalt-dev2',
+  DATABASE_SETTINGS: 'basalt_settings-dev2',
   LIMIT_PROJECTS: 50,
   LIMIT_TASKS: 500,
   LIMIT_TASKLETS: 500,
