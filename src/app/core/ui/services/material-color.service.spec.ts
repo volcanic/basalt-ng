@@ -1,6 +1,6 @@
-import { TestBed, inject } from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 
-import { MaterialColorService } from './material-color.service';
+import {MaterialColorService} from './material-color.service';
 
 describe('MaterialColorService', () => {
   beforeEach(() => {

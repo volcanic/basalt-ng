@@ -18,21 +18,14 @@ export class MaterialColorService {
   /** List of palettes */
   palettes: Palette[] = [];
 
-  /**
-   * Constructor
-   */
-  constructor() {
-    this.initializePalettes();
-  }
-
   //
   // Initialization
   //
 
   /**
-   * Initializes palettes
+   * Initializes colors
    */
-  initializePalettes() {
+  public initializeColors() {
     // Red
     const red = new Palette(PaletteType.RED);
     red.hues.push(new Hue(HueType._50, '#ffcdd2', MaterialColorService.DARK_PRIMARY_TEXT));
