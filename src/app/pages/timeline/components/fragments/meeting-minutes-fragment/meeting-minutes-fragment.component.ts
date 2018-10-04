@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {MeetingMinuteItemModel} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
+import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
 
@@ -15,7 +15,7 @@ import {Person} from '../../../../../core/entity/model/person.model';
 export class MeetingMinutesFragmentComponent implements OnInit {
 
   /** Array of meeting minute items */
-  @Input() meetingMinuteItems: MeetingMinuteItemModel[] = [];
+  @Input() meetingMinuteItems: MeetingMinuteItem[] = [];
   /** Array of person options */
   @Input() personOptions: string[] = [];
   /** Input text */
@@ -100,19 +100,30 @@ export class MeetingMinutesFragmentComponent implements OnInit {
     this.addAction(this.text, new Person(name));
   }
 
+  /**
+   * Handles deletion of a meeting minute item
+   * @param meetingMinuteItem meeting minute item
+   */
+  onMeetingMinuteItemDeleted(meetingMinuteItem: MeetingMinuteItem) {
+    this.meetingMinuteItems = this.meetingMinuteItems.filter(item => {
+      return item.date.toString() !== meetingMinuteItem.date.toString();
+    });
+  }
+
   //
   // Helpers
   //
 
   /**
    * Add a meeting minute of type information
-   * @param topic topic
+   * @param statement statement
    */
-  private addInformation(topic: string) {
-    if (topic.trim() !== '') {
-      const item = new MeetingMinuteItemModel();
+  private addInformation(statement: string) {
+    if (statement.trim() !== '') {
+      const item = new MeetingMinuteItem();
+      item.date = new Date();
       item.type = MeetingMinuteItemType.INFORMATION;
-      item.topic = topic;
+      item.statement = statement;
       this.meetingMinuteItems.push(item);
       this.text = '';
     }
@@ -120,13 +131,14 @@ export class MeetingMinutesFragmentComponent implements OnInit {
 
   /**
    * Add a meeting minute of type decision
-   * @param topic topic
+   * @param statement statement
    */
-  private addDecision(topic: string) {
-    if (topic.trim() !== '') {
-      const item = new MeetingMinuteItemModel();
+  private addDecision(statement: string) {
+    if (statement.trim() !== '') {
+      const item = new MeetingMinuteItem();
+      item.date = new Date();
       item.type = MeetingMinuteItemType.DECISION;
-      item.topic = topic;
+      item.statement = statement;
       this.meetingMinuteItems.push(item);
       this.text = '';
     }
@@ -134,14 +146,15 @@ export class MeetingMinutesFragmentComponent implements OnInit {
 
   /**
    * Add a meeting minute of type action
-   * @param topic topic
+   * @param statement statement
    * @param person person
    */
-  private addAction(topic: string, person: Person) {
-    if (topic.trim() !== '') {
-      const item = new MeetingMinuteItemModel();
+  private addAction(statement: string, person: Person) {
+    if (statement.trim() !== '') {
+      const item = new MeetingMinuteItem();
+      item.date = new Date();
       item.type = MeetingMinuteItemType.ACTION;
-      item.topic = topic;
+      item.statement = statement;
       item.person = person;
       this.meetingMinuteItems.push(item);
       this.text = '';

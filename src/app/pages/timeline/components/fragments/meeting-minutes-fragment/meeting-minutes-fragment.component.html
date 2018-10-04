@@ -1,5 +1,6 @@
 <div class="chat-window" (keydown)="onKeyDown($event)">
-  <app-meeting-minutes-item-fragment *ngFor="let item of meetingMinuteItems" [meetingMinuteItem]="item">
+  <app-meeting-minutes-item-fragment *ngFor="let item of meetingMinuteItems" [meetingMinuteItem]="item"
+  (meetingMinuteItemDeletedEmitter)="onMeetingMinuteItemDeleted(item)">
   </app-meeting-minutes-item-fragment>
   <div class="flexcontainer">
     <div class="input-field">

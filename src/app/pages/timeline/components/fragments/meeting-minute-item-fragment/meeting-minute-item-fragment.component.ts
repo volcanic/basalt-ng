@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MeetingMinuteItemModel} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
+import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
 import {Hash} from '../../../../../core/entity/model/hash';
@@ -29,9 +29,11 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   ];
 
   /** Meeting minute item */
-  @Input() meetingMinuteItem: MeetingMinuteItemModel;
+  @Input() meetingMinuteItem: MeetingMinuteItem;
   /** Event emitter indicating changes in meeting minute item type */
   @Output() meetingMinuteItemTypeSelectedEmitter = new EventEmitter<string>();
+  /** Event emitter indicating deletion of meeting minute item */
+  @Output() meetingMinuteItemDeletedEmitter = new EventEmitter<MeetingMinuteItem>();
 
   /** Background color */
   color: string;
@@ -67,6 +69,14 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   onMeetingMinuteItemTypeChanged(type: MeetingMinuteItemType) {
     this.meetingMinuteItem.type = type;
     this.meetingMinuteItemTypeSelectedEmitter.emit('');
+  }
+
+  /**
+   * Handles deletion of a meeting minute item
+   * @param meetingMinuteItem meeting minute item
+   */
+  onMeetingMinuteItemDeleted(meetingMinuteItem: MeetingMinuteItem) {
+    this.meetingMinuteItemDeletedEmitter.emit(meetingMinuteItem);
   }
 
   //
