@@ -7,17 +7,18 @@
       <input matInput name="input" [(ngModel)]="text"/>
     </div>
     <div class="flexbox"></div>
-    <button class="action-button" mat-mini-fab [matTooltip]="tooltipInformation" matTooltipPosition="above"
+    <button class="action-button" mat-mini-fab [style.background]="colorInformation" [matTooltip]="tooltipInformation" matTooltipPosition="above"
             (click)="onInformationClicked()">
       <mat-icon svgIcon="info"></mat-icon>
     </button>
-    <button class="action-button" mat-mini-fab [matTooltip]="tooltipDecision" matTooltipPosition="above"
+    <button class="action-button" mat-mini-fab [style.background]="colorDecision" [matTooltip]="tooltipDecision" matTooltipPosition="above"
             (click)="onDecisionClicked()">
       <mat-icon svgIcon="gavel"></mat-icon>
     </button>
     <button
       mat-mini-fab
       matTooltip="Action"
+      [style.background]="colorAction"
       matTooltipPosition="above"
       (click)=select.open()>
       <mat-icon svgIcon="person"></mat-icon>
@@ -27,9 +28,9 @@
         {{ person }}
       </mat-option>
     </mat-select>
-    <button class="action-button" mat-mini-fab [matTooltip]="tooltipTopic" matTooltipPosition="above"
+    <button class="action-button" mat-mini-fab [style.background]="colorTopic" [matTooltip]="tooltipTopic" matTooltipPosition="above"
             (click)="onTopicClicked()">
-      <mat-icon svgIcon="forum"></mat-icon>
+      <mat-icon [style.fill]="contrastTopic" svgIcon="forum"></mat-icon>
     </button>
   </div>
 </div>

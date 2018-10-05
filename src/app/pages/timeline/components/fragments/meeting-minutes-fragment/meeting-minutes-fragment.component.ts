@@ -2,6 +2,9 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
+import {MaterialColorService} from '../../../../../core/ui/services/material-color.service';
+import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
+import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 
 /**
  * Displays meeting minutes
@@ -27,25 +30,57 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   private SHORTCUT_DECISION = 'D';
   private SHORTCUT_TOPIC = 'Q';
 
+  /** Tooltip of information button */
   tooltipInformation = `Information (CTRL+${this.SHORTCUT_INFORMATION})`;
+  /** Tooltip of decision button */
   tooltipDecision = `Decision (CTRL+${this.SHORTCUT_DECISION})`;
+  /** Tooltip of topic button */
   tooltipTopic = `Topic (CTRL+${this.SHORTCUT_TOPIC})`;
+
+  /** Color of information button */
+  colorInformation = 'transparent';
+  /** Color of decision button */
+  colorDecision = 'transparent';
+  /** Color of action button */
+  colorAction = 'transparent';
+  /** Color of topic button */
+  colorTopic = 'transparent';
+  /** Contrast color of topic button */
+  contrastTopic = 'transparent';
+
+  /**
+   * Constructor
+   * @param materialColorService material color service
+   */
+  constructor(private materialColorService: MaterialColorService) {
+  }
 
   //
   // Lifecycle hooks
   //
 
-
   /**
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
+    this.initializeColors();
     this.initializeMeetingMinuteItems();
   }
 
   //
   // Initialization
   //
+
+  /**
+   * Initializes colors
+   */
+  private initializeColors() {
+    this.colorInformation = this.materialColorService.color(PaletteType.GREY, HueType._500);
+    this.colorDecision = this.materialColorService.color(PaletteType.GREY, HueType._500);
+    this.colorAction = this.materialColorService.color(PaletteType.GREY, HueType._500);
+    this.colorTopic = this.materialColorService.color(PaletteType.GREY, HueType._200);
+    this.contrastTopic = this.materialColorService.contrast(PaletteType.GREY, HueType._200);
+  }
 
   /**
    * Initializes meeting minute items

@@ -3,6 +3,9 @@ import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minute
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
 import {ColorService} from '../../../../../core/ui/services/color.service';
+import {MaterialColorService} from '../../../../../core/ui/services/material-color.service';
+import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
+import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 
 /**
  * Displays meeting minute item
@@ -38,8 +41,9 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   /**
    * Constructor
    * @param colorService color service
+   * @param materialColorService material color service
    */
-  constructor(private colorService: ColorService) {
+  constructor(private colorService: ColorService, private materialColorService: MaterialColorService) {
   }
 
   //
@@ -87,7 +91,7 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
       this.color = this.colorService.getPersonColor(this.meetingMinuteItem.person);
       this.textColor = this.colorService.getPersonContrast(this.meetingMinuteItem.person);
     } else {
-      this.color = '#eceff1';
+      this.color = this.materialColorService.color(PaletteType.GREY, HueType._300);
     }
   }
 
