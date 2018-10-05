@@ -4,7 +4,8 @@
 export enum MeetingMinuteItemType {
 
   UNSPECIFIED = '???',
-  ACTION = 'Action',
   INFORMATION = 'Information',
-  DECISION = 'Decision'
+  DECISION = 'Decision',
+  ACTION = 'Action',
+  TOPIC = 'Topic'
 }

@@ -7,11 +7,11 @@
       <input matInput name="input" [(ngModel)]="text"/>
     </div>
     <div class="flexbox"></div>
-    <button class="action-button" mat-mini-fab matTooltip="Information (CTRL+I)" matTooltipPosition="above"
+    <button class="action-button" mat-mini-fab [matTooltip]="tooltipInformation" matTooltipPosition="above"
             (click)="onInformationClicked()">
       <mat-icon svgIcon="info"></mat-icon>
     </button>
-    <button class="action-button" mat-mini-fab matTooltip="Decision (CTRL+D)" matTooltipPosition="above"
+    <button class="action-button" mat-mini-fab [matTooltip]="tooltipDecision" matTooltipPosition="above"
             (click)="onDecisionClicked()">
       <mat-icon svgIcon="gavel"></mat-icon>
     </button>
@@ -27,5 +27,9 @@
         {{ person }}
       </mat-option>
     </mat-select>
+    <button class="action-button" mat-mini-fab [matTooltip]="tooltipTopic" matTooltipPosition="above"
+            (click)="onTopicClicked()">
+      <mat-icon svgIcon="forum"></mat-icon>
+    </button>
   </div>
 </div>

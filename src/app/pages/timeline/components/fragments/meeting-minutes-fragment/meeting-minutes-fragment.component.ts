@@ -20,6 +20,16 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   @Input() personOptions: string[] = [];
   /** Input text */
   text = '';
+  /** Current topic */
+  topic = '';
+
+  private SHORTCUT_INFORMATION = 'I';
+  private SHORTCUT_DECISION = 'D';
+  private SHORTCUT_TOPIC = 'Q';
+
+  tooltipInformation = `Information (CTRL+${this.SHORTCUT_INFORMATION})`;
+  tooltipDecision = `Decision (CTRL+${this.SHORTCUT_DECISION})`;
+  tooltipTopic = `Topic (CTRL+${this.SHORTCUT_TOPIC})`;
 
   //
   // Lifecycle hooks
@@ -60,17 +70,17 @@ export class MeetingMinutesFragmentComponent implements OnInit {
       if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
         this.addInformation(this.text);
       } else {
-        switch (String.fromCharCode(event.keyCode).toLowerCase()) {
-          case 'i': {
+        switch (String.fromCharCode(event.keyCode).toUpperCase()) {
+          case this.SHORTCUT_INFORMATION: {
             this.addInformation(this.text);
             break;
           }
-          case 'd': {
+          case this.SHORTCUT_DECISION: {
             this.addDecision(this.text);
             break;
           }
-          case 'q': {
-            // this.addAction(this.text);
+          case this.SHORTCUT_TOPIC: {
+            this.setTopic(this.text);
             break;
           }
         }
@@ -101,6 +111,13 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   }
 
   /**
+   * Handles click on topic button
+   */
+  onTopicClicked() {
+    this.setTopic(this.text);
+  }
+
+  /**
    * Handles deletion of a meeting minute item
    * @param meetingMinuteItem meeting minute item
    */
@@ -123,6 +140,7 @@ export class MeetingMinutesFragmentComponent implements OnInit {
       const item = new MeetingMinuteItem();
       item.date = new Date();
       item.type = MeetingMinuteItemType.INFORMATION;
+      item.topic = this.topic;
       item.statement = statement;
       this.meetingMinuteItems.push(item);
       this.text = '';
@@ -138,6 +156,7 @@ export class MeetingMinutesFragmentComponent implements OnInit {
       const item = new MeetingMinuteItem();
       item.date = new Date();
       item.type = MeetingMinuteItemType.DECISION;
+      item.topic = this.topic;
       item.statement = statement;
       this.meetingMinuteItems.push(item);
       this.text = '';
@@ -154,8 +173,26 @@ export class MeetingMinutesFragmentComponent implements OnInit {
       const item = new MeetingMinuteItem();
       item.date = new Date();
       item.type = MeetingMinuteItemType.ACTION;
+      item.topic = this.topic;
       item.statement = statement;
       item.person = person;
+      this.meetingMinuteItems.push(item);
+      this.text = '';
+    }
+  }
+
+  /**
+   * Sets the topic to a given value
+   * @param topic topic
+   */
+  private setTopic(topic: string) {
+    if (topic.trim() !== '') {
+      this.topic = topic;
+
+      const item = new MeetingMinuteItem();
+      item.date = new Date();
+      item.type = MeetingMinuteItemType.TOPIC;
+      item.statement = topic;
       this.meetingMinuteItems.push(item);
       this.text = '';
     }

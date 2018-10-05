@@ -1,7 +1,13 @@
 @import "../../../../../../flex";
+@import "../../../../../../theme";
 
 .meeting-minute-item {
   margin-bottom: 5px;
+}
+
+.topic {
+  color: mat-color($mat-grey, 400);
+  text-align: center;
 }
 
 .meetingMinuteItemAspect {

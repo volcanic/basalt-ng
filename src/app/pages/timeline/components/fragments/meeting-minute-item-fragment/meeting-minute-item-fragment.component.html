@@ -1,7 +1,12 @@
-<div class="flexcontainer meeting-minute-item">
+<div *ngIf="meetingMinuteItem.type == meetingMinuteItemType.TOPIC" class="meeting-minute-item topic">
+  <mat-divider></mat-divider>
+  <span>Topic {{ meetingMinuteItem.statement }}</span>
+</div>
+<div *ngIf="meetingMinuteItem.type != meetingMinuteItemType.TOPIC" class="flexcontainer meeting-minute-item">
   <div class="flexbox" *ngIf="alignment != 'left'"></div>
   <app-chat-bubble [text]="meetingMinuteItem.statement" [color]="color" [textColor]="textColor" [alignment]=""
                    (chatBubbleDeletionEmitter)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></app-chat-bubble>
-  <app-person-indicator-button *ngIf="meetingMinuteItem.person != null" [name]="meetingMinuteItem.person.name" [color]="color" [textColor]="textColor"></app-person-indicator-button>
+  <app-person-indicator-button *ngIf="meetingMinuteItem.person != null" [name]="meetingMinuteItem.person.name"
+                               [color]="color" [textColor]="textColor"></app-person-indicator-button>
   <div class="flexbox" *ngIf="alignment != 'right'"></div>
 </div>
