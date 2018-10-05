@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output}
 import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
-import {Hash} from '../../../../../core/entity/model/hash';
+import {ColorService} from '../../../../../core/ui/services/color.service';
 
 /**
  * Displays meeting minute item
@@ -15,19 +15,6 @@ import {Hash} from '../../../../../core/entity/model/hash';
 })
 export class MeetingMinuteItemFragmentComponent implements OnInit {
 
-  /** Array of available project colors */
-  static colors = [
-    '#C8E6C9', // Green 100
-    '#A5D6A7', // Green 200
-    '#81C784', // Green 300
-    '#DCEDC8', // Light green 100
-    '#C5E1A5', // Light green 200
-    '#AED581', // Light green 300
-    '#F0F4C3', // Lime 100
-    '#E6EE9C', // Lime 200
-    '#DCE775' // Lime 300
-  ];
-
   /** Meeting minute item */
   @Input() meetingMinuteItem: MeetingMinuteItem;
   /** Event emitter indicating changes in meeting minute item type */
@@ -37,6 +24,8 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
 
   /** Background color */
   color: string;
+  /** Text color */
+  textColor: string;
   /** Alignment */
   alignment: string;
 
@@ -45,6 +34,13 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
 
   /** Enum for meeting minute item types */
   meetingMinuteItemType = MeetingMinuteItemType;
+
+  /**
+   * Constructor
+   * @param colorService color service
+   */
+  constructor(private colorService: ColorService) {
+  }
 
   //
   // Lifecycle hooks
@@ -88,13 +84,8 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
    */
   private initializeColor() {
     if (this.meetingMinuteItem.person != null) {
-      if (this.meetingMinuteItem.person.name != null && this.meetingMinuteItem.person.name.trim().length > 0) {
-        this.color = MeetingMinuteItemFragmentComponent.colors[
-        Math.abs(Hash.hash(this.meetingMinuteItem.person.name.toLowerCase().replace(
-          ' ', ''))) % MeetingMinuteItemFragmentComponent.colors.length];
-      } else {
-        this.color = 'transparent';
-      }
+      this.color = this.colorService.getPersonColor(this.meetingMinuteItem.person);
+      this.textColor = this.colorService.getPersonContrast(this.meetingMinuteItem.person);
     } else {
       this.color = '#eceff1';
     }

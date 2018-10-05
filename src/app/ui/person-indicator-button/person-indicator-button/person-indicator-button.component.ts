@@ -14,6 +14,8 @@ export class PersonIndicatorButtonComponent implements OnInit {
   @Input() name: string;
   /** Background color */
   @Input() color: string;
+  /** Text color */
+  @Input() textColor: string;
   /** Event emitter indicating click action */
   @Output() clickEmitter = new EventEmitter<any>();
 
