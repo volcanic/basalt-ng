@@ -1,0 +1,8 @@
+<div class="flexcontainer">
+  <mat-icon class="icon" [svgIcon]="icon"></mat-icon>
+  <span class="person" *ngIf="meetingMinuteItem.person != null">
+    {{ meetingMinuteItem.person.name }}
+  </span>
+  <span class="statement">{{ meetingMinuteItem.statement }}</span>
+  <div class="flexbox"></div>
+</div>

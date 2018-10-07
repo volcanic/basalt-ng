@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
@@ -21,10 +21,13 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   @Input() meetingMinuteItems: MeetingMinuteItem[] = [];
   /** Array of person options */
   @Input() personOptions: string[] = [];
+  /** Event emitter indicating changes in meeting minute items */
+  @Output() meetingMinuteItemsUpdatedEmitter = new EventEmitter<MeetingMinuteItem[]>();
+
   /** Input text */
   text = '';
   /** Current topic */
-  topic = '';
+  topic = null;
 
   private SHORTCUT_INFORMATION = 'I';
   private SHORTCUT_DECISION = 'D';
@@ -65,6 +68,7 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   ngOnInit() {
     this.initializeColors();
     this.initializeMeetingMinuteItems();
+    this.initializeTopic();
   }
 
   //
@@ -91,13 +95,22 @@ export class MeetingMinutesFragmentComponent implements OnInit {
     }
   }
 
+  /**
+   * Initializes topic
+   */
+  private initializeTopic() {
+    if (this.meetingMinuteItems.length > 0) {
+      this.topic = this.meetingMinuteItems[this.meetingMinuteItems.length - 1].topic;
+    }
+  }
+
   //
   // Actions
   //
 
   /**
    * Handles key down event
-   * @param event
+   * @param event event
    */
   onKeyDown(event: any) {
     if (event.ctrlKey) {
@@ -160,6 +173,8 @@ export class MeetingMinutesFragmentComponent implements OnInit {
     this.meetingMinuteItems = this.meetingMinuteItems.filter(item => {
       return item.date.toString() !== meetingMinuteItem.date.toString();
     });
+
+    this.meetingMinuteItemsUpdatedEmitter.emit(this.meetingMinuteItems);
   }
 
   //

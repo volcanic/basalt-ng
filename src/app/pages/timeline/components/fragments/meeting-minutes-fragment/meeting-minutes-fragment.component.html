@@ -1,17 +1,19 @@
 <div class="chat-window" (keydown)="onKeyDown($event)">
   <app-meeting-minutes-item-fragment *ngFor="let item of meetingMinuteItems" [meetingMinuteItem]="item"
-  (meetingMinuteItemDeletedEmitter)="onMeetingMinuteItemDeleted(item)">
+                                     (meetingMinuteItemDeletedEmitter)="onMeetingMinuteItemDeleted(item)">
   </app-meeting-minutes-item-fragment>
   <div class="flexcontainer">
     <div class="input-field">
       <input matInput name="input" [(ngModel)]="text"/>
     </div>
     <div class="flexbox"></div>
-    <button class="action-button" mat-mini-fab [style.background]="colorInformation" [matTooltip]="tooltipInformation" matTooltipPosition="above"
+    <button class="action-button" mat-mini-fab [style.background]="colorInformation" [matTooltip]="tooltipInformation"
+            matTooltipPosition="above"
             (click)="onInformationClicked()">
-      <mat-icon svgIcon="info"></mat-icon>
+      <mat-icon svgIcon="comment"></mat-icon>
     </button>
-    <button class="action-button" mat-mini-fab [style.background]="colorDecision" [matTooltip]="tooltipDecision" matTooltipPosition="above"
+    <button class="action-button" mat-mini-fab [style.background]="colorDecision" [matTooltip]="tooltipDecision"
+            matTooltipPosition="above"
             (click)="onDecisionClicked()">
       <mat-icon svgIcon="gavel"></mat-icon>
     </button>
@@ -28,7 +30,8 @@
         {{ person }}
       </mat-option>
     </mat-select>
-    <button class="action-button" mat-mini-fab [style.background]="colorTopic" [matTooltip]="tooltipTopic" matTooltipPosition="above"
+    <button class="action-button" mat-mini-fab [style.background]="colorTopic" [matTooltip]="tooltipTopic"
+            matTooltipPosition="above"
             (click)="onTopicClicked()">
       <mat-icon [style.fill]="contrastTopic" svgIcon="forum"></mat-icon>
     </button>

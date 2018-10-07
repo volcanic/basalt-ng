@@ -1,9 +1,10 @@
-<div class="text">
-  <mat-list *ngIf="tasklet.meetingMinuteItems != null && tasklet.meetingMinuteItems.length > 0">
-    <mat-list-item class="text" *ngFor="let item of tasklet.meetingMinuteItems">
-      <mat-icon svgIcon=""></mat-icon>
-
-        {{ item }}
-    </mat-list-item>
-  </mat-list>
-</div>
+<mat-list *ngFor="let topic of topics">
+  <div class="topic-box">
+    <span class="topic">Topic {{ topic }}</span>
+    <app-tasklet-meeting-minute-item-fragment
+      *ngFor="let meetingMinuteItem of getMeetingMinuteItemsByTopic(topic)"
+      [meetingMinuteItem]="meetingMinuteItem">
+    </app-tasklet-meeting-minute-item-fragment>
+  </div>
+  <mat-divider></mat-divider>
+</mat-list>

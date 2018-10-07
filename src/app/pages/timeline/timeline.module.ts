@@ -63,6 +63,7 @@ import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
 import {MeetingMinuteItemFragmentComponent} from './components/fragments/meeting-minute-item-fragment/meeting-minute-item-fragment.component';
 import {TaskletMeetingMinutesFragmentComponent} from './components/fragments/tasklet-meeting-minutes-fragment/tasklet-meeting-minutes-fragment.component';
 import {TaskletDailyScrumFragmentComponent} from './components/fragments/tasklet-daily-scrum-fragment/tasklet-daily-scrum-fragment.component';
+import { TaskletMeetingMinuteItemFragmentComponent } from './components/fragments/tasklet-meeting-minute-item-fragment/tasklet-meeting-minute-item-fragment.component';
 
 @NgModule({
   imports: [
@@ -156,6 +157,7 @@ import {TaskletDailyScrumFragmentComponent} from './components/fragments/tasklet
     TaskletDailyScrumFragmentComponent,
     TaskletMeetingMinutesFragmentComponent,
     TaskletTypeFragmentComponent,
+    TaskletMeetingMinuteItemFragmentComponent,
   ], entryComponents: [
     PersonDialogComponent,
     PersonFilterDialogComponent,

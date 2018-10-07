@@ -10,6 +10,7 @@ import {Task} from 'app/core/entity/model/task.model';
 import {Description} from 'app/core/entity/model/description.model';
 import {Action} from 'app/core/entity/model/action.enum';
 import {SuggestionService} from 'app/core/entity/services/suggestion.service';
+import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 
 /**
  * Displays tasklet dialog
@@ -130,6 +131,14 @@ export class TaskletDialogComponent implements OnInit {
    */
   onDescriptionChanged(description: Description) {
     this.tasklet.description = description;
+  }
+
+  /**
+   * Handles meeting minute item updates
+   * @param meetingMinuteItems meeting minute items
+   */
+  onMeetingMinuteItemsUpdated(meetingMinuteItems: MeetingMinuteItem[]) {
+    this.tasklet.meetingMinuteItems = meetingMinuteItems;
   }
 
   /**
