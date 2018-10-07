@@ -13,6 +13,9 @@
   margin-right: 10px;
 }
 
-.statement {
+.statements {
   fill: mat-color($mat-grey, 800);
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }

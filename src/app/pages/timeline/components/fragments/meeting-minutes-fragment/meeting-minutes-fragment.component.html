@@ -4,7 +4,7 @@
   </app-meeting-minutes-item-fragment>
   <div class="flexcontainer">
     <div class="input-field">
-      <input matInput name="input" [(ngModel)]="text"/>
+      <textarea matInput name="input" [(ngModel)]="text"></textarea>
     </div>
     <div class="flexbox"></div>
     <button class="action-button" mat-mini-fab [style.background]="colorInformation" [matTooltip]="tooltipInformation"
@@ -18,10 +18,11 @@
       <mat-icon svgIcon="gavel"></mat-icon>
     </button>
     <button
+      class="action-button"
       mat-mini-fab
       matTooltip="Action"
-      [style.background]="colorAction"
       matTooltipPosition="above"
+      [style.background]="colorAction"
       (click)=select.open()>
       <mat-icon svgIcon="person"></mat-icon>
     </button>

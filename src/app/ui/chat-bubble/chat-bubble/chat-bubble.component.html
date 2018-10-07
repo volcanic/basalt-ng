@@ -1,7 +1,9 @@
 <div class="flexcontainer">
   <div class="flexbox" *ngIf="alignment != 'left'"></div>
   <div class="chat-bubble" [style.background-color]="color" [style.color]="textColor">
-    {{ text }}
+    <ul class="parts">
+      <li *ngFor="let part of textParts">{{ part }}</li>
+    </ul>
     <mat-icon class="delete-button hidden" svgIcon="close_18" (click)="onDeleteChatBubble()"></mat-icon>
   </div>
   <div class="flexbox" *ngIf="alignment != 'right'"></div>

@@ -15,6 +15,8 @@ export class TaskletMeetingMinuteItemFragmentComponent implements OnInit {
 
   /** Icon name */
   icon = '';
+  /** List of meeting minute item statement parts */
+  meetingMinuteItemStatementParts: string[];
 
   //
   // Lifecycle hooks
@@ -25,6 +27,7 @@ export class TaskletMeetingMinuteItemFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeIcon();
+    this.initializeMeetingMinuteItemStatementParts();
   }
 
   //
@@ -49,5 +52,14 @@ export class TaskletMeetingMinuteItemFragmentComponent implements OnInit {
         break;
       }
     }
+  }
+
+  /**
+   * Initializes meeting minute item statement parts
+   */
+  private initializeMeetingMinuteItemStatementParts() {
+    this.meetingMinuteItemStatementParts = this.meetingMinuteItem.statement.split('\n').map(p => {
+      return p.trim();
+    });
   }
 }
