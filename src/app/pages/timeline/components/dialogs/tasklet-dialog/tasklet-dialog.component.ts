@@ -10,7 +10,8 @@ import {Task} from 'app/core/entity/model/task.model';
 import {Description} from 'app/core/entity/model/description.model';
 import {Action} from 'app/core/entity/model/action.enum';
 import {SuggestionService} from 'app/core/entity/services/suggestion.service';
-import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
+import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-minute-item.model';
+import {PersonService} from 'app/core/entity/services/person.service';
 
 /**
  * Displays tasklet dialog
@@ -54,11 +55,13 @@ export class TaskletDialogComponent implements OnInit {
 
   /**
    * Constructor
+   * @param personService person service
    * @param suggestionService suggestion service
    * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(private suggestionService: SuggestionService,
+  constructor(private personService: PersonService,
+              private suggestionService: SuggestionService,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -228,6 +231,25 @@ export class TaskletDialogComponent implements OnInit {
    */
   deleteTasklet() {
     this.dialogRef.close({action: Action.DELETE, tasklet: this.tasklet});
+  }
+
+  /**
+   * Sends meeting minutes via mail
+   */
+  sendMeetingMinutes() {
+    this.tags = this.aggregateTags(this.tasklet);
+    this.persons = this.aggregatePersons(this.tasklet);
+
+    // Remove empty placeholders
+    this.removePlaceholders(this.tasklet);
+
+    this.dialogRef.close({
+      action: Action.SEND_MAIL_MEETING_MINUTES,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
   }
 
   /**

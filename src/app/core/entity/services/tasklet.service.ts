@@ -18,6 +18,8 @@ import {ScopeService} from './scope.service';
 import {Scope} from '../model/scope.enum';
 import {TagService} from './tag.service';
 import {PersonService} from './person.service';
+import {MeetingMinuteItemType} from '../model/meeting-minutes/meeting-minute-item-type.enum';
+import {MeetingMinuteItem} from '../model/meeting-minutes/meeting-minute-item.model';
 
 /**
  * Handles tasklets including
@@ -29,6 +31,9 @@ import {PersonService} from './person.service';
   providedIn: 'root'
 })
 export class TaskletService {
+
+  /** Name of default topic */
+  static TOPIC_GENERAL = 'General';
 
   /** Map of all tasklets */
   tasklets = new Map<string, Tasklet>();
@@ -335,6 +340,49 @@ export class TaskletService {
     });
 
     this.dateQueueSubject.next(sortedDateQueue[0]);
+  }
+
+  /**
+   * Determines a list of topics
+   *
+   * @param tasklet tasklet to get topics of
+   */
+  public getTopics(tasklet: Tasklet) {
+    const topicsMap = new Map<string, string>();
+
+    if (tasklet != null && tasklet.meetingMinuteItems != null) {
+      tasklet.meetingMinuteItems.forEach(m => {
+        const topic = (m.type !== MeetingMinuteItemType.TOPIC && m.topic != null)
+          ? m.topic : TaskletService.TOPIC_GENERAL;
+        topicsMap.set(topic, topic);
+      });
+
+      return Array.from(topicsMap.values());
+    }
+
+    return [];
+  }
+
+  /**
+   * Returns list of meeting minutes by topic
+   * @param tasklet tasklet
+   * @param topic topic
+   */
+  public getMeetingMinuteItemsByTopic(tasklet: Tasklet, topic: string): MeetingMinuteItem[] {
+    return tasklet.meetingMinuteItems.filter(m => {
+      return (m.topic === topic
+        || (m.topic === null && topic === TaskletService.TOPIC_GENERAL));
+    }).sort((m1, m2) => {
+      return new Date(m2.date).getTime() < new Date(m1.date).getTime() ? 1 : -1;
+    }).sort((a, b) => {
+      if (a.type < b.type) {
+        return 1;
+      }
+      if (a.type > b.type) {
+        return -1;
+      }
+      return 0;
+    });
   }
 
   // </editor-fold>

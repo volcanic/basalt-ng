@@ -39,6 +39,9 @@
       Delete tasklet
     </button>
     <div class="flexbox"></div>
+    <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL" (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
+      Send Meeting Minutes
+    </button>
     <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
         && canBeCreated()">
       Add tasklet

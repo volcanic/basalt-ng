@@ -52,6 +52,7 @@ import {DateTimePickerDialogComponent} from 'app/ui/date-time-picker-dialog/date
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {EmailService} from '../../../../core/mail/services/mail/email.service';
 
 /**
  * Displays timeline page
@@ -151,6 +152,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Constructor
    * @param {DigestService} digestService
+   * @param {EmailService} emailService
    * @param {EntityService} entityService
    * @param {FilterService} filterService
    * @param {MatchService} matchService
@@ -172,6 +174,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {NgZone} zone Angular zone
    */
   constructor(private digestService: DigestService,
+              private emailService: EmailService,
               private entityService: EntityService,
               private filterService: FilterService,
               private matchService: MatchService,
@@ -632,6 +635,40 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             });
           }
         });
+        break;
+      }
+      case Action.SEND_MAIL_MEETING_MINUTES: {
+        // Update tasklet
+        this.onTaskletEvent({
+          action: Action.UPDATE,
+          tasklet: tasklet,
+          task: task,
+          tags: tags,
+          persons: persons
+        });
+
+        const recipients = persons.filter(p => {
+          return p.email != null;
+        }).map(p => {
+          return p.email;
+        });
+        const subject = task.name;
+        let body = `Please find the meeting minutes below\n`;
+
+        this.taskletService.getTopics(tasklet).forEach(topic => {
+          body += `\nTopic ${topic}`;
+          this.taskletService.getMeetingMinuteItemsByTopic(tasklet, topic).forEach(item => {
+            body += `\n -`;
+            if (item.person != null) {
+              body += ` ${item.person.name} `;
+            }
+            body += ` ${item.type.toString()}: `;
+            body += ` ${item.statement}`;
+          });
+        });
+
+        this.emailService.sendMail(recipients, [], `Meeting Minutes - ${subject}`, body);
+
         break;
       }
       case Action.OPEN_DIALOG_ADD: {
