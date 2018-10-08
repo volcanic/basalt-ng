@@ -30,7 +30,7 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   /** Text color */
   textColor: string;
   /** Alignment */
-  alignment: string;
+  alignment: 'left' | 'right' = 'left';
 
   /** Enum of meeting minute types */
   meetingMinuteItemTypes = Object.keys(MeetingMinuteItemType).map(key => MeetingMinuteItemType[key]);
@@ -99,6 +99,7 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
    * Initializes alignment
    */
   private initializeAlignment() {
-    this.alignment = this.meetingMinuteItem.person != null ? 'right' : 'left';
+    // this.alignment = this.meetingMinuteItem.person != null ? 'right' : 'left';
+    this.alignment = 'left';
   }
 }

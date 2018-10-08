@@ -30,13 +30,13 @@ export class TaskletMeetingMinutesFragmentComponent implements OnInit {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.initializeMeetingMinuteItems();
+    this.initializeTopics();
   }
 
   /**
-   * Initializes meeting minute items
+   * Initializes topic
    */
-  private initializeMeetingMinuteItems() {
+  private initializeTopics() {
     const topicsMap = new Map<string, string>();
 
     if (this.tasklet != null && this.tasklet.meetingMinuteItems != null) {
