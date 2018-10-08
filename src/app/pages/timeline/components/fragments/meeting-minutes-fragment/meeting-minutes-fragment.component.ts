@@ -174,7 +174,9 @@ export class MeetingMinutesFragmentComponent implements OnInit {
    */
   onMeetingMinuteItemDeleted(meetingMinuteItem: MeetingMinuteItem) {
     this.meetingMinuteItems = this.meetingMinuteItems.filter(item => {
-      return item.date.toString() !== meetingMinuteItem.date.toString();
+      return item.date != null
+        && meetingMinuteItem.date != null
+        && item.date.toString() !== meetingMinuteItem.date.toString();
     });
 
     this.meetingMinuteItemsUpdatedEmitter.emit(this.meetingMinuteItems);

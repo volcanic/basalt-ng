@@ -43,9 +43,11 @@ export class ChatBubbleComponent implements OnInit {
    * Initializes text parts
    */
   private initializetTextParts() {
-    this.textParts = this.text.split('\n').map(p => {
-      return p.trim();
-    });
+    if (this.text != null) {
+      this.textParts = this.text.split('\n').map(p => {
+        return p.trim();
+      });
+    }
   }
 
   //
