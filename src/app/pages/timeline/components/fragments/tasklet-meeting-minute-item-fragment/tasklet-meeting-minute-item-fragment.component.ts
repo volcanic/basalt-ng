@@ -2,6 +2,9 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 
+/**
+ * Displays meeting minute item fragment
+ */
 @Component({
   selector: 'app-tasklet-meeting-minute-item-fragment',
   templateUrl: './tasklet-meeting-minute-item-fragment.component.html',

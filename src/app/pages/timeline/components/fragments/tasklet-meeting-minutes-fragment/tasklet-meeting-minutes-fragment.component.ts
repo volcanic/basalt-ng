@@ -14,6 +14,7 @@ import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minute
 })
 export class TaskletMeetingMinutesFragmentComponent implements OnInit {
 
+  /** Name of default topic */
   static TOPIC_GENERAL = 'General';
 
   /** Tasklet to be displayed */

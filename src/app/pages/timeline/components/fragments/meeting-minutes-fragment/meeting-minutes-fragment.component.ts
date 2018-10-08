@@ -29,8 +29,11 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   /** Current topic */
   topic = null;
 
+  /** Shortcut button for information */
   private SHORTCUT_INFORMATION = 'I';
-  private SHORTCUT_DECISION = 'D';
+  /** Shortcut button for decision */
+  private SHORTCUT_DECISION = 'Y';
+  /** Shortcut button for topic */
   private SHORTCUT_TOPIC = 'Q';
 
   /** Tooltip of information button */
