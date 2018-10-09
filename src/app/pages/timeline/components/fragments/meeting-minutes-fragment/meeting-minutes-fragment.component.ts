@@ -199,6 +199,8 @@ export class MeetingMinutesFragmentComponent implements OnInit {
       item.statement = statement;
       this.meetingMinuteItems.push(item);
       this.text = '';
+
+      this.meetingMinuteItemsUpdatedEmitter.emit(this.meetingMinuteItems);
     }
   }
 
@@ -215,6 +217,8 @@ export class MeetingMinutesFragmentComponent implements OnInit {
       item.statement = statement;
       this.meetingMinuteItems.push(item);
       this.text = '';
+
+      this.meetingMinuteItemsUpdatedEmitter.emit(this.meetingMinuteItems);
     }
   }
 
@@ -233,6 +237,8 @@ export class MeetingMinutesFragmentComponent implements OnInit {
       item.person = person;
       this.meetingMinuteItems.push(item);
       this.text = '';
+
+      this.meetingMinuteItemsUpdatedEmitter.emit(this.meetingMinuteItems);
     }
   }
 
@@ -250,6 +256,8 @@ export class MeetingMinutesFragmentComponent implements OnInit {
       item.statement = topic;
       this.meetingMinuteItems.push(item);
       this.text = '';
+
+      this.meetingMinuteItemsUpdatedEmitter.emit(this.meetingMinuteItems);
     }
   }
 }

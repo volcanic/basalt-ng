@@ -36,8 +36,8 @@
           <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
           <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
             <!-- Regular text -->
-            <div class="text">
-              <mat-list *ngIf="tasklet.description.value != null && tasklet.description.value.length > 0">
+            <div class="text" *ngIf="tasklet.description.value != null && tasklet.description.value.length > 0">
+              <mat-list>
                 <mat-list-item class="text" *ngFor="let item of tasklet.description.value.split('\n')">{{ item }}
                 </mat-list-item>
               </mat-list>
