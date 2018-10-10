@@ -169,6 +169,21 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   }
 
   /**
+   * Handles changes of a meeting minute item statement
+   * @param meetingMinuteItem meeting minute item
+   */
+  onMeetingMinuteItemChanged(meetingMinuteItem: MeetingMinuteItem) {
+    let item = this.meetingMinuteItems.find(i => {
+      return i.date.toString() !== meetingMinuteItem.date.toString();
+    });
+
+    if (item != null) {
+      item = meetingMinuteItem;
+      this.meetingMinuteItemsUpdatedEmitter.emit(this.meetingMinuteItems);
+    }
+  }
+
+  /**
    * Handles deletion of a meeting minute item
    * @param meetingMinuteItem meeting minute item
    */

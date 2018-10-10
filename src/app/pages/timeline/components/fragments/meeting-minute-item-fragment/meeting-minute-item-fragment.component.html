@@ -6,14 +6,15 @@
   <div class="flexcontainer" *ngIf="alignment == 'left'">
     <app-person-indicator-button *ngIf="meetingMinuteItem.person != null" [name]="meetingMinuteItem.person.name"
                                  [color]="color" [textColor]="textColor"></app-person-indicator-button>
-    <app-chat-bubble [text]="meetingMinuteItem.statement" [color]="color" [textColor]="textColor"
+    <app-chat-bubble class="chat-bubble" [text]="meetingMinuteItem.statement" [color]="color" [textColor]="textColor"
                      [alignment]="alignment"
+                     (chatBubbleChangeEmitter)="onMeetingMinuteItemStatementChanged($event)"
                      (chatBubbleDeletionEmitter)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></app-chat-bubble>
     <div class="flexbox"></div>
   </div>
   <div class="flexcontainer" *ngIf="alignment == 'right'">
     <div class="flexbox"></div>
-    <app-chat-bubble [text]="meetingMinuteItem.statement" [color]="color" [textColor]="textColor"
+    <app-chat-bubble class="chat-bubble" [text]="meetingMinuteItem.statement" [color]="color" [textColor]="textColor"
                      [alignment]="alignment"
                      (chatBubbleDeletionEmitter)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></app-chat-bubble>
     <app-person-indicator-button *ngIf="meetingMinuteItem.person != null" [name]="meetingMinuteItem.person.name"

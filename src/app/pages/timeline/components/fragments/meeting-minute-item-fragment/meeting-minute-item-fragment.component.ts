@@ -22,6 +22,8 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   @Input() meetingMinuteItem: MeetingMinuteItem;
   /** Event emitter indicating changes in meeting minute item type */
   @Output() meetingMinuteItemTypeSelectedEmitter = new EventEmitter<string>();
+  /** Event emitter indicating changes in meeting minute item */
+  @Output() meetingMinuteItemChangedEmitter = new EventEmitter<MeetingMinuteItem>();
   /** Event emitter indicating deletion of meeting minute item */
   @Output() meetingMinuteItemDeletedEmitter = new EventEmitter<MeetingMinuteItem>();
 
@@ -69,6 +71,15 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   onMeetingMinuteItemTypeChanged(type: MeetingMinuteItemType) {
     this.meetingMinuteItem.type = type;
     this.meetingMinuteItemTypeSelectedEmitter.emit('');
+  }
+
+  /**
+   * Handles change of a meeting minute item statement
+   * @param statement statement
+   */
+  onMeetingMinuteItemStatementChanged(statement: string) {
+    this.meetingMinuteItem.statement = statement;
+    this.meetingMinuteItemChangedEmitter.emit(this.meetingMinuteItem);
   }
 
   /**

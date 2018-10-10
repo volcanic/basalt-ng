@@ -8,7 +8,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   templateUrl: './chat-bubble.component.html',
   styleUrls: ['./chat-bubble.component.scss']
 })
-export class ChatBubbleComponent implements OnInit {
+export class ChatBubbleComponent {
 
   /** Text to be displayed */
   @Input() text: string;
@@ -18,37 +18,12 @@ export class ChatBubbleComponent implements OnInit {
   @Input() textColor: string;
   /** Alignment */
   @Input() alignment: 'left' | 'right';
+  /** Readonly if true */
+  @Input() readonly = false;
+  /** Event emitter indicating bubble change */
+  @Output() chatBubbleChangeEmitter = new EventEmitter<string>();
   /** Event emitter indicating bubble deletion */
   @Output() chatBubbleDeletionEmitter = new EventEmitter<any>();
-
-  /** List of text parts */
-  textParts: string[] = [];
-
-  //
-  // Lifecycle hooks
-  //
-
-  /**
-   * Handles on-init lifecycle phase
-   */
-  ngOnInit() {
-    this.initializetTextParts();
-  }
-
-  //
-  // Initialization
-  //
-
-  /**
-   * Initializes text parts
-   */
-  private initializetTextParts() {
-    if (this.text != null) {
-      this.textParts = this.text.split('\n').map(p => {
-        return p.trim();
-      });
-    }
-  }
 
   //
   // Actions
@@ -59,5 +34,13 @@ export class ChatBubbleComponent implements OnInit {
    */
   onDeleteChatBubble() {
     this.chatBubbleDeletionEmitter.emit();
+  }
+
+  /**
+   * Handles change of a chat bubble text
+   * @param text text
+   */
+  onTextChanged(text: string) {
+    this.chatBubbleChangeEmitter.emit(text);
   }
 }
