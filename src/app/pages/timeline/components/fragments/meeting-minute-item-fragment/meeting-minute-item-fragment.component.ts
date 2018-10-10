@@ -83,12 +83,29 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   }
 
   /**
+   * Handles activation of due date
+   */
+  onDueDateActivated() {
+    this.meetingMinuteItem.dueDate = new Date();
+  }
+
+  /**
+   * Handles change of a meeting minute item due date
+   * @param dueDate due date
+   */
+  onDueDateChanged(dueDate: Date) {
+    this.meetingMinuteItem.dueDate = dueDate;
+    this.meetingMinuteItemChangedEmitter.emit(this.meetingMinuteItem);
+  }
+
+  /**
    * Handles deletion of a meeting minute item
    * @param meetingMinuteItem meeting minute item
    */
   onMeetingMinuteItemDeleted(meetingMinuteItem: MeetingMinuteItem) {
     this.meetingMinuteItemDeletedEmitter.emit(meetingMinuteItem);
   }
+
 
   //
   // Helpers

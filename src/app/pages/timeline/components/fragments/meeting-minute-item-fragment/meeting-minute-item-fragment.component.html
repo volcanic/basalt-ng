@@ -4,20 +4,55 @@
 </div>
 <div *ngIf="meetingMinuteItem.type != meetingMinuteItemType.TOPIC" class="flexcontainer meeting-minute-item">
   <div class="flexcontainer" *ngIf="alignment == 'left'">
-    <app-person-indicator-button *ngIf="meetingMinuteItem.person != null" [name]="meetingMinuteItem.person.name"
-                                 [color]="color" [textColor]="textColor"></app-person-indicator-button>
-    <app-chat-bubble class="chat-bubble" [text]="meetingMinuteItem.statement" [color]="color" [textColor]="textColor"
+    <app-person-indicator-button *ngIf="meetingMinuteItem.person != null"
+                                 [name]="meetingMinuteItem.person.name"
+                                 [color]="color"
+                                 [textColor]="textColor"></app-person-indicator-button>
+    <app-chat-bubble class="chat-bubble"
+                     [text]="meetingMinuteItem.statement"
+                     [color]="color"
+                     [textColor]="textColor"
                      [alignment]="alignment"
                      (chatBubbleChangeEmitter)="onMeetingMinuteItemStatementChanged($event)"
                      (chatBubbleDeletionEmitter)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></app-chat-bubble>
+    <button mat-button
+            *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate == null"
+            class="due-date-activation"
+            (click)="onDueDateActivated()">
+      Set due date
+    </button>
+    <app-date-time-picker-fragment
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate != null"
+      class="due-date"
+      [date]="meetingMinuteItem.dueDate"
+      (dateChangedEmitter)="onDueDateChanged($event)">
+    </app-date-time-picker-fragment>
     <div class="flexbox"></div>
   </div>
   <div class="flexcontainer" *ngIf="alignment == 'right'">
     <div class="flexbox"></div>
-    <app-chat-bubble class="chat-bubble" [text]="meetingMinuteItem.statement" [color]="color" [textColor]="textColor"
+    <button mat-button
+            *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate == null"
+            class="due-date-activation"
+            (click)="onDueDateActivated()">
+      Set due date
+    </button>
+    <app-date-time-picker-fragment
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate != null"
+      class="due-date"
+      [date]="meetingMinuteItem.dueDate"
+      (dateChangedEmitter)="onDueDateChanged($event)">
+    </app-date-time-picker-fragment>
+    <app-chat-bubble class="chat-bubble"
+                     [text]="meetingMinuteItem.statement"
+                     [color]="color"
+                     [textColor]="textColor"
                      [alignment]="alignment"
+                     (chatBubbleChangeEmitter)="onMeetingMinuteItemStatementChanged($event)"
                      (chatBubbleDeletionEmitter)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></app-chat-bubble>
-    <app-person-indicator-button *ngIf="meetingMinuteItem.person != null" [name]="meetingMinuteItem.person.name"
-                                 [color]="color" [textColor]="textColor"></app-person-indicator-button>
+    <app-person-indicator-button *ngIf="meetingMinuteItem.person != null"
+                                 [name]="meetingMinuteItem.person.name"
+                                 [color]="color"
+                                 [textColor]="textColor"></app-person-indicator-button>
   </div>
 </div>

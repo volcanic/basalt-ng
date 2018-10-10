@@ -17,5 +17,11 @@
   fill: mat-color($mat-grey, 800);
   list-style-type: none;
   margin: 0;
+  margin-right: 10px;
   padding: 0;
+}
+
+.due-date {
+  color: mat-color($mat-grey, 400);
+  margin-right: 10px;
 }

@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {MeetingMinuteItem} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
+import {DateService} from '../../../../../core/entity/services/date.service';
 
 /**
  * Displays meeting minute item fragment
@@ -20,6 +21,10 @@ export class TaskletMeetingMinuteItemFragmentComponent implements OnInit {
   icon = '';
   /** List of meeting minute item statement parts */
   meetingMinuteItemStatementParts: string[];
+  /** Reference to static method */
+  getDateString = DateService.getDateString;
+  /** Reference to static method */
+  getTimeString = DateService.getTimeString;
 
   //
   // Lifecycle hooks

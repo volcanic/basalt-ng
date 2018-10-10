@@ -6,5 +6,7 @@
   <ul class="statements">
     <li *ngFor="let part of meetingMinuteItemStatementParts">{{ part }}</li>
   </ul>
-  <div class="flexbox"></div>
+  <span class="due-date" *ngIf="meetingMinuteItem.dueDate != null">
+    {{ getDateString(meetingMinuteItem.dueDate) }} {{ getTimeString(meetingMinuteItem.dueDate) }}
+  </span>
 </div>
