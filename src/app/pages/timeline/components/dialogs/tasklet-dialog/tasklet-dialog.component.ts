@@ -284,8 +284,14 @@ export class TaskletDialogComponent implements OnInit {
    */
   public containsDescription(tasklet: Tasklet): boolean {
     return tasklet.type === TaskletType.ACTION
-      || (tasklet.type === TaskletType.MEETING && tasklet.description != null && tasklet.description.value != null)
-      || (tasklet.type === TaskletType.CALL && tasklet.description != null && tasklet.description.value != null)
+      || (tasklet.type === TaskletType.MEETING
+        && tasklet.description != null
+        && tasklet.description.value != null
+        && tasklet.description.value !== '')
+      || (tasklet.type === TaskletType.CALL
+        && tasklet.description != null
+        && tasklet.description.value != null
+        && tasklet.description.value !== '')
       || tasklet.type === TaskletType.MAIL
       || tasklet.type === TaskletType.CHAT
       || tasklet.type === TaskletType.DEVELOPMENT
