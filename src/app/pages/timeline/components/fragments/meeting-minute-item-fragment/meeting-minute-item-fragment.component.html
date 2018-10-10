@@ -3,7 +3,7 @@
   <span>Topic {{ meetingMinuteItem.statement }}</span>
 </div>
 <div *ngIf="meetingMinuteItem.type != meetingMinuteItemType.TOPIC" class="flexcontainer meeting-minute-item">
-  <div class="flexcontainer" *ngIf="alignment == 'left'">
+  <div class="flexcontainer full-width" *ngIf="alignment == 'left'">
     <app-person-indicator-button *ngIf="meetingMinuteItem.person != null"
                                  [name]="meetingMinuteItem.person.name"
                                  [color]="color"
