@@ -759,10 +759,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.OPEN_DIALOG_CONTINUE: {
         const previousDescription = tasklet.description;
 
+        // Remove attributes from original tasklet
         tasklet['_rev'] = null;
         tasklet.id = new UUID().toString();
         tasklet.description = new Description();
         tasklet.creationDate = new Date();
+        tasklet.meetingMinuteItems = [];
 
         // Assemble data to be passed
         const data = {
