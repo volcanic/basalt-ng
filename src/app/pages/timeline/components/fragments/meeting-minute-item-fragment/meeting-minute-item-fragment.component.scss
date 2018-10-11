@@ -3,6 +3,10 @@
 
 .meeting-minute-item {
   margin-bottom: 5px;
+
+  &:hover .hidden {
+    display: inline-block;
+  }
 }
 
 .full-width {

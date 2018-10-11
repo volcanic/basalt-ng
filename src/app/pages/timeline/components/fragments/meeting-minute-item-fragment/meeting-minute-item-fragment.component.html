@@ -41,7 +41,7 @@
                      (chatBubbleDeletionEmitter)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></app-chat-bubble>
     <button mat-button
             *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate == null"
-            class="due-date-activation"
+            class="due-date-activation hidden"
             (click)="onDueDateActivated()">
       Set due date
     </button>
