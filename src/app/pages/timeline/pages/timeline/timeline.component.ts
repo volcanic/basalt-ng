@@ -53,6 +53,7 @@ import {MaterialColorService} from '../../../../core/ui/services/material-color.
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
+import {MeetingMinuteItemType} from '../../../../core/entity/model/meeting-minutes/meeting-minute-item-type.enum';
 
 /**
  * Displays timeline page
@@ -1832,6 +1833,28 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       aggregatedTagIds.set(tag.id, tag.id);
     });
 
+    // Infer tags from meeting minutes
+    if (tasklet.meetingMinuteItems != null) {
+      tasklet.meetingMinuteItems.filter(item => {
+        return item.type === MeetingMinuteItemType.TOPIC;
+      }).map(item => {
+        return item.statement;
+      }).filter(statement => {
+        return statement != null;
+      }).forEach(s => {
+        let tag = this.tagService.getTagByName(s);
+
+        if (tag == null) {
+          tag = new Tag(s, true);
+          this.tagService.createTag(tag).then(() => {
+          });
+        }
+
+        this.filterService.updateTagsList([tag], true);
+        aggregatedTagIds.set(tag.id, tag.id);
+      });
+    }
+
     tasklet.tagIds = Array.from(aggregatedTagIds.values());
   }
 
@@ -1844,11 +1867,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const aggregatedPersonIds = new Map<string, string>();
 
     // New person
-    persons.forEach(t => {
-      let person = this.personService.getPersonByName(t.name);
+    persons.forEach(p => {
+      let person = this.personService.getPersonByName(p.name);
 
       if (person == null) {
-        person = new Person(t.name, true);
+        person = new Person(p.name, true);
         this.personService.createPerson(person).then(() => {
         });
       }
@@ -1856,6 +1879,28 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.filterService.updatePersonsList([person], true);
       aggregatedPersonIds.set(person.id, person.id);
     });
+
+    // Infer persons from meeting minutes
+    if (tasklet.meetingMinuteItems != null) {
+      tasklet.meetingMinuteItems.filter(item => {
+        return item.type === MeetingMinuteItemType.ACTION;
+      }).map(item => {
+        return item.person;
+      }).filter(person => {
+        return person != null && person.name !== this.personService.myself.name;
+      }).forEach(p => {
+        let person = this.personService.getPersonByName(p.name);
+
+        if (person == null) {
+          person = new Person(p.name, true);
+          this.personService.createPerson(person).then(() => {
+          });
+        }
+
+        this.filterService.updatePersonsList([person], true);
+        aggregatedPersonIds.set(person.id, person.id);
+      });
+    }
 
     tasklet.personIds = Array.from(aggregatedPersonIds.values());
   }

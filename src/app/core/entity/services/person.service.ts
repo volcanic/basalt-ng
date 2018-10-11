@@ -1,5 +1,5 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Subject} from 'rxjs/index';
+import {Subject} from 'rxjs/Subject';
 import {Person} from '../model/person.model';
 import {SuggestionService} from './suggestion.service';
 import {EntityType} from '../model/entity-type.enum';
@@ -24,6 +24,8 @@ export class PersonService {
   persons = new Map<string, Person>();
   /** Subject that can be subscribed by components that are interested in changes */
   personsSubject = new Subject<Person[]>();
+  /** Special person representing the user */
+  myself: Person;
 
   /**
    * Constructor
@@ -36,6 +38,7 @@ export class PersonService {
               private suggestionService: SuggestionService,
               private snackbarService: SnackbarService,
               private scopeService: ScopeService) {
+    this.initializeMyself();
     this.initializePersonSubscription();
     this.findPersonsByScope(this.scopeService.scope);
   }
@@ -45,6 +48,13 @@ export class PersonService {
   //
 
   // <editor-fold desc="Initialization">
+
+  /**
+   * Initializes a special person representing the user
+   */
+  initializeMyself() {
+    this.myself = new Person('Myself');
+  }
 
   /**
    * Initializes person subscription

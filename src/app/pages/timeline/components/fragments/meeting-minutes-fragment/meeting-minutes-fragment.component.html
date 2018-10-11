@@ -28,6 +28,8 @@
       <mat-icon svgIcon="person"></mat-icon>
     </button>
     <mat-select #select class="personSelect">
+      <mat-option (click)="onPersonSelected(myselfOption)">{{ myselfOption }}</mat-option>
+      <mat-divider></mat-divider>
       <mat-option *ngFor="let person of personOptions" [value]="person" (click)="onPersonSelected(person)">
         {{ person }}
       </mat-option>

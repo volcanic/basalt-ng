@@ -49,6 +49,8 @@ export class TaskletDialogComponent implements OnInit {
   tagOptions: string[];
   /** Person options */
   personOptions: string[];
+  /** Person option representing the user */
+  myselfOption: string;
 
   /** Enum of dialog modes */
   taskletType = TaskletType;
@@ -114,6 +116,7 @@ export class TaskletDialogComponent implements OnInit {
     }).map(p => {
       return p.name;
     });
+    this.myselfOption = this.personService.myself.name;
   }
 
   //

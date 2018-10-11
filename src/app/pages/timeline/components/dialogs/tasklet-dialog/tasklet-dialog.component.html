@@ -17,6 +17,7 @@
         *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
         [meetingMinuteItems]="tasklet.meetingMinuteItems"
         [personOptions]="personOptions"
+        [myselfOption]="myselfOption"
         (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
 
       <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM" [tasklet]="tasklet"

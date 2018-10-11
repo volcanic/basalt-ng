@@ -21,8 +21,12 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   @Input() meetingMinuteItems: MeetingMinuteItem[] = [];
   /** Array of person options */
   @Input() personOptions: string[] = [];
+  /** Additional person option representing the user */
+  @Input() myselfOption: string;
   /** Event emitter indicating changes in meeting minute items */
   @Output() meetingMinuteItemsUpdatedEmitter = new EventEmitter<MeetingMinuteItem[]>();
+
+
 
   /** Input text */
   text = '';
