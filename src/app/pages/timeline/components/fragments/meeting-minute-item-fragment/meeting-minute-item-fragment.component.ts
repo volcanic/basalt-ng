@@ -106,7 +106,6 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
     this.meetingMinuteItemDeletedEmitter.emit(meetingMinuteItem);
   }
 
-
   //
   // Helpers
   //

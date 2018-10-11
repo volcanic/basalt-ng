@@ -1,6 +1,18 @@
 <div *ngIf="meetingMinuteItem.type == meetingMinuteItemType.TOPIC" class="meeting-minute-item topic">
   <mat-divider></mat-divider>
-  <span>Topic {{ meetingMinuteItem.statement }}</span>
+  <div class="flexcontainer">
+    <div class="flexbox left-side">
+      Topic
+    </div>
+    <div>
+      <input matInput name="input" [ngModel]="meetingMinuteItem.statement"
+             (ngModelChange)="onMeetingMinuteItemStatementChanged($event)"/>
+    </div>
+    <div class="flexbox right-side">
+      <mat-icon class="delete-button hidden" svgIcon="close_18"
+                (click)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></mat-icon>
+    </div>
+  </div>
 </div>
 <div *ngIf="meetingMinuteItem.type != meetingMinuteItemType.TOPIC" class="flexcontainer meeting-minute-item">
   <div class="flexcontainer full-width" *ngIf="alignment == 'left'">
