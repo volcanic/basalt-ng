@@ -16,6 +16,18 @@
 </div>
 <div *ngIf="meetingMinuteItem.type != meetingMinuteItemType.TOPIC" class="flexcontainer meeting-minute-item">
   <div class="flexcontainer full-width" *ngIf="alignment == 'left'">
+    <button
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.INFORMATION"
+      mat-mini-fab matTooltip="Action" matTooltipPosition="above"
+      [style.background]="colorInformation">
+      <mat-icon svgIcon="comment"></mat-icon>
+    </button>
+    <button
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.DECISION"
+      mat-mini-fab matTooltip="Decision" matTooltipPosition="above"
+      [style.background]="colorDecision">
+      <mat-icon svgIcon="gavel"></mat-icon>
+    </button>
     <app-person-indicator-button *ngIf="meetingMinuteItem.person != null"
                                  [name]="meetingMinuteItem.person.name"
                                  [color]="color"

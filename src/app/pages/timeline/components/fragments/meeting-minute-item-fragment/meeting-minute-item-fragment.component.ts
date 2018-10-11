@@ -4,8 +4,6 @@ import {MeetingMinuteItemType} from '../../../../../core/entity/model/meeting-mi
 import {Person} from '../../../../../core/entity/model/person.model';
 import {ColorService} from '../../../../../core/ui/services/color.service';
 import {MaterialColorService} from '../../../../../core/ui/services/material-color.service';
-import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
-import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 
 /**
  * Displays meeting minute item
@@ -20,6 +18,11 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
 
   /** Meeting minute item */
   @Input() meetingMinuteItem: MeetingMinuteItem;
+  /** Color of information button */
+  @Input() colorInformation = 'transparent';
+  /** Color of decision button */
+  @Input() colorDecision = 'transparent';
+
   /** Event emitter indicating changes in meeting minute item type */
   @Output() meetingMinuteItemTypeSelectedEmitter = new EventEmitter<string>();
   /** Event emitter indicating changes in meeting minute item */
@@ -58,6 +61,32 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   ngOnInit() {
     this.initializeColor();
     this.initializeAlignment();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes the color picked by a hash value generated from a name
+   */
+  private initializeColor() {
+    if (this.meetingMinuteItem.type === MeetingMinuteItemType.INFORMATION) {
+      this.color = this.colorInformation;
+    } else if (this.meetingMinuteItem.type === MeetingMinuteItemType.DECISION) {
+      this.color = this.colorDecision;
+    } else if (this.meetingMinuteItem.type === MeetingMinuteItemType.ACTION && this.meetingMinuteItem.person != null) {
+      this.color = this.colorService.getPersonColor(this.meetingMinuteItem.person);
+      this.textColor = this.colorService.getPersonContrast(this.meetingMinuteItem.person);
+    }
+  }
+
+  /**
+   * Initializes alignment
+   */
+  private initializeAlignment() {
+    // this.alignment = this.meetingMinuteItem.person != null ? 'right' : 'left';
+    this.alignment = 'left';
   }
 
   //
@@ -104,29 +133,5 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
    */
   onMeetingMinuteItemDeleted(meetingMinuteItem: MeetingMinuteItem) {
     this.meetingMinuteItemDeletedEmitter.emit(meetingMinuteItem);
-  }
-
-  //
-  // Helpers
-  //
-
-  /**
-   * Initializes the color picked by a hash value generated from a name
-   */
-  private initializeColor() {
-    if (this.meetingMinuteItem.person != null) {
-      this.color = this.colorService.getPersonColor(this.meetingMinuteItem.person);
-      this.textColor = this.colorService.getPersonContrast(this.meetingMinuteItem.person);
-    } else {
-      this.color = this.materialColorService.color(PaletteType.GREY, HueType._300);
-    }
-  }
-
-  /**
-   * Initializes alignment
-   */
-  private initializeAlignment() {
-    // this.alignment = this.meetingMinuteItem.person != null ? 'right' : 'left';
-    this.alignment = 'left';
   }
 }

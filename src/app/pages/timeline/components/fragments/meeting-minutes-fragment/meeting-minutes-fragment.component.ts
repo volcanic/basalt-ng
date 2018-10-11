@@ -86,9 +86,9 @@ export class MeetingMinutesFragmentComponent implements OnInit {
    * Initializes colors
    */
   private initializeColors() {
-    this.colorInformation = this.materialColorService.color(PaletteType.GREY, HueType._500);
+    this.colorInformation = this.materialColorService.color(PaletteType.GREY, HueType._400);
     this.colorDecision = this.materialColorService.color(PaletteType.GREY, HueType._500);
-    this.colorAction = this.materialColorService.color(PaletteType.GREY, HueType._500);
+    this.colorAction = this.materialColorService.color(PaletteType.GREY, HueType._600);
     this.colorTopic = this.materialColorService.color(PaletteType.GREY, HueType._200);
     this.contrastTopic = this.materialColorService.contrast(PaletteType.GREY, HueType._200);
   }
