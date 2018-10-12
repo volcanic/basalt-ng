@@ -26,8 +26,6 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   /** Event emitter indicating changes in meeting minute items */
   @Output() meetingMinuteItemsUpdatedEmitter = new EventEmitter<MeetingMinuteItem[]>();
 
-
-
   /** Input text */
   text = '';
   /** Current topic */

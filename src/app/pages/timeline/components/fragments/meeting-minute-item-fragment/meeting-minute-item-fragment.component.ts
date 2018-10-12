@@ -18,6 +18,8 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
 
   /** Meeting minute item */
   @Input() meetingMinuteItem: MeetingMinuteItem;
+  /** Additional person option representing the user */
+  @Input() myselfOption: string;
   /** Color of information button */
   @Input() colorInformation = 'transparent';
   /** Color of decision button */

@@ -18,17 +18,27 @@
   <div class="flexcontainer full-width" *ngIf="alignment == 'left'">
     <button
       *ngIf="meetingMinuteItem.type == meetingMinuteItemType.INFORMATION"
-      mat-mini-fab matTooltip="Action" matTooltipPosition="above"
-      [style.background]="colorInformation">
+      mat-mini-fab matTooltip="Information" matTooltipPosition="above"
+      [style.background]="color">
       <mat-icon svgIcon="comment"></mat-icon>
     </button>
     <button
       *ngIf="meetingMinuteItem.type == meetingMinuteItemType.DECISION"
       mat-mini-fab matTooltip="Decision" matTooltipPosition="above"
-      [style.background]="colorDecision">
+      [style.background]="color">
       <mat-icon svgIcon="gavel"></mat-icon>
     </button>
-    <app-person-indicator-button *ngIf="meetingMinuteItem.person != null"
+    <button
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION
+      && meetingMinuteItem.person != null
+      && meetingMinuteItem.person.name == myselfOption"
+      mat-mini-fab matTooltip="Myself" matTooltipPosition="above"
+      [style.background]="color">
+      <mat-icon svgIcon="person"></mat-icon>
+    </button>
+    <app-person-indicator-button *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION
+      && meetingMinuteItem.person != null
+      && meetingMinuteItem.person.name != myselfOption"
                                  [name]="meetingMinuteItem.person.name"
                                  [color]="color"
                                  [textColor]="textColor"></app-person-indicator-button>
