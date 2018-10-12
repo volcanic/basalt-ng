@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DailyScrumParticipant} from 'app/core/entity/model/daily-scrum-participant';
-import {DailyScrumActivity} from 'app/core/entity/model/daily-scrum-activity';
+import {DailyScrumParticipant} from 'app/core/entity/model/daily-scrum/daily-scrum-participant';
+import {DailyScrumActivity} from 'app/core/entity/model/daily-scrum/daily-scrum-activity';
 import {Person} from 'app/core/entity/model/person.model';
 import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
 

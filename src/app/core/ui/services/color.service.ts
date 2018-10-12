@@ -1,6 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Hash} from '../../entity/model/hash';
 import {Project} from '../../entity/model/project.model';
+import {MaterialColorService} from './material-color.service';
+import {HueType} from '../model/hue-type.enum';
+import {PaletteType} from '../model/palette-type.enum';
+import {Person} from '../../entity/model/person.model';
 
 /**
  * Handles derived colors
@@ -11,29 +15,99 @@ import {Project} from '../../entity/model/project.model';
 export class ColorService {
 
   /** Array of available project colors */
-  static projectColors = [
-    '#C8E6C9',
-    '#A5D6A7',
-    '#81C784',
-    '#DCEDC8',
-    '#C5E1A5',
-    '#AED581',
-    '#F0F4C3',
-    '#E6EE9C',
-    '#DCE775'
+  projectHues = [
+    this.materialColorService.hue(PaletteType.GREEN, HueType._100),
+    this.materialColorService.hue(PaletteType.GREEN, HueType._200),
+    this.materialColorService.hue(PaletteType.GREEN, HueType._300),
+    this.materialColorService.hue(PaletteType.LIGHT_GREEN, HueType._100),
+    this.materialColorService.hue(PaletteType.LIGHT_GREEN, HueType._200),
+    this.materialColorService.hue(PaletteType.LIGHT_GREEN, HueType._300),
+    this.materialColorService.hue(PaletteType.LIME, HueType._100),
+    this.materialColorService.hue(PaletteType.LIME, HueType._200),
+    this.materialColorService.hue(PaletteType.LIME, HueType._300),
   ];
+
+  /** Array of available person colors */
+  personHues = [
+    this.materialColorService.hue(PaletteType.RED, HueType._500),
+    this.materialColorService.hue(PaletteType.PINK, HueType._500),
+    this.materialColorService.hue(PaletteType.PURPLE, HueType._500),
+    this.materialColorService.hue(PaletteType.DEEP_PURPLE, HueType._500),
+    this.materialColorService.hue(PaletteType.INDIGO, HueType._500),
+    this.materialColorService.hue(PaletteType.BLUE, HueType._500),
+    this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._500),
+    this.materialColorService.hue(PaletteType.CYAN, HueType._500),
+    this.materialColorService.hue(PaletteType.TEAL, HueType._500),
+    this.materialColorService.hue(PaletteType.GREEN, HueType._500),
+    this.materialColorService.hue(PaletteType.LIGHT_GREEN, HueType._500),
+    this.materialColorService.hue(PaletteType.LIME, HueType._500),
+    this.materialColorService.hue(PaletteType.YELLOW, HueType._500),
+    this.materialColorService.hue(PaletteType.AMBER, HueType._500),
+    this.materialColorService.hue(PaletteType.ORANGE, HueType._500),
+    this.materialColorService.hue(PaletteType.DEEP_ORANGE, HueType._500),
+  ];
+
+  /**
+   * Constructor
+   * @param materialColorService material color service
+   */
+  constructor(private materialColorService: MaterialColorService) {
+  }
 
   /**
    * Returns a color picked by a hash value generated from a project's name
    * @param {Project} project project to get color for
    * @returns {string} color string derived from project name
    */
-  static getProjectColor(project: Project) {
-    if (project != null && project.name != null && project.name.trim().length > 0) {
-      return this.projectColors[
-      Math.abs(Hash.hash(project.name.toLowerCase().replace(' ', ''))) % this.projectColors.length];
-    } else {
+  getProjectColor(project: Project) {
+    if (project == null || project.name == null || project.name.trim().length <= 0) {
       return 'transparent';
     }
+    const hue = this.projectHues[
+    Math.abs(Hash.hash(project.name.toLowerCase().replace(' ', ''))) % this.projectHues.length];
+
+    if (hue == null) {
+      return 'transparent';
+    }
+
+    return hue.color;
+  }
+
+  /**
+   * Returns a color picked by a hash value generated from a person's name
+   * @param {Person} person person to get color for
+   * @returns {string} color string derived from project name
+   */
+  getPersonColor(person: Person) {
+    if (person == null || person.name == null || person.name.trim().length <= 0) {
+      return 'transparent';
+    }
+    const hue = this.personHues[
+    Math.abs(Hash.hash(person.name.toLowerCase().replace(' ', ''))) % this.personHues.length];
+
+    if (hue == null) {
+      return 'transparent';
+    }
+
+    return hue.color;
+  }
+
+  /**
+   * Returns a contrast picked by a hash value generated from a person's name
+   * @param {Person} person person to get color for
+   * @returns {string} contrast color string derived from project name
+   */
+  getPersonContrast(person: Person) {
+    if (person == null || person.name == null || person.name.trim().length <= 0) {
+      return 'transparent';
+    }
+    const hue = this.personHues[
+    Math.abs(Hash.hash(person.name.toLowerCase().replace(' ', ''))) % this.personHues.length];
+
+    if (hue == null) {
+      return 'transparent';
+    }
+
+    return hue.contrast;
   }
 }

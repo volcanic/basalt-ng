@@ -1,0 +1,31 @@
+@import "../../../../../../flex";
+@import "../../../../../../theme";
+
+.chat-window {
+  margin: 5px;
+}
+
+.meeting-minute-item {
+  margin-bottom: 5px;
+}
+
+.input-field {
+  background-color: mat-color($mat-grey, 100);
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px 20px;
+  width: 100%;
+}
+
+.action-button {
+  margin: 6px 5px 0;
+}
+
+::ng-deep .personSelect div.mat-select-arrow-wrapper {
+  display: none;
+}
+
+::ng-deep .personSelect.mat-select {
+  display: inline;
+  width: 1px;
+}

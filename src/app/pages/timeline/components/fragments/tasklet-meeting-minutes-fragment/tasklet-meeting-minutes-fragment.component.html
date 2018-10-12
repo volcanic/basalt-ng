@@ -1,0 +1,10 @@
+<mat-list *ngFor="let topic of topics">
+  <div class="topic-box">
+    <span class="topic">Topic {{ topic }}</span>
+    <app-tasklet-meeting-minute-item-fragment
+      *ngFor="let meetingMinuteItem of getMeetingMinuteItemsByTopic(topic)"
+      [meetingMinuteItem]="meetingMinuteItem">
+    </app-tasklet-meeting-minute-item-fragment>
+  </div>
+  <mat-divider></mat-divider>
+</mat-list>

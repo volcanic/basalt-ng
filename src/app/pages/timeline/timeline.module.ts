@@ -46,7 +46,6 @@ import {TaskListItemComponent} from './components/lists/task-list-item/task-list
 import {TaskListComponent} from './components/lists/task-list/task-list.component';
 import {TaskletListItemComponent} from './components/lists/tasklet-list-item/tasklet-list-item.component';
 import {TaskletListComponent} from './components/lists/tasklet-list/tasklet-list.component';
-import {TaskletDailyScrumComponent} from './components/tasklet-daily-scrum/tasklet-daily-scrum.component';
 import {TimelineToolbarComponent} from './components/toolbars/timeline-toolbar/timeline-toolbar.component';
 import {ProjectEffortTreeComponent} from './components/trees/project-effort-tree/project-effort-tree.component';
 import {TimelineComponent} from './pages/timeline/timeline.component';
@@ -59,6 +58,13 @@ import {FileDropFragmentComponent} from './components/fragments/file-drop-fragme
 import {FileUploadModule} from 'ng2-file-upload';
 import {FutureTaskletFragmentComponent} from './components/fragments/future-tasklet-fragment/future-tasklet-fragment.component';
 import {EcoFabSpeedDialModule} from '@ecodev/fab-speed-dial';
+import {TaskletDailyScrumFragmentComponent} from './components/fragments/tasklet-daily-scrum-fragment/tasklet-daily-scrum-fragment.component';
+import {MeetingMinutesFragmentComponent} from './components/fragments/meeting-minutes-fragment/meeting-minutes-fragment.component';
+import {MeetingMinuteItemFragmentComponent} from './components/fragments/meeting-minute-item-fragment/meeting-minute-item-fragment.component';
+import {TaskletMeetingMinutesFragmentComponent} from './components/fragments/tasklet-meeting-minutes-fragment/tasklet-meeting-minutes-fragment.component';
+import {TaskletMeetingMinuteItemFragmentComponent} from './components/fragments/tasklet-meeting-minute-item-fragment/tasklet-meeting-minute-item-fragment.component';
+import {PersonIndicatorButtonModule} from '../../ui/person-indicator-button/person-indicator-button.module';
+import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
 
 
 @NgModule({
@@ -75,7 +81,9 @@ import {EcoFabSpeedDialModule} from '@ecodev/fab-speed-dial';
 
     AboutDialogModule,
     ConfirmationDialogModule,
+    ChatBubbleModule,
     InformationDialogModule,
+    PersonIndicatorButtonModule,
     NewFeaturesDialogModule,
     DateTimePickerDialogModule,
     DateTimePickerFragmentModule,
@@ -138,6 +146,8 @@ import {EcoFabSpeedDialModule} from '@ecodev/fab-speed-dial';
     DescriptionFragmentComponent,
     FileDropFragmentComponent,
     FutureTaskletFragmentComponent,
+    MeetingMinutesFragmentComponent,
+    MeetingMinuteItemFragmentComponent,
     PersonAutocompleteFragmentComponent,
     PersonChipsFragmentComponent,
     PreviousDescriptionFragmentComponent,
@@ -145,10 +155,10 @@ import {EcoFabSpeedDialModule} from '@ecodev/fab-speed-dial';
     RecurrenceIntervalFragmentComponent,
     TagChipsFragmentComponent,
     TaskAutocompleteFragmentComponent,
+    TaskletDailyScrumFragmentComponent,
+    TaskletMeetingMinuteItemFragmentComponent,
+    TaskletMeetingMinutesFragmentComponent,
     TaskletTypeFragmentComponent,
-
-    // Other
-    TaskletDailyScrumComponent,
   ], entryComponents: [
     PersonDialogComponent,
     PersonFilterDialogComponent,

@@ -1,0 +1,95 @@
+<div *ngIf="meetingMinuteItem.type == meetingMinuteItemType.TOPIC" class="meeting-minute-item topic">
+  <mat-divider></mat-divider>
+  <div class="flexcontainer">
+    <div class="flexbox left-side">
+      Topic
+    </div>
+    <div>
+      <input matInput name="input" [ngModel]="meetingMinuteItem.statement"
+             (ngModelChange)="onMeetingMinuteItemStatementChanged($event)"/>
+    </div>
+    <div class="flexbox right-side">
+      <mat-icon class="delete-button hidden" svgIcon="close_18"
+                (click)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></mat-icon>
+    </div>
+  </div>
+</div>
+<div *ngIf="meetingMinuteItem.type != meetingMinuteItemType.TOPIC" class="flexcontainer meeting-minute-item">
+  <div class="flexcontainer full-width" *ngIf="alignment == 'left'">
+    <button
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.INFORMATION"
+      mat-mini-fab matTooltip="Information" matTooltipPosition="above"
+      [style.background]="color"
+      [style.fill]="textColor">
+      <mat-icon svgIcon="comment"></mat-icon>
+    </button>
+    <button
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.DECISION"
+      mat-mini-fab matTooltip="Decision" matTooltipPosition="above"
+      [style.background]="color"
+      [style.fill]="textColor">
+      <mat-icon svgIcon="gavel"></mat-icon>
+    </button>
+    <button
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION
+      && meetingMinuteItem.person != null
+      && meetingMinuteItem.person.name == myselfOption"
+      mat-mini-fab matTooltip="Myself" matTooltipPosition="above"
+      [style.background]="color"
+      [style.fill]="textColor">
+      <mat-icon svgIcon="person"></mat-icon>
+    </button>
+    <app-person-indicator-button *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION
+      && meetingMinuteItem.person != null
+      && meetingMinuteItem.person.name != myselfOption"
+                                 [name]="meetingMinuteItem.person.name"
+                                 [color]="color"
+                                 [textColor]="textColor"></app-person-indicator-button>
+    <app-chat-bubble class="chat-bubble"
+                     [text]="meetingMinuteItem.statement"
+                     [color]="color"
+                     [textColor]="textColor"
+                     [alignment]="alignment"
+                     (chatBubbleChangeEmitter)="onMeetingMinuteItemStatementChanged($event)"
+                     (chatBubbleDeletionEmitter)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></app-chat-bubble>
+    <button mat-button
+            *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate == null"
+            class="due-date-activation hidden"
+            (click)="onDueDateActivated()">
+      Set due date
+    </button>
+    <app-date-time-picker-fragment
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate != null"
+      class="due-date"
+      [date]="meetingMinuteItem.dueDate"
+      (dateChangedEmitter)="onDueDateChanged($event)">
+    </app-date-time-picker-fragment>
+    <div class="flexbox"></div>
+  </div>
+  <div class="flexcontainer" *ngIf="alignment == 'right'">
+    <div class="flexbox"></div>
+    <button mat-button
+            *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate == null"
+            class="due-date-activation"
+            (click)="onDueDateActivated()">
+      Set due date
+    </button>
+    <app-date-time-picker-fragment
+      *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION && meetingMinuteItem.dueDate != null"
+      class="due-date"
+      [date]="meetingMinuteItem.dueDate"
+      (dateChangedEmitter)="onDueDateChanged($event)">
+    </app-date-time-picker-fragment>
+    <app-chat-bubble class="chat-bubble"
+                     [text]="meetingMinuteItem.statement"
+                     [color]="color"
+                     [textColor]="textColor"
+                     [alignment]="alignment"
+                     (chatBubbleChangeEmitter)="onMeetingMinuteItemStatementChanged($event)"
+                     (chatBubbleDeletionEmitter)="onMeetingMinuteItemDeleted(meetingMinuteItem)"></app-chat-bubble>
+    <app-person-indicator-button *ngIf="meetingMinuteItem.person != null"
+                                 [name]="meetingMinuteItem.person.name"
+                                 [color]="color"
+                                 [textColor]="textColor"></app-person-indicator-button>
+  </div>
+</div>

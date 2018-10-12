@@ -1,12 +1,12 @@
-<div class="searchbox">
+<mat-form-field>
   <input class="search-input" matInput name="search" type="text" placeholder="Person"
          [ngModel]="person.name"
-         (ngModelChange)="onPersonNameChanged($event)"
          [matAutocomplete]="auto"
+         (ngModelChange)="onPersonNameChanged($event)"
          (keyup)="onKeyUp()">
   <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
     <mat-option *ngFor="let option of optionsFiltered" [value]="option" (click)="onOptionSelected()">
       {{ option }}
     </mat-option>
   </mat-autocomplete>
-</div>
+</mat-form-field>

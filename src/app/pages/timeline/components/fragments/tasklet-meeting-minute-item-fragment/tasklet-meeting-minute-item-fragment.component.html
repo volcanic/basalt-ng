@@ -1,0 +1,12 @@
+<div class="flexcontainer">
+  <mat-icon class="icon" [svgIcon]="icon"></mat-icon>
+  <span class="person" *ngIf="meetingMinuteItem.person != null">
+    {{ meetingMinuteItem.person.name }}
+  </span>
+  <ul class="statements">
+    <li *ngFor="let part of meetingMinuteItemStatementParts">{{ part }}</li>
+  </ul>
+  <span class="due-date" *ngIf="meetingMinuteItem.dueDate != null">
+    {{ getDateString(meetingMinuteItem.dueDate) }} {{ getTimeString(meetingMinuteItem.dueDate) }}
+  </span>
+</div>

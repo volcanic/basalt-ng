@@ -1,0 +1,40 @@
+.chat-bubble {
+  display: flex;
+  border-radius: 10px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  margin: 5px;
+  padding: 5px 20px;
+  width: 80%;
+  overflow-wrap: break-word;
+
+  &:hover .hidden {
+    display: inline-block;
+  }
+}
+
+.parts {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.delete-button {
+  height: 14px;
+  width: 14px;
+  margin-top: -4px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.hidden {
+  display: none;
+}
+
+.flexcontainer {
+  display: flex;
+  width: 100%;
+}
+
+.flexbox {
+  flex-grow: 1;
+}

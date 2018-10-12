@@ -1,0 +1,7 @@
+<div [style.color]="textColor">
+  <button class="person-indicator" [style.background]="color" [style.color]="textColor"
+          mat-mini-fab matTooltip="{{ name }}" matTooltipPosition="above"
+          (click)="onClick()">
+    {{ initials }}
+  </button>
+</div>

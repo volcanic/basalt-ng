@@ -1,0 +1,49 @@
+<div class="chat-window" (keydown)="onKeyDown($event)">
+  <app-meeting-minutes-item-fragment *ngFor="let item of meetingMinuteItems"
+                                     [meetingMinuteItem]="item"
+                                     [myselfOption]="myselfOption"
+                                     [colorInformation]="colorInformation"
+                                     [colorDecision]="colorDecision"
+                                     [contrastInformation]="contrastInformation"
+                                     [contrastDecision]="contrastDecision"
+                                     (meetingMinuteItemChangedEmitter)="onMeetingMinuteItemChanged($event)"
+                                     (meetingMinuteItemDeletedEmitter)="onMeetingMinuteItemDeleted(item)">
+  </app-meeting-minutes-item-fragment>
+  <div class="flexcontainer">
+    <div class="input-field">
+      <textarea matInput name="input" [(ngModel)]="text"></textarea>
+    </div>
+    <div class="flexbox"></div>
+    <button class="action-button" mat-mini-fab [style.background]="colorInformation" [matTooltip]="tooltipInformation"
+            matTooltipPosition="above"
+            (click)="onInformationClicked()">
+      <mat-icon svgIcon="comment"></mat-icon>
+    </button>
+    <button class="action-button" mat-mini-fab [style.background]="colorDecision" [matTooltip]="tooltipDecision"
+            matTooltipPosition="above"
+            (click)="onDecisionClicked()">
+      <mat-icon svgIcon="gavel"></mat-icon>
+    </button>
+    <button
+      class="action-button"
+      mat-mini-fab
+      matTooltip="Action"
+      matTooltipPosition="above"
+      [style.background]="colorAction"
+      (click)=select.open()>
+      <mat-icon svgIcon="person"></mat-icon>
+    </button>
+    <mat-select #select class="personSelect">
+      <mat-option (click)="onPersonSelected(myselfOption)">{{ myselfOption }}</mat-option>
+      <mat-divider></mat-divider>
+      <mat-option *ngFor="let person of personOptions" [value]="person" (click)="onPersonSelected(person)">
+        {{ person }}
+      </mat-option>
+    </mat-select>
+    <button class="action-button" mat-mini-fab [style.background]="colorTopic" [matTooltip]="tooltipTopic"
+            matTooltipPosition="above"
+            (click)="onTopicClicked()">
+      <mat-icon [style.fill]="contrastTopic" svgIcon="forum"></mat-icon>
+    </button>
+  </div>
+</div>

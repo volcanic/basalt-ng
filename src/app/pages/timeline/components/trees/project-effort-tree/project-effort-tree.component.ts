@@ -59,6 +59,13 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
   dataSource: MatTreeFlatDataSource<EffortNode, EffortFlatNode>;
 
   /**
+   * Constructor
+   * @param colorService color service
+   */
+  constructor(private colorService: ColorService) {
+  }
+
+  /**
    * Transforms an effort node into a effort flat node
    * @param {EffortNode} node effort node
    * @param {number} level level of the node
@@ -154,7 +161,7 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
         const projectEffortNode = new EffortNode();
         projectEffortNode.topic = pe.project.name;
         projectEffortNode.effort = pe.effort;
-        projectEffortNode.color = ColorService.getProjectColor(pe.project);
+        projectEffortNode.color = this.colorService.getProjectColor(pe.project);
         projectEffortNode.children = taskNodes;
 
         node.children.push(projectEffortNode);

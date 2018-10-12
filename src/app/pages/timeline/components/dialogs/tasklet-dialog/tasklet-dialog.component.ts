@@ -10,6 +10,8 @@ import {Task} from 'app/core/entity/model/task.model';
 import {Description} from 'app/core/entity/model/description.model';
 import {Action} from 'app/core/entity/model/action.enum';
 import {SuggestionService} from 'app/core/entity/services/suggestion.service';
+import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-minute-item.model';
+import {PersonService} from 'app/core/entity/services/person.service';
 
 /**
  * Displays tasklet dialog
@@ -47,17 +49,21 @@ export class TaskletDialogComponent implements OnInit {
   tagOptions: string[];
   /** Person options */
   personOptions: string[];
+  /** Person option representing the user */
+  myselfOption: string;
 
   /** Enum of dialog modes */
   taskletType = TaskletType;
 
   /**
    * Constructor
+   * @param personService person service
    * @param suggestionService suggestion service
    * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(private suggestionService: SuggestionService,
+  constructor(private personService: PersonService,
+              private suggestionService: SuggestionService,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -110,6 +116,7 @@ export class TaskletDialogComponent implements OnInit {
     }).map(p => {
       return p.name;
     });
+    this.myselfOption = this.personService.myself.name;
   }
 
   //
@@ -130,6 +137,14 @@ export class TaskletDialogComponent implements OnInit {
    */
   onDescriptionChanged(description: Description) {
     this.tasklet.description = description;
+  }
+
+  /**
+   * Handles meeting minute item updates
+   * @param meetingMinuteItems meeting minute items
+   */
+  onMeetingMinuteItemsUpdated(meetingMinuteItems: MeetingMinuteItem[]) {
+    this.tasklet.meetingMinuteItems = meetingMinuteItems;
   }
 
   /**
@@ -184,7 +199,7 @@ export class TaskletDialogComponent implements OnInit {
     this.persons = this.aggregatePersons(this.tasklet);
 
     // Remove empty placeholders
-    TaskletDialogComponent.removePlaceholders(this.tasklet);
+    this.removePlaceholders(this.tasklet);
 
     this.dialogRef.close({
       action: Action.ADD,
@@ -203,7 +218,7 @@ export class TaskletDialogComponent implements OnInit {
     this.persons = this.aggregatePersons(this.tasklet);
 
     // Remove empty placeholders
-    TaskletDialogComponent.removePlaceholders(this.tasklet);
+    this.removePlaceholders(this.tasklet);
 
     this.dialogRef.close({
       action: Action.UPDATE,
@@ -222,6 +237,25 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   /**
+   * Sends meeting minutes via mail
+   */
+  sendMeetingMinutes() {
+    this.tags = this.aggregateTags(this.tasklet);
+    this.persons = this.aggregatePersons(this.tasklet);
+
+    // Remove empty placeholders
+    this.removePlaceholders(this.tasklet);
+
+    this.dialogRef.close({
+      action: Action.SEND_MAIL_MEETING_MINUTES,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
+  }
+
+  /**
    * Handles click on continue button
    */
   continueTasklet() {
@@ -237,14 +271,14 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeAssignedToTask(tasklet: Tasklet): boolean {
-    return tasklet.type == TaskletType.ACTION
-      || tasklet.type == TaskletType.MEETING
-      || tasklet.type == TaskletType.CALL
-      || tasklet.type == TaskletType.MAIL
-      || tasklet.type == TaskletType.CHAT
-      || tasklet.type == TaskletType.DEVELOPMENT
-      || tasklet.type == TaskletType.DEBUGGING
-      || tasklet.type == TaskletType.IDEA;
+    return tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.CALL
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.CHAT
+      || tasklet.type === TaskletType.DEVELOPMENT
+      || tasklet.type === TaskletType.DEBUGGING
+      || tasklet.type === TaskletType.IDEA;
   }
 
   /**
@@ -252,13 +286,19 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public containsDescription(tasklet: Tasklet): boolean {
-    return tasklet.type == TaskletType.ACTION
-      || tasklet.type == TaskletType.MEETING
-      || tasklet.type == TaskletType.CALL
-      || tasklet.type == TaskletType.MAIL
-      || tasklet.type == TaskletType.CHAT
-      || tasklet.type == TaskletType.DEVELOPMENT
-      || tasklet.type == TaskletType.DEBUGGING;
+    return tasklet.type === TaskletType.ACTION
+      || (tasklet.type === TaskletType.MEETING
+        && tasklet.description != null
+        && tasklet.description.value != null
+        && tasklet.description.value !== '')
+      || (tasklet.type === TaskletType.CALL
+        && tasklet.description != null
+        && tasklet.description.value != null
+        && tasklet.description.value !== '')
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.CHAT
+      || tasklet.type === TaskletType.DEVELOPMENT
+      || tasklet.type === TaskletType.DEBUGGING;
   }
 
   /**
@@ -266,10 +306,10 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public containsPersons(tasklet: Tasklet): boolean {
-    return tasklet.type == TaskletType.MEETING
-      || tasklet.type == TaskletType.CALL
-      || tasklet.type == TaskletType.MAIL
-      || tasklet.type == TaskletType.CHAT;
+    return tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.CALL
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.CHAT;
   }
 
   /**
@@ -277,8 +317,8 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeCreated(tasklet: Tasklet): boolean {
-    return tasklet.type != TaskletType.LUNCH_BREAK
-    && tasklet.type != TaskletType.FINISHING_TIME;
+    return tasklet.type !== TaskletType.LUNCH_BREAK
+      && tasklet.type !== TaskletType.FINISHING_TIME;
   }
 
   /**
@@ -286,8 +326,8 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeUpdated(tasklet: Tasklet): boolean {
-    return tasklet.type != TaskletType.LUNCH_BREAK
-      && tasklet.type != TaskletType.FINISHING_TIME;
+    return tasklet.type !== TaskletType.LUNCH_BREAK
+      && tasklet.type !== TaskletType.FINISHING_TIME;
   }
 
   /**
@@ -304,8 +344,8 @@ export class TaskletDialogComponent implements OnInit {
    * Removes empty placeholder in a daily scrum tasklet
    * @param tasklet tasklet
    */
-  private static removePlaceholders(tasklet: Tasklet) {
-    if (tasklet.type == TaskletType.DAILY_SCRUM) {
+  private removePlaceholders(tasklet: Tasklet) {
+    if (tasklet.type === TaskletType.DAILY_SCRUM) {
       tasklet.participants = tasklet.participants.filter(p => {
         return p.person != null && p.person.name.length > 0;
       });

@@ -1,0 +1,11 @@
+<div class="flexcontainer">
+  <div class="flexbox" *ngIf="alignment != 'left'"></div>
+  <div class="chat-bubble" [style.background-color]="color" [style.color]="textColor">
+    <input *ngIf="!isMultiLine()" matInput name="input" [readonly]="readonly" [ngModel]="text"
+           (ngModelChange)="onTextChanged($event)" (keydown)="onKeyDown($event)"/>
+    <textarea *ngIf="isMultiLine()" matInput name="input" [readonly]="readonly" [ngModel]="text"
+              (ngModelChange)="onTextChanged($event)"></textarea>
+    <mat-icon class="delete-button hidden" svgIcon="close_18" (click)="onDeleteChatBubble()"></mat-icon>
+  </div>
+  <div class="flexbox" *ngIf="alignment != 'right'"></div>
+</div>

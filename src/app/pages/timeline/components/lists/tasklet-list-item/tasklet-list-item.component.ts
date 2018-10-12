@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {MatMenuTrigger} from '@angular/material';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {DateService} from 'app/core/entity/services/date.service';
@@ -87,6 +77,13 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   isWithinNextDays = DateService.isWithinNextDays;
   /** Reference to static service methods */
   isInCurrentWeek = DateService.isInCurrentWeek;
+
+  /**
+   * Constructor
+   * @param colorService color service
+   */
+  constructor(private colorService: ColorService) {
+  }
 
   //
   // Lifecycle hooks
@@ -200,7 +197,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   private initializeProject() {
     this.project = this.getProjectByTasklet(this.tasklet);
-    this.projectColor = ColorService.getProjectColor(this.project);
+    this.projectColor = this.colorService.getProjectColor(this.project);
   }
 
   /**
@@ -243,14 +240,14 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Handles click on continue button
    */
   onContinueClicked() {
-    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, tasklet: this.tasklet})
+    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, tasklet: this.tasklet});
   }
 
   /**
    * Handles click on template button
    */
   onTemplateClicked() {
-    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_TEMPLATE, tasklet: this.tasklet})
+    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_TEMPLATE, tasklet: this.tasklet});
   }
 
   /**
@@ -296,17 +293,17 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Determines whether the displayed tasklet is continuable
    */
   public isContinuable() {
-    return this.tasklet.type == TaskletType.ACTION
-      || this.tasklet.type == TaskletType.MEETING
-      || this.tasklet.type == TaskletType.DEVELOPMENT
-      || this.tasklet.type == TaskletType.DEBUGGING
-      || this.tasklet.type == TaskletType.IDEA;
+    return this.tasklet.type === TaskletType.ACTION
+      || this.tasklet.type === TaskletType.MEETING
+      || this.tasklet.type === TaskletType.DEVELOPMENT
+      || this.tasklet.type === TaskletType.DEBUGGING
+      || this.tasklet.type === TaskletType.IDEA;
   }
 
   /**
    * Determines whether the displayed tasklet is templatable
    */
   public isTemplatable() {
-    return this.tasklet.type == TaskletType.DAILY_SCRUM;
+    return this.tasklet.type === TaskletType.DAILY_SCRUM;
   }
 }

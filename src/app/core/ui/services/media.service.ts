@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BreakpointObserver, Breakpoints, BreakpointState} from '@angular/cdk/layout';
 import {Media} from '../model/media.enum';
-import {Subject} from 'rxjs/index';
+import {Subject} from 'rxjs/Subject';
 
 /**
  * Handles screen size and breakpoints
@@ -21,7 +21,6 @@ export class MediaService {
    * @param {BreakpointObserver} breakpointObserver breakpoint observer
    */
   constructor(public breakpointObserver: BreakpointObserver) {
-
     this.initializeSize();
     this.initializeBreakpoints();
   }

@@ -13,6 +13,13 @@
       <app-description-fragment *ngIf="containsDescription(tasklet)"
                                 [description]="tasklet.description"
                                 (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
+      <app-meeting-minutes-fragment
+        *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
+        [meetingMinuteItems]="tasklet.meetingMinuteItems"
+        [personOptions]="personOptions"
+        [myselfOption]="myselfOption"
+        (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
+
       <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM" [tasklet]="tasklet"
                                 [personOptions]="personOptions">
       </app-daily-scrum-fragment>
@@ -33,6 +40,9 @@
       Delete tasklet
     </button>
     <div class="flexbox"></div>
+    <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL" (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
+      Send Meeting Minutes
+    </button>
     <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
         && canBeCreated()">
       Add tasklet
