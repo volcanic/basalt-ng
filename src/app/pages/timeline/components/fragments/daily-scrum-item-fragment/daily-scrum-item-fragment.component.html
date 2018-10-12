@@ -1,0 +1,79 @@
+<div class="flexcontainer daily-scrum-item">
+  <div class="flexcontainer full-width" *ngIf="alignment == 'left'">
+    <!-- Person -->
+
+    <button
+      *ngIf="dailyScrumItem.person != null && dailyScrumItem.person.name == myselfOption"
+      class="indicator"
+      mat-mini-fab matTooltip="Myself" matTooltipPosition="above"
+      [style.background]="personColor"
+      [style.fill]="personTextColor">
+      <mat-icon svgIcon="person"></mat-icon>
+    </button>
+    <app-person-indicator-button
+      *ngIf="dailyScrumItem.person != null && dailyScrumItem.person.name != myselfOption"
+      class="indicator"
+      [name]="dailyScrumItem.person.name"
+      [color]="personColor"
+      [textColor]="personTextColor"></app-person-indicator-button>
+
+    <!-- Type -->
+
+    <button
+      class="indicator"
+      mat-mini-fab [matTooltip]="typeTooltip" matTooltipPosition="above"
+      [style.background]="actionColor"
+      [style.fill]="actionTextColor">
+      <mat-icon [svgIcon]="typeIcon"></mat-icon>
+    </button>
+
+    <!-- Statement -->
+
+    <app-chat-bubble class="chat-bubble"
+                     [text]="dailyScrumItem.statement"
+                     [color]="colorStatement"
+                     [textColor]="contrastStatement"
+                     [alignment]="alignment"
+                     (chatBubbleChangeEmitter)="ondailyScrumItemStatementChanged($event)"
+                     (chatBubbleDeletionEmitter)="onDailyScrumItemDeleted(dailyScrumItem)"></app-chat-bubble>
+    <div class="flexbox"></div>
+  </div>
+  <div class="flexcontainer" *ngIf="alignment == 'right'">
+    <div class="flexbox"></div>
+
+    <!-- Statement -->
+
+    <app-chat-bubble class="chat-bubble"
+                     [text]="dailyScrumItem.statement"
+                     [color]="colorStatement"
+                     [textColor]="contrastStatement"
+                     [alignment]="alignment"
+                     (chatBubbleChangeEmitter)="ondailyScrumItemStatementChanged($event)"
+                     (chatBubbleDeletionEmitter)="onDailyScrumItemDeleted(dailyScrumItem)"></app-chat-bubble>
+
+    <!-- Type -->
+
+    <button
+      class="indicator"
+      mat-mini-fab [matTooltip]="typeTooltip" matTooltipPosition="above"
+      [style.background]="actionColor"
+      [style.fill]="actionTextColor">
+      <mat-icon [svgIcon]="typeIcon"></mat-icon>
+    </button>
+
+    <!-- Person -->
+
+    <button
+      *ngIf="dailyScrumItem.person != null && dailyScrumItem.person.name == myselfOption"
+      mat-mini-fab matTooltip="Myself" matTooltipPosition="above"
+      [style.background]="personColor"
+      [style.fill]="personTextColor">
+      <mat-icon svgIcon="person"></mat-icon>
+    </button>
+    <app-person-indicator-button
+      *ngIf="dailyScrumItem.person != null && dailyScrumItem.person.name != myselfOption"
+      [name]="dailyScrumItem.person.name"
+      [color]="personColor"
+      [textColor]="personTextColor"></app-person-indicator-button>
+  </div>
+</div>

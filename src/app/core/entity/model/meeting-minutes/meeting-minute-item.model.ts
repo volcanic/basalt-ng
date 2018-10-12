@@ -2,7 +2,7 @@ import {Person} from '../person.model';
 import {MeetingMinuteItemType} from './meeting-minute-item-type.enum';
 
 /**
- * Represents a meeting minute action item
+ * Represents a meeting minute item
  */
 export class MeetingMinuteItem {
 

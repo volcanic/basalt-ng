@@ -1,70 +1,11 @@
 @import "../../../../../../theme";
-@import '../../../../../../flex';
 
-//
-// Custom
-//
-
-.participant {
-  margin-bottom: 15px;
+.person-box {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .person {
-  width: 20%
-}
-
-.activities {
-  width: 75%;
-}
-
-.activity {
-  margin-bottom: 5px;
-}
-
-.label {
   color: mat-color($mat-grey, 600);
-  font-size: 12px;
-}
-
-.person {
-  background-color: mat-color($mat-grey, 300);
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  margin: 6px 6px 0 0;
-  color: mat-color($mat-grey, 700);
-  direction: ltr;
-  font-family: 'Roboto', arial, sans-serif;
-  font-size: 15px;
-  float: left;
-  align-items: center;
-  height: 18px;
-  padding: 3px 5px;
-  text-align: left;
-}
-
-.person-label {
-  padding: 1px;
-}
-
-.type {
-  font-weight: 800;
-  margin: 0 10px;
-  width: 20%;
-}
-
-.tasklet-type {
-  height: 18px;
-  width: 18px;
-}
-
-.done {
-  fill: mat-color($light-accent, 400);;
-}
-
-.topic {
-  width: 75%;
-}
-
-.tasklet-type {
-  vertical-align: sub;
+  text-align: center;
 }

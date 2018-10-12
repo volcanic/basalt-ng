@@ -12,6 +12,7 @@ import {Action} from 'app/core/entity/model/action.enum';
 import {SuggestionService} from 'app/core/entity/services/suggestion.service';
 import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {PersonService} from 'app/core/entity/services/person.service';
+import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 
 /**
  * Displays tasklet dialog
@@ -148,6 +149,14 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   /**
+   * Handles daily scrum item updates
+   * @param dailyScrumItems daily scrum items
+   */
+  onDailyScrumItemsUpdated(dailyScrumItems: DailyScrumItem[]) {
+    this.tasklet.dailyScrumItems = dailyScrumItems;
+  }
+
+  /**
    * Handles tag changes
    * @para tags new tags
    */
@@ -198,9 +207,6 @@ export class TaskletDialogComponent implements OnInit {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
-    // Remove empty placeholders
-    this.removePlaceholders(this.tasklet);
-
     this.dialogRef.close({
       action: Action.ADD,
       tasklet: this.tasklet,
@@ -216,9 +222,6 @@ export class TaskletDialogComponent implements OnInit {
   updateTasklet() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
-
-    // Remove empty placeholders
-    this.removePlaceholders(this.tasklet);
 
     this.dialogRef.close({
       action: Action.UPDATE,
@@ -243,11 +246,24 @@ export class TaskletDialogComponent implements OnInit {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
-    // Remove empty placeholders
-    this.removePlaceholders(this.tasklet);
-
     this.dialogRef.close({
       action: Action.SEND_MAIL_MEETING_MINUTES,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
+  }
+
+  /**
+   * Sends daily scrum summary via mail
+   */
+  sendDailyScrumSummary () {
+    this.tags = this.aggregateTags(this.tasklet);
+    this.persons = this.aggregatePersons(this.tasklet);
+
+    this.dialogRef.close({
+      action: Action.SEND_MAIL_DAILY_SCRUM_SUMMARY,
       tasklet: this.tasklet,
       task: this.task,
       tags: this.tags,
@@ -338,25 +354,6 @@ export class TaskletDialogComponent implements OnInit {
     return this.previousDescription != null;
   }
 
-  // Daily Scrum
-
-  /**
-   * Removes empty placeholder in a daily scrum tasklet
-   * @param tasklet tasklet
-   */
-  private removePlaceholders(tasklet: Tasklet) {
-    if (tasklet.type === TaskletType.DAILY_SCRUM) {
-      tasklet.participants = tasklet.participants.filter(p => {
-        return p.person != null && p.person.name.length > 0;
-      });
-      tasklet.participants.forEach(p => {
-        p.activities = p.activities.filter(a => {
-          return a.topic.length > 0;
-        });
-      });
-    }
-  }
-
   // Tags
 
   /**
@@ -401,7 +398,7 @@ export class TaskletDialogComponent implements OnInit {
     return Array.from(inferredTags.values());
   }
 
-  // Person
+  // Persons
 
   /**
    * Aggregates persons

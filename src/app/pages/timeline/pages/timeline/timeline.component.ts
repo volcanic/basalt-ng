@@ -52,6 +52,7 @@ import {DateTimePickerDialogComponent} from 'app/ui/date-time-picker-dialog/date
 import {DomSanitizer} from '@angular/platform-browser';
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
+import {EmailService} from '../../../../core/mail/services/mail/email.service';
 
 /**
  * Displays timeline page
@@ -151,6 +152,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Constructor
    * @param {DigestService} digestService
+   * @param {EmailService} emailService
    * @param {EntityService} entityService
    * @param {FilterService} filterService
    * @param {MatIconRegistry} iconRegistry
@@ -172,6 +174,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {NgZone} zone Angular zone
    */
   constructor(private digestService: DigestService,
+              private emailService: EmailService,
               private entityService: EntityService,
               private filterService: FilterService,
               private iconRegistry: MatIconRegistry,
@@ -662,6 +665,69 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+      case Action.SEND_MAIL_MEETING_MINUTES: {
+        // Update tasklet
+        this.onTaskletEvent({
+          action: Action.UPDATE,
+          tasklet: tasklet,
+          task: task,
+          tags: tags,
+          persons: persons
+        });
+
+        const recipients = persons.filter(p => {
+          return p.email != null;
+        }).map(p => {
+          return p.email;
+        });
+        const subject = task.name;
+        let body = `Please find the meeting minutes below\n`;
+
+        this.taskletService.getTopics(tasklet).forEach(topic => {
+          body += `\nTopic ${topic}`;
+          this.taskletService.getMeetingMinuteItemsByTopic(tasklet, topic).forEach(item => {
+            body += `\n -`;
+            if (item.person != null) {
+              body += ` ${item.person.name} `;
+            }
+            body += ` ${item.type.toString()}: `;
+            body += ` ${item.statement}`;
+          });
+        });
+
+        this.emailService.sendMail(recipients, [], `Meeting Minutes - ${subject}`, body);
+        break;
+      }
+      case Action.SEND_MAIL_DAILY_SCRUM_SUMMARY: {
+        // Update tasklet
+        this.onTaskletEvent({
+          action: Action.UPDATE,
+          tasklet: tasklet,
+          task: task,
+          tags: tags,
+          persons: persons
+        });
+
+        const recipients = persons.filter(p => {
+          return p.email != null;
+        }).map(p => {
+          return p.email;
+        });
+        const subject = `Daily scrum ${DateService.getSimpleDateString(tasklet.creationDate)}`;
+        let body = `Please find the summary of Daily Scrum below\n`;
+
+        this.taskletService.getParticipants(tasklet).forEach(participant => {
+          body += `\nParticipant ${participant}`;
+          this.taskletService.getDailyScrumActivitiesByParticipant(tasklet, participant).forEach(item => {
+            body += `\n -`;
+            body += ` ${item.type.toString()}: `;
+            body += ` ${item.statement}`;
+          });
+        });
+
+        this.emailService.sendMail(recipients, [], subject, body);
+        break;
+      }
       case Action.OPEN_DIALOG_ADD: {
         // Assemble data to be passed
         const data = {
@@ -809,10 +875,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         tasklet.id = new UUID().toString();
         tasklet.description = new Description();
         tasklet.creationDate = new Date();
-        tasklet.participants.forEach(p => {
-            p.activities = [];
-          }
-        );
 
         // Assemble data to be passed
         const data = {
@@ -1807,23 +1869,49 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {Tag[]} tags array of tags to be checked
    */
   private evaluateTaskletTags(tasklet: Tasklet, tags: Tag[]) {
-    const aggregatedTagIds = new Map<string, string>();
+    const aggregatedTags = new Map<string, Tag>();
 
     // New tag
-    tags.forEach(t => {
-      let tag = this.tagService.getTagByName(t.name);
-
-      if (tag == null) {
-        tag = new Tag(t.name, true);
-        this.tagService.createTag(tag).then(() => {
-        });
-      }
-
-      this.filterService.updateTagsList([tag], true);
-      aggregatedTagIds.set(tag.id, tag.id);
+    tags.filter(t => {
+      return t != null;
+    }).forEach(t => {
+      const tag = this.lookupTag(t.name);
+      aggregatedTags.set(tag.id, tag);
     });
 
-    tasklet.tagIds = Array.from(aggregatedTagIds.values());
+    // Infer tags from meeting minutes
+    if (tasklet.meetingMinuteItems != null) {
+      tasklet.meetingMinuteItems.filter(m => {
+        return m.topic != null;
+      }).map(m => {
+        return m.topic;
+      }).forEach(t => {
+        const tag = this.lookupTag(t);
+        aggregatedTags.set(tag.id, tag);
+      });
+    }
+
+    const values = Array.from(aggregatedTags.values());
+    const keys = Array.from(aggregatedTags.keys());
+
+    this.filterService.updateTagsList(values, true);
+    tasklet.tagIds = Array.from(keys);
+  }
+
+  /**
+   * Returns existing tag if exists or creates a new one if not
+   * @param t tag name
+   */
+  private lookupTag(t: string): Tag {
+    let tag = this.tagService.getTagByName(t);
+
+    if (tag == null) {
+      tag = new Tag(t, true);
+      this.tagService.createTag(tag).then(() => {
+      });
+    }
+
+    return tag;
   }
 
   /**
@@ -1832,23 +1920,65 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {Person[]} persons array of persons to be checked
    */
   private evaluateTaskletPersons(tasklet: Tasklet, persons: Person[]) {
-    const aggregatedPersonIds = new Map<string, string>();
+    const aggregatedPersons = new Map<string, Person>();
 
     // New person
-    persons.forEach(t => {
-      let person = this.personService.getPersonByName(t.name);
-
-      if (person == null) {
-        person = new Person(t.name, true);
-        this.personService.createPerson(person).then(() => {
-        });
-      }
-
-      this.filterService.updatePersonsList([person], true);
-      aggregatedPersonIds.set(person.id, person.id);
+    persons.filter(p => {
+      return p != null;
+    }).forEach(p => {
+      const person = this.lookupPerson(p.name);
+      aggregatedPersons.set(person.id, person);
     });
 
-    tasklet.personIds = Array.from(aggregatedPersonIds.values());
+    // Infer persons from meeting minutes
+    if (tasklet.meetingMinuteItems != null) {
+      tasklet.meetingMinuteItems.filter(m => {
+        return m.person != null;
+      }).filter(m => {
+        return m.person.name !== this.personService.myself.name;
+      }).map(m => {
+        return m.person;
+      }).forEach(p => {
+        const person = this.lookupPerson(p.name);
+        aggregatedPersons.set(person.id, person);
+      });
+    }
+
+    // Infer persons from daily scrum
+    if (tasklet.dailyScrumItems != null) {
+      tasklet.dailyScrumItems.filter(d => {
+        return d.person != null;
+      }).filter(m => {
+        return m.person.name !== this.personService.myself.name;
+      }).map(d => {
+        return d.person;
+      }).forEach(p => {
+        const person = this.lookupPerson(p.name);
+        aggregatedPersons.set(person.id, person);
+      });
+    }
+
+    const values = Array.from(aggregatedPersons.values());
+    const keys = Array.from(aggregatedPersons.keys());
+
+    this.filterService.updatePersonsList(values, true);
+    tasklet.personIds = Array.from(keys);
+  }
+
+  /**
+   * Returns existing person if exists or creates a new one if not
+   * @param p person name
+   */
+  private lookupPerson(p: string): Person {
+    let person = this.personService.getPersonByName(p);
+
+    if (person == null) {
+      person = new Person(p, true);
+      this.personService.createPerson(person).then(() => {
+      });
+    }
+
+    return person;
   }
 
   /**

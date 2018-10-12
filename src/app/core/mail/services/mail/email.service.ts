@@ -16,10 +16,12 @@ export class EmailService {
    * @param text text
    */
   sendMail(recipients: string[], carbonCopy: string[], subject: string, text: string) {
-    window.location.href = `mailto:`
+    const link = `mailto:`
       + (recipients != null && recipients.length > 0 ? `${recipients.join(',')}` : '')
-      + (carbonCopy != null && carbonCopy.length > 0 ? `?cc=${carbonCopy.join(',')}` : '')
-      + (subject != null && subject.length > 0 ? `&subject=${escape(subject)}` : '')
+      // + (carbonCopy != null && carbonCopy.length > 0 ? `?cc=${carbonCopy.join(',')}` : '')
+      + (subject != null && subject.length > 0 ? `?subject=${escape(subject)}` : '')
       + (text != null && text.length > 0 ? `&body=${escape(text)}` : '');
+
+    window.location.href = link;
   }
 }

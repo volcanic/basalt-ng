@@ -20,7 +20,7 @@ export class TaskletMeetingMinutesFragmentComponent implements OnInit {
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
 
-  /** Topic */
+  /** Topics */
   topics: string[] = [];
 
   //
@@ -35,7 +35,7 @@ export class TaskletMeetingMinutesFragmentComponent implements OnInit {
   }
 
   /**
-   * Initializes topic
+   * Initializes topics
    */
   private initializeTopics() {
     const topicsMap = new Map<string, string>();

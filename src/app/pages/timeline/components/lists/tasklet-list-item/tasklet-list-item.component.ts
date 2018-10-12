@@ -54,7 +54,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   topic = '';
   /** Project */
   project: Project;
-  /** Project color */
+  /** Project personColor */
   projectColor = 'transparent';
   /** Creation time */
   time = '';
@@ -80,7 +80,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
 
   /**
    * Constructor
-   * @param colorService color service
+   * @param colorService personColor service
    */
   constructor(private colorService: ColorService) {
   }

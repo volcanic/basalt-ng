@@ -1,4 +1,4 @@
-<div *ngIf="meetingMinuteItem.type == meetingMinuteItemType.TOPIC" class="meeting-minute-item topic">
+<div *ngIf="meetingMinuteItem.type == meetingMinuteItemType.TOPIC" class="daily-scrum-item topic">
   <mat-divider></mat-divider>
   <div class="flexcontainer">
     <div class="flexbox left-side">
@@ -14,7 +14,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="meetingMinuteItem.type != meetingMinuteItemType.TOPIC" class="flexcontainer meeting-minute-item">
+<div *ngIf="meetingMinuteItem.type != meetingMinuteItemType.TOPIC" class="flexcontainer daily-scrum-item">
   <div class="flexcontainer full-width" *ngIf="alignment == 'left'">
     <button
       *ngIf="meetingMinuteItem.type == meetingMinuteItemType.INFORMATION"

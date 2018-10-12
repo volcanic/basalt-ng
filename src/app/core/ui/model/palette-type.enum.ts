@@ -1,5 +1,5 @@
 /**
- * Enum containing color palettes
+ * Enum containing personColor palettes
  */
 export enum PaletteType {
   RED,

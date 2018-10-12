@@ -45,15 +45,15 @@ export class TaskListComponent implements OnInit, OnChanges {
   /** Tasks with a completion date */
   tasksCompleted = [];
 
-  /** Background color for overdue badge */
+  /** Background personColor for overdue badge */
   tasksOverdueBadgeColor = 'transparent';
-  /** Background color for next badge */
+  /** Background personColor for next badge */
   tasksNextBadgeColor = 'transparent';
-  /** Background color for inbox badge */
+  /** Background personColor for inbox badge */
   tasksInboxBadgeColor = 'transparent';
-  /** Background color for delegated badge */
+  /** Background personColor for delegated badge */
   tasksDelegatedBadgeColor = 'transparent';
-  /** Background color for recurring badge */
+  /** Background personColor for recurring badge */
   tasksRecurringBadgeColor = 'transparent';
   //
   // Lifecycle hooks

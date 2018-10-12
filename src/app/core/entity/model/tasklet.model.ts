@@ -2,8 +2,8 @@ import {TaskletType} from './tasklet-type.enum';
 import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
 import {Description} from './description.model';
-import {DailyScrumParticipant} from './daily-scrum/daily-scrum-participant';
 import {MeetingMinuteItem} from './meeting-minutes/meeting-minute-item.model';
+import {DailyScrumItem} from './daily-scrum/daily-scrum-item.model';
 
 /**
  * Represents a tasklet which is a fraction of a task
@@ -16,14 +16,21 @@ export class Tasklet extends Entity {
   taskId: string;
   /** Description */
   description: Description;
-  /** References to persons */
-  personIds: string[];
-  /** Array of meeting minute items */
-  meetingMinuteItems: MeetingMinuteItem[];
-  /** Array of daily scrum participants */
-  participants: DailyScrumParticipant[];
+
+  // Labels
+
+
   /** References to tags */
   tagIds: string[];
+  /** References to persons */
+  personIds: string[];
+
+  // Type specific aspects
+
+  /** Array of meeting minute items */
+  meetingMinuteItems: MeetingMinuteItem[];
+  /** Array of daily scrum items */
+  dailyScrumItems: DailyScrumItem[];
 
   /**
    * Constructor
@@ -34,9 +41,10 @@ export class Tasklet extends Entity {
     this.type = TaskletType.UNSPECIFIED;
     this.taskId = '';
     this.description = new Description();
-    this.personIds = [];
-    this.meetingMinuteItems = [];
-    this.participants = [];
     this.tagIds = [];
+    this.personIds = [];
+
+    this.meetingMinuteItems = [];
+    this.dailyScrumItems = [];
   }
 }

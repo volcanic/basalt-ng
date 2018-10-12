@@ -1,7 +1,7 @@
 /**
  * Enum containing daily scrum activity types
  */
-export enum DailyScrumActivityType {
+export enum DailyScrumItemType {
 
   UNSPECIFIED = '???',
   DONE = 'Done',

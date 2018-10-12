@@ -1,20 +1,10 @@
-<div class="flexcontainer"
-     *ngFor="let dailyScrumParticipant of tasklet.participants">
-  <span class="person">
-      <label class="person-label">{{ dailyScrumParticipant.person.name.split(' ')[0] }}</label>
-  </span>
-  <div class="flexbox"></div>
-  <div class="activities">
-    <div *ngFor="let dailyScrumActivity of dailyScrumParticipant.activities" class="activity">
-      <span ngSwitch="{{ dailyScrumActivity.type }}"
-            matTooltip="{{ dailyScrumActivity.type }}"
-            matTooltipPosition="above">
-        <mat-icon *ngSwitchCase="dailyScrumActivityType.DONE" svgIcon="check_circle" class="tasklet-type done"></mat-icon>
-        <mat-icon *ngSwitchCase="dailyScrumActivityType.DOING" svgIcon="refresh" class="tasklet-type"></mat-icon>
-        <mat-icon *ngSwitchCase="dailyScrumActivityType.WILL_DO" svgIcon="today" class="tasklet-type"></mat-icon>
-        <mat-icon *ngSwitchCase="dailyScrumActivityType.IMPEDIMENT" svgIcon="warning" class="tasklet-type"></mat-icon>
-      </span>
-      <label class="topic">{{ dailyScrumActivity.topic }}</label>
-    </div>
+<mat-list *ngFor="let person of persons">
+  <div class="topic-box">
+    <span class="person">{{ person }}</span>
+    <app-tasklet-daily-scrum-item-fragment
+      *ngFor="let dailyScrumItem of getDailyScrumItemsByPerson(person)"
+      [dailyScrumItem]="dailyScrumItem">
+    </app-tasklet-daily-scrum-item-fragment>
   </div>
-</div>
+  <mat-divider></mat-divider>
+</mat-list>

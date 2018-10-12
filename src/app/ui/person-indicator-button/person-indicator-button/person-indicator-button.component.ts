@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 
 /**
  * Displays round indicator containing a person's initials
@@ -6,15 +6,16 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 @Component({
   selector: 'app-person-indicator-button',
   templateUrl: './person-indicator-button.component.html',
-  styleUrls: ['./person-indicator-button.component.scss']
+  styleUrls: ['./person-indicator-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PersonIndicatorButtonComponent implements OnInit {
+export class PersonIndicatorButtonComponent implements OnInit, OnChanges {
 
   /** Name of a person */
   @Input() name: string;
-  /** Background color */
+  /** Background personColor */
   @Input() color: string;
-  /** Text color */
+  /** Text personColor */
   @Input() textColor: string;
   /** Event emitter indicating click action */
   @Output() clickEmitter = new EventEmitter<any>();
@@ -32,6 +33,15 @@ export class PersonIndicatorButtonComponent implements OnInit {
   ngOnInit() {
     this.initializeInitials();
   }
+
+  /**
+   * Handles on-change lifecycle phase
+   * @param changes changes
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    this.initializeInitials();
+  }
+
 
   //
   // Initialization

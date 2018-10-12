@@ -3,7 +3,6 @@ import {Tasklet} from '../model/tasklet.model';
 import {Subject} from 'rxjs';
 import {Person} from '../model/person.model';
 import {TaskletType} from '../model/tasklet-type.enum';
-import {TaskletDailyScrum} from '../model/daily-scrum/tasklet-daily-scrum.model';
 import {DateService} from './date.service';
 import {EntityType} from '../model/entity-type.enum';
 import {SuggestionService} from './suggestion.service';
@@ -20,6 +19,7 @@ import {TagService} from './tag.service';
 import {PersonService} from './person.service';
 import {MeetingMinuteItemType} from '../model/meeting-minutes/meeting-minute-item-type.enum';
 import {MeetingMinuteItem} from '../model/meeting-minutes/meeting-minute-item.model';
+import {DailyScrumItem} from '../model/daily-scrum/daily-scrum-item.model';
 
 /**
  * Handles tasklets including
@@ -295,15 +295,11 @@ export class TaskletService {
         return t.type === TaskletType.DAILY_SCRUM;
       }).sort((t1, t2) => {
         return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
-      }) as TaskletDailyScrum[]).forEach(t => {
-        t.participants.filter(p => {
-          return p.person.name === person.name;
-        }).forEach(p => {
-          p.activities.filter(a => {
-            return a.topic.length !== 0;
-          }).forEach(a => {
-            dailyScrumActivities.set(a.topic, a.topic);
-          });
+      })).forEach(t => {
+        t.dailyScrumItems.filter(d => {
+          if (d.person != null && d.person.name === person.name) {
+            dailyScrumActivities.set(d.statement, d.statement);
+          }
         });
       });
     }
@@ -372,6 +368,46 @@ export class TaskletService {
     return tasklet.meetingMinuteItems.filter(m => {
       return (m.topic === topic
         || (m.topic === null && topic === TaskletService.TOPIC_GENERAL));
+    }).sort((m1, m2) => {
+      return new Date(m2.date).getTime() < new Date(m1.date).getTime() ? 1 : -1;
+    }).sort((a, b) => {
+      if (a.type < b.type) {
+        return 1;
+      }
+      if (a.type > b.type) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
+  /**
+   * Determines a list of participants
+   *
+   * @param tasklet tasklet to get participants of
+   */
+  public getParticipants(tasklet: Tasklet) {
+    const participantsMap = new Map<string, string>();
+
+    if (tasklet != null && tasklet.dailyScrumItems != null) {
+      tasklet.dailyScrumItems.forEach(d => {
+        participantsMap.set(d.person.name, d.person.name);
+      });
+
+      return Array.from(participantsMap.values());
+    }
+
+    return [];
+  }
+
+  /**
+   * Returns list of daily scrum activities by participant
+   * @param tasklet tasklet
+   * @param participant participant
+   */
+  public getDailyScrumActivitiesByParticipant(tasklet: Tasklet, participant: string): DailyScrumItem[] {
+    return tasklet.dailyScrumItems.filter(m => {
+      return (m.person.name === participant);
     }).sort((m1, m2) => {
       return new Date(m2.date).getTime() < new Date(m1.date).getTime() ? 1 : -1;
     }).sort((a, b) => {

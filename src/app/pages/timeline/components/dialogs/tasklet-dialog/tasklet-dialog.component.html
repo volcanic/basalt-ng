@@ -20,9 +20,13 @@
         [myselfOption]="myselfOption"
         (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
 
-      <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM" [tasklet]="tasklet"
-                                [personOptions]="personOptions">
+      <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
+                                [dailyScrumItems]="tasklet.dailyScrumItems"
+                                [personOptions]="personOptions"
+                                [myselfOption]="myselfOption"
+                                (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
       </app-daily-scrum-fragment>
+
       <app-person-chips-fragment *ngIf="containsPersons(tasklet)"
                                  [persons]="persons"
                                  [personOptions]="personOptions"
@@ -42,6 +46,9 @@
     <div class="flexbox"></div>
     <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL" (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
       Send Meeting Minutes
+    </button>
+    <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM" (click)="sendDailyScrumSummary()" [disabled]="!formCtrl.form.valid">
+      Send Daily Scrum Summary
     </button>
     <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
         && canBeCreated()">

@@ -12,7 +12,7 @@ import {Hue} from '../model/hue.model';
 })
 export class MaterialColorService {
 
-  /** Dark primary text color */
+  /** Dark primary text personColor */
   static DARK_PRIMARY_TEXT = 'rgba(black, 0.87)';
 
   /** List of palettes */
@@ -353,9 +353,9 @@ export class MaterialColorService {
   }
 
   /**
-   * Returns the color of a given palette and a hue
-   * @param paletteType color palette
-   * @param hueType color hue
+   * Returns the personColor of a given palette and a hue
+   * @param paletteType personColor palette
+   * @param hueType personColor hue
    */
   public color(paletteType: PaletteType, hueType: HueType): string {
     const hue = this.hue(paletteType, hueType);
@@ -369,8 +369,8 @@ export class MaterialColorService {
 
   /**
    * Returns the contrast of a given palette and a hue
-   * @param paletteType color palette
-   * @param hueType color hue
+   * @param paletteType personColor palette
+   * @param hueType personColor hue
    */
   public contrast(paletteType: PaletteType, hueType: HueType): string {
     const hue = this.hue(paletteType, hueType);
@@ -384,7 +384,7 @@ export class MaterialColorService {
 
   /**
    * Returns the hue of a given palette and a hue typep
-   * @param paletteType color palette
+   * @param paletteType personColor palette
    * @param hueType hue type
    */
   public hue(paletteType: PaletteType, hueType: HueType): Hue {

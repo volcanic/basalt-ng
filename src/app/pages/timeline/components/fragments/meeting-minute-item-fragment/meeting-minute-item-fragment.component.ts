@@ -25,9 +25,9 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   @Input() colorInformation = 'transparent';
   /** Color of decision button */
   @Input() colorDecision = 'transparent';
-  /** Contrast color of information button */
+  /** Contrast personColor of information button */
   @Input() contrastInformation = 'transparent';
-  /** Contrast color of decision button */
+  /** Contrast personColor of decision button */
   @Input() contrastDecision = 'transparent';
 
   /** Event emitter indicating changes in meeting minute item type */
@@ -37,23 +37,20 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   /** Event emitter indicating deletion of meeting minute item */
   @Output() meetingMinuteItemDeletedEmitter = new EventEmitter<MeetingMinuteItem>();
 
-  /** Background color */
+  /** Background personColor */
   color: string;
-  /** Text color */
+  /** Text personColor */
   textColor: string;
   /** Alignment */
   alignment: 'left' | 'right' = 'left';
-
-  /** Enum of meeting minute types */
-  meetingMinuteItemTypes = Object.keys(MeetingMinuteItemType).map(key => MeetingMinuteItemType[key]);
 
   /** Enum for meeting minute item types */
   meetingMinuteItemType = MeetingMinuteItemType;
 
   /**
    * Constructor
-   * @param colorService color service
-   * @param materialColorService material color service
+   * @param colorService personColor service
+   * @param materialColorService material personColor service
    */
   constructor(private colorService: ColorService, private materialColorService: MaterialColorService) {
   }
@@ -75,7 +72,7 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   //
 
   /**
-   * Initializes the color picked by a hash value generated from a name
+   * Initializes the personColor picked by a hash value generated from a name
    */
   private initializeColor() {
     if (this.meetingMinuteItem.type === MeetingMinuteItemType.INFORMATION) {

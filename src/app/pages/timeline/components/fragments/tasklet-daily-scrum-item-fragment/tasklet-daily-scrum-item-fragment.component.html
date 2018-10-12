@@ -1,0 +1,9 @@
+<div class="flexcontainer">
+  <mat-icon class="icon" [svgIcon]="icon"></mat-icon>
+  <span class="type" *ngIf="dailyScrumItem.type != null">
+    {{ dailyScrumItem.type }}
+  </span>
+  <ul class="statements">
+    <li *ngFor="let part of dailyScrumItemStatementParts">{{ part }}</li>
+  </ul>
+</div>

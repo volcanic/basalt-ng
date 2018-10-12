@@ -12,9 +12,9 @@ export class ChatBubbleComponent {
 
   /** Text to be displayed */
   @Input() text: string;
-  /** Background color */
+  /** Background personColor */
   @Input() color: string;
-  /** Text color */
+  /** Text personColor */
   @Input() textColor: string;
   /** Alignment */
   @Input() alignment: 'left' | 'right';

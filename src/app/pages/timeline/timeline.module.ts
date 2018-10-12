@@ -19,9 +19,7 @@ import {TaskDialogComponent} from './components/dialogs/task-dialog/task-dialog.
 import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/task-list-dialog.component';
 import {TaskletDialogComponent} from './components/dialogs/tasklet-dialog/tasklet-dialog.component';
 import {UploadDialogComponent} from './components/dialogs/upload-dialog/upload-dialog.component';
-import {DailyScrumActivityFragmentComponent} from './components/fragments/daily-scrum-activity-fragment/daily-scrum-activity-fragment.component';
 import {DailyScrumFragmentComponent} from './components/fragments/daily-scrum-fragment/daily-scrum-fragment.component';
-import {DailyScrumParticipantFragmentComponent} from './components/fragments/daily-scrum-participant-fragment/daily-scrum-participant-fragment.component';
 import {DescriptionFragmentComponent} from './components/fragments/description-fragment/description-fragment.component';
 import {TaskletTypeFragmentComponent} from './components/fragments/tasklet-type-fragment/tasklet-type-fragment.component';
 import {PersonAutocompleteFragmentComponent} from './components/fragments/person-autocomplete-fragment/person-autocomplete-fragment.component';
@@ -65,6 +63,8 @@ import {TaskletMeetingMinutesFragmentComponent} from './components/fragments/tas
 import {TaskletMeetingMinuteItemFragmentComponent} from './components/fragments/tasklet-meeting-minute-item-fragment/tasklet-meeting-minute-item-fragment.component';
 import {PersonIndicatorButtonModule} from '../../ui/person-indicator-button/person-indicator-button.module';
 import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
+import { DailyScrumItemFragmentComponent } from './components/fragments/daily-scrum-item-fragment/daily-scrum-item-fragment.component';
+import {TaskletDailyScrumItemFragmentComponent} from './components/fragments/tasklet-daily-scrum-item-fragment/tasklet-daily-scrum-item-fragment.component';
 
 
 @NgModule({
@@ -140,9 +140,8 @@ import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
     ProjectEffortTreeComponent,
 
     // Fragments
-    DailyScrumActivityFragmentComponent,
     DailyScrumFragmentComponent,
-    DailyScrumParticipantFragmentComponent,
+    DailyScrumItemFragmentComponent,
     DescriptionFragmentComponent,
     FileDropFragmentComponent,
     FutureTaskletFragmentComponent,
@@ -156,9 +155,11 @@ import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
     TagChipsFragmentComponent,
     TaskAutocompleteFragmentComponent,
     TaskletDailyScrumFragmentComponent,
+    TaskletDailyScrumItemFragmentComponent,
     TaskletMeetingMinuteItemFragmentComponent,
     TaskletMeetingMinutesFragmentComponent,
     TaskletTypeFragmentComponent,
+    DailyScrumItemFragmentComponent,
   ], entryComponents: [
     PersonDialogComponent,
     PersonFilterDialogComponent,

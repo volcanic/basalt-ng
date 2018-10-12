@@ -53,16 +53,16 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   colorAction = 'transparent';
   /** Color of topic button */
   colorTopic = 'transparent';
-  /** Contrast color of information button */
+  /** Contrast personColor of information button */
   contrastInformation = 'transparent';
-  /** Contrast color of decision button */
+  /** Contrast personColor of decision button */
   contrastDecision = 'transparent';
-  /** Contrast color of topic button */
+  /** Contrast personColor of topic button */
   contrastTopic = 'transparent';
 
   /**
    * Constructor
-   * @param materialColorService material color service
+   * @param materialColorService material personColor service
    */
   constructor(private materialColorService: MaterialColorService) {
   }

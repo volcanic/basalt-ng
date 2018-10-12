@@ -49,15 +49,15 @@ export class ColorService {
 
   /**
    * Constructor
-   * @param materialColorService material color service
+   * @param materialColorService material personColor service
    */
   constructor(private materialColorService: MaterialColorService) {
   }
 
   /**
-   * Returns a color picked by a hash value generated from a project's name
-   * @param {Project} project project to get color for
-   * @returns {string} color string derived from project name
+   * Returns a personColor picked by a hash value generated from a project's name
+   * @param {Project} project project to get personColor for
+   * @returns {string} personColor string derived from project name
    */
   getProjectColor(project: Project) {
     if (project == null || project.name == null || project.name.trim().length <= 0) {
@@ -74,9 +74,9 @@ export class ColorService {
   }
 
   /**
-   * Returns a color picked by a hash value generated from a person's name
-   * @param {Person} person person to get color for
-   * @returns {string} color string derived from project name
+   * Returns a personColor picked by a hash value generated from a person's name
+   * @param {Person} person person to get personColor for
+   * @returns {string} personColor string derived from project name
    */
   getPersonColor(person: Person) {
     if (person == null || person.name == null || person.name.trim().length <= 0) {
@@ -94,8 +94,8 @@ export class ColorService {
 
   /**
    * Returns a contrast picked by a hash value generated from a person's name
-   * @param {Person} person person to get color for
-   * @returns {string} contrast color string derived from project name
+   * @param {Person} person person to get personColor for
+   * @returns {string} contrast personColor string derived from project name
    */
   getPersonContrast(person: Person) {
     if (person == null || person.name == null || person.name.trim().length <= 0) {
