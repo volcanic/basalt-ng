@@ -53,6 +53,10 @@ export class MeetingMinutesFragmentComponent implements OnInit {
   colorAction = 'transparent';
   /** Color of topic button */
   colorTopic = 'transparent';
+  /** Contrast color of information button */
+  contrastInformation = 'transparent';
+  /** Contrast color of decision button */
+  contrastDecision = 'transparent';
   /** Contrast color of topic button */
   contrastTopic = 'transparent';
 
@@ -88,6 +92,8 @@ export class MeetingMinutesFragmentComponent implements OnInit {
     this.colorDecision = this.materialColorService.color(PaletteType.GREY, HueType._500);
     this.colorAction = this.materialColorService.color(PaletteType.GREY, HueType._600);
     this.colorTopic = this.materialColorService.color(PaletteType.GREY, HueType._200);
+    this.contrastInformation = this.materialColorService.contrast(PaletteType.GREY, HueType._400);
+    this.contrastDecision = this.materialColorService.contrast(PaletteType.GREY, HueType._500);
     this.contrastTopic = this.materialColorService.contrast(PaletteType.GREY, HueType._200);
   }
 

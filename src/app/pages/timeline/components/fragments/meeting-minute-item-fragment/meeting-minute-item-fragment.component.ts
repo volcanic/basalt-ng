@@ -20,10 +20,15 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   @Input() meetingMinuteItem: MeetingMinuteItem;
   /** Additional person option representing the user */
   @Input() myselfOption: string;
+
   /** Color of information button */
   @Input() colorInformation = 'transparent';
   /** Color of decision button */
   @Input() colorDecision = 'transparent';
+  /** Contrast color of information button */
+  @Input() contrastInformation = 'transparent';
+  /** Contrast color of decision button */
+  @Input() contrastDecision = 'transparent';
 
   /** Event emitter indicating changes in meeting minute item type */
   @Output() meetingMinuteItemTypeSelectedEmitter = new EventEmitter<string>();
@@ -75,8 +80,10 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   private initializeColor() {
     if (this.meetingMinuteItem.type === MeetingMinuteItemType.INFORMATION) {
       this.color = this.colorInformation;
+      this.textColor = this.contrastInformation;
     } else if (this.meetingMinuteItem.type === MeetingMinuteItemType.DECISION) {
       this.color = this.colorDecision;
+      this.textColor = this.contrastDecision;
     } else if (this.meetingMinuteItem.type === MeetingMinuteItemType.ACTION && this.meetingMinuteItem.person != null) {
       this.color = this.colorService.getPersonColor(this.meetingMinuteItem.person);
       this.textColor = this.colorService.getPersonContrast(this.meetingMinuteItem.person);
