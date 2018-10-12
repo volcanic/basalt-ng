@@ -25,5 +25,6 @@
 { "annotation": "refs/tags/v0.24.0", "message": "Top-level tags and persons"},
 { "annotation": "refs/tags/v0.25.0", "message": "Recurring tasks"},
 { "annotation": "refs/tags/v0.26.0", "message": "Future tasklets"},
-{ "annotation": "refs/tags/v0.27.0", "message": "Task delegation"}
+{ "annotation": "refs/tags/v0.27.0", "message": "Task delegation"},
+{ "annotation": "refs/tags/v0.28.0", "message": "Meeting minutes"}
 ]}
