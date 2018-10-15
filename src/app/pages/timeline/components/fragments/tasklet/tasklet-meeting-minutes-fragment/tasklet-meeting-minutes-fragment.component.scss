@@ -1,0 +1,11 @@
+@import "../../../../../../../theme";
+
+.topic-box {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.topic {
+  color: mat-color($mat-grey, 600);
+  text-align: center;
+}

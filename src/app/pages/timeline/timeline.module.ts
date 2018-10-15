@@ -19,15 +19,15 @@ import {TaskDialogComponent} from './components/dialogs/task-dialog/task-dialog.
 import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/task-list-dialog.component';
 import {TaskletDialogComponent} from './components/dialogs/tasklet-dialog/tasklet-dialog.component';
 import {UploadDialogComponent} from './components/dialogs/upload-dialog/upload-dialog.component';
-import {DailyScrumFragmentComponent} from './components/fragments/daily-scrum-fragment/daily-scrum-fragment.component';
-import {DescriptionFragmentComponent} from './components/fragments/description-fragment/description-fragment.component';
-import {TaskletTypeFragmentComponent} from './components/fragments/tasklet-type-fragment/tasklet-type-fragment.component';
-import {PersonAutocompleteFragmentComponent} from './components/fragments/person-autocomplete-fragment/person-autocomplete-fragment.component';
-import {PersonChipsFragmentComponent} from './components/fragments/person-chips-fragment/person-chips-fragment.component';
-import {PreviousDescriptionFragmentComponent} from './components/fragments/previous-description-fragment/previous-description-fragment.component';
-import {ProjectAutocompleteFragmentComponent} from './components/fragments/project-autocomplete-fragment/project-autocomplete-fragment.component';
-import {TagChipsFragmentComponent} from './components/fragments/tag-chips-fragment/tag-chips-fragment.component';
-import {TaskAutocompleteFragmentComponent} from './components/fragments/task-autocomplete-fragment/task-autocomplete-fragment.component';
+import {DailyScrumFragmentComponent} from './components/fragments/dialog/daily-scrum-fragment/daily-scrum-fragment.component';
+import {DescriptionFragmentComponent} from './components/fragments/dialog/description-fragment/description-fragment.component';
+import {TaskletTypeFragmentComponent} from './components/fragments/dialog/tasklet-type-fragment/tasklet-type-fragment.component';
+import {PersonAutocompleteFragmentComponent} from './components/fragments/dialog/person-autocomplete-fragment/person-autocomplete-fragment.component';
+import {PersonChipsFragmentComponent} from './components/fragments/dialog/person-chips-fragment/person-chips-fragment.component';
+import {PreviousDescriptionFragmentComponent} from './components/fragments/dialog/previous-description-fragment/previous-description-fragment.component';
+import {ProjectAutocompleteFragmentComponent} from './components/fragments/dialog/project-autocomplete-fragment/project-autocomplete-fragment.component';
+import {TagChipsFragmentComponent} from './components/fragments/dialog/tag-chips-fragment/tag-chips-fragment.component';
+import {TaskAutocompleteFragmentComponent} from './components/fragments/dialog/task-autocomplete-fragment/task-autocomplete-fragment.component';
 import {FilterPersonListItemComponent} from './components/lists/filter-person-list-item/filter-person-list-item.component';
 import {FilterPersonListComponent} from './components/lists/filter-person-list/filter-person-list.component';
 import {FilterProjectListItemComponent} from './components/lists/filter-project-list-item/filter-project-list-item.component';
@@ -51,20 +51,20 @@ import {DateTimePickerDialogModule} from '../../ui/date-time-picker-dialog/date-
 import {DateTimePickerFragmentModule} from '../../ui/date-time-picker-fragment/date-time-picker-fragment.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TimelineRoutingModule} from './timeline-routing.module';
-import {RecurrenceIntervalFragmentComponent} from './components/fragments/recurrence-interval-fragment/recurrence-interval-fragment.component';
+import {RecurrenceIntervalFragmentComponent} from './components/fragments/dialog/recurrence-interval-fragment/recurrence-interval-fragment.component';
 import {FileDropFragmentComponent} from './components/fragments/file-drop-fragment/file-drop-fragment.component';
 import {FileUploadModule} from 'ng2-file-upload';
-import {FutureTaskletFragmentComponent} from './components/fragments/future-tasklet-fragment/future-tasklet-fragment.component';
+import {FutureTaskletFragmentComponent} from './components/fragments/tasklet/future-tasklet-fragment/future-tasklet-fragment.component';
 import {EcoFabSpeedDialModule} from '@ecodev/fab-speed-dial';
-import {TaskletDailyScrumFragmentComponent} from './components/fragments/tasklet-daily-scrum-fragment/tasklet-daily-scrum-fragment.component';
-import {MeetingMinutesFragmentComponent} from './components/fragments/meeting-minutes-fragment/meeting-minutes-fragment.component';
-import {MeetingMinuteItemFragmentComponent} from './components/fragments/meeting-minute-item-fragment/meeting-minute-item-fragment.component';
-import {TaskletMeetingMinutesFragmentComponent} from './components/fragments/tasklet-meeting-minutes-fragment/tasklet-meeting-minutes-fragment.component';
-import {TaskletMeetingMinuteItemFragmentComponent} from './components/fragments/tasklet-meeting-minute-item-fragment/tasklet-meeting-minute-item-fragment.component';
+import {TaskletDailyScrumFragmentComponent} from './components/fragments/tasklet/tasklet-daily-scrum-fragment/tasklet-daily-scrum-fragment.component';
+import {MeetingMinutesFragmentComponent} from './components/fragments/dialog/meeting-minutes-fragment/meeting-minutes-fragment.component';
+import {MeetingMinuteItemFragmentComponent} from './components/fragments/dialog/meeting-minute-item-fragment/meeting-minute-item-fragment.component';
+import {TaskletMeetingMinutesFragmentComponent} from './components/fragments/tasklet/tasklet-meeting-minutes-fragment/tasklet-meeting-minutes-fragment.component';
+import {TaskletMeetingMinuteItemFragmentComponent} from './components/fragments/tasklet/tasklet-meeting-minute-item-fragment/tasklet-meeting-minute-item-fragment.component';
 import {PersonIndicatorButtonModule} from '../../ui/person-indicator-button/person-indicator-button.module';
 import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
-import { DailyScrumItemFragmentComponent } from './components/fragments/daily-scrum-item-fragment/daily-scrum-item-fragment.component';
-import {TaskletDailyScrumItemFragmentComponent} from './components/fragments/tasklet-daily-scrum-item-fragment/tasklet-daily-scrum-item-fragment.component';
+import { DailyScrumItemFragmentComponent } from './components/fragments/dialog/daily-scrum-item-fragment/daily-scrum-item-fragment.component';
+import {TaskletDailyScrumItemFragmentComponent} from './components/fragments/tasklet/tasklet-daily-scrum-item-fragment/tasklet-daily-scrum-item-fragment.component';
 
 
 @NgModule({

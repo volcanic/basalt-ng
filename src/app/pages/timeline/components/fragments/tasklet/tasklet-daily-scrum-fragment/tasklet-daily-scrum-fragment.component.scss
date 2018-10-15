@@ -1,0 +1,11 @@
+@import "../../../../../../../theme";
+
+.person-box {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.person {
+  color: mat-color($mat-grey, 600);
+  text-align: center;
+}
