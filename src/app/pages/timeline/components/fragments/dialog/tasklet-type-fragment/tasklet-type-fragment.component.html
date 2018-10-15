@@ -1,8 +1,17 @@
-<mat-form-field color="primary">
-  <mat-select name="type" placeholder="Tasklet Type" [(ngModel)]="tasklet.type">
-    <mat-option *ngFor="let item of taskletTypes" [value]="item">
-      <mat-icon [svgIcon]=selectIcon(item)></mat-icon>
-      {{ item }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+<div class="flexcontainer">
+  <div class="flexbox" *ngFor="let action of taskletTypeActions">
+    <app-suggested-action-button
+      [backgroundColor]="action.backgroundColor"
+      [iconColor]="action.iconColor"
+      [icon]="action.icon"
+      [label]="action.label"
+      (buttonClickedEmitter)="select.open()">
+    </app-suggested-action-button>
+    <mat-select #select class="typeSelect">
+      <mat-option *ngFor="let type of action.taskletTypes" [value]="type" (click)="onTaskletTypeSelected(type)">
+        <mat-icon [svgIcon]="getTypeIcon(type)"></mat-icon>
+        {{ type }}
+      </mat-option>
+    </mat-select>
+  </div>
+</div>

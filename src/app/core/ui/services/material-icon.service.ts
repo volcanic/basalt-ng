@@ -111,8 +111,9 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.IMAGE, 'brightness_3', 'ic_brightness_3_24px.svg'));
     icons.push(new Icon(IconTopic.IMAGE, 'nature', 'ic_nature_24px.svg'));
     icons.push(new Icon(IconTopic.MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
-    icons.push(new Icon(IconTopic.MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
     icons.push(new Icon(IconTopic.MAPS, 'layers_clear', 'ic_layers_clear_24px.svg'));
+    icons.push(new Icon(IconTopic.MAPS, 'local_cafe', 'ic_local_cafe_24px.svg'));
+    icons.push(new Icon(IconTopic.MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'check', 'ic_check_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'chevron_right', 'ic_chevron_right_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'close_18', 'ic_close_18px.svg'));
@@ -131,6 +132,8 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('blank', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'));
     iconRegistry.addSvgIcon('scrum',
       sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
+    iconRegistry.addSvgIcon('code_braces',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_braces_24px.svg'));
     iconRegistry.addSvgIcon('outlined_flag',
       sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
   }

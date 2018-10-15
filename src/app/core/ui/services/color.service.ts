@@ -5,6 +5,8 @@ import {MaterialColorService} from './material-color.service';
 import {HueType} from '../model/hue-type.enum';
 import {PaletteType} from '../model/palette-type.enum';
 import {Person} from '../../entity/model/person.model';
+import {TaskletTypeGroup} from '../../entity/model/tasklet-type-group.enum';
+import {Hue} from '../model/hue.model';
 
 /**
  * Handles derived colors
@@ -74,7 +76,7 @@ export class ColorService {
   }
 
   /**
-   * Returns a personColor picked by a hash value generated from a person's name
+   * Returns a color picked by a hash value generated from a person's name
    * @param {Person} person person to get personColor for
    * @returns {string} personColor string derived from project name
    */
@@ -109,5 +111,29 @@ export class ColorService {
     }
 
     return hue.contrast;
+  }
+
+  /**
+   * Returns a color associated to tasklet type group
+   * @param {TaskletTypeGroup} group tasklet type group
+   */
+  getTaskletTypeGroupColor(group: TaskletTypeGroup): Hue {
+    switch (group) {
+      case TaskletTypeGroup.ACTION: {
+        return this.materialColorService.hue(PaletteType.RED, HueType._600);
+      }
+      case TaskletTypeGroup.COMMUNICATION: {
+        return this.materialColorService.hue(PaletteType.LIME, HueType._600);
+      }
+      case TaskletTypeGroup.CODING: {
+        return this.materialColorService.hue(PaletteType.CYAN, HueType._700);
+      }
+      case TaskletTypeGroup.IDEA: {
+        return this.materialColorService.hue(PaletteType.AMBER, HueType._600);
+      }
+      case TaskletTypeGroup.BREAK: {
+        return this.materialColorService.hue(PaletteType.GREY, HueType._600);
+      }
+    }
   }
 }

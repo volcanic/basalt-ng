@@ -125,6 +125,14 @@ export class TaskletDialogComponent implements OnInit {
   //
 
   /**
+   * Handles tasklet type changes
+   * @param type tasklet type
+   */
+  onTaskletTypeChanged(type: TaskletType) {
+    this.tasklet.type = type;
+  }
+
+  /**
    * Handles task changes
    * @param task new task
    */

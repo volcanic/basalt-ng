@@ -1,0 +1,10 @@
+@import '../../../../../../../flex';
+
+::ng-deep .typeSelect div.mat-select-arrow-wrapper {
+  display: none;
+}
+
+::ng-deep .typeSelect.mat-select {
+  display: inline;
+  width: 1px;
+}

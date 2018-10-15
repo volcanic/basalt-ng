@@ -2,8 +2,8 @@
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
     <form #formCtrl="ngForm">
-      <app-header-fragment [tasklet]="tasklet">
-      </app-header-fragment>
+      <app-tasklet-type-fragment [tasklet]="tasklet" (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
+      </app-tasklet-type-fragment>
       <app-task-autocomplete-fragment
         [task]="task" [taskOptions]="taskOptions" (taskChangedEmitter)="onTaskChanged($event)"
         *ngIf="canBeAssignedToTask(tasklet)">
@@ -33,6 +33,7 @@
                                  (personsChangedEmitter)="onPersonsChanged($event)">
       </app-person-chips-fragment>
       <app-tag-chips-fragment
+        *ngIf="tasklet.type != null && tasklet.type != taskletType.UNSPECIFIED"
         [tags]="tags"
         [tagOptions]="tagOptions"
         (tagsChangedEmitter)="onTagsChanged($event)">
@@ -44,10 +45,12 @@
       Delete tasklet
     </button>
     <div class="flexbox"></div>
-    <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL" (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
+            (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
       Send Meeting Minutes
     </button>
-    <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM" (click)="sendDailyScrumSummary()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM" (click)="sendDailyScrumSummary()"
+            [disabled]="!formCtrl.form.valid">
       Send Daily Scrum Summary
     </button>
     <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid

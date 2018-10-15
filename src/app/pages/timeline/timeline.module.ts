@@ -65,6 +65,7 @@ import {PersonIndicatorButtonModule} from '../../ui/person-indicator-button/pers
 import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
 import { DailyScrumItemFragmentComponent } from './components/fragments/dialog/daily-scrum-item-fragment/daily-scrum-item-fragment.component';
 import {TaskletDailyScrumItemFragmentComponent} from './components/fragments/tasklet/tasklet-daily-scrum-item-fragment/tasklet-daily-scrum-item-fragment.component';
+import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/suggested-action-button.module';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import {TaskletDailyScrumItemFragmentComponent} from './components/fragments/tas
     NewFeaturesDialogModule,
     DateTimePickerDialogModule,
     DateTimePickerFragmentModule,
-    EcoFabSpeedDialModule
+    EcoFabSpeedDialModule,
+    SuggestedActionButtonModule
   ],
   declarations: [
     // Page

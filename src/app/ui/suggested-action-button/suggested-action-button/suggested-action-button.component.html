@@ -1,0 +1,7 @@
+<button mat-button class="container" [disableRipple]="true" (click)="onButtonClicked()">
+  <button mat-fab class="fab"
+          [style.backgroundColor]=backgroundColor>
+    <mat-icon [svgIcon]=icon [style.fill]=iconColor class="icon-accent-contrast"></mat-icon>
+  </button>
+  <span class="label">{{ label }}</span>
+</button>

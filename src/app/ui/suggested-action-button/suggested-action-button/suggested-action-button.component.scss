@@ -1,0 +1,15 @@
+@import '../../../../light-theme';
+@import '../../../../dark-theme';
+
+.container {
+  padding-top: 5px;
+}
+
+.fab {
+  display: block;
+  margin: 0 auto 15px;
+}
+
+.label {
+  color: mat-color($mat-grey, 700);
+}
