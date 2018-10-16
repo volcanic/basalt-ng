@@ -60,6 +60,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.26 | Future tasklets |
 | 0.27 | Task delegation |
 | 0.28 | Meeting minutes |
+| 0.29 | Tasklet type groups |
 
 ### Planned features
 
