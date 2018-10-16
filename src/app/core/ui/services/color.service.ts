@@ -125,7 +125,7 @@ export class ColorService {
       case TaskletTypeGroup.COMMUNICATION: {
         return this.materialColorService.hue(PaletteType.LIME, HueType._600);
       }
-      case TaskletTypeGroup.CODING: {
+      case TaskletTypeGroup.DEVELOPMENT: {
         return this.materialColorService.hue(PaletteType.CYAN, HueType._700);
       }
       case TaskletTypeGroup.IDEA: {

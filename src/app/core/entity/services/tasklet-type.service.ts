@@ -43,9 +43,12 @@ export class TaskletTypeService {
           this.taskletTypeGroups.set(TaskletType.DAILY_SCRUM, group);
           break;
         }
-        case TaskletTypeGroup.CODING: {
-          this.taskletTypeGroups.set(TaskletType.DEVELOPMENT, group);
+        case TaskletTypeGroup.DEVELOPMENT: {
+          this.taskletTypeGroups.set(TaskletType.CODING, group);
           this.taskletTypeGroups.set(TaskletType.DEBUGGING, group);
+          this.taskletTypeGroups.set(TaskletType.DOCUMENTATION, group);
+          this.taskletTypeGroups.set(TaskletType.REVIEW, group);
+          this.taskletTypeGroups.set(TaskletType.TESTING, group);
           break;
         }
         case TaskletTypeGroup.IDEA: {
@@ -102,7 +105,7 @@ export class TaskletTypeService {
       case TaskletTypeGroup.COMMUNICATION: {
         return 'chat';
       }
-      case TaskletTypeGroup.CODING: {
+      case TaskletTypeGroup.DEVELOPMENT: {
         return 'code_braces';
       }
       case TaskletTypeGroup.IDEA: {
@@ -123,14 +126,11 @@ export class TaskletTypeService {
       case TaskletType.ACTION: {
         return 'turned_in_not';
       }
-      case TaskletType.MEETING: {
-        return 'people';
-      }
       case TaskletType.CALL: {
         return 'call';
       }
-      case TaskletType.DAILY_SCRUM: {
-        return 'scrum';
+      case TaskletType.MEETING: {
+        return 'people';
       }
       case TaskletType.MAIL: {
         return 'mail';
@@ -138,11 +138,24 @@ export class TaskletTypeService {
       case TaskletType.CHAT: {
         return 'chat';
       }
+      case TaskletType.DAILY_SCRUM: {
+        return 'scrum';
+      }
+      case TaskletType.CODING:
       case TaskletType.DEVELOPMENT: {
         return 'code';
       }
       case TaskletType.DEBUGGING: {
         return 'bug_report';
+      }
+      case TaskletType.DOCUMENTATION: {
+        return 'file_document_outline';
+      }
+      case TaskletType.REVIEW: {
+        return 'code_tags_check';
+      }
+      case TaskletType.TESTING: {
+        return 'test_tube';
       }
       case TaskletType.IDEA: {
         return 'lightbulb_outline';
