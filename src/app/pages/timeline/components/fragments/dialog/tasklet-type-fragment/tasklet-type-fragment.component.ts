@@ -5,12 +5,21 @@ import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
 import {TaskletTypeService} from '../../../../../../core/entity/services/tasklet-type.service';
 
+/**
+ * Represents a tasklet type group action button
+ */
 class TaskletTypeGroupAction {
+  /** Tasklet type group */
   group: TaskletTypeGroup;
+  /** Label to be displayed */
   label: string;
+  /** Icon to be used */
   icon: string;
+  /** Background color to be used */
   backgroundColor: string;
+  /** Background color to be used */
   iconColor: string;
+  /** Tasklet types in context menu */
   taskletTypes = [];
 }
 

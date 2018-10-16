@@ -3,7 +3,7 @@ import {TaskletTypeGroup} from '../model/tasklet-type-group.enum';
 import {TaskletType} from '../model/tasklet-type.enum';
 
 /**
- * Handles tasklets type hierarchy
+ * Handles tasklet type hierarchy
  */
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,9 @@ export class TaskletTypeService {
   /** Map of tasklet types and type groups */
   taskletTypeGroups = new Map<TaskletType, TaskletTypeGroup>();
 
+  /**
+   * Constructor
+   */
   constructor() {
     this.initializeTaskletTypeHierarchy();
   }
@@ -25,8 +28,6 @@ export class TaskletTypeService {
    * Initializes tasklet type hierarchy
    */
   private initializeTaskletTypeHierarchy() {
-
-    /** Available tasklet type groups */
     const groups = Object.keys(TaskletTypeGroup).map(key => TaskletTypeGroup[key]);
 
     groups.forEach(group => {

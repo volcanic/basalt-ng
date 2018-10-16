@@ -1,5 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
+/**
+ * Displays round action button
+ */
 @Component({
   selector: 'app-suggested-action-button',
   templateUrl: './suggested-action-button.component.html',

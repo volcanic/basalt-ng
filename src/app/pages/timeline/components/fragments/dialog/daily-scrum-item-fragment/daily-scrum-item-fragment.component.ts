@@ -4,6 +4,9 @@ import {MaterialColorService} from '../../../../../../core/ui/services/material-
 import {DailyScrumItem} from '../../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 import {DailyScrumItemType} from '../../../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
 
+/**
+ * Displays daily scrum item fragment
+ */
 @Component({
   selector: 'app-daily-scrum-item-fragment',
   templateUrl: './daily-scrum-item-fragment.component.html',
@@ -65,13 +68,8 @@ export class DailyScrumItemFragmentComponent implements OnInit {
 
   /**
    * Constructor
-   <<<<<<< Updated upstream
-   * @param colorService personColor service
-   * @param materialColorService material personColor service
-   =======
    * @param colorService color service
    * @param materialColorService material color service
-   >>>>>>> Stashed changes
    */
   constructor(private colorService: ColorService, private materialColorService: MaterialColorService) {
   }
@@ -129,8 +127,6 @@ export class DailyScrumItemFragmentComponent implements OnInit {
   }
 
   /**
-   <<<<<<< Updated upstream
-   =======
    * Initializes type
    */
   private initializeType() {
@@ -161,7 +157,6 @@ export class DailyScrumItemFragmentComponent implements OnInit {
   }
 
   /**
-   >>>>>>> Stashed changes
    * Initializes alignment
    */
   private initializeAlignment() {
@@ -190,4 +185,3 @@ export class DailyScrumItemFragmentComponent implements OnInit {
     this.dailyScrumItemDeletedEmitter.emit(dailyScrumItem);
   }
 }
-
