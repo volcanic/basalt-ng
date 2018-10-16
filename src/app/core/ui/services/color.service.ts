@@ -134,6 +134,9 @@ export class ColorService {
       case TaskletTypeGroup.BREAK: {
         return this.materialColorService.hue(PaletteType.GREY, HueType._600);
       }
+      default: {
+        return this.materialColorService.hue(PaletteType.GREY, HueType._300);
+      }
     }
   }
 }

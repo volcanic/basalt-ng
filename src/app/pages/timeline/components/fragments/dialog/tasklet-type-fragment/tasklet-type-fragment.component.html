@@ -1,5 +1,6 @@
 <div class="flexcontainer">
-  <div class="flexbox" *ngFor="let action of taskletTypeActions">
+  <div class="flexbox" *ngFor="let action of taskletTypeActions" (mouseenter)="onHoverContainer(true, action)"
+       (mouseleave)="onHoverContainer(false, action)">
     <app-suggested-action-button
       [backgroundColor]="action.backgroundColor"
       [iconColor]="action.iconColor"
@@ -8,8 +9,8 @@
       (buttonClickedEmitter)="select.open()">
     </app-suggested-action-button>
     <mat-select #select class="typeSelect">
-      <mat-option *ngFor="let type of action.taskletTypes" [value]="type" (click)="onTaskletTypeSelected(type)">
-        <mat-icon [svgIcon]="getTypeIcon(type)"></mat-icon>
+      <mat-option *ngFor="let type of action.taskletTypes" [value]="type" (click)="onTaskletTypeSelected(type, action)">
+        <mat-icon [svgIcon]="getIconByTaskletType(type)"></mat-icon>
         {{ type }}
       </mat-option>
     </mat-select>

@@ -3,6 +3,7 @@ import {TaskletType} from 'app/core/entity/model/tasklet-type.enum';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
+import {TaskletTypeService} from '../../../../../../core/entity/services/tasklet-type.service';
 
 class TaskletTypeGroupAction {
   group: TaskletTypeGroup;
@@ -33,14 +34,19 @@ export class TaskletTypeFragmentComponent implements OnInit {
   taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]);
   /** Available tasklet type groups */
   taskletTypeGroups = Object.keys(TaskletTypeGroup).map(key => TaskletTypeGroup[key]);
-
+  /** List of tasklet type actions */
   taskletTypeActions = [];
+  /** Currently selected group */
+  selectedGroup: TaskletTypeGroup;
+  /** Currently hovered group */
+  hoveredGroup: TaskletTypeGroup;
 
   /**
    * Constructor
    * @param colorService color service
+   * @param taskletTypeService tasklet type service
    */
-  constructor(private colorService: ColorService) {
+  constructor(private colorService: ColorService, private taskletTypeService: TaskletTypeService) {
   }
 
   //
@@ -62,14 +68,15 @@ export class TaskletTypeFragmentComponent implements OnInit {
    * Initializes tasklet types
    */
   initializeTaskletTypeGroups() {
+    this.taskletTypeActions = [];
     this.taskletTypeGroups.forEach(group => {
       const action = new TaskletTypeGroupAction();
       action.group = group;
       action.backgroundColor = this.getGroupColor(group);
       action.iconColor = this.getGroupContrast(group);
-      action.icon = this.getGroupIcon(group);
+      action.icon = this.taskletTypeService.getIconByTaskletTypeGroup(group);
       action.label = group.toString();
-      action.taskletTypes = this.getTaskletTypes(group);
+      action.taskletTypes = this.taskletTypeService.getTaskletTypesByGroup(group);
       this.taskletTypeActions.push(action);
     });
   }
@@ -80,19 +87,31 @@ export class TaskletTypeFragmentComponent implements OnInit {
   //
 
   /**
-   * Handles selection of tasklet type group
-   * @param taskletTypeGroupAction tasklet type group action
+   * Handles selection of tasklet type
+   * @param taskletType tasklet type action
+   * @param action tasklet type group action
    */
-  onTaskletTypeGroupSelected(taskletTypeGroupAction: TaskletTypeGroupAction) {
-    // this.taskletTypeEventEmitter.emit(taskletTypeAction.type);
+  onTaskletTypeSelected(taskletType: TaskletType, action: TaskletTypeGroupAction) {
+    this.taskletTypeEventEmitter.emit(taskletType);
+
+    this.selectedGroup = action.group;
+
+    // Update color of all actions
+    this.taskletTypeActions.forEach(a => {
+      this.updateActionColor(a);
+    });
   }
 
   /**
-   * Handles selection of tasklet type
-   * @param taskletType tasklet type action
+   * Handles hover over container
+   * @param {boolean} hovered whether there is currently a hover event
+   * @param {TaskletTypeGroupAction} action tasklet type group action
    */
-  onTaskletTypeSelected(taskletType: TaskletType) {
-    this.taskletTypeEventEmitter.emit(taskletType);
+  onHoverContainer(hovered: boolean, action: TaskletTypeGroupAction) {
+    this.hoveredGroup = hovered ? action.group : null;
+
+    // Update color of hovered action
+    this.updateActionColor(action);
   }
 
   //
@@ -100,11 +119,30 @@ export class TaskletTypeFragmentComponent implements OnInit {
   //
 
   /**
+   * Updates color of a given tasklet type group action
+   * @param action tasklet type group action
+   */
+  private updateActionColor(action: TaskletTypeGroupAction) {
+    this.taskletTypeActions.filter(a => {
+      return a === action;
+    }).forEach((a: TaskletTypeGroupAction) => {
+      const group = a.group;
+      action.backgroundColor = this.getGroupColor(group);
+      action.iconColor = this.getGroupContrast(group);
+    });
+  }
+
+  /**
    * Retrieves a color by tasklet type group
    * @param group tasklet type group
    */
   private getGroupColor(group: TaskletTypeGroup): string {
-    return this.colorService.getTaskletTypeGroupColor(group).color;
+    if ((this.tasklet.type != null && this.taskletTypeService.groupContainsType(group, this.tasklet.type))
+      || (this.hoveredGroup === group)) {
+      return this.colorService.getTaskletTypeGroupColor(group).color;
+    } else {
+      return this.colorService.getTaskletTypeGroupColor(null).color;
+    }
   }
 
   /**
@@ -112,30 +150,11 @@ export class TaskletTypeFragmentComponent implements OnInit {
    * @param group tasklet type group
    */
   private getGroupContrast(group: TaskletTypeGroup): string {
-    return this.colorService.getTaskletTypeGroupColor(group).contrast;
-  }
-
-  /**
-   * Retrieves an icon by tasklet type
-   * @param group tasklet type group
-   */
-  private getGroupIcon(group: TaskletTypeGroup) {
-    switch (group) {
-      case TaskletTypeGroup.ACTION: {
-        return 'turned_in_not';
-      }
-      case TaskletTypeGroup.COMMUNICATION: {
-        return 'chat';
-      }
-      case TaskletTypeGroup.CODING: {
-        return 'code_braces';
-      }
-      case TaskletTypeGroup.IDEA: {
-        return 'lightbulb_outline';
-      }
-      case TaskletTypeGroup.BREAK: {
-        return 'local_cafe';
-      }
+    if ((this.tasklet.type != null && this.taskletTypeService.groupContainsType(group, this.tasklet.type))
+      || (this.hoveredGroup === group)) {
+      return this.colorService.getTaskletTypeGroupColor(group).contrast;
+    } else {
+      return this.colorService.getTaskletTypeGroupColor(null).contrast;
     }
   }
 
@@ -143,79 +162,7 @@ export class TaskletTypeFragmentComponent implements OnInit {
    * Retrieves an icon by tasklet type
    * @param type tasklet type
    */
-  public getTypeIcon(type: TaskletType) {
-    switch (type) {
-      case TaskletType.ACTION: {
-        return 'turned_in_not';
-      }
-      case TaskletType.MEETING: {
-        return 'people';
-      }
-      case TaskletType.CALL: {
-        return 'call';
-      }
-      case TaskletType.DAILY_SCRUM: {
-        return 'scrum';
-      }
-      case TaskletType.MAIL: {
-        return 'mail';
-      }
-      case TaskletType.CHAT: {
-        return 'chat';
-      }
-      case TaskletType.DEVELOPMENT: {
-        return 'code';
-      }
-      case TaskletType.DEBUGGING: {
-        return 'bug_report';
-      }
-      case TaskletType.IDEA: {
-        return 'lightbulb_outline';
-      }
-      case TaskletType.LUNCH_BREAK: {
-        return 'local_dining';
-      }
-      case TaskletType.FINISHING_TIME: {
-        return 'directions_run';
-      }
-    }
-  }
-
-  /**
-   * Returns a list of tasklet types contained in a given tasklet type group
-   * @param group tasklet type group
-   */
-  getTaskletTypes(group: TaskletTypeGroup): TaskletType[] {
-    const types: TaskletType[] = [];
-
-    switch (group) {
-      case TaskletTypeGroup.ACTION: {
-        types.push(TaskletType.ACTION);
-        break;
-      }
-      case TaskletTypeGroup.COMMUNICATION: {
-        types.push(TaskletType.MEETING);
-        types.push(TaskletType.CALL);
-        types.push(TaskletType.CHAT);
-        types.push(TaskletType.DAILY_SCRUM);
-        break;
-      }
-      case TaskletTypeGroup.CODING: {
-        types.push(TaskletType.DEVELOPMENT);
-        types.push(TaskletType.DEBUGGING);
-        break;
-      }
-      case TaskletTypeGroup.IDEA: {
-        types.push(TaskletType.IDEA);
-        break;
-      }
-      case TaskletTypeGroup.BREAK: {
-        types.push(TaskletType.LUNCH_BREAK);
-        types.push(TaskletType.FINISHING_TIME);
-        break;
-      }
-    }
-
-    return types;
+  public getIconByTaskletType(type: TaskletType): string {
+    return this.taskletTypeService.getIconByTaskletType(type);
   }
 }
