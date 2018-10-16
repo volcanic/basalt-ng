@@ -266,7 +266,7 @@ export class TaskletDialogComponent implements OnInit {
   /**
    * Sends daily scrum summary via mail
    */
-  sendDailyScrumSummary () {
+  sendDailyScrumSummary() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -334,6 +334,16 @@ export class TaskletDialogComponent implements OnInit {
       || tasklet.type === TaskletType.CALL
       || tasklet.type === TaskletType.MAIL
       || tasklet.type === TaskletType.CHAT;
+  }
+
+  /**
+   * Determines whether a given tasklet contains tags
+   * @param tasklet tasklet
+   */
+  public containsTags(tasklet: Tasklet): boolean {
+    return tasklet.type !== TaskletType.LUNCH_BREAK
+      && tasklet.type !== TaskletType.FINISHING_TIME
+      && tasklet.type !== TaskletType.UNSPECIFIED;
   }
 
   /**

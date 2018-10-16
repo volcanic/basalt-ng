@@ -130,18 +130,12 @@ export class MaterialIconService {
     });
 
     iconRegistry.addSvgIcon('blank', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_blank_24px.svg'));
-    iconRegistry.addSvgIcon('scrum',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
-    iconRegistry.addSvgIcon('code_braces',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_braces_24px.svg'));
-    iconRegistry.addSvgIcon('outlined_flag',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag-24px.svg'));
-    iconRegistry.addSvgIcon('test_tube',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_test_tube_24px.svg'));
-    iconRegistry.addSvgIcon('code_tags_check',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_tags_check_24px.svg'));
-    iconRegistry.addSvgIcon('file_document_outline',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_file_document_outline_24px.svg'));
+    iconRegistry.addSvgIcon('scrum', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_scrum_black_24px.svg'));
+    iconRegistry.addSvgIcon('code_braces', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_braces_24px.svg'));
+    iconRegistry.addSvgIcon('outlined_flag', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag_24px.svg'));
+    iconRegistry.addSvgIcon('test_tube', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_test_tube_24px.svg'));
+    iconRegistry.addSvgIcon('code_tags_check', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_tags_check_24px.svg'));
+    iconRegistry.addSvgIcon('file_document_outline', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_file_document_outline_24px.svg'));
 
   }
 }

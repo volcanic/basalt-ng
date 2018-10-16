@@ -33,7 +33,7 @@
                                  (personsChangedEmitter)="onPersonsChanged($event)">
       </app-person-chips-fragment>
       <app-tag-chips-fragment
-        *ngIf="tasklet.type != null && tasklet.type != taskletType.UNSPECIFIED"
+        *ngIf="containsTags(tasklet)"
         [tags]="tags"
         [tagOptions]="tagOptions"
         (tagsChangedEmitter)="onTagsChanged($event)">
