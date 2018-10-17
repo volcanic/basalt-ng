@@ -34,6 +34,7 @@ export class TaskletTypeService {
       switch (group) {
         case TaskletTypeGroup.ACTION: {
           this.taskletTypeGroups.set(TaskletType.ACTION, group);
+          this.taskletTypeGroups.set(TaskletType.POMODORO, group);
           break;
         }
         case TaskletTypeGroup.COMMUNICATION: {
@@ -126,6 +127,9 @@ export class TaskletTypeService {
     switch (type) {
       case TaskletType.ACTION: {
         return 'turned_in_not';
+      }
+      case TaskletType.POMODORO: {
+        return 'clock_end';
       }
       case TaskletType.CALL: {
         return 'call';
