@@ -46,6 +46,7 @@
 
   <mat-sidenav-content cdkScrollable>
     <div class="content">
+      <button mat-button routerLink="/tasklet">Go to tasklet</button>
       <app-tasklet-list [tasklets]="tasklets" [media]="media" [tasks]="tasksMap" [projects]="projectsMap"
                         [tags]="tagsMap" [persons]="personsMap"
                         [persons]="personService.persons"

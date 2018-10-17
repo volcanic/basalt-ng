@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {TimelineComponent} from './pages/timeline/timeline.component';
+import {MainComponent} from './pages/main/main.component';
 
 const routes: Routes = [
-  {path: '', component: TimelineComponent}
+  {path: '', component: MainComponent}
 ];
 
 @NgModule({

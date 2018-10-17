@@ -63,9 +63,11 @@ import {TaskletMeetingMinutesFragmentComponent} from './components/fragments/tas
 import {TaskletMeetingMinuteItemFragmentComponent} from './components/fragments/tasklet/tasklet-meeting-minute-item-fragment/tasklet-meeting-minute-item-fragment.component';
 import {PersonIndicatorButtonModule} from '../../ui/person-indicator-button/person-indicator-button.module';
 import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
-import { DailyScrumItemFragmentComponent } from './components/fragments/dialog/daily-scrum-item-fragment/daily-scrum-item-fragment.component';
+import {DailyScrumItemFragmentComponent} from './components/fragments/dialog/daily-scrum-item-fragment/daily-scrum-item-fragment.component';
 import {TaskletDailyScrumItemFragmentComponent} from './components/fragments/tasklet/tasklet-daily-scrum-item-fragment/tasklet-daily-scrum-item-fragment.component';
 import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/suggested-action-button.module';
+import {TaskletComponent} from './pages/tasklet/tasklet.component';
+import {MainComponent} from './pages/main/main.component';
 
 
 @NgModule({
@@ -93,8 +95,10 @@ import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/sugg
   ],
   declarations: [
     // Page
+    MainComponent,
     TimelineComponent,
     TimelineToolbarComponent,
+    TaskletComponent,
 
     // Dialogs
     PersonDialogComponent,
@@ -163,6 +167,10 @@ import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/sugg
     TaskletTypeFragmentComponent,
     DailyScrumItemFragmentComponent,
   ], entryComponents: [
+    // Page
+    TimelineComponent,
+    TaskletComponent,
+
     PersonDialogComponent,
     PersonFilterDialogComponent,
 
