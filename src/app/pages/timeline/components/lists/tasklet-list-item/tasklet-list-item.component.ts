@@ -10,6 +10,7 @@ import {ColorService} from 'app/core/ui/services/color.service';
 import {Action} from 'app/core/entity/model/action.enum';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Person} from 'app/core/entity/model/person.model';
+import {TaskletTypeService} from '../../../../../core/entity/services/tasklet-type.service';
 
 /**
  * Displays tasklet list item
@@ -80,9 +81,10 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
 
   /**
    * Constructor
-   * @param colorService personColor service
+   * @param colorService color service
+   * @param taskletTypeService tasklet type service
    */
-  constructor(private colorService: ColorService) {
+  constructor(private colorService: ColorService, private taskletTypeService: TaskletTypeService) {
   }
 
   //
@@ -114,52 +116,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Initializes icon
    */
   private initializeIcon() {
-    switch (this.tasklet.type) {
-      case TaskletType.ACTION: {
-        this.icon = 'turned_in_not';
-        break;
-      }
-      case TaskletType.MEETING: {
-        this.icon = 'people';
-        break;
-      }
-      case TaskletType.CALL: {
-        this.icon = 'call';
-        break;
-      }
-      case TaskletType.DAILY_SCRUM: {
-        this.icon = 'scrum';
-        break;
-      }
-      case TaskletType.MAIL: {
-        this.icon = 'mail';
-        break;
-      }
-      case TaskletType.CHAT: {
-        this.icon = 'chat';
-        break;
-      }
-      case TaskletType.DEVELOPMENT: {
-        this.icon = 'code';
-        break;
-      }
-      case TaskletType.DEBUGGING: {
-        this.icon = 'bug_report';
-        break;
-      }
-      case TaskletType.IDEA: {
-        this.icon = 'lightbulb_outline';
-        break;
-      }
-      case TaskletType.LUNCH_BREAK: {
-        this.icon = 'local_dining';
-        break;
-      }
-      case TaskletType.FINISHING_TIME: {
-        this.icon = 'directions_run';
-        break;
-      }
-    }
+    this.icon = this.taskletTypeService.getIconByTaskletType(this.tasklet.type);
   }
 
   /**

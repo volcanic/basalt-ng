@@ -6,6 +6,7 @@ export enum TaskletType {
   UNSPECIFIED = '???',
   // Action
   ACTION = 'Action',
+  POMODORO = 'Pomodoro Session',
   // Communication
   CALL = 'Call',
   MEETING = 'Meeting',
