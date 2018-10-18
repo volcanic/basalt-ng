@@ -245,24 +245,29 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes tasklet subscription
    */
   private initializeTaskletSubscription() {
+    this.initializeTasklets(Array.from(this.taskletService.tasklets.values()));
     this.taskletService.taskletsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        this.tasklets = (value as Tasklet[]).filter(tasklet => {
-          const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-          const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
-            Array.from(this.filterService.projects.values()),
-            this.filterService.projectsNone);
-
-          return matchesSearchItem && matchesProjects;
-        });
-
-        // Digests
-        this.generateWeeklyDigest(this.indicatedDate);
-        this.generateDailyDigests(this.indicatedDate);
+        this.initializeTasklets(value as Tasklet[]);
       }
     });
+  }
+
+  private initializeTasklets(tasklets: Tasklet[]) {
+    this.tasklets = tasklets.filter(tasklet => {
+      const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
+      const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
+        Array.from(this.filterService.projects.values()),
+        this.filterService.projectsNone);
+
+      return matchesSearchItem && matchesProjects;
+    });
+
+    // Digests
+    this.generateWeeklyDigest(this.indicatedDate);
+    this.generateDailyDigests(this.indicatedDate);
   }
 
   /**

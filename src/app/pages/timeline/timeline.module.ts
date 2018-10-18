@@ -68,6 +68,7 @@ import {TaskletDailyScrumItemFragmentComponent} from './components/fragments/tas
 import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/suggested-action-button.module';
 import {TaskletComponent} from './pages/tasklet/tasklet.component';
 import {MainComponent} from './pages/main/main.component';
+import {TaskletResolver} from './resolver/tasklet.resolver';
 
 
 @NgModule({
@@ -189,6 +190,8 @@ import {MainComponent} from './pages/main/main.component';
     TaskletDialogComponent,
 
     UploadDialogComponent
+  ], providers: [
+    TaskletResolver
   ], exports: [
     TimelineComponent
   ]

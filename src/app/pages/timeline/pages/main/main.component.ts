@@ -16,9 +16,9 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.router.url === '/timeline') {
+    if (this.router.url.startsWith('/timeline')) {
       this.currentComponent = TimelineComponent;
-    } else if (this.router.url === '/tasklet') {
+    } else if (this.router.url.startsWith('/tasklet')) {
       this.currentComponent = TaskletComponent;
     }
   }

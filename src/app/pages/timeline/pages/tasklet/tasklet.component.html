@@ -1,4 +1,5 @@
-<p>
-  tasklet works!
+<p>{{ id }}</p>
+<p *ngIf="tasklet != null">
+  {{ tasklet.creationDate }}
 </p>
 <button mat-button routerLink="/timeline">Go back to timeline</button>
