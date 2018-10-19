@@ -45,6 +45,9 @@
       Delete tasklet
     </button>
     <div class="flexbox"></div>
+    <button mat-button (click)="goToFullscreen()">
+      Go to Fullscreen
+    </button>
     <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
             (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
       Send Meeting Minutes

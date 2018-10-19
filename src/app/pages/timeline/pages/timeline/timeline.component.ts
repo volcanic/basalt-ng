@@ -53,6 +53,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
+import {Router} from '@angular/router';
 
 /**
  * Displays timeline page
@@ -159,6 +160,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {MatchService} matchService
    * @param {MaterialColorService} materialColorService
    * @param {MaterialIconService} materialIconService
+   * @param {Router} router
    * @param {MediaService} mediaService
    * @param {DomSanitizer} sanitizer
    * @param {ScopeService} scopeService
@@ -182,6 +184,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private materialColorService: MaterialColorService,
               private materialIconService: MaterialIconService,
               private mediaService: MediaService,
+              private router: Router,
               private sanitizer: DomSanitizer,
               private scopeService: ScopeService,
               private scroll: ScrollDispatcher,
@@ -945,6 +948,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               })
             });
           }
+        });
+        break;
+      }
+      case Action.FULLSCREEN: {
+        this.router.navigate([`/tasklet/${tasklet.id}`]).then(() => {
         });
         break;
       }

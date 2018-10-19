@@ -13,6 +13,7 @@ import {SuggestionService} from 'app/core/entity/services/suggestion.service';
 import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
+import {Router} from '@angular/router';
 
 /**
  * Displays tasklet dialog
@@ -245,6 +246,13 @@ export class TaskletDialogComponent implements OnInit {
    */
   deleteTasklet() {
     this.dialogRef.close({action: Action.DELETE, tasklet: this.tasklet});
+  }
+
+  /**
+   * Handles click on fullscreen button
+   */
+  goToFullscreen() {
+    this.dialogRef.close({action: Action.FULLSCREEN, tasklet: this.tasklet});
   }
 
   /**

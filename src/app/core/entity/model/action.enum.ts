@@ -21,5 +21,7 @@ export enum Action {
 
   FILTER_ALL,
   FILTER_LIST,
-  FILTER_NONE
+  FILTER_NONE,
+
+  FULLSCREEN
 }
