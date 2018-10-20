@@ -1,27 +1,32 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Person} from 'app/core/entity/model/person.model';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
 
 /**
- * Displays person chip fragmemt
+ * Displays tag chips
  */
 @Component({
-  selector: 'app-person-chips-fragment',
-  templateUrl: './person-chips-fragment.component.html',
-  styleUrls: ['./person-chips-fragment.component.scss'],
+  selector: 'app-tag-chips',
+  templateUrl: './tag-chips.component.html',
+  styleUrls: ['./tag-chips.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PersonChipsFragmentComponent implements OnInit {
+export class TagChipsComponent implements OnInit {
 
-  /** Persons to be displayed */
-  @Input() persons: Person[] = [];
+  /** Tags to be displayed */
+  @Input() tags: string[] = [];
   /** Whether the component is readonly */
   @Input() readonly = false;
-  /** Array of person options */
-  @Input() personOptions: string[] = [];
-  /** Event emitter indicating changes in persons */
-  @Output() personsChangedEmitter = new EventEmitter<Person[]>();
+  /** Array of options */
+  @Input() tagOptions: string[] = [];
+  /** Text color of the tag */
+  @Input() color: 'black';
+  /** Background color of the tag */
+  @Input() background: 'white';
+  /** Placeholder for new elements */
+  @Input() placeholder = 'New tag';
+  /** Event emitter indicating changes in tags */
+  @Output() tagsChangedEmitter = new EventEmitter<string[]>();
 
   /** Current value of input field */
   value = '';
@@ -50,7 +55,7 @@ export class PersonChipsFragmentComponent implements OnInit {
    * Initialize auto-complete options
    */
   private initializeOptions() {
-    this.optionsFiltered = this.personOptions;
+    this.optionsFiltered = this.tagOptions;
   }
 
   /**
@@ -59,7 +64,7 @@ export class PersonChipsFragmentComponent implements OnInit {
   private initializeDebouncer() {
     this.debouncer.pipe(
       debounceTime(500)
-    ).subscribe((value: Person[]) => this.personsChangedEmitter.emit(value));
+    ).subscribe((value: string[]) => this.tagsChangedEmitter.emit(value));
   }
 
   //
@@ -75,14 +80,15 @@ export class PersonChipsFragmentComponent implements OnInit {
     this.optionsFiltered = this.filterAutoCompleteOptions(this.value);
   }
 
+
   /**
-   * Handles deletion of a person
-   * @param {Person} value person to be deleted
+   * Handles deletion of a tag
+   * @param {string} value tag to be deleted
    */
-  onDeletePerson(value: Person) {
+  onDeleteTag(value: string) {
     if (!this.readonly) {
-      this.persons = this.persons.filter(person => {
-        return person.name !== value.name;
+      this.tags = this.tags.filter(tag => {
+        return tag !== value;
       });
 
       this.notify();
@@ -94,15 +100,16 @@ export class PersonChipsFragmentComponent implements OnInit {
    * @param event
    */
   onKeyUp(event: any) {
-    const KEY_CODE_ENTER = 13;
-    const KEY_CODE_COMMA = 188;
+    if (!this.readonly) {
+      const KEY_CODE_ENTER = 13;
+      const KEY_CODE_COMMA = 188;
 
-    if (this.value !== ''
-      && this.value !== ','
-      && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
-      this.persons.push(new Person(this.value.replace(/,/, ''), true));
-      this.value = '';
-      this.notify();
+      if (this.value !== '' && this.value !== ','
+        && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
+        this.tags.push(this.value.replace(/,/, ''));
+        this.value = '';
+        this.notify();
+      }
     }
   }
 
@@ -118,7 +125,7 @@ export class PersonChipsFragmentComponent implements OnInit {
    */
   onOptionSelected() {
     if (!this.readonly) {
-      this.persons.push(new Person(this.value.replace(/,/, ''), true));
+      this.tags.push(this.value.replace(/,/, ''));
       this.value = '';
       this.notify();
     }
@@ -134,19 +141,19 @@ export class PersonChipsFragmentComponent implements OnInit {
    * @returns {string[]} filtered options
    */
   filterAutoCompleteOptions(value: string): string[] {
-    return this.personOptions.filter(option =>
+    return this.tagOptions.filter(option =>
       option.toLowerCase().includes(value.toLowerCase())
     );
   }
 
   //
-  // Notification
+  // Notifications
   //
 
   /**
    * Informs subscribers that something has changed
    */
   private notify() {
-    this.debouncer.next(this.persons);
+    this.debouncer.next(this.tags);
   }
 }

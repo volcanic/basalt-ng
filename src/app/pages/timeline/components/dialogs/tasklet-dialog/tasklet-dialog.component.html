@@ -20,24 +20,19 @@
         [myselfOption]="myselfOption"
         (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
 
-      <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
-                                [dailyScrumItems]="tasklet.dailyScrumItems"
-                                [personOptions]="personOptions"
-                                [myselfOption]="myselfOption"
-                                (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
-      </app-daily-scrum-fragment>
-
-      <app-person-chips-fragment *ngIf="containsPersons(tasklet)"
-                                 [persons]="persons"
-                                 [personOptions]="personOptions"
-                                 (personsChangedEmitter)="onPersonsChanged($event)">
-      </app-person-chips-fragment>
-      <app-tag-chips-fragment
-        *ngIf="containsTags(tasklet)"
-        [tags]="tags"
-        [tagOptions]="tagOptions"
-        (tagsChangedEmitter)="onTagsChanged($event)">
-      </app-tag-chips-fragment>
+      <app-tag-chips *ngIf="containsTags(tasklet)"
+                     [tags]="tags | tagNames"
+                     [tagOptions]="tagOptions"
+                     [readonly]=false
+                     (tagsChangedEmitter)="onTagsChanged($event)">
+      </app-tag-chips>
+      <app-tag-chips *ngIf="containsPersons(tasklet)"
+                     [tags]="persons | personNames"
+                     [tagOptions]="personOptions"
+                     [readonly]=false
+                     placeholder="New project"
+                     (tagsChangedEmitter)="onPersonsChanged($event)">
+      </app-tag-chips>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions class="flexcontainer">
