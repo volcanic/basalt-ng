@@ -34,6 +34,7 @@ export class TaskletTypeService {
       switch (group) {
         case TaskletTypeGroup.ACTION: {
           this.taskletTypeGroups.set(TaskletType.ACTION, group);
+          this.taskletTypeGroups.set(TaskletType.BUSINESS_FLIGHT, group);
           break;
         }
         case TaskletTypeGroup.COMMUNICATION: {
@@ -58,6 +59,7 @@ export class TaskletTypeService {
         }
         case TaskletTypeGroup.BREAK: {
           this.taskletTypeGroups.set(TaskletType.LUNCH_BREAK, group);
+          this.taskletTypeGroups.set(TaskletType.COMMUTE, group);
           this.taskletTypeGroups.set(TaskletType.FINISHING_TIME, group);
           break;
         }
@@ -127,6 +129,9 @@ export class TaskletTypeService {
       case TaskletType.ACTION: {
         return 'turned_in_not';
       }
+      case TaskletType.BUSINESS_FLIGHT: {
+        return 'flight';
+      }
       case TaskletType.CALL: {
         return 'call';
       }
@@ -161,8 +166,11 @@ export class TaskletTypeService {
       case TaskletType.IDEA: {
         return 'lightbulb_outline';
       }
+      case TaskletType.COMMUTE: {
+        return 'train';
+      }
       case TaskletType.LUNCH_BREAK: {
-        return 'local_dining';
+        return 'directions_bike';
       }
       case TaskletType.FINISHING_TIME: {
         return 'directions_run';

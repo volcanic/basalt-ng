@@ -6,7 +6,7 @@ export enum TaskletType {
   UNSPECIFIED = '???',
   // Action
   ACTION = 'Action',
-  POMODORO = 'Pomodoro Session',
+  BUSINESS_FLIGHT = 'Business Flight',
   // Communication
   CALL = 'Call',
   MEETING = 'Meeting',
@@ -24,5 +24,6 @@ export enum TaskletType {
   IDEA = 'Idea',
   // Break
   LUNCH_BREAK = 'Lunch Break',
+  COMMUTE = 'Commute',
   FINISHING_TIME = 'Finishing Time'
 }

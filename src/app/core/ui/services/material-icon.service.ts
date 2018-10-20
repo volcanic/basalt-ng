@@ -111,9 +111,11 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.IMAGE, 'brightness_3', 'ic_brightness_3_24px.svg'));
     icons.push(new Icon(IconTopic.IMAGE, 'nature', 'ic_nature_24px.svg'));
     icons.push(new Icon(IconTopic.MAPS, 'directions_run', 'ic_directions_run_24px.svg'));
+    icons.push(new Icon(IconTopic.MAPS, 'flight', 'ic_flight_24px.svg'));
     icons.push(new Icon(IconTopic.MAPS, 'layers_clear', 'ic_layers_clear_24px.svg'));
     icons.push(new Icon(IconTopic.MAPS, 'local_cafe', 'ic_local_cafe_24px.svg'));
     icons.push(new Icon(IconTopic.MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
+    icons.push(new Icon(IconTopic.MAPS, 'train', 'ic_train_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'check', 'ic_check_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'chevron_right', 'ic_chevron_right_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'close_18', 'ic_close_18px.svg'));
