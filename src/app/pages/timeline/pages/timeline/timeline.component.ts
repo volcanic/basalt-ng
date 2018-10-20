@@ -207,6 +207,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
+    this.tasksMap = new Map(this.taskService.tasks);
+    this.projectsMap = new Map(this.projectService.projects);
+    this.tagsMap = new Map(this.tagService.tags);
+    this.personsMap = new Map(this.personService.persons);
+
+    this.initializeTasklets(Array.from(this.taskletService.tasklets.values()));
+    this.initializeTasks(Array.from(this.taskService.tasks.values()));
+    this.initializeProjects(Array.from(this.projectService.projects.values()));
+    this.initializeTags(Array.from(this.tagService.tags.values()));
+    this.initializePersons(Array.from(this.personService.persons.values()));
+
     this.initializeTaskletSubscription();
     this.initializeTaskSubscription();
     this.initializeProjectSubscription();
@@ -223,6 +234,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeMaterial();
     this.initializeMediaSubscription();
     this.initializeScopeSubscription();
+
+    this.clearFilters();
+    this.findEntities();
   }
 
   /**
@@ -248,7 +262,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes tasklet subscription
    */
   private initializeTaskletSubscription() {
-    this.initializeTasklets(Array.from(this.taskletService.tasklets.values()));
     this.taskletService.taskletsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
@@ -258,6 +271,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * Initializes tasklets by filtering them
+   * @param tasklets tasklets
+   */
   private initializeTasklets(tasklets: Tasklet[]) {
     this.tasklets = tasklets.filter(tasklet => {
       const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
@@ -286,15 +303,23 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.taskletService.notify();
 
       if (value != null) {
-        this.tasks = (value as Task[]).filter(task => {
-          const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
-          const matchesProjects = this.matchService.taskMatchesProjects(task,
-            Array.from(this.filterService.projects.values()),
-            this.filterService.projectsNone);
-
-          return matchesSearchItem && matchesProjects;
-        });
+        this.initializeTasks(value as Task[]);
       }
+    });
+  }
+
+  /**
+   * Initializes tasks by filtering them
+   * @param tasks tasks
+   */
+  private initializeTasks(tasks: Task[]) {
+    this.tasks = tasks.filter(task => {
+      const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
+      const matchesProjects = this.matchService.taskMatchesProjects(task,
+        Array.from(this.filterService.projects.values()),
+        this.filterService.projectsNone);
+
+      return matchesSearchItem && matchesProjects;
     });
   }
 
@@ -311,15 +336,23 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.taskletService.notify();
 
       if (value != null) {
-        this.projects = (value as Project[]).filter(project => {
-          const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
-          const matchesProjects = this.matchService.projectMatchesProjects(project,
-            Array.from(this.filterService.projects.values()),
-            this.filterService.projectsNone);
-
-          return matchesSearchItem && matchesProjects;
-        });
+        this.initializeProjects((value as Project[]));
       }
+    });
+  }
+
+  /**
+   * Initializes projects by filtering them
+   * @param projects projects
+   */
+  private initializeProjects(projects: Project[]) {
+    this.projects = projects.filter(project => {
+      const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
+      const matchesProjects = this.matchService.projectMatchesProjects(project,
+        Array.from(this.filterService.projects.values()),
+        this.filterService.projectsNone);
+
+      return matchesSearchItem && matchesProjects;
     });
   }
 
@@ -334,15 +367,23 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.tagsMap = new Map(this.tagService.tags);
 
       if (value != null) {
-        this.tags = (value as Tag[]).filter(tag => {
-          const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
-          const matchesTags = this.matchService.tagMatchesTags(tag,
-            Array.from(this.filterService.tags.values()),
-            this.filterService.tagsNone);
-
-          return matchesSearchItem && matchesTags;
-        });
+        this.initializeTags(value as Tag[]);
       }
+    });
+  }
+
+  /**
+   * Initializes tags by filtering them
+   * @param tags tags
+   */
+  private initializeTags(tags: Tag[]) {
+    this.tags = tags.filter(tag => {
+      const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
+      const matchesTags = this.matchService.tagMatchesTags(tag,
+        Array.from(this.filterService.tags.values()),
+        this.filterService.tagsNone);
+
+      return matchesSearchItem && matchesTags;
     });
   }
 
@@ -357,15 +398,23 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.personsMap = new Map(this.personService.persons);
 
       if (value != null) {
-        this.persons = (value as Person[]).filter(person => {
-          const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
-          const matchesPersons = this.matchService.personMatchesPersons(person,
-            Array.from(this.filterService.persons.values()),
-            this.filterService.personsNone);
-
-          return matchesSearchItem && matchesPersons;
-        });
+        this.initializeProjects(value as Person[]);
       }
+    });
+  }
+
+  /**
+   * Initializes persons by filtering them
+   * @param persons persons
+   */
+  private initializePersons(persons: Person[]) {
+    this.persons = persons.filter(person => {
+      const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
+      const matchesPersons = this.matchService.personMatchesPersons(person,
+        Array.from(this.filterService.persons.values()),
+        this.filterService.personsNone);
+
+      return matchesSearchItem && matchesPersons;
     });
   }
 
@@ -534,16 +583,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scopeService.scopeSubject.subscribe(scope => {
       this.scope = scope;
 
-      this.filterService.clearSearchItem();
-      this.filterService.clearTags();
-      this.filterService.clearProjects();
-      this.filterService.clearPersons();
-
-      this.taskletService.findTaskletsByScope(scope);
-      this.taskService.findTasksByScope(scope);
-      this.projectService.findProjectsByScope(scope);
-      this.tagService.findTagsByScope(scope);
-      this.personService.findPersonsByScope(scope);
+      this.clearFilters();
+      this.findEntities();
     });
   }
 
@@ -579,6 +620,37 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Save current scroll position
         this.scrollPosLast = scrollPos;
       })).subscribe();
+  }
+
+  /**
+   * Clears all filters
+   */
+  private clearFilters() {
+    this.filterService.clearSearchItem();
+    this.filterService.clearTags();
+    this.filterService.clearProjects();
+    this.filterService.clearPersons();
+  }
+
+  /**
+   * Triggers entity retrieval from database
+   */
+  private findEntities() {
+    if (this.tasklets.length === 0) {
+      this.taskletService.findTaskletsByScope(this.scope);
+    }
+    if (this.tasks.length === 0) {
+      this.taskService.findTasksByScope(this.scope);
+    }
+    if (this.projects.length === 0) {
+      this.projectService.findProjectsByScope(this.scope);
+    }
+    if (this.tags.length === 0) {
+      this.tagService.findTagsByScope(this.scope);
+    }
+    if (this.persons.length === 0) {
+      this.personService.findPersonsByScope(this.scope);
+    }
   }
 
   //
