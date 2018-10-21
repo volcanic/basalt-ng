@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {TaskletType} from 'app/core/entity/model/tasklet-type.enum';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
@@ -32,7 +32,7 @@ class TaskletTypeGroupAction {
   styleUrls: ['./tasklet-type-fragment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskletTypeFragmentComponent implements OnInit {
+export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
@@ -67,6 +67,16 @@ export class TaskletTypeFragmentComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeTaskletTypeGroups();
+  }
+
+  /**
+   * Handles on-changes lifecycle phase
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    // Update color of all actions
+    this.taskletTypeActions.forEach(a => {
+      this.updateActionColor(a);
+    });
   }
 
   //
@@ -146,7 +156,7 @@ export class TaskletTypeFragmentComponent implements OnInit {
    * @param group tasklet type group
    */
   private getGroupColor(group: TaskletTypeGroup): string {
-    if ((this.tasklet.type != null && this.taskletTypeService.groupContainsType(group, this.tasklet.type))
+    if (this.tasklet != null && (this.tasklet.type != null && this.taskletTypeService.groupContainsType(group, this.tasklet.type))
       || (this.hoveredGroup === group)) {
       return this.colorService.getTaskletTypeGroupColor(group).color;
     } else {
@@ -159,7 +169,7 @@ export class TaskletTypeFragmentComponent implements OnInit {
    * @param group tasklet type group
    */
   private getGroupContrast(group: TaskletTypeGroup): string {
-    if ((this.tasklet.type != null && this.taskletTypeService.groupContainsType(group, this.tasklet.type))
+    if (this.tasklet != null && (this.tasklet.type != null && this.taskletTypeService.groupContainsType(group, this.tasklet.type))
       || (this.hoveredGroup === group)) {
       return this.colorService.getTaskletTypeGroupColor(group).contrast;
     } else {

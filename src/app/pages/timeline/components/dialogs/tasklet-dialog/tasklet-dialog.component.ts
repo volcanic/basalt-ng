@@ -13,7 +13,6 @@ import {SuggestionService} from 'app/core/entity/services/suggestion.service';
 import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
-import {Router} from '@angular/router';
 
 /**
  * Displays tasklet dialog
@@ -313,7 +312,11 @@ export class TaskletDialogComponent implements OnInit {
       || tasklet.type === TaskletType.MAIL
       || tasklet.type === TaskletType.CHAT
       || tasklet.type === TaskletType.DEVELOPMENT
+      || tasklet.type === TaskletType.CODING
       || tasklet.type === TaskletType.DEBUGGING
+      || tasklet.type === TaskletType.DOCUMENTATION
+      || tasklet.type === TaskletType.REVIEW
+      || tasklet.type === TaskletType.TESTING
       || tasklet.type === TaskletType.IDEA);
   }
 
@@ -334,7 +337,11 @@ export class TaskletDialogComponent implements OnInit {
       || tasklet.type === TaskletType.MAIL
       || tasklet.type === TaskletType.CHAT
       || tasklet.type === TaskletType.DEVELOPMENT
-      || tasklet.type === TaskletType.DEBUGGING);
+      || tasklet.type === TaskletType.CODING
+      || tasklet.type === TaskletType.DEBUGGING
+      || tasklet.type === TaskletType.DOCUMENTATION
+      || tasklet.type === TaskletType.REVIEW
+      || tasklet.type === TaskletType.TESTING);
   }
 
   /**
