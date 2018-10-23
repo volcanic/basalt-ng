@@ -69,6 +69,94 @@
   }
 }
 
+.header {
+  @media #{$breakpoint-small} {
+    margin-bottom: 10px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-bottom: 20px;
+  }
+  @media #{$breakpoint-large} {
+    margin-bottom: 65px;
+  }
+}
+
+.header-buttons {
+  height: 50px;
+
+  .icon-wrapper {
+    text-align: center;
+    width: 100%;
+    display: flex;
+
+    .more {
+      margin: 0 auto;
+
+      mat-icon {
+        fill: mat-color($mat-grey, 400);
+      }
+    }
+  }
+
+  .button-wrapper {
+    display: none;
+    color: mat-color($mat-grey, 500);
+  }
+
+  &:hover {
+    .icon-wrapper {
+      display: none;
+    }
+    .button-wrapper {
+      display: flex;
+    }
+  }
+}
+
+.footer {
+  @media #{$breakpoint-small} {
+    margin-top: 10px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-top: 20px;
+  }
+  @media #{$breakpoint-large} {
+    margin-top: 65px;
+  }
+}
+
+.footer-buttons {
+  height: 50px;
+
+  .icon-wrapper {
+    text-align: center;
+    width: 100%;
+    display: block;
+
+    .more {
+      margin: 0 auto;
+
+      mat-icon {
+        fill: mat-color($mat-grey, 400);
+      }
+    }
+  }
+
+  .button-wrapper {
+    display: none;
+    color: mat-color($mat-grey, 500);
+  }
+
+  &:hover {
+    .icon-wrapper {
+      display: none;
+    }
+    .button-wrapper {
+      display: block;
+    }
+  }
+}
+
 // Task
 
 .task {
@@ -129,8 +217,13 @@
   margin-top: 20px;
 }
 
-// Buttons
+// Tasklet action button
 
-.button-area {
-  margin-top: 20px;
+::ng-deep .typeSelect div.mat-select-arrow-wrapper {
+  display: none;
+}
+
+::ng-deep .typeSelect.mat-select {
+  display: inline;
+  width: 1px;
 }

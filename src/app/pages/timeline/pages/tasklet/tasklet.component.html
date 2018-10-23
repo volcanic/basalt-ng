@@ -16,76 +16,116 @@
 
     <mat-sidenav-content cdkScrollable>
       <div class="content">
-        <button mat-button routerLink="/timeline">Back to timeline</button>
         <form #formCtrl="ngForm">
           <!-- Pseudo form field to make other input fields work -->
-          <mat-form-field style="width: 0; height: 0;"><input matInput="" /></mat-form-field>
-          <app-tasklet-type-fragment [tasklet]="tasklet" (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
-          </app-tasklet-type-fragment>
-          <app-task-autocomplete-fragment class="task"
-                                          [task]="task" [taskOptions]="taskOptions"
-                                          (taskChangedEmitter)="onTaskChanged($event)"
-                                          *ngIf="canBeAssignedToTask(tasklet)">
-          </app-task-autocomplete-fragment>
-          <app-description-fragment *ngIf="containsDescription(tasklet)"
-                                    [description]="tasklet.description"
-                                    (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
-          <app-meeting-minutes-fragment
-            *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
-            [meetingMinuteItems]="tasklet.meetingMinuteItems"
-            [personOptions]="personOptions"
-            [myselfOption]="myselfOption"
-            (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
-
-          <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
-                                    [dailyScrumItems]="tasklet.dailyScrumItems"
-                                    [personOptions]="personOptions"
-                                    [myselfOption]="myselfOption"
-                                    (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
-          </app-daily-scrum-fragment>
-
-          <app-tag-chips *ngIf="containsTags(tasklet)"
-                         class="tag-area"
-                         [tags]="tags | tagNames"
-                         [tagOptions]="tagOptions"
-                         [readonly]=false
-                         (tagsChangedEmitter)="onTagsChanged($event)">
-          </app-tag-chips>
-          <app-tag-chips *ngIf="containsPersons(tasklet)"
-                         class="tag-area"
-                         [tags]="persons | personNames"
-                         [tagOptions]="personOptions"
-                         [readonly]=false
-                         placeholder="New person"
-                         (tagsChangedEmitter)="onPersonsChanged($event)">
-          </app-tag-chips>
-        </form>
-        <div class="flexcontainer button-area">
-          <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteTasklet()">
-            Delete tasklet
-          </button>
-          <div class="flexbox"></div>
-          <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
-                  (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
-            Send Meeting Minutes
-          </button>
-          <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM" (click)="sendDailyScrumSummary()"
-                  [disabled]="!formCtrl.form.valid">
-            Send Daily Scrum Summary
-          </button>
-          <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
+          <mat-form-field style="width: 0; height: 0;"><input matInput=""/></mat-form-field>
+          <div class="header-buttons">
+            <div class="icon-wrapper">
+              <div class="more">
+                <mat-icon svgIcon="more_horiz_36"></mat-icon>
+              </div>
+            </div>
+            <div class="flexcontainer button-wrapper">
+              <div class="flexbox"></div>
+              <button mat-button routerLink="/timeline">Back to timeline</button>
+              <div class="flexbox"></div>
+            </div>
+          </div>
+          <div class="flexcontainer header">
+            <app-suggested-action-button
+              [backgroundColor]="action.backgroundColor"
+              [iconColor]="action.iconColor"
+              [icon]="action.icon"
+              (buttonClickedEmitter)="select.open()">
+            </app-suggested-action-button>
+            <mat-select #select class="typeSelect">
+              <mat-option *ngFor="let type of action.taskletTypes" [value]="type"
+                          (click)="onTaskletTypeSelected(type)">
+                <mat-icon [svgIcon]="getIconByTaskletType(type)"></mat-icon>
+                {{ type }}
+              </mat-option>
+            </mat-select>
+            <div>
+              <app-task-autocomplete-fragment class="task"
+                                              [task]="task" [taskOptions]="taskOptions"
+                                              (taskChangedEmitter)="onTaskChanged($event)"
+                                              *ngIf="canBeAssignedToTask(tasklet)">
+              </app-task-autocomplete-fragment>
+              <div *ngIf="project != null" [style.color]="action.backgroundColor">{{ project.name }}</div>
+            </div>
+          </div>
+          <div class="main">
+            <app-description-fragment *ngIf="containsPomodoroTask(tasklet)"
+                                      [description]="tasklet.pomodoroTask"
+                                      placeholder="Pomodoro Task"
+                                      (descriptionChangedEmitter)="onPomodoroTaskChanged($event)"></app-description-fragment>
+            <app-description-fragment *ngIf="containsDescription(tasklet)"
+                                      [description]="tasklet.description"
+                                      placeholder="Description"
+                                      (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
+            <app-meeting-minutes-fragment *ngIf="containsMeetingMinutes(tasklet)"
+                                          [meetingMinuteItems]="tasklet.meetingMinuteItems"
+                                          [personOptions]="personOptions"
+                                          [myselfOption]="myselfOption"
+                                          (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
+            <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
+                                      [dailyScrumItems]="tasklet.dailyScrumItems"
+                                      [personOptions]="personOptions"
+                                      [myselfOption]="myselfOption"
+                                      (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
+            </app-daily-scrum-fragment>
+            <app-tag-chips *ngIf="containsTags(tasklet)"
+                           class="tag-area"
+                           [tags]="tags | tagNames"
+                           [tagOptions]="tagOptions"
+                           [readonly]=false
+                           (tagsChangedEmitter)="onTagsChanged($event)">
+            </app-tag-chips>
+            <app-tag-chips *ngIf="containsPersons(tasklet)"
+                           class="tag-area"
+                           [tags]="persons | personNames"
+                           [tagOptions]="personOptions"
+                           [readonly]=false
+                           placeholder="New person"
+                           (tagsChangedEmitter)="onPersonsChanged($event)">
+            </app-tag-chips>
+          </div>
+          <div class="footer footer-buttons">
+            <div class="header-buttons">
+              <div class="icon-wrapper">
+                <div class="more">
+                  <mat-icon svgIcon="more_horiz_36"></mat-icon>
+                </div>
+              </div>
+              <div class="flexcontainer button-wrapper">
+                <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteTasklet()">
+                  Delete tasklet
+                </button>
+                <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
+                        (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
+                  Send Meeting Minutes
+                </button>
+                <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM" (click)="sendDailyScrumSummary()"
+                        [disabled]="!formCtrl.form.valid">
+                  Send Daily Scrum Summary
+                </button>
+                <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
         && canBeCreated()">
-            Add tasklet
-          </button>
-          <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTasklet()" [disabled]="!formCtrl.form.valid
+                  Add tasklet
+                </button>
+                <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTasklet()" [disabled]="!formCtrl.form.valid
         && canBeUpdated()">
-            Update tasklet
-          </button>
-          <button mat-button *ngIf="mode == modeType.CONTINUE" (click)="continueTasklet()"
-                  [disabled]="!formCtrl.form.valid">
-            Continue tasklet
-          </button>
-        </div>
+                  Update tasklet
+                </button>
+                <button mat-button *ngIf="mode == modeType.CONTINUE" (click)="continueTasklet()"
+                        [disabled]="!formCtrl.form.valid">
+                  Continue tasklet
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </form>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

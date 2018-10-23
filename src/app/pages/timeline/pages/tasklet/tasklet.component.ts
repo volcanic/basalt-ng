@@ -31,6 +31,30 @@ import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
 import {Media} from '../../../../core/ui/model/media.enum';
 import {MediaService} from '../../../../core/ui/services/media.service';
 import {Animations, ScrollDirection, ScrollState} from './tasklet.animation';
+import {TaskletTypeService} from '../../../../core/entity/services/tasklet-type.service';
+import {TaskletTypeGroup} from '../../../../core/entity/model/tasklet-type-group.enum';
+import {ColorService} from '../../../../core/ui/services/color.service';
+import {Project} from '../../../../core/entity/model/project.model';
+import {ProjectService} from '../../../../core/entity/services/project.service';
+import {ScopeService} from '../../../../core/entity/services/scope.service';
+
+/**
+ * Represents a tasklet type action button
+ */
+class TaskletTypeAction {
+  /** Tasklet type group */
+  group: TaskletTypeGroup;
+  /** Label to be displayed */
+  label: string;
+  /** Icon to be used */
+  icon: string;
+  /** Background color to be used */
+  backgroundColor: string;
+  /** Background color to be used */
+  iconColor: string;
+  /** Tasklet types in context menu */
+  taskletTypes = [];
+}
 
 @Component({
   selector: 'app-tasklet',
@@ -58,6 +82,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** Temporarily displayed task */
   task: Task;
+  /** Temporarily displayed project */
+  project: Project;
   /** Temporarily displayed tags */
   tags: Tag[] = [];
   /** Temporarily displayed persons */
@@ -74,6 +100,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** Enum of dialog modes */
   taskletType = TaskletType;
+  /** Tasklet type action */
+  action: TaskletTypeAction;
 
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
@@ -99,6 +127,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Constructor
+   * @param colorService color service
    * @param emailService email service
    * @param filterService filter service
    * @param mediaService media service
@@ -106,10 +135,13 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {MaterialIconService} materialIconService
    * @param {ScrollDispatcher} scroll scroll
    * @param personService person service
+   * @param projectService project service
+   * @param scopeService scope service
    * @param snackbarService snackbar service
    * @param tagService tag service
    * @param suggestionService suggestion service
    * @param taskletService tasklet service
+   * @param taskletTypeService tasklet type service
    * @param taskService task service
    * @param route route
    * @param iconRegistry iconRegistry
@@ -117,17 +149,21 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param dialog dialog
    * @param {NgZone} zone Angular zone
    */
-  constructor(private emailService: EmailService,
+  constructor(private colorService: ColorService,
+              private emailService: EmailService,
               private filterService: FilterService,
               private mediaService: MediaService,
               private materialColorService: MaterialColorService,
               private materialIconService: MaterialIconService,
               private personService: PersonService,
+              private projectService: ProjectService,
+              private scopeService: ScopeService,
               private scroll: ScrollDispatcher,
               private snackbarService: SnackbarService,
               private suggestionService: SuggestionService,
               private tagService: TagService,
               private taskletService: TaskletService,
+              private taskletTypeService: TaskletTypeService,
               private taskService: TaskService,
               private route: ActivatedRoute,
               private iconRegistry: MatIconRegistry,
@@ -150,6 +186,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.initializeMaterial();
     this.initializeMediaSubscription();
+
+    this.initializeOptions();
+    this.initializeTaskletTypeAction();
 
     this.findEntities();
   }
@@ -193,6 +232,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     const resolved = this.route.snapshot.data['tasklet'];
     if (resolved != null) {
       this.initializeTasklet(resolved as Tasklet);
+      this.initializeTaskletTypeAction();
     }
   }
 
@@ -205,6 +245,15 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe((value) => {
       if (value != null) {
         this.initializeTasklet(value as Tasklet);
+        this.initializeTaskletTypeAction();
+      }
+    });
+
+    this.taskletService.taskletsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        this.initializeOptions();
       }
     });
   }
@@ -216,6 +265,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeTasklet(tasklet: Tasklet) {
     this.tasklet = tasklet;
     this.task = this.taskService.tasks.get(tasklet.taskId);
+    this.project = this.projectService.projects.get(this.task.projectId);
     this.tags = tasklet.tagIds.map(id => {
       return this.tagService.tags.get(id);
     }).filter(tag => {
@@ -249,13 +299,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Triggers entity retrieval from database
-   */
-  private findEntities() {
-    this.taskletService.findTaskletByID(this.id);
-  }
-
-  /**
    * Initializes options
    */
   private initializeOptions() {
@@ -275,6 +318,31 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       return p.name;
     });
     this.myselfOption = this.personService.myself.name;
+  }
+
+  /**
+   * Initializes tasklet type action
+   */
+  private initializeTaskletTypeAction() {
+    const group = this.taskletTypeService.getTaskletGroupByType(this.tasklet.type);
+
+    this.action = new TaskletTypeAction();
+    this.action.group = group;
+    this.action.backgroundColor = this.colorService.getTaskletTypeGroupColor(group).color;
+    this.action.iconColor = this.colorService.getTaskletTypeGroupColor(group).contrast;
+    this.action.icon = this.taskletTypeService.getIconByTaskletType(this.tasklet.type);
+    this.action.label = this.tasklet.type.toString();
+    this.action.taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]).filter(type => {
+      return type !== TaskletType.DEVELOPMENT;
+    });
+  }
+
+  /**
+   * Triggers entity retrieval from database
+   */
+  private findEntities() {
+    this.taskletService.findTaskletByID(this.id);
+    this.taskletService.findTaskletsByScope(this.scopeService.scope);
   }
 
   /**
@@ -316,11 +384,12 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles tasklet type changes
-   * @param type tasklet type
+   * Handles selection of tasklet type
+   * @param taskletType tasklet type action
    */
-  onTaskletTypeChanged(type: TaskletType) {
-    this.tasklet.type = type;
+  onTaskletTypeSelected(taskletType: TaskletType) {
+    this.tasklet.type = taskletType;
+    this.initializeTaskletTypeAction();
   }
 
   /**
@@ -329,6 +398,14 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onTaskChanged(task: Task) {
     this.task = task;
+  }
+
+  /**
+   * Handles pomodoro task changes
+   * @param pomodoroTask new pomodoro task
+   */
+  onPomodoroTaskChanged(pomodoroTask: Description) {
+    this.tasklet.pomodoroTask = pomodoroTask;
   }
 
   /**
@@ -751,11 +828,20 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
+   * Retrieves an icon by tasklet type
+   * @param type tasklet type
+   */
+  public getIconByTaskletType(type: TaskletType): string {
+    return this.taskletTypeService.getIconByTaskletType(type);
+  }
+
+  /**
    * Determines whether the displayed tasklet can be assigned to a task
    * @param tasklet tasklet
    */
   public canBeAssignedToTask(tasklet: Tasklet): boolean {
     return tasklet != null && (tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.POMODORO
       || tasklet.type === TaskletType.MEETING
       || tasklet.type === TaskletType.CALL
       || tasklet.type === TaskletType.MAIL
@@ -775,6 +861,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   public containsDescription(tasklet: Tasklet): boolean {
     return tasklet != null && (tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.POMODORO
       || (tasklet.type === TaskletType.MEETING
         && tasklet.description != null
         && tasklet.description.value != null
@@ -784,13 +871,31 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         && tasklet.description.value != null
         && tasklet.description.value !== '')
       || tasklet.type === TaskletType.MAIL
-      || tasklet.type === TaskletType.CHAT
       || tasklet.type === TaskletType.DEVELOPMENT
       || tasklet.type === TaskletType.CODING
       || tasklet.type === TaskletType.DEBUGGING
       || tasklet.type === TaskletType.DOCUMENTATION
       || tasklet.type === TaskletType.REVIEW
-      || tasklet.type === TaskletType.TESTING);
+      || tasklet.type === TaskletType.TESTING
+      || tasklet.type === TaskletType.IDEA);
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains meeting minutes
+   * @param tasklet tasklet
+   */
+  public containsMeetingMinutes(tasklet: Tasklet): boolean {
+    return tasklet != null && (tasklet.type === TaskletType.CALL
+      || tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.CHAT);
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains pomodoro tasks
+   * @param tasklet tasklet
+   */
+  public containsPomodoroTask(tasklet: Tasklet) {
+    return tasklet != null && tasklet.type === TaskletType.POMODORO;
   }
 
   /**
