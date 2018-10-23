@@ -31,13 +31,10 @@
               <div class="flexbox"></div>
             </div>
           </div>
-          <div class="flexcontainer header">
-            <app-suggested-action-button
-              [backgroundColor]="action.backgroundColor"
-              [iconColor]="action.iconColor"
-              [icon]="action.icon"
-              (buttonClickedEmitter)="select.open()">
-            </app-suggested-action-button>
+          <div class="header flexcontainer">
+            <button mat-fab class="tasklet-type" [style.backgroundColor]="action.backgroundColor" (click)="select.open()">
+              <mat-icon [svgIcon]="action.icon" [style.fill]="action.iconColor"></mat-icon>
+            </button>
             <mat-select #select class="typeSelect">
               <mat-option *ngFor="let type of action.taskletTypes" [value]="type"
                           (click)="onTaskletTypeSelected(type)">
