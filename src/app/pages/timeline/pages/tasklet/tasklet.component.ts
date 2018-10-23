@@ -264,18 +264,22 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTasklet(tasklet: Tasklet) {
     this.tasklet = tasklet;
-    this.task = this.taskService.tasks.get(tasklet.taskId);
-    this.project = this.projectService.projects.get(this.task.projectId);
-    this.tags = tasklet.tagIds.map(id => {
-      return this.tagService.tags.get(id);
-    }).filter(tag => {
-      return tag != null;
-    });
-    this.persons = tasklet.personIds.map(id => {
-      return this.personService.persons.get(id);
-    }).filter(person => {
-      return person != null;
-    });
+    if (tasklet != null) {
+      this.task = this.taskService.tasks.get(tasklet.taskId);
+      if (this.task != null) {
+        this.project = this.projectService.projects.get(this.task.projectId);
+      }
+      this.tags = tasklet.tagIds.map(id => {
+        return this.tagService.tags.get(id);
+      }).filter(tag => {
+        return tag != null;
+      });
+      this.persons = tasklet.personIds.map(id => {
+        return this.personService.persons.get(id);
+      }).filter(person => {
+        return person != null;
+      });
+    }
   }
 
   /**

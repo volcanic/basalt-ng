@@ -138,7 +138,7 @@ export class ColorService {
         return this.materialColorService.hue(PaletteType.GREY, HueType._600);
       }
       default: {
-        return this.materialColorService.hue(PaletteType.GREY, HueType._50);
+        return this.materialColorService.hue(PaletteType.GREY, HueType._300);
       }
     }
   }

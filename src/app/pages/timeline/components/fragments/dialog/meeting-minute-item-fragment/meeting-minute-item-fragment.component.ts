@@ -72,7 +72,7 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
   //
 
   /**
-   * Initializes the personColor picked by a hash value generated from a name
+   * Initializes the color picked by a hash value generated from a name
    */
   private initializeColor() {
     if (this.meetingMinuteItem.type === MeetingMinuteItemType.INFORMATION) {
