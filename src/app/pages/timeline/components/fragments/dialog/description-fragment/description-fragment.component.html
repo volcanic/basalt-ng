@@ -1,15 +1,15 @@
 <mat-form-field color="primary" class="wide-box">
-          <textarea matInput
-                    matTextareaAutosize
-                    required
-                    name="description"
-                    placeholder="Description"
-                    matAutosizeMinRows="5"
-                    matAutosizeMaxRows="5"
-                    [(ngModel)]="description.value"
-                    [disabled]="readonly"
-                    (change)="onDescriptionTextChanged()">
-          </textarea>
+  <textarea matInput
+            matTextareaAutosize
+            required
+            name="description"
+            [placeholder]="placeholder"
+            matAutosizeMinRows="5"
+            matAutosizeMaxRows="5"
+            [(ngModel)]="description.value"
+            [disabled]="readonly"
+            (change)="onDescriptionTextChanged()">
+  </textarea>
   <button
     *ngIf="description.value"
     mat-button
