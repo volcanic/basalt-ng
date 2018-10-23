@@ -3,6 +3,7 @@
  */
 export enum TaskletTypeGroup {
 
+  UNSPECIFIED = '???',
   ACTION = 'Action',
   COMMUNICATION = 'Communication',
   DEVELOPMENT = 'Development',

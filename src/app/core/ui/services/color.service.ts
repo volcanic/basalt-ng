@@ -119,6 +119,9 @@ export class ColorService {
    */
   getTaskletTypeGroupColor(group: TaskletTypeGroup): Hue {
     switch (group) {
+      case TaskletTypeGroup.UNSPECIFIED: {
+        return this.materialColorService.hue(PaletteType.GREY, HueType._50);
+      }
       case TaskletTypeGroup.ACTION: {
         return this.materialColorService.hue(PaletteType.RED, HueType._600);
       }
@@ -135,7 +138,7 @@ export class ColorService {
         return this.materialColorService.hue(PaletteType.GREY, HueType._600);
       }
       default: {
-        return this.materialColorService.hue(PaletteType.GREY, HueType._300);
+        return this.materialColorService.hue(PaletteType.GREY, HueType._50);
       }
     }
   }

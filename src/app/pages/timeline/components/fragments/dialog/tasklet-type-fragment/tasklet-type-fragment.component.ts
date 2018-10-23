@@ -88,7 +88,9 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    */
   initializeTaskletTypeGroups() {
     this.taskletTypeActions = [];
-    this.taskletTypeGroups.forEach(group => {
+    this.taskletTypeGroups.filter(group => {
+      return group !== TaskletTypeGroup.UNSPECIFIED;
+    }).forEach(group => {
       const action = new TaskletTypeGroupAction();
       action.group = group;
       action.backgroundColor = this.getGroupColor(group);

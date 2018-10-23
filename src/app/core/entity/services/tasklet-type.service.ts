@@ -32,6 +32,10 @@ export class TaskletTypeService {
 
     groups.forEach(group => {
       switch (group) {
+        case TaskletTypeGroup.UNSPECIFIED: {
+          this.taskletTypeGroups.set(TaskletType.UNSPECIFIED, group);
+          break;
+        }
         case TaskletTypeGroup.ACTION: {
           this.taskletTypeGroups.set(TaskletType.ACTION, group);
           this.taskletTypeGroups.set(TaskletType.POMODORO, group);
@@ -87,6 +91,14 @@ export class TaskletTypeService {
   }
 
   /**
+   * Returns the tasklet type group of a given tasklet type
+   * @param type tasklet type
+   */
+  public getTaskletGroupByType(type: TaskletType): TaskletTypeGroup {
+    return this.taskletTypeGroups.get(type);
+  }
+
+  /**
    * Determines if a tasklet type group contains a given tasklet type
    * @param group tasklet type group
    * @param type tasklet type
@@ -99,8 +111,11 @@ export class TaskletTypeService {
    * Retrieves an icon by tasklet type
    * @param group tasklet type group
    */
-  public getIconByTaskletTypeGroup(group: TaskletTypeGroup) {
+  public getIconByTaskletTypeGroup(group: TaskletTypeGroup): string {
     switch (group) {
+      case TaskletTypeGroup.UNSPECIFIED: {
+        return 'help';
+      }
       case TaskletTypeGroup.ACTION: {
         return 'turned_in_not';
       }
@@ -123,8 +138,11 @@ export class TaskletTypeService {
    * Retrieves an icon by tasklet type
    * @param type tasklet type
    */
-  public getIconByTaskletType(type: TaskletType) {
+  public getIconByTaskletType(type: TaskletType): string {
     switch (type) {
+      case TaskletType.UNSPECIFIED: {
+        return 'help';
+      }
       case TaskletType.ACTION: {
         return 'turned_in_not';
       }
