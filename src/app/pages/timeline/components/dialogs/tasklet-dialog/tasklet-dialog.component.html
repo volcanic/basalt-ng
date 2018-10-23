@@ -10,16 +10,20 @@
       </app-task-autocomplete-fragment>
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescription]="previousDescription"></app-previous-description-fragment>
+      <app-description-fragment *ngIf="containsPomodoroTask(tasklet)"
+                                [description]="tasklet.pomodoroTask"
+                                placeholder="Pomodoro Task"
+                                (descriptionChangedEmitter)="onPomodoroTaskChanged($event)"></app-description-fragment>
       <app-description-fragment *ngIf="containsDescription(tasklet)"
                                 [description]="tasklet.description"
+                                placeholder="Description"
                                 (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
       <app-meeting-minutes-fragment
-        *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
+        *ngIf="containsMeetingMinutes(tasklet)"
         [meetingMinuteItems]="tasklet.meetingMinuteItems"
         [personOptions]="personOptions"
         [myselfOption]="myselfOption"
         (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
-
       <app-tag-chips *ngIf="containsTags(tasklet)"
                      [tags]="tags | tagNames"
                      [tagOptions]="tagOptions"
@@ -42,6 +46,9 @@
     <div class="flexbox"></div>
     <button mat-button (click)="goToFullscreen()">
       Go to Fullscreen
+    </button>
+    <button *ngIf="containsPomodoroTask(tasklet)" mat-button (click)="startPomodoro()">
+      Start Pomodoro
     </button>
     <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
             (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">

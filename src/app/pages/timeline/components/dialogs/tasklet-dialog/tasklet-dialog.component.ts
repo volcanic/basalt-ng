@@ -157,6 +157,14 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   /**
+   * Handles pomodoro task changes
+   * @param pomodoroTask new pomodoro task
+   */
+  onPomodoroTaskChanged(pomodoroTask: Description) {
+    this.tasklet.pomodoroTask = pomodoroTask;
+  }
+
+  /**
    * Handles daily scrum item updates
    * @param dailyScrumItems daily scrum items
    */
@@ -255,7 +263,26 @@ export class TaskletDialogComponent implements OnInit {
    * Handles click on fullscreen button
    */
   goToFullscreen() {
-    this.dialogRef.close({action: Action.FULLSCREEN, tasklet: this.tasklet});
+    this.dialogRef.close({
+      action: Action.FULLSCREEN,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
+  }
+
+  /**
+   * Handles click on pomodoro start button
+   */
+  startPomodoro() {
+    this.dialogRef.close({
+      action: Action.POMODORO_START,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
   }
 
   /**
@@ -307,6 +334,7 @@ export class TaskletDialogComponent implements OnInit {
    */
   public canBeAssignedToTask(tasklet: Tasklet): boolean {
     return tasklet != null && (tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.POMODORO
       || tasklet.type === TaskletType.MEETING
       || tasklet.type === TaskletType.CALL
       || tasklet.type === TaskletType.MAIL
@@ -342,6 +370,25 @@ export class TaskletDialogComponent implements OnInit {
       || tasklet.type === TaskletType.DOCUMENTATION
       || tasklet.type === TaskletType.REVIEW
       || tasklet.type === TaskletType.TESTING);
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains meeting minutes
+   * @param tasklet tasklet
+   */
+  public containsMeetingMinutes(tasklet: Tasklet) {
+    return tasklet != null && (tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.CALL
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.CHAT);
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains pomodoro tasks
+   * @param tasklet tasklet
+   */
+  public containsPomodoroTask(tasklet: Tasklet) {
+    return tasklet != null && tasklet.type === TaskletType.POMODORO;
   }
 
   /**

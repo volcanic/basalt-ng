@@ -19,7 +19,6 @@ export class Tasklet extends Entity {
 
   // Labels
 
-
   /** References to tags */
   tagIds: string[];
   /** References to persons */
@@ -31,6 +30,8 @@ export class Tasklet extends Entity {
   meetingMinuteItems: MeetingMinuteItem[];
   /** Array of daily scrum items */
   dailyScrumItems: DailyScrumItem[];
+  /** Pomodoro task */
+  pomodoroTask: Description;
 
   /**
    * Constructor
@@ -46,5 +47,6 @@ export class Tasklet extends Entity {
 
     this.meetingMinuteItems = [];
     this.dailyScrumItems = [];
+    this.pomodoroTask = new Description();
   }
 }
