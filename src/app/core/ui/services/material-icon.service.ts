@@ -74,6 +74,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.ACTION, 'code', 'ic_code_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'gavel', 'ic_gavel_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'info', 'ic_info_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'help_outline', 'ic_help_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'label_outline', 'ic_label_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'lightbulb_outline', 'ic_lightbulb_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'receipt', 'ic_receipt_24px.svg'));
@@ -119,6 +120,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.NAVIGATION, 'close_18', 'ic_close_18px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'expand_more', 'ic_expand_more_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'menu', 'ic_menu_24px.svg'));
+    icons.push(new Icon(IconTopic.NAVIGATION, 'more_horiz_36', 'ic_more_horiz_36px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'more_vert', 'ic_more_vert_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'refresh', 'ic_refresh_24px.svg'));
     icons.push(new Icon(IconTopic.SOCIAL, 'person', 'ic_person_24px.svg'));
@@ -137,5 +139,6 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('code_tags_check', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_tags_check_24px.svg'));
     iconRegistry.addSvgIcon('file_document_outline', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_file_document_outline_24px.svg'));
     iconRegistry.addSvgIcon('clock_end', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_clock_end_24px.svg'));
+    iconRegistry.addSvgIcon('help', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_help_24px.svg'));
   }
 }
