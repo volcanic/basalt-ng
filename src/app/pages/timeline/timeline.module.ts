@@ -70,6 +70,7 @@ import {TaskletResolver} from './resolvers/tasklet.resolver';
 import {TagChipsModule} from '../../ui/tag-chips/tag-chips.module';
 import {TagNamesPipe} from './pipes/tag-names.pipe';
 import {PersonNamesPipe} from './pipes/person-names.pipe';
+import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
 
 @NgModule({
   imports: [
@@ -170,6 +171,7 @@ import {PersonNamesPipe} from './pipes/person-names.pipe';
     // Pipes
     TagNamesPipe,
     PersonNamesPipe,
+    PomodoroTimerComponent,
   ], entryComponents: [
     // Page
     TimelineComponent,

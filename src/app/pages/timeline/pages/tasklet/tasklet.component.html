@@ -31,24 +31,37 @@
               <div class="flexbox"></div>
             </div>
           </div>
-          <div class="header flexcontainer">
-            <button mat-fab class="tasklet-type" [style.backgroundColor]="action.backgroundColor" (click)="select.open()">
-              <mat-icon [svgIcon]="action.icon" [style.fill]="action.iconColor"></mat-icon>
-            </button>
-            <mat-select #select class="typeSelect">
-              <mat-option *ngFor="let type of action.taskletTypes" [value]="type"
-                          (click)="onTaskletTypeSelected(type)">
-                <mat-icon [svgIcon]="getIconByTaskletType(type)"></mat-icon>
-                {{ type }}
-              </mat-option>
-            </mat-select>
-            <div>
-              <app-task-autocomplete-fragment class="task"
-                                              [task]="task" [taskOptions]="taskOptions"
-                                              (taskChangedEmitter)="onTaskChanged($event)"
-                                              *ngIf="canBeAssignedToTask(tasklet)">
-              </app-task-autocomplete-fragment>
-              <div *ngIf="project != null" [style.color]="action.backgroundColor">{{ project.name }}</div>
+          <div class="header">
+            <div class="flexcontainer">
+              <div *ngIf="action != null">
+                <button mat-fab class="tasklet-type"
+                        [style.backgroundColor]="action.backgroundColor"
+                        (click)="select.open()">
+                  <mat-icon [svgIcon]="action.icon" [style.fill]="action.iconColor"></mat-icon>
+                </button>
+                <mat-select #select class="typeSelect">
+                  <mat-option *ngFor="let type of action.taskletTypes" [value]="type"
+                              (click)="onTaskletTypeSelected(type)">
+                    <mat-icon [svgIcon]="getIconByTaskletType(type)"></mat-icon>
+                    {{ type }}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div>
+                <app-task-autocomplete-fragment class="task"
+                                                [task]="task" [taskOptions]="taskOptions"
+                                                (taskChangedEmitter)="onTaskChanged($event)"
+                                                *ngIf="canBeAssignedToTask(tasklet)">
+                </app-task-autocomplete-fragment>
+                <div *ngIf="project != null" [style.color]="action.backgroundColor">{{ project.name }}</div>
+              </div>
+              <app-pomodoro-timer *ngIf="tasklet.type == taskletType.POMODORO && tasklet.pomodoroStartTime != null"
+                                  class="pomodoro-timer"
+                                  [pomodoroDuration]="tasklet.pomodoroDuration"
+                                  [pomodoroStartTime]="tasklet.pomodoroStartTime"
+                                  [textColor]="action.iconColor"
+                                  [backgroundColor]="action.backgroundColor">
+              </app-pomodoro-timer>
             </div>
           </div>
           <div class="main">

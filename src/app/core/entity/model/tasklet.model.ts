@@ -32,6 +32,10 @@ export class Tasklet extends Entity {
   dailyScrumItems: DailyScrumItem[];
   /** Pomodoro task */
   pomodoroTask: Description;
+  /** Pomodoro duration */
+  pomodoroDuration: number;
+  /** Pomodoro start time */
+  pomodoroStartTime: Date;
 
   /**
    * Constructor
@@ -48,5 +52,6 @@ export class Tasklet extends Entity {
     this.meetingMinuteItems = [];
     this.dailyScrumItems = [];
     this.pomodoroTask = new Description();
+    this.pomodoroDuration = -1;
   }
 }

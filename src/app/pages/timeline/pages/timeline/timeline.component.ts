@@ -54,6 +54,8 @@ import {MaterialColorService} from '../../../../core/ui/services/material-color.
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
 import {Router} from '@angular/router';
+import {SettingsService} from '../../../../core/settings/services/settings.service';
+import {Settings} from '../../../../core/settings/model/settings.enum';
 
 /**
  * Displays timeline page
@@ -169,6 +171,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {SuggestionService} suggestionService
    * @param {PersonService} personService person service
    * @param {ProjectService} projectService project service
+   * @param {SettingsService} settingsService settings service
    * @param {TagService} tagService tag service
    * @param {TaskService} taskService task service
    * @param {TaskletService} taskletService tasklet service
@@ -192,6 +195,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               private suggestionService: SuggestionService,
               public personService: PersonService,
               public projectService: ProjectService,
+              public settingsService: SettingsService,
               public tagService: TagService,
               public taskService: TaskService,
               public taskletService: TaskletService,
@@ -1024,6 +1028,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FULLSCREEN: {
+        this.router.navigate([`/tasklet/${tasklet.id}`]).then(() => {
+        });
+        break;
+      }
+      case Action.POMODORO_START: {
+        // Set pomodoro duration and start time
+        tasklet.pomodoroDuration = +this.settingsService.settings.get(Settings.POMODORO_DURATION).value;
+        tasklet.pomodoroStartTime = new Date();
+
+        // Update tasklet
+        this.onTaskletEvent({
+          action: Action.UPDATE,
+          tasklet: tasklet,
+          task: task,
+          tags: tags,
+          persons: persons
+        });
+
         this.router.navigate([`/tasklet/${tasklet.id}`]).then(() => {
         });
         break;

@@ -187,9 +187,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeMaterial();
     this.initializeMediaSubscription();
 
-    this.initializeOptions();
-    this.initializeTaskletTypeAction();
-
     this.findEntities();
   }
 

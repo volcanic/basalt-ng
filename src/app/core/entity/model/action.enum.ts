@@ -23,5 +23,6 @@ export enum Action {
   FILTER_LIST,
   FILTER_NONE,
 
-  FULLSCREEN
+  FULLSCREEN,
+  POMODORO_START
 }
