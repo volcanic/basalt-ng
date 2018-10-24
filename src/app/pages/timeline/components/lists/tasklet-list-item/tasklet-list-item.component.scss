@@ -53,6 +53,10 @@
   0 1px 5px 0 rgba(0, 0, 0, .12);
 }
 
+.pomodoro-task {
+  font-weight: 400;
+}
+
 .light-theme {
   .tag {
     background: mat-color($mat-grey, 200) !important;
