@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {SnackbarService} from './core/ui/services/snackbar.service';
 import {PouchDBService} from './core/persistence/services/pouchdb.service';
-import {MatDialog, MatIconRegistry, MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {environment} from '../environments/environment';
 import {GitTag} from './core/settings/model/git-tag.model';
 import {NewFeaturesDialogComponent} from './ui/new-features-dialog/new-features-dialog/new-features-dialog.component';
@@ -9,11 +9,11 @@ import {SettingsService} from './core/settings/services/settings.service';
 import {PouchDBSettingsService} from './core/persistence/services/pouchdb-settings.service';
 import {Setting} from './core/settings/model/setting.model';
 import {EntityService} from './core/entity/services/entity.service';
-import {DomSanitizer} from '@angular/platform-browser';
 import {TaskService} from './core/entity/services/task.service';
 import {TaskletService} from './core/entity/services/tasklet.service';
 import {ThemeService} from './core/ui/services/theme.service';
 import {OverlayContainer} from '@angular/cdk/overlay';
+import {Settings} from './core/settings/model/settings.enum';
 
 /**
  * Displays root element
@@ -42,8 +42,6 @@ export class AppComponent implements OnInit, AfterViewInit {
    * @param {SettingsService} settingsService
    * @param {ThemeService} themeService
    * @param {OverlayContainer} overlayContainer
-   * @param {MatIconRegistry} iconRegistry
-   * @param {DomSanitizer} sanitizer
    * @param {MatDialog} dialog dialog
    * @param {MatSnackBar} snackBar snack bar
    */
@@ -92,8 +90,19 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.settingsService.fetch();
     this.settingsService.settingsSubject.subscribe(settings => {
 
-      if (settings.get('version') != null) {
-        this.showNewFeatures(settings.get('version').value);
+      if (settings.get(Settings.VERSION) != null) {
+        this.showNewFeatures(settings.get(Settings.VERSION).value);
+      }
+
+      // Initialize values
+      if (this.settingsService.settings.get(Settings.POMODORO_DURATION) == null) {
+        const setting = new Setting(Settings.POMODORO_DURATION, '25');
+        this.settingsService.updateSetting(setting);
+      }
+
+      if (this.settingsService.settings.get(Settings.VERSION) == null) {
+        const setting = new Setting(Settings.VERSION, '0.0.0');
+        this.settingsService.updateSetting(setting);
       }
     });
   }
@@ -205,7 +214,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       });
       dialogRef.afterClosed().subscribe(() => {
         // Save latest version
-        this.settingsService.updateSetting(new Setting('version', environment.VERSION));
+        this.settingsService.updateSetting(new Setting(Settings.VERSION, environment.VERSION));
       });
     }
   }
