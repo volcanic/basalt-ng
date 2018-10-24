@@ -10,20 +10,29 @@
       </app-task-autocomplete-fragment>
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescription]="previousDescription"></app-previous-description-fragment>
+      <!-- Pomodoro task -->
       <app-description-fragment *ngIf="containsPomodoroTask(tasklet)"
                                 [description]="tasklet.pomodoroTask"
                                 placeholder="Pomodoro Task"
                                 (descriptionChangedEmitter)="onPomodoroTaskChanged($event)"></app-description-fragment>
+      <!-- Description -->
       <app-description-fragment *ngIf="containsDescription(tasklet)"
                                 [description]="tasklet.description"
                                 placeholder="Description"
                                 (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
+      <!-- Meeting minutes -->
       <app-meeting-minutes-fragment
         *ngIf="containsMeetingMinutes(tasklet)"
         [meetingMinuteItems]="tasklet.meetingMinuteItems"
         [personOptions]="personOptions"
         [myselfOption]="myselfOption"
         (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
+      <!-- Daily Scrum -->
+      <app-daily-scrum-fragment
+        *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
+        [dailyScrumItems]="tasklet.dailyScrumItems"
+        [personOptions]="personOptions">
+      </app-daily-scrum-fragment>
       <app-tag-chips *ngIf="containsTags(tasklet)"
                      [tags]="tags | tagNames"
                      [tagOptions]="tagOptions"
