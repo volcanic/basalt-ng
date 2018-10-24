@@ -268,6 +268,7 @@ export class TaskletService {
         return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
           this.snackbarService.showSnackbar('Updated tasklet');
           this.tasklets.set(tasklet.id, tasklet);
+          this.tasklet = tasklet;
           this.notify();
         });
       }

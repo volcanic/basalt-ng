@@ -139,6 +139,7 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('code_tags_check', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_tags_check_24px.svg'));
     iconRegistry.addSvgIcon('file_document_outline', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_file_document_outline_24px.svg'));
     iconRegistry.addSvgIcon('clock_end', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_clock_end_24px.svg'));
+    iconRegistry.addSvgIcon('clock_start', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_clock_start_24px.svg'));
     iconRegistry.addSvgIcon('help', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_help_24px.svg'));
   }
 }

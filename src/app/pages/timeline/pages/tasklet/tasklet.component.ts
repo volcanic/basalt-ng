@@ -37,6 +37,8 @@ import {ColorService} from '../../../../core/ui/services/color.service';
 import {Project} from '../../../../core/entity/model/project.model';
 import {ProjectService} from '../../../../core/entity/services/project.service';
 import {ScopeService} from '../../../../core/entity/services/scope.service';
+import {Settings} from '../../../../core/settings/model/settings.enum';
+import {SettingsService} from '../../../../core/settings/services/settings.service';
 
 /**
  * Represents a tasklet type action button
@@ -137,6 +139,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param personService person service
    * @param projectService project service
    * @param scopeService scope service
+   * @param settingsService settings service
    * @param snackbarService snackbar service
    * @param tagService tag service
    * @param suggestionService suggestion service
@@ -159,6 +162,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
               private projectService: ProjectService,
               private scopeService: ScopeService,
               private scroll: ScrollDispatcher,
+              private settingsService: SettingsService,
               private snackbarService: SnackbarService,
               private suggestionService: SuggestionService,
               private tagService: TagService,
@@ -186,6 +190,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.initializeMaterial();
     this.initializeMediaSubscription();
+
+    // this.initializeTaskletTypeAction();
 
     this.findEntities();
   }
@@ -521,6 +527,19 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Handles click on pomodoro start button
+   */
+  startPomodoro() {
+    this.onTaskletEvent({
+      action: Action.POMODORO_START,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
+  }
+
+  /**
    * Sends meeting minutes via mail
    */
   sendMeetingMinutes() {
@@ -673,6 +692,22 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.emailService.sendMail(recipients, [], subject, body);
+        break;
+      }
+      case Action.POMODORO_START: {
+        // Set pomodoro duration and start time
+        tasklet.pomodoroDuration = +this.settingsService.settings.get(Settings.POMODORO_DURATION).value;
+        tasklet.pomodoroStartTime = new Date();
+
+        // Update tasklet
+        this.onTaskletEvent({
+          action: Action.UPDATE,
+          tasklet: tasklet,
+          task: task,
+          tags: tags,
+          persons: persons
+        });
+
         break;
       }
     }

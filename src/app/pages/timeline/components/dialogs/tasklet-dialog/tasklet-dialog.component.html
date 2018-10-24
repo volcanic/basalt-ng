@@ -56,7 +56,7 @@
     <button mat-button (click)="goToFullscreen()">
       Go to Fullscreen
     </button>
-    <button *ngIf="containsPomodoroTask(tasklet)" mat-button (click)="startPomodoro()">
+    <button mat-button [disabled]="tasklet.pomodoroStartTime != null" *ngIf="containsPomodoroTask(tasklet)" mat-button (click)="startPomodoro()">
       Start Pomodoro
     </button>
     <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
