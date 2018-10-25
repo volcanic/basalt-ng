@@ -24,5 +24,6 @@ export enum TaskletType {
   IDEA = 'Idea',
   // Break
   LUNCH_BREAK = 'Lunch Break',
+  POMODORO_BREAK = 'Pomodoro Break',
   FINISHING_TIME = 'Finishing Time'
 }

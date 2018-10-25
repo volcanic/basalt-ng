@@ -34,6 +34,8 @@ export class Tasklet extends Entity {
   pomodoroTask: Description;
   /** Pomodoro duration */
   pomodoroDuration: number;
+  /** Pomodoro break duration */
+  pomodoroBreak: number;
   /** Pomodoro start time */
   pomodoroStartTime: Date;
 
@@ -53,5 +55,6 @@ export class Tasklet extends Entity {
     this.dailyScrumItems = [];
     this.pomodoroTask = new Description();
     this.pomodoroDuration = -1;
+    this.pomodoroBreak = -1;
   }
 }

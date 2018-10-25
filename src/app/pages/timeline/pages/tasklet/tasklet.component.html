@@ -19,6 +19,7 @@
         <form #formCtrl="ngForm">
           <!-- Pseudo form field to make other input fields work -->
           <mat-form-field style="width: 0; height: 0;"><input matInput=""/></mat-form-field>
+
           <div class="header-buttons">
             <div class="icon-wrapper">
               <div class="more">
@@ -31,6 +32,7 @@
               <div class="flexbox"></div>
             </div>
           </div>
+
           <div class="header">
             <div class="flexcontainer">
               <div *ngIf="action != null">
@@ -60,7 +62,8 @@
                                   [pomodoroDuration]="tasklet.pomodoroDuration"
                                   [pomodoroStartTime]="tasklet.pomodoroStartTime"
                                   [textColor]="action.iconColor"
-                                  [backgroundColor]="action.backgroundColor">
+                                  [backgroundColor]="action.backgroundColor"
+                                  (timerOverEmitter)="onPomodoroTimerOver()">
               </app-pomodoro-timer>
             </div>
           </div>
@@ -144,21 +147,26 @@
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
+  <div *ngIf="tasklet.type === taskletType.POMODORO_BREAK && action != null" class="overlay">
+
+    <div>
+    <div class="overlay-buttons">
+      <div class="icon-wrapper">
+        <div class="more">
+          <mat-icon svgIcon="more_horiz_36"></mat-icon>
+        </div>
+      </div>
+      <div class="flexcontainer button-wrapper">
+        <div class="flexbox"></div>
+        <button mat-button routerLink="/timeline">Back to timeline</button>
+        <div class="flexbox"></div>
+      </div>
+    </div>
+
+    <div class="overlay-content">
+      <div>POMODORO BREAK</div>
+      <app-stop-watch [duration]="tasklet.pomodoroBreak" [startTime]="tasklet.creationDate"></app-stop-watch>
+    </div>
+    </div>
+  </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

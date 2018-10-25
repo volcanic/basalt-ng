@@ -8,7 +8,7 @@ import {DateService} from '../../../core/entity/services/date.service';
 })
 export class StopWatchComponent implements OnInit {
 
-  /** Duration */
+  /** Duration in minutes */
   @Input() duration: number;
   /** Start time */
   @Input() startTime: Date;
@@ -82,9 +82,9 @@ export class StopWatchComponent implements OnInit {
           // Stop timer if time is over
           clearInterval(refreshIntervalID);
           this.invalidateTimer();
-        }
+          this.timeLeftEmitter.emit(this.secondsLeft);
 
-        this.timeLeftEmitter.emit(this.secondsLeft);
+        }
       }, 1000);
     } else {
       this.invalidateTimer();

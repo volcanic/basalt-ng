@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TaskletService} from '../../../../core/entity/services/tasklet.service';
 import {Tasklet} from '../../../../core/entity/model/tasklet.model';
 import {map, takeUntil} from 'rxjs/operators';
@@ -127,6 +127,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Scrollable directive */
   @ViewChild(CdkScrollable) scrollable: CdkScrollable;
 
+  transparent = 'transparent';
+
   /**
    * Constructor
    * @param colorService color service
@@ -147,6 +149,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param taskletTypeService tasklet type service
    * @param taskService task service
    * @param route route
+   * @param router router
    * @param iconRegistry iconRegistry
    * @param sanitizer sanitizer
    * @param dialog dialog
@@ -170,6 +173,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
               private taskletTypeService: TaskletTypeService,
               private taskService: TaskService,
               private route: ActivatedRoute,
+              private router: Router,
               private iconRegistry: MatIconRegistry,
               private sanitizer: DomSanitizer,
               public dialog: MatDialog,
@@ -191,9 +195,12 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeMaterial();
     this.initializeMediaSubscription();
 
-    // this.initializeTaskletTypeAction();
-
     this.findEntities();
+
+    this.route.params.subscribe(param => {
+      this.id = this.route.snapshot.paramMap.get('id');
+      this.findEntities();
+    });
   }
 
   /**
@@ -340,7 +347,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.action.icon = this.taskletTypeService.getIconByTaskletType(this.tasklet.type);
     this.action.label = this.tasklet.type.toString();
     this.action.taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]).filter(type => {
-      return type !== TaskletType.DEVELOPMENT;
+      return type !== TaskletType.DEVELOPMENT
+        && type !== TaskletType.POMODORO_BREAK;
     });
   }
 
@@ -456,6 +464,32 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   onPersonsChanged(persons: string[]) {
     this.persons = persons.map(p => {
       return new Person(p, true);
+    });
+  }
+
+  /**
+   * Handles pomodoro timer running out
+   */
+  onPomodoroTimerOver() {
+    const taskletPomodoroBreak = new Tasklet();
+    taskletPomodoroBreak.type = TaskletType.POMODORO_BREAK;
+    taskletPomodoroBreak.pomodoroBreak = +this.settingsService.settings.get(Settings.POMODORO_BREAK).value;
+
+    const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+      disableClose: false,
+      data: {
+        title: 'Pomodoro completed',
+        text: 'Check it like a polaroid picture!',
+        action: `Have a ${taskletPomodoroBreak.pomodoroBreak}min break`,
+        value: taskletPomodoroBreak
+      }
+    });
+    confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+      if (confirmationResult != null) {
+        this.onTaskletEvent({action: Action.ADD, tasklet: confirmationResult as Tasklet});
+        this.router.navigate([`/tasklet/${taskletPomodoroBreak.id}`]).then(() => {
+        });
+      }
     });
   }
 
@@ -697,6 +731,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.POMODORO_START: {
         // Set pomodoro duration and start time
         tasklet.pomodoroDuration = +this.settingsService.settings.get(Settings.POMODORO_DURATION).value;
+        tasklet.pomodoroBreak = +this.settingsService.settings.get(Settings.POMODORO_BREAK).value;
         tasklet.pomodoroStartTime = new Date();
 
         // Update tasklet
@@ -747,15 +782,18 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {Tag[]} tags array of tags to be checked
    */
   private evaluateTaskletTags(tasklet: Tasklet, tags: Tag[]) {
+
     const aggregatedTags = new Map<string, Tag>();
 
     // New tag
-    tags.filter(t => {
-      return t != null;
-    }).forEach(t => {
-      const tag = this.lookupTag(t.name);
-      aggregatedTags.set(tag.id, tag);
-    });
+    if (tags != null) {
+      tags.filter(t => {
+        return t != null;
+      }).forEach(t => {
+        const tag = this.lookupTag(t.name);
+        aggregatedTags.set(tag.id, tag);
+      });
+    }
 
     // Infer tags from meeting minutes
     if (tasklet.meetingMinuteItems != null) {
@@ -801,12 +839,14 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     const aggregatedPersons = new Map<string, Person>();
 
     // New person
-    persons.filter(p => {
-      return p != null;
-    }).forEach(p => {
-      const person = this.lookupPerson(p.name);
-      aggregatedPersons.set(person.id, person);
-    });
+    if (persons != null) {
+      persons.filter(p => {
+        return p != null;
+      }).forEach(p => {
+        const person = this.lookupPerson(p.name);
+        aggregatedPersons.set(person.id, person);
+      });
+    }
 
     // Infer persons from meeting minutes
     if (tasklet.meetingMinuteItems != null) {

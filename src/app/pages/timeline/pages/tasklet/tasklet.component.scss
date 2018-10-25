@@ -113,6 +113,40 @@
   }
 }
 
+$overlay-color: mat-color($mat-grey, 50);
+
+.overlay-buttons {
+  height: 50px;
+
+  .icon-wrapper {
+    text-align: center;
+    width: 100%;
+    display: flex;
+
+    .more {
+      margin: 0 auto;
+
+      mat-icon {
+        fill: $overlay-color;
+      }
+    }
+  }
+
+  .button-wrapper {
+    display: none;
+    color: $overlay-color;
+  }
+
+  &:hover {
+    .icon-wrapper {
+      display: none;
+    }
+    .button-wrapper {
+      display: flex;
+    }
+  }
+}
+
 .footer {
   @media #{$breakpoint-small} {
     margin-top: 10px;
@@ -174,7 +208,7 @@
 
 // Pomodoro timer
 
-.pomodoro-timer{
+.pomodoro-timer {
   margin-left: 15px;
   margin-top: 5px;
 }
@@ -240,4 +274,42 @@
 ::ng-deep .typeSelect.mat-select {
   display: inline;
   width: 1px;
+}
+
+//
+// Overlay
+//
+
+.overlay {
+  background: url('./../../../../../../src/assets/images/basalt.jpg') no-repeat center center fixed;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  overflow-x: hidden;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+  color: $overlay-color;
+  position: relative;
+  top: 25%; /* 25% from the top */
+  width: 100%; /* 100% width */
+  text-align: center; /* Centered text/links */
+  margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 4em;
 }

@@ -97,7 +97,10 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
       action.iconColor = this.getGroupContrast(group);
       action.icon = this.taskletTypeService.getIconByTaskletTypeGroup(group);
       action.label = group.toString();
-      action.taskletTypes = this.taskletTypeService.getTaskletTypesByGroup(group);
+      action.taskletTypes = this.taskletTypeService.getTaskletTypesByGroup(group).filter(type => {
+        return type !== TaskletType.DEVELOPMENT
+          && type !== TaskletType.POMODORO_BREAK;
+      });
       this.taskletTypeActions.push(action);
     });
   }

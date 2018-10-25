@@ -62,6 +62,7 @@ export class TaskletTypeService {
           break;
         }
         case TaskletTypeGroup.BREAK: {
+          this.taskletTypeGroups.set(TaskletType.POMODORO_BREAK, group);
           this.taskletTypeGroups.set(TaskletType.LUNCH_BREAK, group);
           this.taskletTypeGroups.set(TaskletType.FINISHING_TIME, group);
           break;
@@ -147,7 +148,7 @@ export class TaskletTypeService {
         return 'turned_in_not';
       }
       case TaskletType.POMODORO: {
-        return 'clock_end';
+        return 'circle_slice_3';
       }
       case TaskletType.CALL: {
         return 'call';
@@ -185,6 +186,9 @@ export class TaskletTypeService {
       }
       case TaskletType.LUNCH_BREAK: {
         return 'local_dining';
+      }
+      case TaskletType.POMODORO_BREAK: {
+        return 'circle_slice_1';
       }
       case TaskletType.FINISHING_TIME: {
         return 'directions_run';

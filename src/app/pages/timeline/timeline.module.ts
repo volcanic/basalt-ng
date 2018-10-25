@@ -71,6 +71,7 @@ import {TagChipsModule} from '../../ui/tag-chips/tag-chips.module';
 import {TagNamesPipe} from './pipes/tag-names.pipe';
 import {PersonNamesPipe} from './pipes/person-names.pipe';
 import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
+import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
 
 @NgModule({
   imports: [
@@ -94,7 +95,8 @@ import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomo
     DateTimePickerFragmentModule,
     EcoFabSpeedDialModule,
     SuggestedActionButtonModule,
-    TagChipsModule
+    TagChipsModule,
+    StopWatchModule,
   ],
   declarations: [
     // Page

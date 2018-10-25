@@ -141,5 +141,7 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('clock_end', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_clock_end_24px.svg'));
     iconRegistry.addSvgIcon('clock_start', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_clock_start_24px.svg'));
     iconRegistry.addSvgIcon('help', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_help_24px.svg'));
+    iconRegistry.addSvgIcon('circle_slice_1', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_circle_slice_1_24px.svg'));
+    iconRegistry.addSvgIcon('circle_slice_3', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_circle_slice_3_24px.svg'));
   }
 }

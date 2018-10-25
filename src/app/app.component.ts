@@ -95,13 +95,18 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
 
       // Initialize values
+      if (this.settingsService.settings.get(Settings.VERSION) == null) {
+        const setting = new Setting(Settings.VERSION, '0.0.0');
+        this.settingsService.updateSetting(setting);
+      }
+
       if (this.settingsService.settings.get(Settings.POMODORO_DURATION) == null) {
         const setting = new Setting(Settings.POMODORO_DURATION, '25');
         this.settingsService.updateSetting(setting);
       }
 
-      if (this.settingsService.settings.get(Settings.VERSION) == null) {
-        const setting = new Setting(Settings.VERSION, '0.0.0');
+      if (this.settingsService.settings.get(Settings.POMODORO_BREAK) == null) {
+        const setting = new Setting(Settings.POMODORO_BREAK, '5');
         this.settingsService.updateSetting(setting);
       }
     });
