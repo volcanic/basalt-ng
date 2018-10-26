@@ -38,7 +38,7 @@ export class TaskletTypeService {
         }
         case TaskletTypeGroup.ACTION: {
           this.taskletTypeGroups.set(TaskletType.ACTION, group);
-          this.taskletTypeGroups.set(TaskletType.BUSINESS_FLIGHT, group);
+          this.taskletTypeGroups.set(TaskletType.TRAVEL, group);
           this.taskletTypeGroups.set(TaskletType.POMODORO, group);
           break;
         }
@@ -149,7 +149,7 @@ export class TaskletTypeService {
       case TaskletType.ACTION: {
         return 'turned_in_not';
       }
-      case TaskletType.BUSINESS_FLIGHT: {
+      case TaskletType.TRAVEL: {
         return 'flight';
       }
       case TaskletType.POMODORO: {

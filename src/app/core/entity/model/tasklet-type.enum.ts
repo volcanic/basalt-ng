@@ -6,7 +6,7 @@ export enum TaskletType {
   UNSPECIFIED = '???',
   // Action
   ACTION = 'Action',
-  BUSINESS_FLIGHT = 'Business Flight',
+  TRAVEL = 'Travel',
   POMODORO = 'Pomodoro',
   // Communication
   CALL = 'Call',
