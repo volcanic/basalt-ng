@@ -1,0 +1,36 @@
+<mat-toolbar class="toolbar flexcontainer">
+  <div class="toolbar-block start">
+    <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('back')">
+      <mat-icon svgIcon="arrow_back"></mat-icon>
+    </button>
+    <span *ngIf="media != mediaType.SMALL" class="toolbar-title">{{ title }}</span>
+  </div>
+  <div class="flexbox"></div>
+  <div class="searchbox">
+    <mat-form-field floatLabel="never" class="search-form-field">
+      <button mat-button *ngIf="!searchItem" matSuffix mat-icon-button aria-label="Search">
+        <mat-icon svgIcon="search"></mat-icon>
+      </button>
+      <mat-label>Search</mat-label>
+      <input class="search-input" matInput #search name="search" type="text"
+             [ngModel]="searchItem"
+             (ngModelChange)="onSearchItemChanged($event)"
+             [matAutocomplete]="auto"
+             (keyup)="onKeyUp()"
+             (click)="onSearchFieldClicked()">
+      <button mat-button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
+              (click)="onClearButtonClicked()">
+        <mat-icon svgIcon="close_18"></mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of searchOptionsFiltered" [value]="option"
+                  (click)="onOptionSelected($event)">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+  <div class="flexbox"></div>
+  <div class="toolbar-block end">
+  </div>
+</mat-toolbar>

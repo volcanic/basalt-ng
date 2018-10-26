@@ -1,3 +1,12 @@
-<p>
-  settings works!
-</p>
+<app-settings-toolbar
+  [@toolbarAnimation]="scrollDirection"
+  class="fixed"
+  [title]="title"
+  [media]="media"
+  [searchOptions]="searchOptions"
+  (searchItemEventEmitter)="onSearchItemChanged($event)"
+  (menuItemEventEmitter)="onMenuItemClicked($event)"></app-settings-toolbar>
+
+
+
+<mat-divider></mat-divider>

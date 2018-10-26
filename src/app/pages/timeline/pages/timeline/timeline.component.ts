@@ -1668,7 +1668,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'settings': {
-        this.snackbarService.showSnackbar('Clicked on menu item Setting');
+        this.router.navigate(['/settings']);
         break;
       }
       case 'task-list': {
