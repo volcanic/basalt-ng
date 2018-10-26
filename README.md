@@ -61,6 +61,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.27 | Task delegation |
 | 0.28 | Meeting minutes |
 | 0.29 | Tasklet type groups |
+| 0.30 | Pomodoro mode |
 
 ### Planned features
 
