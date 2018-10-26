@@ -9,6 +9,8 @@ const routes: Routes = [
     {path: 'timeline', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
     // Calendar module
     {path: 'calendar', loadChildren: './pages/calendar/calendar.module#CalendarModule'},
+    // Settings module
+    {path: 'settings', loadChildren: './pages/settings/settings.module#SettingsModule'},
     // Default
   ]
 ;
