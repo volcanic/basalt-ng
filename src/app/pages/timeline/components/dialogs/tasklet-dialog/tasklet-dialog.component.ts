@@ -157,6 +157,14 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   /**
+   * Handles pomodoro task changes
+   * @param pomodoroTask new pomodoro task
+   */
+  onPomodoroTaskChanged(pomodoroTask: Description) {
+    this.tasklet.pomodoroTask = pomodoroTask;
+  }
+
+  /**
    * Handles daily scrum item updates
    * @param dailyScrumItems daily scrum items
    */
@@ -166,18 +174,22 @@ export class TaskletDialogComponent implements OnInit {
 
   /**
    * Handles tag changes
-   * @para tags new tags
+   * @param tags new tags
    */
-  onTagsChanged(tags: Tag[]) {
-    this.tags = tags;
+  onTagsChanged(tags: string[]) {
+    this.tags = tags.map(t => {
+      return new Tag(t, true);
+    });
   }
 
   /**
    * Handles person changes
-   * @para persons new persons
+   * @param persons new persons
    */
-  onPersonsChanged(persons: Person[]) {
-    this.persons = persons;
+  onPersonsChanged(persons: string[]) {
+    this.persons = persons.map(p => {
+      return new Person(p, true);
+    });
   }
 
   /**
@@ -248,6 +260,32 @@ export class TaskletDialogComponent implements OnInit {
   }
 
   /**
+   * Handles click on fullscreen button
+   */
+  goToFullscreen() {
+    this.dialogRef.close({
+      action: Action.FULLSCREEN,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
+  }
+
+  /**
+   * Handles click on pomodoro start button
+   */
+  startPomodoro() {
+    this.dialogRef.close({
+      action: Action.POMODORO_START,
+      tasklet: this.tasklet,
+      task: this.task,
+      tags: this.tags,
+      persons: this.persons
+    });
+  }
+
+  /**
    * Sends meeting minutes via mail
    */
   sendMeetingMinutes() {
@@ -295,14 +333,19 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeAssignedToTask(tasklet: Tasklet): boolean {
-    return tasklet.type === TaskletType.ACTION
+    return tasklet != null && (tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.POMODORO
       || tasklet.type === TaskletType.MEETING
       || tasklet.type === TaskletType.CALL
       || tasklet.type === TaskletType.MAIL
       || tasklet.type === TaskletType.CHAT
       || tasklet.type === TaskletType.DEVELOPMENT
+      || tasklet.type === TaskletType.CODING
       || tasklet.type === TaskletType.DEBUGGING
-      || tasklet.type === TaskletType.IDEA;
+      || tasklet.type === TaskletType.DOCUMENTATION
+      || tasklet.type === TaskletType.REVIEW
+      || tasklet.type === TaskletType.TESTING
+      || tasklet.type === TaskletType.IDEA);
   }
 
   /**
@@ -310,7 +353,7 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public containsDescription(tasklet: Tasklet): boolean {
-    return tasklet.type === TaskletType.ACTION
+    return tasklet != null && (tasklet.type === TaskletType.ACTION
       || (tasklet.type === TaskletType.MEETING
         && tasklet.description != null
         && tasklet.description.value != null
@@ -322,7 +365,30 @@ export class TaskletDialogComponent implements OnInit {
       || tasklet.type === TaskletType.MAIL
       || tasklet.type === TaskletType.CHAT
       || tasklet.type === TaskletType.DEVELOPMENT
-      || tasklet.type === TaskletType.DEBUGGING;
+      || tasklet.type === TaskletType.CODING
+      || tasklet.type === TaskletType.DEBUGGING
+      || tasklet.type === TaskletType.DOCUMENTATION
+      || tasklet.type === TaskletType.REVIEW
+      || tasklet.type === TaskletType.TESTING);
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains meeting minutes
+   * @param tasklet tasklet
+   */
+  public containsMeetingMinutes(tasklet: Tasklet) {
+    return tasklet != null && (tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.CALL
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.CHAT);
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains pomodoro tasks
+   * @param tasklet tasklet
+   */
+  public containsPomodoroTask(tasklet: Tasklet) {
+    return tasklet != null && tasklet.type === TaskletType.POMODORO;
   }
 
   /**
@@ -330,10 +396,10 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public containsPersons(tasklet: Tasklet): boolean {
-    return tasklet.type === TaskletType.MEETING
+    return tasklet != null && (tasklet.type === TaskletType.MEETING
       || tasklet.type === TaskletType.CALL
       || tasklet.type === TaskletType.MAIL
-      || tasklet.type === TaskletType.CHAT;
+      || tasklet.type === TaskletType.CHAT);
   }
 
   /**
@@ -341,9 +407,9 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public containsTags(tasklet: Tasklet): boolean {
-    return tasklet.type !== TaskletType.LUNCH_BREAK
+    return tasklet != null && (tasklet.type !== TaskletType.LUNCH_BREAK
       && tasklet.type !== TaskletType.FINISHING_TIME
-      && tasklet.type !== TaskletType.UNSPECIFIED;
+      && tasklet.type !== TaskletType.UNSPECIFIED);
   }
 
   /**
@@ -351,8 +417,8 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeCreated(tasklet: Tasklet): boolean {
-    return tasklet.type !== TaskletType.LUNCH_BREAK
-      && tasklet.type !== TaskletType.FINISHING_TIME;
+    return tasklet != null && (tasklet.type !== TaskletType.LUNCH_BREAK
+      && tasklet.type !== TaskletType.FINISHING_TIME);
   }
 
   /**
@@ -360,8 +426,8 @@ export class TaskletDialogComponent implements OnInit {
    * @param tasklet tasklet
    */
   public canBeUpdated(tasklet: Tasklet): boolean {
-    return tasklet.type !== TaskletType.LUNCH_BREAK
-      && tasklet.type !== TaskletType.FINISHING_TIME;
+    return tasklet != null && (tasklet.type !== TaskletType.LUNCH_BREAK
+      && tasklet.type !== TaskletType.FINISHING_TIME);
   }
 
   /**
@@ -392,7 +458,6 @@ export class TaskletDialogComponent implements OnInit {
 
     return Array.from(aggregatedTags.values());
   }
-
 
   /**
    * Infers tags from a tasklet's description

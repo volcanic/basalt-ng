@@ -1,0 +1,24 @@
+//
+// Custom
+//
+
+.delete-button {
+  height: 14px;
+  width: 14px;
+  margin-top: -14px;
+  margin-left: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+//
+// Material
+//
+
+mat-chip {
+  &:hover .hidden {
+    display: inline-block;
+  }
+}

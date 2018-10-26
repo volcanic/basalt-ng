@@ -10,34 +10,42 @@
       </app-task-autocomplete-fragment>
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescription]="previousDescription"></app-previous-description-fragment>
+      <!-- Pomodoro task -->
+      <app-description-fragment *ngIf="containsPomodoroTask(tasklet)"
+                                [description]="tasklet.pomodoroTask"
+                                placeholder="Pomodoro Task"
+                                (descriptionChangedEmitter)="onPomodoroTaskChanged($event)"></app-description-fragment>
+      <!-- Description -->
       <app-description-fragment *ngIf="containsDescription(tasklet)"
                                 [description]="tasklet.description"
+                                placeholder="Description"
                                 (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
+      <!-- Meeting minutes -->
       <app-meeting-minutes-fragment
-        *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
+        *ngIf="containsMeetingMinutes(tasklet)"
         [meetingMinuteItems]="tasklet.meetingMinuteItems"
         [personOptions]="personOptions"
         [myselfOption]="myselfOption"
         (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
-
-      <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
-                                [dailyScrumItems]="tasklet.dailyScrumItems"
-                                [personOptions]="personOptions"
-                                [myselfOption]="myselfOption"
-                                (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
+      <!-- Daily Scrum -->
+      <app-daily-scrum-fragment
+        *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
+        [dailyScrumItems]="tasklet.dailyScrumItems"
+        [personOptions]="personOptions">
       </app-daily-scrum-fragment>
-
-      <app-person-chips-fragment *ngIf="containsPersons(tasklet)"
-                                 [persons]="persons"
-                                 [personOptions]="personOptions"
-                                 (personsChangedEmitter)="onPersonsChanged($event)">
-      </app-person-chips-fragment>
-      <app-tag-chips-fragment
-        *ngIf="containsTags(tasklet)"
-        [tags]="tags"
-        [tagOptions]="tagOptions"
-        (tagsChangedEmitter)="onTagsChanged($event)">
-      </app-tag-chips-fragment>
+      <app-tag-chips *ngIf="containsTags(tasklet)"
+                     [tags]="tags | tagNames"
+                     [tagOptions]="tagOptions"
+                     [readonly]=false
+                     (tagsChangedEmitter)="onTagsChanged($event)">
+      </app-tag-chips>
+      <app-tag-chips *ngIf="containsPersons(tasklet)"
+                     [tags]="persons | personNames"
+                     [tagOptions]="personOptions"
+                     [readonly]=false
+                     placeholder="New person"
+                     (tagsChangedEmitter)="onPersonsChanged($event)">
+      </app-tag-chips>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions class="flexcontainer">
@@ -45,6 +53,12 @@
       Delete tasklet
     </button>
     <div class="flexbox"></div>
+    <button mat-button (click)="goToFullscreen()">
+      Go to Fullscreen
+    </button>
+    <button mat-button [disabled]="tasklet.pomodoroStartTime != null" *ngIf="containsPomodoroTask(tasklet)" mat-button (click)="startPomodoro()">
+      Start Pomodoro
+    </button>
     <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
             (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
       Send Meeting Minutes

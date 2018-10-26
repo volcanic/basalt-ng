@@ -23,10 +23,8 @@ import {DailyScrumFragmentComponent} from './components/fragments/dialog/daily-s
 import {DescriptionFragmentComponent} from './components/fragments/dialog/description-fragment/description-fragment.component';
 import {TaskletTypeFragmentComponent} from './components/fragments/dialog/tasklet-type-fragment/tasklet-type-fragment.component';
 import {PersonAutocompleteFragmentComponent} from './components/fragments/dialog/person-autocomplete-fragment/person-autocomplete-fragment.component';
-import {PersonChipsFragmentComponent} from './components/fragments/dialog/person-chips-fragment/person-chips-fragment.component';
 import {PreviousDescriptionFragmentComponent} from './components/fragments/dialog/previous-description-fragment/previous-description-fragment.component';
 import {ProjectAutocompleteFragmentComponent} from './components/fragments/dialog/project-autocomplete-fragment/project-autocomplete-fragment.component';
-import {TagChipsFragmentComponent} from './components/fragments/dialog/tag-chips-fragment/tag-chips-fragment.component';
 import {TaskAutocompleteFragmentComponent} from './components/fragments/dialog/task-autocomplete-fragment/task-autocomplete-fragment.component';
 import {FilterPersonListItemComponent} from './components/lists/filter-person-list-item/filter-person-list-item.component';
 import {FilterPersonListComponent} from './components/lists/filter-person-list/filter-person-list.component';
@@ -63,10 +61,17 @@ import {TaskletMeetingMinutesFragmentComponent} from './components/fragments/tas
 import {TaskletMeetingMinuteItemFragmentComponent} from './components/fragments/tasklet/tasklet-meeting-minute-item-fragment/tasklet-meeting-minute-item-fragment.component';
 import {PersonIndicatorButtonModule} from '../../ui/person-indicator-button/person-indicator-button.module';
 import {ChatBubbleModule} from '../../ui/chat-bubble/chat-bubble.module';
-import { DailyScrumItemFragmentComponent } from './components/fragments/dialog/daily-scrum-item-fragment/daily-scrum-item-fragment.component';
+import {DailyScrumItemFragmentComponent} from './components/fragments/dialog/daily-scrum-item-fragment/daily-scrum-item-fragment.component';
 import {TaskletDailyScrumItemFragmentComponent} from './components/fragments/tasklet/tasklet-daily-scrum-item-fragment/tasklet-daily-scrum-item-fragment.component';
 import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/suggested-action-button.module';
-
+import {TaskletComponent} from './pages/tasklet/tasklet.component';
+import {MainComponent} from './pages/main/main.component';
+import {TaskletResolver} from './resolvers/tasklet.resolver';
+import {TagChipsModule} from '../../ui/tag-chips/tag-chips.module';
+import {TagNamesPipe} from './pipes/tag-names.pipe';
+import {PersonNamesPipe} from './pipes/person-names.pipe';
+import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
+import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
 
 @NgModule({
   imports: [
@@ -89,12 +94,16 @@ import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/sugg
     DateTimePickerDialogModule,
     DateTimePickerFragmentModule,
     EcoFabSpeedDialModule,
-    SuggestedActionButtonModule
+    SuggestedActionButtonModule,
+    TagChipsModule,
+    StopWatchModule,
   ],
   declarations: [
     // Page
+    MainComponent,
     TimelineComponent,
     TimelineToolbarComponent,
+    TaskletComponent,
 
     // Dialogs
     PersonDialogComponent,
@@ -150,11 +159,9 @@ import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/sugg
     MeetingMinutesFragmentComponent,
     MeetingMinuteItemFragmentComponent,
     PersonAutocompleteFragmentComponent,
-    PersonChipsFragmentComponent,
     PreviousDescriptionFragmentComponent,
     ProjectAutocompleteFragmentComponent,
     RecurrenceIntervalFragmentComponent,
-    TagChipsFragmentComponent,
     TaskAutocompleteFragmentComponent,
     TaskletDailyScrumFragmentComponent,
     TaskletDailyScrumItemFragmentComponent,
@@ -162,7 +169,16 @@ import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/sugg
     TaskletMeetingMinutesFragmentComponent,
     TaskletTypeFragmentComponent,
     DailyScrumItemFragmentComponent,
+
+    // Pipes
+    TagNamesPipe,
+    PersonNamesPipe,
+    PomodoroTimerComponent,
   ], entryComponents: [
+    // Page
+    TimelineComponent,
+    TaskletComponent,
+
     PersonDialogComponent,
     PersonFilterDialogComponent,
 
@@ -181,6 +197,8 @@ import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/sugg
     TaskletDialogComponent,
 
     UploadDialogComponent
+  ], providers: [
+    TaskletResolver
   ], exports: [
     TimelineComponent
   ]

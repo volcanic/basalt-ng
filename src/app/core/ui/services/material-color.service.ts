@@ -18,6 +18,13 @@ export class MaterialColorService {
   /** List of palettes */
   palettes: Palette[] = [];
 
+  /**
+   * Constructor
+   */
+  constructor() {
+    this.initializeColors();
+  }
+
   //
   // Initialization
   //

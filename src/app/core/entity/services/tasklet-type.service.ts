@@ -32,9 +32,14 @@ export class TaskletTypeService {
 
     groups.forEach(group => {
       switch (group) {
+        case TaskletTypeGroup.UNSPECIFIED: {
+          this.taskletTypeGroups.set(TaskletType.UNSPECIFIED, group);
+          break;
+        }
         case TaskletTypeGroup.ACTION: {
           this.taskletTypeGroups.set(TaskletType.ACTION, group);
           this.taskletTypeGroups.set(TaskletType.BUSINESS_FLIGHT, group);
+          this.taskletTypeGroups.set(TaskletType.POMODORO, group);
           break;
         }
         case TaskletTypeGroup.COMMUNICATION: {
@@ -58,6 +63,7 @@ export class TaskletTypeService {
           break;
         }
         case TaskletTypeGroup.BREAK: {
+          this.taskletTypeGroups.set(TaskletType.POMODORO_BREAK, group);
           this.taskletTypeGroups.set(TaskletType.LUNCH_BREAK, group);
           this.taskletTypeGroups.set(TaskletType.COMMUTE, group);
           this.taskletTypeGroups.set(TaskletType.FINISHING_TIME, group);
@@ -88,6 +94,14 @@ export class TaskletTypeService {
   }
 
   /**
+   * Returns the tasklet type group of a given tasklet type
+   * @param type tasklet type
+   */
+  public getTaskletGroupByType(type: TaskletType): TaskletTypeGroup {
+    return this.taskletTypeGroups.get(type);
+  }
+
+  /**
    * Determines if a tasklet type group contains a given tasklet type
    * @param group tasklet type group
    * @param type tasklet type
@@ -100,8 +114,11 @@ export class TaskletTypeService {
    * Retrieves an icon by tasklet type
    * @param group tasklet type group
    */
-  public getIconByTaskletTypeGroup(group: TaskletTypeGroup) {
+  public getIconByTaskletTypeGroup(group: TaskletTypeGroup): string {
     switch (group) {
+      case TaskletTypeGroup.UNSPECIFIED: {
+        return 'help';
+      }
       case TaskletTypeGroup.ACTION: {
         return 'turned_in_not';
       }
@@ -124,13 +141,19 @@ export class TaskletTypeService {
    * Retrieves an icon by tasklet type
    * @param type tasklet type
    */
-  public getIconByTaskletType(type: TaskletType) {
+  public getIconByTaskletType(type: TaskletType): string {
     switch (type) {
+      case TaskletType.UNSPECIFIED: {
+        return 'help';
+      }
       case TaskletType.ACTION: {
         return 'turned_in_not';
       }
       case TaskletType.BUSINESS_FLIGHT: {
         return 'flight';
+      }
+      case TaskletType.POMODORO: {
+        return 'circle_slice_3';
       }
       case TaskletType.CALL: {
         return 'call';
@@ -167,10 +190,13 @@ export class TaskletTypeService {
         return 'lightbulb_outline';
       }
       case TaskletType.COMMUTE: {
-        return 'train';
+        return 'directions_bike';
       }
       case TaskletType.LUNCH_BREAK: {
-        return 'directions_bike';
+        return 'local_dining';
+      }
+      case TaskletType.POMODORO_BREAK: {
+        return 'circle_slice_1';
       }
       case TaskletType.FINISHING_TIME: {
         return 'directions_run';

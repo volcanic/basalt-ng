@@ -119,6 +119,9 @@ export class ColorService {
    */
   getTaskletTypeGroupColor(group: TaskletTypeGroup): Hue {
     switch (group) {
+      case TaskletTypeGroup.UNSPECIFIED: {
+        return this.materialColorService.hue(PaletteType.GREY, HueType._50);
+      }
       case TaskletTypeGroup.ACTION: {
         return this.materialColorService.hue(PaletteType.RED, HueType._600);
       }

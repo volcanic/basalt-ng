@@ -47,10 +47,6 @@ export class SettingsService {
   public fetch() {
     this.settings.clear();
     this.pouchDBSettingsService.fetch().then(result => {
-        if (result.rows.length === 0) {
-          this.initializeEntries();
-        }
-
         result.rows.forEach(r => {
           const setting = r.doc as Setting;
           this.settings.set(setting.id, setting);
@@ -63,13 +59,6 @@ export class SettingsService {
         }
       }
     );
-  }
-
-  /**
-   * Initializes entries
-   */
-  private initializeEntries() {
-    this.updateSetting(new Setting('version', '0.0.0'));
   }
 
   //

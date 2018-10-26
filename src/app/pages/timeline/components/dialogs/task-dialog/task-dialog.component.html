@@ -170,9 +170,11 @@
             </mat-panel-description>
             <mat-icon svgIcon="label_outline"></mat-icon>
           </mat-expansion-panel-header>
-          <app-tag-chips-fragment [tags]="tags" [readonly]="readonly"
-                                  (tagsChangedEmitter)="onTagsChanged($event)">
-          </app-tag-chips-fragment>
+          <app-tag-chips [tags]="tags | tagNames"
+                         [tagOptions]="tagOptions"
+                         [readonly]=false
+                         (tagsChangedEmitter)="onTagsChanged($event)">
+          </app-tag-chips>
         </mat-expansion-panel>
 
       </mat-accordion>

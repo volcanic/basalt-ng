@@ -40,6 +40,11 @@ export class TaskletService {
   /** Subject that publishes tasklets */
   taskletsSubject = new Subject<Tasklet[]>();
 
+  /** Tasklet in focus */
+  tasklet: Tasklet;
+  /** Subject that publishes tasklet */
+  taskletSubject = new Subject<Tasklet>();
+
   /** Queue containing recent dates scrolled by */
   dateQueue = [];
   /** Subject that publishes dates scrolled by */
@@ -120,6 +125,26 @@ export class TaskletService {
   }
 
   /**
+   * Loads tasklet by a given ID
+   * @param {number} id ID of filter by
+   */
+  public findTaskletByID(id: string) {
+    const index = {fields: ['entityType', 'id', 'creationDate']};
+    const options = {
+      selector: {
+        '$and': [
+          {entityType: {$eq: EntityType.TASKLET}},
+          {id: {$eq: id}}
+        ]
+      },
+      // sort: [{creationDate: 'desc'}],
+      limit: environment.LIMIT_TASKLETS
+    };
+
+    this.findTaskletInternal(index, options);
+  }
+
+  /**
    * Clears tasklets
    */
   private clearTasklets() {
@@ -136,6 +161,25 @@ export class TaskletService {
         result['docs'].forEach(element => {
           const tasklet = element as Tasklet;
           this.tasklets.set(tasklet.id, tasklet);
+        });
+        this.notify();
+      }, error => {
+        if (isDevMode()) {
+          console.error(error);
+        }
+      }
+    );
+  }
+
+  /**
+   * Index tasklets and queries them afterwards
+   * @param index index to be used
+   * @param options query options
+   */
+  private findTaskletInternal(index: any, options: any) {
+    this.pouchDBService.find(index, options).then(result => {
+        result['docs'].forEach(element => {
+          this.tasklet = element as Tasklet;
         });
         this.notify();
       }, error => {
@@ -224,6 +268,7 @@ export class TaskletService {
         return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
           this.snackbarService.showSnackbar('Updated tasklet');
           this.tasklets.set(tasklet.id, tasklet);
+          this.tasklet = tasklet;
           this.notify();
         });
       }
@@ -433,6 +478,7 @@ export class TaskletService {
    * Informs subscribers that something has changed
    */
   public notify() {
+    this.taskletSubject.next(this.tasklet);
     this.taskletsSubject.next(Array.from(this.tasklets.values()).sort((t1, t2) => {
       return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
     }));

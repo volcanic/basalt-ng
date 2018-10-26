@@ -65,6 +65,8 @@ export class TaskDialogComponent implements OnInit {
 
   /** Project options */
   projectOptions: string[];
+  /** Tag options */
+  tagOptions: string[];
   /** Person options */
   personOptions: string[];
 
@@ -131,7 +133,11 @@ export class TaskDialogComponent implements OnInit {
     }).map(p => {
       return p.name;
     });
-
+    this.tagOptions = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
+      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+    }).map(t => {
+      return t.name;
+    });
     this.personOptions = Array.from(this.suggestionService.personOptions.values()).sort((p1, p2) => {
       return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
     }).map(p => {
@@ -159,8 +165,8 @@ export class TaskDialogComponent implements OnInit {
    */
   private initializeRecurring() {
     this.recurring = this.task.recurrenceInterval != null
-      && this.task.recurrenceInterval != RecurrenceInterval.UNSPECIFIED
-      && this.task.recurrenceInterval != RecurrenceInterval.NONE;
+      && this.task.recurrenceInterval !== RecurrenceInterval.UNSPECIFIED
+      && this.task.recurrenceInterval !== RecurrenceInterval.NONE;
   }
 
   /**
@@ -317,11 +323,11 @@ export class TaskDialogComponent implements OnInit {
 
   /**
    * Handles tag changes
-   * @param {Tag[]} tags tags value
+   * @param tags new tags
    */
-  onTagsChanged(tags: Tag[]) {
-    this.task.tagIds = tags.map(tag => {
-      return tag.id;
+  onTagsChanged(tags: string[]) {
+    this.tags = tags.map(t => {
+      return new Tag(t, true);
     });
   }
 
@@ -333,14 +339,30 @@ export class TaskDialogComponent implements OnInit {
    * Handles click on add button
    */
   addTask() {
-    this.dialogRef.close({action: Action.ADD, task: this.task, project: this.project, delegatedTo: this.delegatedTo, tags: this.tags});
+    this.tags = this.aggregateTags(this.task);
+
+    this.dialogRef.close({
+      action: Action.ADD,
+      task: this.task,
+      project: this.project,
+      delegatedTo: this.delegatedTo,
+      tags: this.tags
+    });
   }
 
   /**
    * Handles click on update button
    */
   updateTask() {
-    this.dialogRef.close({action: Action.UPDATE, task: this.task, project: this.project, delegatedTo: this.delegatedTo, tags: this.tags});
+    this.tags = this.aggregateTags(this.task);
+
+    this.dialogRef.close({
+      action: Action.UPDATE,
+      task: this.task,
+      project: this.project,
+      delegatedTo: this.delegatedTo,
+      tags: this.tags
+    });
   }
 
   /**
@@ -364,5 +386,27 @@ export class TaskDialogComponent implements OnInit {
   reopenTask() {
     this.task.completionDate = null;
     this.dialogRef.close({action: Action.REOPEN, task: this.task, project: this.project});
+  }
+
+  //
+  // Helpers
+  //
+
+  // Tags
+
+  /**
+   * Aggregates tags
+   * @param {Task} task
+   * @returns {Tag[]}
+   */
+  private aggregateTags(task: Task): Tag[] {
+    const aggregatedTags = new Map<string, Tag>();
+
+    // Concatenate
+    this.tags.forEach(t => {
+      aggregatedTags.set(t.id, t);
+    });
+
+    return Array.from(aggregatedTags.values());
   }
 }

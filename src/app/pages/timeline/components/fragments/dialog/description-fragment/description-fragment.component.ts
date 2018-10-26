@@ -14,6 +14,8 @@ export class DescriptionFragmentComponent {
 
   /** Description of to be displayed */
   @Input() description: Description = new Description();
+  /** Placeholder to be used */
+  @Input() placeholder = '';
   /** Whether component is readonly or not */
   @Input() readonly = false;
 

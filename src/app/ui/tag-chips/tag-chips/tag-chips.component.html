@@ -1,9 +1,9 @@
 <mat-chip-list>
-  <mat-chip *ngFor="let tag of tags">
-    {{ tag.name }} <mat-icon class="delete-button hidden" svgIcon="close_18" (click)="onDeleteTag(tag)"></mat-icon>
+  <mat-chip *ngFor="let tag of tags" [style.color]="color" [style.background]="background">
+    {{ tag }} <mat-icon *ngIf="!readonly" class="delete-button hidden" svgIcon="close_18" (click)="onDeleteTag(tag)"></mat-icon>
   </mat-chip>
-  <div class="searchbox">
-    <input class="search-input" matInput name="search" type="text" placeholder="New tag"
+  <div *ngIf="!readonly" class="searchbox">
+    <input class="search-input" matInput name="search" type="text" [placeholder]="placeholder"
            [ngModel]="value"
            [disabled]="readonly"
            [matAutocomplete]="auto"

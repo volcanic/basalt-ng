@@ -3,5 +3,5 @@
           [style.backgroundColor]=backgroundColor>
     <mat-icon [svgIcon]=icon [style.fill]=iconColor></mat-icon>
   </button>
-  <span class="label">{{ label }}</span>
+  <span *ngIf="label != null" class="label">{{ label }}</span>
 </button>

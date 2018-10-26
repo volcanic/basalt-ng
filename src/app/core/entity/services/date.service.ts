@@ -212,6 +212,28 @@ export class DateService {
   }
 
   //
+  // Diff
+  //
+
+  /**
+   * Returns the difference of two dates in milliseconds
+   * @param one first date
+   * @param two second date
+   */
+  static getDiffInMilliseconds(one: Date, two: Date) {
+    return new Date(one).getTime() - new Date(two).getTime();
+  }
+
+  /**
+   * Returns the difference of two dates in seconds
+   * @param one first date
+   * @param two second date
+   */
+  static diffInSeconds(one: Date, two: Date): number {
+    return Math.floor(DateService.getDiffInMilliseconds(one, two) / 1000);
+  }
+
+  //
   // Formatting
   //
 
@@ -294,24 +316,28 @@ export class DateService {
         hours = 0;
       }
 
-      let hoursString = hours.toString();
-      let minutesString = minutes.toString();
+      const hoursString = DateService.getTwoCharacterString(hours);
+      const minutesString = DateService.getTwoCharacterString(minutes);
 
-
-      if (hours < 10) {
-        hoursString = `0${hours}`;
-      }
-
-
-      if (minutes < 10) {
-        minutesString = `0${minutes}`;
-      }
-
-      return `${hoursString}:${minutesString}`;
+      return `${hoursString}:${minutesString}`
+        ;
     } else {
       return '';
     }
   }
+
+  /**
+   * Returns a string representing minutes (might be negative)
+   * @param seconds
+   */
+  static getMinutesString(seconds: number): string {
+    const negative = seconds < 0;
+    const diffMin = Math.abs(Math.floor(seconds / 60));
+    const diffSec = Math.abs(Math.floor(seconds % 60));
+
+    return `${negative ? '-' : ''}${DateService.getTwoCharacterString(diffMin)}:${DateService.getTwoCharacterString(diffSec)}`;
+  }
+
 
   /**
    * Returns the day of a month as a string
@@ -421,6 +447,17 @@ export class DateService {
     d.setUTCDate(d.getUTCDate() + 4 - dayNum);
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  }
+
+  /**
+   * Returns a string that has at least two characters (used for displaying hours and minutes)
+   * @param value numeric value
+   * @return two-character string
+   */
+  static getTwoCharacterString(value: number): string {
+    return (value < 10) ?
+      `0${value}`
+      : value.toString();
   }
 
   //

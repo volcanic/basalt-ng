@@ -1,0 +1,3 @@
+<button mat-flat-button [style.color]="textColor" [style.background]="backgroundColor">
+  <app-stop-watch [duration]="pomodoroDuration" [startTime]="pomodoroStartTime" (timeLeftEmitter)="onTimeLeft($event)"></app-stop-watch>
+</button>
