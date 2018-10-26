@@ -1661,6 +1661,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
       case 'menu': {
+        this.sidenavStart.toggle().then(() => {
+        });
+        this.sidenavEnd.toggle().then(() => {
+        });
         break;
       }
       case 'settings': {
@@ -1794,13 +1798,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             this.filterService.updatePersons(persons, false, personsNone);
             this.snackbarService.showSnackbar('Persons selected');
           }
-        });
-        break;
-      }
-      case 'todo': {
-        this.sidenavStart.toggle().then(() => {
-        });
-        this.sidenavEnd.toggle().then(() => {
         });
         break;
       }

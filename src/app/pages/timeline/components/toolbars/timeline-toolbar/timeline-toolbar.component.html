@@ -1,5 +1,5 @@
 <mat-toolbar class="toolbar flexcontainer">
-  <div class="toolbar-block">
+  <div class="toolbar-block start">
     <button mat-button class="toolbar-menu-item" (click)="onMenuItemClicked('menu')">
       <mat-icon svgIcon="menu"></mat-icon>
     </button>
@@ -32,11 +32,7 @@
     </mat-autocomplete>
   </div>
   <div class="flexbox"></div>
-  <div class="toolbar-block">
-    <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item"
-            (click)="onMenuItemClicked('todo')">
-      <mat-icon svgIcon="timer"></mat-icon>
-    </button>
+  <div class="toolbar-block end">
     <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item" [matMenuTriggerFor]="menuSwitcher">
       <mat-icon svgIcon="business" *ngIf="scope === scopeType.WORK"></mat-icon>
       <mat-icon svgIcon="nature" *ngIf="scope === scopeType.FREETIME"></mat-icon>
