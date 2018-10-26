@@ -72,6 +72,8 @@ import {TagNamesPipe} from './pipes/tag-names.pipe';
 import {PersonNamesPipe} from './pipes/person-names.pipe';
 import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
 import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 @NgModule({
   imports: [
@@ -97,6 +99,7 @@ import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
     SuggestedActionButtonModule,
     TagChipsModule,
     StopWatchModule,
+    MatTabsModule,
   ],
   declarations: [
     // Page

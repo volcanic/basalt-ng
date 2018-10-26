@@ -11,6 +11,25 @@ import {Action} from 'app/core/entity/model/action.enum';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Person} from 'app/core/entity/model/person.model';
 import {TaskletTypeService} from '../../../../../core/entity/services/tasklet-type.service';
+import hljs from 'highlight.js';
+
+// Get Markdown-It with all options enabled
+const md = require('markdown-it')({
+  html: true,
+  linkify: true,
+  typographer: true,
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(lang, str).value;
+      } catch (__) {}
+    }
+
+    return ''; // use external default escaping
+  }
+});
+
+
 
 /**
  * Displays tasklet list item
@@ -36,7 +55,8 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   @Input() tags = new Map<string, Tag>();
   /** Map of persons */
   @Input() persons = new Map<string, Person>();
-
+  /** */
+  @Input() descriptionInMarkdown = '';
   /** Event emitter indicating tasklet action */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
   /** Trigger for context menu */
@@ -98,6 +118,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     this.initializeIcon();
     this.initializeDate();
     this.initializeExpansionPanel();
+    this.updateMarkdown();
   }
 
   /**
@@ -106,6 +127,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.initializeTopic();
     this.initializeProject();
+    this.updateMarkdown();
   }
 
   //
@@ -217,6 +239,13 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   //
   // Helpers
   //
+
+  /**
+   * Updates markdown
+   */
+  updateMarkdown() {
+    this.descriptionInMarkdown = md.render(this.tasklet.description.value);
+  }
 
   /**
    * Retrieves a task by a given tasklet

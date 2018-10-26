@@ -9,6 +9,7 @@ import {NgModule} from '@angular/core';
 import {CoreModule} from './core/core.module';
 import {MaterialModule} from './ui/material/material.module';
 import {NewFeaturesDialogModule} from './ui/new-features-dialog/new-features-dialog.module';
+import {MatTabsModule} from '../../node_modules/@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {NewFeaturesDialogModule} from './ui/new-features-dialog/new-features-dia
     // Core service
     CoreModule,
 
-    NewFeaturesDialogModule
+    NewFeaturesDialogModule,
+    MatTabsModule,
 
     // Pages (loaded via lazy loading)
     // TimelineModule,
