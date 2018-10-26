@@ -1054,7 +1054,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     if (tasklet.description != null && tasklet.description.value != null) {
       tasklet.description.value.split('\n').forEach(line => {
         line.split(' ').forEach(word => {
-          if (word.startsWith('#')) {
+          if (word.startsWith('#') &&
+              word.length > 1 &&
+              word.charAt(1) !== '#') {
             const hashtag = word.replace('#', '');
             inferredTags.set(hashtag, new Tag(hashtag));
           }

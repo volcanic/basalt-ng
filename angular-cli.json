@@ -19,7 +19,8 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "style.scss"
+        "style.scss",
+        "../node_modules/prismjs/themes/prism-okaidia.css" // Import for Angular2-Markdown editor
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
