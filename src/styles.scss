@@ -27,9 +27,11 @@ html {
   background: transparent; /* optional: just make scrollbar invisible */
 }
 
+$background: #fafafa;
+
 body {
   height: 100%;
-  background: mat-color($mat-grey, 100);
+  background: $background;
   color: mat-color($mat-grey, 600);
   font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 0;
