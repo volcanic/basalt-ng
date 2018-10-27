@@ -77,8 +77,8 @@
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Priority</mat-panel-title>
-            <mat-panel-description *ngIf="task.priority < 0">Select a priority</mat-panel-description>
-            <mat-panel-description *ngIf="task.priority >= 0">
+            <mat-panel-description *ngIf="task.priority > 3 || task.priority < 0">Select a priority</mat-panel-description>
+            <mat-panel-description *ngIf="task.priority <= 3 && task.priority >= 0">
               <span class="value-set">Priority {{ task.priority + 1 }}</span>
             </mat-panel-description>
             <mat-icon svgIcon="flag"></mat-icon>
@@ -122,7 +122,7 @@
             <mat-panel-description *ngIf="task.effort == null || task.effort <= 0">Estimate the effort
             </mat-panel-description>
             <mat-panel-description *ngIf="task.effort > 0">
-              <span class="value-set">{{ task.effort }} hours</span>
+              <span class="value-set">{{ task.effort }} minutes</span>
             </mat-panel-description>
             <mat-icon svgIcon="timer"></mat-icon>
           </mat-expansion-panel-header>
@@ -130,7 +130,7 @@
             <mat-form-field>
               <input matInput [(ngModel)]="task.effort" name="effort" placeholder="Effort" type="number">
             </mat-form-field>
-            <span>hours</span>
+            <span>minutes</span>
           </div>
         </mat-expansion-panel>
 

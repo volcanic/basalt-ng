@@ -41,7 +41,7 @@ export class Task extends Entity {
     this.projectId = null;
     this.dueDate = null;
     this.completionDate = null;
-    this.priority = -1;
+    this.priority = 4;
     this.effort = 0;
     this.tagIds = [];
     this.recurrenceInterval = RecurrenceInterval.NONE;

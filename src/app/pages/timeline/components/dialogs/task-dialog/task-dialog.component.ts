@@ -41,19 +41,15 @@ export class TaskDialogComponent implements OnInit {
   colorEmpty = '#cfd8dc';
   /** Color for priorities */
   colorsPriorities = [
-    '#90a4ae',
-    '#78909c',
-    '#607d8b',
-    '#546e7a',
-    '#455a64',
+    '#990000',
+    '#9c690e',
+    '#3c8b09',
   ];
   /** Color for flags */
   colorsFlags = [
     '#cfd8dc',
     '#cfd8dc',
     '#cfd8dc',
-    '#cfd8dc',
-    '#cfd8dc'
   ];
 
   /** Project assigned to this task */
@@ -172,9 +168,11 @@ export class TaskDialogComponent implements OnInit {
   /**
    * Initializes priority
    */
-  private initializePriority() {
+  initializePriority() {
+    const taskPriority = this.task.priority;
+
     this.colorsFlags.forEach((flagColor, index) => {
-      if (index <= this.task.priority) {
+      if (index === taskPriority) {
         this.colorsFlags[index] = this.colorsPriorities[this.task.priority];
       } else {
         this.colorsFlags[index] = this.colorEmpty;
@@ -258,13 +256,14 @@ export class TaskDialogComponent implements OnInit {
    */
   onHoverFlag(priority: number) {
     if (!this.readonly) {
-      this.colorsFlags.forEach((flagColor, index) => {
-        if (index <= priority) {
-          this.colorsFlags[index] = this.colorsPriorities[priority];
-        } else {
-          this.colorsFlags[index] = this.colorEmpty;
-        }
-      });
+      this.colorsFlags[priority] = this.colorsPriorities[priority];
+      // this.colorsFlags.forEach((flagColor, index) => {
+      //   if (index <= priority) {
+      //     this.colorsFlags[index] = this.colorsPriorities[priority];
+      //   } else {
+      //     this.colorsFlags[index] = this.colorEmpty;
+      //   }
+      // });
     }
   }
 
@@ -285,13 +284,11 @@ export class TaskDialogComponent implements OnInit {
     if (!this.readonly) {
       this.task.priority = priority;
 
-      if (priority === -1) {
+      if (priority === 4) {
         this.colorsFlags = [
           '#cfd8dc',
           '#cfd8dc',
           '#cfd8dc',
-          '#cfd8dc',
-          '#cfd8dc'
         ];
       }
     }
