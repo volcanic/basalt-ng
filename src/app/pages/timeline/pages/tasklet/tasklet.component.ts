@@ -348,6 +348,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.action.label = this.tasklet.type.toString();
     this.action.taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]).filter(type => {
       return type !== TaskletType.DEVELOPMENT
+        && !(this.taskletTypeService.groupContainsType(TaskletTypeGroup.DEVELOPMENT, type) && !this.settingsService.settings.get(Settings.DEVELOPMENT).value)
+        && !(type === TaskletType.POMODORO && !this.settingsService.settings.get(Settings.POMODORO).value)
+        && !(type === TaskletType.DAILY_SCRUM && !this.settingsService.settings.get(Settings.SCRUM).value)
         && type !== TaskletType.POMODORO_BREAK;
     });
   }

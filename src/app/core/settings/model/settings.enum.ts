@@ -1,7 +1,7 @@
 export enum Settings {
   VERSION = 'version',
-  // Coding
-  CODING = 'coding',
+  // Development
+  DEVELOPMENT = 'development',
   // Scrum
   SCRUM = 'scrum',
   // Pomodoro

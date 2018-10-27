@@ -95,7 +95,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
 
       // Initialize values
-      this.initializeSetting(Settings.CODING, true);
+      this.initializeSetting(Settings.DEVELOPMENT, true);
       this.initializeSetting(Settings.SCRUM, true);
       this.initializeSetting(Settings.POMODORO, true);
       this.initializeSetting(Settings.POMODORO_DURATION, 5);
