@@ -10,6 +10,7 @@
         </mat-form-field>
       </div>
 
+
       <mat-accordion class="headers-align">
 
         <mat-slide-toggle
@@ -20,6 +21,7 @@
           Recurring task
         </mat-slide-toggle>
 
+        <!-- Completion date (if completed) -->
         <mat-expansion-panel
           *ngIf="!recurring && task.completionDate != null" (opened)="false"
           hideToggle>
@@ -36,21 +38,7 @@
           </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
-        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title>Description</mat-panel-title>
-            <mat-panel-description *ngIf="task.description == null || task.description.value == ''">
-              Describe this task
-            </mat-panel-description>
-            <mat-panel-description *ngIf="task.description != null && task.description.value != ''">
-              <span class="value-set description">{{ task.description.value }}</span>
-            </mat-panel-description>
-            <mat-icon svgIcon="short_text"></mat-icon>
-          </mat-expansion-panel-header>
-          <app-description-fragment [description]="task.description"
-                                    [readonly]="readonly"></app-description-fragment>
-        </mat-expansion-panel>
-
+        <!-- Due Date -->
         <mat-expansion-panel *ngIf="!recurring" [disabled]="readonly"
                              (opened)="false" hideToggle>
           <mat-expansion-panel-header>
@@ -61,12 +49,14 @@
             </mat-panel-description>
             <mat-icon svgIcon="today"></mat-icon>
           </mat-expansion-panel-header>
+
           <app-date-time-picker-fragment
             [date]="task.dueDate"
             (dateChangedEmitter)="onDueDateChanged($event)">
           </app-date-time-picker-fragment>
         </mat-expansion-panel>
 
+        <!-- Recurrence Interval -->
         <mat-expansion-panel *ngIf="recurring" [disabled]="readonly"
                              (opened)="false" hideToggle>
           <mat-expansion-panel-header>
@@ -83,6 +73,7 @@
           </app-recurrence-interval-fragment>
         </mat-expansion-panel>
 
+        <!-- Priority -->
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Priority</mat-panel-title>
@@ -103,6 +94,7 @@
           </mat-icon>
         </mat-expansion-panel>
 
+        <!-- Project -->
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -123,6 +115,7 @@
           </div>
         </mat-expansion-panel>
 
+        <!-- Effort -->
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Estimated effort</mat-panel-title>
@@ -141,6 +134,7 @@
           </div>
         </mat-expansion-panel>
 
+        <!-- Delegation -->
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Delegated to</mat-panel-title>
@@ -159,6 +153,7 @@
           </div>
         </mat-expansion-panel>
 
+        <!-- Tags -->
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -177,7 +172,24 @@
           </app-tag-chips>
         </mat-expansion-panel>
 
+        <!-- Description -->
+        <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Description</mat-panel-title>
+            <mat-panel-description *ngIf="task.description == null || task.description.value == ''">
+              Describe this task
+            </mat-panel-description>
+            <mat-panel-description *ngIf="task.description != null && task.description.value != ''">
+              <span class="value-set description">{{ task.description.value }}</span>
+            </mat-panel-description>
+            <mat-icon svgIcon="short_text"></mat-icon>
+          </mat-expansion-panel-header>
+          <app-description-fragment [description]="task.description"
+                                    [readonly]="readonly"></app-description-fragment>
+        </mat-expansion-panel>
+
       </mat-accordion>
+
     </form>
   </mat-dialog-content>
   <mat-dialog-actions class="flexcontainer">
