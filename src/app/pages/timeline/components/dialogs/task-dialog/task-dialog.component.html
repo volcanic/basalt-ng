@@ -205,10 +205,10 @@
             (click)="completeTask()" [disabled]="!formCtrl.form.valid">
       Complete task
     </button>
-    <button mat-button *ngIf="mode == modeType.ADD" (click)="addTask()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.ADD" (click)="handleTaskChanges()" [disabled]="!formCtrl.form.valid">
       Add task
     </button>
-    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTask()" [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="handleTaskChanges()" [disabled]="!formCtrl.form.valid">
       Update task
     </button>
   </mat-dialog-actions>

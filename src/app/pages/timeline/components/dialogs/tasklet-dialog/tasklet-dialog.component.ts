@@ -224,7 +224,6 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
         break;
       }
       case DialogMode.DELETE: {
-        this.deleteTasklet();
         break;
       }
       case DialogMode.NONE: {
@@ -273,6 +272,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * Handles click on delete button
    */
   deleteTasklet() {
+    this.mode = DialogMode.DELETE;
     this.dialogRef.close({action: Action.DELETE, tasklet: this.tasklet});
   }
 

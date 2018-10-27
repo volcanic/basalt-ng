@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Task} from 'app/core/entity/model/task.model';
 import {Project} from 'app/core/entity/model/project.model';
 import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSlideToggleChange} from '@angular/material';
@@ -19,7 +19,7 @@ import {Person} from '../../../../../core/entity/model/person.model';
   templateUrl: './task-dialog.component.html',
   styleUrls: ['./task-dialog.component.scss']
 })
-export class TaskDialogComponent implements OnInit {
+export class TaskDialogComponent implements OnInit, OnDestroy {
 
   /** Enum of dialog modes */
   public modeType = DialogMode;
@@ -102,6 +102,10 @@ export class TaskDialogComponent implements OnInit {
     this.initializeTask();
     this.initializeRecurring();
     this.initializePriority();
+  }
+
+  ngOnDestroy() {
+    this.handleTaskChanges();
   }
 
   //
@@ -191,17 +195,7 @@ export class TaskDialogComponent implements OnInit {
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      switch (this.mode) {
-        case DialogMode.ADD: {
-          this.addTask();
-          break;
-        }
-        case DialogMode.UPDATE: {
-          this.updateTask();
-          break;
-        }
-      }
-
+      this.handleTaskChanges();
     }
   }
 
@@ -257,13 +251,6 @@ export class TaskDialogComponent implements OnInit {
   onHoverFlag(priority: number) {
     if (!this.readonly) {
       this.colorsFlags[priority] = this.colorsPriorities[priority];
-      // this.colorsFlags.forEach((flagColor, index) => {
-      //   if (index <= priority) {
-      //     this.colorsFlags[index] = this.colorsPriorities[priority];
-      //   } else {
-      //     this.colorsFlags[index] = this.colorEmpty;
-      //   }
-      // });
     }
   }
 
@@ -332,6 +319,23 @@ export class TaskDialogComponent implements OnInit {
   // Button actions
   //
 
+  private handleTaskChanges() {
+    switch (this.mode) {
+      case DialogMode.ADD: {
+        this.addTask();
+        break;
+      }
+      case DialogMode.UPDATE: {
+        this.updateTask();
+        break;
+      }
+      case DialogMode.DELETE: {
+        // this.deleteTask();
+        break;
+      }
+    }
+  }
+
   /**
    * Handles click on add button
    */
@@ -366,6 +370,7 @@ export class TaskDialogComponent implements OnInit {
    * Handles click on delete button
    */
   deleteTask() {
+    this.mode = DialogMode.DELETE;
     this.dialogRef.close({action: Action.DELETE, task: this.task});
   }
 
