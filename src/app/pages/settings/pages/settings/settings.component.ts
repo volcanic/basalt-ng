@@ -31,6 +31,12 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Map of current settings */
   settings = new Map<String, Setting>();
 
+  coding: string;
+  scrum: string;
+  pomodoro: string;
+  pomodoroDuration: number;
+  pomodoroBreak: number;
+
   /** Search items options for auto-complete */
   public searchOptions = [];
 
@@ -48,6 +54,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   public scrollDirection: ScrollDirection = ScrollDirection.UP;
   /** Scroll state */
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
+
+  settingsType = Settings;
 
   /** Scrollable directive */
   @ViewChild(CdkScrollable) scrollable: CdkScrollable;
@@ -114,6 +122,11 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.settingsService.settingsSubject.subscribe(value => {
       if (value != null) {
         this.settings = value;
+        this.coding = this.settings.get(Settings.CODING).value;
+        this.scrum = this.settings.get(Settings.SCRUM).value;
+        this.pomodoro = this.settings.get(Settings.POMODORO).value;
+        this.pomodoroDuration = +this.settings.get(Settings.POMODORO_DURATION).value;
+        this.pomodoroBreak = +this.settings.get(Settings.POMODORO_BREAK).value;
       }
     });
   }
@@ -174,5 +187,17 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param {string} searchItem new search item
    */
   onSearchItemChanged(searchItem: string) {
+  }
+
+  onFeatureToggled(settingName: string, value: any) {
+    const setting = new Setting(settingName, value);
+    this.settingsService.updateSetting(setting);
+  }
+
+  onValueChanged(settingName: string, value: any) {
+    if (value != null) {
+      const setting = new Setting(settingName, value);
+      this.settingsService.updateSetting(setting);
+    }
   }
 }
