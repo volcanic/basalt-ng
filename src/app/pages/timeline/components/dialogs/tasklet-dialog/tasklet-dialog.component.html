@@ -67,15 +67,15 @@
             [disabled]="!formCtrl.form.valid">
       Send Daily Scrum Summary
     </button>
-    <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
+    <button mat-button *ngIf="mode == modeType.ADD" (click)="handleTaskletChanges()" [disabled]="!formCtrl.form.valid
         && canBeCreated()">
       Add tasklet
     </button>
-    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTasklet()" [disabled]="!formCtrl.form.valid
+    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="handleTaskletChanges()" [disabled]="!formCtrl.form.valid
         && canBeUpdated()">
       Update tasklet
     </button>
-    <button mat-button *ngIf="mode == modeType.CONTINUE" (click)="continueTasklet()"
+    <button mat-button *ngIf="mode == modeType.CONTINUE" (click)="handleTaskletChanges()"
             [disabled]="!formCtrl.form.valid">
       Continue tasklet
     </button>

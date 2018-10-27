@@ -7,4 +7,5 @@ export enum DialogMode {
   ADD,
   UPDATE,
   CONTINUE,
+  DELETE
 }

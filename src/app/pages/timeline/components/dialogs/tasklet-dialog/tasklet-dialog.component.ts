@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
@@ -22,7 +22,7 @@ import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily
   templateUrl: './tasklet-dialog.component.html',
   styleUrls: ['./tasklet-dialog.component.scss'],
 })
-export class TaskletDialogComponent implements OnInit {
+export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /** Enum of dialog modes */
   public modeType = DialogMode;
@@ -81,6 +81,9 @@ export class TaskletDialogComponent implements OnInit {
     this.initializeOptions();
   }
 
+  ngOnDestroy() {
+    this.handleTaskletChanges();
+  }
   //
   // Initialization
   //
@@ -199,19 +202,33 @@ export class TaskletDialogComponent implements OnInit {
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
-      switch (this.mode) {
-        case DialogMode.ADD: {
-          this.addTasklet();
-          break;
-        }
-        case DialogMode.UPDATE: {
-          this.updateTasklet();
-          break;
-        }
-        case DialogMode.CONTINUE: {
-          this.continueTasklet();
-          break;
-        }
+      this.handleTaskletChanges();
+    }
+  }
+
+  /**
+   * Handles the creation, updating or continuation of a task
+   */
+  private handleTaskletChanges() {
+    switch (this.mode) {
+      case DialogMode.ADD: {
+        this.addTasklet();
+        break;
+      }
+      case DialogMode.UPDATE: {
+        this.updateTasklet();
+        break;
+      }
+      case DialogMode.CONTINUE: {
+        this.continueTasklet();
+        break;
+      }
+      case DialogMode.DELETE: {
+        this.deleteTasklet();
+        break;
+      }
+      case DialogMode.NONE: {
+        break;
       }
     }
   }
@@ -263,6 +280,7 @@ export class TaskletDialogComponent implements OnInit {
    * Handles click on fullscreen button
    */
   goToFullscreen() {
+    this.mode = DialogMode.NONE;
     this.dialogRef.close({
       action: Action.FULLSCREEN,
       tasklet: this.tasklet,
@@ -276,6 +294,7 @@ export class TaskletDialogComponent implements OnInit {
    * Handles click on pomodoro start button
    */
   startPomodoro() {
+    this.mode = DialogMode.NONE;
     this.dialogRef.close({
       action: Action.POMODORO_START,
       tasklet: this.tasklet,
