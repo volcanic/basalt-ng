@@ -44,8 +44,11 @@
             </div>
             <!-- Description -->
             <div *ngIf="containsDescription(tasklet)" class="text">
-              <div
-                [innerHtml]="descriptionInMarkdown">
+              <div *ngIf="descriptionInMarkdown != null && descriptionInMarkdown != ''"
+                   [innerHtml]="descriptionInMarkdown">
+              </div>
+              <div *ngIf="descriptionInMarkdown == null || descriptionInMarkdown == ''" class="placeholder-description">
+                Click here to add description
               </div>
               <!-- <mat-list>
                 <mat-list-item class="text" *ngFor="let item of tasklet.description.value.split('\n')">{{ item }}
@@ -54,7 +57,7 @@
             </div>
             <!-- Meeting minutes -->
             <app-tasklet-meeting-minutes-fragment *ngIf="containsMeetingMinutes(tasklet)"
-              [tasklet]="tasklet">
+                                                  [tasklet]="tasklet">
             </app-tasklet-meeting-minutes-fragment>
             <!-- Daily Scrum -->
             <app-tasklet-daily-scrum-fragment

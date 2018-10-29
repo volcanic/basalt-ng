@@ -43,6 +43,11 @@
   font-size: 1.2em;
 }
 
+.placeholder-description {
+  color: mat-color($mat-grey, 600);
+  font-style: italic;
+}
+
 .project {
   padding: 3px 10px;
   margin-top: -25px;
