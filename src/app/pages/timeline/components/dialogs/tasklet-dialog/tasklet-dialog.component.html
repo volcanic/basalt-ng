@@ -11,15 +11,15 @@
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescription]="previousDescription"></app-previous-description-fragment>
       <!-- Pomodoro task -->
-      <app-description-fragment *ngIf="containsPomodoroTask(tasklet)"
-                                [description]="tasklet.pomodoroTask"
+      <app-markdown-editor *ngIf="containsPomodoroTask(tasklet)"
+                                [text]="tasklet.pomodoroTask.value"
                                 placeholder="Pomodoro Task"
-                                (descriptionChangedEmitter)="onPomodoroTaskChanged($event)"></app-description-fragment>
+                                (textChangedEmitter)="onPomodoroTaskChanged($event)"></app-markdown-editor>
       <!-- Description -->
-      <app-description-fragment *ngIf="containsDescription(tasklet)"
-                                [description]="tasklet.description"
+      <app-markdown-editor *ngIf="containsDescription(tasklet)"
+                                [text]="tasklet.description.value"
                                 placeholder="Description"
-                                (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
+                                (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
       <!-- Meeting minutes -->
       <app-meeting-minutes-fragment
         *ngIf="containsMeetingMinutes(tasklet)"

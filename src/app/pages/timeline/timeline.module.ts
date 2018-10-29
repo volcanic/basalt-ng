@@ -20,7 +20,6 @@ import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/tas
 import {TaskletDialogComponent} from './components/dialogs/tasklet-dialog/tasklet-dialog.component';
 import {UploadDialogComponent} from './components/dialogs/upload-dialog/upload-dialog.component';
 import {DailyScrumFragmentComponent} from './components/fragments/dialog/daily-scrum-fragment/daily-scrum-fragment.component';
-import {DescriptionFragmentComponent} from './components/fragments/dialog/description-fragment/description-fragment.component';
 import {TaskletTypeFragmentComponent} from './components/fragments/dialog/tasklet-type-fragment/tasklet-type-fragment.component';
 import {PersonAutocompleteFragmentComponent} from './components/fragments/dialog/person-autocomplete-fragment/person-autocomplete-fragment.component';
 import {PreviousDescriptionFragmentComponent} from './components/fragments/dialog/previous-description-fragment/previous-description-fragment.component';
@@ -72,7 +71,7 @@ import {TagNamesPipe} from './pipes/tag-names.pipe';
 import {PersonNamesPipe} from './pipes/person-names.pipe';
 import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
 import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
-import {MatTabsModule} from '@angular/material/tabs';
+import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragment.module';
 
 
 @NgModule({
@@ -99,7 +98,7 @@ import {MatTabsModule} from '@angular/material/tabs';
     SuggestedActionButtonModule,
     TagChipsModule,
     StopWatchModule,
-    MatTabsModule,
+    MarkdownFragmentModule
   ],
   declarations: [
     // Page
@@ -156,7 +155,6 @@ import {MatTabsModule} from '@angular/material/tabs';
     // Fragments
     DailyScrumFragmentComponent,
     DailyScrumItemFragmentComponent,
-    DescriptionFragmentComponent,
     FileDropFragmentComponent,
     FutureTaskletFragmentComponent,
     MeetingMinutesFragmentComponent,

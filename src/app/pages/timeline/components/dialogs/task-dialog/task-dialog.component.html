@@ -184,8 +184,9 @@
             </mat-panel-description>
             <mat-icon svgIcon="short_text"></mat-icon>
           </mat-expansion-panel-header>
-          <app-description-fragment [description]="task.description"
-                                    [readonly]="readonly"></app-description-fragment>
+          <app-markdown-editor [text]="task.description.value"
+                               [readonly]="readonly"
+                               (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
         </mat-expansion-panel>
 
       </mat-accordion>

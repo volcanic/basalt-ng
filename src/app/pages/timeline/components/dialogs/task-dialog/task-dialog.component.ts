@@ -328,6 +328,16 @@ export class TaskDialogComponent implements OnInit {
     });
   }
 
+  // Description
+
+  /**
+   * Handles description changes
+   * @param text text
+   */
+  onDescriptionChanged(text: string) {
+    this.task.description.value = text;
+  }
+
   //
   // Button actions
   //

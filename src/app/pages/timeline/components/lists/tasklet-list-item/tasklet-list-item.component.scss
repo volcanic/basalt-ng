@@ -62,6 +62,10 @@
   font-weight: 400;
 }
 
+.pomodoro-divider {
+  position: relative !important;
+}
+
 .light-theme {
   .tag {
     background: mat-color($mat-grey, 200) !important;

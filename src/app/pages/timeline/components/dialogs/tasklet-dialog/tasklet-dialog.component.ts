@@ -142,10 +142,10 @@ export class TaskletDialogComponent implements OnInit {
 
   /**
    * Handles description changes
-   * @param description new description
+   * @param text text
    */
-  onDescriptionChanged(description: Description) {
-    this.tasklet.description = description;
+  onDescriptionChanged(text: string) {
+    this.tasklet.description.value = text;
   }
 
   /**
@@ -158,10 +158,10 @@ export class TaskletDialogComponent implements OnInit {
 
   /**
    * Handles pomodoro task changes
-   * @param pomodoroTask new pomodoro task
+   * @param text text
    */
-  onPomodoroTaskChanged(pomodoroTask: Description) {
-    this.tasklet.pomodoroTask = pomodoroTask;
+  onPomodoroTaskChanged(text: string) {
+    this.tasklet.pomodoroTask.value = text;
   }
 
   /**

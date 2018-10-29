@@ -417,18 +417,18 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles pomodoro task changes
-   * @param pomodoroTask new pomodoro task
+   * @param text text
    */
-  onPomodoroTaskChanged(pomodoroTask: Description) {
-    this.tasklet.pomodoroTask = pomodoroTask;
+  onPomodoroTaskChanged(text: string) {
+    this.tasklet.pomodoroTask.value = text;
   }
 
   /**
    * Handles description changes
-   * @param description new description
+   * @param text text
    */
-  onDescriptionChanged(description: Description) {
-    this.tasklet.description = description;
+  onDescriptionChanged(text: string) {
+    this.tasklet.description.value = text;
   }
 
   /**
@@ -1054,9 +1054,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     if (tasklet.description != null && tasklet.description.value != null) {
       tasklet.description.value.split('\n').forEach(line => {
         line.split(' ').forEach(word => {
-          if (word.startsWith('#') &&
-              word.length > 1 &&
-              word.charAt(1) !== '#') {
+          if (word.startsWith('#')
+            && word.length > 1 // Exclude single hashes
+            && word.charAt(1) !== '#' // Exclude markdown tags
+          ) {
             const hashtag = word.replace('#', '');
             inferredTags.set(hashtag, new Tag(hashtag));
           }

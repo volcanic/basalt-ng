@@ -68,14 +68,14 @@
             </div>
           </div>
           <div class="main">
-            <app-description-fragment *ngIf="containsPomodoroTask(tasklet)"
-                                      [description]="tasklet.pomodoroTask"
-                                      placeholder="Pomodoro Task"
-                                      (descriptionChangedEmitter)="onPomodoroTaskChanged($event)"></app-description-fragment>
-            <app-description-fragment *ngIf="containsDescription(tasklet)"
-                                      [description]="tasklet.description"
-                                      placeholder="Description"
-                                      (descriptionChangedEmitter)="onDescriptionChanged($event)"></app-description-fragment>
+            <app-markdown-editor *ngIf="containsPomodoroTask(tasklet)"
+                                  [text]="tasklet.pomodoroTask.value"
+                                  placeholder="Pomodoro Task"
+                                  (textChangedEmitter)="onPomodoroTaskChanged($event)"></app-markdown-editor>
+            <app-markdown-editor *ngIf="containsDescription(tasklet)"
+                                  [text]="tasklet.description.value"
+                                  placeholder="Description"
+                                  (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
             <app-meeting-minutes-fragment *ngIf="containsMeetingMinutes(tasklet)"
                                           [meetingMinuteItems]="tasklet.meetingMinuteItems"
                                           [personOptions]="personOptions"
@@ -150,23 +150,23 @@
   <div *ngIf="tasklet.type === taskletType.POMODORO_BREAK && action != null" class="overlay">
 
     <div>
-    <div class="overlay-buttons">
-      <div class="icon-wrapper">
-        <div class="more">
-          <mat-icon svgIcon="more_horiz_36"></mat-icon>
+      <div class="overlay-buttons">
+        <div class="icon-wrapper">
+          <div class="more">
+            <mat-icon svgIcon="more_horiz_36"></mat-icon>
+          </div>
+        </div>
+        <div class="flexcontainer button-wrapper">
+          <div class="flexbox"></div>
+          <button mat-button routerLink="/timeline">Back to timeline</button>
+          <div class="flexbox"></div>
         </div>
       </div>
-      <div class="flexcontainer button-wrapper">
-        <div class="flexbox"></div>
-        <button mat-button routerLink="/timeline">Back to timeline</button>
-        <div class="flexbox"></div>
-      </div>
-    </div>
 
-    <div class="overlay-content">
-      <div>POMODORO BREAK</div>
-      <app-stop-watch [duration]="tasklet.pomodoroBreak" [startTime]="tasklet.creationDate"></app-stop-watch>
-    </div>
+      <div class="overlay-content">
+        <div>POMODORO BREAK</div>
+        <app-stop-watch [duration]="tasklet.pomodoroBreak" [startTime]="tasklet.creationDate"></app-stop-watch>
+      </div>
     </div>
   </div>
 </div>

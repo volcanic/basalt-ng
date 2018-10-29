@@ -20,6 +20,7 @@ import {
   MatSidenavModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule
@@ -46,6 +47,7 @@ import {
     MatSidenavModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule
@@ -73,6 +75,7 @@ import {
     MatSidenavModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule

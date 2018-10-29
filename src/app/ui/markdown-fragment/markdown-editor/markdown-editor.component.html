@@ -1,19 +1,22 @@
 <mat-tab-group mat-align-tabs="center">
-  <mat-tab label="Text">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon svgIcon="text"></mat-icon>
+      Text
+    </ng-template>
     <mat-form-field color="primary" class="wide-box">
         <textarea matInput
                   matTextareaAutosize
-                  required
                   name="description"
                   [placeholder]="placeholder"
                   matAutosizeMinRows="3"
                   matAutosizeMaxRows="12"
-                  [(ngModel)]="description.value"
+                  [(ngModel)]="text"
                   [disabled]="readonly"
-                  (change)="onDescriptionTextChanged()">
+                  (change)="onTextChanged()">
         </textarea>
       <button
-        *ngIf="description.value"
+        *ngIf="text"
         mat-button
         mat-icon-button
         matSuffix
@@ -25,9 +28,11 @@
       </button>
     </mat-form-field>
   </mat-tab>
-  <mat-tab label="Preview">
-    <div
-      [innerHtml]="markdownText"
-    ></div>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon svgIcon="markdown"></mat-icon>
+      Preview
+    </ng-template>
+    <app-markdown-preview [markdownText]="text"></app-markdown-preview>
   </mat-tab>
 </mat-tab-group>

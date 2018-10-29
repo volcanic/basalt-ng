@@ -37,23 +37,18 @@
           <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
             <!-- Pomodoro task -->
             <div *ngIf="containsPomodoroTask(tasklet)" class="text pomodoro-task">
-              <mat-list>
-                <mat-list-item class="text" *ngFor="let item of tasklet.pomodoroTask.value.split('\n')">{{ item }}
-                </mat-list-item>
-              </mat-list>
+              <app-markdown-preview
+                [markdownText]="tasklet.pomodoroTask.value"></app-markdown-preview>
+              <mat-divider class="pomodoro-divider"></mat-divider>
             </div>
             <!-- Description -->
             <div *ngIf="containsDescription(tasklet)" class="text">
-              <div *ngIf="descriptionInMarkdown != null && descriptionInMarkdown != ''"
-                   [innerHtml]="descriptionInMarkdown">
-              </div>
-              <div *ngIf="descriptionInMarkdown == null || descriptionInMarkdown == ''" class="placeholder-description">
+              <app-markdown-preview
+                *ngIf="tasklet.description.value != ''"
+                [markdownText]="tasklet.description.value"></app-markdown-preview>
+              <div *ngIf="tasklet.description.value == ''" class="placeholder-description">
                 Click here to add description
               </div>
-              <!-- <mat-list>
-                <mat-list-item class="text" *ngFor="let item of tasklet.description.value.split('\n')">{{ item }}
-                </mat-list-item>
-              </mat-list> -->
             </div>
             <!-- Meeting minutes -->
             <app-tasklet-meeting-minutes-fragment *ngIf="containsMeetingMinutes(tasklet)"
