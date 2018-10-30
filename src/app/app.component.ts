@@ -1,19 +1,15 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {SnackbarService} from './core/ui/services/snackbar.service';
 import {PouchDBService} from './core/persistence/services/pouchdb.service';
-import {MatDialog, MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
 import {environment} from '../environments/environment';
-import {GitTag} from './core/settings/model/git-tag.model';
-import {NewFeaturesDialogComponent} from './ui/new-features-dialog/new-features-dialog/new-features-dialog.component';
 import {SettingsService} from './core/settings/services/settings.service';
 import {PouchDBSettingsService} from './core/persistence/services/pouchdb-settings.service';
-import {Setting} from './core/settings/model/setting.model';
 import {EntityService} from './core/entity/services/entity.service';
 import {TaskService} from './core/entity/services/task.service';
 import {TaskletService} from './core/entity/services/tasklet.service';
 import {ThemeService} from './core/ui/services/theme.service';
 import {OverlayContainer} from '@angular/cdk/overlay';
-import {Settings} from './core/settings/model/settings.enum';
 
 /**
  * Displays root element
@@ -42,7 +38,6 @@ export class AppComponent implements OnInit, AfterViewInit {
    * @param {SettingsService} settingsService
    * @param {ThemeService} themeService
    * @param {OverlayContainer} overlayContainer
-   * @param {MatDialog} dialog dialog
    * @param {MatSnackBar} snackBar snack bar
    */
   constructor(private entityService: EntityService,
@@ -54,7 +49,6 @@ export class AppComponent implements OnInit, AfterViewInit {
               private settingsService: SettingsService,
               private themeService: ThemeService,
               private overlayContainer: OverlayContainer,
-              public dialog: MatDialog,
               public snackBar: MatSnackBar) {
   }
 
@@ -66,7 +60,6 @@ export class AppComponent implements OnInit, AfterViewInit {
    * Handles on-init lifecycle hook
    */
   ngOnInit() {
-    this.initializeSettings();
     this.initializeTheme();
     this.initializeThemeSubscription();
     this.initializeSnackbar();
@@ -82,33 +75,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   //
   // Initialization
   //
-
-  /**
-   * Initializes settings
-   */
-  private initializeSettings() {
-    this.settingsService.fetch();
-    this.settingsService.settingsSubject.subscribe(settings => {
-
-      if (settings.get(Settings.VERSION) != null) {
-        this.showNewFeatures(settings.get(Settings.VERSION).value);
-      }
-
-      // Initialize values
-      this.initializeSetting(Settings.DEVELOPMENT, true);
-      this.initializeSetting(Settings.SCRUM, true);
-      this.initializeSetting(Settings.POMODORO, true);
-      this.initializeSetting(Settings.POMODORO_DURATION, 5);
-      this.initializeSetting(Settings.POMODORO_BREAK, 5);
-    });
-  }
-
-  private initializeSetting(settings: Settings, value: any) {
-    if (this.settingsService.settings.get(settings) == null) {
-      const setting = new Setting(settings, value);
-      this.settingsService.updateSetting(setting);
-    }
-  }
 
   /**
    * Initializes theme
@@ -171,54 +137,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     if (action != null) {
       snackbarRef.onAction().subscribe(action);
-    }
-  }
-
-  /**
-   * Handles display of new features dialog
-   * @param {string} currentVersion
-   */
-  private showNewFeatures(currentVersion: string) {
-    // Current version
-    const currentMajor = Number.parseInt(environment.VERSION.split('.')[0]);
-    const currentMinor = Number.parseInt(environment.VERSION.split('.')[1]);
-    const currentPatch = Number.parseInt(environment.VERSION.split('.')[2]);
-
-    // Latest version
-    const latestMajor = Number.parseInt(currentVersion.split('.')[0]);
-    const latestMinor = Number.parseInt(currentVersion.split('.')[1]);
-    const latestPatch = Number.parseInt(currentVersion.split('.')[2]);
-
-    if ((currentMajor > latestMajor)
-      || (currentMajor === latestMajor && currentMinor > latestMinor)
-      || (currentMajor === latestMajor && currentMinor === latestMinor && currentPatch > latestPatch)) {
-      const dialogRef = this.dialog.open(NewFeaturesDialogComponent, {
-        disableClose: false,
-        data: {
-          dialogTitle: 'New features',
-          gitTags: (environment.TAGS as GitTag[]).filter(gt => {
-            gt.annotation = gt.annotation.replace(/.*v/g, '');
-
-            // Tag version
-            const tagMajor = Number.parseInt(gt.annotation.split('.')[0]);
-            const tagMinor = Number.parseInt(gt.annotation.split('.')[1]);
-            const tagPatch = Number.parseInt(gt.annotation.split('.')[2]);
-
-            const relevant = ((tagMajor > latestMajor)
-              || (tagMajor === latestMajor && tagMinor > latestMinor)
-              || (tagMajor === latestMajor && tagMinor === latestMinor && tagPatch > latestPatch)
-            );
-
-            console.log(`tag version ${gt.annotation}, relevant: ${relevant}`);
-
-            return relevant;
-          })
-        }
-      });
-      dialogRef.afterClosed().subscribe(() => {
-        // Save latest version
-        this.settingsService.updateSetting(new Setting(Settings.VERSION, environment.VERSION));
-      });
     }
   }
 }

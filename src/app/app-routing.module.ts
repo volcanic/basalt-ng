@@ -2,7 +2,9 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
-    {path: '', redirectTo: 'timeline', pathMatch: 'full'},
+    {path: '', redirectTo: 'intro', pathMatch: 'full'},
+    // Intro module
+    {path: 'intro', loadChildren: './pages/intro/intro.module#IntroModule'},
     // Timeline module
     {path: 'tasklet', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
     {path: 'tasklet/:id', loadChildren: './pages/timeline/timeline.module#TimelineModule'},

@@ -1,0 +1,12 @@
+<div class="flexcontainer">
+  <div class="flexbox centered" *ngFor="let action of featureActions" (mouseenter)="onHoverContainer(true, action)"
+       (mouseleave)="onHoverContainer(false, action)">
+    <app-suggested-action-button
+      [backgroundColor]="action.backgroundColor"
+      [iconColor]="action.iconColor"
+      [icon]="action.icon"
+      [label]="action.label"
+      (buttonClickedEmitter)="onFeatureToggled(action)">
+    </app-suggested-action-button>
+  </div>
+</div>

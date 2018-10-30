@@ -55,7 +55,7 @@ import {MaterialIconService} from '../../../../core/ui/services/material-icon.se
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
 import {Router} from '@angular/router';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
-import {Settings} from '../../../../core/settings/model/settings.enum';
+import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 
 /**
  * Displays timeline page
@@ -1043,7 +1043,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.POMODORO_START: {
         // Set pomodoro duration and start time
-        tasklet.pomodoroDuration = +this.settingsService.settings.get(Settings.POMODORO_DURATION).value;
+        tasklet.pomodoroDuration = +this.settingsService.settings.get(SettingType.POMODORO_DURATION).value;
         tasklet.pomodoroStartTime = new Date();
 
         // Update tasklet

@@ -1,0 +1,14 @@
+@import '../../../../../flex';
+
+.centered {
+  text-align: center;
+}
+
+::ng-deep .typeSelect div.mat-select-arrow-wrapper {
+  display: none;
+}
+
+::ng-deep .typeSelect.mat-select {
+  display: inline;
+  width: 1px;
+}

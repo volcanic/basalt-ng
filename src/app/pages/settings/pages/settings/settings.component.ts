@@ -8,7 +8,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
 import {Subject} from 'rxjs/Subject';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
-import {Settings} from '../../../../core/settings/model/settings.enum';
+import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {Setting} from '../../../../core/settings/model/setting.model';
 import {Router} from '@angular/router';
 import {Animations, ScrollDirection, ScrollState} from './settings.animation';
@@ -55,7 +55,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Scroll state */
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
 
-  settingsType = Settings;
+  settingsType = SettingType;
 
   /** Scrollable directive */
   @ViewChild(CdkScrollable) scrollable: CdkScrollable;
@@ -122,11 +122,11 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.settingsService.settingsSubject.subscribe(value => {
       if (value != null) {
         this.settings = value;
-        this.development = this.settings.get(Settings.DEVELOPMENT).value;
-        this.scrum = this.settings.get(Settings.SCRUM).value;
-        this.pomodoro = this.settings.get(Settings.POMODORO).value;
-        this.pomodoroDuration = +this.settings.get(Settings.POMODORO_DURATION).value;
-        this.pomodoroBreak = +this.settings.get(Settings.POMODORO_BREAK).value;
+        this.development = this.settings.get(SettingType.DEVELOPMENT).value;
+        this.scrum = this.settings.get(SettingType.SCRUM).value;
+        this.pomodoro = this.settings.get(SettingType.POMODORO).value;
+        this.pomodoroDuration = +this.settings.get(SettingType.POMODORO_DURATION).value;
+        this.pomodoroBreak = +this.settings.get(SettingType.POMODORO_BREAK).value;
       }
     });
   }
@@ -176,7 +176,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
       case 'back': {
-        this.router.navigate(['/timeline']);
+        this.router.navigate(['/timeline']).then(() => {
+        });
         break;
       }
     }

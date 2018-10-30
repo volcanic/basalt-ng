@@ -1,4 +1,4 @@
-export enum Settings {
+export enum SettingType {
   VERSION = 'version',
   // Development
   DEVELOPMENT = 'development',

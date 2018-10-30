@@ -37,13 +37,14 @@ import {ColorService} from '../../../../core/ui/services/color.service';
 import {Project} from '../../../../core/entity/model/project.model';
 import {ProjectService} from '../../../../core/entity/services/project.service';
 import {ScopeService} from '../../../../core/entity/services/scope.service';
-import {Settings} from '../../../../core/settings/model/settings.enum';
+import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 
 /**
  * Represents a tasklet type action button
  */
 class TaskletTypeAction {
+
   /** Tasklet type group */
   group: TaskletTypeGroup;
   /** Label to be displayed */
@@ -348,9 +349,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.action.label = this.tasklet.type.toString();
     this.action.taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]).filter(type => {
       return type !== TaskletType.DEVELOPMENT
-        && !(this.taskletTypeService.groupContainsType(TaskletTypeGroup.DEVELOPMENT, type) && !this.settingsService.settings.get(Settings.DEVELOPMENT).value)
-        && !(type === TaskletType.POMODORO && !this.settingsService.settings.get(Settings.POMODORO).value)
-        && !(type === TaskletType.DAILY_SCRUM && !this.settingsService.settings.get(Settings.SCRUM).value)
+        && !(this.taskletTypeService.groupContainsType(TaskletTypeGroup.DEVELOPMENT, type) && !this.settingsService.settings.get(SettingType.DEVELOPMENT).value)
+        && !(type === TaskletType.POMODORO && !this.settingsService.settings.get(SettingType.POMODORO).value)
+        && !(type === TaskletType.DAILY_SCRUM && !this.settingsService.settings.get(SettingType.SCRUM).value)
         && type !== TaskletType.POMODORO_BREAK;
     });
   }
@@ -476,7 +477,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   onPomodoroTimerOver() {
     const taskletPomodoroBreak = new Tasklet();
     taskletPomodoroBreak.type = TaskletType.POMODORO_BREAK;
-    taskletPomodoroBreak.pomodoroBreak = +this.settingsService.settings.get(Settings.POMODORO_BREAK).value;
+    taskletPomodoroBreak.pomodoroBreak = +this.settingsService.settings.get(SettingType.POMODORO_BREAK).value;
 
     const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
       disableClose: false,
@@ -733,8 +734,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.POMODORO_START: {
         // Set pomodoro duration and start time
-        tasklet.pomodoroDuration = +this.settingsService.settings.get(Settings.POMODORO_DURATION).value;
-        tasklet.pomodoroBreak = +this.settingsService.settings.get(Settings.POMODORO_BREAK).value;
+        tasklet.pomodoroDuration = +this.settingsService.settings.get(SettingType.POMODORO_DURATION).value;
+        tasklet.pomodoroBreak = +this.settingsService.settings.get(SettingType.POMODORO_BREAK).value;
         tasklet.pomodoroStartTime = new Date();
 
         // Update tasklet
