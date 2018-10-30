@@ -58,6 +58,9 @@ class TaskletTypeAction {
   taskletTypes = [];
 }
 
+/**
+ * Displays a tasklet in fullscreen mode
+ */
 @Component({
   selector: 'app-tasklet',
   templateUrl: './tasklet.component.html',
@@ -127,6 +130,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Scrollable directive */
   @ViewChild(CdkScrollable) scrollable: CdkScrollable;
 
+  /** Transparent color */
   transparent = 'transparent';
 
   /**

@@ -1,6 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DateService} from '../../../core/entity/services/date.service';
 
+/**
+ * Displays a stop watch counting down
+ */
 @Component({
   selector: 'app-stop-watch',
   templateUrl: './stop-watch.component.html',
@@ -69,6 +72,9 @@ export class StopWatchComponent implements OnInit {
   // Lifecycle hooks
   //
 
+  /**
+   * Handles on-init lifecycle phase
+   */
   ngOnInit() {
     // Initially calculate time left
     this.calculateTimeLeft();

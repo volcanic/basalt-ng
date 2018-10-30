@@ -3,6 +3,9 @@ import {MaterialColorService} from '../../../../../core/ui/services/material-col
 import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
 import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 
+/**
+ * Displays a pomodoro timer
+ */
 @Component({
   selector: 'app-pomodoro-timer',
   templateUrl: './pomodoro-timer.component.html',
@@ -32,6 +35,10 @@ export class PomodoroTimerComponent {
   // Actions
   //
 
+  /**
+   * Handles time-left event
+   * @param timeLeft time left in seconds
+   */
   onTimeLeft(timeLeft: number) {
     if (timeLeft <= 0) {
       this.textColor = this.materialColorService.contrast(PaletteType.GREY, HueType._200);

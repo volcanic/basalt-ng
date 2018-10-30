@@ -1,7 +1,9 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import hljs from 'highlight.js';
 
-// Get Markdown-It with all options enabled
+/**
+ * Markdown converter instance including configuration
+ */
 const md = require('markdown-it')({
   html: true,
   linkify: true,
@@ -18,11 +20,21 @@ const md = require('markdown-it')({
   }
 });
 
-// Remember old renderer, if overriden, or proxy to default renderer
+/**
+ * Default renderer for markdown
+ */
 const defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
   return self.renderToken(tokens, idx, options);
 };
 
+/**
+ * Adds configuration for links
+ * @param tokens tokens
+ * @param idx idx
+ * @param options options
+ * @param env env
+ * @param self self
+ */
 md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   // If you are sure other plugins can't add `target` - drop check below
   const aIndex = tokens[idx].attrIndex('target');
@@ -33,10 +45,13 @@ md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
     tokens[idx].attrs[aIndex][1] = '_blank';    // replace value of existing attr
   }
 
-  // pass token to default renderer.
+  // Pass token to default renderer.
   return defaultRender(tokens, idx, options, env, self);
 };
 
+/**
+ * Displays rendered markdown text
+ */
 @Component({
   selector: 'app-markdown-preview',
   templateUrl: './markdown-preview.component.html',
@@ -51,9 +66,21 @@ export class MarkdownPreviewComponent implements OnChanges {
   /** Text transformed into html */
   htmlText = '';
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-change lifecycle phase
+   * @param changes simple changes
+   */
   ngOnChanges(changes: SimpleChanges): void {
     this.updateMarkdown();
   }
+
+  //
+  // Actions
+  //
 
   /**
    * Updates markdown

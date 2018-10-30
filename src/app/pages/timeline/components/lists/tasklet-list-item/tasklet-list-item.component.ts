@@ -11,43 +11,6 @@ import {Action} from 'app/core/entity/model/action.enum';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Person} from 'app/core/entity/model/person.model';
 import {TaskletTypeService} from '../../../../../core/entity/services/tasklet-type.service';
-import hljs from 'highlight.js';
-
-// Get Markdown-It with all options enabled
-const md = require('markdown-it')({
-  html: true,
-  linkify: true,
-  typographer: true,
-  highlight: function (str, lang) {
-    if (lang && hljs.getLanguage(lang)) {
-      try {
-        return hljs.highlight(lang, str).value;
-      } catch (__) {}
-    }
-
-    return ''; // use external default escaping
-  }
-});
-
-// Remember old renderer, if overriden, or proxy to default renderer
-const defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
-  return self.renderToken(tokens, idx, options);
-};
-
-md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
-  // If you are sure other plugins can't add `target` - drop check below
-  const aIndex = tokens[idx].attrIndex('target');
-
-  if (aIndex < 0) {
-    tokens[idx].attrPush(['target', '_blank']); // add new attribute
-  } else {
-    tokens[idx].attrs[aIndex][1] = '_blank';    // replace value of existing attr
-  }
-
-  // pass token to default renderer.
-  return defaultRender(tokens, idx, options, env, self);
-};
-
 
 /**
  * Displays tasklet list item
@@ -73,8 +36,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   @Input() tags = new Map<string, Tag>();
   /** Map of persons */
   @Input() persons = new Map<string, Person>();
-  /** */
-  @Input() descriptionInMarkdown = '';
   /** Event emitter indicating tasklet action */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
   /** Trigger for context menu */
@@ -136,7 +97,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     this.initializeIcon();
     this.initializeDate();
     this.initializeExpansionPanel();
-    this.updateMarkdown();
   }
 
   /**
@@ -145,7 +105,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.initializeTopic();
     this.initializeProject();
-    this.updateMarkdown();
   }
 
   //
@@ -257,13 +216,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   //
   // Helpers
   //
-
-  /**
-   * Updates markdown
-   */
-  updateMarkdown() {
-    this.descriptionInMarkdown = md.render(this.tasklet.description.value);
-  }
 
   /**
    * Retrieves a task by a given tasklet
