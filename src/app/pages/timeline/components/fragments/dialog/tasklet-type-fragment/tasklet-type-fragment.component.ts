@@ -55,7 +55,8 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    * @param colorService color service
    * @param taskletTypeService tasklet type service
    */
-  constructor(private colorService: ColorService, private taskletTypeService: TaskletTypeService) {
+  constructor(private colorService: ColorService,
+              private taskletTypeService: TaskletTypeService) {
   }
 
   //

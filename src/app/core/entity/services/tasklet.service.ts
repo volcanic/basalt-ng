@@ -20,12 +20,15 @@ import {PersonService} from './person.service';
 import {MeetingMinuteItemType} from '../model/meeting-minutes/meeting-minute-item-type.enum';
 import {MeetingMinuteItem} from '../model/meeting-minutes/meeting-minute-item.model';
 import {DailyScrumItem} from '../model/daily-scrum/daily-scrum-item.model';
+import {DisplayAspect, TaskletDisplayService} from './tasklet/tasklet-display.service';
+import {Description} from '../model/description.model';
 
 /**
  * Handles tasklets including
  * <li> Queries
  * <li> Persistence
  * <li> Lookup
+ * <li> Display options
  */
 @Injectable({
   providedIn: 'root'
@@ -70,7 +73,8 @@ export class TaskletService {
               private dateService: DateService,
               private suggestionService: SuggestionService,
               private snackbarService: SnackbarService,
-              private scopeService: ScopeService) {
+              private scopeService: ScopeService,
+              private taskletDisplayService: TaskletDisplayService) {
     this.initializeTaskletSubscription();
     this.findTaskletsByScope(this.scopeService.scope);
   }
@@ -467,6 +471,50 @@ export class TaskletService {
   }
 
   // </editor-fold>
+
+  //
+  // Display aspects
+  //
+
+  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, previousDescription?: Description): boolean {
+    switch (displayAspect) {
+      case DisplayAspect.CAN_BE_ASSIGNED_TO_TASK: {
+        return this.taskletDisplayService.canBeAssignedToTask(tasklet);
+      }
+      case DisplayAspect.CONTAINS_DESCRIPTION: {
+        return TaskletDisplayService.containsDescription(tasklet);
+      }
+      case DisplayAspect.CONTAINS_PREVIOUS_DESCRIPTION: {
+        return TaskletDisplayService.containsPreviousDescription(previousDescription);
+      }
+      case DisplayAspect.CONTAINS_MEETING_MINUTES: {
+        return TaskletDisplayService.containsMeetingMinutes(tasklet);
+      }
+      case DisplayAspect.CONTAINS_POMODORO_TASK: {
+        return TaskletDisplayService.containsPomodoroTask(tasklet);
+      }
+      case DisplayAspect.CONTAINS_TAGS: {
+        return TaskletDisplayService.containsTags(tasklet);
+      }
+      case DisplayAspect.CONTAINS_PERSONS: {
+        return TaskletDisplayService.containsPersons(tasklet);
+      }
+      case DisplayAspect.CAN_BE_CREATED: {
+        return TaskletDisplayService.canBeCreated(tasklet);
+      }
+      case DisplayAspect.CAN_BE_UPDATED: {
+        return TaskletDisplayService.canBeUpdated(tasklet);
+      }
+      case DisplayAspect.CAN_BE_CONTINUED: {
+        return TaskletDisplayService.canBeContinued(tasklet);
+      }
+      case DisplayAspect.CAN_BE_TEMPLATED: {
+        return TaskletDisplayService.canBeTemplated(tasklet);
+      }
+    }
+
+    return false;
+  }
 
   //
   // Notification

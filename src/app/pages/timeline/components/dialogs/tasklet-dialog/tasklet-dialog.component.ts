@@ -13,6 +13,8 @@ import {SuggestionService} from 'app/core/entity/services/suggestion.service';
 import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
+import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
+import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
 
 /**
  * Displays tasklet dialog
@@ -53,18 +55,22 @@ export class TaskletDialogComponent implements OnInit {
   /** Person option representing the user */
   myselfOption: string;
 
-  /** Enum of dialog modes */
+  /** Enum of tasklet types */
   taskletType = TaskletType;
+  /** Enum of display aspects */
+  displayAspectType = DisplayAspect;
 
   /**
    * Constructor
    * @param personService person service
    * @param suggestionService suggestion service
+   * @param taskletService tasklet service
    * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
   constructor(private personService: PersonService,
               private suggestionService: SuggestionService,
+              private taskletService: TaskletService,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -329,105 +335,12 @@ export class TaskletDialogComponent implements OnInit {
   //
 
   /**
-   * Determines whether the displayed tasklet can be assigned to a task
+   * Determines whether the displayed tasklet contains a specific display aspect
+   * @param displayAspect display aspect
    * @param tasklet tasklet
    */
-  public canBeAssignedToTask(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type === TaskletType.ACTION
-      || tasklet.type === TaskletType.POMODORO
-      || tasklet.type === TaskletType.MEETING
-      || tasklet.type === TaskletType.CALL
-      || tasklet.type === TaskletType.MAIL
-      || tasklet.type === TaskletType.CHAT
-      || tasklet.type === TaskletType.DEVELOPMENT
-      || tasklet.type === TaskletType.CODING
-      || tasklet.type === TaskletType.DEBUGGING
-      || tasklet.type === TaskletType.DOCUMENTATION
-      || tasklet.type === TaskletType.REVIEW
-      || tasklet.type === TaskletType.TESTING
-      || tasklet.type === TaskletType.IDEA);
-  }
-
-  /**
-   * Determines whether the displayed tasklet contains a description
-   * @param tasklet tasklet
-   */
-  public containsDescription(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type === TaskletType.ACTION
-      || (tasklet.type === TaskletType.MEETING
-        && tasklet.description != null
-        && tasklet.description.value != null
-        && tasklet.description.value !== '')
-      || (tasklet.type === TaskletType.CALL
-        && tasklet.description != null
-        && tasklet.description.value != null
-        && tasklet.description.value !== '')
-      || tasklet.type === TaskletType.MAIL
-      || tasklet.type === TaskletType.CHAT
-      || tasklet.type === TaskletType.DEVELOPMENT
-      || tasklet.type === TaskletType.CODING
-      || tasklet.type === TaskletType.DEBUGGING
-      || tasklet.type === TaskletType.DOCUMENTATION
-      || tasklet.type === TaskletType.REVIEW
-      || tasklet.type === TaskletType.TESTING);
-  }
-
-  /**
-   * Determines whether the displayed tasklet contains meeting minutes
-   * @param tasklet tasklet
-   */
-  public containsMeetingMinutes(tasklet: Tasklet) {
-    return tasklet != null && (tasklet.type === TaskletType.MEETING
-      || tasklet.type === TaskletType.CALL
-      || tasklet.type === TaskletType.MAIL
-      || tasklet.type === TaskletType.CHAT);
-  }
-
-  /**
-   * Determines whether the displayed tasklet contains pomodoro tasks
-   * @param tasklet tasklet
-   */
-  public containsPomodoroTask(tasklet: Tasklet) {
-    return tasklet != null && tasklet.type === TaskletType.POMODORO;
-  }
-
-  /**
-   * Determines whether a given tasklet contains persons
-   * @param tasklet tasklet
-   */
-  public containsPersons(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type === TaskletType.MEETING
-      || tasklet.type === TaskletType.CALL
-      || tasklet.type === TaskletType.MAIL
-      || tasklet.type === TaskletType.CHAT);
-  }
-
-  /**
-   * Determines whether a given tasklet contains tags
-   * @param tasklet tasklet
-   */
-  public containsTags(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type !== TaskletType.LUNCH_BREAK
-      && tasklet.type !== TaskletType.FINISHING_TIME
-      && tasklet.type !== TaskletType.UNSPECIFIED);
-  }
-
-  /**
-   * Determines whether a given tasklet can be created
-   * @param tasklet tasklet
-   */
-  public canBeCreated(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type !== TaskletType.LUNCH_BREAK
-      && tasklet.type !== TaskletType.FINISHING_TIME);
-  }
-
-  /**
-   * Determines whether a given tasklet can be updated
-   * @param tasklet tasklet
-   */
-  public canBeUpdated(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type !== TaskletType.LUNCH_BREAK
-      && tasklet.type !== TaskletType.FINISHING_TIME);
+  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
+    return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
   }
 
   /**

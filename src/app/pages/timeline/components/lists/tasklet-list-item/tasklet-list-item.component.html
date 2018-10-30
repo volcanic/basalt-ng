@@ -36,13 +36,14 @@
           <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
           <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
             <!-- Pomodoro task -->
-            <div *ngIf="containsPomodoroTask(tasklet)" class="text pomodoro-task">
+            <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
+                 class="text pomodoro-task">
               <app-markdown-preview
                 [markdownText]="tasklet.pomodoroTask.value"></app-markdown-preview>
               <mat-divider class="pomodoro-divider"></mat-divider>
             </div>
             <!-- Description -->
-            <div *ngIf="containsDescription(tasklet)" class="text">
+            <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DESCRIPTION, tasklet)" class="text">
               <app-markdown-preview
                 *ngIf="tasklet.description.value != ''"
                 [markdownText]="tasklet.description.value"></app-markdown-preview>
@@ -51,7 +52,7 @@
               </div>
             </div>
             <!-- Meeting minutes -->
-            <app-tasklet-meeting-minutes-fragment *ngIf="containsMeetingMinutes(tasklet)"
+            <app-tasklet-meeting-minutes-fragment *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
                                                   [tasklet]="tasklet">
             </app-tasklet-meeting-minutes-fragment>
             <!-- Daily Scrum -->
@@ -72,10 +73,10 @@
           <button mat-menu-item (click)="onTaskletCreationTimeClicked()">
             Update creation time
           </button>
-          <button mat-menu-item (click)="onContinueClicked()" *ngIf="isContinuable()">
+          <button mat-menu-item (click)="onContinueClicked()" *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)">
             Continue tasklet
           </button>
-          <button mat-menu-item (click)="onTemplateClicked()" *ngIf="isTemplatable()">
+          <button mat-menu-item (click)="onTemplateClicked()" *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_TEMPLATED, tasklet)">
             Template tasklet
           </button>
         </mat-menu>
@@ -110,7 +111,7 @@
           </div>
           <div class="flexbox"></div>
           <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
-            <div *ngIf="isContinuable()"
+            <div *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)"
                  class="side-attached right-attached hidden"
                  (click)="onContinueClicked()"
                  matTooltip="Continue with tasklet"
@@ -119,7 +120,7 @@
                 <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
               </div>
             </div>
-            <div *ngIf="isTemplatable()" class="side-attached right-attached hidden"
+            <div *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_TEMPLATED, tasklet)" class="side-attached right-attached hidden"
                  (click)="onTemplateClicked()"
                  matTooltip="Template this event" matTooltipPosition="above">
               <div class="right-attached-content">

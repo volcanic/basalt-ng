@@ -5,24 +5,24 @@
       <app-tasklet-type-fragment [tasklet]="tasklet" (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
       </app-tasklet-type-fragment>
       <app-task-autocomplete-fragment
-        [task]="task" [taskOptions]="taskOptions" (taskChangedEmitter)="onTaskChanged($event)"
-        *ngIf="canBeAssignedToTask(tasklet)">
+        *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
+        [task]="task" [taskOptions]="taskOptions" (taskChangedEmitter)="onTaskChanged($event)">
       </app-task-autocomplete-fragment>
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescription]="previousDescription"></app-previous-description-fragment>
       <!-- Pomodoro task -->
-      <app-markdown-editor *ngIf="containsPomodoroTask(tasklet)"
-                                [text]="tasklet.pomodoroTask.value"
-                                placeholder="Pomodoro Task"
-                                (textChangedEmitter)="onPomodoroTaskChanged($event)"></app-markdown-editor>
+      <app-markdown-editor *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
+                           [text]="tasklet.pomodoroTask.value"
+                           placeholder="Pomodoro Task"
+                           (textChangedEmitter)="onPomodoroTaskChanged($event)"></app-markdown-editor>
       <!-- Description -->
-      <app-markdown-editor *ngIf="containsDescription(tasklet)"
-                                [text]="tasklet.description.value"
-                                placeholder="Description"
-                                (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
+      <app-markdown-editor *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DESCRIPTION, tasklet)"
+                           [text]="tasklet.description.value"
+                           placeholder="Description"
+                           (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
       <!-- Meeting minutes -->
       <app-meeting-minutes-fragment
-        *ngIf="containsMeetingMinutes(tasklet)"
+        *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
         [meetingMinuteItems]="tasklet.meetingMinuteItems"
         [personOptions]="personOptions"
         [myselfOption]="myselfOption"
@@ -33,13 +33,13 @@
         [dailyScrumItems]="tasklet.dailyScrumItems"
         [personOptions]="personOptions">
       </app-daily-scrum-fragment>
-      <app-tag-chips *ngIf="containsTags(tasklet)"
+      <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
                      [tags]="tags | tagNames"
                      [tagOptions]="tagOptions"
                      [readonly]=false
                      (tagsChangedEmitter)="onTagsChanged($event)">
       </app-tag-chips>
-      <app-tag-chips *ngIf="containsPersons(tasklet)"
+      <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_PERSONS, tasklet)"
                      [tags]="persons | personNames"
                      [tagOptions]="personOptions"
                      [readonly]=false
@@ -56,10 +56,11 @@
     <button mat-button (click)="goToFullscreen()">
       Go to Fullscreen
     </button>
-    <button mat-button [disabled]="tasklet.pomodoroStartTime != null" *ngIf="containsPomodoroTask(tasklet)" mat-button (click)="startPomodoro()">
+    <button mat-button *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
+            [disabled]="tasklet.pomodoroStartTime != null" (click)="startPomodoro()">
       Start Pomodoro
     </button>
-    <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
+    <button mat-button *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
             (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
       Send Meeting Minutes
     </button>
@@ -67,16 +68,17 @@
             [disabled]="!formCtrl.form.valid">
       Send Daily Scrum Summary
     </button>
-    <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()" [disabled]="!formCtrl.form.valid
-        && canBeCreated()">
+    <button mat-button *ngIf="mode == modeType.ADD"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet)" (click)="addTasklet()">
       Add tasklet
     </button>
-    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTasklet()" [disabled]="!formCtrl.form.valid
-        && canBeUpdated()">
+    <button mat-button *ngIf="mode == modeType.UPDATE"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet)" (click)="updateTasklet()">
       Update tasklet
     </button>
-    <button mat-button *ngIf="mode == modeType.CONTINUE" (click)="continueTasklet()"
-            [disabled]="!formCtrl.form.valid">
+    <button mat-button *ngIf="mode == modeType.CONTINUE"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)"
+            (click)="continueTasklet()">
       Continue tasklet
     </button>
   </mat-dialog-actions>
