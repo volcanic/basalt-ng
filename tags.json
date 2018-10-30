@@ -28,5 +28,6 @@
 { "annotation": "refs/tags/v0.27.0", "message": "Task delegation"},
 { "annotation": "refs/tags/v0.28.0", "message": "Meeting minutes"},
 { "annotation": "refs/tags/v0.29.0", "message": "Tasklet type groups"},
-{ "annotation": "refs/tags/v0.30.0", "message": "Pomdoro mode"}
+{ "annotation": "refs/tags/v0.30.0", "message": "Pomdoro mode"},
+{ "annotation": "refs/tags/v0.31.0", "message": "Markdown support"}
 ]}
