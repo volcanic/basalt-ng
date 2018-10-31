@@ -1,0 +1,93 @@
+@import '../../../../../../../sizes';
+@import '../../../../../../../flex';
+@import '../../../../../../../light-theme';
+@import '../../../../../../../dark-theme';
+
+.tasklet-preview {
+  margin-top: 25px;
+}
+
+.container {
+  margin: 0 auto;
+
+  @media #{$breakpoint-small} {
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+  @media #{$breakpoint-medium} {
+    width: 450px + 24px;
+  }
+  @media #{$breakpoint-large} {
+    width: 450px + 24px;
+  }
+
+  display: flex;
+}
+
+.tasklet-type {
+  fill: mat-color($mat-grey, 500);
+  margin-right: 10px;
+  height: 16px;
+}
+
+.date{
+  color: mat-color($mat-grey, 500);
+  margin-right: 15px;
+  width: 90px;
+}
+
+.date-component {
+  margin-right: 5px;
+}
+
+.topic {
+  color: mat-color($mat-grey, 500);
+}
+
+// Attachment
+
+.hidden {
+  display: none;
+}
+
+$side-attached-height: 40px;
+
+.attachment-holder {
+  min-height: $side-attached-height;
+  width: 0;
+}
+
+.side-attached {
+  height: $side-attached-height;
+  vertical-align: middle;
+}
+
+$side-attached-width: 55px;
+$side-attached-distance: 50px;
+
+// Left
+
+.left-attached, .left-attached-without-connector {
+  color: mat-color($mat-grey, 500);
+  width: $side-attached-width + $side-attached-distance;
+  margin-left: - ($side-attached-width + 2 * $side-attached-distance);
+  text-align: right;
+  vertical-align: middle;
+}
+
+.left-attached::after {
+  border-bottom: 2px solid mat-color($mat-grey, 500);
+  content: '\00a0';
+  position: absolute;
+  width: $side-attached-distance;
+  z-index: 0;
+}
+
+.left-attached-content {
+  margin-right: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  // line-height: $side-attached-height;
+}

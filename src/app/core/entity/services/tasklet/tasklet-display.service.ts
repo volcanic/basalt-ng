@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {Tasklet} from '../../model/tasklet.model';
 import {TaskletType} from '../../model/tasklet-type.enum';
 import {Description} from '../../model/description.model';
-import {TaskletTypeService} from '../tasklet-type.service';
+import {TaskletTypeService} from './tasklet-type.service';
 import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
+import {DateService} from '../date.service';
 
 /**
  * Enum representing display aspects
@@ -13,13 +14,16 @@ export enum DisplayAspect {
   CONTAINS_DESCRIPTION,
   CONTAINS_PREVIOUS_DESCRIPTION,
   CONTAINS_MEETING_MINUTES,
+  CONTAINS_DAILY_SCRUM,
   CONTAINS_POMODORO_TASK,
   CONTAINS_TAGS,
   CONTAINS_PERSONS,
   CAN_BE_CREATED,
   CAN_BE_UPDATED,
   CAN_BE_CONTINUED,
-  CAN_BE_TEMPLATED
+  CAN_BE_TEMPLATED,
+
+  IS_DISPLAYED_AS_PREVIEW
 }
 
 /**
@@ -33,7 +37,8 @@ export class TaskletDisplayService {
   /**
    * Constructor
    */
-  constructor(private taskletTypeService: TaskletTypeService) {
+  constructor(private dateService: DateService,
+              private taskletTypeService: TaskletTypeService) {
   }
 
   //
@@ -81,6 +86,14 @@ export class TaskletDisplayService {
     return tasklet != null && (tasklet.type === TaskletType.CALL
       || tasklet.type === TaskletType.MEETING
       || tasklet.type === TaskletType.CHAT);
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains daily scrum
+   * @param tasklet tasklet
+   */
+  static containsDailyScrum(tasklet: Tasklet): boolean {
+    return tasklet != null && tasklet.type === TaskletType.DAILY_SCRUM;
   }
 
   /**
@@ -150,17 +163,28 @@ export class TaskletDisplayService {
     return tasklet.type === TaskletType.DAILY_SCRUM;
   }
 
-
   /**
    * Determines whether the displayed tasklet can be assigned to a task
    * @param tasklet tasklet
    */
   canBeAssignedToTask(tasklet: Tasklet): boolean {
+    const group = this.taskletTypeService.taskletTypeGroups.get(tasklet.type);
 
-    this.taskletTypeService.taskletTypeGroups.get(tasklet.type);
-
-    return tasklet != null && (this.taskletTypeService.taskletTypeGroups.get(tasklet.type) != null
-      && this.taskletTypeService.taskletTypeGroups.get(tasklet.type) !== TaskletTypeGroup.BREAK)
+    return tasklet != null
+      && group !== null
+      && group !== TaskletTypeGroup.BREAK
       && tasklet.type !== TaskletType.DAILY_SCRUM;
+  }
+
+  /**
+   * Determines whether a given tasklet shall be displayed as a preview
+   * @param tasklet tasklet
+   */
+  isDisplayedAsPreview(tasklet: Tasklet): boolean {
+    const group = this.taskletTypeService.taskletTypeGroups.get(tasklet.type);
+
+    return tasklet != null
+      && ((group != null && group === TaskletTypeGroup.BREAK)
+        || !DateService.isBeforeNow(tasklet.creationDate));
   }
 }

@@ -10,9 +10,8 @@ import {ColorService} from 'app/core/ui/services/color.service';
 import {Action} from 'app/core/entity/model/action.enum';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Person} from 'app/core/entity/model/person.model';
-import {TaskletTypeService} from '../../../../../core/entity/services/tasklet-type.service';
-import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
+import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 
 /**
  * Displays tasklet list item
@@ -48,8 +47,13 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
 
   /** Enum for media types */
   mediaType = Media;
+  /** Enum for action types */
+  actionType = Action;
   /** Enum for tasklet types */
   taskletType = TaskletType;
+  /** Enum of display aspects */
+  displayAspectType = DisplayAspect;
+
   /** Icon name */
   icon = '';
   /** Topic (typically derived from task name */
@@ -61,37 +65,24 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   /** Creation time */
   time = '';
   /** Creation weekday */
-  weekDay = '';
+  weekday = '';
   /** Creation date */
   date = '';
   /** Simple creation date */
   simpleDate = '';
 
-  /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
-
-  /** Expansion panel state */
-  expansionPanelOpened = false;
   /** Reference to static service methods */
   isToday = DateService.isToday;
   /** Reference to static service methods */
-  isBeforeNow = DateService.isBeforeNow;
-  /** Reference to static service methods */
-  isBeforeToday = DateService.isBeforeToday;
-  /** Reference to static service methods */
   isWithinNextDays = DateService.isWithinNextDays;
-  /** Reference to static service methods */
-  isInCurrentWeek = DateService.isInCurrentWeek;
 
   /**
    * Constructor
    * @param colorService color service
    * @param taskletService tasklet service
-   * @param taskletTypeService tasklet type service
    */
   constructor(private colorService: ColorService,
-              private taskletService: TaskletService,
-              private taskletTypeService: TaskletTypeService) {
+              private taskletService: TaskletService) {
   }
 
   //
@@ -104,7 +95,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.initializeIcon();
     this.initializeDate();
-    this.initializeExpansionPanel();
   }
 
   /**
@@ -123,7 +113,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Initializes icon
    */
   private initializeIcon() {
-    this.icon = this.taskletTypeService.getIconByTaskletType(this.tasklet.type);
+    this.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
   }
 
   /**
@@ -131,7 +121,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   private initializeDate() {
     this.time = DateService.getTimeString(new Date(this.tasklet.creationDate));
-    this.weekDay = DateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
+    this.weekday = DateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
     this.date = DateService.getDateString(new Date(this.tasklet.creationDate));
     this.simpleDate = DateService.getSimpleDateWithoutYearString(new Date(this.tasklet.creationDate));
   }
@@ -164,61 +154,28 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     this.projectColor = this.colorService.getProjectColor(this.project);
   }
 
-  /**
-   * Initializes expansion panel
-   */
-  private initializeExpansionPanel() {
-    this.expansionPanelOpened = !DateService.isBeforeToday(this.tasklet.creationDate);
-  }
-
   //
   // Actions
   //
 
   /**
    * Handles click on tasklet
+   * @param event event
    */
-  onTaskletClicked() {
-    if (this.media > this.mediaType.MEDIUM) {
-      this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, tasklet: this.tasklet});
-    } else {
-      this.contextMenuTrigger.openMenu();
+  onTaskletClicked(event: { action: Action, tasklet: Tasklet }) {
+    switch (event.action) {
+      case Action.NONE: {
+        if (this.media > this.mediaType.MEDIUM) {
+          this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, tasklet: this.tasklet});
+        } else {
+          this.contextMenuTrigger.openMenu();
+        }
+        break;
+      }
+      default: {
+        this.taskletEventEmitter.emit({action: event.action, tasklet: event.tasklet});
+      }
     }
-  }
-
-  /**
-   * Handles click on update button
-   */
-  onUpdateClicked() {
-    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, tasklet: this.tasklet});
-  }
-
-  /**
-   * Handles click on tasklet creation time
-   */
-  onTaskletCreationTimeClicked() {
-    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_CREATION_TIME, tasklet: this.tasklet});
-  }
-
-  /**
-   * Handles click on continue button
-   */
-  onContinueClicked() {
-    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, tasklet: this.tasklet});
-  }
-
-  /**
-   * Handles click on template button
-   */
-  onTemplateClicked() {
-    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_TEMPLATE, tasklet: this.tasklet});
-  }
-
-  /**
-   * Handles expansion panel toggle
-   */
-  onExpansionPanelToggled() {
-    this.expansionPanelOpened = !this.expansionPanelOpened;
   }
 
   //

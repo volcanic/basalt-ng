@@ -51,7 +51,7 @@ import {TimelineRoutingModule} from './timeline-routing.module';
 import {RecurrenceIntervalFragmentComponent} from './components/fragments/dialog/recurrence-interval-fragment/recurrence-interval-fragment.component';
 import {FileDropFragmentComponent} from './components/fragments/file-drop-fragment/file-drop-fragment.component';
 import {FileUploadModule} from 'ng2-file-upload';
-import {FutureTaskletFragmentComponent} from './components/fragments/tasklet/future-tasklet-fragment/future-tasklet-fragment.component';
+import {TaskletPreviewFragmentComponent} from './components/fragments/tasklet/tasklet-preview-fragment/tasklet-preview-fragment.component';
 import {EcoFabSpeedDialModule} from '@ecodev/fab-speed-dial';
 import {TaskletDailyScrumFragmentComponent} from './components/fragments/tasklet/tasklet-daily-scrum-fragment/tasklet-daily-scrum-fragment.component';
 import {MeetingMinutesFragmentComponent} from './components/fragments/dialog/meeting-minutes-fragment/meeting-minutes-fragment.component';
@@ -72,6 +72,7 @@ import {PersonNamesPipe} from './pipes/person-names.pipe';
 import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
 import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
 import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragment.module';
+import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tasklet-card-fragment/tasklet-card-fragment.component';
 
 
 @NgModule({
@@ -156,7 +157,7 @@ import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragme
     DailyScrumFragmentComponent,
     DailyScrumItemFragmentComponent,
     FileDropFragmentComponent,
-    FutureTaskletFragmentComponent,
+    TaskletPreviewFragmentComponent,
     MeetingMinutesFragmentComponent,
     MeetingMinuteItemFragmentComponent,
     PersonAutocompleteFragmentComponent,
@@ -175,6 +176,7 @@ import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragme
     TagNamesPipe,
     PersonNamesPipe,
     PomodoroTimerComponent,
+    TaskletCardFragmentComponent,
   ], entryComponents: [
     // Page
     TimelineComponent,

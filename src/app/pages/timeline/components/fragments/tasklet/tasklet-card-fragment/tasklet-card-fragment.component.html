@@ -1,0 +1,115 @@
+<div [class]="themeClass">
+  <mat-card>
+    <mat-card-header (click)="onExpansionPanelToggled()">
+      <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
+      <mat-card-title class="topic">{{ topic }}</mat-card-title>
+      <mat-card-subtitle *ngIf="project != null">{{ project.name }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="content">
+      <mat-accordion class="headers-align" (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
+        <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
+        <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
+          <!-- Pomodoro task -->
+          <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
+               class="text pomodoro-task">
+            <app-markdown-preview
+              [markdownText]="tasklet.pomodoroTask.value"></app-markdown-preview>
+            <mat-divider class="pomodoro-divider"></mat-divider>
+          </div>
+          <!-- Description -->
+          <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DESCRIPTION, tasklet)" class="text">
+            <app-markdown-preview
+              *ngIf="tasklet.description.value != ''"
+              [markdownText]="tasklet.description.value"></app-markdown-preview>
+            <div *ngIf="tasklet.description.value == ''" class="placeholder-description">
+              Click here to add description
+            </div>
+          </div>
+          <!-- Meeting minutes -->
+          <app-tasklet-meeting-minutes-fragment
+            *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
+            [tasklet]="tasklet">
+          </app-tasklet-meeting-minutes-fragment>
+          <!-- Daily Scrum -->
+          <app-tasklet-daily-scrum-fragment
+            *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)"
+            [tasklet]="tasklet">
+          </app-tasklet-daily-scrum-fragment>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <hr class="delimiter"/>
+    </mat-card-content>
+
+    <mat-card-footer>
+      <mat-menu #contextMenu="matMenu">
+        <button mat-menu-item
+                (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
+          Update tasklet
+        </button>
+        <button mat-menu-item
+                (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">
+          Update creation time
+        </button>
+        <button mat-menu-item *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)"
+                (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CONTINUE, tasklet: tasklet})">
+          Continue tasklet
+        </button>
+        <button mat-menu-item *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_TEMPLATED, tasklet)"
+                (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_TEMPLATE, tasklet: tasklet})">
+          Template tasklet
+        </button>
+      </mat-menu>
+      <div class="flexcontainer">
+        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
+          <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
+               (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})"
+               [matTooltip]=date
+               matTooltipPosition="above">
+              <span class="left-attached-content"
+                    *ngIf="isInCurrentWeek(tasklet.creationDate) && !isToday(tasklet.creationDate)">{{ weekday.slice(0, 3) }},</span>
+            <span class="left-attached-content"
+                  *ngIf="!isInCurrentWeek(tasklet.creationDate)">{{ simpleDate }},</span>
+            <span class="left-attached-content">{{ time }}</span>
+          </div>
+        </div>
+        <div class="tags-holder"
+             (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
+          <span class="time" *ngIf="media <= mediaType.MEDIUM">
+            <label class="time-label">
+             <span>{{ time }}</span>
+              <span *ngIf="isBeforeToday(tasklet.creationDate)">, {{ date }}</span>
+            </label>
+          </span>
+          <span *ngFor="let p of tasklet.personIds">
+            <span class="person" *ngIf="persons.get(p) != null"><label
+              class="person-label">{{ persons.get(p).name }}</label></span>
+            </span>
+          <span *ngFor="let t of tasklet.tagIds">
+            <span class="tag" *ngIf="tags.get(t) != null"><label class="tag-label">{{ tags.get(t).name }}</label></span>
+            </span>
+        </div>
+        <div class="flexbox"></div>
+        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
+          <div *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)"
+               class="side-attached right-attached hidden"
+               (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CONTINUE, tasklet: tasklet})"
+               matTooltip="Continue with tasklet"
+               matTooltipPosition="above">
+            <div class="right-attached-content">
+              <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+            </div>
+          </div>
+          <div *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_TEMPLATED, tasklet)"
+               class="side-attached right-attached hidden"
+               (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_TEMPLATE, tasklet: tasklet})"
+               matTooltip="Template this event" matTooltipPosition="above">
+            <div class="right-attached-content">
+              <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-footer>
+  </mat-card>
+</div>

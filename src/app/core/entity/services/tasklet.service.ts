@@ -22,6 +22,8 @@ import {MeetingMinuteItem} from '../model/meeting-minutes/meeting-minute-item.mo
 import {DailyScrumItem} from '../model/daily-scrum/daily-scrum-item.model';
 import {DisplayAspect, TaskletDisplayService} from './tasklet/tasklet-display.service';
 import {Description} from '../model/description.model';
+import {TaskletTypeGroup} from '../model/tasklet-type-group.enum';
+import {TaskletTypeService} from './tasklet/tasklet-type.service';
 
 /**
  * Handles tasklets including
@@ -64,6 +66,8 @@ export class TaskletService {
    * @param {SuggestionService} suggestionService
    * @param {SnackbarService} snackbarService
    * @param {ScopeService} scopeService
+   * @param {TaskletDisplayService} taskletDisplayService
+   * @param {TaskletTypeService} taskletTypeService
    */
   constructor(private pouchDBService: PouchDBService,
               private projectService: ProjectService,
@@ -74,7 +78,8 @@ export class TaskletService {
               private suggestionService: SuggestionService,
               private snackbarService: SnackbarService,
               private scopeService: ScopeService,
-              private taskletDisplayService: TaskletDisplayService) {
+              private taskletDisplayService: TaskletDisplayService,
+              private taskletTypeService: TaskletTypeService) {
     this.initializeTaskletSubscription();
     this.findTaskletsByScope(this.scopeService.scope);
   }
@@ -473,7 +478,7 @@ export class TaskletService {
   // </editor-fold>
 
   //
-  // Display aspects
+  // Delegated: Display aspects
   //
 
   public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, previousDescription?: Description): boolean {
@@ -489,6 +494,9 @@ export class TaskletService {
       }
       case DisplayAspect.CONTAINS_MEETING_MINUTES: {
         return TaskletDisplayService.containsMeetingMinutes(tasklet);
+      }
+      case DisplayAspect.CONTAINS_DAILY_SCRUM: {
+        return TaskletDisplayService.containsDailyScrum(tasklet);
       }
       case DisplayAspect.CONTAINS_POMODORO_TASK: {
         return TaskletDisplayService.containsPomodoroTask(tasklet);
@@ -511,9 +519,57 @@ export class TaskletService {
       case DisplayAspect.CAN_BE_TEMPLATED: {
         return TaskletDisplayService.canBeTemplated(tasklet);
       }
+      case DisplayAspect.IS_DISPLAYED_AS_PREVIEW: {
+        return this.taskletDisplayService.isDisplayedAsPreview(tasklet);
+      }
     }
 
     return false;
+  }
+
+  //
+  // Delegated: tasklet types
+  //
+
+  /**
+   * Returns a list of tasklet types contained in a given tasklet type group
+   * @param group tasklet type group
+   */
+  public getTaskletTypesByGroup(group: TaskletTypeGroup): TaskletType[] {
+    return this.taskletTypeService.getTaskletTypesByGroup(group);
+  }
+
+  /**
+   * Returns the tasklet type group of a given tasklet type
+   * @param type tasklet type
+   */
+  public getTaskletGroupByType(type: TaskletType): TaskletTypeGroup {
+    return this.taskletTypeService.getTaskletGroupByType(type);
+  }
+
+  /**
+   * Determines if a tasklet type group contains a given tasklet type
+   * @param group tasklet type group
+   * @param type tasklet type
+   */
+  public groupContainsType(group: TaskletTypeGroup, type: TaskletType) {
+    return this.taskletTypeService.groupContainsType(group, type);
+  }
+
+  /**
+   * Retrieves an icon by tasklet type
+   * @param group tasklet type group
+   */
+  public getIconByTaskletTypeGroup(group: TaskletTypeGroup): string {
+    return this.taskletTypeService.getIconByTaskletTypeGroup(group);
+  }
+
+  /**
+   * Retrieves an icon by tasklet type
+   * @param type tasklet type
+   */
+  public getIconByTaskletType(type: TaskletType): string {
+    return this.taskletTypeService.getIconByTaskletType(type);
   }
 
   //

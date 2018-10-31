@@ -31,7 +31,7 @@ import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
 import {Media} from '../../../../core/ui/model/media.enum';
 import {MediaService} from '../../../../core/ui/services/media.service';
 import {Animations, ScrollDirection, ScrollState} from './tasklet.animation';
-import {TaskletTypeService} from '../../../../core/entity/services/tasklet-type.service';
+import {TaskletTypeService} from '../../../../core/entity/services/tasklet/tasklet-type.service';
 import {TaskletTypeGroup} from '../../../../core/entity/model/tasklet-type-group.enum';
 import {ColorService} from '../../../../core/ui/services/color.service';
 import {Project} from '../../../../core/entity/model/project.model';
@@ -178,7 +178,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
               private suggestionService: SuggestionService,
               private tagService: TagService,
               private taskletService: TaskletService,
-              private taskletTypeService: TaskletTypeService,
               private taskService: TaskService,
               private route: ActivatedRoute,
               private router: Router,
@@ -346,13 +345,13 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes tasklet type action
    */
   private initializeTaskletTypeAction() {
-    const group = this.taskletTypeService.getTaskletGroupByType(this.tasklet.type);
+    const group = this.taskletService.getTaskletGroupByType(this.tasklet.type);
 
     this.action = new TaskletTypeAction();
     this.action.group = group;
     this.action.backgroundColor = this.colorService.getTaskletTypeGroupColor(group).color;
     this.action.iconColor = this.colorService.getTaskletTypeGroupColor(group).contrast;
-    this.action.icon = this.taskletTypeService.getIconByTaskletType(this.tasklet.type);
+    this.action.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
     this.action.label = this.tasklet.type.toString();
     this.action.taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]).filter(type => {
       return type !== TaskletType.DEVELOPMENT
@@ -916,7 +915,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param type tasklet type
    */
   public getIconByTaskletType(type: TaskletType): string {
-    return this.taskletTypeService.getIconByTaskletType(type);
+    return this.taskletService.getIconByTaskletType(type);
   }
 
   /**

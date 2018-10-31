@@ -1,135 +1,27 @@
 <div [class]="themeClass">
-  <div *ngIf="!isBeforeNow(tasklet.creationDate)">
-    <div class="future-tasklet flexcontainer">
-      <div class="attachments">
-        <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
-          <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached-without-connector"
-               (click)="onTaskletCreationTimeClicked()"
-               [matTooltip]=date
-               matTooltipPosition="above">
-            <span class="left-attached-content"
-                  *ngIf="isWithinNextDays(tasklet.creationDate, 7) && !isToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
-            <span class="left-attached-content"
-                  *ngIf="!isWithinNextDays(tasklet.creationDate, 7)">{{ simpleDate }},</span>
-            <span class="left-attached-content">{{ time }}</span>
-          </div>
-        </div>
-      </div>
-      <app-future-tasklet-fragment [tasklet]="tasklet" [topic]="topic" [media]="media"
-                                   (click)="onTaskletClicked()"></app-future-tasklet-fragment>
+
+  <!-- Top attachment -->
+  <div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
+    {{ weekday }}, {{ date }}
+    <div class="top-connection-line"></div>
+  </div>
+
+  <!-- Display as preview -->
+  <div *ngIf="containsDisplayAspect(displayAspectType.IS_DISPLAYED_AS_PREVIEW, tasklet)">
+    <div class="tasklet-preview">
+      <app-tasklet-preview-fragment [tasklet]="tasklet" [topic]="topic" [icon]="icon"
+                                    [time]="time" [weekday]="weekday" [date]="date" [simpleDate]="simpleDate"
+                                    [media]="media"
+                                    (taskletEventEmitter)="onTaskletClicked($event)"></app-tasklet-preview-fragment>
     </div>
   </div>
-  <div class="card-wrapper" *ngIf="isBeforeNow(tasklet.creationDate)">
-    <div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
-      {{ weekDay }}, {{ date }}
-      <div class="top-connection-line"></div>
-    </div>
-    <mat-card>
-      <mat-card-header (click)="onExpansionPanelToggled()">
-        <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
-        <mat-card-title class="topic">{{ topic }}</mat-card-title>
-        <mat-card-subtitle *ngIf="project != null">{{ project.name }}</mat-card-subtitle>
-      </mat-card-header>
 
-      <mat-card-content class="content">
-        <mat-accordion class="headers-align" (click)="onTaskletClicked()">
-          <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
-          <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
-            <!-- Pomodoro task -->
-            <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
-                 class="text pomodoro-task">
-              <app-markdown-preview
-                [markdownText]="tasklet.pomodoroTask.value"></app-markdown-preview>
-              <mat-divider class="pomodoro-divider"></mat-divider>
-            </div>
-            <!-- Description -->
-            <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DESCRIPTION, tasklet)" class="text">
-              <app-markdown-preview
-                *ngIf="tasklet.description.value != ''"
-                [markdownText]="tasklet.description.value"></app-markdown-preview>
-              <div *ngIf="tasklet.description.value == ''" class="placeholder-description">
-                Click here to add description
-              </div>
-            </div>
-            <!-- Meeting minutes -->
-            <app-tasklet-meeting-minutes-fragment *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
-                                                  [tasklet]="tasklet">
-            </app-tasklet-meeting-minutes-fragment>
-            <!-- Daily Scrum -->
-            <app-tasklet-daily-scrum-fragment
-              *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
-              [tasklet]="tasklet">
-            </app-tasklet-daily-scrum-fragment>
-          </mat-expansion-panel>
-        </mat-accordion>
-        <hr class="delimiter"/>
-      </mat-card-content>
-
-      <mat-card-footer>
-        <mat-menu #contextMenu="matMenu">
-          <button mat-menu-item (click)="onUpdateClicked()">
-            Update tasklet
-          </button>
-          <button mat-menu-item (click)="onTaskletCreationTimeClicked()">
-            Update creation time
-          </button>
-          <button mat-menu-item (click)="onContinueClicked()" *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)">
-            Continue tasklet
-          </button>
-          <button mat-menu-item (click)="onTemplateClicked()" *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_TEMPLATED, tasklet)">
-            Template tasklet
-          </button>
-        </mat-menu>
-        <div class="flexcontainer">
-          <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
-            <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
-                 (click)="onTaskletCreationTimeClicked()"
-                 [matTooltip]=date
-                 matTooltipPosition="above">
-              <span class="left-attached-content"
-                    *ngIf="isInCurrentWeek(tasklet.creationDate) && !isToday(tasklet.creationDate)">{{ weekDay.slice(0, 3) }},</span>
-              <span class="left-attached-content"
-                    *ngIf="!isInCurrentWeek(tasklet.creationDate)">{{ simpleDate }},</span>
-              <span class="left-attached-content">{{ time }}</span>
-            </div>
-          </div>
-          <div class="tags-holder"
-               (click)="onTaskletClicked()">
-          <span class="time" *ngIf="media <= mediaType.MEDIUM">
-            <label class="time-label">
-             <span>{{ time }}</span>
-              <span *ngIf="isBeforeToday(tasklet.creationDate)">, {{ date }}</span>
-            </label>
-          </span>
-            <span *ngFor="let p of tasklet.personIds">
-            <span class="person" *ngIf="persons.get(p) != null"><label
-              class="person-label">{{ persons.get(p).name }}</label></span>
-            </span>
-            <span *ngFor="let t of tasklet.tagIds">
-            <span class="tag" *ngIf="tags.get(t) != null"><label class="tag-label">{{ tags.get(t).name }}</label></span>
-            </span>
-          </div>
-          <div class="flexbox"></div>
-          <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
-            <div *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)"
-                 class="side-attached right-attached hidden"
-                 (click)="onContinueClicked()"
-                 matTooltip="Continue with tasklet"
-                 matTooltipPosition="above">
-              <div class="right-attached-content">
-                <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
-              </div>
-            </div>
-            <div *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_TEMPLATED, tasklet)" class="side-attached right-attached hidden"
-                 (click)="onTemplateClicked()"
-                 matTooltip="Template this event" matTooltipPosition="above">
-              <div class="right-attached-content">
-                <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
-              </div>
-            </div>
-          </div>
-        </div>
-      </mat-card-footer>
-    </mat-card>
+  <!-- Display as card -->
+  <div class="card-wrapper" *ngIf="!containsDisplayAspect(displayAspectType.IS_DISPLAYED_AS_PREVIEW, tasklet)">
+    <app-tasklet-card-fragment [tasklet]="tasklet" [project]="project" [topic]="topic" [icon]="icon"
+                               [tags]="tags" [persons]="persons"
+                               [time]="time" [weekday]="weekday" [date]="date" [simpleDate]="simpleDate"
+                               [media]="media" [themeClass]="themeClass"
+                               (taskletEventEmitter)="onTaskletClicked($event)"></app-tasklet-card-fragment>
   </div>
 </div>

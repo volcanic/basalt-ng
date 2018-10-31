@@ -1,0 +1,27 @@
+<div class="tasklet-preview flexcontainer">
+  <div class="attachments">
+    <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
+      <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached-without-connector"
+           (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})"
+           [matTooltip]=date
+           [matTooltipPosition]="'above'">
+        <span class="left-attached-content"
+              *ngIf="isWithinNextDays(tasklet.creationDate, 7) && !isToday(tasklet.creationDate)">{{ weekday.slice(0, 3) }},</span>
+        <span class="left-attached-content"
+              *ngIf="!isWithinNextDays(tasklet.creationDate, 7)">{{ simpleDate }},</span>
+        <span class="left-attached-content">{{ time }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="container" (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
+    <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
+    <div class="date" *ngIf="media < mediaType.LARGE">
+    <span class="date-component"
+          *ngIf="isWithinNextDays(tasklet.creationDate, 7) && !isToday(tasklet.creationDate)">{{ weekday.slice(0, 3) }},</span>
+      <span class="date-component"
+            *ngIf="!isWithinNextDays(tasklet.creationDate, 7)">{{ simpleDate }},</span>
+      <span class="date-component">{{ time }}</span>
+    </div>
+    <div class="topic">{{ topic }}</div>
+  </div>
+</div>

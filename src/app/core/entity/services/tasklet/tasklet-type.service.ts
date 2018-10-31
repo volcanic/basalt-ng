@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {TaskletTypeGroup} from '../model/tasklet-type-group.enum';
-import {TaskletType} from '../model/tasklet-type.enum';
+import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
+import {TaskletType} from '../../model/tasklet-type.enum';
 
 /**
  * Handles tasklet type hierarchy

@@ -3,7 +3,7 @@ import {TaskletType} from 'app/core/entity/model/tasklet-type.enum';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
-import {TaskletTypeService} from '../../../../../../core/entity/services/tasklet-type.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
 
 /**
  * Represents a tasklet type group action button
@@ -53,10 +53,10 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
   /**
    * Constructor
    * @param colorService color service
-   * @param taskletTypeService tasklet type service
+   * @param taskletService tasklet service
    */
   constructor(private colorService: ColorService,
-              private taskletTypeService: TaskletTypeService) {
+              private taskletService: TaskletService) {
   }
 
   //
@@ -96,9 +96,9 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
       action.group = group;
       action.backgroundColor = this.getGroupColor(group);
       action.iconColor = this.getGroupContrast(group);
-      action.icon = this.taskletTypeService.getIconByTaskletTypeGroup(group);
+      action.icon = this.taskletService.getIconByTaskletTypeGroup(group);
       action.label = group.toString();
-      action.taskletTypes = this.taskletTypeService.getTaskletTypesByGroup(group).filter(type => {
+      action.taskletTypes = this.taskletService.getTaskletTypesByGroup(group).filter(type => {
         return type !== TaskletType.DEVELOPMENT
           && type !== TaskletType.POMODORO_BREAK;
       });
@@ -162,7 +162,7 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    * @param group tasklet type group
    */
   private getGroupColor(group: TaskletTypeGroup): string {
-    if (this.tasklet != null && (this.tasklet.type != null && this.taskletTypeService.groupContainsType(group, this.tasklet.type))
+    if (this.tasklet != null && (this.tasklet.type != null && this.taskletService.groupContainsType(group, this.tasklet.type))
       || (this.hoveredGroup === group)) {
       return this.colorService.getTaskletTypeGroupColor(group).color;
     } else {
@@ -175,7 +175,7 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    * @param group tasklet type group
    */
   private getGroupContrast(group: TaskletTypeGroup): string {
-    if (this.tasklet != null && (this.tasklet.type != null && this.taskletTypeService.groupContainsType(group, this.tasklet.type))
+    if (this.tasklet != null && (this.tasklet.type != null && this.taskletService.groupContainsType(group, this.tasklet.type))
       || (this.hoveredGroup === group)) {
       return this.colorService.getTaskletTypeGroupColor(group).contrast;
     } else {
@@ -188,6 +188,6 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    * @param type tasklet type
    */
   public getIconByTaskletType(type: TaskletType): string {
-    return this.taskletTypeService.getIconByTaskletType(type);
+    return this.taskletService.getIconByTaskletType(type);
   }
 }
