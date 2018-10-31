@@ -30,7 +30,7 @@ export class TaskListComponent implements OnInit, OnChanges {
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */
-  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task }>();
+  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[]}>();
 
   /** Tasks having a due date before now */
   tasksOverdue = [];
@@ -203,6 +203,6 @@ export class TaskListComponent implements OnInit, OnChanges {
    * Handles click on add button
    */
   onAddClicked() {
-    this.onTaskEvent({action: Action.OPEN_DIALOG_ADD, task: null})
+    this.onTaskEvent({action: Action.OPEN_DIALOG_ADD, task: null});
   }
 }

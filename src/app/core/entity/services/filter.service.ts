@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Tag} from '../model/tag.model';
+import {Task} from '../model/task.model';
 import {Project} from '../model/project.model';
 import {CloneService} from './clone.service';
 import {takeUntil} from 'rxjs/operators';
@@ -22,25 +23,32 @@ export class FilterService {
   /** Current search item */
   searchItem = '';
 
-  /** Map of tags */
-  tags: Map<string, Tag> = new Map<string, Tag>();
-  /** Flag indicating whether entities without tag shall be displayed */
-  tagsNone = true;
+  /** Map of tasks */
+  tasks: Map<string, Task> = new Map<string, Task>();
+  /** Flag indicating whether entities without task shall be displayed */
+  tasksNone = true;
 
   /** Map of projects */
   projects: Map<string, Project> = new Map<string, Project>();
   /** Flag indicating whether entities without project shall be displayed */
   projectsNone = true;
 
+  /** Map of tags */
+  tags: Map<string, Tag> = new Map<string, Tag>();
+  /** Flag indicating whether entities without tag shall be displayed */
+  tagsNone = true;
+
   /** Map of persons */
   persons: Map<string, Person> = new Map<string, Person>();
   /** Flag indicating whether entities without person shall be displayed */
   personsNone = true;
 
-  /** Flag indicating that tags have been initialized */
-  initializedTags = false;
+  /** Flag indicating that tasks have been initialized */
+  initializedTasks = false;
   /** Flag indicating that projects have been initialized */
   initializedProjects = false;
+  /** Flag indicating that tags have been initialized */
+  initializedTags = false;
   /** Flag indicating that persons have been initialized */
   initializedPersons = false;
 
@@ -51,19 +59,20 @@ export class FilterService {
 
   /**
    * Constructor
-   * @param {ProjectService} projectService
    * @param {CloneService} cloneService
    * @param {TaskletService} taskletService
    * @param {TaskService} taskService
+   * @param {ProjectService} projectService
    * @param {TagService} tagService
    * @param {PersonService} personService
    */
-  constructor(private projectService: ProjectService,
-              private cloneService: CloneService,
+  constructor(private cloneService: CloneService,
               private taskletService: TaskletService,
               private taskService: TaskService,
+              private projectService: ProjectService,
               private tagService: TagService,
               private personService: PersonService) {
+    this.initializeTaskSubscription();
     this.initializeProjectSubscription();
     this.initializeTagSubscription();
     this.initializePersonSubscription();
@@ -72,6 +81,24 @@ export class FilterService {
   //
   // Initialization
   //
+
+  /**
+   * Initializes task subscription
+   */
+  private initializeTaskSubscription() {
+    this.taskService.tasksSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        const tasks = value as Task[];
+
+        if (!this.initializedTasks) {
+          this.updateTasksList(tasks, true);
+          this.initializedTasks = true;
+        }
+      }
+    });
+  }
 
   /**
    * Initializes project subscription
@@ -146,6 +173,109 @@ export class FilterService {
   public updateSearchItem(searchItem: string) {
     this.searchItem = searchItem;
     this.notify();
+  }
+
+  //
+  // Tasks
+  //
+
+  /**
+   * Clears tasks
+   */
+  public clearTasks() {
+    this.initializedTasks = false;
+    this.tasks = new Map<string, Task>();
+  }
+
+  /**
+   * Update tasks and notifies subscribers
+   * @param {Task[]} tasks array of tasks
+   * @param {boolean} enable enable tasks if true
+   */
+  public updateTasksList(tasks: Task[], enable: boolean = false) {
+    this.updateTasksListInternal(tasks, enable);
+    this.notify();
+  }
+
+  /**
+   * Update tasks
+   * @param {Task[]} tasks array of tasks
+   * @param {boolean} enable enable tasks if true
+   */
+  private updateTasksListInternal(tasks: Task[], enable: boolean) {
+    tasks.forEach((t: Task) => {
+      if (t != null) {
+        const task = CloneService.cloneTask(t);
+
+        if (enable) {
+          task.checked = true;
+        }
+
+        this.tasks.set(task.id, task);
+      }
+    });
+  }
+
+  //
+  // Projects
+  //
+
+  /**
+   * Clears projects
+   */
+  public clearProjects() {
+    this.initializedProjects = false;
+    this.projects = new Map<string, Project>();
+  }
+
+  /**
+   * Update projects and notifies subscribers
+   * @param {Project[]} projects array of projects
+   * @param {boolean} enable enable projects if true
+   * @param {boolean} projectsNone include entities without projects if true
+   */
+  public updateProjects(projects: Project[], enable: boolean, projectsNone: boolean) {
+    this.updateProjectsListInternal(projects, enable);
+    this.updateProjectsNone(projectsNone);
+    this.notify();
+  }
+
+  /**
+   * Update projects and notifies subscribers
+   * @param {Project[]} projects array of projects
+   * @param {boolean} enable enable projects if true
+   */
+  public updateProjectsList(projects: Project[], enable: boolean = false) {
+    this.updateProjectsListInternal(projects, enable);
+    this.notify();
+  }
+
+  /**
+   * Updates flag which indicates that entities without projects shall be included during filtering
+   * @param {boolean} projectsNone include entities without projects if true
+   */
+  public updateProjectsNone(projectsNone: boolean) {
+    this.projectsNone = projectsNone;
+    this.notify();
+  }
+
+  /**
+   * Update projects
+   * @param {Project[]} projects array of projects
+   * @param {boolean} enable enable projects if true
+   */
+  private updateProjectsListInternal(projects: Project[], enable: boolean) {
+    projects.forEach((p: Project) => {
+      if (p != null) {
+        const project = CloneService.cloneProject(p);
+
+        if (enable) {
+          project.checked = true;
+        }
+
+        this.projects.set(project.id, project);
+      }
+    });
   }
 
   //
@@ -243,68 +373,6 @@ export class FilterService {
   }
 
   //
-  // Projects
-  //
-
-  /**
-   * Clears projects
-   */
-  public clearProjects() {
-    this.initializedProjects = false;
-    this.projects = new Map<string, Project>();
-  }
-
-  /**
-   * Update projects and notifies subscribers
-   * @param {Project[]} projects array of projects
-   * @param {boolean} enable enable projects if true
-   * @param {boolean} projectsNone include entities without projects if true
-   */
-  public updateProjects(projects: Project[], enable: boolean, projectsNone: boolean) {
-    this.updateProjectsListInternal(projects, enable);
-    this.updateProjectsNone(projectsNone);
-    this.notify();
-  }
-
-  /**
-   * Update projects and notifies subscribers
-   * @param {Project[]} projects array of projects
-   * @param {boolean} enable enable projects if true
-   */
-  public updateProjectsList(projects: Project[], enable: boolean = false) {
-    this.updateProjectsListInternal(projects, enable);
-    this.notify();
-  }
-
-  /**
-   * Updates flag which indicates that entities without projects shall be included during filtering
-   * @param {boolean} projectsNone include entities without projects if true
-   */
-  public updateProjectsNone(projectsNone: boolean) {
-    this.projectsNone = projectsNone;
-    this.notify();
-  }
-
-  /**
-   * Update projects
-   * @param {Project[]} projects array of projects
-   * @param {boolean} enable enable projects if true
-   */
-  private updateProjectsListInternal(projects: Project[], enable: boolean) {
-    projects.forEach((p: Project) => {
-      if (p != null) {
-        const project = CloneService.cloneProject(p);
-
-        if (enable) {
-          project.checked = true;
-        }
-
-        this.projects.set(project.id, project);
-      }
-    });
-  }
-
-  //
   // Persons
   //
 
@@ -370,15 +438,42 @@ export class FilterService {
    * Clears all currently set filters
    */
   public clearAllFilters() {
+    this.clearTaskFilter();
+    this.clearProjectFilter();
     this.clearTagFilter();
     this.clearPersonFilter();
     this.notify();
   }
 
   /**
+   * Clears all task-related filters
+   */
+  private clearTaskFilter() {
+    this.tasks.clear();
+    this.tasks.forEach((value) => {
+      const currentTask = value as Task;
+      currentTask.checked = true;
+    });
+    this.tasksNone = true;
+  }
+
+  /**
+   * Clears all project-related filters
+   */
+  private clearProjectFilter() {
+    this.projects.clear();
+    this.projects.forEach((value) => {
+      const currentProject = value as Project;
+      currentProject.checked = true;
+    });
+    this.projectsNone = true;
+  }
+
+  /**
    * Clears all tag-related filters
    */
   private clearTagFilter() {
+    this.tags.clear();
     this.tags.forEach((value) => {
       const currentTag = value as Tag;
       currentTag.checked = true;
@@ -390,6 +485,7 @@ export class FilterService {
    * Clears all person-related filters
    */
   private clearPersonFilter() {
+    this.persons.clear();
     this.persons.forEach((value) => {
       const currentPerson = value as Person;
       currentPerson.checked = true;

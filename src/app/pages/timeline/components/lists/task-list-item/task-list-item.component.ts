@@ -28,7 +28,7 @@ export class TaskListItemComponent implements OnInit {
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */
-  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, omitReferenceEvaluation?: boolean }>();
+  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
@@ -112,5 +112,12 @@ export class TaskListItemComponent implements OnInit {
    */
   onReopenClicked() {
     this.taskEventEmitter.emit({action: Action.REOPEN, task: this.task});
+  }
+
+  /**
+   * Handles clicks on filter button
+   */
+  onFilterClicked() {
+    this.taskEventEmitter.emit({action: Action.FILTER_LIST, task: null, tasks: [this.task]});
   }
 }

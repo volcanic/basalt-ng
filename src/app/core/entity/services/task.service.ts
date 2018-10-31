@@ -195,6 +195,9 @@ export class TaskService {
   public createTask(task: Task, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (task != null) {
+        // Remove transient attributes
+        task.checked = undefined;
+
         task.scope = this.scopeService.scope;
 
         // Update related objects

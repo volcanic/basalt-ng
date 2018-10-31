@@ -229,6 +229,54 @@ export class MatchService {
   }
 
   //
+  // Tasks
+  //
+
+  /**
+   * Determines whether a tasklet matches a given set of tasks
+   * @param tasklet tasklet to check
+   * @param tasks array of tasks tasklet should match
+   * @param tasksNone whether tasklets without task shall be included
+   * @returns {boolean} true if tasklet matches given tasks
+   */
+  public taskletMatchesTasks(tasklet: Tasklet, tasks: Task[], tasksNone: boolean): boolean {
+    const task = this.taskletService.getTaskByTasklet(tasklet);
+
+    return this.taskMatchesTasks(task, tasks, tasksNone);
+  }
+
+  /**
+   * Determines whether a task matches a given set of tasks
+   * @param task task to check
+   * @param tasks array of tasks task should match
+   * @param tasksNone whether tasks without project shall be included
+   * @returns {boolean} true if task matches given tasks
+   */
+  public taskMatchesTasks(task: Task, tasks: Task[], tasksNone: boolean): boolean {
+    return (task == null && tasksNone)
+      || tasks.length === 0
+      || tasks.some(t => {
+        console.log(`t ${JSON.stringify(t)}`);
+        return t.checked && task != null && task.id != null && t.id === task.id;
+      });
+  }
+
+  /**
+   * Determines whether a project matches a given set of project
+   * @param project project to check
+   * @param tasks array of tasks the project should be contained in
+   * @param tasksNone whether true should be returned if project is null
+   * @returns {boolean} true if project matches given tasks
+   */
+  public projectMatchesTasks(project: Project, tasks: Project[], tasksNone: boolean) {
+    return (project == null && tasksNone)
+      || tasks.length === 0
+      || tasks.some(t => {
+        return t.checked && project != null && project.id != null && t.id === project.id;
+      });
+  }
+
+  //
   // Projects
   //
 

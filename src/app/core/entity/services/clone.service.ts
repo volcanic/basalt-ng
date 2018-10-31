@@ -41,6 +41,15 @@ export class CloneService {
   }
 
   /**
+   * Clones a given array of tasks
+   * @param {Task[]} original
+   * @returns {Task[]} cloned object
+   */
+  static cloneTasks(original: Task[]): Task[] {
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
+  }
+
+  /**
    * Clones a given tasklet
    * @param {Tasklet} original
    * @returns {Tasklet} cloned object
