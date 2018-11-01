@@ -285,17 +285,32 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTasklets(tasklets: Tasklet[]) {
     this.tasklets = tasklets.filter(tasklet => {
-      const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-      const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
-        Array.from(this.filterService.projects.values()),
-        this.filterService.projectsNone);
-
-      return matchesSearchItem && matchesProjects;
+      return this.filterTasklet(tasklet);
     });
 
     // Digests
     this.generateWeeklyDigest(this.indicatedDate);
     this.generateDailyDigests(this.indicatedDate);
+  }
+
+  /**
+   * Checks if a tasklet matches current filter criteria
+   * @param tasklet tasklet
+   */
+  private filterTasklet(tasklet: Tasklet): boolean {
+    const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
+    const matchesTasks = this.matchService.taskletMatchesTasks(tasklet,
+      Array.from(this.filterService.tasks.values()),
+      this.filterService.tasksNone);
+    const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
+      Array.from(this.filterService.projects.values()),
+      this.filterService.projectsNone);
+    const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()),
+      this.filterService.tagsNone);
+    const matchesPersons = this.matchService.taskletMatchesPersons(tasklet,
+      Array.from(this.filterService.persons.values()), this.filterService.personsNone);
+
+    return matchesSearchItem && matchesTasks && matchesProjects && matchesTags && matchesPersons;
   }
 
   //
@@ -334,7 +349,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Checks if a task matches current filter criteria
    * @param task task
    */
-  private filterTask(task: Task) {
+  private filterTask(task: Task): boolean {
     const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
     const matchesProjects = this.matchService.taskMatchesProjects(task,
       Array.from(this.filterService.projects.values()),
@@ -381,7 +396,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Checks if a project matches current filter criteria
    * @param project project
    */
-  private filterProject(project: Project) {
+  private filterProject(project: Project): boolean {
     const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
     const matchesTasks = this.matchService.projectMatchesTasks(project,
       Array.from(this.filterService.tasks.values()),
@@ -416,13 +431,22 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTags(tags: Tag[]) {
     this.tags = tags.filter(tag => {
-      const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
-      const matchesTags = this.matchService.tagMatchesTags(tag,
-        Array.from(this.filterService.tags.values()),
-        this.filterService.tagsNone);
-
-      return matchesSearchItem && matchesTags;
+      return this.filterTag(tag);
     });
+  }
+
+  /**
+   * Checks if a tag matches current filter criteria
+   * @param tag tag
+   */
+  private filterTag(tag: Tag): boolean {
+    const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
+    /*
+    const matchesTags = this.matchService.tagMatchesTags(tag,
+      Array.from(this.filterService.tags.values()),
+      this.filterService.tagsNone);
+    */
+    return matchesSearchItem /* && matchesTags */;
   }
 
   //
@@ -473,19 +497,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     ).subscribe(() => {
       // Filter tasklets
       this.tasklets = Array.from(this.taskletService.tasklets.values()).filter(tasklet => {
-        const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-        const matchesTasks = this.matchService.taskletMatchesTasks(tasklet,
-          Array.from(this.filterService.tasks.values()),
-          this.filterService.tasksNone);
-        const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
-          Array.from(this.filterService.projects.values()),
-          this.filterService.projectsNone);
-        const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()),
-          this.filterService.tagsNone);
-        const matchesPersons = this.matchService.taskletMatchesPersons(tasklet,
-          Array.from(this.filterService.persons.values()), this.filterService.personsNone);
-
-        return matchesSearchItem && matchesTasks && matchesProjects && matchesTags && matchesPersons;
+        return this.filterTasklet(tasklet);
       }).sort((t1, t2) => {
         return new Date(t2.creationDate).getTime() > new Date(t1.creationDate).getTime() ? 1 : -1;
       });
@@ -512,12 +524,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Filter tags
       this.tags = Array.from(this.tagService.tags.values()).filter(tag => {
-        const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
-        const matchesTags = this.matchService.tagMatchesTags(tag,
-          Array.from(this.filterService.tags.values()),
-          this.filterService.tagsNone);
-
-        return matchesSearchItem && matchesTags;
+        return this.filterTag(tag);
       }).sort((t1, t2) => {
         return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
       });
@@ -1550,7 +1557,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FILTER_LIST: {
-        this.filterService.updateTagsList(tags);
+        this.filterService.clearTags();
+        this.filterService.updateTagsList(tags, true);
         break;
       }
       case Action.FILTER_NONE: {

@@ -12,7 +12,15 @@
 }
 
 .toolbar-menu-item {
-  padding: 0 20px;
+  @media #{$breakpoint-small} {
+    padding: 0;
+  }
+  @media #{$breakpoint-medium} {
+    padding: 0 10px;
+  }
+  @media #{$breakpoint-large} {
+    padding: 0 20px;
+  }
 }
 
 .toolbar-block {
