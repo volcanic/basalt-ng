@@ -262,6 +262,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   // Initialization
   //
 
+  //
+  // Tasklet
+  //
+
   /**
    * Initializes tasklet subscription
    */
@@ -294,6 +298,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.generateDailyDigests(this.indicatedDate);
   }
 
+  //
+  // Task
+  //
+
   /**
    * Initializes task subscription
    */
@@ -318,14 +326,28 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTasks(tasks: Task[]) {
     this.tasks = tasks.filter(task => {
-      const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
-      const matchesProjects = this.matchService.taskMatchesProjects(task,
-        Array.from(this.filterService.projects.values()),
-        this.filterService.projectsNone);
-
-      return matchesSearchItem && matchesProjects;
+      return this.filterTask(task);
     });
   }
+
+  /**
+   * Checks if a task matches current filter criteria
+   * @param task task
+   */
+  private filterTask(task: Task) {
+    const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
+    const matchesProjects = this.matchService.taskMatchesProjects(task,
+      Array.from(this.filterService.projects.values()),
+      this.filterService.projectsNone);
+    const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()),
+      this.filterService.tagsNone);
+
+    return matchesSearchItem && matchesProjects && matchesTags;
+  }
+
+  //
+  // Projects
+  //
 
   /**
    * Initializes project subscription
@@ -351,14 +373,26 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeProjects(projects: Project[]) {
     this.projects = projects.filter(project => {
-      const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
-      const matchesProjects = this.matchService.projectMatchesProjects(project,
-        Array.from(this.filterService.projects.values()),
-        this.filterService.projectsNone);
-
-      return matchesSearchItem && matchesProjects;
+      return this.filterProject(project);
     });
   }
+
+  /**
+   * Checks if a project matches current filter criteria
+   * @param project project
+   */
+  private filterProject(project: Project) {
+    const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
+    const matchesTasks = this.matchService.projectMatchesTasks(project,
+      Array.from(this.filterService.tasks.values()),
+      this.filterService.tasksNone);
+
+    return matchesSearchItem && matchesTasks;
+  }
+
+  //
+  // Tags
+  //
 
   /**
    * Initializes tag subscription
@@ -391,6 +425,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  //
+  // Person
+  //
+
   /**
    * Initializes person subscription
    */
@@ -402,7 +440,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.personsMap = new Map(this.personService.persons);
 
       if (value != null) {
-        this.initializeProjects(value as Person[]);
+        this.initializePersons(value as Person[]);
       }
     });
   }
@@ -421,6 +459,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       return matchesSearchItem && matchesPersons;
     });
   }
+
+  //
+  // Other
+  //
 
   /**
    * Initializes filter subscription
@@ -450,29 +492,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Filter tasks
       this.tasks = Array.from(this.taskService.tasks.values()).filter(task => {
-        const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
-        const matchesProjects = this.matchService.taskMatchesProjects(task,
-          Array.from(this.filterService.projects.values()),
-          this.filterService.projectsNone);
-        const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()),
-          this.filterService.tagsNone);
-
-        return matchesSearchItem && matchesProjects && matchesTags;
+        return this.filterTask(task);
       }).sort((t1, t2) => {
         return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
       });
 
       // Filter projects
       this.projects = Array.from(this.projectService.projects.values()).filter(project => {
-        const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
-        const matchesTasks = this.matchService.projectMatchesTasks(project,
-          Array.from(this.filterService.tasks.values()),
-          this.filterService.tasksNone);
-        const matchesProjects = this.matchService.projectMatchesProjects(project,
-          Array.from(this.filterService.projects.values()),
-          this.filterService.projectsNone);
-
-        return matchesSearchItem && matchesTasks && matchesProjects;
+        return this.filterProject(project);
       }).sort((p1, p2) => {
         return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
       });
@@ -1387,7 +1414,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FILTER_LIST: {
-        this.filterService.updateProjectsList(projects);
+        this.filterService.clearProjects();
+        this.filterService.updateProjectsList(projects, true);
         break;
       }
       case Action.FILTER_NONE: {

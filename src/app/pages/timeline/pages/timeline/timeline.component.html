@@ -36,11 +36,11 @@
     <div [@toolbarAnimation]="scrollDirection">
       <app-task-list [tasks]="tasks" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
       <mat-divider></mat-divider>
-      <app-project-list [projects]="projects" (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
+      <app-project-list [projects]="projects" [media]="media" (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
       <mat-divider></mat-divider>
-      <app-tag-list [tags]="tags" (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
+      <app-tag-list [tags]="tags" [media]="media" (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
       <mat-divider></mat-divider>
-      <app-person-list [persons]="persons" (personEventEmitter)="onPersonEvent($event)"></app-person-list>
+      <app-person-list [persons]="persons" [media]="media" (personEventEmitter)="onPersonEvent($event)"></app-person-list>
     </div>
   </mat-sidenav>
 

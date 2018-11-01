@@ -256,7 +256,6 @@ export class MatchService {
     return (task == null && tasksNone)
       || tasks.length === 0
       || tasks.some(t => {
-        console.log(`t ${JSON.stringify(t)}`);
         return t.checked && task != null && task.id != null && t.id === task.id;
       });
   }
@@ -268,11 +267,12 @@ export class MatchService {
    * @param tasksNone whether true should be returned if project is null
    * @returns {boolean} true if project matches given tasks
    */
-  public projectMatchesTasks(project: Project, tasks: Project[], tasksNone: boolean) {
+  public projectMatchesTasks(project: Project, tasks: Task[], tasksNone: boolean) {
     return (project == null && tasksNone)
       || tasks.length === 0
       || tasks.some(t => {
-        return t.checked && project != null && project.id != null && t.id === project.id;
+
+        return t.checked && project != null && project.id != null && t.projectId === project.id;
       });
   }
 
@@ -301,6 +301,7 @@ export class MatchService {
    */
   public taskMatchesProjects(task: Task, projects: Project[], projectsNone: boolean): boolean {
     const project = this.projectService.projects.get(task.projectId);
+
     return this.projectMatchesProjects(project, projects, projectsNone);
   }
 

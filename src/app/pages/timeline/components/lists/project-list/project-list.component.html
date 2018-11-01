@@ -1,5 +1,5 @@
 <mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="false" (opened)="false" hideToggle>
+  <mat-expansion-panel [expanded]="false" (opened)="true" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div class="label" color="">
@@ -7,7 +7,7 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-project-list-item *ngFor="let p of projects" [project]="p"
+    <app-project-list-item *ngFor="let p of projects" [project]="p" [media]="media"
                            (projectEventEmitter)="onProjectEvent($event)">
     </app-project-list-item>
   </mat-expansion-panel>

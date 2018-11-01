@@ -1,9 +1,28 @@
 <div class="flexcontainer"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
+  <mat-menu #contextMenu="matMenu">
+    <button mat-menu-item (click)="onProjectClicked()">Update project</button>
+    <button mat-menu-item (click)="onFilterClicked()"
+            class="action-buttons">Filter by project
+    </button>
+  </mat-menu>
+  <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
   <button mat-button class="entity flexbox"
           (click)="onProjectClicked()">
     <mat-icon svgIcon="agenda" class="list-icon"></mat-icon>
     <span>{{ project.name }}</span>
   </button>
+  <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
+    <button [@actionAnimation]="state"
+            mat-icon-button
+            matTooltip="Filter"
+            matTooltipPosition="above"
+            matTooltipShowDelay="250"
+            class="action"
+            [disableRipple]="true"
+            (click)="onFilterClicked()">
+      <mat-icon svgIcon='filter_list'></mat-icon>
+    </button>
+  </div>
 </div>

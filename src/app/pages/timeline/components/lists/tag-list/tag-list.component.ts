@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Action} from 'app/core/entity/model/action.enum';
 import {Tag} from '../../../../../core/entity/model/tag.model';
+import {Media} from '../../../../../core/ui/model/media.enum';
 
 /**
  * Displays tag list
@@ -15,6 +16,8 @@ export class TagListComponent {
 
   /** Tags to be displayed */
   @Input() tags = [];
+  /** Current media */
+  @Input() media: Media;
   /** Event emitter indicating tag action */
   @Output() tagEventEmitter = new EventEmitter<{ action: Action, tag: Tag }>();
 

@@ -7,7 +7,7 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-person-list-item *ngFor="let p of persons" [person]="p" (personEventEmitter)="onPersonEvent($event)">
+    <app-person-list-item *ngFor="let p of persons" [person]="p" [media]="media" (personEventEmitter)="onPersonEvent($event)">
     </app-person-list-item>
   </mat-expansion-panel>
 </mat-accordion>
