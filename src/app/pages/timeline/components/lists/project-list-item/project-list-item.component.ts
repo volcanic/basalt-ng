@@ -57,6 +57,6 @@ export class ProjectListItemComponent {
    * Handles clicks on filter button
    */
   onFilterClicked() {
-    this.projectEventEmitter.emit({action: Action.FILTER_LIST, project: null, projects: [this.project]});
+    this.projectEventEmitter.emit({action: Action.FILTER_SINGLE, project: null, projects: [this.project]});
   }
 }

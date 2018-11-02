@@ -240,6 +240,8 @@ export class MatchService {
    * @returns {boolean} true if tasklet matches given tasks
    */
   public taskletMatchesTasks(tasklet: Tasklet, tasks: Task[], tasksNone: boolean): boolean {
+    console.log(`tasks${JSON.stringify(tasks)}`);
+
     const task = this.taskletService.getTaskByTasklet(tasklet);
 
     return this.taskMatchesTasks(task, tasks, tasksNone);
@@ -340,6 +342,19 @@ export class MatchService {
       }).some(person => {
         return this.personMatchesPersons(person, persons, personsNone);
       }));
+  }
+
+  /**
+   * Determines whether a task matches a given set of persons
+   * @param task task to check
+   * @param persons array of persons task should match
+   * @param personsNone whether tasks without person shall be included
+   * @returns {boolean} true if task matches given persons
+   */
+  public taskMatchesPersons(task: Task, persons: Person[], personsNone: boolean): boolean {
+    return (task.delegatedToId == null && personsNone)
+      || (task.delegatedToId != null
+        && this.personMatchesPersons(this.personService.getPersonById(task.delegatedToId), persons, personsNone));
   }
 
   /**

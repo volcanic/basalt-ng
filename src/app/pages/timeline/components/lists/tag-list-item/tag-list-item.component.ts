@@ -57,6 +57,6 @@ export class TagListItemComponent {
    * Handles clicks on filter button
    */
   onFilterClicked() {
-    this.tagEventEmitter.emit({action: Action.FILTER_LIST, tag: null, tags: [this.tag]});
+    this.tagEventEmitter.emit({action: Action.FILTER_SINGLE, tag: null, tags: [this.tag]});
   }
 }

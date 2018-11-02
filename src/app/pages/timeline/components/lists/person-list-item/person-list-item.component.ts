@@ -57,6 +57,6 @@ export class PersonListItemComponent {
    * Handles clicks on filter button
    */
   onFilterClicked() {
-    this.personEventEmitter.emit({action: Action.FILTER_LIST, person: null, persons: [this.person]});
+    this.personEventEmitter.emit({action: Action.FILTER_SINGLE, person: null, persons: [this.person]});
   }
 }

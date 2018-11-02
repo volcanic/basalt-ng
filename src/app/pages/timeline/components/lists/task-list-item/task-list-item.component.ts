@@ -118,6 +118,6 @@ export class TaskListItemComponent implements OnInit {
    * Handles clicks on filter button
    */
   onFilterClicked() {
-    this.taskEventEmitter.emit({action: Action.FILTER_LIST, task: null, tasks: [this.task]});
+    this.taskEventEmitter.emit({action: Action.FILTER_SINGLE, task: null, tasks: [this.task]});
   }
 }

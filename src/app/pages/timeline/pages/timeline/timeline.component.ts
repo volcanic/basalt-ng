@@ -356,8 +356,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.filterService.projectsNone);
     const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()),
       this.filterService.tagsNone);
+    const matchesPersons = this.matchService.taskMatchesPersons(task, Array.from(this.filterService.persons.values()), this.filterService.personsNone);
 
-    return matchesSearchItem && matchesProjects && matchesTags;
+    return matchesSearchItem && matchesProjects && matchesTags && matchesPersons;
   }
 
   //
@@ -475,13 +476,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializePersons(persons: Person[]) {
     this.persons = persons.filter(person => {
-      const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
-      const matchesPersons = this.matchService.personMatchesPersons(person,
-        Array.from(this.filterService.persons.values()),
-        this.filterService.personsNone);
-
-      return matchesSearchItem && matchesPersons;
+      return this.filterPerson(person);
     });
+  }
+
+  /**
+   * Checks if a person matches current filter criteria
+   * @param person person
+   */
+  private filterPerson(person: Person): boolean {
+    const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
+
+    /*
+    const matchesPersons = this.matchService.personMatchesPersons(person,
+      Array.from(this.filterService.persons.values()),
+      this.filterService.personsNone);
+    */
+
+    return matchesSearchItem /* && matchesPersons */;
   }
 
   //
@@ -537,12 +549,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Filter persons
       this.persons = Array.from(this.personService.persons.values()).filter(person => {
-        const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
-        const matchesPersons = this.matchService.personMatchesPersons(person,
-          Array.from(this.filterService.persons.values()),
-          this.filterService.personsNone);
-
-        return matchesSearchItem && matchesPersons;
+        return this.filterPerson(person);
       }).sort((p1, p2) => {
         return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
       });
@@ -1295,8 +1302,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
-      case Action.FILTER_LIST: {
-        this.filterService.clearTasks();
+      case Action.FILTER_SINGLE: {
+        this.filterService.uncheckTasks();
         this.filterService.updateTasksList(tasks, true);
         break;
       }
@@ -1416,13 +1423,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+      case Action.FILTER_SINGLE: {
+        this.filterService.uncheckProjects();
+        this.filterService.updateProjectsList(projects, true);
+        break;
+      }
       case Action.FILTER_ALL: {
         this.filterService.updateProjects(projects, false, projectsNone);
         break;
       }
       case Action.FILTER_LIST: {
-        this.filterService.clearProjects();
-        this.filterService.updateProjectsList(projects, true);
+        this.filterService.updateProjectsList(projects);
         break;
       }
       case Action.FILTER_NONE: {
@@ -1552,13 +1563,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+      case Action.FILTER_SINGLE: {
+        this.filterService.uncheckTags();
+        this.filterService.updateTagsList(tags, true);
+        break;
+      }
       case Action.FILTER_ALL: {
         this.filterService.updateTags(tags, false, tagsNone);
         break;
       }
       case Action.FILTER_LIST: {
-        this.filterService.clearTags();
-        this.filterService.updateTagsList(tags, true);
+        this.filterService.updateTagsList(tags);
         break;
       }
       case Action.FILTER_NONE: {
@@ -1681,6 +1696,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             });
           }
         });
+        break;
+      }
+      case Action.FILTER_SINGLE: {
+        this.filterService.uncheckPerson();
+        this.filterService.updatePersonsList(persons, true);
         break;
       }
       case Action.FILTER_ALL: {

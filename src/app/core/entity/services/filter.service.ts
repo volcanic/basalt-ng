@@ -187,6 +187,12 @@ export class FilterService {
     this.tasks = new Map<string, Task>();
   }
 
+  public uncheckTasks() {
+    this.tasks.forEach(task => {
+      task.checked = false;
+    });
+  }
+
   /**
    * Update tasks and notifies subscribers
    * @param {Task[]} tasks array of tasks
@@ -226,6 +232,12 @@ export class FilterService {
   public clearProjects() {
     this.initializedProjects = false;
     this.projects = new Map<string, Project>();
+  }
+
+  public uncheckProjects() {
+    this.projects.forEach(project => {
+      project.checked = false;
+    });
   }
 
   /**
@@ -288,6 +300,12 @@ export class FilterService {
   public clearTags() {
     this.initializedTags = false;
     this.tags = new Map<string, Tag>();
+  }
+
+  public uncheckTags() {
+    this.tags.forEach(tag => {
+      tag.checked = false;
+    });
   }
 
   /**
@@ -382,6 +400,12 @@ export class FilterService {
   public clearPersons() {
     this.initializedPersons = false;
     this.persons = new Map<string, Person>();
+  }
+
+  public uncheckPerson() {
+    this.persons.forEach(person => {
+      person.checked = false;
+    });
   }
 
   /**
