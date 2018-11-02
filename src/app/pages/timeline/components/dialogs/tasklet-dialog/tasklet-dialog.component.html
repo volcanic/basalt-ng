@@ -69,11 +69,13 @@
       Send Daily Scrum Summary
     </button>
     <button mat-button *ngIf="mode == modeType.ADD"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet)" (click)="addTasklet()">
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet)"
+            (click)="addTasklet()">
       Add tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.UPDATE"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet)" (click)="updateTasklet()">
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet)"
+            (click)="updateTasklet()">
       Update tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.CONTINUE"

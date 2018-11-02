@@ -10,7 +10,6 @@
         </mat-form-field>
       </div>
 
-
       <mat-accordion class="headers-align">
 
         <mat-slide-toggle
@@ -77,7 +76,8 @@
         <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>Priority</mat-panel-title>
-            <mat-panel-description *ngIf="task.priority > 3 || task.priority < 0">Select a priority</mat-panel-description>
+            <mat-panel-description *ngIf="task.priority > 3 || task.priority < 0">Select a priority
+            </mat-panel-description>
             <mat-panel-description *ngIf="task.priority <= 3 && task.priority >= 0">
               <span class="value-set">Priority {{ task.priority + 1 }}</span>
             </mat-panel-description>
