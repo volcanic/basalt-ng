@@ -222,15 +222,21 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   private handleTaskletChanges() {
     switch (this.mode) {
       case DialogMode.ADD: {
-        this.addTasklet();
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CREATED, this.tasklet)) {
+          this.addTasklet();
+        }
         break;
       }
       case DialogMode.UPDATE: {
-        this.updateTasklet();
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_UPDATED, this.tasklet)) {
+          this.updateTasklet();
+        }
         break;
       }
       case DialogMode.CONTINUE: {
-        this.continueTasklet();
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CONTINUED, this.tasklet)) {
+          this.continueTasklet();
+        }
         break;
       }
       case DialogMode.DELETE: {

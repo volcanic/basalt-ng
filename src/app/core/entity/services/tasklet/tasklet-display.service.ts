@@ -133,7 +133,7 @@ export class TaskletDisplayService {
    * @param tasklet tasklet
    */
   static canBeCreated(tasklet: Tasklet): boolean {
-    return tasklet != null;
+    return tasklet.type !== TaskletType.UNSPECIFIED;
   }
 
   /**
@@ -141,8 +141,9 @@ export class TaskletDisplayService {
    * @param tasklet tasklet
    */
   static canBeUpdated(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type !== TaskletType.LUNCH_BREAK
-      && tasklet.type !== TaskletType.FINISHING_TIME);
+    return tasklet != null
+      && tasklet.type !== TaskletType.LUNCH_BREAK
+      && tasklet.type !== TaskletType.FINISHING_TIME;
   }
 
   /**
@@ -173,6 +174,7 @@ export class TaskletDisplayService {
     return tasklet != null
       && group !== null
       && group !== TaskletTypeGroup.BREAK
+      && tasklet.type !== TaskletType.UNSPECIFIED
       && tasklet.type !== TaskletType.DAILY_SCRUM;
   }
 
