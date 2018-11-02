@@ -30,5 +30,6 @@
 { "annotation": "refs/tags/v0.29.0", "message": "Tasklet type groups"},
 { "annotation": "refs/tags/v0.30.0", "message": "Pomdoro mode"},
 { "annotation": "refs/tags/v0.31.0", "message": "Markdown support"},
-{ "annotation": "refs/tags/v0.32.0", "message": "Integrated filtering"}
+{ "annotation": "refs/tags/v0.32.0", "message": "Integrated filtering"},
+{ "annotation": "refs/tags/v0.33.0", "message": "Safety net"}
 ]}
