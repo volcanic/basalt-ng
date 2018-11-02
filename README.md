@@ -63,6 +63,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.29 | Tasklet type groups |
 | 0.30 | Pomodoro mode |
 | 0.31 | Markdown support |
+| 0.32 | Integrated filtering |
 
 ### Planned features
 

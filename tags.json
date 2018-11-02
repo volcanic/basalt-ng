@@ -29,5 +29,6 @@
 { "annotation": "refs/tags/v0.28.0", "message": "Meeting minutes"},
 { "annotation": "refs/tags/v0.29.0", "message": "Tasklet type groups"},
 { "annotation": "refs/tags/v0.30.0", "message": "Pomdoro mode"},
-{ "annotation": "refs/tags/v0.31.0", "message": "Markdown support"}
+{ "annotation": "refs/tags/v0.31.0", "message": "Markdown support"},
+{ "annotation": "refs/tags/v0.32.0", "message": "Integrated filtering"}
 ]}
