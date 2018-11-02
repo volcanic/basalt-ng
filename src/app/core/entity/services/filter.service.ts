@@ -204,6 +204,15 @@ export class FilterService {
   }
 
   /**
+   * Updates flag which indicates that entities without tasks shall be included during filtering
+   * @param {boolean} tasksNone include entities without tasks if true
+   */
+  public updateTasksNone(tasksNone: boolean) {
+    this.tasksNone = tasksNone;
+    this.notify();
+  }
+
+  /**
    * Update tasks
    * @param {Task[]} tasks array of tasks
    * @param {boolean} enable enable tasks if true

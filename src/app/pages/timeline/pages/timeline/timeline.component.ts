@@ -1290,6 +1290,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.FILTER_SINGLE: {
         this.filterService.uncheckTasks();
+        this.filterService.updateTasksNone(false);
         this.filterService.updateTasksList(tasks, true);
         break;
       }
@@ -1411,6 +1412,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.FILTER_SINGLE: {
         this.filterService.uncheckProjects();
+        this.filterService.updateProjectsNone(false);
         this.filterService.updateProjectsList(projects, true);
         break;
       }
@@ -1551,6 +1553,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.FILTER_SINGLE: {
         this.filterService.uncheckTags();
+        this.filterService.updateTagsNone(false);
         this.filterService.updateTagsList(tags, true);
         break;
       }
@@ -1686,6 +1689,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.FILTER_SINGLE: {
         this.filterService.uncheckPerson();
+        this.filterService.updatePersonsNone(false);
         this.filterService.updatePersonsList(persons, true);
         break;
       }

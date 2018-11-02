@@ -28,20 +28,20 @@
   <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"
             mat-icon-button
-            matTooltip="Complete"
-            matTooltipPosition="above"
-            matTooltipShowDelay="250"
             class="action"
+            matTooltip="Complete"
+            [matTooltipPosition]="'above'"
+            [matTooltipShowDelay]="'250'"
             [disableRipple]="true"
             (click)="onCompleteClicked()">
       <mat-icon svgIcon='check'></mat-icon>
     </button>
     <button [@actionAnimation]="state"
             mat-icon-button
-            matTooltip="Continue"
-            matTooltipPosition="above"
-            matTooltipShowDelay="250"
             class="action"
+            matTooltip="Complete"
+            [matTooltipPosition]="'above'"
+            [matTooltipShowDelay]="'250'"
             [disableRipple]="true"
             (click)="onContinueClicked()">
       <mat-icon svgIcon='reply'></mat-icon>
@@ -50,10 +50,10 @@
   <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"
             mat-icon-button
-            matTooltip="Re-open"
-            matTooltipPosition="above"
-            matTooltipShowDelay="250"
             class="action"
+            matTooltip="Complete"
+            [matTooltipPosition]="'above'"
+            [matTooltipShowDelay]="'250'"
             [disableRipple]="true"
             (click)="onReopenClicked()">
       <mat-icon svgIcon='replay'></mat-icon>
@@ -62,10 +62,10 @@
   <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"
             mat-icon-button
-            matTooltip="Filter"
-            matTooltipPosition="above"
-            matTooltipShowDelay="250"
             class="action"
+            matTooltip="Complete"
+            [matTooltipPosition]="'above'"
+            [matTooltipShowDelay]="'250'"
             [disableRipple]="true"
             (click)="onFilterClicked()">
       <mat-icon svgIcon='filter_list'></mat-icon>

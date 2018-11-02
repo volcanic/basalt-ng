@@ -1,22 +1,23 @@
 <mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="false" (opened)="true" hideToggle>
+  <mat-expansion-panel [expanded]="true" (opened)="true" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <div class="label" color="">
+        <div class="label">
           Projects
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-project-list-item *ngFor="let p of projects" [project]="p" [media]="media"
+    <!-- Recent -->
+    <app-project-list-item *ngFor="let p of projectsRecent" [project]="p" [media]="media"
                            (projectEventEmitter)="onProjectEvent($event)">
     </app-project-list-item>
+    <!-- Non-recent -->
+    <div *ngIf="showMoreStatus">
+      <mat-divider></mat-divider>
+      <app-project-list-item *ngFor="let p of projectsNonRecent" [project]="p" [media]="media"
+                             (projectEventEmitter)="onProjectEvent($event)">
+      </app-project-list-item>
+    </div>
+    <button mat-button *ngIf="projects.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
   </mat-expansion-panel>
 </mat-accordion>
-
-<!--
-<button mat-button class="label headers-align"
-        (click)="onAddClicked()">
-  <mat-icon class="icon-add" svgIcon="add"></mat-icon>
-  <span>Add new project</span>
-</button>
--->

@@ -129,6 +129,13 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.SOCIAL, 'person', 'ic_person_24px.svg'));
     icons.push(new Icon(IconTopic.SOCIAL, 'people', 'ic_people_24px.svg'));
 
+    // Aliases
+    icons.push(new Icon(IconTopic.ACTION, 'alias_task', 'ic_turned_in_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'alias_task_unassigned', 'ic_turned_in_not_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'alias_project', 'ic_view_agenda_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'alias_tag', 'ic_label_outline_24px.svg'));
+    icons.push(new Icon(IconTopic.SOCIAL, 'alias_person', 'ic_person_24px.svg'));
+
     icons.forEach(icon => {
       iconRegistry.addSvgIcon(icon.name,
         sanitizer.bypassSecurityTrustResourceUrl(this.ICON_ROOT_DIR + '/' + icon.topic + '/svg/' + this.VARIANT + '/' + icon.file));
@@ -148,5 +155,6 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('circle_slice_3', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_circle_slice_3_24px.svg'));
     iconRegistry.addSvgIcon('text', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_text_24px.svg'));
     iconRegistry.addSvgIcon('markdown', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_markdown_24px.svg'));
+    iconRegistry.addSvgIcon('hexagon_multiple', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_hexagon_multiple_24px.svg'));
   }
 }

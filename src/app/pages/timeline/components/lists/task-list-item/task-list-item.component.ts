@@ -66,9 +66,9 @@ export class TaskListItemComponent implements OnInit {
     } else if (this.task != null && this.task.delegatedToId != null && this.task.delegatedToId !== '') {
       this.icon = 'person';
     } else if (this.task != null && this.task.projectId != null && this.task.projectId !== '') {
-      this.icon = 'turned_in';
+      this.icon = 'alias_task';
     } else {
-      this.icon = 'turned_in_not';
+      this.icon = 'alias_task_unassigned';
     }
   }
 

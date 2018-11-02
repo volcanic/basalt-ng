@@ -1,5 +1,5 @@
 <mat-accordion class="headers-align">
-  <mat-expansion-panel [expanded]="false" (opened)="false" hideToggle>
+  <mat-expansion-panel [expanded]="true" (opened)="true" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div class="label" color="">
@@ -7,14 +7,18 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-tag-list-item *ngFor="let t of tags" [tag]="t" [media]="media" (tagEventEmitter)="onTagEvent($event)">
+    <!-- Recent -->
+    <app-tag-list-item *ngFor="let p of tagsRecent" [tag]="p" [media]="media"
+                           (tagEventEmitter)="onTagEvent($event)">
     </app-tag-list-item>
+    <!-- Non-recent -->
+    <div *ngIf="showMoreStatus">
+      <mat-divider></mat-divider>
+      <app-tag-list-item *ngFor="let p of tagsNonRecent" [tag]="p" [media]="media"
+                             (tagEventEmitter)="onTagEvent($event)">
+      </app-tag-list-item>
+    </div>
+
+    <button mat-button *ngIf="tags.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
   </mat-expansion-panel>
 </mat-accordion>
-
-<!--
-<button mat-button class="label headers-align" (click)="onAddClicked()">
-  <mat-icon class="icon-add" svgIcon="add"></mat-icon>
-  <span>Add new tag</span>
-</button>
--->
