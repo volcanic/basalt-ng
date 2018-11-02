@@ -441,13 +441,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param tag tag
    */
   private filterTag(tag: Tag): boolean {
-    const matchesSearchItem = this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
-    /*
-    const matchesTags = this.matchService.tagMatchesTags(tag,
-      Array.from(this.filterService.tags.values()),
-      this.filterService.tagsNone);
-    */
-    return matchesSearchItem /* && matchesTags */;
+    return this.matchService.tagMatchesEveryItem(tag, this.filterService.searchItem);
   }
 
   //
@@ -485,15 +479,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param person person
    */
   private filterPerson(person: Person): boolean {
-    const matchesSearchItem = this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
-
-    /*
-    const matchesPersons = this.matchService.personMatchesPersons(person,
-      Array.from(this.filterService.persons.values()),
-      this.filterService.personsNone);
-    */
-
-    return matchesSearchItem /* && matchesPersons */;
+    return this.matchService.personMatchesEveryItem(person, this.filterService.searchItem);
   }
 
   //
