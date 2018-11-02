@@ -33,7 +33,20 @@
   </div>
   <div class="flexbox"></div>
   <div class="toolbar-block end">
-    <button *ngIf="media > mediaType.MEDIUM" mat-button class="toolbar-menu-item" [matMenuTriggerFor]="menuSwitcher">
+    <button *ngIf="media > mediaType.MEDIUM"
+            mat-button
+            class="toolbar-menu-item"
+            [matTooltip]="'Clear filters'"
+            [matTooltipPosition]="'left'"
+            (click)="onMenuItemClicked('clear-filter')">
+      <mat-icon svgIcon="layers_clear"></mat-icon>
+    </button>
+    <button *ngIf="media > mediaType.MEDIUM"
+            mat-button
+            class="toolbar-menu-item"
+            [matTooltip]="'Switch scope'"
+            [matTooltipPosition]="'left'"
+            [matMenuTriggerFor]="menuSwitcher">
       <mat-icon svgIcon="business" *ngIf="scope === scopeType.WORK"></mat-icon>
       <mat-icon svgIcon="nature" *ngIf="scope === scopeType.FREETIME"></mat-icon>
     </button>
@@ -73,11 +86,11 @@
           <mat-icon svgIcon="label_outline"></mat-icon>
           <span>Tags</span>
         </button>
+        <button mat-menu-item (click)="onMenuItemClicked('clear-filter')">
+          <mat-icon svgIcon="layers_clear"></mat-icon>
+          <span>Clear filters</span>
+        </button>
       </div>
-      <button mat-menu-item (click)="onMenuItemClicked('clear-filter')">
-        <mat-icon svgIcon="layers_clear"></mat-icon>
-        <span>Clear filters</span>
-      </button>
       <mat-divider *ngIf="media < mediaType.LARGE"></mat-divider>
       <button mat-menu-item (click)="onMenuItemClicked('download')">
         <mat-icon svgIcon="file_download"></mat-icon>

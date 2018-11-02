@@ -71,7 +71,7 @@ export class TimelineToolbarComponent implements OnInit {
     this.searchItemDebouncer.pipe(
       debounceTime(500)
     ).subscribe((value) => {
-      this.searchItemEventEmitter.emit(value.toString())
+      this.searchItemEventEmitter.emit(value.toString());
     });
   }
 
