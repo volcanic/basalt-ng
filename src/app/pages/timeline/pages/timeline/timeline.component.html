@@ -18,15 +18,11 @@
         <app-project-effort-tree [projectDigest]="dailyDigest"></app-project-effort-tree>
       </div>
       <mat-divider></mat-divider>
-      <app-filter-tag-list [tags]="tagsFilter" [tagsNone]="tagsNone"
-                           (tagEventEmitter)="onTagEvent($event)"></app-filter-tag-list>
+      <app-project-list [projects]="projects" [media]="media" (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
       <mat-divider></mat-divider>
-      <app-filter-project-list [projects]="projectsFilter" [projectsNone]="projectsNone"
-                               (projectEventEmitter)="onProjectEvent($event)"></app-filter-project-list>
+      <app-tag-list [tags]="tags" [media]="media" (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
       <mat-divider></mat-divider>
-      <app-filter-person-list [persons]="personsFilter" [personsNone]="personsNone"
-                              (personEventEmitter)="onPersonEvent($event)"
-      ></app-filter-person-list>
+      <app-person-list [persons]="persons" [media]="media" (personEventEmitter)="onPersonEvent($event)"></app-person-list>
     </div>
   </mat-sidenav>
 
@@ -35,12 +31,6 @@
                class="sidenav sidenav-end">
     <div [@toolbarAnimation]="scrollDirection">
       <app-task-list [tasks]="tasks" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
-      <mat-divider></mat-divider>
-      <app-project-list [projects]="projects" [media]="media" (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
-      <mat-divider></mat-divider>
-      <app-tag-list [tags]="tags" [media]="media" (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
-      <mat-divider></mat-divider>
-      <app-person-list [persons]="persons" [media]="media" (personEventEmitter)="onPersonEvent($event)"></app-person-list>
     </div>
   </mat-sidenav>
 

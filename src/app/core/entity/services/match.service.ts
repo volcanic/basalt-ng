@@ -240,8 +240,6 @@ export class MatchService {
    * @returns {boolean} true if tasklet matches given tasks
    */
   public taskletMatchesTasks(tasklet: Tasklet, tasks: Task[], tasksNone: boolean): boolean {
-    console.log(`tasks${JSON.stringify(tasks)}`);
-
     const task = this.taskletService.getTaskByTasklet(tasklet);
 
     return this.taskMatchesTasks(task, tasks, tasksNone);
