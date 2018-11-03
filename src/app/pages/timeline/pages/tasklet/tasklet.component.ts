@@ -154,7 +154,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param tagService tag service
    * @param suggestionService suggestion service
    * @param taskletService tasklet service
-   * @param taskletTypeService tasklet type service
    * @param taskService task service
    * @param route route
    * @param router router
