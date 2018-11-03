@@ -65,6 +65,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.31 | Markdown support |
 | 0.32 | Integrated filtering |
 | 0.33 | Safety net |
+| 0.34 | Feature toggle |
 
 ### Planned features
 
