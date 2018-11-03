@@ -7,5 +7,7 @@ export enum SettingType {
   // Pomodoro
   POMODORO = 'pomodoro',
   POMODORO_DURATION = 'pomodoro-duration',
-  POMODORO_BREAK = 'pomodoro-break'
+  POMODORO_BREAK = 'pomodoro-break',
+  // Helper
+  SEMAPHORE_FEATURE = 'helper-feature'
 }

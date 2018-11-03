@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {TaskletTypeGroup} from '../model/tasklet-type-group.enum';
 import {TaskletType} from '../model/tasklet-type.enum';
 import {SettingsService} from '../../settings/services/settings.service';
-import {SettingType} from '../../settings/model/setting-type.enum';
 
 /**
  * Handles tasklet type hierarchy
@@ -42,9 +41,7 @@ export class TaskletTypeService {
         case TaskletTypeGroup.ACTION: {
           this.taskletTypeGroups.set(TaskletType.ACTION, group);
           this.taskletTypeGroups.set(TaskletType.TRAVEL, group);
-          if (this.settingsService.settings.get(SettingType.POMODORO) != null && this.settingsService.settings.get(SettingType.POMODORO).value) {
-            this.taskletTypeGroups.set(TaskletType.POMODORO, group);
-          }
+          this.taskletTypeGroups.set(TaskletType.POMODORO, group);
           break;
         }
         case TaskletTypeGroup.COMMUNICATION: {
@@ -52,9 +49,7 @@ export class TaskletTypeService {
           this.taskletTypeGroups.set(TaskletType.MEETING, group);
           this.taskletTypeGroups.set(TaskletType.MAIL, group);
           this.taskletTypeGroups.set(TaskletType.CHAT, group);
-          if (this.settingsService.settings.get(SettingType.SCRUM) != null && this.settingsService.settings.get(SettingType.SCRUM).value) {
-            this.taskletTypeGroups.set(TaskletType.DAILY_SCRUM, group);
-          }
+          this.taskletTypeGroups.set(TaskletType.DAILY_SCRUM, group);
           break;
         }
         case TaskletTypeGroup.DEVELOPMENT: {

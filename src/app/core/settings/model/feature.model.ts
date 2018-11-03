@@ -12,13 +12,13 @@ export class Feature {
   /** Background color */
   backgroundColor: string;
   /** Setting associated with this feature */
-  setting: SettingType;
+  settingType: SettingType;
 
   constructor(type: FeatureType, icon: string, iconColor: string, backgroundColor: string, setting: SettingType) {
     this.type = type;
     this.icon = icon;
     this.iconColor = iconColor;
     this.backgroundColor = backgroundColor;
-    this.setting = setting;
+    this.settingType = setting;
   }
 }

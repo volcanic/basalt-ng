@@ -3,6 +3,7 @@ import {Feature} from '../model/feature.model';
 import {FeatureType} from '../model/feature-type.enum';
 import {ColorService} from '../../ui/services/color.service';
 import {SettingType} from '../model/setting-type.enum';
+import {SettingsService} from './settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class FeatureService {
   /** List of features */
   features: Feature[];
 
-  constructor(private colorService: ColorService) {
+  constructor(private colorService: ColorService,
+              private settingsService: SettingsService) {
     this.initializeFeatures();
   }
 
@@ -32,7 +34,6 @@ export class FeatureService {
       const iconColor = this.colorService.getFeatureTypeColor(type).contrast;
       const backgroundColor = this.colorService.getFeatureTypeColor(type).color;
 
-
       switch (type) {
         case FeatureType.DEVELOPMENT: {
           this.features.push(new Feature(type, 'code', iconColor, backgroundColor, SettingType.DEVELOPMENT));
@@ -47,6 +48,20 @@ export class FeatureService {
           break;
         }
       }
+    });
+  }
+
+  /**
+   * Determines if a feature is active
+   * @param featureType feature type
+   */
+  public isFeatureActive(featureType: FeatureType): boolean {
+    return this.features.filter(feature => {
+      return feature.type === featureType;
+    }).some(feature => {
+      const settingType = feature.settingType;
+      return this.settingsService.settings.get(settingType) != null
+        && this.settingsService.settings.get(settingType).value === true;
     });
   }
 }

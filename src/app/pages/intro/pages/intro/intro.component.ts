@@ -69,6 +69,7 @@ export class IntroComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.initializeSettings();
+    this.initializeSemaphore();
     this.initializeMaterial();
     this.initializeMediaSubscription();
   }
@@ -85,11 +86,24 @@ export class IntroComponent implements OnInit, OnDestroy {
   // Initialization
   //
 
+  /**
+   * Initializes an unset settingType
+   * @param settings settingType
+   * @param value value
+   */
   private initializeSetting(settings: SettingType, value: any) {
     if (this.settingsService.settings.get(settings) == null) {
       const setting = new Setting(settings, value);
       this.settingsService.updateSetting(setting);
     }
+  }
+
+  /**
+   * Initializes semaphore
+   */
+  private initializeSemaphore() {
+    // Deactivate semaphore
+    this.settingsService.updateSetting(new Setting(SettingType.SEMAPHORE_FEATURE, true));
   }
 
   /**
@@ -105,9 +119,6 @@ export class IntroComponent implements OnInit, OnDestroy {
         if (this.settings.get(SettingType.VERSION) != null) {
           this.showNewFeatures(this.settings.get(SettingType.VERSION).value);
         }
-
-        // Check features
-        this.checkFeatures();
       }
     });
   }
@@ -180,25 +191,13 @@ export class IntroComponent implements OnInit, OnDestroy {
     });
   }
 
-  private checkFeatures() {
-    let allFeaturesSet = true;
-
-    this.featureService.features.forEach(feature => {
-      if (this.settingsService.settings.get(feature.setting) == null) {
-        allFeaturesSet = false;
-      }
-    });
-
-    if (allFeaturesSet) {
-      this.router.navigate([`/timeline`]).then(() => {
-      });
-    }
-  }
-
   //
   // Actions
   //
 
+  /**
+   * Handles click on continue button
+   */
   onContinue() {
     // Set default values
     this.initializeSetting(SettingType.DEVELOPMENT, false);
@@ -206,6 +205,9 @@ export class IntroComponent implements OnInit, OnDestroy {
     this.initializeSetting(SettingType.POMODORO, false);
     this.initializeSetting(SettingType.POMODORO_DURATION, 5);
     this.initializeSetting(SettingType.POMODORO_BREAK, 5);
+
+    // Deactivate semaphore
+    this.settingsService.updateSetting(new Setting(SettingType.SEMAPHORE_FEATURE, false));
 
     this.router.navigate([`/timeline`]).then(() => {
     });

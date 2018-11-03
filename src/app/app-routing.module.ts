@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {IntroGuard} from './guards/intro.guard';
 
 const routes: Routes = [
     {path: '', redirectTo: 'intro', pathMatch: 'full'},
     // Intro module
-    {path: 'intro', loadChildren: './pages/intro/intro.module#IntroModule'},
+    {path: 'intro', loadChildren: './pages/intro/intro.module#IntroModule', canActivate: [IntroGuard]},
     // Timeline module
     {path: 'tasklet', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
     {path: 'tasklet/:id', loadChildren: './pages/timeline/timeline.module#TimelineModule'},

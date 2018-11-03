@@ -6,6 +6,7 @@ import {MaterialModule} from '../../ui/material/material.module';
 import {IntroRoutingModule} from './intro-routing.module';
 import {FeatureFragmentComponent} from './components/feature-fragment/feature-fragment.component';
 import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/suggested-action-button.module';
+import {NewFeaturesDialogModule} from '../../ui/new-features-dialog/new-features-dialog.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import {SuggestedActionButtonModule} from '../../ui/suggested-action-button/sugg
 
     IntroRoutingModule,
 
+    NewFeaturesDialogModule,
     SuggestedActionButtonModule
   ],
   declarations: [

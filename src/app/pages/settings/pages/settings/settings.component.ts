@@ -31,9 +31,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Map of current settings */
   settings = new Map<String, Setting>();
 
-  development: string;
-  scrum: string;
-  pomodoro: string;
+  development: boolean;
+  scrum: boolean;
+  pomodoro: boolean;
   pomodoroDuration: number;
   pomodoroBreak: number;
 
@@ -122,9 +122,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.settingsService.settingsSubject.subscribe(value => {
       if (value != null) {
         this.settings = value;
-        this.development = this.settings.get(SettingType.DEVELOPMENT).value;
-        this.scrum = this.settings.get(SettingType.SCRUM).value;
-        this.pomodoro = this.settings.get(SettingType.POMODORO).value;
+        this.development = JSON.parse(this.settings.get(SettingType.DEVELOPMENT).value);
+        this.scrum = JSON.parse(this.settings.get(SettingType.SCRUM).value);
+        this.pomodoro = JSON.parse(this.settings.get(SettingType.POMODORO).value);
         this.pomodoroDuration = +this.settings.get(SettingType.POMODORO_DURATION).value;
         this.pomodoroBreak = +this.settings.get(SettingType.POMODORO_BREAK).value;
       }

@@ -6,14 +6,14 @@ export class Setting {
   /** Key */
   id = '';
   /** Value */
-  value = '';
+  value: any;
 
   /**
    * Constructor
    * @param {string} id key of the setting
-   * @param {string} value value of the setting
+   * @param {any} value value of the setting
    */
-  constructor(id: string, value: string) {
+  constructor(id: string, value: any) {
     this.id = id;
     this.value = value;
   }

@@ -90,7 +90,7 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
       this.featureService.features.forEach(feature => {
         const action = new FeatureAction();
         action.featureType = feature.type;
-        action.settingType = feature.setting;
+        action.settingType = feature.settingType;
         action.backgroundColor = this.getFeatureColor(action.featureType, action.active);
         action.iconColor = this.getFeatureContrast(action.featureType, action.active);
         action.icon = feature.icon;
@@ -109,7 +109,7 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
    * @param action feature action
    */
   onFeatureToggled(action: FeatureAction) {
-    this.settingsService.updateSetting(new Setting(action.settingType, (!action.active).toString()));
+    this.settingsService.updateSetting(new Setting(action.settingType, !action.active));
   }
 
   /**
@@ -147,7 +147,7 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Retrieves a color by feature and current setting
+   * Retrieves a color by feature and current settingType
    * @param feature feature
    * @param active active
    */
@@ -160,7 +160,7 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Retrieves a contrast by feature and current setting
+   * Retrieves a contrast by feature and current settingType
    * @param feature feature
    * @param active active
    */
