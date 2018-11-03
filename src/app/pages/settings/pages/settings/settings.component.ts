@@ -13,6 +13,9 @@ import {Setting} from '../../../../core/settings/model/setting.model';
 import {Router} from '@angular/router';
 import {Animations, ScrollDirection, ScrollState} from './settings.animation';
 
+/**
+ * Displays settings page
+ */
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -31,10 +34,15 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Map of current settings */
   settings = new Map<String, Setting>();
 
+  /** Feature development */
   development: boolean;
+  /** Feature scrum */
   scrum: boolean;
+  /** Feature pomodoro */
   pomodoro: boolean;
+  /** Setting pomodoro duration */
   pomodoroDuration: number;
+  /** Setting pomodoro break */
   pomodoroBreak: number;
 
   /** Search items options for auto-complete */
@@ -55,6 +63,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Scroll state */
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
 
+  /** Enum of setting types */
   settingsType = SettingType;
 
   /** Scrollable directive */
@@ -62,14 +71,14 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Constructor
-   * @param iconRegistry
-   * @param materialColorService
-   * @param materialIconService
-   * @param router
-   * @param sanitizer
-   * @param scroll
-   * @param settingsService
-   * @param zone
+   * @param iconRegistry icon registry
+   * @param materialColorService material color service
+   * @param materialIconService material icon service
+   * @param router router
+   * @param sanitizer dom sanitizer
+   * @param scroll scrol dispatcher
+   * @param settingsService settings service
+   * @param zone ng zone
    */
   constructor(private iconRegistry: MatIconRegistry,
               private materialColorService: MaterialColorService,
@@ -81,6 +90,13 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
               public zone: NgZone) {
   }
 
+  //
+  // Lifecycle hooks
+  //
+
+  /**
+   * Handles on-init lifecycle phase
+   */
   ngOnInit() {
     this.initializeMaterial();
     this.initializeScrollDetection();
@@ -88,14 +104,14 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles after-view-init lifecycle hook
+   * Handles after-view-init lifecycle phase
    */
   ngAfterViewInit() {
     this.initializeScrollDetection();
   }
 
   /**
-   * Handles on-destroy lifecycle hook
+   * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
     this.unsubscribeSubject.next();
@@ -190,11 +206,21 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   onSearchItemChanged(searchItem: string) {
   }
 
-  onFeatureToggled(settingName: string, value: any) {
+  /**
+   * Handles toggle of a setting
+   * @param settingName name of the setting that has been toggled
+   * @param value new value
+   */
+  onSettingToggled(settingName: string, value: any) {
     const setting = new Setting(settingName, value);
     this.settingsService.updateSetting(setting);
   }
 
+  /**
+   * Handles value changes
+   * @param settingName name of the setting to get a new value
+   * @param value new value
+   */
   onValueChanged(settingName: string, value: any) {
     if (value != null) {
       const setting = new Setting(settingName, value);

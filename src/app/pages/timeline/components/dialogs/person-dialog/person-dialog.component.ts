@@ -43,7 +43,7 @@ export class PersonDialogComponent implements OnInit {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeData();

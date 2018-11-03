@@ -40,7 +40,7 @@ export class TagChipsComponent implements OnInit {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeOptions();

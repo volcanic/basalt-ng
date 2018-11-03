@@ -90,7 +90,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeIcon();
@@ -98,7 +98,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Handles on-changes lifecycle hook
+   * Handles on-changes lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
     this.initializeTopic();

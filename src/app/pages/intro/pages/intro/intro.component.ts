@@ -16,6 +16,9 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 import {FeatureService} from '../../../../core/settings/services/feature.service';
 
+/**
+ * Displays an intro page
+ */
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
@@ -23,7 +26,9 @@ import {FeatureService} from '../../../../core/settings/services/feature.service
 })
 export class IntroComponent implements OnInit, OnDestroy {
 
+  /** Title to be displayed */
   title = 'How do you work?';
+  /** Description to be displayed */
   description = 'Select the aspects you want to use (you can change this later)';
 
   /** Helper subject used to finish other subscriptions */
@@ -47,7 +52,7 @@ export class IntroComponent implements OnInit, OnDestroy {
    * @param router router
    * @param dialog dialog
    * @param iconRegistry icon registry
-   * @param sanitizer sanitizer
+   * @param sanitizer dom sanitizer
    */
   constructor(private featureService: FeatureService,
               private mediaService: MediaService,
@@ -65,7 +70,7 @@ export class IntroComponent implements OnInit, OnDestroy {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeSettings();
@@ -75,7 +80,7 @@ export class IntroComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles on-destroy lifecycle hook
+   * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
     this.unsubscribeSubject.next();
@@ -102,7 +107,7 @@ export class IntroComponent implements OnInit, OnDestroy {
    * Initializes semaphore
    */
   private initializeSemaphore() {
-    // Deactivate semaphore
+    // Activate semaphore
     this.settingsService.updateSetting(new Setting(SettingType.SEMAPHORE_FEATURE, true));
   }
 

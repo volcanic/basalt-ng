@@ -60,14 +60,14 @@ export class TaskListComponent implements OnInit, OnChanges {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeTaskCategories();
   }
 
   /**
-   * Handles on-changes lifecycle hook
+   * Handles on-changes lifecycle phase
    * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges): void {

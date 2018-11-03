@@ -26,7 +26,7 @@ export class CalendarGridComponent implements OnChanges {
   //
 
   /**
-   * Handles on-changes lifecycle hook
+   * Handles on-changes lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges): void {
     this.filteredTasklets = this.tasklets.filter(tasklet => {

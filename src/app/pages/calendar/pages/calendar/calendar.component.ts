@@ -40,14 +40,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeTaskletSubscription();
   }
 
   /**
-   * Handles on-destroy lifecycle hook
+   * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
     this.unsubscribeSubject.next();

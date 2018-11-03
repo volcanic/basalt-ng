@@ -28,7 +28,9 @@ export class TagListComponent implements OnChanges {
   /** Non-recent tags */
   tagsNonRecent = [];
 
+  /** Shows more if true */
   showMoreStatus = false;
+  /** Label of more button */
   showMoreLabel = 'More';
 
   //
@@ -37,7 +39,7 @@ export class TagListComponent implements OnChanges {
 
   /**
    * Handles on-changes lifecycle phase
-   * @param changes
+   * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges) {
     this.tagsRecent = this.tags.slice(0, this.recentCount);

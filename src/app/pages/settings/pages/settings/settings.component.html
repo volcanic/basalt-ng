@@ -16,7 +16,7 @@
       <span>Development</span>
       <div class="flexbox"></div>
       <mat-slide-toggle [ngModel]="development"
-                        (ngModelChange)="onFeatureToggled(settingsType.DEVELOPMENT, $event)"></mat-slide-toggle>
+                        (ngModelChange)="onSettingToggled(settingsType.DEVELOPMENT, $event)"></mat-slide-toggle>
     </div>
     <p>
       <mat-divider></mat-divider>
@@ -26,7 +26,7 @@
       <span>Scrum</span>
       <div class="flexbox"></div>
       <mat-slide-toggle [ngModel]="scrum"
-                        (ngModelChange)="onFeatureToggled(settingsType.SCRUM, $event)"></mat-slide-toggle>
+                        (ngModelChange)="onSettingToggled(settingsType.SCRUM, $event)"></mat-slide-toggle>
     </div>
     <p>
       <mat-divider></mat-divider>
@@ -36,7 +36,7 @@
       <span>Pomodoro</span>
       <div class="flexbox"></div>
       <mat-slide-toggle [ngModel]="pomodoro"
-                        (ngModelChange)="onFeatureToggled(settingsType.POMODORO, $event)"></mat-slide-toggle>
+                        (ngModelChange)="onSettingToggled(settingsType.POMODORO, $event)"></mat-slide-toggle>
     </div>
     <div *ngIf="pomodoro" class="details-box">
       <div class="flexcontainer">

@@ -39,13 +39,13 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
 
   /** Color for no priority */
   colorEmpty = '#cfd8dc';
-  /** Color for priorities */
+  /** Colors for priorities */
   colorsPriorities = [
     '#990000',
     '#9c690e',
     '#3c8b09',
   ];
-  /** Color for flags */
+  /** Colors for flags */
   colorsFlags = [
     '#cfd8dc',
     '#cfd8dc',
@@ -93,7 +93,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeData();
@@ -104,6 +104,9 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
     this.initializePriority();
   }
 
+  /**
+   * Handles on-destroy lifecycle phase
+   */
   ngOnDestroy() {
     this.handleTaskChanges();
   }
@@ -329,6 +332,9 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   // Button actions
   //
 
+  /**
+   * Handles task changes
+   */
   private handleTaskChanges() {
     switch (this.mode) {
       case DialogMode.ADD: {

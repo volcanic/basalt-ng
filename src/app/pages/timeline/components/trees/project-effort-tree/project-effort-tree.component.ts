@@ -95,7 +95,7 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeTree();
@@ -103,7 +103,7 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Handles on-change lifecycle hook
+   * Handles on-change lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges): void {
     this.initializeTree();

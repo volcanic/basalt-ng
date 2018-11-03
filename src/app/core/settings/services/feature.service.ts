@@ -5,6 +5,9 @@ import {ColorService} from '../../ui/services/color.service';
 import {SettingType} from '../model/setting-type.enum';
 import {SettingsService} from './settings.service';
 
+/**
+ * Handles features
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +16,11 @@ export class FeatureService {
   /** List of features */
   features: Feature[];
 
+  /**
+   * Constructor
+   * @param colorService color service
+   * @param settingsService settings service
+   */
   constructor(private colorService: ColorService,
               private settingsService: SettingsService) {
     this.initializeFeatures();

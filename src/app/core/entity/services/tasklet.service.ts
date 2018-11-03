@@ -481,6 +481,12 @@ export class TaskletService {
   // Delegated: Display aspects
   //
 
+  /**
+   * Determines if a given tasklet contains a display aspect
+   * @param displayAspect display aspect
+   * @param tasklet tasklet
+   * @param previousDescription previous description
+   */
   public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, previousDescription?: Description): boolean {
     switch (displayAspect) {
       case DisplayAspect.CAN_BE_ASSIGNED_TO_TASK: {

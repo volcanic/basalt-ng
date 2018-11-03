@@ -89,7 +89,7 @@ export class DailyScrumFragmentComponent implements OnInit {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeColors();

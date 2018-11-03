@@ -28,7 +28,9 @@ export class ProjectListComponent implements OnChanges {
   /** Non-recent projects */
   projectsNonRecent = [];
 
+  /** Shows more if true */
   showMoreStatus = false;
+  /** Label of more button */
   showMoreLabel = 'More';
 
   //

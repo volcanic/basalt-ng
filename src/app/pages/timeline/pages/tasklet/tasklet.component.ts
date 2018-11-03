@@ -192,7 +192,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeParameters();
@@ -211,14 +211,14 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles after-view-init lifecycle hook
+   * Handles after-view-init lifecycle phase
    */
   ngAfterViewInit() {
     this.initializeScrollDetection();
   }
 
   /**
-   * Handles on-destroy lifecycle hook
+   * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
     this.unsubscribeSubject.next();

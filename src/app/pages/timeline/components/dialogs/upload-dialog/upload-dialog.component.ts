@@ -52,7 +52,7 @@ export class UploadDialogComponent implements OnInit {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.dialogTitle = this.data.title;

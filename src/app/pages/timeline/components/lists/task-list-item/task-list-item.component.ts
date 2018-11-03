@@ -44,7 +44,7 @@ export class TaskListItemComponent implements OnInit {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeIcon();

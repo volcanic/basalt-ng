@@ -57,7 +57,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeTheme();
@@ -66,7 +66,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Handles after-view-init lifecycle hook
+   * Handles after-view-init lifecycle phase
    */
   ngAfterViewInit() {
     this.initializeDatabaseSync();

@@ -60,7 +60,7 @@ export class FileDropFragmentComponent implements OnInit, OnDestroy {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeFilesSubject();
@@ -68,7 +68,7 @@ export class FileDropFragmentComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles on-destroy lifecycle hook
+   * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
     if (this.subscription) {

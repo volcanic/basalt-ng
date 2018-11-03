@@ -80,7 +80,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.initializeData();
@@ -88,7 +88,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles on-destroy lifecycle hook
+   * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
     this.handleTaskletChanges();

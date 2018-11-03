@@ -187,6 +187,9 @@ export class FilterService {
     this.tasks = new Map<string, Task>();
   }
 
+  /**
+   * Unchecks all tasks
+   */
   public uncheckTasks() {
     this.tasks.forEach(task => {
       task.checked = false;
@@ -243,6 +246,9 @@ export class FilterService {
     this.projects = new Map<string, Project>();
   }
 
+  /**
+   * Unchecks all projects
+   */
   public uncheckProjects() {
     this.projects.forEach(project => {
       project.checked = false;
@@ -311,6 +317,9 @@ export class FilterService {
     this.tags = new Map<string, Tag>();
   }
 
+  /**
+   * Unchecks all tags
+   */
   public uncheckTags() {
     this.tags.forEach(tag => {
       tag.checked = false;
@@ -411,7 +420,10 @@ export class FilterService {
     this.persons = new Map<string, Person>();
   }
 
-  public uncheckPerson() {
+  /**
+   * Unchecks all persons
+   */
+  public uncheckPersons() {
     this.persons.forEach(person => {
       person.checked = false;
     });

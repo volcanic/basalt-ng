@@ -28,7 +28,9 @@ export class PersonListComponent implements OnChanges {
   /** Non-recent persons */
   personsNonRecent = [];
 
+  /** Shows more if true */
   showMoreStatus = false;
+  /** Label of more button */
   showMoreLabel = 'More';
 
   //

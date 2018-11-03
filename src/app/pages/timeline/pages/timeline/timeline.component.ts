@@ -208,7 +208,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles on-init lifecycle hook
+   * Handles on-init lifecycle phase
    */
   ngOnInit() {
     this.tasksMap = new Map(this.taskService.tasks);
@@ -244,14 +244,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles after-view-init lifecycle hook
+   * Handles after-view-init lifecycle phase
    */
   ngAfterViewInit() {
     this.initializeScrollDetection();
   }
 
   /**
-   * Handles on-destroy lifecycle hook
+   * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
     this.unsubscribeSubject.next();
@@ -1688,7 +1688,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FILTER_SINGLE: {
-        this.filterService.uncheckPerson();
+        this.filterService.uncheckPersons();
         this.filterService.updatePersonsNone(false);
         this.filterService.updatePersonsList(persons, true);
         break;
