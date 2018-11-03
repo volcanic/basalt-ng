@@ -1,0 +1,15 @@
+<div class="main">
+  <div class="content">
+    <div class="header">
+      <div class="title">{{ title }}</div>
+      <div class="description">{{ description }}</div>
+    </div>
+    <app-feature-fragment [settings]="settings"></app-feature-fragment>
+    <div class="footer flexcontainer">
+      <div class="flexbox"></div>
+      <button mat-button (click)="onContinue()">
+        Continue
+      </button>
+    </div>
+  </div>
+</div>

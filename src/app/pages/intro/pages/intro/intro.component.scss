@@ -1,0 +1,57 @@
+@import '../../../../../sizes';
+@import '../../../../../flex';
+@import '../../../../../theme';
+
+.main {
+  height: 100%;
+}
+
+.content {
+  @media #{$breakpoint-small} {
+    margin: 10px auto;
+    padding: 10px;
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+  @media #{$breakpoint-medium} {
+    padding: 20px;
+    margin: 50px auto;
+    width: 450px;
+  }
+  @media #{$breakpoint-large} {
+    margin: 65px auto;
+    width: 450px;
+  }
+}
+
+.header {
+  @media #{$breakpoint-small} {
+    margin-bottom: 10px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-bottom: 20px;
+  }
+  @media #{$breakpoint-large} {
+    margin-bottom: 65px;
+  }
+}
+
+.title {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 1.8em;
+}
+
+.footer {
+  @media #{$breakpoint-small} {
+    margin-top: 10px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-top: 20px;
+  }
+  @media #{$breakpoint-large} {
+    margin-top: 65px;
+  }
+}

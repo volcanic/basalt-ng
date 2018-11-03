@@ -79,6 +79,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.ACTION, 'lightbulb_outline', 'ic_lightbulb_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'receipt', 'ic_receipt_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'search', 'ic_search_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'settings', 'ic_settings_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'today', 'ic_today_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'turned_in', 'ic_turned_in_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
@@ -118,6 +119,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.MAPS, 'local_cafe', 'ic_local_cafe_24px.svg'));
     icons.push(new Icon(IconTopic.MAPS, 'local_dining', 'ic_local_dining_24px.svg'));
     icons.push(new Icon(IconTopic.MAPS, 'train', 'ic_train_24px.svg'));
+    icons.push(new Icon(IconTopic.NAVIGATION, 'arrow_back', 'ic_arrow_back_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'check', 'ic_check_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'chevron_right', 'ic_chevron_right_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'close_18', 'ic_close_18px.svg'));

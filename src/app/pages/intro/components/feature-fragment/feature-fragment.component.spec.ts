@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {TimelineToolbarComponent} from './timeline-toolbar.component';
+import {FeatureFragmentComponent} from './feature-fragment.component';
 
-describe('SettingsToolbarComponent', () => {
-  let component: TimelineToolbarComponent;
-  let fixture: ComponentFixture<TimelineToolbarComponent>;
+describe('RecurrenceIntervalFragmentComponent', () => {
+  let component: FeatureFragmentComponent;
+  let fixture: ComponentFixture<FeatureFragmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TimelineToolbarComponent]
+      declarations: [FeatureFragmentComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimelineToolbarComponent);
+    fixture = TestBed.createComponent(FeatureFragmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -3,12 +3,15 @@ import {TaskletType} from 'app/core/entity/model/tasklet-type.enum';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
+import {FeatureService} from '../../../../../../core/settings/services/feature.service';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {FeatureType} from '../../../../../../core/settings/model/feature-type.enum';
 
 /**
  * Represents a tasklet type group action button
  */
 class TaskletTypeGroupAction {
+
   /** Tasklet type group */
   group: TaskletTypeGroup;
   /** Label to be displayed */
@@ -53,9 +56,11 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
   /**
    * Constructor
    * @param colorService color service
+   * @param featureService feature service
    * @param taskletService tasklet service
    */
   constructor(private colorService: ColorService,
+              private featureService: FeatureService,
               private taskletService: TaskletService) {
   }
 
@@ -90,7 +95,8 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
   initializeTaskletTypeGroups() {
     this.taskletTypeActions = [];
     this.taskletTypeGroups.filter(group => {
-      return group !== TaskletTypeGroup.UNSPECIFIED;
+      return group !== TaskletTypeGroup.UNSPECIFIED
+        && !(group === TaskletTypeGroup.DEVELOPMENT && !this.featureService.isFeatureActive(FeatureType.DEVELOPMENT));
     }).forEach(group => {
       const action = new TaskletTypeGroupAction();
       action.group = group;
@@ -100,6 +106,9 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
       action.label = group.toString();
       action.taskletTypes = this.taskletService.getTaskletTypesByGroup(group).filter(type => {
         return type !== TaskletType.DEVELOPMENT
+          && !(group === TaskletTypeGroup.DEVELOPMENT && !this.featureService.isFeatureActive(FeatureType.DEVELOPMENT))
+          && !(type === TaskletType.DAILY_SCRUM && !this.featureService.isFeatureActive(FeatureType.SCRUM))
+          && !(type === TaskletType.POMODORO && !this.featureService.isFeatureActive(FeatureType.POMODORO))
           && type !== TaskletType.POMODORO_BREAK;
       });
       this.taskletTypeActions.push(action);

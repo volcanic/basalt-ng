@@ -46,8 +46,11 @@ export class NewFeaturesDialogComponent implements OnInit {
   private initializeData() {
     this.dialogTitle = this.data.dialogTitle;
     this.gitTags = this.data.gitTags;
-    this.gitTags.forEach(gt => {
-      gt.annotation = gt.annotation.replace(/.*v/g, '');
-    });
+
+    if (this.gitTags != null) {
+      this.gitTags.forEach(gt => {
+        gt.annotation = gt.annotation.replace(/.*v/g, '');
+      });
+    }
   }
 }

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
+import {SettingsService} from '../../../settings/services/settings.service';
 import {TaskletType} from '../../model/tasklet-type.enum';
+import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
 
 /**
  * Handles tasklet type hierarchy
@@ -15,8 +16,9 @@ export class TaskletTypeService {
 
   /**
    * Constructor
+   * @param settingsService settings service
    */
-  constructor() {
+  constructor(private settingsService: SettingsService) {
     this.initializeTaskletTypeHierarchy();
   }
 

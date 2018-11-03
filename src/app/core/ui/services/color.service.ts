@@ -7,6 +7,7 @@ import {PaletteType} from '../model/palette-type.enum';
 import {Person} from '../../entity/model/person.model';
 import {TaskletTypeGroup} from '../../entity/model/tasklet-type-group.enum';
 import {Hue} from '../model/hue.model';
+import {FeatureType} from '../../settings/model/feature-type.enum';
 
 /**
  * Handles derived colors
@@ -136,6 +137,27 @@ export class ColorService {
       }
       case TaskletTypeGroup.BREAK: {
         return this.materialColorService.hue(PaletteType.GREY, HueType._600);
+      }
+      default: {
+        return this.materialColorService.hue(PaletteType.GREY, HueType._300);
+      }
+    }
+  }
+
+  /**
+   * Returns a color associated to a feature
+   * @param feature feature
+   */
+  getFeatureTypeColor(feature: FeatureType): Hue {
+    switch (feature) {
+      case FeatureType.DEVELOPMENT: {
+        return this.materialColorService.hue(PaletteType.CYAN, HueType._700);
+      }
+      case FeatureType.SCRUM: {
+        return this.materialColorService.hue(PaletteType.LIME, HueType._600);
+      }
+      case FeatureType.POMODORO: {
+        return this.materialColorService.hue(PaletteType.RED, HueType._600);
       }
       default: {
         return this.materialColorService.hue(PaletteType.GREY, HueType._300);

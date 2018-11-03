@@ -1,0 +1,62 @@
+<app-settings-toolbar
+  [@toolbarAnimation]="scrollDirection"
+  class="fixed"
+  [title]="title"
+  [media]="media"
+  [searchOptions]="searchOptions"
+  (searchItemEventEmitter)="onSearchItemChanged($event)"
+  (menuItemEventEmitter)="onMenuItemClicked($event)"></app-settings-toolbar>
+
+<div cdkScrollable>
+  <div class="content">
+
+
+    <div class="flexcontainer">
+      <mat-icon svgIcon="code" class="icon"></mat-icon>
+      <span>Development</span>
+      <div class="flexbox"></div>
+      <mat-slide-toggle [ngModel]="development"
+                        (ngModelChange)="onFeatureToggled(settingsType.DEVELOPMENT, $event)"></mat-slide-toggle>
+    </div>
+    <p>
+      <mat-divider></mat-divider>
+    </p>
+    <div class="flexcontainer">
+      <mat-icon svgIcon="scrum" class="icon"></mat-icon>
+      <span>Scrum</span>
+      <div class="flexbox"></div>
+      <mat-slide-toggle [ngModel]="scrum"
+                        (ngModelChange)="onFeatureToggled(settingsType.SCRUM, $event)"></mat-slide-toggle>
+    </div>
+    <p>
+      <mat-divider></mat-divider>
+    </p>
+    <div class="flexcontainer">
+      <mat-icon svgIcon="circle_slice_3" class="icon"></mat-icon>
+      <span>Pomodoro</span>
+      <div class="flexbox"></div>
+      <mat-slide-toggle [ngModel]="pomodoro"
+                        (ngModelChange)="onFeatureToggled(settingsType.POMODORO, $event)"></mat-slide-toggle>
+    </div>
+    <div *ngIf="pomodoro" class="details-box">
+      <div class="flexcontainer">
+        <mat-icon svgIcon="blank" class="icon"></mat-icon>
+        <span>Pomodoro Duration</span>
+        <div class="flexbox"></div>
+        <div class="number-input">
+          <input matInput type="number" [ngModel]="pomodoroDuration"
+                 (ngModelChange)="onValueChanged(settingsType.POMODORO_DURATION, $event)"/>
+        </div>
+      </div>
+      <div class="flexcontainer">
+        <mat-icon svgIcon="blank" class="icon"></mat-icon>
+        <span>Pomodoro Break</span>
+        <div class="flexbox"></div>
+        <div class="number-input">
+          <input matInput type="number" [ngModel]="pomodoroBreak"
+                 (ngModelChange)="onValueChanged(settingsType.POMODORO_BREAK, $event)"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

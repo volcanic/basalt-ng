@@ -6,7 +6,6 @@ import {AboutDialogModule} from '../../ui/about-dialog/about-dialog.module';
 import {ConfirmationDialogModule} from '../../ui/confirmation-dialog/confirmation-dialog.module';
 import {InformationDialogModule} from '../../ui/information-dialog/information-dialog.module';
 import {MaterialModule} from '../../ui/material/material.module';
-import {NewFeaturesDialogModule} from '../../ui/new-features-dialog/new-features-dialog.module';
 import {PersonDialogComponent} from './components/dialogs/person-dialog/person-dialog.component';
 import {PersonFilterDialogComponent} from './components/dialogs/person-filter-dialog/person-filter-dialog.component';
 import {ProjectDialogComponent} from './components/dialogs/project-dialog/project-dialog.component';
@@ -92,7 +91,6 @@ import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tas
     ChatBubbleModule,
     InformationDialogModule,
     PersonIndicatorButtonModule,
-    NewFeaturesDialogModule,
     DateTimePickerDialogModule,
     DateTimePickerFragmentModule,
     EcoFabSpeedDialModule,
