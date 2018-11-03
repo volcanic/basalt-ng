@@ -2,6 +2,7 @@ import {Injectable, isDevMode} from '@angular/core';
 import {Setting} from '../model/setting.model';
 import {PouchDBSettingsService} from '../../persistence/services/pouchdb-settings.service';
 import {Subject} from 'rxjs';
+import {SettingType} from '../model/setting-type.enum';
 
 /**
  * Handles settings
@@ -59,6 +60,16 @@ export class SettingsService {
         }
       }
     );
+  }
+
+  /**
+   * Determines if a setting is active
+   * @param settingType setting type
+   */
+  public isSettingActive(settingType: SettingType): boolean {
+    const value = this.settings.get(settingType).value;
+
+    return value != null && JSON.parse(value) === true;
   }
 
   //

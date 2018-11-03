@@ -56,6 +56,7 @@ import {EmailService} from '../../../../core/mail/services/mail/email.service';
 import {Router} from '@angular/router';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
+import {Setting} from '../../../../core/settings/model/setting.model';
 
 /**
  * Displays timeline page
@@ -144,6 +145,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public scrollDirection: ScrollDirection = ScrollDirection.UP;
   /** Scroll state */
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
+
+  /** Sidenav state */
+  public sidenavOpened = false;
 
   /** Side navigation at start */
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
@@ -238,6 +242,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeMaterial();
     this.initializeMediaSubscription();
     this.initializeScopeSubscription();
+
+    this.initializeSettings();
 
     this.clearFilters();
     this.findEntities();
@@ -657,6 +663,18 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Save current scroll position
         this.scrollPosLast = scrollPos;
       })).subscribe();
+  }
+
+  /**
+   * Initializes settings
+   */
+  private initializeSettings() {
+    this.settingsService.fetch();
+    this.settingsService.settingsSubject.subscribe(value => {
+      if (value != null) {
+        this.sidenavOpened = this.settingsService.isSettingActive(SettingType.SIDENAV_OPENED);
+      }
+    });
   }
 
   /**
@@ -1720,6 +1738,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (menuItem) {
       case 'menu': {
         this.sidenavStart.toggle().then(() => {
+          this.settingsService.updateSetting(new Setting(SettingType.SIDENAV_OPENED, this.sidenavStart.opened));
         });
         this.sidenavEnd.toggle().then(() => {
         });
