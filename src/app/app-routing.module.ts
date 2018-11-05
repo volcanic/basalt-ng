@@ -8,6 +8,8 @@ const routes: Routes = [
     {path: 'intro', loadChildren: './pages/intro/intro.module#IntroModule', canActivate: [IntroGuard]},
     // Timeline module
     {path: 'tasklet', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
+    {path: 'task/:id', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
+    {path: 'task', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
     {path: 'tasklet/:id', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
     {path: 'timeline', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
     // Calendar module

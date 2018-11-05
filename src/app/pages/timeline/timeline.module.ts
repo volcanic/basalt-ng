@@ -71,7 +71,8 @@ import {PersonNamesPipe} from './pipes/person-names.pipe';
 import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
 import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
 import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragment.module';
-import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tasklet-card-fragment/tasklet-card-fragment.component';
+import {TaskletCardFragmentComponent} from './components/fragments/tasklet/tasklet-card-fragment/tasklet-card-fragment.component';
+import {TaskComponent} from './pages/task/task.component';
 
 
 @NgModule({
@@ -105,6 +106,7 @@ import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tas
     TimelineComponent,
     TimelineToolbarComponent,
     TaskletComponent,
+    TaskComponent,
 
     // Dialogs
     PersonDialogComponent,
@@ -179,6 +181,7 @@ import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tas
     // Page
     TimelineComponent,
     TaskletComponent,
+    TaskComponent,
 
     PersonDialogComponent,
     PersonFilterDialogComponent,
