@@ -23,7 +23,6 @@ import {TaskletTypeFragmentComponent} from './components/fragments/dialog/taskle
 import {PersonAutocompleteFragmentComponent} from './components/fragments/dialog/person-autocomplete-fragment/person-autocomplete-fragment.component';
 import {PreviousDescriptionFragmentComponent} from './components/fragments/dialog/previous-description-fragment/previous-description-fragment.component';
 import {ProjectAutocompleteFragmentComponent} from './components/fragments/dialog/project-autocomplete-fragment/project-autocomplete-fragment.component';
-import {TaskAutocompleteFragmentComponent} from './components/fragments/dialog/task-autocomplete-fragment/task-autocomplete-fragment.component';
 import {FilterPersonListItemComponent} from './components/lists/filter-person-list-item/filter-person-list-item.component';
 import {FilterPersonListComponent} from './components/lists/filter-person-list/filter-person-list.component';
 import {FilterProjectListItemComponent} from './components/lists/filter-project-list-item/filter-project-list-item.component';
@@ -73,6 +72,7 @@ import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
 import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragment.module';
 import {TaskletCardFragmentComponent} from './components/fragments/tasklet/tasklet-card-fragment/tasklet-card-fragment.component';
 import {TaskComponent} from './pages/task/task.component';
+import {TaskAutocompleteModule} from '../../ui/task-autocomplete/task-autocomplete.module';
 
 
 @NgModule({
@@ -97,6 +97,7 @@ import {TaskComponent} from './pages/task/task.component';
     EcoFabSpeedDialModule,
     SuggestedActionButtonModule,
     TagChipsModule,
+    TaskAutocompleteModule,
     StopWatchModule,
     MarkdownFragmentModule
   ],
@@ -164,7 +165,6 @@ import {TaskComponent} from './pages/task/task.component';
     PreviousDescriptionFragmentComponent,
     ProjectAutocompleteFragmentComponent,
     RecurrenceIntervalFragmentComponent,
-    TaskAutocompleteFragmentComponent,
     TaskletDailyScrumFragmentComponent,
     TaskletDailyScrumItemFragmentComponent,
     TaskletMeetingMinuteItemFragmentComponent,

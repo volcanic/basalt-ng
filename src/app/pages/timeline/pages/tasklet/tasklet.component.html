@@ -53,8 +53,8 @@
                 <app-task-autocomplete-fragment
                   *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
                   class="task"
-                  [task]="task" [taskOptions]="taskOptions"
-                  (taskChangedEmitter)="onTaskChanged($event)">
+                  [taskName]="task.name" [taskOptions]="taskOptions"
+                  (taskNameChangedEmitter)="onTaskNameChanged($event)">
                 </app-task-autocomplete-fragment>
                 <div *ngIf="project != null" [style.color]="action.backgroundColor">{{ project.name }}</div>
               </div>

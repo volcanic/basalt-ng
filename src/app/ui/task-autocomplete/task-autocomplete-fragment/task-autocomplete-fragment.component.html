@@ -1,6 +1,6 @@
 <div class="searchbox">
   <input class="search-input" matInput name="search" type="text" placeholder="Task"
-         [ngModel]="task.name"
+         [ngModel]="taskName"
          (ngModelChange)="onTaskNameChanged($event)"
          [disabled]="readonly"
          [matAutocomplete]="auto"

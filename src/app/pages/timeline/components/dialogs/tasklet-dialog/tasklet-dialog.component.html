@@ -6,7 +6,7 @@
       </app-tasklet-type-fragment>
       <app-task-autocomplete-fragment
         *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
-        [task]="task" [taskOptions]="taskOptions" (taskChangedEmitter)="onTaskChanged($event)">
+        [taskName]="task.name" [taskOptions]="taskOptions" (taskNameChangedEmitter)="onTaskNameChanged($event)">
       </app-task-autocomplete-fragment>
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescription]="previousDescription"></app-previous-description-fragment>

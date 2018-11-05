@@ -869,7 +869,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           mode: DialogMode.ADD,
           dialogTitle: 'Add tasklet',
           tasklet: new Tasklet(),
-          task: null,
+          task: new Task(),
           tags: [],
           persons: [],
           previousDescription: null

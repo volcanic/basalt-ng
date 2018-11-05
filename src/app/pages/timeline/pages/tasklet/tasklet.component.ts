@@ -417,11 +417,11 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles task changes
-   * @param task new task
+   * Handles task name changes
+   * @param taskName new task name
    */
-  onTaskChanged(task: Task) {
-    this.task = task;
+  onTaskNameChanged(taskName: string) {
+    this.task.name = taskName;
   }
 
   /**
