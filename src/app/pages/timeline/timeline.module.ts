@@ -21,7 +21,6 @@ import {UploadDialogComponent} from './components/dialogs/upload-dialog/upload-d
 import {DailyScrumFragmentComponent} from './components/fragments/dialog/daily-scrum-fragment/daily-scrum-fragment.component';
 import {TaskletTypeFragmentComponent} from './components/fragments/dialog/tasklet-type-fragment/tasklet-type-fragment.component';
 import {PersonAutocompleteFragmentComponent} from './components/fragments/dialog/person-autocomplete-fragment/person-autocomplete-fragment.component';
-import {PreviousDescriptionFragmentComponent} from './components/fragments/dialog/previous-description-fragment/previous-description-fragment.component';
 import {ProjectAutocompleteFragmentComponent} from './components/fragments/dialog/project-autocomplete-fragment/project-autocomplete-fragment.component';
 import {FilterPersonListItemComponent} from './components/lists/filter-person-list-item/filter-person-list-item.component';
 import {FilterPersonListComponent} from './components/lists/filter-person-list/filter-person-list.component';
@@ -73,6 +72,7 @@ import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragme
 import {TaskletCardFragmentComponent} from './components/fragments/tasklet/tasklet-card-fragment/tasklet-card-fragment.component';
 import {TaskComponent} from './pages/task/task.component';
 import {TaskAutocompleteModule} from '../../ui/task-autocomplete/task-autocomplete.module';
+import {PreviousDescriptionModule} from '../../ui/previous-description/previous-description.module';
 
 
 @NgModule({
@@ -99,7 +99,8 @@ import {TaskAutocompleteModule} from '../../ui/task-autocomplete/task-autocomple
     TagChipsModule,
     TaskAutocompleteModule,
     StopWatchModule,
-    MarkdownFragmentModule
+    MarkdownFragmentModule,
+    PreviousDescriptionModule
   ],
   declarations: [
     // Page
@@ -162,7 +163,6 @@ import {TaskAutocompleteModule} from '../../ui/task-autocomplete/task-autocomple
     MeetingMinutesFragmentComponent,
     MeetingMinuteItemFragmentComponent,
     PersonAutocompleteFragmentComponent,
-    PreviousDescriptionFragmentComponent,
     ProjectAutocompleteFragmentComponent,
     RecurrenceIntervalFragmentComponent,
     TaskletDailyScrumFragmentComponent,

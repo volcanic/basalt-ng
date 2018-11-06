@@ -9,7 +9,7 @@
         [taskName]="task.name" [taskOptions]="taskOptions" (taskNameChangedEmitter)="onTaskNameChanged($event)">
       </app-task-autocomplete-fragment>
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
-                                         [previousDescription]="previousDescription"></app-previous-description-fragment>
+                                         [previousDescriptionText]="previousDescription.value"></app-previous-description-fragment>
       <!-- Pomodoro task -->
       <app-markdown-editor *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
                            [text]="tasklet.pomodoroTask.value"

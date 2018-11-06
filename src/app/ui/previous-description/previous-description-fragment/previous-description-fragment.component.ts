@@ -13,5 +13,5 @@ import {Description} from 'app/core/entity/model/description.model';
 export class PreviousDescriptionFragmentComponent {
 
   /** Description to be displayed */
-  @Input() previousDescription: Description = new Description();
+  @Input() previousDescriptionText = '';
 }
