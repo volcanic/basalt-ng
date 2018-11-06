@@ -67,9 +67,9 @@ export class SettingsService {
    * @param settingType setting type
    */
   public isSettingActive(settingType: SettingType): boolean {
-    const value = this.settings.get(settingType).value;
+    const setting = this.settings.get(settingType);
 
-    return value != null && JSON.parse(value) === true;
+    return setting != null && setting.value != null && JSON.parse(setting.value) === true;
   }
 
   //
