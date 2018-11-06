@@ -198,6 +198,9 @@
       Delete task
     </button>
     <div class="flexbox"></div>
+    <button mat-button (click)="goToFullscreen()">
+      Go to Fullscreen
+    </button>
     <button mat-button *ngIf="mode == modeType.UPDATE && task.completionDate != null" color="accent"
             (click)="reopenTask()">
       Re-open task

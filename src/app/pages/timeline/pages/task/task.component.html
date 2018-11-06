@@ -1,3 +1,85 @@
-<p>
-  task works!
-</p>
+<div (keydown)="onKeyDown($event)" class="main">
+  <mat-sidenav-container class="sidenav-container" layout="column">
+    <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
+                 position="start" opened="true"
+                 class="sidenav sidenav-start">
+      <div [@toolbarAnimation]="scrollDirection">
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavEnd mode="side"
+                 position="end" opened="true"
+                 class="sidenav sidenav-end">
+      <div [@toolbarAnimation]="scrollDirection">
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content cdkScrollable>
+      <div class="content">
+        <form #formCtrl="ngForm">
+          <!-- Pseudo form field to make other input fields work -->
+          <mat-form-field style="width: 0; height: 0;"><input matInput=""/></mat-form-field>
+
+          <div class="header-buttons">
+            <div class="icon-wrapper">
+              <div class="more">
+                <mat-icon svgIcon="more_horiz_36"></mat-icon>
+              </div>
+            </div>
+            <div class="flexcontainer button-wrapper">
+              <div class="flexbox"></div>
+              <button mat-button routerLink="/timeline">Back to timeline</button>
+              <div class="flexbox"></div>
+            </div>
+          </div>
+
+          <div class="header">
+            <div class="flexcontainer">
+              <div *ngIf="action != null">
+                <button mat-fab class="tasklet-type"
+                        [style.backgroundColor]="action.backgroundColor">
+                  <mat-icon [svgIcon]="action.icon" [style.fill]="action.iconColor"></mat-icon>
+                </button>
+              </div>
+              <div *ngIf="task != null">
+                <input class="task" matInput name="name" type="text" placeholder="Name"
+                       [(ngModel)]="task.name"
+                       [disabled]="readonly">
+                <div *ngIf="project != null" [style.color]="action.backgroundColor">{{ project.name }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="main">
+
+          </div>
+
+          <div class="footer footer-buttons">
+            <div class="header-buttons">
+              <div class="icon-wrapper">
+                <div class="more">
+                  <mat-icon svgIcon="more_horiz_36"></mat-icon>
+                </div>
+              </div>
+              <div class="flexcontainer button-wrapper">
+                <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteTask()">
+                  Delete task
+                </button>
+                <div class="flexbox"></div>
+                <button mat-button *ngIf="mode == modeType.ADD" (click)="addTask()">
+                  Add tasklet
+                </button>
+                <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTask()">
+                  Update tasklet
+                </button>
+                <button mat-button *ngIf="mode == modeType.CONTINUE" (click)="continueTask()">
+                  Continue on task
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

@@ -387,6 +387,20 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Handles click on fullscreen button
+   */
+  goToFullscreen() {
+    this.mode = DialogMode.NONE;
+    this.dialogRef.close({
+      action: Action.FULLSCREEN,
+      task: this.task,
+      project: this.project,
+      delegatedTo: this.delegatedTo,
+      tags: this.tags
+    });
+  }
+
+  /**
    * Handles click on complete button
    */
   completeTask() {

@@ -34,10 +34,10 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     if (this.router.url.startsWith('/timeline')) {
       this.currentComponent = TimelineComponent;
-    } else if (this.router.url.startsWith('/task')) {
-      this.currentComponent = TaskComponent;
     } else if (this.router.url.startsWith('/tasklet')) {
       this.currentComponent = TaskletComponent;
+    } else if (this.router.url.startsWith('/task')) {
+      this.currentComponent = TaskComponent;
     }
   }
 }

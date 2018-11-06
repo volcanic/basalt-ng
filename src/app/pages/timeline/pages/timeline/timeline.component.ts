@@ -1312,6 +1312,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.filterService.updateTasksList(tasks, true);
         break;
       }
+      case Action.FULLSCREEN: {
+        // Update task
+        this.onTaskEvent({
+          action: Action.UPDATE,
+          task: task,
+          project: project,
+          delegatedTo: delegatedTo,
+          tags: tags
+        });
+
+        this.router.navigate([`/task/${task.id}`]).then(() => {
+        });
+        break;
+      }
     }
   }
 
