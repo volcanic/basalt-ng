@@ -1,7 +1,7 @@
 <div [class]="themeClass">
 
   <!-- Top attachment -->
-  <div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
+  <div class="top-attached" *ngIf="tasklet.type === taskletType.FINISHING_TIME">
     {{ weekday }}, {{ date }}
     <div class="top-connection-line"></div>
   </div>
