@@ -10,32 +10,7 @@
       <mat-accordion class="headers-align" (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
         <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
-          <!-- Pomodoro task -->
-          <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
-               class="text pomodoro-task">
-            <app-markdown-preview
-              [markdownText]="tasklet.pomodoroTask.value"></app-markdown-preview>
-            <mat-divider class="pomodoro-divider"></mat-divider>
-          </div>
-          <!-- Description -->
-          <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DESCRIPTION, tasklet)" class="text">
-            <app-markdown-preview
-              *ngIf="tasklet.description.value != ''"
-              [markdownText]="tasklet.description.value"></app-markdown-preview>
-            <div *ngIf="tasklet.description.value == ''" class="placeholder-description">
-              Click here to add description
-            </div>
-          </div>
-          <!-- Meeting minutes -->
-          <app-tasklet-meeting-minutes-fragment
-            *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
-            [tasklet]="tasklet">
-          </app-tasklet-meeting-minutes-fragment>
-          <!-- Daily Scrum -->
-          <app-tasklet-daily-scrum-fragment
-            *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)"
-            [tasklet]="tasklet">
-          </app-tasklet-daily-scrum-fragment>
+          <app-tasklet-content-fragment [tasklet]="tasklet"></app-tasklet-content-fragment>
         </mat-expansion-panel>
       </mat-accordion>
       <hr class="delimiter"/>

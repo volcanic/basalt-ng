@@ -73,6 +73,7 @@ import {TaskletCardFragmentComponent} from './components/fragments/tasklet/taskl
 import {TaskComponent} from './pages/task/task.component';
 import {TaskAutocompleteModule} from '../../ui/task-autocomplete/task-autocomplete.module';
 import {PreviousDescriptionModule} from '../../ui/previous-description/previous-description.module';
+import {TaskletContentFragmentComponent} from './components/fragments/tasklet/tasklet-content-fragment/tasklet-content-fragment.component';
 
 
 @NgModule({
@@ -165,18 +166,19 @@ import {PreviousDescriptionModule} from '../../ui/previous-description/previous-
     PersonAutocompleteFragmentComponent,
     ProjectAutocompleteFragmentComponent,
     RecurrenceIntervalFragmentComponent,
+    TaskletCardFragmentComponent,
+    TaskletContentFragmentComponent,
     TaskletDailyScrumFragmentComponent,
     TaskletDailyScrumItemFragmentComponent,
     TaskletMeetingMinuteItemFragmentComponent,
     TaskletMeetingMinutesFragmentComponent,
     TaskletTypeFragmentComponent,
+    PomodoroTimerComponent,
     DailyScrumItemFragmentComponent,
 
     // Pipes
     TagNamesPipe,
     PersonNamesPipe,
-    PomodoroTimerComponent,
-    TaskletCardFragmentComponent,
   ], entryComponents: [
     // Page
     TimelineComponent,

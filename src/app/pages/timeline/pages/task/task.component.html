@@ -50,7 +50,9 @@
             </div>
           </div>
           <div class="main">
-
+            <div *ngFor="let tasklet of tasklets">
+              <app-tasklet-content-fragment [tasklet]="tasklet"></app-tasklet-content-fragment>
+            </div>
           </div>
 
           <div class="footer footer-buttons">
