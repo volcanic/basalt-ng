@@ -105,7 +105,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = this.data.tasklet;
-    this.task = this.data.task;
+    this.task = this.data.task != null ? this.data.task : new Task();
     this.tags = this.data.tags;
     this.persons = this.data.persons;
     this.previousDescription = this.data.previousDescription;
