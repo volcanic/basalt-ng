@@ -1,0 +1,28 @@
+@import '../../../../../../../light-theme';
+@import '../../../../../../../dark-theme';
+
+$totalWidth: 56px;
+$lineWidth: 6px;
+
+.timebar-fragment {
+  margin-right: 15px;
+  text-align: center;
+  height: 100%;
+  width: $totalWidth;
+}
+
+.tasklet-type {
+  box-shadow: none;
+}
+
+.line-short {
+  margin: 0 auto;
+  height: 10px;
+  width: $lineWidth;
+}
+
+.line-fill {
+  margin: 0 auto;
+  height: 100%;
+  width: $lineWidth;
+}

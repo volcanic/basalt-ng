@@ -20,14 +20,6 @@ export class TaskletPreviewFragmentComponent {
   @Input() topic = '';
   /** Icon name */
   @Input() icon = '';
-  /** Creation time */
-  @Input() time = '';
-  /** Creation weekday */
-  @Input() weekday = '';
-  /** Creation date */
-  @Input() date = '';
-  /** Simple creation date */
-  @Input() simpleDate = '';
   /** Current media */
   @Input() media: Media;
 

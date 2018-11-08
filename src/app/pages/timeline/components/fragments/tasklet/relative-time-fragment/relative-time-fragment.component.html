@@ -1,0 +1,6 @@
+<div [matTooltip]=fullDate
+     [matTooltipPosition]="'above'">
+  <span *ngIf="isInCurrentWeek(date) && !isToday(date)">{{ weekday.slice(0, 3) }},</span>
+  <span *ngIf="!isInCurrentWeek(date)">{{ simpleDate }},</span>
+  <span>{{ time }}</span>
+</div>

@@ -7,10 +7,11 @@
     </mat-card-header>
 
     <mat-card-content class="content">
-      <mat-accordion class="headers-align" (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
+      <mat-accordion class="headers-align"
+                     (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
         <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
-          <app-tasklet-content-fragment [tasklet]="tasklet"></app-tasklet-content-fragment>
+          <app-tasklet-content-fragment [tasklet]="tasklet" [placeholderDescription]="placeholderDescription"></app-tasklet-content-fragment>
         </mat-expansion-panel>
       </mat-accordion>
       <hr class="delimiter"/>
@@ -38,22 +39,17 @@
       <div class="flexcontainer">
         <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
           <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
-               (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})"
-               [matTooltip]=date
-               matTooltipPosition="above">
-              <span class="left-attached-content"
-                    *ngIf="isInCurrentWeek(tasklet.creationDate) && !isToday(tasklet.creationDate)">{{ weekday.slice(0, 3) }},</span>
-            <span class="left-attached-content"
-                  *ngIf="!isInCurrentWeek(tasklet.creationDate)">{{ simpleDate }},</span>
-            <span class="left-attached-content">{{ time }}</span>
+               (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">
+            <span class="left-attached-content">
+              <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
+            </span>
           </div>
         </div>
         <div class="tags-holder"
              (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
           <span class="time" *ngIf="media <= mediaType.MEDIUM">
             <label class="time-label">
-             <span>{{ time }}</span>
-              <span *ngIf="isBeforeToday(tasklet.creationDate)">, {{ date }}</span>
+             <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
             </label>
           </span>
           <span *ngFor="let p of tasklet.personIds">

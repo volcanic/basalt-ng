@@ -74,6 +74,8 @@ import {TaskComponent} from './pages/task/task.component';
 import {TaskAutocompleteModule} from '../../ui/task-autocomplete/task-autocomplete.module';
 import {PreviousDescriptionModule} from '../../ui/previous-description/previous-description.module';
 import {TaskletContentFragmentComponent} from './components/fragments/tasklet/tasklet-content-fragment/tasklet-content-fragment.component';
+import {RelativeTimeFragmentComponent} from './components/fragments/tasklet/relative-time-fragment/relative-time-fragment.component';
+import {TaskletTimelineFragmentComponent} from './components/fragments/tasklet/tasklet-timeline-fragment/tasklet-timeline-fragment.component';
 
 
 @NgModule({
@@ -166,12 +168,14 @@ import {TaskletContentFragmentComponent} from './components/fragments/tasklet/ta
     PersonAutocompleteFragmentComponent,
     ProjectAutocompleteFragmentComponent,
     RecurrenceIntervalFragmentComponent,
+    RelativeTimeFragmentComponent,
     TaskletCardFragmentComponent,
     TaskletContentFragmentComponent,
     TaskletDailyScrumFragmentComponent,
     TaskletDailyScrumItemFragmentComponent,
     TaskletMeetingMinuteItemFragmentComponent,
     TaskletMeetingMinutesFragmentComponent,
+    TaskletTimelineFragmentComponent,
     TaskletTypeFragmentComponent,
     PomodoroTimerComponent,
     DailyScrumItemFragmentComponent,
