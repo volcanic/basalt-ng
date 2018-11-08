@@ -6,7 +6,6 @@ import {Project} from '../../../../core/entity/model/project.model';
 import {Tag} from '../../../../core/entity/model/tag.model';
 import {Person} from '../../../../core/entity/model/person.model';
 import {TaskletType} from '../../../../core/entity/model/tasklet-type.enum';
-import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
 import {Subject} from 'rxjs';
 import {Media} from '../../../../core/ui/model/media.enum';
 import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
@@ -102,6 +101,9 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Tags assigned to this task */
   tags: Tag[] = [];
 
+  /** Tasklets associated with with task */
+  tasklets: Tasklet[] = [];
+
   /** Project options */
   projectOptions: string[];
   /** Tag options */
@@ -114,8 +116,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Tasklet type action */
   action: TaskletTypeAction;
 
-  /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
+  /** Placeholder text for description */
+  placeholderDescription = 'empty';
 
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
@@ -202,6 +204,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeParameters();
     this.initializeResolvedData();
     this.initializeTaskSubscription();
+    this.initializeTaskletSubscription();
 
     this.initializeMaterial();
     this.initializeMediaSubscription();
@@ -293,7 +296,23 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         return tag != null;
       });
       this.delegatedTo = this.personService.persons.get(task.delegatedToId);
+
+      // After task has been initialized associated tasklets can be determined
+      this.taskletService.findTaskletsByScope(this.scopeService.scope);
     }
+  }
+
+  /**
+   * Initializes tasklet subscription
+   */
+  private initializeTaskletSubscription() {
+    this.taskletService.taskletsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      if (value != null) {
+        this.tasklets = this.taskletService.getTaskletsByTask(this.task);
+      }
+    });
   }
 
   /**

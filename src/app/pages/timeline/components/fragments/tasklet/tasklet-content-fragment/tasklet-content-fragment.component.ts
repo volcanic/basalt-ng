@@ -18,6 +18,8 @@ export class TaskletContentFragmentComponent {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
+  /** Placeholder text for description */
+  @Input() placeholderDescription = '';
 
   /** Enum of display aspects */
   displayAspectType = DisplayAspect;

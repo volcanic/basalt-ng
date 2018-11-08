@@ -50,9 +50,29 @@
             </div>
           </div>
           <div class="main">
-            <div *ngFor="let tasklet of tasklets">
-              <app-tasklet-content-fragment [tasklet]="tasklet"></app-tasklet-content-fragment>
+
+            <div class="history">
+              <div class="tasklet" *ngFor="let tasklet of tasklets">
+                <div class="flexcontainer">
+                  <div class="attachments">
+                    <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
+                      <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached-without-connector">
+                      <span class="left-attached-content">
+                        <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                  <app-tasklet-timeline-fragment [tasklet]="tasklet"
+                                                 [backgroundColor]="action.backgroundColor"
+                                                 [iconColor]="action.iconColor"
+                                                 [media]="media"></app-tasklet-timeline-fragment>
+                  <app-tasklet-content-fragment [tasklet]="tasklet"
+                                                [placeholderDescription]="placeholderDescription"></app-tasklet-content-fragment>
+                </div>
+              </div>
             </div>
+
           </div>
 
           <div class="footer footer-buttons">

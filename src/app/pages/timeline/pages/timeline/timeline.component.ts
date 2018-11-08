@@ -316,7 +316,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const matchesPersons = this.matchService.taskletMatchesPersons(tasklet,
       Array.from(this.filterService.persons.values()), this.filterService.personsNone);
 
-    return matchesSearchItem && matchesTasks && matchesProjects && matchesTags && matchesPersons;
+    return true;
+    // return matchesSearchItem && matchesTasks && matchesProjects && matchesTags && matchesPersons;
   }
 
   //

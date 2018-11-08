@@ -122,7 +122,7 @@ export class TaskletService {
       selector: {
         '$and': [
           {entityType: {$eq: EntityType.TASKLET}},
-          {creationDate: {$gt: '2018-08-01T00:00:00.000Z'}}
+          {creationDate: {$gt: '2018-09-01T00:00:00.000Z'}}
         ]
       },
       // sort: [{creationDate: 'desc'}],
@@ -319,6 +319,18 @@ export class TaskletService {
     }
 
     return null;
+  }
+
+  /**
+   * Retrieves a list of tasklets that are associated with a given task
+   * @param task task
+   */
+  public getTaskletsByTask(task: Task): Tasklet[] {
+    return Array.from(this.tasklets.values()).filter(tasklet => {
+      return tasklet != null && task != null && tasklet.taskId === task.id;
+    }).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
+    }).reverse();
   }
 
   /**
