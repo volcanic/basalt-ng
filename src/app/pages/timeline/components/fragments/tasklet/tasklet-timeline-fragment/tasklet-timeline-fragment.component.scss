@@ -4,6 +4,9 @@
 $totalWidth: 56px;
 $lineWidth: 6px;
 
+$lineHeightTop: 10px;
+$fabMiniHeight: 40px;
+
 .timebar-fragment {
   margin-right: 15px;
   text-align: center;
@@ -17,12 +20,14 @@ $lineWidth: 6px;
 
 .line-short {
   margin: 0 auto;
-  height: 10px;
+  height: $lineHeightTop;
   width: $lineWidth;
 }
 
 .line-fill {
   margin: 0 auto;
-  height: 100%;
+  height: -webkit-calc(100% - #{$fabMiniHeight} - #{$lineHeightTop});
+  height:    -moz-calc(100% - #{$fabMiniHeight} - #{$lineHeightTop});
+  height:         calc(100% - #{$fabMiniHeight} - #{$lineHeightTop});
   width: $lineWidth;
 }
