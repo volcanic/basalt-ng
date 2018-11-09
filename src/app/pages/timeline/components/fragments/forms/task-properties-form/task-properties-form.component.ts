@@ -1,18 +1,18 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Task} from '../../../../../../core/entity/model/task.model';
-import {Project} from '../../../../../../core/entity/model/project.model';
-import {Person} from '../../../../../../core/entity/model/person.model';
 import {Tag} from '../../../../../../core/entity/model/tag.model';
-import {MatSlideToggleChange} from '@angular/material';
+import {Task} from '../../../../../../core/entity/model/task.model';
+import {Person} from '../../../../../../core/entity/model/person.model';
+import {Project} from '../../../../../../core/entity/model/project.model';
 import {RecurrenceInterval} from '../../../../../../core/entity/model/recurrence-interval.enum';
+import {MatSlideToggleChange} from '@angular/material';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 
 @Component({
-  selector: 'app-task-form',
-  templateUrl: './task-form.component.html',
-  styleUrls: ['./task-form.component.scss']
+  selector: 'app-task-properties-form',
+  templateUrl: './task-properties-form.component.html',
+  styleUrls: ['./task-properties-form.component.scss']
 })
-export class TaskFormComponent implements OnInit {
+export class TaskPropertiesFormComponent implements OnInit {
 
   /** Task to be displayed */
   @Input() task: Task;

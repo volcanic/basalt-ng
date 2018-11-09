@@ -51,8 +51,25 @@
           </div>
           <div class="main">
 
-            <div class="information">
+            <div *ngIf="!propertiesOpened" class="information-buttons">
+              <div class="icon-wrapper">
+                <div class="more">
+                  <mat-icon svgIcon="more_horiz_36"></mat-icon>
+                </div>
+              </div>
+              <div class="flexcontainer button-wrapper">
+                <div class="flexbox"></div>
+                <button mat-button (click)="onUpdatePropertiesClicked()">Update properties</button>
+                <div class="flexbox"></div>
+              </div>
+            </div>
 
+            <div *ngIf="task != null && propertiesOpened" class="information">
+              <app-task-properties-form [task]="task" [project]="project" [delegatedTo]="delegatedTo" [tags]="tags"
+                                        [readonly]="readonly" [projectOptions]="projectOptions"
+                                        [tagOptions]="tagOptions" [personOptions]="personOptions"
+                                        (taskEventEmitter)="onTaskChanged($event)">
+              </app-task-properties-form>
             </div>
 
             <div class="history">

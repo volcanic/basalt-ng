@@ -76,8 +76,8 @@ import {PreviousDescriptionModule} from '../../ui/previous-description/previous-
 import {TaskletContentFragmentComponent} from './components/fragments/tasklet/tasklet-content-fragment/tasklet-content-fragment.component';
 import {RelativeTimeFragmentComponent} from './components/fragments/tasklet/relative-time-fragment/relative-time-fragment.component';
 import {TaskletTimelineFragmentComponent} from './components/fragments/tasklet/tasklet-timeline-fragment/tasklet-timeline-fragment.component';
-import { TaskFormComponent } from './components/fragments/forms/task-form/task-form.component';
-
+import {TaskTitleFormComponent} from './components/fragments/forms/task-title-form/task-title-form.component';
+import {TaskPropertiesFormComponent} from './components/fragments/forms/task-properties-form/task-properties-form.component';
 
 @NgModule({
   imports: [
@@ -180,11 +180,12 @@ import { TaskFormComponent } from './components/fragments/forms/task-form/task-f
     TaskletTypeFragmentComponent,
     PomodoroTimerComponent,
     DailyScrumItemFragmentComponent,
+    TaskTitleFormComponent,
+    TaskPropertiesFormComponent,
 
     // Pipes
     TagNamesPipe,
     PersonNamesPipe,
-    TaskFormComponent,
   ], entryComponents: [
     // Pages
     TimelineComponent,

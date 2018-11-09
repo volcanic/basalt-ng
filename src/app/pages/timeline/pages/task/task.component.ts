@@ -79,21 +79,6 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Readonly dialog if true */
   readonly = false;
 
-  /** Color for no priority */
-  colorEmpty = '#cfd8dc';
-  /** Colors for priorities */
-  colorsPriorities = [
-    '#990000',
-    '#9c690e',
-    '#3c8b09',
-  ];
-  /** Colors for flags */
-  colorsFlags = [
-    '#cfd8dc',
-    '#cfd8dc',
-    '#cfd8dc',
-  ];
-
   /** Project assigned to this task */
   project: Project;
   /** Delegated to affiliated to this task */
@@ -133,6 +118,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   public scrollDirection: ScrollDirection = ScrollDirection.UP;
   /** Scroll state */
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
+
+  propertiesOpened = false;
 
   /** Side navigation at start */
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
@@ -408,21 +395,21 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles task changes
-   * @param task new task
+   * Handles click on update-properties button
    */
-  onTaskChanged(task: Task) {
-    this.task = task;
+  onUpdatePropertiesClicked() {
+    this.propertiesOpened = true;
   }
 
   /**
-   * Handles tag changes
-   * @param tags new tags
+   * Handles task changes
+   * @param event event
    */
-  onTagsChanged(tags: string[]) {
-    this.tags = tags.map(t => {
-      return new Tag(t, true);
-    });
+  onTaskChanged(event: { task: Task, project?: Project, delegatedTo?: Person, tags?: Tag[] }) {
+    this.task = event.task;
+    this.project = event.project;
+    this.delegatedTo = event.delegatedTo;
+    this.tags = event.tags;
   }
 
   /**

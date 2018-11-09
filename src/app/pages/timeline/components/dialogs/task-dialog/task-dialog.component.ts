@@ -150,6 +150,14 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   //
 
   /**
+   * Handles task name changes
+   * @param event event
+   */
+  onTaskNameChanged(event: { task: Task }) {
+    this.task = event.task;
+  }
+
+  /**
    * Handles task changes
    * @param event event
    */

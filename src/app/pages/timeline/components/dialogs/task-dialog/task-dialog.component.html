@@ -1,10 +1,13 @@
 <div (keydown)="onKeyDown($event)">
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
-    <app-task-form [task]="task" [project]="project" [delegatedTo]="delegatedTo" [tags]="tags"
-                   [readonly]="readonly" [projectOptions]="projectOptions" [tagOptions]="tagOptions" [personOptions]="personOptions"
-                   (taskEventEmitter)="onTaskChanged($event)">
-    </app-task-form>
+    <app-task-title-form [task]="task" [readonly]="readonly"
+                            (taskEventEmitter)="onTaskNameChanged($event)"></app-task-title-form>
+    <app-task-properties-form [task]="task" [project]="project" [delegatedTo]="delegatedTo" [tags]="tags"
+                                 [readonly]="readonly" [projectOptions]="projectOptions" [tagOptions]="tagOptions"
+                                 [personOptions]="personOptions"
+                                 (taskEventEmitter)="onTaskChanged($event)">
+    </app-task-properties-form>
   </mat-dialog-content>
   <mat-dialog-actions class="flexcontainer">
     <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteTask()">

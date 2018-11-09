@@ -69,19 +69,22 @@
   }
 }
 
-.header {
+.main > * {
   @media #{$breakpoint-small} {
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
   @media #{$breakpoint-medium} {
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   @media #{$breakpoint-large} {
-    margin-bottom: 65px;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 
-.header-buttons {
+.header-buttons, .information-buttons, .footer-buttons {
   height: 50px;
 
   .icon-wrapper {
@@ -132,7 +135,7 @@
 
 // Attachment
 
-.date{
+.date {
   color: mat-color($mat-grey, 500);
   margin-right: 15px;
   width: 90px;
@@ -193,38 +196,6 @@ $side-attached-distance: 10px;
   }
   @media #{$breakpoint-large} {
     margin-top: 65px;
-  }
-}
-
-.footer-buttons {
-  height: 50px;
-
-  .icon-wrapper {
-    text-align: center;
-    width: 100%;
-    display: block;
-
-    .more {
-      margin: 0 auto;
-
-      mat-icon {
-        fill: mat-color($mat-grey, 400);
-      }
-    }
-  }
-
-  .button-wrapper {
-    display: none;
-    color: mat-color($mat-grey, 500);
-  }
-
-  &:hover {
-    .icon-wrapper {
-      display: none;
-    }
-    .button-wrapper {
-      display: flex;
-    }
   }
 }
 
