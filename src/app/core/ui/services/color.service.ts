@@ -68,7 +68,7 @@ export class ColorService {
   getProjectColor(project: Project) {
     const hue = this.getProjectHue(project);
 
-    return (hue != null) ? hue.color : 'transparent';
+    return (hue != null) ? hue.color : this.materialColorService.color(PaletteType.GREY, HueType._500);
   }
 
   /**
@@ -79,7 +79,7 @@ export class ColorService {
   getProjectContrast(project: Project) {
     const hue = this.getProjectHue(project);
 
-    return (hue != null) ? hue.contrast : 'transparent';
+    return (hue != null) ? hue.contrast : this.materialColorService.contrast(PaletteType.GREY, HueType._500);
   }
 
   /**

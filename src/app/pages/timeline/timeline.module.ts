@@ -186,11 +186,12 @@ import { TaskFormComponent } from './components/fragments/forms/task-form/task-f
     PersonNamesPipe,
     TaskFormComponent,
   ], entryComponents: [
-    // Page
+    // Pages
     TimelineComponent,
     TaskletComponent,
     TaskComponent,
 
+    // Dialogs
     PersonDialogComponent,
     PersonFilterDialogComponent,
 
