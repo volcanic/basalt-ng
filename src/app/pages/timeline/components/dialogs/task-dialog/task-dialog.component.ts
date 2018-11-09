@@ -1,9 +1,8 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {Task} from 'app/core/entity/model/task.model';
 import {Project} from 'app/core/entity/model/project.model';
-import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSlideToggleChange} from '@angular/material';
+import {DateAdapter, MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {Tag} from 'app/core/entity/model/tag.model';
-import {DateService} from 'app/core/entity/services/date.service';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
 import {SuggestionService} from 'app/core/entity/services/suggestion.service';
 import {CloneService} from 'app/core/entity/services/clone.service';
@@ -37,21 +36,6 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   /** Readonly dialog if true */
   readonly = false;
 
-  /** Color for no priority */
-  colorEmpty = '#cfd8dc';
-  /** Colors for priorities */
-  colorsPriorities = [
-    '#990000',
-    '#9c690e',
-    '#3c8b09',
-  ];
-  /** Colors for flags */
-  colorsFlags = [
-    '#cfd8dc',
-    '#cfd8dc',
-    '#cfd8dc',
-  ];
-
   /** Project assigned to this task */
   project: Project;
   /** Delegated to affiliated to this task */
@@ -66,12 +50,6 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   /** Person options */
   personOptions: string[];
 
-  /** Reference to static method */
-  getTimeString = DateService.getTimeString;
-  /** Reference to static method */
-  getDateString = DateService.getDateString;
-  /** Reference to static method */
-  getRecurrenceIntervalString = DateService.getRecurrenceIntervalString;
 
   /**
    * Constructor
@@ -101,7 +79,6 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
     this.initializeInput();
     this.initializeTask();
     this.initializeRecurring();
-    this.initializePriority();
   }
 
   /**
@@ -110,10 +87,6 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.handleTaskChanges();
   }
-
-  //
-  // Initialization
-  //
 
   /**
    * Initializes data
@@ -172,24 +145,20 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
       && this.task.recurrenceInterval !== RecurrenceInterval.NONE;
   }
 
-  /**
-   * Initializes priority
-   */
-  private initializePriority() {
-    const taskPriority = this.task.priority;
-
-    this.colorsFlags.forEach((flagColor, index) => {
-      if (index === taskPriority) {
-        this.colorsFlags[index] = this.colorsPriorities[this.task.priority];
-      } else {
-        this.colorsFlags[index] = this.colorEmpty;
-      }
-    });
-  }
-
   //
   // Actions
   //
+
+  /**
+   * Handles task changes
+   * @param event event
+   */
+  onTaskChanged(event: { task: Task, project?: Project, delegatedTo?: Person, tags?: Tag[] }) {
+    this.task = event.task;
+    this.project = event.project;
+    this.delegatedTo = event.delegatedTo;
+    this.tags = event.tags;
+  }
 
   /**
    * Handles key down event
@@ -200,132 +169,6 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
     if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
       this.handleTaskChanges();
     }
-  }
-
-  // Recurring
-
-  /**
-   * Handles changes in recurring flag
-   * @param {MatSlideToggleChange} event event
-   */
-  onRecurringChanged(event: MatSlideToggleChange) {
-    this.recurring = event.checked;
-    if (!this.recurring) {
-      this.task.recurrenceInterval = RecurrenceInterval.NONE;
-    }
-  }
-
-  // Completion date
-
-  /**
-   * Handles completion date changes
-   * @param {Date} value completion date
-   */
-  onCompletionDateChanged(value: Date) {
-    this.task.completionDate = value;
-  }
-
-  // Due date
-
-  /**
-   * Handles due date changes
-   * @param {Date} value due date
-   */
-  onDueDateChanged(value: Date) {
-    this.task.dueDate = value;
-  }
-
-  // Recurrence interval
-
-  /**
-   * Handles recurrence interval changes
-   * @param {RecurrenceInterval} value recurrence interval
-   */
-  onRecurrenceIntervalChanged(value: RecurrenceInterval) {
-    this.task.recurrenceInterval = value;
-  }
-
-  // Priority
-
-  /**
-   * Handles hover over priority flags
-   * @param {number} priority priority hovered over
-   */
-  onHoverFlag(priority: number) {
-    if (!this.readonly) {
-      this.colorsFlags[priority] = this.colorsPriorities[priority];
-    }
-  }
-
-  /**
-   * Handles leave of priority flags
-   */
-  onLeaveFlag() {
-    if (!this.readonly) {
-      this.initializePriority();
-    }
-  }
-
-  /**
-   * Handles click on priority flags
-   * @param {number} priority priority clicked on
-   */
-  onClickFlag(priority: number) {
-    if (!this.readonly) {
-      this.task.priority = priority;
-
-      if (priority === 4) {
-        this.colorsFlags = [
-          '#cfd8dc',
-          '#cfd8dc',
-          '#cfd8dc',
-        ];
-      }
-    }
-  }
-
-  // Project
-
-  /**
-   * Handles project changes
-   * @param {Project} project project value
-   */
-  onProjectChanged(project: Project) {
-    this.project = project;
-    this.task.projectId = project.id;
-  }
-
-  // Delegated to
-
-  /**
-   * Handles delegated to changes
-   * @param delegatedTo delegated to value
-   */
-  onDelegatedToChanged(delegatedTo: Person) {
-    this.delegatedTo = delegatedTo;
-    this.task.delegatedToId = delegatedTo.id;
-  }
-
-  // Tags
-
-  /**
-   * Handles tag changes
-   * @param tags new tags
-   */
-  onTagsChanged(tags: string[]) {
-    this.tags = tags.map(t => {
-      return new Tag(t, true);
-    });
-  }
-
-  // Description
-
-  /**
-   * Handles description changes
-   * @param text text
-   */
-  onDescriptionChanged(text: string) {
-    this.task.description.value = text;
   }
 
   //

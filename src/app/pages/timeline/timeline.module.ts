@@ -76,6 +76,7 @@ import {PreviousDescriptionModule} from '../../ui/previous-description/previous-
 import {TaskletContentFragmentComponent} from './components/fragments/tasklet/tasklet-content-fragment/tasklet-content-fragment.component';
 import {RelativeTimeFragmentComponent} from './components/fragments/tasklet/relative-time-fragment/relative-time-fragment.component';
 import {TaskletTimelineFragmentComponent} from './components/fragments/tasklet/tasklet-timeline-fragment/tasklet-timeline-fragment.component';
+import { TaskFormComponent } from './components/fragments/forms/task-form/task-form.component';
 
 
 @NgModule({
@@ -183,6 +184,7 @@ import {TaskletTimelineFragmentComponent} from './components/fragments/tasklet/t
     // Pipes
     TagNamesPipe,
     PersonNamesPipe,
+    TaskFormComponent,
   ], entryComponents: [
     // Page
     TimelineComponent,
