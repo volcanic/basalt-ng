@@ -1,3 +1,11 @@
+<!--
+<app-task-toolbar
+  [@toolbarAnimation]="scrollDirection"
+  class="fixed"
+  [media]="media"
+  (menuItemEventEmitter)="onMenuItemClicked($event)"></app-task-toolbar>
+-->
+
 <div (keydown)="onKeyDown($event)" class="main">
   <mat-sidenav-container class="sidenav-container" layout="column">
     <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"

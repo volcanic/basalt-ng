@@ -33,6 +33,8 @@ import {Action} from '../../../../core/entity/model/action.enum';
 import {CloneService} from '../../../../core/entity/services/clone.service';
 import {InformationDialogComponent} from '../../../../ui/information-dialog/information-dialog/information-dialog.component';
 import {Animations, ScrollDirection, ScrollState} from './task.animation';
+import {Setting} from '../../../../core/settings/model/setting.model';
+import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 
 /**
  * Represents a tasklet type action button
@@ -393,6 +395,23 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   // Actions
   //
+
+  /**
+   * Handles click on menu items
+   * @param {string} menuItem menu item that has been clicked
+   */
+  onMenuItemClicked(menuItem: string) {
+    switch (menuItem) {
+      case 'menu': {
+        this.sidenavStart.toggle().then(() => {
+          this.settingsService.updateSetting(new Setting(SettingType.SIDENAV_OPENED, this.sidenavStart.opened));
+        });
+        this.sidenavEnd.toggle().then(() => {
+        });
+        break;
+      }
+    }
+  }
 
   /**
    * Handles click on update-properties button

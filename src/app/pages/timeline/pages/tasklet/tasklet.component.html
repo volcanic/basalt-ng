@@ -1,3 +1,9 @@
+<app-tasklet-toolbar
+  [@toolbarAnimation]="scrollDirection"
+  class="fixed"
+  [media]="media"
+  (menuItemEventEmitter)="onMenuItemClicked($event)"></app-tasklet-toolbar>
+
 <div (keydown)="onKeyDown($event)" class="main">
   <mat-sidenav-container class="sidenav-container" layout="column">
     <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
@@ -11,6 +17,19 @@
                  position="end" opened="true"
                  class="sidenav sidenav-end">
       <div [@toolbarAnimation]="scrollDirection">
+        <div class="tasklet" *ngFor="let tasklet of tasklets">
+          <div class="flexcontainer">
+            <app-tasklet-timeline-fragment [tasklet]="tasklet"
+                                           [backgroundColor]="action.backgroundColor"
+                                           [iconColor]="action.iconColor"
+                                           [media]="media"></app-tasklet-timeline-fragment>
+            <div class="tasklet-previous">
+              <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
+              <app-tasklet-content-fragment [tasklet]="tasklet"
+                                            [placeholderDescription]="placeholderDescription"></app-tasklet-content-fragment>
+            </div>
+          </div>
+        </div>
       </div>
     </mat-sidenav>
 

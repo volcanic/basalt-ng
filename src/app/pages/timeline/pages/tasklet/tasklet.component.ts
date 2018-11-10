@@ -39,6 +39,7 @@ import {ScopeService} from '../../../../core/entity/services/scope.service';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
+import {Setting} from '../../../../core/settings/model/setting.model';
 
 /**
  * Represents a tasklet type action button
@@ -94,6 +95,12 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   tags: Tag[] = [];
   /** Temporarily displayed persons */
   persons: Person[] = [];
+
+  /** Tasklets associated with with task */
+  tasklets: Tasklet[] = [];
+
+  /** Placeholder text for description */
+  placeholderDescription = 'Empty';
 
   /** Task options */
   taskOptions: string[];
@@ -284,6 +291,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       this.task = this.taskService.tasks.get(tasklet.taskId);
       if (this.task != null) {
         this.project = this.projectService.projects.get(this.task.projectId);
+        this.tasklets = this.taskletService.getTaskletsByTask(this.task).filter(t => {
+          // Exclude current tasklet from history
+          return t.id !== this.tasklet.id;
+        });
       }
       this.tags = tasklet.tagIds.map(id => {
         return this.tagService.tags.get(id);
@@ -410,6 +421,23 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   //
   // Actions
   //
+
+  /**
+   * Handles click on menu items
+   * @param {string} menuItem menu item that has been clicked
+   */
+  onMenuItemClicked(menuItem: string) {
+    switch (menuItem) {
+      case 'menu': {
+        this.sidenavStart.toggle().then(() => {
+          this.settingsService.updateSetting(new Setting(SettingType.SIDENAV_OPENED, this.sidenavStart.opened));
+        });
+        this.sidenavEnd.toggle().then(() => {
+        });
+        break;
+      }
+    }
+  }
 
   /**
    * Handles selection of tasklet type

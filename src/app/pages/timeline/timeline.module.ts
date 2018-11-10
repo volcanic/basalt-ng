@@ -78,6 +78,8 @@ import {RelativeTimeFragmentComponent} from './components/fragments/tasklet/rela
 import {TaskletTimelineFragmentComponent} from './components/fragments/tasklet/tasklet-timeline-fragment/tasklet-timeline-fragment.component';
 import {TaskTitleFormComponent} from './components/fragments/forms/task-title-form/task-title-form.component';
 import {TaskPropertiesFormComponent} from './components/fragments/forms/task-properties-form/task-properties-form.component';
+import {TaskToolbarComponent} from './components/toolbars/task-toolbar/task-toolbar.component';
+import {TaskletToolbarComponent} from './components/toolbars/tasklet-toolbar/tasklet-toolbar.component';
 
 @NgModule({
   imports: [
@@ -112,7 +114,9 @@ import {TaskPropertiesFormComponent} from './components/fragments/forms/task-pro
     TimelineComponent,
     TimelineToolbarComponent,
     TaskletComponent,
+    TaskletToolbarComponent,
     TaskComponent,
+    TaskToolbarComponent,
 
     // Dialogs
     PersonDialogComponent,
