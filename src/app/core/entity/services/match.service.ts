@@ -11,6 +11,8 @@ import {TaskService} from './task.service';
 import {DateService} from './date.service';
 import {TagService} from './tag.service';
 import {PersonService} from './person.service';
+import {MeetingMinuteItem} from '../model/meeting-minutes/meeting-minute-item.model';
+import {DailyScrumItem} from '../model/daily-scrum/daily-scrum-item.model';
 
 /**
  * Handles matching
@@ -388,6 +390,8 @@ export class MatchService {
       return MatchService.taskNameMatchesSingleItem(task, item)
         || MatchService.projectNameMatchesSingleItem(project, item)
         || this.descriptionMatchesSingleItem(tasklet.description, item)
+        || this.meetingMinutesMatchesSingleItem(tasklet.meetingMinuteItems, item)
+        || this.dailyScrumMatchesSingleItem(tasklet.dailyScrumItems, item)
         || (tasklet.personIds != null && this.personsMatchesSingleItem(tasklet.personIds.map(id => {
           return this.personService.getPersonById(id);
         }).filter(person => {
@@ -470,6 +474,30 @@ export class MatchService {
   private descriptionMatchesSingleItem(description: Description, item: string): boolean {
     return description.value != null && description.value.split('\n').some(s => {
       return MatchService.textMatchesSingleItem(s, item);
+    });
+  }
+
+  /**
+   * Determines whether meeting minutes matches a given search item
+   * @param {MeetingMinuteItem[]} meetingMinutes meeting minutes to check
+   * @param {string} item search item
+   * @returns {boolean} true if meeting minutes match search item
+   */
+  private meetingMinutesMatchesSingleItem(meetingMinutes: MeetingMinuteItem[], item: string): boolean {
+    return meetingMinutes != null && meetingMinutes.some(meetingMinute => {
+      return MatchService.textMatchesSingleItem(meetingMinute.statement, item);
+    });
+  }
+
+  /**
+   * Determines whether daily scrum matches a given search item
+   * @param {DailyScrumItem[]} dailyScrumItems daily scrum items to check
+   * @param {string} item search item
+   * @returns {boolean} true if daily scrum items match search item
+   */
+  private dailyScrumMatchesSingleItem(dailyScrumItems: DailyScrumItem[], item: string): boolean {
+    return dailyScrumItems != null && dailyScrumItems.some(meetingMinute => {
+      return MatchService.textMatchesSingleItem(meetingMinute.statement, item);
     });
   }
 
