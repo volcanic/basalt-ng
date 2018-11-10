@@ -109,6 +109,10 @@ export class DateTimePickerFragmentComponent implements OnInit {
    * @param {number} value hour value
    */
   onHourSelected(value: number) {
+    if (this.date == null) {
+      this.date = new Date();
+    }
+
     this.date = new Date(
       new Date(this.date).getFullYear(),
       new Date(this.date).getMonth(),
@@ -125,6 +129,10 @@ export class DateTimePickerFragmentComponent implements OnInit {
    * @param {number} value minute value
    */
   onMinuteSelected(value: number) {
+    if (this.date == null) {
+      this.date = new Date();
+    }
+
     this.date = new Date(
       new Date(this.date).getFullYear(),
       new Date(this.date).getMonth(),
