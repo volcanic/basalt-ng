@@ -91,7 +91,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
-    this.handleTaskletChanges();
+    // this.handleTaskletChanges();
   }
 
   //
