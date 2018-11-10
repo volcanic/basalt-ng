@@ -64,6 +64,22 @@ export class SuggestionService {
             }
           });
         }
+
+        // Add meeting minutes to search item
+        if (t.meetingMinuteItems !== null && t.creationDate) {
+          t.meetingMinuteItems.forEach(m => {
+            const value = m.statement.trim().replace(/(^-)/g, '');
+            this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
+          });
+        }
+
+        // Add daily scrum items to search item
+        if (t.dailyScrumItems !== null && t.creationDate) {
+          t.dailyScrumItems.forEach(d => {
+            const value = d.statement.trim().replace(/(^-)/g, '');
+            this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
+          });
+        }
       }
     });
 
