@@ -7,7 +7,8 @@
     </mat-card-header>
 
     <mat-card-content class="content">
-      <mat-accordion class="headers-align" (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
+      <mat-accordion class="headers-align"
+                     (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
         <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
           <!-- Pomodoro task -->
@@ -22,20 +23,28 @@
             <app-markdown-preview
               *ngIf="tasklet.description.value != ''"
               [markdownText]="tasklet.description.value"></app-markdown-preview>
-            <div *ngIf="tasklet.description.value == ''" class="placeholder-description">
-              Click here to add description
+            <div *ngIf="tasklet.description.value == ''" class="placeholder">
+              {{ placeholderDescription }}
             </div>
           </div>
           <!-- Meeting minutes -->
-          <app-tasklet-meeting-minutes-fragment
-            *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
-            [tasklet]="tasklet">
-          </app-tasklet-meeting-minutes-fragment>
+          <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)">
+            <app-tasklet-meeting-minutes-fragment *ngIf="tasklet.meetingMinuteItems.length > 0"
+                                                  [tasklet]="tasklet">
+            </app-tasklet-meeting-minutes-fragment>
+            <div *ngIf="tasklet.meetingMinuteItems.length === 0" class="placeholder">
+              {{ placeholderMeetingMinutes }}
+            </div>
+          </div>
           <!-- Daily Scrum -->
-          <app-tasklet-daily-scrum-fragment
-            *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)"
-            [tasklet]="tasklet">
-          </app-tasklet-daily-scrum-fragment>
+          <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)">
+            <app-tasklet-daily-scrum-fragment *ngIf="tasklet.dailyScrumItems.length > 0"
+              [tasklet]="tasklet">
+            </app-tasklet-daily-scrum-fragment>
+            <div *ngIf="tasklet.dailyScrumItems.length === 0" class="placeholder">
+              {{ placeholderDailyScrum }}
+            </div>
+          </div>
         </mat-expansion-panel>
       </mat-accordion>
       <hr class="delimiter"/>

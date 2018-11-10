@@ -58,6 +58,13 @@ export class TaskletCardFragmentComponent implements OnInit {
   /** Expansion panel state */
   expansionPanelOpened = false;
 
+  /** Placeholder for emtpy description */
+  placeholderDescription = 'Click here to add description';
+  /** Placeholder for emtpy meeting minutes */
+  placeholderMeetingMinutes = 'Click here to add meeting minutes';
+  /** Placeholder for emtpy daily scrum items */
+  placeholderDailyScrum = 'Click here to add daily scrum items';
+
   /** Reference to static service methods */
   isToday = DateService.isToday;
   /** Reference to static service methods */
