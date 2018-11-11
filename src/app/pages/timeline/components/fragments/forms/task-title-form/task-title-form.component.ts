@@ -1,6 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Task} from '../../../../../../core/entity/model/task.model';
 
+/**
+ * Displays form to set task name
+ */
 @Component({
   selector: 'app-task-title-form',
   templateUrl: './task-title-form.component.html',
@@ -35,6 +38,9 @@ export class TaskTitleFormComponent {
   // Notifications
   //
 
+  /**
+   * Informs subscribers that something has changed
+   */
   private notify() {
     this.taskEventEmitter.emit({task: this.task});
   }

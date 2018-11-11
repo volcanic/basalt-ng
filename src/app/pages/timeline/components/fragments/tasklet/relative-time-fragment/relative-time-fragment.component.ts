@@ -35,9 +35,6 @@ export class RelativeTimeFragmentComponent implements OnInit {
   /** Reference to static service methods */
   isInCurrentWeek = DateService.isInCurrentWeek;
 
-  constructor() {
-  }
-
   //
   // Lifecycle hooks
   //

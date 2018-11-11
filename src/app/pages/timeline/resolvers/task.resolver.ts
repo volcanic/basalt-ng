@@ -26,7 +26,6 @@ export class TaskResolver implements Resolve<Task> {
    */
   resolve(route: ActivatedRouteSnapshot,
           state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-    console.log(`resolve`);
     return this.taskService.tasks.get(route.params.id);
   }
 }

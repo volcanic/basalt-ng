@@ -7,6 +7,9 @@ import {RecurrenceInterval} from '../../../../../../core/entity/model/recurrence
 import {MatSlideToggleChange} from '@angular/material';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 
+/**
+ * Displays form to set task properties
+ */
 @Component({
   selector: 'app-task-properties-form',
   templateUrl: './task-properties-form.component.html',
@@ -233,6 +236,9 @@ export class TaskPropertiesFormComponent implements OnInit {
   // Notifications
   //
 
+  /**
+   * Informs subscribers that something has changed
+   */
   private notify() {
     this.taskEventEmitter.emit({task: this.task, project: this.project, delegatedTo: this.delegatedTo, tags: this.tags});
   }

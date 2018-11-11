@@ -3,6 +3,9 @@ import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
 import {Media} from '../../../../../../core/ui/model/media.enum';
 
+/**
+ * Displays timeline fraction for a specific tasklet
+ */
 @Component({
   selector: 'app-tasklet-timeline-fragment',
   templateUrl: './tasklet-timeline-fragment.component.html',

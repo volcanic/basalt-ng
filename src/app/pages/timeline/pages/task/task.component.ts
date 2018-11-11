@@ -121,6 +121,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Scroll state */
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
 
+  /** Indicates whether properties form is opened */
   propertiesOpened = false;
 
   /** Side navigation at start */
