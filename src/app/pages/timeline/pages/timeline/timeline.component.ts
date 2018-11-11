@@ -57,6 +57,7 @@ import {Router} from '@angular/router';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {Setting} from '../../../../core/settings/model/setting.model';
+import {DailyScrumItemType} from '../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
 
 /**
  * Displays timeline page
@@ -949,6 +950,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case Action.OPEN_DIALOG_CONTINUE: {
         const previousDescription = tasklet.description;
+        const previousDailyScrumItems = tasklet.dailyScrumItems.filter(dailyScrumItem => {
+          return dailyScrumItem.type === DailyScrumItemType.WILL_DO;
+        });
 
         tasklet['_rev'] = null;
         tasklet.id = new UUID().toString();
@@ -972,7 +976,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           }).filter(person => {
             return person != null;
           }),
-          previousDescription: previousDescription
+          previousDescription: previousDescription,
+          previousDailyScrumItems: previousDailyScrumItems
         };
 
         // Open dialog

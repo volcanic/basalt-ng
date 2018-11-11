@@ -8,8 +8,18 @@
         *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
         [taskName]="task.name" [taskOptions]="taskOptions" (taskNameChangedEmitter)="onTaskNameChanged($event)">
       </app-task-autocomplete-fragment>
+      <!-- Previous description and daily scrum items-->
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescriptionText]="previousDescription.value"></app-previous-description-fragment>
+      <div *ngIf="containsPreviousDailyScrumItems(tasklet)">
+        <div *ngFor="let dailyScrumItem of previousDailyScrumItems" class="flexcontainer daily-scrum-item">
+          <span>{{ dailyScrumItem.person.name }}</span>
+          <app-tasklet-daily-scrum-item-fragment
+            [dailyScrumItem]="dailyScrumItem">
+          </app-tasklet-daily-scrum-item-fragment>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
       <!-- Pomodoro task -->
       <app-markdown-editor *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
                            [text]="tasklet.pomodoroTask.value"

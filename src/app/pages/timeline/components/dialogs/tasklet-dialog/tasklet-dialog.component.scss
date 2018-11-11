@@ -24,5 +24,10 @@
 }
 
 app-task-autocomplete-fragment {
-  margin: 0px 5px 0px 5px;
+  margin: 0 5px 0 5px;
+}
+
+.daily-scrum-item {
+  color: mat-color($mat-grey, 400) !important;
+  text-align: center;
 }

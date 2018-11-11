@@ -15,7 +15,6 @@ import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
-import {DailyScrumItemType} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
 
 /**
  * Displays tasklet dialog
@@ -38,7 +37,9 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   /** Tasklet to be displayed */
   tasklet: Tasklet;
   /** Description of previous tasklet */
-  previousDescription = new Description();
+  previousDescription: Description;
+  /** Will-do daily scrum activities of previous tasklet */
+  previousDailyScrumItems: DailyScrumItem[];
 
   /** Temporarily displayed task */
   task: Task;
@@ -110,6 +111,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.tags = this.data.tags != null ? this.data.tags : [];
     this.persons = this.data.persons != null ? this.data.persons : [];
     this.previousDescription = this.data.previousDescription;
+    this.previousDailyScrumItems = this.data.previousDailyScrumItems;
   }
 
   /**
@@ -378,7 +380,15 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * @param tasklet tasklet
    */
   public containsPreviousDescription(tasklet: Tasklet): boolean {
-    return this.previousDescription != null;
+    return this.previousDescription != null && this.previousDescription.value !== '';
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains previous scrum items
+   * @param tasklet tasklet
+   */
+  public containsPreviousDailyScrumItems(tasklet: Tasklet): boolean {
+    return this.previousDailyScrumItems != null && this.previousDailyScrumItems.length > 0;
   }
 
   // Tags
