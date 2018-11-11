@@ -1,0 +1,14 @@
+@import '../../../../../../../theme';
+
+.pomodoro-task {
+  font-weight: 400;
+}
+
+.pomodoro-divider {
+  position: relative !important;
+}
+
+.placeholder-description {
+  color: mat-color($mat-grey, 600);
+  font-style: italic;
+}

@@ -105,7 +105,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = this.data.tasklet;
-    this.task = this.data.task;
+    this.task = this.data.task != null ? this.data.task : new Task();
     this.tags = this.data.tags;
     this.persons = this.data.persons;
     this.previousDescription = this.data.previousDescription;
@@ -146,11 +146,11 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles task changes
-   * @param task new task
+   * Handles task name changes
+   * @param taskName new task name
    */
-  onTaskChanged(task: Task) {
-    this.task = task;
+  onTaskNameChanged(taskName: string) {
+    this.task.name = taskName;
   }
 
   /**

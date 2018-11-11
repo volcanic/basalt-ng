@@ -37,7 +37,7 @@ export class Task extends Entity {
    * @param {string} name name of the task
    * @param {boolean} checked whether task is checked in filter mechanism
    */
-  constructor(name: string, checked: boolean = false) {
+  constructor(name: string = '', checked: boolean = false) {
     super();
     this.entityType = EntityType.TASK;
     this.name = name.trim();

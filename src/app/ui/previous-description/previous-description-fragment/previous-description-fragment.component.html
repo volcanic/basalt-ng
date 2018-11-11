@@ -1,0 +1,5 @@
+<mat-form-field class="wide-box" *ngIf="previousDescriptionText != null">
+          <textarea matInput required name="previousDescription" placeholder="Previous" matTextareaAutosize
+                    matAutosizeMinRows="1"
+                    matAutosizeMaxRows="5" [(ngModel)]="previousDescriptionText" disabled></textarea>
+</mat-form-field>

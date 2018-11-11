@@ -869,7 +869,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           mode: DialogMode.ADD,
           dialogTitle: 'Add tasklet',
           tasklet: new Tasklet(),
-          task: null,
+          task: new Task(),
           tags: [],
           persons: [],
           previousDescription: null
@@ -1310,6 +1310,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.filterService.uncheckTasks();
         this.filterService.updateTasksNone(false);
         this.filterService.updateTasksList(tasks, true);
+        break;
+      }
+      case Action.FULLSCREEN: {
+        // Update task
+        this.onTaskEvent({
+          action: Action.UPDATE,
+          task: task,
+          project: project,
+          delegatedTo: delegatedTo,
+          tags: tags
+        });
+
+        this.router.navigate([`/task/${task.id}`]).then(() => {
+        });
         break;
       }
     }

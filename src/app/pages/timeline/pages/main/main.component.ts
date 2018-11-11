@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TimelineComponent} from '../timeline/timeline.component';
 import {TaskletComponent} from '../tasklet/tasklet.component';
 import {Router} from '@angular/router';
+import {TaskComponent} from '../task/task.component';
 
 /**
  * Wraps timeline and tasklet page
@@ -14,7 +15,7 @@ import {Router} from '@angular/router';
 export class MainComponent implements OnInit {
 
   /** Component currently displayed */
-  currentComponent: typeof TimelineComponent | typeof TaskletComponent;
+  currentComponent: typeof TimelineComponent | typeof TaskComponent | typeof TaskletComponent;
 
   /**
    * Constructor
@@ -35,6 +36,8 @@ export class MainComponent implements OnInit {
       this.currentComponent = TimelineComponent;
     } else if (this.router.url.startsWith('/tasklet')) {
       this.currentComponent = TaskletComponent;
+    } else if (this.router.url.startsWith('/task')) {
+      this.currentComponent = TaskComponent;
     }
   }
 }

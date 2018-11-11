@@ -21,9 +21,7 @@ import {UploadDialogComponent} from './components/dialogs/upload-dialog/upload-d
 import {DailyScrumFragmentComponent} from './components/fragments/dialog/daily-scrum-fragment/daily-scrum-fragment.component';
 import {TaskletTypeFragmentComponent} from './components/fragments/dialog/tasklet-type-fragment/tasklet-type-fragment.component';
 import {PersonAutocompleteFragmentComponent} from './components/fragments/dialog/person-autocomplete-fragment/person-autocomplete-fragment.component';
-import {PreviousDescriptionFragmentComponent} from './components/fragments/dialog/previous-description-fragment/previous-description-fragment.component';
 import {ProjectAutocompleteFragmentComponent} from './components/fragments/dialog/project-autocomplete-fragment/project-autocomplete-fragment.component';
-import {TaskAutocompleteFragmentComponent} from './components/fragments/dialog/task-autocomplete-fragment/task-autocomplete-fragment.component';
 import {FilterPersonListItemComponent} from './components/lists/filter-person-list-item/filter-person-list-item.component';
 import {FilterPersonListComponent} from './components/lists/filter-person-list/filter-person-list.component';
 import {FilterProjectListItemComponent} from './components/lists/filter-project-list-item/filter-project-list-item.component';
@@ -71,8 +69,17 @@ import {PersonNamesPipe} from './pipes/person-names.pipe';
 import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
 import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
 import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragment.module';
-import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tasklet-card-fragment/tasklet-card-fragment.component';
-
+import {TaskletCardFragmentComponent} from './components/fragments/tasklet/tasklet-card-fragment/tasklet-card-fragment.component';
+import {TaskComponent} from './pages/task/task.component';
+import {TaskAutocompleteModule} from '../../ui/task-autocomplete/task-autocomplete.module';
+import {PreviousDescriptionModule} from '../../ui/previous-description/previous-description.module';
+import {TaskletContentFragmentComponent} from './components/fragments/tasklet/tasklet-content-fragment/tasklet-content-fragment.component';
+import {RelativeTimeFragmentComponent} from './components/fragments/tasklet/relative-time-fragment/relative-time-fragment.component';
+import {TaskletTimelineFragmentComponent} from './components/fragments/tasklet/tasklet-timeline-fragment/tasklet-timeline-fragment.component';
+import {TaskTitleFormComponent} from './components/fragments/forms/task-title-form/task-title-form.component';
+import {TaskPropertiesFormComponent} from './components/fragments/forms/task-properties-form/task-properties-form.component';
+import {TaskToolbarComponent} from './components/toolbars/task-toolbar/task-toolbar.component';
+import {TaskletToolbarComponent} from './components/toolbars/tasklet-toolbar/tasklet-toolbar.component';
 
 @NgModule({
   imports: [
@@ -96,8 +103,10 @@ import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tas
     EcoFabSpeedDialModule,
     SuggestedActionButtonModule,
     TagChipsModule,
+    TaskAutocompleteModule,
     StopWatchModule,
-    MarkdownFragmentModule
+    MarkdownFragmentModule,
+    PreviousDescriptionModule
   ],
   declarations: [
     // Page
@@ -105,6 +114,9 @@ import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tas
     TimelineComponent,
     TimelineToolbarComponent,
     TaskletComponent,
+    TaskletToolbarComponent,
+    TaskComponent,
+    TaskToolbarComponent,
 
     // Dialogs
     PersonDialogComponent,
@@ -159,27 +171,32 @@ import { TaskletCardFragmentComponent } from './components/fragments/tasklet/tas
     MeetingMinutesFragmentComponent,
     MeetingMinuteItemFragmentComponent,
     PersonAutocompleteFragmentComponent,
-    PreviousDescriptionFragmentComponent,
     ProjectAutocompleteFragmentComponent,
     RecurrenceIntervalFragmentComponent,
-    TaskAutocompleteFragmentComponent,
+    RelativeTimeFragmentComponent,
+    TaskletCardFragmentComponent,
+    TaskletContentFragmentComponent,
     TaskletDailyScrumFragmentComponent,
     TaskletDailyScrumItemFragmentComponent,
     TaskletMeetingMinuteItemFragmentComponent,
     TaskletMeetingMinutesFragmentComponent,
+    TaskletTimelineFragmentComponent,
     TaskletTypeFragmentComponent,
+    PomodoroTimerComponent,
     DailyScrumItemFragmentComponent,
+    TaskTitleFormComponent,
+    TaskPropertiesFormComponent,
 
     // Pipes
     TagNamesPipe,
     PersonNamesPipe,
-    PomodoroTimerComponent,
-    TaskletCardFragmentComponent,
   ], entryComponents: [
-    // Page
+    // Pages
     TimelineComponent,
     TaskletComponent,
+    TaskComponent,
 
+    // Dialogs
     PersonDialogComponent,
     PersonFilterDialogComponent,
 

@@ -31,22 +31,16 @@ export class TaskletCardFragmentComponent implements OnInit {
   @Input() tags = new Map<string, Tag>();
   /** Map of persons */
   @Input() persons = new Map<string, Person>();
-  /** Creation time */
-  @Input() time = '';
-  /** Creation weekday */
-  @Input() weekday = '';
-  /** Creation date */
-  @Input() date = '';
-  /** Simple creation date */
-  @Input() simpleDate = '';
   /** Current media */
   @Input() media: Media;
-
   /** Default theme to be used */
   @Input() themeClass = 'light-theme';
 
   /** Event emitter indicating click on tasklet */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+
+  /** Placeholder text for description */
+  placeholderDescription = 'Click here to add description';
 
   /** Enum for media types */
   mediaType = Media;

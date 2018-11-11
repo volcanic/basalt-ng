@@ -1,4 +1,4 @@
-<mat-form-field>
+<mat-form-field *ngIf="person != null">
   <input class="search-input" matInput name="search" type="text" placeholder="Person"
          [ngModel]="person.name"
          [matAutocomplete]="auto"

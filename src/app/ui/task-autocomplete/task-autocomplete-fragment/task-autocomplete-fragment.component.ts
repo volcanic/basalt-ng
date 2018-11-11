@@ -1,6 +1,4 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Task} from 'app/core/entity/model/task.model';
-import {CloneService} from 'app/core/entity/services/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
 
@@ -14,14 +12,14 @@ import {debounceTime} from 'rxjs/operators';
 })
 export class TaskAutocompleteFragmentComponent implements OnInit {
 
-  /** Task to be displayed */
-  @Input() task: Task;
+  /** Task name to be displayed */
+  @Input() taskName: string;
   /** Readonly dialog if true */
   @Input() readonly: false;
   /** Array of taskOptions */
   @Input() taskOptions: string[];
-  /** Event emitter indicating changes in task */
-  @Output() taskChangedEmitter = new EventEmitter<Task>();
+  /** Event emitter indicating changes in task name */
+  @Output() taskNameChangedEmitter = new EventEmitter<string>();
 
   /** Debouncer for input field */
   debouncer = new Subject();
@@ -36,7 +34,6 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.initializeTask();
     this.initializeOptions();
     this.initializeDebouncer();
   }
@@ -44,17 +41,6 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   //
   // Initialization
   //
-
-  /**
-   * Initializes task
-   */
-  private initializeTask() {
-    if (this.task == null) {
-      this.task = new Task('');
-    }
-
-    this.task = CloneService.cloneTask(this.task);
-  }
 
   /**
    * Initialize auto-complete options
@@ -69,7 +55,7 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
   private initializeDebouncer() {
     this.debouncer.pipe(
       debounceTime(500)
-    ).subscribe((value: Task) => this.taskChangedEmitter.emit(value));
+    ).subscribe((value: string) => this.taskNameChangedEmitter.emit(value));
   }
 
   //
@@ -81,9 +67,9 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    * @param taskName task name
    */
   onTaskNameChanged(taskName: string) {
-    this.task.name = taskName;
-    this.optionsFiltered = this.filterOptions(this.task.name);
-    this.debouncer.next(this.task);
+    this.taskName = taskName;
+    this.optionsFiltered = this.filterOptions(taskName);
+    this.debouncer.next(taskName);
   }
 
   /**
@@ -123,6 +109,6 @@ export class TaskAutocompleteFragmentComponent implements OnInit {
    * Informs subscribers that something has changed
    */
   private notify() {
-    this.debouncer.next(this.task);
+    this.debouncer.next(this.taskName);
   }
 }

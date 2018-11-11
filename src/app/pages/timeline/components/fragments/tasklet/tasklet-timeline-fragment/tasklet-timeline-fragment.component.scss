@@ -1,0 +1,33 @@
+@import '../../../../../../../light-theme';
+@import '../../../../../../../dark-theme';
+
+$totalWidth: 56px;
+$lineWidth: 6px;
+
+$lineHeightTop: 10px;
+$fabMiniHeight: 40px;
+
+.timebar-fragment {
+  margin-right: 15px;
+  text-align: center;
+  height: 100%;
+  width: $totalWidth;
+}
+
+.tasklet-type {
+  box-shadow: none;
+}
+
+.line-short {
+  margin: 0 auto;
+  height: $lineHeightTop;
+  width: $lineWidth;
+}
+
+.line-fill {
+  margin: 0 auto;
+  height: -webkit-calc(100% - #{$fabMiniHeight} - #{$lineHeightTop});
+  height:    -moz-calc(100% - #{$fabMiniHeight} - #{$lineHeightTop});
+  height:         calc(100% - #{$fabMiniHeight} - #{$lineHeightTop});
+  width: $lineWidth;
+}

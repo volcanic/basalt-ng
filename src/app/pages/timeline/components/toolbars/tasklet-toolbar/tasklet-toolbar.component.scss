@@ -1,0 +1,60 @@
+@import '../../../../../../styles';
+@import '../../../../../../sizes';
+@import '../../../../../../theme';
+@import '../../../../../../flex';
+
+//
+// Custom
+//
+
+.toolbar {
+  background: $background;
+}
+
+.toolbar-menu-item {
+  @media #{$breakpoint-small} {
+    padding: 0;
+  }
+  @media #{$breakpoint-medium} {
+    padding: 0 10px;
+  }
+  @media #{$breakpoint-large} {
+    padding: 0 20px;
+  }
+}
+
+.toolbar-block {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  @media #{$breakpoint-small} {
+    width: 10%;
+  }
+  @media #{$breakpoint-medium} {
+    width: 100px;
+  }
+  @media #{$breakpoint-large} {
+    width: 250px;
+  }
+}
+
+.start {
+  text-align: start;
+}
+
+//
+// Material
+//
+
+mat-toolbar {
+  box-shadow: 0 3px 5px -1px rgba(250, 250, 250, 1.2), 0 6px 10px 0 rgba(250, 250, 250, 1.14), 0 1px 18px 0 rgba(250, 250, 250, 1.12);
+  font-weight: bolder;
+}
+
+.mat-form-field-infix {
+  display: block;
+  position: relative;
+  flex: auto;
+  min-width: 0;
+  width: 100% !important;
+}

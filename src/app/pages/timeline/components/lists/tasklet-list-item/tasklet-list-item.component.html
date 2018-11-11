@@ -1,7 +1,7 @@
 <div [class]="themeClass">
 
   <!-- Top attachment -->
-  <div class="top-attached" *ngIf="tasklet.type == 'Finishing Time'">
+  <div class="top-attached" *ngIf="tasklet.type === taskletType.FINISHING_TIME">
     {{ weekday }}, {{ date }}
     <div class="top-connection-line"></div>
   </div>
@@ -10,7 +10,6 @@
   <div *ngIf="containsDisplayAspect(displayAspectType.IS_DISPLAYED_AS_PREVIEW, tasklet)">
     <div class="tasklet-preview">
       <app-tasklet-preview-fragment [tasklet]="tasklet" [topic]="topic" [icon]="icon"
-                                    [time]="time" [weekday]="weekday" [date]="date" [simpleDate]="simpleDate"
                                     [media]="media"
                                     (taskletEventEmitter)="onTaskletClicked($event)"></app-tasklet-preview-fragment>
     </div>
@@ -20,7 +19,6 @@
   <div class="card-wrapper" *ngIf="!containsDisplayAspect(displayAspectType.IS_DISPLAYED_AS_PREVIEW, tasklet)">
     <app-tasklet-card-fragment [tasklet]="tasklet" [project]="project" [topic]="topic" [icon]="icon"
                                [tags]="tags" [persons]="persons"
-                               [time]="time" [weekday]="weekday" [date]="date" [simpleDate]="simpleDate"
                                [media]="media" [themeClass]="themeClass"
                                (taskletEventEmitter)="onTaskletClicked($event)"></app-tasklet-card-fragment>
   </div>

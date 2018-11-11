@@ -1,0 +1,285 @@
+@import '../../../../../sizes';
+@import '../../../../../flex';
+@import '../../../../../theme';
+
+.main {
+  height: 100%;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  background: transparent;
+  width: 350px;
+
+  @media #{$breakpoint-small} {
+    padding: 88px 20px;
+  }
+  @media #{$breakpoint-medium} {
+    padding: 88px 20px;
+  }
+  @media #{$breakpoint-large} {
+    padding: 88px 20px;
+  }
+}
+
+.sidenav-start {
+  @media #{$breakpoint-small} {
+    margin-right: 10px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-right: 20px;
+  }
+  @media #{$breakpoint-large} {
+    margin-right: 40px;
+  }
+}
+
+.sidenav-end {
+  @media #{$breakpoint-small} {
+    margin-left: 10px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-left: 20px;
+  }
+  @media #{$breakpoint-large} {
+    margin-left: 40px;
+  }
+}
+
+.content {
+  @media #{$breakpoint-small} {
+    margin: 10px auto;
+    padding: 10px;
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box; /* Firefox, other Gecko */
+    box-sizing: border-box; /* Opera/IE 8+ */
+  }
+  @media #{$breakpoint-medium} {
+    padding: 20px;
+    margin: 50px auto;
+    width: 450px;
+  }
+  @media #{$breakpoint-large} {
+    margin: 65px auto;
+    width: 450px;
+  }
+}
+
+.main > * {
+  @media #{$breakpoint-small} {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  @media #{$breakpoint-large} {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
+
+.header-buttons, .information-buttons, .footer-buttons {
+  height: 50px;
+
+  .icon-wrapper {
+    text-align: center;
+    width: 100%;
+    display: flex;
+
+    .more {
+      margin: 0 auto;
+
+      mat-icon {
+        fill: mat-color($mat-grey, 400);
+      }
+    }
+  }
+
+  .button-wrapper {
+    display: none;
+    color: mat-color($mat-grey, 500);
+  }
+
+  &:hover {
+    .icon-wrapper {
+      display: none;
+    }
+    .button-wrapper {
+      display: flex;
+    }
+  }
+}
+
+// Main
+
+.history > * {
+  opacity: 1;
+  transition: opacity .1s ease-in-out;
+  -moz-transition: opacity .1s ease-in-out;
+  -webkit-transition: opacity .1s ease-in-out;
+}
+
+.history:hover > * {
+  opacity: 0.5;
+}
+
+.tasklet:hover {
+  opacity: 1 !important;
+}
+
+// Attachment
+
+.date {
+  color: mat-color($mat-grey, 500);
+  margin-right: 15px;
+  width: 90px;
+}
+
+.hidden {
+  display: none;
+}
+
+$side-attached-height: 40px;
+
+.attachment-holder {
+  min-height: $side-attached-height;
+  width: 0;
+}
+
+.side-attached {
+  height: $side-attached-height;
+  vertical-align: middle;
+}
+
+$side-attached-width: 100px;
+$side-attached-distance: 10px;
+
+// Left
+
+.left-attached, .left-attached-without-connector {
+  margin-top: 16px;
+
+  color: mat-color($mat-grey, 500);
+  width: $side-attached-width + $side-attached-distance;
+  margin-left: - ($side-attached-width + 2 * $side-attached-distance);
+  text-align: right;
+  vertical-align: middle;
+}
+
+.left-attached::after {
+  border-bottom: 2px solid mat-color($mat-grey, 500);
+  content: '\00a0';
+  position: absolute;
+  width: $side-attached-distance;
+  z-index: 0;
+}
+
+.left-attached-content {
+  margin-right: 5px;
+  display: inline-block;
+  vertical-align: middle;
+  // line-height: $side-attached-height;
+}
+
+.footer {
+  @media #{$breakpoint-small} {
+    margin-top: 10px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-top: 20px;
+  }
+  @media #{$breakpoint-large} {
+    margin-top: 65px;
+  }
+}
+
+// Tasklet type
+
+.tasklet-type {
+  margin-right: 15px;
+  margin-top: 5px;
+}
+
+// Task
+
+.task {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 1.8em;
+}
+
+// Pomodoro timer
+
+.pomodoro-timer {
+  margin-left: 15px;
+  margin-top: 5px;
+}
+
+// Tags
+
+.light-theme {
+  .tag {
+    background: mat-color($mat-grey, 200) !important;
+    color: mat-contrast($mat-grey, 200) !important;
+  }
+}
+
+.dark-theme {
+  .tag {
+    background: mat-color($mat-grey, 400) !important;
+    color: mat-contrast($mat-grey, 400) !important;
+  }
+}
+
+.tag {
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  margin: 6px 6px 0 0;
+  direction: ltr;
+  font-family: 'Roboto', arial, sans-serif;
+  font-size: 15px;
+  float: left;
+  align-items: center;
+  height: 18px;
+  padding: 3px 5px;
+  text-align: left;
+}
+
+.tag-label {
+  padding: 1px;
+}
+
+.label {
+  display: block;
+  color: mat-color($mat-grey, 400);
+  padding-bottom: 5px;
+  font-size: 75%;
+  /*-webkit-transform: translateX(-20%) scale(.75);
+  transform: translateX(-12%) scale(.75);
+  width: 133.33333%;*/
+}
+
+.tags-holder {
+  padding: 0 24px 24px;
+}
+
+.tag-area {
+  margin-top: 20px;
+}
+
+// Tasklet action button
+
+::ng-deep .typeSelect div.mat-select-arrow-wrapper {
+  display: none;
+}
+
+::ng-deep .typeSelect.mat-select {
+  display: inline;
+  width: 1px;
+}

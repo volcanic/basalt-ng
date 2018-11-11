@@ -39,6 +39,7 @@ import {ScopeService} from '../../../../core/entity/services/scope.service';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
+import {Setting} from '../../../../core/settings/model/setting.model';
 
 /**
  * Represents a tasklet type action button
@@ -94,6 +95,12 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   tags: Tag[] = [];
   /** Temporarily displayed persons */
   persons: Person[] = [];
+
+  /** Tasklets associated with with task */
+  tasklets: Tasklet[] = [];
+
+  /** Placeholder text for description */
+  placeholderDescription = 'Empty';
 
   /** Task options */
   taskOptions: string[];
@@ -154,7 +161,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param tagService tag service
    * @param suggestionService suggestion service
    * @param taskletService tasklet service
-   * @param taskletTypeService tasklet type service
    * @param taskService task service
    * @param route route
    * @param router router
@@ -285,6 +291,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       this.task = this.taskService.tasks.get(tasklet.taskId);
       if (this.task != null) {
         this.project = this.projectService.projects.get(this.task.projectId);
+        this.tasklets = this.taskletService.getTaskletsByTask(this.task).filter(t => {
+          // Exclude current tasklet from history
+          return t.id !== this.tasklet.id;
+        });
       }
       this.tags = tasklet.tagIds.map(id => {
         return this.tagService.tags.get(id);
@@ -354,10 +364,14 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.action.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
     this.action.label = this.tasklet.type.toString();
     this.action.taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]).filter(type => {
+      const settingDevelopmemt = this.settingsService.settings.get(SettingType.DEVELOPMENT);
+      const settingPomodoro = this.settingsService.settings.get(SettingType.POMODORO);
+      const settingScrum = this.settingsService.settings.get(SettingType.SCRUM);
+
       return type !== TaskletType.DEVELOPMENT
-        && !(this.taskletService.groupContainsType(TaskletTypeGroup.DEVELOPMENT, type) && !this.settingsService.settings.get(SettingType.DEVELOPMENT).value)
-        && !(type === TaskletType.POMODORO && !this.settingsService.settings.get(SettingType.POMODORO).value)
-        && !(type === TaskletType.DAILY_SCRUM && !this.settingsService.settings.get(SettingType.SCRUM).value)
+        && !(this.taskletService.groupContainsType(TaskletTypeGroup.DEVELOPMENT, type) && !(settingDevelopmemt != null && settingDevelopmemt.value))
+        && !(type === TaskletType.POMODORO && !(settingPomodoro != null && settingPomodoro.value))
+        && !(type === TaskletType.DAILY_SCRUM && !(settingScrum != null && settingScrum.value))
         && type !== TaskletType.POMODORO_BREAK;
     });
   }
@@ -409,6 +423,23 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
+   * Handles click on menu items
+   * @param {string} menuItem menu item that has been clicked
+   */
+  onMenuItemClicked(menuItem: string) {
+    switch (menuItem) {
+      case 'menu': {
+        this.sidenavStart.toggle().then(() => {
+          this.settingsService.updateSetting(new Setting(SettingType.SIDENAV_OPENED, this.sidenavStart.opened));
+        });
+        this.sidenavEnd.toggle().then(() => {
+        });
+        break;
+      }
+    }
+  }
+
+  /**
    * Handles selection of tasklet type
    * @param taskletType tasklet type action
    */
@@ -418,11 +449,11 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles task changes
-   * @param task new task
+   * Handles task name changes
+   * @param taskName new task name
    */
-  onTaskChanged(task: Task) {
-    this.task = task;
+  onTaskNameChanged(taskName: string) {
+    this.task.name = taskName;
   }
 
   /**

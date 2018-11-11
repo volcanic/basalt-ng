@@ -17,6 +17,7 @@ import {TagService} from './tag.service';
  * <li> Queries
  * <li> Persistence
  * <li> Lookup
+ * <li> Display options
  */
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,11 @@ export class TaskService {
   tasks = new Map<string, Task>();
   /** Subject that can be subscribed by components that are interested in changes */
   tasksSubject = new Subject<Task[]>();
+
+  /** Task in focus */
+  task: Task;
+  /** Subject that publishes task */
+  taskSubject = new Subject<Task>();
 
   /**
    * Constructor
@@ -145,6 +151,26 @@ export class TaskService {
   }
 
   /**
+   * Loads task by a given ID
+   * @param {number} id ID of filter by
+   */
+  public findTaskByID(id: string) {
+    const index = {fields: ['entityType', 'id', 'creationDate']};
+    const options = {
+      selector: {
+        '$and': [
+          {entityType: {$eq: EntityType.TASK}},
+          {id: {$eq: id}}
+        ]
+      },
+      // sort: [{creationDate: 'desc'}],
+      limit: environment.LIMIT_TASKS
+    };
+
+    this.findTaskInternal(index, options);
+  }
+
+  /**
    * Clears tasks
    */
   private clearTasks() {
@@ -170,6 +196,25 @@ export class TaskService {
           this.tasks.set(task.id, task);
         });
 
+        this.notify();
+      }, error => {
+        if (isDevMode()) {
+          console.error(error);
+        }
+      }
+    );
+  }
+
+  /**
+   * Index tasks and queries them afterwards
+   * @param index index to be used
+   * @param options query options
+   */
+  private findTaskInternal(index: any, options: any) {
+    this.pouchDBService.find(index, options).then(result => {
+        result['docs'].forEach(element => {
+          this.task = element as Task;
+        });
         this.notify();
       }, error => {
         if (isDevMode()) {
@@ -217,6 +262,7 @@ export class TaskService {
             this.snackbarService.showSnackbar('Created task');
           }
           this.tasks.set(task.id, task);
+          this.task = task;
           this.notify();
         });
       }
@@ -250,6 +296,7 @@ export class TaskService {
             this.snackbarService.showSnackbar('Updated task');
           }
           this.tasks.set(task.id, task);
+          this.task = task;
           this.notify();
         });
       }
@@ -266,6 +313,7 @@ export class TaskService {
         this.pouchDBService.remove(task.id, task).then(() => {
           this.snackbarService.showSnackbar('Deleted task');
           this.tasks.delete(task.id);
+          this.task = null;
           this.notify();
         }).catch(() => {
           this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
@@ -327,6 +375,7 @@ export class TaskService {
    * Informs subscribers that something has changed
    */
   public notify() {
+    this.taskSubject.next(this.task);
     this.tasksSubject.next(Array.from(this.tasks.values()).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     }));
