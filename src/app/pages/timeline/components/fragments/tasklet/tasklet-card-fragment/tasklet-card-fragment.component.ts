@@ -39,9 +39,6 @@ export class TaskletCardFragmentComponent implements OnInit {
   /** Event emitter indicating click on tasklet */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
 
-  /** Placeholder text for description */
-  placeholderDescription = 'Click here to add description';
-
   /** Enum for media types */
   mediaType = Media;
   /** Enum for action types */
