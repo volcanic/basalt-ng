@@ -15,6 +15,7 @@ import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
+import {CloneService} from '../../../../../core/entity/services/clone.service';
 
 /**
  * Displays tasklet dialog
@@ -106,11 +107,11 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   private initializeData() {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
-    this.tasklet = this.data.tasklet;
-    this.task = this.data.task != null ? this.data.task : new Task();
-    this.tags = this.data.tags != null ? this.data.tags : [];
-    this.persons = this.data.persons != null ? this.data.persons : [];
-    this.previousDescription = this.data.previousDescription;
+    this.tasklet = this.data.tasklet != null ? CloneService.cloneTasklet(this.data.tasklet) : new Tasklet();
+    this.task = this.data.task != null ? CloneService.cloneTask(this.data.task) : new Task();
+    this.tags = this.data.tags != null ? CloneService.cloneTags(this.data.tags) : [];
+    this.persons = this.data.persons != null ? CloneService.clonePersons(this.data.persons) : [];
+    this.previousDescription = this.data.previousDescription != null ? CloneService.cloneDescription(this.data.previousDescription) : null;
     this.previousDailyScrumItems = this.data.previousDailyScrumItems;
   }
 

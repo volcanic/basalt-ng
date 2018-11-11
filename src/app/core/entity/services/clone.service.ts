@@ -4,6 +4,7 @@ import {Task} from '../model/task.model';
 import {Project} from '../model/project.model';
 import {Person} from '../model/person.model';
 import {Tag} from '../model/tag.model';
+import {Description} from '../model/description.model';
 
 /**
  * Creates deep copies of objects
@@ -100,6 +101,15 @@ export class CloneService {
    * @returns {Tag[]} cloned object
    */
   static cloneTags(original: Tag[]): Tag[] {
+    return original != null ? JSON.parse(JSON.stringify(original)) : null;
+  }
+
+  /**
+   * Clones a given description
+   * @param {Description} original
+   * @returns {Description} cloned object
+   */
+  static cloneDescription(original: Description): Description {
     return original != null ? JSON.parse(JSON.stringify(original)) : null;
   }
 }
