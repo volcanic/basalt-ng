@@ -25,10 +25,10 @@
             (click)="completeTask()">
       Complete task
     </button>
-    <button mat-button *ngIf="mode == modeType.ADD" (click)="addTask()">
+    <button mat-button *ngIf="mode == modeType.ADD" (click)="handleTaskChanges()">
       Add task
     </button>
-    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTask()">
+    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="handleTaskChanges()">
       Update task
     </button>
   </mat-dialog-actions>
