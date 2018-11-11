@@ -15,6 +15,7 @@ import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
+import {DailyScrumItemType} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
 
 /**
  * Displays tasklet dialog
@@ -106,8 +107,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = this.data.tasklet;
     this.task = this.data.task != null ? this.data.task : new Task();
-    this.tags = this.data.tags;
-    this.persons = this.data.persons;
+    this.tags = this.data.tags != null ? this.data.tags : [];
+    this.persons = this.data.persons != null ? this.data.persons : [];
     this.previousDescription = this.data.previousDescription;
   }
 

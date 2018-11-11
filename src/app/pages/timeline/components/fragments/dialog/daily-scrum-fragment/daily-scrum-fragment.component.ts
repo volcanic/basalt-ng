@@ -6,6 +6,8 @@ import {Person} from '../../../../../../core/entity/model/person.model';
 import {DailyScrumItem} from '../../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 import {DailyScrumItemType} from '../../../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
+import {Subject} from 'rxjs/Subject';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
 
 /**
  * Displays daily scrum fragment
@@ -31,6 +33,10 @@ export class DailyScrumFragmentComponent implements OnInit {
   text = '';
   /** Current person */
   person = null;
+
+  /** Daily scrum options */
+  dailyScrumOptions = [];
+
 
   /** Shortcut button for done */
   private SHORTCUT_DONE = '?';
@@ -76,12 +82,20 @@ export class DailyScrumFragmentComponent implements OnInit {
   /** Contrast color of statement */
   contrastStatement = 'transparent';
 
+  /** Debouncer for input field */
+  debouncer = new Subject();
+  /** Array of options filtered by currently typed value */
+  optionsFiltered: string[];
+
   /**
    * Constructor
    * @param colorService color service
    * @param materialColorService material color service
+   * @param taskletService tasklet service
    */
-  constructor(private colorService: ColorService, private materialColorService: MaterialColorService) {
+  constructor(private colorService: ColorService,
+              private materialColorService: MaterialColorService,
+              private taskletService: TaskletService) {
   }
 
   //
@@ -92,6 +106,7 @@ export class DailyScrumFragmentComponent implements OnInit {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    this.initializeOptions();
     this.initializeColors();
     this.initializedailyScrumItems();
   }
@@ -99,6 +114,14 @@ export class DailyScrumFragmentComponent implements OnInit {
   //
   // Initialization
   //
+
+  /**
+   * Initialize auto-complete options
+   */
+  private initializeOptions() {
+    this.dailyScrumOptions = Array.from(this.taskletService.getDailyScrumActivities(DailyScrumItemType.WILL_DO, this.person).values());
+    this.optionsFiltered = this.dailyScrumOptions;
+  }
 
   /**
    * Initializes colors
@@ -203,6 +226,9 @@ export class DailyScrumFragmentComponent implements OnInit {
     this.person = new Person(name, true);
     this.colorPerson = this.colorService.getPersonColor(this.person);
     this.contrastPerson = this.colorService.getPersonContrast(this.person);
+
+    this.dailyScrumOptions = Array.from(this.taskletService.getDailyScrumActivities(DailyScrumItemType.WILL_DO, this.person).values());
+    this.optionsFiltered = this.filterOptions(this.text);
   }
 
   /**
@@ -232,6 +258,15 @@ export class DailyScrumFragmentComponent implements OnInit {
     });
 
     this.dailyScrumItemsUpdatedEmitter.emit(this.dailyScrumItems);
+  }
+
+  /**
+   * Handles text changes
+   * @param text text
+   */
+  onTextChanged(text: string) {
+    this.text = text;
+    this.optionsFiltered = this.filterOptions(text);
   }
 
   //
@@ -308,5 +343,20 @@ export class DailyScrumFragmentComponent implements OnInit {
 
       this.dailyScrumItemsUpdatedEmitter.emit(this.dailyScrumItems);
     }
+  }
+
+  //
+  // Helpers
+  //
+
+  /**
+   * Filters options according to current value of input field
+   * @param {string} value input field value
+   * @returns {string[]} array of filtered options
+   */
+  private filterOptions(value: string): string[] {
+    return this.dailyScrumOptions.filter(option =>
+      option.toLowerCase().includes(value.toLowerCase())
+    );
   }
 }

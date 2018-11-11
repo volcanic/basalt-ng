@@ -953,6 +953,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         tasklet['_rev'] = null;
         tasklet.id = new UUID().toString();
         tasklet.description = new Description();
+        tasklet.dailyScrumItems = [];
         tasklet.creationDate = new Date();
 
         // Assemble data to be passed
@@ -1001,46 +1002,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
                 return person != null;
               })
             });
-          }
-        });
-        break;
-      }
-      case Action.OPEN_DIALOG_TEMPLATE: {
-        tasklet['_rev'] = null;
-        tasklet.id = new UUID().toString();
-        tasklet.description = new Description();
-        tasklet.creationDate = new Date();
-
-        // Assemble data to be passed
-        const data = {
-          mode: DialogMode.CONTINUE,
-          dialogTitle: 'Template tasklet',
-          tasklet: tasklet,
-          tags: tasklet.tagIds.map(id => {
-            return this.tagService.tags.get(id);
-          }).filter(tag => {
-            return tag != null;
-          }),
-        };
-
-        // Open dialog
-        const continueTaskletDialogRef = this.dialog.open(TaskletDialogComponent, {
-          disableClose: false,
-          data: data
-        });
-
-        // Handle dialog close
-        continueTaskletDialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const resultingTasklet = result.tasklet as Tasklet;
-
-            switch (result.action) {
-              case Action.ADD: {
-                this.taskletService.createTasklet(resultingTasklet).then(() => {
-                });
-                break;
-              }
-            }
           }
         });
         break;

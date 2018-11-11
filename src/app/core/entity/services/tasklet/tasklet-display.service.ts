@@ -21,7 +21,6 @@ export enum DisplayAspect {
   CAN_BE_CREATED,
   CAN_BE_UPDATED,
   CAN_BE_CONTINUED,
-  CAN_BE_TEMPLATED,
 
   IS_DISPLAYED_AS_PREVIEW
 }
@@ -152,6 +151,7 @@ export class TaskletDisplayService {
   static canBeContinued(tasklet: Tasklet): boolean {
     return tasklet.type === TaskletType.ACTION
       || tasklet.type === TaskletType.MEETING
+      || tasklet.type === TaskletType.DAILY_SCRUM
       || tasklet.type === TaskletType.DEVELOPMENT
       || tasklet.type === TaskletType.DEBUGGING
       || tasklet.type === TaskletType.IDEA;

@@ -16,9 +16,16 @@
                                  (dailyScrumItemDeletedEmitter)="onDailyScrumItemDeleted(item)">
   </app-daily-scrum-item-fragment>
   <div class="flexcontainer">
-    <div class="input-field">
-      <textarea matInput name="input" [(ngModel)]="text"></textarea>
-    </div>
+    <input class="search-input" matInput name="search" type="text"
+           [ngModel]="text"
+           (ngModelChange)="onTextChanged($event)"
+           [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let option of optionsFiltered" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+
     <div class="flexbox"></div>
 
     <button class="action-button" mat-mini-fab [style.background]="colorDone" [matTooltip]="tooltipDone"

@@ -24,6 +24,7 @@ import {DisplayAspect, TaskletDisplayService} from './tasklet/tasklet-display.se
 import {Description} from '../model/description.model';
 import {TaskletTypeGroup} from '../model/tasklet-type-group.enum';
 import {TaskletTypeService} from './tasklet/tasklet-type.service';
+import {DailyScrumItemType} from '../model/daily-scrum/daily-scrum-item-type.enum';
 
 /**
  * Handles tasklets including
@@ -349,26 +350,27 @@ export class TaskletService {
   }
 
   /**
-   * Returns a map of recent daily scrum activities of a given person
+   * Returns a map of recent daily scrum activities of a given type and a given person
+   * @param {DailyScrumItemType} type daily scrum item type
    * @param {Person} person person to get scrum activities for
    * @returns {Map<string, string>} map of scrum activities
    */
-  public getDailyScrumActivities(person: Person): Map<string, string> {
+  public getDailyScrumActivities(type: DailyScrumItemType, person: Person): Map<string, string> {
     const dailyScrumActivities = new Map<string, string>();
 
-    if (person != null) {
-      (Array.from(this.tasklets.values()).filter(t => {
-        return t.type === TaskletType.DAILY_SCRUM;
-      }).sort((t1, t2) => {
-        return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
-      })).forEach(t => {
-        t.dailyScrumItems.filter(d => {
-          if (d.person != null && d.person.name === person.name) {
-            dailyScrumActivities.set(d.statement, d.statement);
-          }
-        });
+    (Array.from(this.tasklets.values()).filter(t => {
+      return t.type === TaskletType.DAILY_SCRUM;
+    }).sort((t1, t2) => {
+      return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
+    })).forEach(t => {
+      t.dailyScrumItems.filter(dailyScrumItem => {
+        return dailyScrumItem.type === type;
+      }).filter(dailyScrumItem => {
+        return person == null || (dailyScrumItem.person != null && dailyScrumItem.person.name === person.name);
+      }).forEach(dailyScrumItem => {
+        dailyScrumActivities.set(dailyScrumItem.statement, dailyScrumItem.statement);
       });
-    }
+    });
 
     return dailyScrumActivities;
   }
@@ -533,9 +535,6 @@ export class TaskletService {
       }
       case DisplayAspect.CAN_BE_CONTINUED: {
         return TaskletDisplayService.canBeContinued(tasklet);
-      }
-      case DisplayAspect.CAN_BE_TEMPLATED: {
-        return TaskletDisplayService.canBeTemplated(tasklet);
       }
       case DisplayAspect.IS_DISPLAYED_AS_PREVIEW: {
         return this.taskletDisplayService.isDisplayedAsPreview(tasklet);

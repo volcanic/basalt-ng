@@ -71,14 +71,6 @@
               <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
             </div>
           </div>
-          <div *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_TEMPLATED, tasklet)"
-               class="side-attached right-attached hidden"
-               (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_TEMPLATE, tasklet: tasklet})"
-               matTooltip="Template this event" matTooltipPosition="above">
-            <div class="right-attached-content">
-              <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
-            </div>
-          </div>
         </div>
       </div>
     </mat-card-footer>
