@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Tag} from '../../../../../../core/entity/model/tag.model';
 import {Task} from '../../../../../../core/entity/model/task.model';
 import {Person} from '../../../../../../core/entity/model/person.model';
@@ -10,7 +10,8 @@ import {DateService} from '../../../../../../core/entity/services/date.service';
 @Component({
   selector: 'app-task-properties-form',
   templateUrl: './task-properties-form.component.html',
-  styleUrls: ['./task-properties-form.component.scss']
+  styleUrls: ['./task-properties-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskPropertiesFormComponent implements OnInit {
 
