@@ -92,11 +92,11 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   tasklets: Tasklet[] = [];
 
   /** Project options */
-  projectOptions: string[];
+  projectOptions: string[] = [];
   /** Tag options */
-  tagOptions: string[];
+  tagOptions: string[] = [];
   /** Person options */
-  personOptions: string[];
+  personOptions: string[] = [];
 
   /** Enum of tasklet types */
   taskletType = TaskletType;
@@ -192,8 +192,14 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.initializeParameters();
     this.initializeResolvedData();
-    this.initializeTaskSubscription();
+
     this.initializeTaskletSubscription();
+    this.initializeTaskSubscription();
+    this.initializeProjectSubscription();
+    this.initializeTagSubscription();
+    this.initializePersonSubscription();
+
+    this.initializeOptions();
 
     this.initializeMaterial();
     this.initializeMediaSubscription();
@@ -305,6 +311,39 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Initializes project subscription
+   */
+  private initializeProjectSubscription() {
+    this.projectService.projectsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.initializeOptions();
+    });
+  }
+
+  /**
+   * Initializes tag subscription
+   */
+  private initializeTagSubscription() {
+    this.tagService.tagsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.initializeOptions();
+    });
+  }
+
+  /**
+   * Initializes person subscription
+   */
+  private initializePersonSubscription() {
+    this.personService.personsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.initializeOptions();
+    });
+  }
+
+  /**
    * Initializes material colors and icons
    */
   private initializeMaterial() {
@@ -328,6 +367,11 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes options
    */
   private initializeOptions() {
+    this.projectOptions = Array.from(this.suggestionService.projectOptions.values()).sort((p1, p2) => {
+      return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
+    }).map(p => {
+      return p.name;
+    });
     this.tagOptions = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     }).map(t => {
@@ -468,7 +512,9 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
     this.onTaskEvent({
       action: Action.ADD,
       task: this.task,
-      tags: this.tags
+      project: this.project,
+      delegatedTo: this.delegatedTo,
+      tags: this.tags,
     });
   }
 
@@ -482,6 +528,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
       action: Action.UPDATE,
       task: this.task,
       project: this.project,
+      delegatedTo: this.delegatedTo,
       tags: this.tags,
     });
   }

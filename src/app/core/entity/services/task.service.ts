@@ -262,6 +262,7 @@ export class TaskService {
             this.snackbarService.showSnackbar('Created task');
           }
           this.tasks.set(task.id, task);
+          this.task = task;
           this.notify();
         });
       }
@@ -295,6 +296,7 @@ export class TaskService {
             this.snackbarService.showSnackbar('Updated task');
           }
           this.tasks.set(task.id, task);
+          this.task = task;
           this.notify();
         });
       }
@@ -311,6 +313,7 @@ export class TaskService {
         this.pouchDBService.remove(task.id, task).then(() => {
           this.snackbarService.showSnackbar('Deleted task');
           this.tasks.delete(task.id);
+          this.task = null;
           this.notify();
         }).catch(() => {
           this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
