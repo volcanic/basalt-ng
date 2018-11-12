@@ -31,10 +31,6 @@
                 (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CONTINUE, tasklet: tasklet})">
           Continue tasklet
         </button>
-        <button mat-menu-item *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_TEMPLATED, tasklet)"
-                (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_TEMPLATE, tasklet: tasklet})">
-          Template tasklet
-        </button>
       </mat-menu>
       <div class="flexcontainer">
         <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
