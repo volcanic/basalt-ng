@@ -12,6 +12,8 @@
 }
 
 .toolbar-menu-item {
+  vertical-align: top;
+
   @media #{$breakpoint-small} {
     padding: 0;
   }
@@ -21,6 +23,12 @@
   @media #{$breakpoint-large} {
     padding: 0 20px;
   }
+}
+
+.toolbar-title {
+  font-family: 'Kristi', cursive;
+  font-size: 2.5em;
+  vertical-align: top;
 }
 
 .toolbar-block {
