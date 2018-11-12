@@ -1108,6 +1108,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Create task itself
         this.taskService.createTask(task).then(() => {
+          this.filterService.updateTasksList([task], true);
           this.snackbarService.showSnackbar('Added task');
         });
         break;
@@ -1120,6 +1121,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Update task itself
         this.taskService.updateTask(task).then(() => {
+          this.filterService.updateTasksList([task], true);
           this.snackbarService.showSnackbar('Updated task');
         });
         break;
@@ -2026,6 +2028,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
 
+      this.filterService.updateTasksList([t], true);
       tasklet.taskId = t.id;
     } else {
       // Unassign task

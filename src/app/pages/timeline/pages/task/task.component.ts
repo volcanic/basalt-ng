@@ -569,6 +569,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Create task itself
         this.taskService.createTask(task).then(() => {
+          this.filterService.updateTasksList([task], true);
           this.snackbarService.showSnackbar('Added task');
         });
         break;
