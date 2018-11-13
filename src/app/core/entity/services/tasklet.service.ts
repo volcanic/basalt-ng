@@ -536,6 +536,9 @@ export class TaskletService {
       case DisplayAspect.CAN_BE_CONTINUED: {
         return TaskletDisplayService.canBeContinued(tasklet);
       }
+      case DisplayAspect.IS_POMODORO_STARTED: {
+        return this.taskletDisplayService.isPomodoroStarted(tasklet);
+      }
       case DisplayAspect.IS_DISPLAYED_AS_PREVIEW: {
         return this.taskletDisplayService.isDisplayedAsPreview(tasklet);
       }

@@ -19,7 +19,7 @@ import {CloneService} from '../../../../core/entity/services/clone.service';
 import {FilterService} from '../../../../core/entity/services/filter.service';
 import {SnackbarService} from '../../../../core/ui/services/snackbar.service';
 import {TagService} from '../../../../core/entity/services/tag.service';
-import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
+import {MatDialog, MatDialogConfig, MatIconRegistry, MatSelect, MatSidenav} from '@angular/material';
 import {ConfirmationDialogComponent} from '../../../../ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
 import {DateService} from '../../../../core/entity/services/date.service';
@@ -140,6 +140,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
   /** Scrollable directive */
   @ViewChild(CdkScrollable) scrollable: CdkScrollable;
+  /** Tasklet type selection */
+  @ViewChild('select') select: MatSelect;
 
   /** Transparent color */
   transparent = 'transparent';
@@ -436,6 +438,17 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+    }
+  }
+
+  /**
+   * Handles click on tasklet type action button
+   */
+  ontTaskletTypeActionButtonClicked() {
+    if (this.containsDisplayAspect(DisplayAspect.IS_POMODORO_STARTED, this.tasklet)) {
+      this.snackbarService.showSnackbar('Tasklet type cannot be changed after pomodoro session has been started');
+    } else {
+      this.select.open();
     }
   }
 

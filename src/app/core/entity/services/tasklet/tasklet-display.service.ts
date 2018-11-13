@@ -22,6 +22,7 @@ export enum DisplayAspect {
   CAN_BE_UPDATED,
   CAN_BE_CONTINUED,
 
+  IS_POMODORO_STARTED,
   IS_DISPLAYED_AS_PREVIEW
 }
 
@@ -176,6 +177,15 @@ export class TaskletDisplayService {
       && group !== TaskletTypeGroup.BREAK
       && tasklet.type !== TaskletType.UNSPECIFIED
       && tasklet.type !== TaskletType.DAILY_SCRUM;
+  }
+
+  /**
+   * Determines whether a given tasklet is of type pomodoro and if the pomodoro session has been started
+   * @param tasklet tasklet
+   */
+  isPomodoroStarted(tasklet: Tasklet): boolean {
+    return tasklet != null
+      && tasklet.type === TaskletType.POMODORO && tasklet.pomodoroStartTime != null;
   }
 
   /**

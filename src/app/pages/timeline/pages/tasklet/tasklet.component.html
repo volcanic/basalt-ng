@@ -57,7 +57,7 @@
               <div *ngIf="action != null">
                 <button mat-fab class="tasklet-type"
                         [style.backgroundColor]="action.backgroundColor"
-                        (click)="select.open()">
+                        (click)="ontTaskletTypeActionButtonClicked()">
                   <mat-icon [svgIcon]="action.icon" [style.fill]="action.iconColor"></mat-icon>
                 </button>
                 <mat-select #select class="typeSelect">
@@ -77,7 +77,7 @@
                 </app-task-autocomplete-fragment>
                 <div *ngIf="project != null" [style.color]="action.backgroundColor">{{ project.name }}</div>
               </div>
-              <app-pomodoro-timer *ngIf="tasklet.type == taskletType.POMODORO && tasklet.pomodoroStartTime != null"
+              <app-pomodoro-timer *ngIf="containsDisplayAspect(displayAspectType.IS_POMODORO_STARTED, tasklet)"
                                   class="pomodoro-timer"
                                   [pomodoroDuration]="tasklet.pomodoroDuration"
                                   [pomodoroStartTime]="tasklet.pomodoroStartTime"
