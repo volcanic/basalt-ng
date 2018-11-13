@@ -1,0 +1,11 @@
+<div class="flexcontainer">
+  <div class="flexbox"></div>
+  <mat-divider vertical="true"></mat-divider>
+  <app-suggested-action-button *ngFor="let staticSuggestedAction of staticSuggestedActions"
+                               [backgroundColor]="staticSuggestedAction.backgroundColor"
+                               [iconColor]="staticSuggestedAction.iconColor"
+                               [icon]="staticSuggestedAction.icon"
+                               [label]="staticSuggestedAction.label"
+                               (buttonClickedEmitter)="onStaticSuggestedActionClicked(staticSuggestedAction.taskletType)">
+  </app-suggested-action-button>
+</div>
