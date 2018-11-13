@@ -80,6 +80,7 @@ import {TaskTitleFormComponent} from './components/fragments/forms/task-title-fo
 import {TaskPropertiesFormComponent} from './components/fragments/forms/task-properties-form/task-properties-form.component';
 import {TaskToolbarComponent} from './components/toolbars/task-toolbar/task-toolbar.component';
 import {TaskletToolbarComponent} from './components/toolbars/tasklet-toolbar/tasklet-toolbar.component';
+import {PomodoroFinishedDialogModule} from '../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog.module';
 
 @NgModule({
   imports: [
@@ -106,7 +107,8 @@ import {TaskletToolbarComponent} from './components/toolbars/tasklet-toolbar/tas
     TaskAutocompleteModule,
     StopWatchModule,
     MarkdownFragmentModule,
-    PreviousDescriptionModule
+    PreviousDescriptionModule,
+    PomodoroFinishedDialogModule
   ],
   declarations: [
     // Page

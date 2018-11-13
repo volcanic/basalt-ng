@@ -1720,7 +1720,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (menuItem) {
       case 'menu': {
         this.sidenavStart.toggle().then(() => {
-          this.settingsService.updateSetting(new Setting(SettingType.SIDENAV_OPENED, this.sidenavStart.opened));
+          this.settingsService.updateSetting(new Setting(SettingType.TIMELINE_SIDENAV_OPENED, this.sidenavStart.opened));
         });
         this.sidenavEnd.toggle().then(() => {
         });

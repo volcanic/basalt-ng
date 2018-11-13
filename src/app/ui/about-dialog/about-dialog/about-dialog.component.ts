@@ -25,7 +25,7 @@ export class AboutDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
+   * @param {MatDialogRef<PomodoroFinishedDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<AboutDialogComponent>,

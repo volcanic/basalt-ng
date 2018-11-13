@@ -1,0 +1,20 @@
+.flexcontainer {
+  display: flex;
+}
+
+.mat-dialog-content {
+  height: 150px;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
+
+.flexbox-half {
+  flex-grow: 0.7;
+}
+
+.checkbox {
+  margin-top: 35px;
+  transform: scale(5);
+}

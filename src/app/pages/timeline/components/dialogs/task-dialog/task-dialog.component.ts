@@ -56,7 +56,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * @param suggestionService suggestion service
    * @param {DateAdapter<any>} adapter
    * @param {MatDialog} dialog dialog
-   * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
+   * @param {MatDialogRef<PomodoroFinishedDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
   constructor(private suggestionService: SuggestionService,

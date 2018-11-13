@@ -40,6 +40,7 @@ import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
 import {Setting} from '../../../../core/settings/model/setting.model';
+import {PomodoroFinishedDialogComponent} from '../../../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog/pomodoro-finished-dialog.component';
 
 /**
  * Represents a tasklet type action button
@@ -546,7 +547,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     taskletPomodoroBreak.type = TaskletType.POMODORO_BREAK;
     taskletPomodoroBreak.pomodoroBreak = +this.settingsService.settings.get(SettingType.POMODORO_BREAK).value;
 
-    const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+    const confirmationDialogRef = this.dialog.open(PomodoroFinishedDialogComponent, <MatDialogConfig>{
       disableClose: false,
       data: {
         title: 'Pomodoro completed',

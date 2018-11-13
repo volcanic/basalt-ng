@@ -1,6 +1,6 @@
 import { ConfirmationDialogModule } from './confirmation-dialog.module';
 
-describe('ConfirmationDialogModule', () => {
+describe('PomodoroFinishedDialogModule', () => {
   let confirmationDialogModule: ConfirmationDialogModule;
 
   beforeEach(() => {

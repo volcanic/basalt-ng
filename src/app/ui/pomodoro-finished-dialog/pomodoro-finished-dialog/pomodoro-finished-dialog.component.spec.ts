@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ConfirmationDialogComponent} from './confirmation-dialog.component';
+import {PomodoroFinishedDialogComponent} from './pomodoro-finished-dialog.component';
 
 describe('PomodoroFinishedDialogComponent', () => {
-  let component: ConfirmationDialogComponent;
-  let fixture: ComponentFixture<ConfirmationDialogComponent>;
+  let component: PomodoroFinishedDialogComponent;
+  let fixture: ComponentFixture<PomodoroFinishedDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ConfirmationDialogComponent]
+      declarations: [PomodoroFinishedDialogComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ConfirmationDialogComponent);
+    fixture = TestBed.createComponent(PomodoroFinishedDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

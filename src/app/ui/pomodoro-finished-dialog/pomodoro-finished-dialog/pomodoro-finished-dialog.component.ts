@@ -2,14 +2,14 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 /**
- * Displays information dialog
+ * Displays pomodoro finished dialog
  */
 @Component({
-  selector: 'app-information-dialog',
-  templateUrl: './information-dialog.component.html',
-  styleUrls: ['./information-dialog.component.scss']
+  selector: 'app-pomodoro-finished-dialog',
+  templateUrl: './pomodoro-finished-dialog.component.html',
+  styleUrls: ['./pomodoro-finished-dialog.component.scss'],
 })
-export class InformationDialogComponent implements OnInit {
+export class PomodoroFinishedDialogComponent implements OnInit {
 
   /** Dialog title */
   dialogTitle = '';
@@ -21,12 +21,15 @@ export class InformationDialogComponent implements OnInit {
   /** Value to be returned */
   value: any;
 
+  /** Checkbox state */
+  disabled = false;
+
   /**
    * Constructor
    * @param {MatDialogRef<PomodoroFinishedDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(public dialogRef: MatDialogRef<InformationDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<PomodoroFinishedDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
@@ -53,6 +56,16 @@ export class InformationDialogComponent implements OnInit {
     this.text = this.data.text;
     this.action = this.data.action;
     this.value = this.data.value;
+  }
+
+  //
+  // Actions
+  //
+
+  onCheckboxActived() {
+    setInterval(() => {
+      this.disabled = true;
+    }, 1500);
   }
 
   //
