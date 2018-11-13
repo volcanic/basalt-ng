@@ -24,5 +24,6 @@ export enum SettingType {
   // Preferences
   //
 
-  SIDENAV_OPENED = 'sidenav-opened'
+  TIMELINE_SIDENAV_OPENED = 'timeline-sidenav-opened',
+  TASKLET_SIDENAV_OPENED = 'tasklet-sidenav-opened'
 }

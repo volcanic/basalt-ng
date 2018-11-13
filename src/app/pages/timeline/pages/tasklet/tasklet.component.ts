@@ -134,6 +134,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Scroll state */
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
 
+  /** Sidenav state */
+  public sidenavOpened = false;
+
   /** Side navigation at start */
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
   /** Side navigation at end */
@@ -209,6 +212,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.initializeMaterial();
     this.initializeMediaSubscription();
+
+    this.initializeSettings();
 
     this.findEntities();
 
@@ -379,6 +384,18 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Initializes settings
+   */
+  private initializeSettings() {
+    this.settingsService.fetch();
+    this.settingsService.settingsSubject.subscribe(value => {
+      if (value != null) {
+        this.sidenavOpened = this.settingsService.isSettingActive(SettingType.TASKLET_SIDENAV_OPENED);
+      }
+    });
+  }
+
+  /**
    * Triggers entity retrieval from database
    */
   private findEntities() {
@@ -432,7 +449,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (menuItem) {
       case 'menu': {
         this.sidenavStart.toggle().then(() => {
-          this.settingsService.updateSetting(new Setting(SettingType.SIDENAV_OPENED, this.sidenavStart.opened));
+          this.settingsService.updateSetting(new Setting(SettingType.TASKLET_SIDENAV_OPENED, this.sidenavStart.opened));
         });
         this.sidenavEnd.toggle().then(() => {
         });

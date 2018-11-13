@@ -673,7 +673,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.settingsService.fetch();
     this.settingsService.settingsSubject.subscribe(value => {
       if (value != null) {
-        this.sidenavOpened = this.settingsService.isSettingActive(SettingType.SIDENAV_OPENED);
+        this.sidenavOpened = this.settingsService.isSettingActive(SettingType.TIMELINE_SIDENAV_OPENED);
       }
     });
   }

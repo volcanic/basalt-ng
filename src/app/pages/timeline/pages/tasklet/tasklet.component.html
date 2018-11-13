@@ -7,14 +7,14 @@
 <div (keydown)="onKeyDown($event)" class="main">
   <mat-sidenav-container class="sidenav-container" layout="column">
     <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
-                 position="start" opened="true"
+                 position="start" [opened]="sidenavOpened"
                  class="sidenav sidenav-start">
       <div [@toolbarAnimation]="scrollDirection">
       </div>
     </mat-sidenav>
 
     <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavEnd mode="side"
-                 position="end" opened="true"
+                 position="end" [opened]="sidenavOpened"
                  class="sidenav sidenav-end">
       <div [@toolbarAnimation]="scrollDirection">
         <div class="tasklet" *ngFor="let tasklet of tasklets">
