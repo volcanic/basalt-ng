@@ -68,7 +68,7 @@
                   </mat-option>
                 </mat-select>
               </div>
-              <div>
+              <div *ngIf="task != null">
                 <app-task-autocomplete-fragment
                   *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
                   class="task"
