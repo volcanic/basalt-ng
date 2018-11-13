@@ -123,6 +123,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** Indicates whether properties form is opened */
   propertiesOpened = false;
+  /** Sidenav state */
+  public sidenavOpened = false;
 
   /** Side navigation at start */
   @ViewChild('sidenavStart') sidenavStart: MatSidenav;
@@ -204,6 +206,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.initializeMaterial();
     this.initializeMediaSubscription();
+
+    this.initializeSettings();
 
     this.findEntities();
 
@@ -396,6 +400,18 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Initializes settings
+   */
+  private initializeSettings() {
+    this.settingsService.fetch();
+    this.settingsService.settingsSubject.subscribe(value => {
+      if (value != null) {
+        this.sidenavOpened = this.settingsService.isSettingActive(SettingType.TASK_SIDENAV_OPENED);
+      }
+    });
+  }
+
+  /**
    * Triggers entity retrieval from database
    */
   private findEntities() {
@@ -449,7 +465,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (menuItem) {
       case 'menu': {
         this.sidenavStart.toggle().then(() => {
-          this.settingsService.updateSetting(new Setting(SettingType.SIDENAV_OPENED, this.sidenavStart.opened));
+          this.settingsService.updateSetting(new Setting(SettingType.TASK_SIDENAV_OPENED, this.sidenavStart.opened));
         });
         this.sidenavEnd.toggle().then(() => {
         });
