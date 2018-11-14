@@ -12,6 +12,8 @@
   width: 100%;
 }
 
+$attachment-width: 48px;
+
 .tasklet-preview {
   margin: 0 auto;
 
@@ -22,10 +24,10 @@
     box-sizing: border-box; /* Opera/IE 8+ */
   }
   @media #{$breakpoint-medium} {
-    width: 450px + 48px;
+    width: 450px + $attachment-width;
   }
   @media #{$breakpoint-large} {
-    width: 450px + 48px;
+    width: 450px + $attachment-width;
   }
 }
 

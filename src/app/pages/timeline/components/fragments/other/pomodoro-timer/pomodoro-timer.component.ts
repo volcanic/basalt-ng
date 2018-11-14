@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {MaterialColorService} from '../../../../../core/ui/services/material-color.service';
-import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
-import {HueType} from '../../../../../core/ui/model/hue-type.enum';
+import {MaterialColorService} from '../../../../../../core/ui/services/material-color.service';
+import {PaletteType} from '../../../../../../core/ui/model/palette-type.enum';
+import {HueType} from '../../../../../../core/ui/model/hue-type.enum';
 
 /**
  * Displays a pomodoro timer

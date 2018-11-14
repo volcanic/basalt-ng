@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
@@ -6,6 +6,7 @@ import {TaskletType} from '../../../../../../core/entity/model/tasklet-type.enum
 import {Task} from '../../../../../../core/entity/model/task.model';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {Action} from '../../../../../../core/entity/model/action.enum';
+import {TaskService} from '../../../../../../core/entity/services/task.service';
 
 /**
  * Represents a suggested action button
@@ -30,9 +31,10 @@ class SuggestedAction {
 @Component({
   selector: 'app-suggested-actions',
   templateUrl: './suggested-actions.component.html',
-  styleUrls: ['./suggested-actions.component.scss']
+  styleUrls: ['./suggested-actions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SuggestedActionsComponent implements OnInit {
+export class SuggestedActionsComponent implements OnInit, OnChanges {
 
   /** List of suggested tasks */
   @Input() suggestedTasks: Task[] = [];
@@ -44,12 +46,17 @@ export class SuggestedActionsComponent implements OnInit {
   /** List of static suggested actions */
   staticSuggestedActions: SuggestedAction[] = [];
 
+  /** Maximum number of dynamically picked tasks */
+  MAX_NUMBER_DYNAMIC = 3;
+
   /**
    * Constructor
    * @param taskletService tasklet service
+   * @param taskService task service
    * @param colorService color service
    */
   constructor(private taskletService: TaskletService,
+              private taskService: TaskService,
               private colorService: ColorService) {
   }
 
@@ -61,8 +68,14 @@ export class SuggestedActionsComponent implements OnInit {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.initializeSuggestedActions();
     this.initializeStaticSuggestedActions();
+  }
+
+  /**
+   * Handles on-change lifecycle phase
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    this.initializeSuggestedActions();
   }
 
   //
@@ -73,14 +86,34 @@ export class SuggestedActionsComponent implements OnInit {
    * Initializes suggested actions
    */
   private initializeSuggestedActions() {
-    this.suggestedTasks.slice(3).forEach(task => {
-      const suggestedAction = new SuggestedAction();
-      suggestedAction.icon = this.taskletService.getIconByTaskletType(TaskletType.ACTION);
-      suggestedAction.label = task.name;
-      suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
-      suggestedAction.iconColor = this.colorService.getTaskContrast(task);
-      this.suggestedActions.push(suggestedAction);
-    });
+    this.suggestedActions = [];
+
+    // Recurring tasks
+    // TODO Implement logic that finds out when recurring tasks will be relevant
+
+    // Overdue tasks
+    this.suggestedTasks.filter(this.taskService.isTaskOverdue)
+      .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
+      .forEach(task => {
+        const suggestedAction = new SuggestedAction();
+        suggestedAction.icon = 'warning';
+        suggestedAction.label = task.name;
+        suggestedAction.backgroundColor = this.colorService.getTaskOverdueColor(task);
+        suggestedAction.iconColor = this.colorService.getTaskOverdueContrast(task);
+        this.suggestedActions.push(suggestedAction);
+      });
+
+    // Next tasks
+    this.suggestedTasks.filter(this.taskService.isTaskNext)
+      .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
+      .forEach(task => {
+        const suggestedAction = new SuggestedAction();
+        suggestedAction.icon = this.taskletService.getIconByTaskletType(TaskletType.ACTION);
+        suggestedAction.label = task.name;
+        suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
+        suggestedAction.iconColor = this.colorService.getTaskContrast(task);
+        this.suggestedActions.push(suggestedAction);
+      });
   }
 
   /**

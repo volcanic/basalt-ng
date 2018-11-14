@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Out
 import {FileUploader} from 'ng2-file-upload/ng2-file-upload';
 import {Observable, Subject, Subscription} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
-import {Entity} from '../../../../../core/entity/model/entity.model';
+import {Entity} from '../../../../../../core/entity/model/entity.model';
 
 /** URL used by file uploader */
 const URL = 'https://foo.bar.com';

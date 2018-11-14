@@ -11,6 +11,8 @@ import {SnackbarService} from '../../ui/services/snackbar.service';
 import {ScopeService} from './scope.service';
 import {Scope} from '../model/scope.enum';
 import {TagService} from './tag.service';
+import {RecurrenceInterval} from '../model/recurrence-interval.enum';
+import {DateService} from './date.service';
 
 /**
  * Handles tasks including
@@ -361,6 +363,146 @@ export class TaskService {
     }
 
     return null;
+  }
+
+  // </editor-fold>
+
+  //
+  // Filter
+  //
+
+  /**
+   * Determines if a task is overdue
+   * @param task task
+   */
+  public isTaskOverdue(task: Task) {
+    return task != null
+      && task.completionDate == null
+      && task.dueDate != null
+      && (task.delegatedToId == null || task.delegatedToId === '')
+      && (task.recurrenceInterval == null
+        || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
+        || task.recurrenceInterval === RecurrenceInterval.NONE)
+      && DateService.isBefore(task.dueDate, new Date());
+  }
+
+  /**
+   * Determines if a task is next
+   * @param task task
+   */
+  public isTaskNext(task: Task) {
+    return task != null
+      && task.completionDate == null
+      && task.dueDate != null
+      && (task.delegatedToId == null || task.delegatedToId === '')
+      && (task.recurrenceInterval == null
+        || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
+        || task.recurrenceInterval === RecurrenceInterval.NONE)
+      && DateService.isAfter(task.dueDate, new Date());
+  }
+
+  /**
+   * Determines if a task is in inbox
+   * @param task task
+   */
+  public isTaskInInbox(task: Task) {
+    return task != null
+      && task.completionDate == null
+      && task.dueDate == null
+      && (task.delegatedToId == null || task.delegatedToId === '')
+      && (task.recurrenceInterval == null
+        || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
+        || task.recurrenceInterval === RecurrenceInterval.NONE);
+  }
+
+  /**
+   * Determines if a task is delegated to someone
+   * @param task task
+   */
+  public isTaskDelegated(task: Task) {
+    return task != null
+      && task.completionDate == null
+      && (task.delegatedToId != null && task.delegatedToId !== '');
+  }
+
+  /**
+   * Determines if a task is recurring
+   * @param task task
+   */
+  public isTaskRecurring(task: Task) {
+    return task != null
+      && task.completionDate == null
+      && (task.delegatedToId == null || task.delegatedToId === '')
+      && task.recurrenceInterval != null
+      && (task.recurrenceInterval !== RecurrenceInterval.UNSPECIFIED && task.recurrenceInterval !== RecurrenceInterval.NONE);
+  }
+
+  /**
+   * Determines if a task is completed
+   * @param task task
+   */
+  public isTaskCompleted(task: Task) {
+    return task != null && task.completionDate != null;
+  }
+
+  //
+  // Sort
+  //
+
+  // <editor-fold desc="Sort">
+
+  /**
+   * Sorts tasks based on their due date & due time, effort estimation and priority
+   * @param taskA first task
+   * @param taskB seconds task
+   * @return Returns -1 if taskA is of a higher order (i.e. before taskB), 0 if taskA and taskB are equal and 1 if task B is of a higher order
+   */
+  public sortTasks(taskA: Task, taskB: Task) {
+    let returnValue = 0; // 0 does not sort, < 0 places taskA first, > 0 places taskB first
+
+    const dueTimeA = new Date(taskA.dueDate).getTime() / 1000 / 60; // Get due time in milliseconds and convert to minutes
+    const effortA = taskA.effort; // Get effort in minutes
+    const calculatedStartA = dueTimeA - effortA; // Calculate start time for comparison with taskB
+    const priorityA = taskA.priority; // get priority
+
+    const dueTimeB = new Date(taskB.dueDate).getTime() / 1000 / 60; // Get due time in milliseconds and convert to minutes
+    const effortB = taskB.effort; // Get effort in minutes
+    const calculatedStartB = dueTimeB - effortB; // Calculate start time for comparison with taskB
+    const priorityB = taskB.priority; // get priority
+
+    if (dueTimeA < dueTimeB) {  // A comes first
+      if (calculatedStartB < dueTimeA) { // B comes first
+        if (priorityA < priorityB) { // A comes first
+          returnValue = -1;
+        } else { // B stays first
+          returnValue = 1;
+        }
+      } else { // A stays first
+        returnValue = -1;
+      }
+    } else if (dueTimeA === dueTimeB) {
+      if (calculatedStartB < dueTimeA) { // B comes first
+        if (priorityA < priorityB) { // A comes first
+          returnValue = -1;
+        } else { // B stays first
+          returnValue = 1;
+        }
+      } else { // A stays first
+        returnValue = -1;
+      }
+    } else { // B comes first
+      if (calculatedStartA < dueTimeB) { // A comes first
+        if (priorityB < priorityA) { // B comes first
+          returnValue = 1;
+        } else { // A stays first
+          returnValue = -1;
+        }
+      } else { // B stays first
+        returnValue = 1;
+      }
+    }
+
+    return returnValue;
   }
 
   // </editor-fold>

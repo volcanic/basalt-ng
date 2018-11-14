@@ -1,6 +1,14 @@
-<div class="flexcontainer">
+<div class="flexcontainer container">
+  <app-suggested-action-button *ngFor="let suggestedAction of suggestedActions"
+                               [backgroundColor]="suggestedAction.backgroundColor"
+                               [iconColor]="suggestedAction.iconColor"
+                               [icon]="suggestedAction.icon"
+                               [label]="suggestedAction.label">
+  </app-suggested-action-button>
+
   <div class="flexbox"></div>
   <mat-divider vertical="true"></mat-divider>
+
   <app-suggested-action-button *ngFor="let staticSuggestedAction of staticSuggestedActions"
                                [backgroundColor]="staticSuggestedAction.backgroundColor"
                                [iconColor]="staticSuggestedAction.iconColor"

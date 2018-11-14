@@ -349,7 +349,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeTasks(tasks: Task[]) {
     this.tasks = tasks.filter(task => {
       return this.filterTask(task);
-    });
+    }).sort(this.taskService.sortTasks);
   }
 
   /**
@@ -2045,12 +2045,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const aggregatedTags = new Map<string, Tag>();
 
     // New tag
-    tags.filter(t => {
-      return t != null;
-    }).forEach(t => {
-      const tag = this.lookupTag(t.name);
-      aggregatedTags.set(tag.id, tag);
-    });
+    if (tags != null) {
+      tags.filter(t => {
+        return t != null;
+      }).forEach(t => {
+        const tag = this.lookupTag(t.name);
+        aggregatedTags.set(tag.id, tag);
+      });
+    }
 
     // Infer tags from meeting minutes
     if (tasklet.meetingMinuteItems != null) {
@@ -2096,12 +2098,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const aggregatedPersons = new Map<string, Person>();
 
     // New person
-    persons.filter(p => {
-      return p != null;
-    }).forEach(p => {
-      const person = this.lookupPerson(p.name);
-      aggregatedPersons.set(person.id, person);
-    });
+    if (persons != null) {
+      persons.filter(p => {
+        return p != null;
+      }).forEach(p => {
+        const person = this.lookupPerson(p.name);
+        aggregatedPersons.set(person.id, person);
+      });
+    }
 
     // Infer persons from meeting minutes
     if (tasklet.meetingMinuteItems != null) {

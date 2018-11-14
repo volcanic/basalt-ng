@@ -46,7 +46,7 @@ import {DateTimePickerFragmentModule} from '../../ui/date-time-picker-fragment/d
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TimelineRoutingModule} from './timeline-routing.module';
 import {RecurrenceIntervalFragmentComponent} from './components/fragments/dialog/recurrence-interval-fragment/recurrence-interval-fragment.component';
-import {FileDropFragmentComponent} from './components/fragments/file-drop-fragment/file-drop-fragment.component';
+import {FileDropFragmentComponent} from './components/fragments/other/file-drop-fragment/file-drop-fragment.component';
 import {FileUploadModule} from 'ng2-file-upload';
 import {TaskletPreviewFragmentComponent} from './components/fragments/tasklet/tasklet-preview-fragment/tasklet-preview-fragment.component';
 import {EcoFabSpeedDialModule} from '@ecodev/fab-speed-dial';
@@ -66,7 +66,7 @@ import {TaskletResolver} from './resolvers/tasklet.resolver';
 import {TagChipsModule} from '../../ui/tag-chips/tag-chips.module';
 import {TagNamesPipe} from './pipes/tag-names.pipe';
 import {PersonNamesPipe} from './pipes/person-names.pipe';
-import {PomodoroTimerComponent} from './components/fragments/pomodoro-timer/pomodoro-timer.component';
+import {PomodoroTimerComponent} from './components/fragments/other/pomodoro-timer/pomodoro-timer.component';
 import {StopWatchModule} from '../../ui/stop-watch/stop-watch.module';
 import {MarkdownFragmentModule} from '../../ui/markdown-fragment/markdown-fragment.module';
 import {TaskletCardFragmentComponent} from './components/fragments/tasklet/tasklet-card-fragment/tasklet-card-fragment.component';
@@ -81,6 +81,7 @@ import {TaskPropertiesFormComponent} from './components/fragments/forms/task-pro
 import {TaskToolbarComponent} from './components/toolbars/task-toolbar/task-toolbar.component';
 import {TaskletToolbarComponent} from './components/toolbars/tasklet-toolbar/tasklet-toolbar.component';
 import {PomodoroFinishedDialogModule} from '../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog.module';
+import {SuggestedActionsComponent} from './components/fragments/other/suggested-actions/suggested-actions.component';
 
 @NgModule({
   imports: [
@@ -188,6 +189,7 @@ import {PomodoroFinishedDialogModule} from '../../ui/pomodoro-finished-dialog/po
     DailyScrumItemFragmentComponent,
     TaskTitleFormComponent,
     TaskPropertiesFormComponent,
+    SuggestedActionsComponent,
 
     // Pipes
     TagNamesPipe,

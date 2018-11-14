@@ -18,11 +18,14 @@
         <app-project-effort-tree [projectDigest]="dailyDigest"></app-project-effort-tree>
       </div>
       <mat-divider></mat-divider>
-      <app-project-list [projects]="projects" [recentCount]="'3'" [media]="media" (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
+      <app-project-list [projects]="projects" [recentCount]="'3'" [media]="media"
+                        (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
       <mat-divider></mat-divider>
-      <app-tag-list [tags]="tags" [recentCount]="'10'" [media]="media" (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
+      <app-tag-list [tags]="tags" [recentCount]="'10'" [media]="media"
+                    (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
       <mat-divider></mat-divider>
-      <app-person-list [persons]="persons" [recentCount]="'10'" [media]="media" (personEventEmitter)="onPersonEvent($event)"></app-person-list>
+      <app-person-list [persons]="persons" [recentCount]="'10'" [media]="media"
+                       (personEventEmitter)="onPersonEvent($event)"></app-person-list>
     </div>
   </mat-sidenav>
 
@@ -36,9 +39,11 @@
 
   <mat-sidenav-content cdkScrollable>
     <div class="content">
+      <app-suggested-actions [suggestedTasks]="tasks"
+                             (taskletEventEmitter)="onTaskletEvent($event)"></app-suggested-actions>
+
       <app-tasklet-list [tasklets]="tasklets" [media]="media" [tasks]="tasksMap" [projects]="projectsMap"
                         [tags]="tagsMap" [persons]="personsMap"
-                        [persons]="personService.persons"
                         (taskletEventEmitter)="onTaskletEvent($event)"
                         (taskletCreationDateEventEmitter)="onTaskletCreationDateEvent($event)"></app-tasklet-list>
     </div>
