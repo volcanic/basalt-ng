@@ -36,6 +36,15 @@ export class ColorService {
     this.materialColorService.hue(PaletteType.RED, HueType._800),
   ];
 
+  /** Array of available task colors */
+  taskRecurringHues = [
+    this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._400),
+    this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._500),
+    this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._600),
+    this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._700),
+    this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._800),
+  ];
+
   /** Array of available project colors */
   projectHues = [
     this.materialColorService.hue(PaletteType.TEAL, HueType._100),
@@ -80,6 +89,41 @@ export class ColorService {
   }
 
   /**
+   * Determines a task's color
+   * @param {Task} task task to get color for
+   * @returns {string} color string derived from task name
+   */
+  getTaskColor(task: Task) {
+    const hue = this.getTaskHue(task);
+
+    return (hue != null) ? hue.color : this.materialColorService.color(PaletteType.GREY, HueType._500);
+  }
+
+  /**
+   * Determines a task's contrast
+   * @param {Task} task task to get color for
+   * @returns {string} contrast color string derived from task name
+   */
+  getTaskContrast(task: Task) {
+    const hue = this.getTaskHue(task);
+
+    return (hue != null) ? hue.contrast : this.materialColorService.contrast(PaletteType.GREY, HueType._500);
+  }
+
+  /**
+   * Returns a hue picked by a hash value generated from a task's name
+   * @param task task
+   */
+  private getTaskHue(task: Task): Hue {
+    if (task == null || task.name == null || task.name.trim().length <= 0) {
+      return null;
+    }
+
+    return this.taskHues[
+    Math.abs(Hash.hash(task.name.toLowerCase().replace(' ', ''))) % this.taskHues.length];
+  }
+
+  /**
    * Determines a task's overdue color
    * @param {Task} task task to get color for
    * @returns {string} color string derived from task name
@@ -115,23 +159,23 @@ export class ColorService {
   }
 
   /**
-   * Determines a task's color
+   * Determines a task's recurring color
    * @param {Task} task task to get color for
    * @returns {string} color string derived from task name
    */
-  getTaskColor(task: Task) {
-    const hue = this.getTaskHue(task);
+  getTaskRecurringColor(task: Task) {
+    const hue = this.getTaskRecurringHue(task);
 
     return (hue != null) ? hue.color : this.materialColorService.color(PaletteType.GREY, HueType._500);
   }
 
   /**
-   * Determines a task's contrast
+   * Determines a task's recurring contrast
    * @param {Task} task task to get color for
    * @returns {string} contrast color string derived from task name
    */
-  getTaskContrast(task: Task) {
-    const hue = this.getTaskHue(task);
+  getTaskRecurringContrast(task: Task) {
+    const hue = this.getTaskRecurringHue(task);
 
     return (hue != null) ? hue.contrast : this.materialColorService.contrast(PaletteType.GREY, HueType._500);
   }
@@ -140,12 +184,12 @@ export class ColorService {
    * Returns a hue picked by a hash value generated from a task's name
    * @param task task
    */
-  private getTaskHue(task: Task): Hue {
+  private getTaskRecurringHue(task: Task): Hue {
     if (task == null || task.name == null || task.name.trim().length <= 0) {
       return null;
     }
 
-    return this.taskHues[
+    return this.taskRecurringHues[
     Math.abs(Hash.hash(task.name.toLowerCase().replace(' ', ''))) % this.taskHues.length];
   }
 

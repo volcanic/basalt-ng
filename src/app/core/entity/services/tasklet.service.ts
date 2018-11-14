@@ -335,6 +335,20 @@ export class TaskletService {
   }
 
   /**
+   * Determines the latest creation time of a tasklet associated with a given task
+   * @param task task
+   */
+  public getLastestOccurrence(task: Task): Date {
+    const tasklets = this.getTaskletsByTask(task);
+
+    if (tasklets.length > 0) {
+      return tasklets[0].creationDate;
+    } else {
+      return null;
+    }
+  }
+
+  /**
    * Retrieves a project by a given tasklet
    * @param {Tasklet} tasklet tasklet to find project by
    * @returns {Project} project referenced by given tasklet, null if no such project exists

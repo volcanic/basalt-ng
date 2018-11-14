@@ -438,6 +438,40 @@ export class TaskService {
   }
 
   /**
+   * Determines if a task is relevant soon
+   * @param task task
+   * @param lastOccurrence last occurrence
+   */
+  public isTaskRelevantSoon(task: Task, lastOccurrence: Date) {
+    if (task != null && lastOccurrence != null) {
+      const now = new Date();
+
+      switch (task.recurrenceInterval) {
+        case RecurrenceInterval.DAILY: {
+          const nextOccurrence = DateService.addDays(lastOccurrence, 1);
+          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -15);
+          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
+          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+        }
+        case RecurrenceInterval.WEEKLY: {
+          const nextOccurrence = DateService.addDays(lastOccurrence, 7);
+          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -15);
+          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
+          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+        }
+        case RecurrenceInterval.MONTHLY: {
+          const nextOccurrence = DateService.addMonths(lastOccurrence, 1);
+          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -60);
+          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
+          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Determines if a task is completed
    * @param task task
    */

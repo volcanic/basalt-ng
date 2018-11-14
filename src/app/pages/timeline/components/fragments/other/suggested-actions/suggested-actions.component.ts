@@ -89,7 +89,18 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
     this.suggestedActions = [];
 
     // Recurring tasks
-    // TODO Implement logic that finds out when recurring tasks will be relevant
+    this.suggestedTasks.filter(this.taskService.isTaskRecurring).filter(task => {
+      const getLastestOccurrence = this.taskletService.getLastestOccurrence(task);
+      return this.taskService.isTaskRelevantSoon(task, getLastestOccurrence);
+    }).slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
+      .forEach(task => {
+        const suggestedAction = new SuggestedAction();
+        suggestedAction.icon = 'loop';
+        suggestedAction.label = task.name;
+        suggestedAction.backgroundColor = this.colorService.getTaskRecurringColor(task);
+        suggestedAction.iconColor = this.colorService.getTaskRecurringContrast(task);
+        this.suggestedActions.push(suggestedAction);
+      });
 
     // Overdue tasks
     this.suggestedTasks.filter(this.taskService.isTaskOverdue)

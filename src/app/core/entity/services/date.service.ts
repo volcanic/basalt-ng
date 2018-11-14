@@ -13,6 +13,53 @@ export class DateService {
   public static MINUTES_INTERVAL = 5;
 
   //
+  // Manipulation
+  //
+
+  /**
+   * Adds minutes to a given date
+   * @param date original date
+   * @param minutes minutes to add
+   */
+  static addMinutes(date: Date, minutes: number) {
+    if (date != null) {
+      return new Date(date.getTime() + minutes * 60000);
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Adds days to a given date
+   * @param date original date
+   * @param days days to add
+   */
+  static addDays(date: Date, days: number) {
+    if (date != null) {
+      const d = new Date(date);
+      d.setDate(d.getDate() + days);
+      return d;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Adds months to a given date
+   * @param date original date
+   * @param months months to add
+   */
+  static addMonths(date: Date, months: number) {
+    if (date != null) {
+      const d = new Date(date);
+      d.setMonth(d.getMonth() + months);
+      return d;
+    } else {
+      return null;
+    }
+  }
+
+  //
   // Comparison
   //
 
@@ -22,10 +69,14 @@ export class DateService {
    * @returns {boolean} true if given date is today
    */
   static isToday(date: Date): boolean {
-    const now = new Date();
+    if (date != null) {
+      const now = new Date();
 
-    return DateService.isAfter(date, DateService.getDayStart(now)) &&
-      DateService.isBefore(date, DateService.getDayEnd(now));
+      return DateService.isAfter(date, DateService.getDayStart(now)) &&
+        DateService.isBefore(date, DateService.getDayEnd(now));
+    } else {
+      return false;
+    }
   }
 
   /**
