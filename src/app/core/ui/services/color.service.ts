@@ -9,6 +9,7 @@ import {Person} from '../../entity/model/person.model';
 import {TaskletTypeGroup} from '../../entity/model/tasklet-type-group.enum';
 import {Hue} from '../model/hue.model';
 import {FeatureType} from '../../settings/model/feature-type.enum';
+import {DateService} from '../../entity/services/date.service';
 
 /**
  * Handles derived colors
@@ -26,6 +27,15 @@ export class ColorService {
     this.materialColorService.hue(PaletteType.TEAL, HueType._800),
     this.materialColorService.hue(PaletteType.TEAL, HueType._900),
 
+  ];
+
+  /** Array of available task colors */
+  taskUrgentHues = [
+    this.materialColorService.hue(PaletteType.ORANGE, HueType._500),
+    this.materialColorService.hue(PaletteType.ORANGE, HueType._600),
+    this.materialColorService.hue(PaletteType.ORANGE, HueType._700),
+    this.materialColorService.hue(PaletteType.ORANGE, HueType._800),
+    this.materialColorService.hue(PaletteType.ORANGE, HueType._900),
   ];
 
   /** Array of available task colors */
@@ -120,8 +130,14 @@ export class ColorService {
       return null;
     }
 
-    return this.taskHues[
-    Math.abs(Hash.hash(task.name.toLowerCase().replace(' ', ''))) % this.taskHues.length];
+    if (task.dueDate == null || DateService.isAfter(task.dueDate, DateService.addDays(new Date(), 1))) {
+      const index = Math.abs(Hash.hash(task.name.toLowerCase().replace(' ', ''))) % this.taskHues.length;
+      return this.taskHues[index];
+    } else {
+      // Due date is in less than a day
+      const index = Math.abs(Hash.hash(task.name.toLowerCase().replace(' ', ''))) % this.taskUrgentHues.length;
+      return this.taskUrgentHues[index];
+    }
   }
 
   /**
