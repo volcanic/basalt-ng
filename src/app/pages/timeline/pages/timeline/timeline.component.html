@@ -40,7 +40,8 @@
   <mat-sidenav-content cdkScrollable>
     <div class="content">
       <app-suggested-actions [suggestedTasks]="tasks"
-                             (taskletEventEmitter)="onTaskletEvent($event)"></app-suggested-actions>
+                             (taskletEventEmitter)="onTaskletEvent($event)"
+                             (taskEventEmitter)="onTaskEvent($event)"></app-suggested-actions>
 
       <app-tasklet-list [tasklets]="tasklets" [media]="media" [tasks]="tasksMap" [projects]="projectsMap"
                         [tags]="tagsMap" [persons]="personsMap"

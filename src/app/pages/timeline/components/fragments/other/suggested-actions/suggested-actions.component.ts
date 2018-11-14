@@ -9,12 +9,10 @@ import {Action} from '../../../../../../core/entity/model/action.enum';
 import {TaskService} from '../../../../../../core/entity/services/task.service';
 
 /**
- * Represents a suggested action button
+ * Represents suggested actions
  */
-class SuggestedAction {
+class SuggestedActions {
 
-  /** Tasklet type */
-  taskletType: TaskletType;
   /** Label to be displayed */
   label: string;
   /** Icon to be used */
@@ -23,6 +21,11 @@ class SuggestedAction {
   backgroundColor: string;
   /** Background color to be used */
   iconColor: string;
+
+  /** Task */
+  task?: Task;
+  /** Tasklet type */
+  taskletType?: TaskletType;
 }
 
 /**
@@ -40,11 +43,13 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
   @Input() suggestedTasks: Task[] = [];
   /** Event emitter indicating tasklet action */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+  /** Event emitter indicating task action */
+  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task }>();
 
   /** List of suggested actions */
-  suggestedActions: SuggestedAction[] = [];
+  suggestedActions: SuggestedActions[] = [];
   /** List of static suggested actions */
-  staticSuggestedActions: SuggestedAction[] = [];
+  staticSuggestedActions: SuggestedActions[] = [];
 
   /** Maximum number of dynamically picked tasks */
   MAX_NUMBER_DYNAMIC = 3;
@@ -75,7 +80,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
    * Handles on-change lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
-    this.initializeSuggestedActions();
+    this.initializeDynamicSuggestedActions();
   }
 
   //
@@ -83,9 +88,12 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
   //
 
   /**
-   * Initializes suggested actions
+   * Initializes dynamic suggested actions which are fed by
+   * <li> upcoming recurring tasks
+   * <li> tasks being overdue
+   * <li> tasks that are sorted by urgency and importance
    */
-  private initializeSuggestedActions() {
+  private initializeDynamicSuggestedActions() {
     this.suggestedActions = [];
 
     // Recurring tasks
@@ -94,11 +102,12 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
       return this.taskService.isTaskRelevantSoon(task, getLastestOccurrence);
     }).slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
-        const suggestedAction = new SuggestedAction();
+        const suggestedAction = new SuggestedActions();
         suggestedAction.icon = 'loop';
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskRecurringColor(task);
         suggestedAction.iconColor = this.colorService.getTaskRecurringContrast(task);
+        suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
 
@@ -106,11 +115,12 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
     this.suggestedTasks.filter(this.taskService.isTaskOverdue)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
-        const suggestedAction = new SuggestedAction();
+        const suggestedAction = new SuggestedActions();
         suggestedAction.icon = 'warning';
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskOverdueColor(task);
         suggestedAction.iconColor = this.colorService.getTaskOverdueContrast(task);
+        suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
 
@@ -118,11 +128,12 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
     this.suggestedTasks.filter(this.taskService.isTaskNext)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
-        const suggestedAction = new SuggestedAction();
+        const suggestedAction = new SuggestedActions();
         suggestedAction.icon = this.taskletService.getIconByTaskletType(TaskletType.ACTION);
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
         suggestedAction.iconColor = this.colorService.getTaskContrast(task);
+        suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
   }
@@ -131,7 +142,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
    * Initializes static suggested actions
    */
   private initializeStaticSuggestedActions() {
-    const suggestedActionLunchBreak = new SuggestedAction();
+    const suggestedActionLunchBreak = new SuggestedActions();
     suggestedActionLunchBreak.taskletType = TaskletType.LUNCH_BREAK;
     suggestedActionLunchBreak.icon = this.taskletService.getIconByTaskletType(TaskletType.LUNCH_BREAK);
     suggestedActionLunchBreak.label = TaskletType.LUNCH_BREAK.toString();
@@ -139,7 +150,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
     suggestedActionLunchBreak.iconColor = this.colorService.getTaskletTypeGroupColor(TaskletTypeGroup.BREAK).contrast;
     this.staticSuggestedActions.push(suggestedActionLunchBreak);
 
-    const suggestedActionFinishingTime = new SuggestedAction();
+    const suggestedActionFinishingTime = new SuggestedActions();
     suggestedActionFinishingTime.taskletType = TaskletType.FINISHING_TIME;
     suggestedActionFinishingTime.icon = this.taskletService.getIconByTaskletType(TaskletType.FINISHING_TIME);
     suggestedActionFinishingTime.label = TaskletType.FINISHING_TIME.toString();
@@ -151,6 +162,14 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
   //
   // Actions
   //
+
+  /**
+   * Handles click on dynamic suggested action
+   * @param task
+   */
+  onDynamicSuggestedActionClicked(task: Task) {
+    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: task});
+  }
 
   /**
    * Handles click on static suggested action

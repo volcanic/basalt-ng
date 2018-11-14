@@ -3,7 +3,8 @@
                                [backgroundColor]="suggestedAction.backgroundColor"
                                [iconColor]="suggestedAction.iconColor"
                                [icon]="suggestedAction.icon"
-                               [label]="suggestedAction.label">
+                               [label]="suggestedAction.label"
+                               (buttonClickedEmitter)="onDynamicSuggestedActionClicked(suggestedAction.task)">
   </app-suggested-action-button>
 
   <div class="flexbox"></div>
