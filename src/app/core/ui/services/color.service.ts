@@ -20,29 +20,30 @@ export class ColorService {
 
   /** Array of available task colors */
   taskHues = [
-    this.materialColorService.hue(PaletteType.TEAL, HueType._400),
     this.materialColorService.hue(PaletteType.TEAL, HueType._500),
     this.materialColorService.hue(PaletteType.TEAL, HueType._600),
     this.materialColorService.hue(PaletteType.TEAL, HueType._700),
     this.materialColorService.hue(PaletteType.TEAL, HueType._800),
+    this.materialColorService.hue(PaletteType.TEAL, HueType._900),
+
   ];
 
   /** Array of available task colors */
   taskOverdueHues = [
-    this.materialColorService.hue(PaletteType.RED, HueType._400),
     this.materialColorService.hue(PaletteType.RED, HueType._500),
     this.materialColorService.hue(PaletteType.RED, HueType._600),
     this.materialColorService.hue(PaletteType.RED, HueType._700),
     this.materialColorService.hue(PaletteType.RED, HueType._800),
+    this.materialColorService.hue(PaletteType.RED, HueType._900),
   ];
 
   /** Array of available task colors */
   taskRecurringHues = [
-    this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._400),
     this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._500),
     this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._600),
     this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._700),
     this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._800),
+    this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._900),
   ];
 
   /** Array of available project colors */
