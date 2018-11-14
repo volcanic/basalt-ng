@@ -7,6 +7,7 @@ import {Task} from '../../../../../../core/entity/model/task.model';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {Action} from '../../../../../../core/entity/model/action.enum';
 import {TaskService} from '../../../../../../core/entity/services/task.service';
+import {DateService} from '../../../../../../core/entity/services/date.service';
 
 /**
  * Represents suggested actions
@@ -21,6 +22,8 @@ class SuggestedActions {
   backgroundColor: string;
   /** Background color to be used */
   iconColor: string;
+  /** Tooltip */
+  tooltip?: string;
 
   /** Task */
   task?: Task;
@@ -107,6 +110,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskRecurringColor(task);
         suggestedAction.iconColor = this.colorService.getTaskRecurringContrast(task);
+        suggestedAction.tooltip = `${task.name} (due: ${DateService.getDateString(task.dueDate)}, ${DateService.getTimeString(task.dueDate)})`;
         suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
@@ -120,6 +124,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskOverdueColor(task);
         suggestedAction.iconColor = this.colorService.getTaskOverdueContrast(task);
+        suggestedAction.tooltip = `${task.name} (due: ${DateService.getDateString(task.dueDate)}, ${DateService.getTimeString(task.dueDate)})`;
         suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
@@ -133,6 +138,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
         suggestedAction.iconColor = this.colorService.getTaskContrast(task);
+        suggestedAction.tooltip = `${task.name} (due: ${DateService.getDateString(task.dueDate)}, ${DateService.getTimeString(task.dueDate)})`;
         suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });

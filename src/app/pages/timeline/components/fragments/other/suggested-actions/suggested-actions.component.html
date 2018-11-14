@@ -4,6 +4,9 @@
                                [iconColor]="suggestedAction.iconColor"
                                [icon]="suggestedAction.icon"
                                [label]="suggestedAction.label"
+                               [matTooltip]="suggestedAction.tooltip"
+                               [matTooltipPosition]="'below'"
+                               [matTooltipShowDelay]="'250'"
                                (buttonClickedEmitter)="onDynamicSuggestedActionClicked(suggestedAction.task)">
   </app-suggested-action-button>
 
