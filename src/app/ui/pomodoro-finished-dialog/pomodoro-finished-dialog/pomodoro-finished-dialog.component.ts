@@ -62,6 +62,9 @@ export class PomodoroFinishedDialogComponent implements OnInit {
   // Actions
   //
 
+  /**
+   * Handles activation of checkbox
+   */
   onCheckboxActived() {
     setInterval(() => {
       this.disabled = true;
