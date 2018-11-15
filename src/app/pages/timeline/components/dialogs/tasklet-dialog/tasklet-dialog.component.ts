@@ -226,19 +226,19 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   private handleTaskletChanges() {
     switch (this.mode) {
       case DialogMode.ADD: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CREATED, this.tasklet)) {
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CREATED, this.tasklet, this.task)) {
           this.addTasklet();
         }
         break;
       }
       case DialogMode.UPDATE: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_UPDATED, this.tasklet)) {
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task)) {
           this.updateTasklet();
         }
         break;
       }
       case DialogMode.CONTINUE: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CONTINUED, this.tasklet)) {
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CONTINUED, this.tasklet, this.task)) {
           this.continueTasklet();
         }
         break;
@@ -371,9 +371,10 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * Determines whether the displayed tasklet contains a specific display aspect
    * @param displayAspect display aspect
    * @param tasklet tasklet
+   * @param task task
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
-    return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
+  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task): boolean {
+    return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
   }
 
   /**

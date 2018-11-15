@@ -513,15 +513,16 @@ export class TaskletService {
    * Determines if a given tasklet contains a display aspect
    * @param displayAspect display aspect
    * @param tasklet tasklet
+   * @param task tasks
    * @param previousDescription previous description
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, previousDescription?: Description): boolean {
+  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task, previousDescription?: Description): boolean {
     switch (displayAspect) {
       case DisplayAspect.CAN_BE_ASSIGNED_TO_TASK: {
         return this.taskletDisplayService.canBeAssignedToTask(tasklet);
       }
       case DisplayAspect.CONTAINS_DESCRIPTION: {
-        return TaskletDisplayService.containsDescription(tasklet);
+        return this.taskletDisplayService.containsDescription(tasklet);
       }
       case DisplayAspect.CONTAINS_PREVIOUS_DESCRIPTION: {
         return TaskletDisplayService.containsPreviousDescription(previousDescription);
@@ -542,13 +543,13 @@ export class TaskletService {
         return TaskletDisplayService.containsPersons(tasklet);
       }
       case DisplayAspect.CAN_BE_CREATED: {
-        return TaskletDisplayService.canBeCreated(tasklet);
+        return this.taskletDisplayService.canBeCreated(tasklet, task);
       }
       case DisplayAspect.CAN_BE_UPDATED: {
-        return TaskletDisplayService.canBeUpdated(tasklet);
+        return this.taskletDisplayService.canBeUpdated(tasklet, task);
       }
       case DisplayAspect.CAN_BE_CONTINUED: {
-        return TaskletDisplayService.canBeContinued(tasklet);
+        return this.taskletDisplayService.canBeContinued(tasklet, task);
       }
       case DisplayAspect.IS_POMODORO_STARTED: {
         return this.taskletDisplayService.isPomodoroStarted(tasklet);
