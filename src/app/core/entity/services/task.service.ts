@@ -13,6 +13,7 @@ import {Scope} from '../model/scope.enum';
 import {TagService} from './tag.service';
 import {RecurrenceInterval} from '../model/recurrence-interval.enum';
 import {DateService} from './date.service';
+import {DisplayAspect, TaskDisplayService} from './task-display.service';
 
 /**
  * Handles tasks including
@@ -540,6 +541,26 @@ export class TaskService {
   }
 
   // </editor-fold>
+
+  //
+  // Delegated: Display aspects
+  //
+
+  /**
+   * Determines if a given tasklet contains a display aspect
+   * @param displayAspect display aspect
+   * @param task tasks
+   */
+  public containsDisplayAspect(displayAspect: DisplayAspect, task: Task): boolean {
+    switch (displayAspect) {
+      case DisplayAspect.CAN_BE_CREATED: {
+        return TaskDisplayService.canBeCreated(task);
+      }
+      case DisplayAspect.CAN_BE_UPDATED: {
+        return TaskDisplayService.canBeUpdated(task);
+      }
+    }
+  }
 
   //
   // Notification

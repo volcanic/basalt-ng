@@ -9,6 +9,8 @@ import {CloneService} from 'app/core/entity/services/clone.service';
 import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
+import {DisplayAspect} from '../../../../../core/entity/services/task-display.service';
+import {TaskService} from '../../../../../core/entity/services/task.service';
 
 /**
  * Displays task dialog
@@ -50,16 +52,20 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   /** Person options */
   personOptions: string[];
 
+  /** Enum of display aspects */
+  displayAspectType = DisplayAspect;
 
   /**
    * Constructor
+   * @param taskService task service
    * @param suggestionService suggestion service
    * @param {DateAdapter<any>} adapter
    * @param {MatDialog} dialog dialog
    * @param {MatDialogRef<PomodoroFinishedDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(private suggestionService: SuggestionService,
+  constructor(private taskService: TaskService,
+              private suggestionService: SuggestionService,
               private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -270,6 +276,15 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   //
   // Helpers
   //
+
+  /**
+   * Determines whether the displayed task contains a specific display aspect
+   * @param displayAspect display aspect
+   * @param task task
+   */
+  public containsDisplayAspect(displayAspect: DisplayAspect, task: Task): boolean {
+    return this.taskService.containsDisplayAspect(displayAspect, task);
+  }
 
   // Tags
 
