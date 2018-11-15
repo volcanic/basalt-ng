@@ -988,9 +988,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Determines whether the displayed tasklet contains a specific display aspect
    * @param displayAspect display aspect
    * @param tasklet tasklet
+   * @param task task
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
-    return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
+  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task): boolean {
+    return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
   }
 
   // Tags
