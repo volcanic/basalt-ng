@@ -82,9 +82,13 @@ export class TaskListComponent implements OnInit, OnChanges {
   initializeTaskCategories() {
     this.tasksOverdue = this.tasks.filter(this.taskService.isTaskOverdue);
     this.tasksNext = this.tasks.filter(this.taskService.isTaskNext);
-    this.tasksInbox = this.tasks.filter(this.taskService.isTaskInInbox);
+    this.tasksInbox = this.tasks.filter(this.taskService.isTaskInInbox).sort((t1, t2) => {
+      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+    });
     this.tasksDelegated = this.tasks.filter(this.taskService.isTaskDelegated);
-    this.tasksRecurring = this.tasks.filter(this.taskService.isTaskRecurring);
+    this.tasksRecurring = this.tasks.filter(this.taskService.isTaskRecurring).sort((t1, t2) => {
+      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+    });
     this.tasksCompleted = this.tasks.filter(this.taskService.isTaskCompleted);
 
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';

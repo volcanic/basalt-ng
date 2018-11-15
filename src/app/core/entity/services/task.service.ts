@@ -552,9 +552,7 @@ export class TaskService {
    */
   public notify() {
     this.taskSubject.next(this.task);
-    this.tasksSubject.next(Array.from(this.tasks.values()).sort((t1, t2) => {
-      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
-    }));
+    this.tasksSubject.next(Array.from(this.tasks.values()));
   }
 
   // </editor-fold>
