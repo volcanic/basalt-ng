@@ -1145,7 +1145,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
             disableClose: false,
             data: {
-              title: 'Delete person',
+              title: 'Delete task',
               text: 'Do you want to delete this task?',
               action: 'Delete',
               value: task
