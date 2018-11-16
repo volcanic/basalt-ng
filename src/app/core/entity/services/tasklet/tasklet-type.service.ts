@@ -40,7 +40,6 @@ export class TaskletTypeService {
         }
         case TaskletTypeGroup.ACTION: {
           this.taskletTypeGroups.set(TaskletType.ACTION, group);
-          this.taskletTypeGroups.set(TaskletType.TRAVEL, group);
           this.taskletTypeGroups.set(TaskletType.POMODORO, group);
           break;
         }
@@ -64,10 +63,14 @@ export class TaskletTypeService {
           this.taskletTypeGroups.set(TaskletType.IDEA, group);
           break;
         }
+        case TaskletTypeGroup.TRAVEL: {
+          this.taskletTypeGroups.set(TaskletType.COMMUTE, group);
+          this.taskletTypeGroups.set(TaskletType.TRAVEL, group);
+          break;
+        }
         case TaskletTypeGroup.BREAK: {
           this.taskletTypeGroups.set(TaskletType.POMODORO_BREAK, group);
           this.taskletTypeGroups.set(TaskletType.LUNCH_BREAK, group);
-          this.taskletTypeGroups.set(TaskletType.COMMUTE, group);
           this.taskletTypeGroups.set(TaskletType.FINISHING_TIME, group);
           break;
         }
@@ -133,6 +136,9 @@ export class TaskletTypeService {
       case TaskletTypeGroup.IDEA: {
         return 'lightbulb_outline';
       }
+      case TaskletTypeGroup.TRAVEL: {
+        return 'flight';
+      }
       case TaskletTypeGroup.BREAK: {
         return 'local_cafe';
       }
@@ -150,9 +156,6 @@ export class TaskletTypeService {
       }
       case TaskletType.ACTION: {
         return 'turned_in_not';
-      }
-      case TaskletType.TRAVEL: {
-        return 'flight';
       }
       case TaskletType.POMODORO: {
         return 'circle_slice_3';
@@ -193,6 +196,9 @@ export class TaskletTypeService {
       }
       case TaskletType.COMMUTE: {
         return 'directions_bike';
+      }
+      case TaskletType.TRAVEL: {
+        return 'flight';
       }
       case TaskletType.LUNCH_BREAK: {
         return 'local_dining';
