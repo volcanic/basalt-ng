@@ -162,12 +162,15 @@ export class TaskletDisplayService {
    * @param task task
    */
   canBeContinued(tasklet: Tasklet, task: Task): boolean {
-    return tasklet.type === TaskletType.ACTION
-      || tasklet.type === TaskletType.MEETING
-      || tasklet.type === TaskletType.DAILY_SCRUM
-      || tasklet.type === TaskletType.DEVELOPMENT
-      || tasklet.type === TaskletType.DEBUGGING
-      || tasklet.type === TaskletType.IDEA;
+    return tasklet != null
+      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
+      && (!this.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0))
+      && (tasklet.type === TaskletType.ACTION
+        || tasklet.type === TaskletType.MEETING
+        || tasklet.type === TaskletType.DAILY_SCRUM
+        || tasklet.type === TaskletType.DEVELOPMENT
+        || tasklet.type === TaskletType.DEBUGGING
+        || tasklet.type === TaskletType.IDEA);
   }
 
   /**
