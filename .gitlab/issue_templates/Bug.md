@@ -12,4 +12,4 @@ _Describe how the app currently behaves._
 * _step 2_
 * ...
 
-/label ~bug
+/label ~Bug
