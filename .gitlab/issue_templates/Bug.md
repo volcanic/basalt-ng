@@ -11,3 +11,5 @@ _Describe how the app currently behaves._
 * _step 1_
 * _step 2_
 * ...
+
+/label ~bug
