@@ -3,11 +3,9 @@ import {SnackbarService} from 'app/core/ui/services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
 import {TaskletService} from 'app/core/entity/services/tasklet.service';
 import {TaskletDialogComponent} from '../../components/dialogs/tasklet-dialog/tasklet-dialog.component';
-import {TagFilterDialogComponent} from '../../components/dialogs/tag-filter-dialog/tag-filter-dialog.component';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
 import {AboutDialogComponent} from 'app/ui/about-dialog/about-dialog/about-dialog.component';
 import {environment} from 'app/../environments/environment';
-import {ProjectFilterDialogComponent} from '../../components/dialogs/project-filter-dialog/project-filter-dialog.component';
 import {UploadDialogComponent} from '../../components/dialogs/upload-dialog/upload-dialog.component';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {Project} from 'app/core/entity/model/project.model';
@@ -22,7 +20,6 @@ import {MediaService} from 'app/core/ui/services/media.service';
 import {Media} from 'app/core/ui/model/media.enum';
 import {map, takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
-import {TaskListDialogComponent} from '../../components/dialogs/task-list-dialog/task-list-dialog.component';
 import {ProjectListDialogComponent} from '../../components/dialogs/project-list-dialog/project-list-dialog.component';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
 import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
@@ -34,7 +31,6 @@ import {TagDialogComponent} from '../../components/dialogs/tag-dialog/tag-dialog
 import {PersonDialogComponent} from '../../components/dialogs/person-dialog/person-dialog.component';
 import {Person} from 'app/core/entity/model/person.model';
 import {PersonService} from 'app/core/entity/services/person.service';
-import {PersonFilterDialogComponent} from '../../components/dialogs/person-filter-dialog/person-filter-dialog.component';
 import {TagListDialogComponent} from '../../components/dialogs/tag-list-dialog/tag-list-dialog.component';
 import {MatchService} from 'app/core/entity/services/match.service';
 import {ConfirmationDialogComponent} from 'app/ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
@@ -58,6 +54,7 @@ import {SettingsService} from '../../../../core/settings/services/settings.servi
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {Setting} from '../../../../core/settings/model/setting.model';
 import {DailyScrumItemType} from '../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
+import {TaskListDialogComponent} from '../../components/dialogs/task-list-dialog/task-list-dialog.component';
 
 /**
  * Displays timeline page
@@ -1798,66 +1795,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'clear-filter': {
         this.filterService.clearAllFilters();
         this.snackbarService.showSnackbar('Filters cleared');
-        break;
-      }
-      case 'filter-tags': {
-        const dialogRef = this.dialog.open(TagFilterDialogComponent, {
-          disableClose: false,
-          data: {
-            dialogTitle: 'Select tags',
-            tags: Array.from(this.filterService.tags.values()),
-            tagsNone: this.filterService.tagsNone
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const tags = result.tags as Tag[];
-            const tagsNone = result.tagsNone as boolean;
-
-            this.filterService.updateTags(tags, false, tagsNone);
-            this.snackbarService.showSnackbar('Tags selected');
-          }
-        });
-        break;
-      }
-      case 'filter-projects': {
-        const dialogRef = this.dialog.open(ProjectFilterDialogComponent, {
-          disableClose: false,
-          data: {
-            dialogTitle: 'Select projects',
-            projects: Array.from(this.filterService.projects.values()),
-            projectsNone: this.filterService.projectsNone
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const projects = result.projects as Project[];
-            const projectsNone = result.projectsNone as boolean;
-
-            this.filterService.updateProjects(projects, false, projectsNone);
-            this.snackbarService.showSnackbar('Projects selected');
-          }
-        });
-        break;
-      }
-      case 'filter-persons': {
-        const dialogRef = this.dialog.open(PersonFilterDialogComponent, {
-          disableClose: false,
-          data: {
-            dialogTitle: 'Select persons',
-            persons: Array.from(this.filterService.persons.values()),
-            personsNone: this.filterService.personsNone
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const persons = result.persons as Person[];
-            const personsNone = result.personsNone as boolean;
-
-            this.filterService.updatePersons(persons, false, personsNone);
-            this.snackbarService.showSnackbar('Persons selected');
-          }
-        });
         break;
       }
       case 'upload': {
