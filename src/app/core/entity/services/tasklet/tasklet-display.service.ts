@@ -191,6 +191,7 @@ export class TaskletDisplayService {
       && group !== null
       && group !== TaskletTypeGroup.BREAK
       && tasklet.type !== TaskletType.UNSPECIFIED
+      && tasklet.type !== TaskletType.COMMUTE
       && tasklet.type !== TaskletType.DAILY_SCRUM;
   }
 
