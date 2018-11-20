@@ -213,6 +213,7 @@ export class TaskletDisplayService {
 
     return tasklet != null
       && ((group != null && group === TaskletTypeGroup.BREAK)
+        || tasklet.type === TaskletType.COMMUTE
         || !DateService.isBeforeNow(tasklet.creationDate));
   }
 }
