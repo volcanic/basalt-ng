@@ -6,7 +6,7 @@ import {Description} from '../../model/description.model';
 import {TaskletTypeService} from './tasklet-type.service';
 import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
 import {DateService} from '../date.service';
-import {TaskService} from '../task.service';
+import {TaskService} from '../task/task.service';
 
 /**
  * Enum representing display aspects

@@ -1,18 +1,18 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Task} from '../model/task.model';
+import {Task} from '../../model/task.model';
 import {Subject} from 'rxjs/Subject';
-import {EntityType} from '../model/entity-type.enum';
-import {SuggestionService} from './suggestion.service';
-import {PouchDBService} from '../../persistence/services/pouchdb.service';
-import {Project} from '../model/project.model';
-import {ProjectService} from './project.service';
-import {environment} from '../../../../environments/environment';
-import {SnackbarService} from '../../ui/services/snackbar.service';
-import {ScopeService} from './scope.service';
-import {Scope} from '../model/scope.enum';
-import {TagService} from './tag.service';
-import {RecurrenceInterval} from '../model/recurrence-interval.enum';
-import {DateService} from './date.service';
+import {EntityType} from '../../model/entity-type.enum';
+import {SuggestionService} from '../suggestion.service';
+import {PouchDBService} from '../../../persistence/services/pouchdb.service';
+import {Project} from '../../model/project.model';
+import {ProjectService} from '../project.service';
+import {environment} from '../../../../../environments/environment';
+import {SnackbarService} from '../../../ui/services/snackbar.service';
+import {ScopeService} from '../scope.service';
+import {Scope} from '../../model/scope.enum';
+import {TagService} from '../tag.service';
+import {RecurrenceInterval} from '../../model/recurrence-interval.enum';
+import {DateService} from '../date.service';
 import {DisplayAspect, TaskDisplayService} from './task-display.service';
 
 /**
@@ -243,9 +243,6 @@ export class TaskService {
   public createTask(task: Task, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (task != null) {
-        // Remove transient attributes
-        task.checked = undefined;
-
         task.scope = this.scopeService.scope;
 
         // Update related objects

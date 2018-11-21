@@ -3,7 +3,7 @@ import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {Media} from '../../../../../../core/ui/model/media.enum';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 import {DisplayAspect} from '../../../../../../core/entity/services/tasklet/tasklet-display.service';
-import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 import {Project} from '../../../../../../core/entity/model/project.model';
 import {Action} from '../../../../../../core/entity/model/action.enum';
 import {Tag} from '../../../../../../core/entity/model/tag.model';

@@ -14,7 +14,7 @@ import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-m
 import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
-import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../core/entity/services/tasklet/tasklet.service';
 import {CloneService} from '../../../../../core/entity/services/clone.service';
 
 /**
@@ -195,7 +195,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    */
   onTagsChanged(tags: string[]) {
     this.tags = tags.map(t => {
-      return new Tag(t, true);
+      return new Tag(t);
     });
   }
 
@@ -205,7 +205,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    */
   onPersonsChanged(persons: string[]) {
     this.persons = persons.map(p => {
-      return new Person(p, true);
+      return new Person(p);
     });
   }
 

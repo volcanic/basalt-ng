@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
-import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 import {TaskletType} from '../../../../../../core/entity/model/tasklet-type.enum';
 import {Task} from '../../../../../../core/entity/model/task.model';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {Action} from '../../../../../../core/entity/model/action.enum';
-import {TaskService} from '../../../../../../core/entity/services/task.service';
+import {TaskService} from '../../../../../../core/entity/services/task/task.service';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 
 /**

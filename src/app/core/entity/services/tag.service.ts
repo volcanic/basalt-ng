@@ -1,5 +1,5 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Subject} from 'rxjs/index';
+import {Subject} from 'rxjs';
 import {Tag} from '../model/tag.model';
 import {SuggestionService} from './suggestion.service';
 import {EntityType} from '../model/entity-type.enum';
@@ -132,9 +132,6 @@ export class TagService {
   public createTag(tag: Tag): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
-        // Remove transient attributes
-        tag.checked = undefined;
-
         tag.scope = this.scopeService.scope;
 
         return this.pouchDBService.upsert(tag.id, tag).then(() => {
@@ -154,9 +151,6 @@ export class TagService {
   public updateTag(tag: Tag, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
-        // Remove transient attributes
-        tag.checked = undefined;
-
         tag.modificationDate = new Date();
 
         return this.pouchDBService.upsert(tag.id, tag).then(() => {

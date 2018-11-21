@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnIn
 import {Task} from '../../../../../core/entity/model/task.model';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Action} from 'app/core/entity/model/action.enum';
-import {TaskService} from '../../../../../core/entity/services/task.service';
+import {TaskService} from '../../../../../core/entity/services/task/task.service';
 
 /**
  * Displays task list

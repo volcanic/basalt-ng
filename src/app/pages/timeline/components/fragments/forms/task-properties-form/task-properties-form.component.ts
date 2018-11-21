@@ -216,7 +216,7 @@ export class TaskPropertiesFormComponent implements OnInit {
    */
   onTagsChanged(tags: string[]) {
     this.tags = tags.map(t => {
-      return new Tag(t, true);
+      return new Tag(t);
     });
     this.notify();
   }

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Task} from '../model/task.model';
+import {Task} from '../../model/task.model';
 
 /**
  * Enum representing display aspects

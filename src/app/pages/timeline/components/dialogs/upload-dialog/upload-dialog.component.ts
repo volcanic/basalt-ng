@@ -5,8 +5,8 @@ import {DropResult, SUCCESS} from 'app/pages/timeline/components/fragments/other
 import {SnackbarService} from 'app/core/ui/services/snackbar.service';
 import {Entity} from 'app/core/entity/model/entity.model';
 import {ProjectService} from 'app/core/entity/services/project.service';
-import {TaskService} from 'app/core/entity/services/task.service';
-import {TaskletService} from 'app/core/entity/services/tasklet.service';
+import {TaskService} from 'app/core/entity/services/task/task.service';
+import {TaskletService} from 'app/core/entity/services/tasklet/tasklet.service';
 import {EntityService} from 'app/core/entity/services/entity.service';
 import {PouchDBService} from 'app/core/persistence/services/pouchdb.service';
 

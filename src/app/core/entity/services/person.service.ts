@@ -143,9 +143,6 @@ export class PersonService {
   public createPerson(person: Person): Promise<any> {
     return new Promise(() => {
       if (person != null) {
-        // Remove transient attributes
-        person.checked = undefined;
-
         person.scope = this.scopeService.scope;
 
         return this.pouchDBService.upsert(person.id, person).then(() => {
@@ -165,9 +162,6 @@ export class PersonService {
   public updatePerson(person: Person, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (person != null) {
-        // Remove transient attributes
-        person.checked = undefined;
-
         person.modificationDate = new Date();
 
         return this.pouchDBService.upsert(person.id, person).then(() => {

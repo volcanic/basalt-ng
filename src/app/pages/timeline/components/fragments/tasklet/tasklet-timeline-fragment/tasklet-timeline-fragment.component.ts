@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
-import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 import {Media} from '../../../../../../core/ui/model/media.enum';
 
 /**

@@ -23,8 +23,8 @@ import {SettingsService} from '../../../../core/settings/services/settings.servi
 import {SnackbarService} from '../../../../core/ui/services/snackbar.service';
 import {SuggestionService} from '../../../../core/entity/services/suggestion.service';
 import {TagService} from '../../../../core/entity/services/tag.service';
-import {TaskletService} from '../../../../core/entity/services/tasklet.service';
-import {TaskService} from '../../../../core/entity/services/task.service';
+import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
+import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {map, takeUntil} from 'rxjs/operators';
@@ -211,7 +211,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.findEntities();
 
-    this.route.params.subscribe(param => {
+    this.route.params.subscribe(() => {
       this.id = this.route.snapshot.paramMap.get('id');
       this.findEntities();
     });
@@ -321,7 +321,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeProjectSubscription() {
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.initializeOptions();
     });
   }
@@ -332,7 +332,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeTagSubscription() {
     this.tagService.tagsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.initializeOptions();
     });
   }
@@ -343,7 +343,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializePersonSubscription() {
     this.personService.personsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.initializeOptions();
     });
   }
@@ -570,7 +570,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onTaskEvent(event: { action: Action, task: Task, tasks?: Task[], project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
     const task = CloneService.cloneTask(event.task as Task);
-    const tasks = CloneService.cloneTasks(event.tasks as Task[]);
+    // const tasks = CloneService.cloneTasks(event.tasks as Task[]);
     const project = CloneService.cloneProject(event.project as Project);
     const delegatedTo = CloneService.clonePerson(event.delegatedTo as Person);
     const tags = CloneService.cloneTags(event.tags as Tag[]);
@@ -585,7 +585,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Create task itself
         this.taskService.createTask(task).then(() => {
-          this.filterService.updateTasksList([task], true);
+          this.filterService.updateTasksListIfNotEmpty([task]);
           this.snackbarService.showSnackbar('Added task');
         });
         break;
@@ -677,12 +677,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // New project
       if (p == null && project.name != null && project.name !== '') {
-        p = new Project(project.name, true);
+        p = new Project(project.name);
         this.projectService.createProject(p, false).then(() => {
         });
       }
 
-      this.filterService.updateProjectsList([p], true);
+      this.filterService.updateProjectsListIfNotEmpty([p]);
       task.projectId = p.id;
     } else {
       // Unassign project
@@ -702,12 +702,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // New person
       if (p == null && delegatedTo.name != null && delegatedTo.name !== '') {
-        p = new Person(delegatedTo.name, true);
+        p = new Person(delegatedTo.name);
         this.personService.createPerson(p).then(() => {
         });
       }
 
-      this.filterService.updatePersonsList([p], true);
+      this.filterService.updatePersonsListIfNotEmpty([p]);
       task.delegatedToId = p.id;
     } else {
       // Unassign delegated-to
@@ -729,12 +729,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         let tag = this.tagService.getTagByName(t.name);
 
         if (tag == null) {
-          tag = new Tag(t.name, true);
+          tag = new Tag(t.name);
           this.tagService.createTag(tag).then(() => {
           });
         }
 
-        this.filterService.updateTagsList([tag], true);
+        this.filterService.updateTagsListIfNotEmpty([tag]);
         aggregatedTagIds.set(tag.id, tag.id);
       });
 
@@ -743,22 +743,6 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
       // Unassign tags
       task.tagIds = [];
     }
-  }
-
-  /**
-   * Returns existing person if exists or creates a new one if not
-   * @param p person name
-   */
-  private lookupPerson(p: string): Person {
-    let person = this.personService.getPersonByName(p);
-
-    if (person == null) {
-      person = new Person(p, true);
-      this.personService.createPerson(person).then(() => {
-      });
-    }
-
-    return person;
   }
 
   //

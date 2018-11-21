@@ -14,19 +14,14 @@ export class Person extends Entity {
   phone = '';
   /** Department */
   department = '';
-  /** Whether person is checked in filter mechanism */
-  checked: boolean;
 
   /**
    * Constructor
    * @param {string} name person name
-   * @param {boolean} checked whether person is checked in filter mechanism
    */
-  constructor(name: string, checked: boolean = false) {
+  constructor(name: string) {
     super();
     this.entityType = EntityType.PERSON;
     this.name = name.trim();
-
-    this.checked = checked;
   }
 }

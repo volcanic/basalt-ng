@@ -48,7 +48,7 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
    */
   private initializePerson() {
     if (this.person == null) {
-      this.person = new Person('', true);
+      this.person = new Person('');
     }
 
     this.person = CloneService.clonePerson(this.person);

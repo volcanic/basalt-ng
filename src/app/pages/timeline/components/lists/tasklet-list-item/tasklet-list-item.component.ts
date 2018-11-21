@@ -10,7 +10,7 @@ import {ColorService} from 'app/core/ui/services/color.service';
 import {Action} from 'app/core/entity/model/action.enum';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Person} from 'app/core/entity/model/person.model';
-import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../core/entity/services/tasklet/tasklet.service';
 import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 
 /**

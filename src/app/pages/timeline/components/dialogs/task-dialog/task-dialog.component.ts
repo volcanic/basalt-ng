@@ -9,8 +9,8 @@ import {CloneService} from 'app/core/entity/services/clone.service';
 import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
-import {DisplayAspect} from '../../../../../core/entity/services/task-display.service';
-import {TaskService} from '../../../../../core/entity/services/task.service';
+import {DisplayAspect} from '../../../../../core/entity/services/task/task-display.service';
+import {TaskService} from '../../../../../core/entity/services/task/task.service';
 
 /**
  * Displays task dialog

@@ -3,7 +3,7 @@ import {ProjectDigest} from '../../model/project-digest.model';
 import {DateService} from '../../../entity/services/date.service';
 import {TaskletType} from '../../../entity/model/tasklet-type.enum';
 import {Tasklet} from '../../../entity/model/tasklet.model';
-import {TaskletService} from '../../../entity/services/tasklet.service';
+import {TaskletService} from '../../../entity/services/tasklet/tasklet.service';
 import {ProjectEffort} from '../../model/project-effort.model';
 import {TaskEffort} from '../../model/task-effort.model';
 import {Project} from '../../../entity/model/project.model';
@@ -99,7 +99,7 @@ export class DigestService {
           // Get existing efforts (project)
           let project = this.taskletService.getProjectByTasklet(tasklet);
           if (project == null) {
-            project = new Project(PlaceholderValues.UNSPECIFIED_PROJECT, false);
+            project = new Project(PlaceholderValues.UNSPECIFIED_PROJECT);
             project.id = PlaceholderValues.EMPTY_PROJECT_ID;
           }
 

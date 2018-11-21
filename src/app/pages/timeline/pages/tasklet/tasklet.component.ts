@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TaskletService} from '../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
 import {Tasklet} from '../../../../core/entity/model/tasklet.model';
 import {map, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -23,7 +23,7 @@ import {MatDialog, MatDialogConfig, MatIconRegistry, MatSelect, MatSidenav} from
 import {ConfirmationDialogComponent} from '../../../../ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
 import {DateService} from '../../../../core/entity/services/date.service';
-import {TaskService} from '../../../../core/entity/services/task.service';
+import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -218,7 +218,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.findEntities();
 
-    this.route.params.subscribe(param => {
+    this.route.params.subscribe(() => {
       this.id = this.route.snapshot.paramMap.get('id');
       this.findEntities();
     });
@@ -525,7 +525,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onTagsChanged(tags: string[]) {
     this.tags = tags.map(t => {
-      return new Tag(t, true);
+      return new Tag(t);
     });
   }
 
@@ -535,7 +535,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onPersonsChanged(persons: string[]) {
     this.persons = persons.map(p => {
-      return new Person(p, true);
+      return new Person(p);
     });
   }
 
@@ -838,7 +838,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       if (t == null && task.name != null && task.name !== '') {
         t = new Task(task.name);
         this.taskService.createTask(t, false).then(() => {
-          this.filterService.updateTasksList([task], true);
+          this.filterService.updateTasksListIfNotEmpty([task]);
         });
       }
 
@@ -883,7 +883,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     const values = Array.from(aggregatedTags.values());
     const keys = Array.from(aggregatedTags.keys());
 
-    this.filterService.updateTagsList(values, true);
+    this.filterService.updateTagsListIfNotEmpty(values);
     tasklet.tagIds = Array.from(keys);
   }
 
@@ -895,7 +895,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     let tag = this.tagService.getTagByName(t);
 
     if (tag == null) {
-      tag = new Tag(t, true);
+      tag = new Tag(t);
       this.tagService.createTag(tag).then(() => {
       });
     }
@@ -952,7 +952,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     const values = Array.from(aggregatedPersons.values());
     const keys = Array.from(aggregatedPersons.keys());
 
-    this.filterService.updatePersonsList(values, true);
+    this.filterService.updatePersonsListIfNotEmpty(values);
     tasklet.personIds = Array.from(keys);
   }
 
@@ -964,7 +964,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     let person = this.personService.getPersonByName(p);
 
     if (person == null) {
-      person = new Person(p, true);
+      person = new Person(p);
       this.personService.createPerson(person).then(() => {
       });
     }

@@ -4,7 +4,7 @@ import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
 import {FeatureService} from '../../../../../../core/settings/services/feature.service';
-import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 import {FeatureType} from '../../../../../../core/settings/model/feature-type.enum';
 
 /**

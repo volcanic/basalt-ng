@@ -8,18 +8,14 @@ export class Tag extends Entity {
 
   /** Name */
   name: string;
-  /** Whether tags is checked in filter mechanism */
-  checked = false;
 
   /**
    * Constructor
    * @param {string} name tag name
-   * @param {boolean} checked whether tags is checked in filter mechanism
    */
-  constructor(name: string, checked: boolean = false) {
+  constructor(name: string) {
     super();
     this.entityType = EntityType.TAG;
     this.name = name.trim();
-    this.checked = checked;
   }
 }
