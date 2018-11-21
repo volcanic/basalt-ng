@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {Task} from 'app/core/entity/model/task.model';
 import {MatMenuTrigger} from '@angular/material';
 import {Animations, AnimationState} from './task-list-item.animation';
@@ -19,7 +19,7 @@ import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-in
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskListItemComponent implements OnInit {
+export class TaskListItemComponent implements OnInit, OnChanges {
 
   /** Task to be displayed */
   @Input() task: Task;
@@ -27,10 +27,15 @@ export class TaskListItemComponent implements OnInit {
   @Input() taskDigest: TaskDigest;
   /** Current media */
   @Input() media: Media;
+  /** Displays item opaque if true */
+  @Input() opaque = false;
   /** Event emitter indicating task action */
   @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+
+  /** CSS class that handles opacity */
+  opaqueClass = '';
 
   /** Enum for media types */
   mediaType = Media;
@@ -48,6 +53,14 @@ export class TaskListItemComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeIcon();
+  }
+
+  /**
+   * Handles on-changes lifecycle phase
+   * @param changes
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    this.initializeOpacity();
   }
 
   //
@@ -70,6 +83,13 @@ export class TaskListItemComponent implements OnInit {
     } else {
       this.icon = 'alias_task_unassigned';
     }
+  }
+
+  /**
+   * Initializes opacity
+   */
+  private initializeOpacity() {
+    this.opaqueClass = this.opaque ? 'opaque' : '';
   }
 
   //

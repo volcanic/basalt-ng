@@ -8,13 +8,13 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <!-- Recent -->
-    <app-project-list-item *ngFor="let p of projectsRecent" [project]="p" [media]="media"
+    <app-project-list-item *ngFor="let p of projectsRecent" [project]="p" [media]="media" [opaque]="!isInFocus(p)"
                            (projectEventEmitter)="onProjectEvent($event)">
     </app-project-list-item>
     <!-- Non-recent -->
     <div *ngIf="showMoreStatus">
       <mat-divider></mat-divider>
-      <app-project-list-item *ngFor="let p of projectsNonRecent" [project]="p" [media]="media"
+      <app-project-list-item *ngFor="let p of projectsNonRecent" [project]="p" [media]="media" [opaque]="!isInFocus(p)"
                              (projectEventEmitter)="onProjectEvent($event)">
       </app-project-list-item>
     </div>

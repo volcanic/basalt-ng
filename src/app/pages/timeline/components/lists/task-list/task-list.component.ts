@@ -17,6 +17,8 @@ export class TaskListComponent implements OnInit, OnChanges {
 
   /** Tasks to be displayed */
   @Input() tasks = [];
+  /** Tasks that are currently filtered */
+  @Input() tasksFiltered = [];
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */
@@ -114,5 +116,19 @@ export class TaskListComponent implements OnInit, OnChanges {
    */
   onAddClicked() {
     this.onTaskEvent({action: Action.OPEN_DIALOG_ADD, task: null});
+  }
+
+  //
+  // Helpers
+  //
+
+  /**
+   * Determines whether a task in focus due to filter
+   * @param task task
+   */
+  isInFocus(task: Task) {
+    return this.tasksFiltered.length === 0 || this.tasksFiltered.some(t => {
+      return t.name === task.name;
+    });
   }
 }

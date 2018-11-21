@@ -16,6 +16,8 @@ export class PersonListComponent implements OnChanges {
 
   /** Persons to be displayed */
   @Input() persons = [];
+  /** Persons that are currently filtered */
+  @Input() personsFiltered = [];
   /** Number of items to be shown initially **/
   @Input() recentCount: number;
   /** Current media */
@@ -75,5 +77,19 @@ export class PersonListComponent implements OnChanges {
   onMoreLessToggled() {
     this.showMoreStatus = !this.showMoreStatus;
     this.showMoreLabel = this.showMoreStatus ? 'Less' : 'More';
+  }
+
+  //
+  // Helpers
+  //
+
+  /**
+   * Determines whether a person in focus due to filter
+   * @param person person
+   */
+  isInFocus(person: Person) {
+    return this.personsFiltered.length === 0 || this.personsFiltered.some(t => {
+      return t.name === person.name;
+    });
   }
 }

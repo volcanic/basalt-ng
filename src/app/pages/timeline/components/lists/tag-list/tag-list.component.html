@@ -8,13 +8,13 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <!-- Recent -->
-    <app-tag-list-item *ngFor="let p of tagsRecent" [tag]="p" [media]="media"
+    <app-tag-list-item *ngFor="let p of tagsRecent" [tag]="p" [media]="media" [opaque]="!isInFocus(t)"
                            (tagEventEmitter)="onTagEvent($event)">
     </app-tag-list-item>
     <!-- Non-recent -->
     <div *ngIf="showMoreStatus">
       <mat-divider></mat-divider>
-      <app-tag-list-item *ngFor="let p of tagsNonRecent" [tag]="p" [media]="media"
+      <app-tag-list-item *ngFor="let p of tagsNonRecent" [tag]="p" [media]="media" [opaque]="!isInFocus(t)"
                              (tagEventEmitter)="onTagEvent($event)">
       </app-tag-list-item>
     </div>

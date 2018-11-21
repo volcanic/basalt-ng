@@ -24,13 +24,10 @@ export class FilterService {
 
   /** Map of tasks */
   tasks: Map<string, Task>;
-
   /** Map of projects */
   projects: Map<string, Project>;
-
   /** Map of tags */
   tags: Map<string, Tag>;
-
   /** Map of persons */
   persons: Map<string, Person>;
 

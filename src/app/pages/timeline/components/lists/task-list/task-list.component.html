@@ -19,7 +19,7 @@
             </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t" [media]="media"
+        <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t" [media]="media" [opaque]="!isInFocus(t)"
                             (taskEventEmitter)="onTaskEvent($event)">
         </app-task-list-item>
       </mat-expansion-panel>
@@ -35,7 +35,7 @@
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-task-list-item *ngFor="let t of tasksNext" [task]="t" [media]="media"
+          <app-task-list-item *ngFor="let t of tasksNext" [task]="t" [media]="media" [opaque]="!isInFocus(t)"
                               (taskEventEmitter)="onTaskEvent($event)">
           </app-task-list-item>
         </mat-expansion-panel>
@@ -50,7 +50,7 @@
               [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
             </div>
           </mat-expansion-panel-header>
-          <app-task-list-item *ngFor="let t of tasksInbox" [task]="t" [media]="media"
+          <app-task-list-item *ngFor="let t of tasksInbox" [task]="t" [media]="media" [opaque]="!isInFocus(t)"
                               (taskEventEmitter)="onTaskEvent($event)">
           </app-task-list-item>
         </mat-expansion-panel>
@@ -67,7 +67,7 @@
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-task-list-item *ngFor="let t of tasksDelegated" [task]="t" [media]="media"
+          <app-task-list-item *ngFor="let t of tasksDelegated" [task]="t" [media]="media" [opaque]="!isInFocus(t)"
                               (taskEventEmitter)="onTaskEvent($event)">
           </app-task-list-item>
         </mat-expansion-panel>
@@ -84,7 +84,7 @@
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-task-list-item *ngFor="let t of tasksRecurring" [task]="t" [media]="media"
+          <app-task-list-item *ngFor="let t of tasksRecurring" [task]="t" [media]="media" [opaque]="!isInFocus(t)"
                               (taskEventEmitter)="onTaskEvent($event)">
           </app-task-list-item>
         </mat-expansion-panel>
@@ -97,7 +97,7 @@
               <span>Completed</span>
             </div>
           </mat-expansion-panel-header>
-          <app-task-list-item *ngFor="let t of tasksCompleted" [task]="t" [media]="media"
+          <app-task-list-item *ngFor="let t of tasksCompleted" [task]="t" [media]="media" [opaque]="!isInFocus(t)"
                               (taskEventEmitter)="onTaskEvent($event)">
           </app-task-list-item>
         </mat-expansion-panel>

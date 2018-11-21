@@ -16,6 +16,8 @@ export class ProjectListComponent implements OnChanges {
 
   /** Projects to be displayed */
   @Input() projects = [];
+  /** Projects that are currently filtered */
+  @Input() projectsFiltered = [];
   /** Number of items to be shown initially **/
   @Input() recentCount: number;
   /** Current media */
@@ -75,5 +77,19 @@ export class ProjectListComponent implements OnChanges {
   onMoreLessToggled() {
     this.showMoreStatus = !this.showMoreStatus;
     this.showMoreLabel = this.showMoreStatus ? 'Less' : 'More';
+  }
+
+  //
+  // Helpers
+  //
+
+  /**
+   * Determines whether a project in focus due to filter
+   * @param project project
+   */
+  isInFocus(project: Project) {
+    return this.projectsFiltered.length === 0 || this.projectsFiltered.some(t => {
+      return t.name === project.name;
+    });
   }
 }

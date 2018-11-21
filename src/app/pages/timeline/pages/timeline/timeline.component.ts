@@ -81,6 +81,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public tasksMap = new Map<string, Task>();
   /** Array of tasks */
   public tasks: Task[] = [];
+  /** Array of tasks that are currently filtered */
+  public tasksFiltered: Task[] = [];
+  /** Array of projects that are currently filtered */
+  public projectsFiltered: Project[] = [];
+  /** Array of tags that are currently filtered */
+  public tagsFiltered: Tag[] = [];
+  /** Array of persons that are currently filtered */
+  public personsFiltered: Person[] = [];
 
   /** Map of projects */
   public projectsMap = new Map<string, Project>();
@@ -484,6 +492,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
+      // Update filter lists
+      this.tasksFiltered = Array.from(this.filterService.tasks.values());
+      this.projectsFiltered = Array.from(this.filterService.projects.values());
+      this.tagsFiltered = Array.from(this.filterService.tags.values());
+      this.personsFiltered = Array.from(this.filterService.persons.values());
+
       // Filter tasklets
       this.tasklets = Array.from(this.taskletService.tasklets.values()).filter(tasklet => {
         return this.filterTasklet(tasklet);
