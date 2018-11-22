@@ -547,6 +547,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     taskletPomodoroBreak.type = TaskletType.POMODORO_BREAK;
     taskletPomodoroBreak.pomodoroBreak = +this.settingsService.settings.get(SettingType.POMODORO_BREAK).value;
 
+    // Save finished pomodoro tasklet
+    this.updateTasklet();
+
     const confirmationDialogRef = this.dialog.open(PomodoroFinishedDialogComponent, <MatDialogConfig>{
       disableClose: false,
       data: {
