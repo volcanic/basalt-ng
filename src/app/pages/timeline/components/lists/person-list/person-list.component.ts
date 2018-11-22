@@ -88,8 +88,8 @@ export class PersonListComponent implements OnChanges {
    * @param person person
    */
   isInFocus(person: Person) {
-    return this.personsFiltered.length === 0 || this.personsFiltered.some(t => {
-      return t.name === person.name;
+    return this.personsFiltered.length === 0 || this.personsFiltered.some(p => {
+      return person != null && p != null && p.name === person.name;
     });
   }
 }

@@ -17,7 +17,7 @@ export class TagListComponent implements OnChanges {
   /** Tags to be displayed */
   @Input() tags = [];
   /** Tags that are currently filtered */
-  @Input() tagsFiltered = [];
+  @Input() tagsFiltered: Tag[] = [];
   /** Number of items to be shown initially **/
   @Input() recentCount: number;
   /** Current media */
@@ -89,7 +89,7 @@ export class TagListComponent implements OnChanges {
    */
   isInFocus(tag: Tag) {
     return this.tagsFiltered.length === 0 || this.tagsFiltered.some(t => {
-      return t.name === tag.name;
+      return tag != null && t != null && t.name === tag.name;
     });
   }
 }

@@ -28,7 +28,6 @@
                   (click)="onOptionSelected($event)">
         {{ option }}
       </mat-option>
-
     </mat-autocomplete>
   </div>
   <div class="flexbox"></div>
@@ -36,6 +35,7 @@
     <button *ngIf="media > mediaType.MEDIUM"
             mat-button
             class="toolbar-menu-item"
+            [disabled]="!filterActive"
             [matTooltip]="'Clear filters'"
             [matTooltipPosition]="'left'"
             (click)="onMenuItemClicked('clear-filter')">

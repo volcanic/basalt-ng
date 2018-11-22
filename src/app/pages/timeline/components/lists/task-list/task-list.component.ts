@@ -128,7 +128,7 @@ export class TaskListComponent implements OnInit, OnChanges {
    */
   isInFocus(task: Task) {
     return this.tasksFiltered.length === 0 || this.tasksFiltered.some(t => {
-      return t.name === task.name;
+      return task != null && t != null && t.name === task.name;
     });
   }
 }

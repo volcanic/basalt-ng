@@ -8,11 +8,9 @@
     </button>
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
-  <button mat-button class="entity flexbox" (click)="onPersonClicked()">
-    <div [className]="opaqueClass">
-      <mat-icon svgIcon="person" class="list-icon"></mat-icon>
-      <span>{{ person.name }}</span>
-    </div>
+  <button mat-button class="entity flexbox" [disabled]="!active" (click)="onPersonClicked()">
+    <mat-icon svgIcon="person" class="list-icon"></mat-icon>
+    <span>{{ person.name }}</span>
   </button>
   <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"

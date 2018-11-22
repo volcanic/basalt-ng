@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Action} from 'app/core/entity/model/action.enum';
 import {Media} from '../../../../../core/ui/model/media.enum';
@@ -18,49 +18,23 @@ import {AnimationState} from '../task-list-item/task-list-item.animation';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TagListItemComponent implements OnChanges {
+export class TagListItemComponent  {
 
   /** Tag to be displayed */
   @Input() tag: Tag;
   /** Current media */
   @Input() media: Media;
-  /** Displays item opaque if true */
-  @Input() opaque = false;
+  /** Indicates if item is active */
+  @Input() active = true;
   /** Event emitter indicating tag action */
   @Output() tagEventEmitter = new EventEmitter<{ action: Action, tag: Tag, tags?: Tag[] }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
-  /** CSS class that handles opacity */
-  opaqueClass = '';
-
   /** Enum for media types */
   mediaType = Media;
   /** Animation state */
   state = AnimationState.INACTIVE;
-
-  //
-  // Lifecycle hooks
-  //
-
-  /**
-   * Handles on-changes lifecycle phase
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges) {
-    this.initializeOpacity();
-  }
-
-  //
-  // Initialization
-  //
-
-  /**
-   * Initializes opacity
-   */
-  private initializeOpacity() {
-    this.opaqueClass = this.opaque ? 'opaque' : '';
-  }
 
   //
   // Actions

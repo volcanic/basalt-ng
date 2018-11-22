@@ -88,8 +88,8 @@ export class ProjectListComponent implements OnChanges {
    * @param project project
    */
   isInFocus(project: Project) {
-    return this.projectsFiltered.length === 0 || this.projectsFiltered.some(t => {
-      return t.name === project.name;
+    return this.projectsFiltered.length === 0 || this.projectsFiltered.some(p => {
+      return project != null && p != null && p.name === project.name;
     });
   }
 }

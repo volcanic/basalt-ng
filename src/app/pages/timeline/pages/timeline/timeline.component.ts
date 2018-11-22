@@ -89,6 +89,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public tagsFiltered: Tag[] = [];
   /** Array of persons that are currently filtered */
   public personsFiltered: Person[] = [];
+  /** Indicates whether a filter is active */
+  public filterActive = false;
 
   /** Map of projects */
   public projectsMap = new Map<string, Project>();
@@ -492,11 +494,16 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
-      // Update filter lists
+      // Update filter lists and filter state
       this.tasksFiltered = Array.from(this.filterService.tasks.values());
       this.projectsFiltered = Array.from(this.filterService.projects.values());
       this.tagsFiltered = Array.from(this.filterService.tags.values());
       this.personsFiltered = Array.from(this.filterService.persons.values());
+      this.filterActive = this.filterService.searchItem.length > 0
+        || this.tasksFiltered.length > 0
+        || this.projectsFiltered.length > 0
+        || this.tagsFiltered.length > 0
+        || this.personsFiltered.length > 0;
 
       // Filter tasklets
       this.tasklets = Array.from(this.taskletService.tasklets.values()).filter(tasklet => {
