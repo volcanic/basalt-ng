@@ -62,6 +62,8 @@ export class MarkdownPreviewComponent implements OnChanges {
 
   /** Text to be formatted */
   @Input() markdownText = '';
+  /** Prevents paragraph margin if true */
+  @Input() preventParagraphMargins = false;
 
   /** Text transformed into html */
   htmlText = '';
