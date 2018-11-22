@@ -123,7 +123,7 @@ export class TaskletService {
       selector: {
         '$and': [
           {entityType: {$eq: EntityType.TASKLET}},
-          {creationDate: {$gt: '2018-09-01T00:00:00.000Z'}}
+          {creationDate: {$gt: '2018-11-01T00:00:00.000Z'}}
         ]
       },
       // sort: [{creationDate: 'desc'}],

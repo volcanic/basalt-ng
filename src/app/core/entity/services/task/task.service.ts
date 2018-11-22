@@ -14,6 +14,7 @@ import {TagService} from '../tag.service';
 import {RecurrenceInterval} from '../../model/recurrence-interval.enum';
 import {DateService} from '../date.service';
 import {DisplayAspect, TaskDisplayService} from './task-display.service';
+import {Tasklet} from '../../model/tasklet.model';
 
 /**
  * Handles tasks including
@@ -438,32 +439,36 @@ export class TaskService {
   /**
    * Determines if a task is relevant soon
    * @param task task
-   * @param lastOccurrence last occurrence
+   * @param expectedNextOccurrence expected next occurrence
    */
-  public isTaskRelevantSoon(task: Task, lastOccurrence: Date) {
-    if (task != null && lastOccurrence != null) {
+  public isTaskRelevantSoon(task: Task, expectedNextOccurrence: Date) {
+    if (task != null && expectedNextOccurrence != null) {
       const now = new Date();
+
+      let minutesBefore = 0;
+      let minutesAfter = 0;
 
       switch (task.recurrenceInterval) {
         case RecurrenceInterval.DAILY: {
-          const nextOccurrence = DateService.addDays(lastOccurrence, 1);
-          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -15);
-          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
-          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+          minutesBefore = 15;
+          minutesAfter = 5;
+          break;
         }
         case RecurrenceInterval.WEEKLY: {
-          const nextOccurrence = DateService.addDays(lastOccurrence, 7);
-          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -15);
-          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
-          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+          minutesBefore = 15;
+          minutesAfter = 5;
+          break;
         }
         case RecurrenceInterval.MONTHLY: {
-          const nextOccurrence = DateService.addMonths(lastOccurrence, 1);
-          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -60);
-          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
-          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+          minutesBefore = 60;
+          minutesAfter = 5;
+          break;
         }
       }
+
+      const minutesBeforeStart = DateService.addMinutes(expectedNextOccurrence, -minutesBefore);
+      const minutesAfterStart = DateService.addMinutes(expectedNextOccurrence, minutesAfter);
+      return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
     }
 
     return false;
@@ -538,6 +543,48 @@ export class TaskService {
   }
 
   // </editor-fold>
+
+  //
+  // Lookup
+  //
+
+  /**
+   * Determines the latest occurrence of a task by looking at its tasklets
+   * @param tasklets tasklets associated with this a task
+   */
+  public getLastestOccurrence(tasklets: Tasklet[]): Date {
+
+    if (tasklets.length > 0) {
+      return tasklets[0].creationDate;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Determines the expected next occurrence of a task by looking at its tasklets
+   * @param task task
+   * @param tasklets tasklets associated with this a task
+   */
+  public getExpectedNextOccurrence(task: Task, tasklets: Tasklet[]) {
+    const lastOccurrence = this.getLastestOccurrence(tasklets);
+
+    if (lastOccurrence != null) {
+      switch (task.recurrenceInterval) {
+        case RecurrenceInterval.DAILY: {
+          return DateService.addDays(lastOccurrence, 1);
+        }
+        case RecurrenceInterval.WEEKLY: {
+          return DateService.addDays(lastOccurrence, 7);
+        }
+        case RecurrenceInterval.MONTHLY: {
+          return DateService.addMonths(lastOccurrence, 1);
+        }
+      }
+    } else {
+      return null;
+    }
+  }
 
   //
   // Delegated: Display aspects
