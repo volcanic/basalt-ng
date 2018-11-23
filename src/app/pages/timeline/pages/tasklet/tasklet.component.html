@@ -136,32 +136,41 @@
                 </div>
               </div>
               <div class="flexcontainer button-wrapper">
-                <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteTasklet()">
+                <button mat-button color="warn" *ngIf="mode == modeType.UPDATE"
+                        (click)="onButtonClicked(actionType.DELETE)">
                   Delete tasklet
                 </button>
                 <div class="flexbox"></div>
-                <button *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
-                        mat-button [disabled]="tasklet.pomodoroStartTime != null" (click)="startPomodoro()">
+                <button mat-button
+                        (click)="onButtonClicked(actionType.FULLSCREEN)">
+                  Go to Fullscreen
+                </button>
+                <button mat-button *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
+                        [disabled]="tasklet.pomodoroStartTime != null"
+                        (click)="onButtonClicked(actionType.POMODORO_START)">
                   Start Pomodoro
                 </button>
-                <button mat-button *ngIf="tasklet.type == taskletType.MEETING || tasklet.type == taskletType.CALL"
-                        (click)="sendMeetingMinutes()" [disabled]="!formCtrl.form.valid">
+                <button mat-button *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
+                        (click)="onButtonClicked(actionType.SEND_MAIL_MEETING_MINUTES)">
                   Send Meeting Minutes
                 </button>
-                <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM" (click)="sendDailyScrumSummary()"
-                        [disabled]="!formCtrl.form.valid">
+                <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
+                        (click)="onButtonClicked(actionType.DAIL)">
                   Send Daily Scrum Summary
                 </button>
-                <button mat-button *ngIf="mode == modeType.ADD" (click)="addTasklet()"
-                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet, task)">
+                <button mat-button *ngIf="mode == modeType.ADD"
+                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet, task)"
+                        (click)="onButtonClicked(actionType.ADD)">
                   Add tasklet
                 </button>
-                <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTasklet()"
-                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet, task)">
+                <button mat-button *ngIf="mode == modeType.UPDATE"
+                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet, task)"
+                        (click)="onButtonClicked(actionType.UPDATE)">
                   Update tasklet
                 </button>
-                <button mat-button *ngIf="mode == modeType.CONTINUE" (click)="continueTasklet()"
-                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet, task)">
+                <button mat-button *ngIf="mode == modeType.CONTINUE"
+                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet, task)"
+                        (click)="onButtonClicked(actionType.CONTINUE)">
                   Continue tasklet
                 </button>
               </div>

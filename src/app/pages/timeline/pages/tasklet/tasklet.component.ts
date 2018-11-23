@@ -597,9 +597,50 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles click on add button
+   * Handles click on button
+   * @param action
    */
-  addTasklet() {
+  onButtonClicked(action: Action) {
+    switch (action) {
+      case Action.ADD: {
+        this.addTasklet();
+        break;
+      }
+      case Action.UPDATE: {
+        this.updateTasklet();
+        break;
+      }
+      case Action.CONTINUE: {
+        this.continueTasklet();
+        break;
+      }
+      case Action.DELETE: {
+        this.deleteTasklet();
+        break;
+      }
+      case Action.POMODORO_START: {
+        this.startPomodoro();
+        break;
+      }
+      case Action.SEND_MAIL_MEETING_MINUTES: {
+        this.sendMeetingMinutes();
+        break;
+      }
+      case Action.SEND_MAIL_DAILY_SCRUM_SUMMARY: {
+        this.sendDailyScrumSummary();
+        break;
+      }
+    }
+  }
+
+  //
+  //
+  //
+
+  /**
+   * Adds a tasklet
+   */
+  private addTasklet() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -613,9 +654,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles click on update button
+   * Updates a tasklet
    */
-  updateTasklet() {
+  private updateTasklet() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -629,16 +670,23 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles click on delete button
+   * Continues a tasklet
    */
-  deleteTasklet() {
+  private continueTasklet() {
+    this.onTaskletEvent({action: Action.ADD, tasklet: this.tasklet, tags: this.tags, task: this.task});
+  }
+
+  /**
+   * Deletes a tasklet
+   */
+  private deleteTasklet() {
     this.onTaskletEvent({action: Action.DELETE, tasklet: this.tasklet});
   }
 
   /**
-   * Handles click on pomodoro start button
+   * Start a pomodoro
    */
-  startPomodoro() {
+  private startPomodoro() {
     this.onTaskletEvent({
       action: Action.POMODORO_START,
       tasklet: this.tasklet,
@@ -678,13 +726,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       tags: this.tags,
       persons: this.persons
     });
-  }
-
-  /**
-   * Handles click on continue button
-   */
-  continueTasklet() {
-    this.onTaskletEvent({action: Action.ADD, tasklet: this.tasklet, tags: this.tags, task: this.task});
   }
 
   /**
@@ -867,7 +908,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return t != null;
       }).forEach(t => {
         const tag = this.lookupTag(t.name);
-        aggregatedTags.set(tag.id, tag);
+        aggregatedTags.set(tag.name, tag);
       });
     }
 
@@ -879,7 +920,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return m.topic;
       }).forEach(t => {
         const tag = this.lookupTag(t);
-        aggregatedTags.set(tag.id, tag);
+        aggregatedTags.set(tag.name, tag);
       });
     }
 
@@ -920,7 +961,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return p != null;
       }).forEach(p => {
         const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.id, person);
+        aggregatedPersons.set(person.name, person);
       });
     }
 
@@ -934,7 +975,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return m.person;
       }).forEach(p => {
         const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.id, person);
+        aggregatedPersons.set(person.name, person);
       });
     }
 
@@ -948,7 +989,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return d.person;
       }).forEach(p => {
         const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.id, person);
+        aggregatedPersons.set(person.name, person);
       });
     }
 
@@ -1009,10 +1050,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Concatenate
     this.tags.forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
     this.inferTags(tasklet).forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
 
     return Array.from(aggregatedTags.values());
@@ -1056,10 +1097,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Concatenate
     this.persons.forEach(p => {
-      aggregatedPersons.set(p.id, p);
+      aggregatedPersons.set(p.name, p);
     });
     this.inferPersons(tasklet).forEach(p => {
-      aggregatedPersons.set(p.id, p);
+      aggregatedPersons.set(p.name, p);
     });
 
     return Array.from(aggregatedPersons.values());

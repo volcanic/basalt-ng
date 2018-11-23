@@ -109,10 +109,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /** Enum for action types */
+  actionType = Action;
   /** Enum of media types */
-  public mediaType = Media;
+  mediaType = Media;
   /** Current media */
-  public media: Media = Media.UNDEFINED;
+  media: Media = Media.UNDEFINED;
 
   /** Vertical scroll position */
   private scrollPosLast = 0;
@@ -521,9 +523,46 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles click on add button
+   * Handles click on button
+   * @param action
    */
-  addTask() {
+  onButtonClicked(action: Action) {
+    switch (action) {
+      case Action.ADD: {
+        this.addTask();
+        break;
+      }
+      case Action.UPDATE: {
+        this.updateTask();
+        break;
+      }
+      case Action.CONTINUE: {
+        this.continueTask();
+        break;
+      }
+      case Action.DELETE: {
+        this.deleteTask();
+        break;
+      }
+      case Action.COMPLETE: {
+        this.completeTask();
+        break;
+      }
+      case Action.REOPEN: {
+        this.reopenTask();
+        break;
+      }
+    }
+  }
+
+  //
+  //
+  //
+
+  /**
+   * Adds a task
+   */
+  private addTask() {
     this.tags = this.aggregateTags(this.task);
 
     this.onTaskEvent({
@@ -536,9 +575,9 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles click on update button
+   * Updates a task
    */
-  updateTask() {
+  private updateTask() {
     this.tags = this.aggregateTags(this.task);
 
     this.onTaskEvent({
@@ -551,16 +590,30 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles click on delete button
+   * Continues a task
    */
-  deleteTask() {
+  private continueTask() {
+    // TODO
+  }
+
+  /**
+   * Completes a task
+   */
+  private completeTask() {
+    // TODO
+  }
+
+  /**
+   * Deletes a task
+   */
+  private deleteTask() {
     this.onTaskEvent({action: Action.DELETE, task: this.task});
   }
 
   /**
-   * Handles click on continue button
+   * Re-opens a task
    */
-  continueTask() {
+  private reopenTask() {
     // TODO
   }
 
@@ -568,7 +621,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a task
    * @param {any} event event parameters
    */
-  onTaskEvent(event: { action: Action, task: Task, tasks?: Task[], project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
+  private onTaskEvent(event: { action: Action, task: Task, tasks?: Task[], project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
     const task = CloneService.cloneTask(event.task as Task);
     // const tasks = CloneService.cloneTasks(event.tasks as Task[]);
     const project = CloneService.cloneProject(event.project as Project);
@@ -735,7 +788,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this.filterService.updateTagsListIfNotEmpty([tag]);
-        aggregatedTagIds.set(tag.id, tag.id);
+        aggregatedTagIds.set(tag.name, tag.id);
       });
 
       task.tagIds = Array.from(aggregatedTagIds.values());
@@ -769,10 +822,10 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Concatenate
     this.tags.forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
     this.inferTags(task).forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
 
     return Array.from(aggregatedTags.values());
