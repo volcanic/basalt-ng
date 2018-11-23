@@ -8,6 +8,7 @@ import {Scope} from '../model/scope.enum';
 import {PouchDBService} from '../../persistence/services/pouchdb.service';
 import {ScopeService} from './scope.service';
 import {SnackbarService} from '../../ui/services/snackbar.service';
+import {DateService} from './date.service';
 
 /**
  * Handles persons including
@@ -83,17 +84,19 @@ export class PersonService {
    * @param {Scope} scope scope to filter by
    */
   public findPersonsByScope(scope: Scope) {
-    const index = {fields: ['entityType', 'scope', 'creationDate']};
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PERSONS_DAYS));
+
+    const index = {fields: ['entityType', 'scope', 'modificationDate']};
     const options = {
       selector: {
         $and: [
           {entityType: {$eq: EntityType.PERSON}},
           {scope: {$eq: scope}},
-          {creationDate: {$gt: null}}
+          {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{'creationDate': 'desc'}],
-      limit: environment.LIMIT_PERSONS
+      limit: environment.LIMIT_PERSONS_COUNT
     };
 
     this.clearPersons();

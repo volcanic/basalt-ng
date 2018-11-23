@@ -118,16 +118,18 @@ export class TaskletService {
    * @param {Scope} scope scope to filter by
    */
   public findTaskletsByScope(scope: Scope) {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKLETS_DAYS));
+
     const index = {fields: ['entityType', 'scope', 'creationDate']};
     const options = {
       selector: {
         '$and': [
           {entityType: {$eq: EntityType.TASKLET}},
-          {creationDate: {$gt: '2018-11-01T00:00:00.000Z'}}
+          {creationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{creationDate: 'desc'}],
-      limit: environment.LIMIT_TASKLETS
+      limit: environment.LIMIT_TASKLETS_COUNT
     };
 
     this.clearTasklets();
@@ -148,7 +150,7 @@ export class TaskletService {
         ]
       },
       // sort: [{creationDate: 'desc'}],
-      limit: environment.LIMIT_TASKLETS
+      limit: environment.LIMIT_TASKLETS_COUNT
     };
 
     this.findTaskletInternal(index, options);
@@ -332,20 +334,6 @@ export class TaskletService {
     }).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
     }).reverse();
-  }
-
-  /**
-   * Determines the latest creation time of a tasklet associated with a given task
-   * @param task task
-   */
-  public getLastestOccurrence(task: Task): Date {
-    const tasklets = this.getTaskletsByTask(task);
-
-    if (tasklets.length > 0) {
-      return tasklets[0].creationDate;
-    } else {
-      return null;
-    }
   }
 
   /**

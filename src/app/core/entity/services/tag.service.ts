@@ -8,6 +8,7 @@ import {Scope} from '../model/scope.enum';
 import {ScopeService} from './scope.service';
 import {PouchDBService} from '../../persistence/services/pouchdb.service';
 import {SnackbarService} from '../../ui/services/snackbar.service';
+import {DateService} from './date.service';
 
 /**
  * Handles tags including
@@ -73,17 +74,19 @@ export class TagService {
    * @param {Scope} scope scope to filter by
    */
   public findTagsByScope(scope: Scope) {
-    const index = {fields: ['entityType', 'scope', 'creationDate']};
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TAGS_DAYS));
+
+    const index = {fields: ['entityType', 'scope', 'modificationDate']};
     const options = {
       selector: {
         $and: [
           {entityType: {$eq: EntityType.TAG}},
           {scope: {$eq: this.scopeService.scope}},
-          {creationDate: {$gt: null}}
+          {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{'creationDate': 'desc'}],
-      limit: environment.LIMIT_TAGS
+      limit: environment.LIMIT_TAGS_COUNT
     };
 
     this.clearTags();

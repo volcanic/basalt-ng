@@ -911,16 +911,16 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           dialogTitle: 'Update tasklet',
           tasklet: tasklet,
           task: this.taskService.tasks.get(tasklet.taskId),
-          tags: tasklet.tagIds.map(id => {
+          tags: tasklet.tagIds != null ? tasklet.tagIds.map(id => {
             return this.tagService.tags.get(id);
           }).filter(tag => {
             return tag != null;
-          }),
-          persons: tasklet.personIds.map(id => {
+          }) : [],
+          persons: tasklet.personIds != null ? tasklet.personIds.map(id => {
             return this.personService.persons.get(id);
           }).filter(person => {
             return person != null;
-          }),
+          }) : [],
           previousDescription: null
         };
 
@@ -1229,11 +1229,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           task: task,
           project: this.projectService.projects.get(task.projectId),
           delegatedTo: this.personService.persons.get(task.delegatedToId),
-          tags: task.tagIds.map(id => {
+          tags: task.tagIds != null ? task.tagIds.map(id => {
             return this.tagService.tags.get(id);
           }).filter(tag => {
             return tag != null;
-          })
+          }) : []
         };
 
         // Open dialog

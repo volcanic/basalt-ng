@@ -91,17 +91,19 @@ export class TaskService {
    * @param {Scope} scope scope to filter by
    */
   public findTasksByScope(scope: Scope) {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKS_DAYS));
+
     const index = {fields: ['entityType', 'scope', 'modificationDate', 'completionDate']};
     const options = {
       selector: {
         '$and': [
           {'entityType': {'$eq': EntityType.TASK}},
           {scope: {$eq: scope}},
-          {'modificationDate': {'$gt': null}}
+          {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
-      limit: environment.LIMIT_TASKS
+      limit: environment.LIMIT_TASKS_COUNT
     };
 
     this.clearTasks();
@@ -124,7 +126,7 @@ export class TaskService {
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
-      limit: environment.LIMIT_TASKS
+      limit: environment.LIMIT_TASKS_COUNT
     };
 
     this.clearTasks();
@@ -147,7 +149,7 @@ export class TaskService {
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
-      limit: environment.LIMIT_TASKS
+      limit: environment.LIMIT_TASKS_COUNT
     };
 
     this.clearTasks();
@@ -168,7 +170,7 @@ export class TaskService {
         ]
       },
       // sort: [{creationDate: 'desc'}],
-      limit: environment.LIMIT_TASKS
+      limit: environment.LIMIT_TASKS_COUNT
     };
 
     this.findTaskInternal(index, options);

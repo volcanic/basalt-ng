@@ -8,6 +8,7 @@ import {environment} from '../../../../environments/environment';
 import {SnackbarService} from '../../ui/services/snackbar.service';
 import {ScopeService} from './scope.service';
 import {Scope} from '../model/scope.enum';
+import {DateService} from './date.service';
 
 /**
  * Handles projects including
@@ -73,17 +74,19 @@ export class ProjectService {
    * @param {Scope} scope scope to filter by
    */
   public findProjectsByScope(scope: Scope) {
-    const index = {fields: ['entityType', 'scope', 'modificationType']};
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PROJECTS_DAYS));
+
+    const index = {fields: ['entityType', 'scope', 'modificationDate']};
     const options = {
       selector: {
         $and: [
           {entityType: {$eq: EntityType.PROJECT}},
           {scope: {$eq: scope}},
-          {modificationDate: {$gt: null}}
+          {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
-      limit: environment.LIMIT_PROJECTS
+      limit: environment.LIMIT_PROJECTS_COUNT
     };
 
     this.clearProjects();
