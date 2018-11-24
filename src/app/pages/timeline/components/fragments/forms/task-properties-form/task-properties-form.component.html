@@ -37,10 +37,17 @@
       <mat-icon svgIcon="today"></mat-icon>
     </mat-expansion-panel-header>
 
-    <app-date-time-picker-fragment
-      [date]="task.dueDate"
-      (dateChangedEmitter)="onDueDateChanged($event)">
-    </app-date-time-picker-fragment>
+    <div class="flexcontainer">
+      <app-date-time-picker-fragment
+        [date]="task.dueDate"
+        (dateChangedEmitter)="onDueDateChanged($event)">
+      </app-date-time-picker-fragment>
+      <div class="flexbox"></div>
+      <mat-divider [vertical]="true"></mat-divider>
+      <div class="flexbox"></div>
+      <button mat-button (click)="endOfBusinessClicked()">End of business</button>
+      <button mat-button (click)="endOfWeekClicked()">End of week</button>
+    </div>
   </mat-expansion-panel>
 
   <!-- Recurrence Interval -->

@@ -132,6 +132,20 @@ export class TaskPropertiesFormComponent implements OnInit {
     this.task.dueDate = value;
   }
 
+  /**
+   * Handles click on end-of-business button
+   */
+  endOfBusinessClicked() {
+    this.task.dueDate = new Date(DateService.getEndOfBusiness(new Date()));
+  }
+
+  /**
+   * Handles click on end-of-week button
+   */
+  endOfWeekClicked() {
+    this.task.dueDate = new Date(DateService.getEndOfWorkWeek(new Date()));
+  }
+
   // Recurrence interval
 
   /**
