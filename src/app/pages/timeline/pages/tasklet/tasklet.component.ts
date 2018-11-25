@@ -123,6 +123,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /** Enum for action types */
+  actionType = Action;
   /** Enum of media types */
   public mediaType = Media;
   /** Current media */

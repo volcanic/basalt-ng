@@ -73,6 +73,7 @@ import {TaskletToolbarComponent} from './components/toolbars/tasklet-toolbar/tas
 import {PomodoroFinishedDialogModule} from '../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog.module';
 import {SuggestedActionsComponent} from './components/fragments/other/suggested-actions/suggested-actions.component';
 import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/task-list-dialog.component';
+import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort-picker-fragment.module';
 
 @NgModule({
   imports: [
@@ -100,7 +101,8 @@ import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/tas
     StopWatchModule,
     MarkdownFragmentModule,
     PreviousDescriptionModule,
-    PomodoroFinishedDialogModule
+    PomodoroFinishedDialogModule,
+    EffortPickerFragmentModule
   ],
   declarations: [
     // Page

@@ -142,10 +142,8 @@
                 </button>
                 <div class="flexbox"></div>
                 <button mat-button
-                        (click)="onButtonClicked(actionType.FULLSCREEN)">
-                  Go to Fullscreen
-                </button>
-                <button mat-button *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
+                        *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)
+                        && !containsDisplayAspect(displayAspectType.IS_POMODORO_STARTED, tasklet)"
                         [disabled]="tasklet.pomodoroStartTime != null"
                         (click)="onButtonClicked(actionType.POMODORO_START)">
                   Start Pomodoro
@@ -155,7 +153,7 @@
                   Send Meeting Minutes
                 </button>
                 <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
-                        (click)="onButtonClicked(actionType.DAIL)">
+                        (click)="onButtonClicked(actionType.SEND_MAIL_DAILY_SCRUM_SUMMARY)">
                   Send Daily Scrum Summary
                 </button>
                 <button mat-button *ngIf="mode == modeType.ADD"

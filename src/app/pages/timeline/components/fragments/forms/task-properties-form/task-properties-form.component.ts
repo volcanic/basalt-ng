@@ -210,6 +210,17 @@ export class TaskPropertiesFormComponent implements OnInit {
     this.notify();
   }
 
+  // Effort
+
+  /**
+   * Handles effort changes
+   * @param effort effort
+   */
+  onEffortChanged(effort: number) {
+    this.task.effort = effort;
+    this.notify();
+  }
+
   // Delegated to
 
   /**

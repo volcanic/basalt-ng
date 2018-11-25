@@ -21,10 +21,12 @@
         <mat-divider></mat-divider>
       </div>
       <!-- Pomodoro task -->
-      <app-markdown-editor *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)"
-                           [text]="tasklet.pomodoroTask.value"
-                           placeholder="Pomodoro Task"
-                           (textChangedEmitter)="onPomodoroTaskChanged($event)"></app-markdown-editor>
+      <app-markdown-editor
+        *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)
+        && !containsDisplayAspect(displayAspectType.IS_POMODORO_STARTED, tasklet)"
+        [text]="tasklet.pomodoroTask.value"
+        placeholder="Pomodoro Task"
+        (textChangedEmitter)="onPomodoroTaskChanged($event)"></app-markdown-editor>
       <!-- Description -->
       <app-markdown-editor *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DESCRIPTION, tasklet)"
                            [text]="tasklet.description.value"
