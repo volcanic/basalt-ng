@@ -92,7 +92,7 @@ mat-dialog-container {
     width: 100%;
   }
   @media #{$breakpoint-medium} {
-    width: 500px !important;
+    width: 100% !important;
   }
   @media #{$breakpoint-large} {
     width: 750px !important;
