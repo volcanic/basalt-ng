@@ -7,6 +7,17 @@ enum Unit {
   // WEEK = 'weeks'
 }
 
+enum PlanningPokerValue {
+  _0 = '0',
+  _30MIN = '1/2',
+  _1HOUR = '1',
+  _2HOUR = '2',
+  _3HOUR = '3',
+  _5HOUR = '5',
+  _8HOUR = '8',
+  _13HOUR = '13'
+}
+
 @Component({
   selector: 'app-effort-picker-fragment',
   templateUrl: './effort-picker-fragment.component.html',
@@ -27,11 +38,10 @@ export class EffortPickerFragmentComponent implements OnInit {
   /** Time unit */
   unit = Unit.MINUTE;
 
-  /** Enum for unit types */
-  unitType = Unit;
   /** List of units */
   units = Object.values(Unit);
-
+  /** List of planning poker values */
+  planningPokerValues = Object.values(PlanningPokerValue);
 
   //
   // Helpers
@@ -102,5 +112,57 @@ export class EffortPickerFragmentComponent implements OnInit {
    */
   onUnitSelected(unit: Unit) {
     this.initEffortInUnit(unit);
+  }
+
+  /**
+   * Handles click on planning poker value
+   * @param value
+   */
+  onPlanningPokerValueClicked(value: PlanningPokerValue) {
+    switch (value) {
+      case PlanningPokerValue._0: {
+        this.unit = Unit.MINUTE;
+        this.effortInMinutes = 0;
+        break;
+      }
+      case PlanningPokerValue._30MIN: {
+        this.unit = Unit.MINUTE;
+        this.effortInMinutes = 30;
+        break;
+      }
+      case PlanningPokerValue._1HOUR: {
+        this.unit = Unit.HOUR;
+        this.effortInMinutes = 60;
+        break;
+      }
+      case PlanningPokerValue._2HOUR: {
+        this.unit = Unit.HOUR;
+        this.effortInMinutes = 120;
+        break;
+      }
+      case PlanningPokerValue._3HOUR: {
+        this.unit = Unit.HOUR;
+        this.effortInMinutes = 180;
+        break;
+      }
+      case PlanningPokerValue._5HOUR: {
+        this.unit = Unit.HOUR;
+        this.effortInMinutes = 300;
+        break;
+      }
+      case PlanningPokerValue._8HOUR: {
+        this.unit = Unit.DAY;
+        this.effortInMinutes = 480;
+        break;
+      }
+      case PlanningPokerValue._13HOUR: {
+        this.unit = Unit.HOUR;
+        this.effortInMinutes = 780;
+        break;
+      }
+    }
+
+    this.initEffortInUnit(this.unit);
+    this.onEffortChanged(this.effort);
   }
 }
