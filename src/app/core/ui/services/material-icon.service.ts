@@ -54,7 +54,7 @@ class Icon {
 export class MaterialIconService {
 
   /** Root directory of material design icons */
-  private ICON_ROOT_DIR = '../assets/material-design-icons';
+  private ICON_ROOT_DIR = './assets/material-design-icons';
   /** Icon variant */
   private VARIANT = 'production';
 

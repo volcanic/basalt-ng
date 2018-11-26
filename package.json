@@ -42,6 +42,8 @@
     "release-android": "mkdirp ./release && npm run cordova-android-prod && cd ./cordova/platforms/android/build/outputs/apk && bestzip ./../../../../../../release/%npm_package_name%-android-%npm_package_version%.zip ./android-release-unsigned.apk",
     "release-notes": "mkdirp ./release && markdown ./doc/release-notes-%npm_package_version%.md > release/release-notes-%npm_package_version%.html",
     "gh-pages": "ng build --output-path docs --base-href https://florianschwanz.github.io/basalt-ng/",
+    "gh-pages-fix-icons": "rimraf ./docs/assets/material-design-icons/ && mkdirp ./docs/assets/material-design-icons && cd ./src/assets/material-design-icons && copyfiles ./**/*.svg ./../../../docs/assets/material-design-icons/",
+    "gh-pages-fix-404": "cd ./docs && copyfiles index.html .",
     "git-tags": "echo { \"tags\": [ > tags.json && git tag --format=\"{ \\\"annotation\\\":\\\"%(refname)\\\", \\\"message\\\": \\\"%(subject)\\\"} ,\" >> tags.json && replace ,\\n$ \"\" tags.json && echo ]} >> tags.json",
     "compodoc": "compodoc -p tsconfig.json"
   },
