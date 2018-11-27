@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 
 /**
  * Displays markdown editor
@@ -34,7 +34,8 @@ export class MarkdownEditorComponent {
   /**
    * Handles changes in description markdownText
    */
-  onTextChanged() {
-    this.textChangedEmitter.emit(this.text);
+  onTextChanged(text: string) {
+    this.text = text;
+    this.textChangedEmitter.emit(text);
   }
 }

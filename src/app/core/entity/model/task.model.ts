@@ -29,15 +29,11 @@ export class Task extends Entity {
   /** Reference to person */
   delegatedToId: string;
 
-  /** Whether task is checked in filter mechanism */
-  checked: boolean;
-
   /**
    * Constructor
    * @param {string} name name of the task
-   * @param {boolean} checked whether task is checked in filter mechanism
    */
-  constructor(name: string = '', checked: boolean = false) {
+  constructor(name: string = '') {
     super();
     this.entityType = EntityType.TASK;
     this.name = name.trim();
@@ -50,7 +46,5 @@ export class Task extends Entity {
     this.tagIds = [];
     this.recurrenceInterval = RecurrenceInterval.NONE;
     this.delegatedToId = null;
-
-    this.checked = checked;
   }
 }

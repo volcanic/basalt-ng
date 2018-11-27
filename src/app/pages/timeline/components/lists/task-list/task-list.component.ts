@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnIn
 import {Task} from '../../../../../core/entity/model/task.model';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Action} from 'app/core/entity/model/action.enum';
-import {TaskService} from '../../../../../core/entity/services/task.service';
+import {TaskService} from '../../../../../core/entity/services/task/task.service';
 
 /**
  * Displays task list
@@ -17,6 +17,8 @@ export class TaskListComponent implements OnInit, OnChanges {
 
   /** Tasks to be displayed */
   @Input() tasks = [];
+  /** Tasks that are currently filtered */
+  @Input() tasksFiltered = [];
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */
@@ -24,8 +26,10 @@ export class TaskListComponent implements OnInit, OnChanges {
 
   /** Tasks having a due date before now */
   tasksOverdue = [];
-  /** Tasks having a due date after now */
-  tasksNext = [];
+  /** Tasks having a due date today */
+  tasksToday = [];
+  /** Tasks having a due date after today */
+  tasksLater = [];
   /** Tasks not having a due date */
   tasksInbox = [];
   /** Delegated tasks */
@@ -37,8 +41,10 @@ export class TaskListComponent implements OnInit, OnChanges {
 
   /** Background personColor for overdue badge */
   tasksOverdueBadgeColor = 'transparent';
-  /** Background personColor for next badge */
-  tasksNextBadgeColor = 'transparent';
+  /** Background personColor for today badge */
+  tasksTodayBadgeColor = 'transparent';
+  /** Background personColor for later badge */
+  tasksLaterBadgeColor = 'transparent';
   /** Background personColor for inbox badge */
   tasksInboxBadgeColor = 'transparent';
   /** Background personColor for delegated badge */
@@ -81,7 +87,8 @@ export class TaskListComponent implements OnInit, OnChanges {
    */
   initializeTaskCategories() {
     this.tasksOverdue = this.tasks.filter(this.taskService.isTaskOverdue);
-    this.tasksNext = this.tasks.filter(this.taskService.isTaskNext);
+    this.tasksToday = this.tasks.filter(this.taskService.isTaskToday);
+    this.tasksLater = this.tasks.filter(this.taskService.isTaskLater);
     this.tasksInbox = this.tasks.filter(this.taskService.isTaskInInbox).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     });
@@ -92,7 +99,8 @@ export class TaskListComponent implements OnInit, OnChanges {
     this.tasksCompleted = this.tasks.filter(this.taskService.isTaskCompleted);
 
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
-    this.tasksNextBadgeColor = (this.tasksNext.length > 0) ? 'accent' : 'primary';
+    this.tasksTodayBadgeColor = (this.tasksToday.length > 0) ? 'accent' : 'primary';
+    this.tasksLaterBadgeColor = (this.tasksLater.length > 0) ? 'accent' : 'primary';
     this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
     this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
   }
@@ -114,5 +122,19 @@ export class TaskListComponent implements OnInit, OnChanges {
    */
   onAddClicked() {
     this.onTaskEvent({action: Action.OPEN_DIALOG_ADD, task: null});
+  }
+
+  //
+  // Helpers
+  //
+
+  /**
+   * Determines whether a task in focus due to filter
+   * @param task task
+   */
+  isInFocus(task: Task) {
+    return this.tasksFiltered.length === 0 || this.tasksFiltered.some(t => {
+      return task != null && t != null && t.name === task.name;
+    });
   }
 }

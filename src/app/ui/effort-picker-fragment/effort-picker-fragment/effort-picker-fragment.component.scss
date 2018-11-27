@@ -1,0 +1,16 @@
+.flexcontainer {
+  display: flex;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
+
+.effort, .unit {
+  width: 80px;
+  margin-right: 20px;
+}
+
+.planning-poker-value {
+  min-width: 50px !important;
+}

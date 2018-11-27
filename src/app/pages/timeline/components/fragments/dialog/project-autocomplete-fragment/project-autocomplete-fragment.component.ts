@@ -1,14 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
 import {Project} from 'app/core/entity/model/project.model';
-import {map, startWith} from 'rxjs/internal/operators';
-import {ProjectService} from 'app/core/entity/services/project.service';
 import {CloneService} from 'app/core/entity/services/clone.service';
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operators';
-import {SuggestionService} from 'app/core/entity/services/suggestion.service';
-import {Task} from '../../../../../../core/entity/model/task.model';
 
 /**
  * Displays project auto-complete fragment
@@ -56,7 +50,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
    */
   private initializeProject() {
     if (this.project == null) {
-      this.project = new Project('', true);
+      this.project = new Project('');
     }
 
     this.project = CloneService.cloneProject(this.project);
@@ -91,7 +85,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
     this.optionsFiltered = this.filterOptions(this.project.name);
     this.debouncer.next(this.project);
   }
-  
+
   /**
    * Handles key up event
    */

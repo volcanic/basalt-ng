@@ -9,6 +9,8 @@ import {CloneService} from 'app/core/entity/services/clone.service';
 import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
+import {DisplayAspect} from '../../../../../core/entity/services/task/task-display.service';
+import {TaskService} from '../../../../../core/entity/services/task/task.service';
 
 /**
  * Displays task dialog
@@ -50,16 +52,22 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   /** Person options */
   personOptions: string[];
 
+  /** Enum for action types */
+  actionType = Action;
+  /** Enum of display aspects */
+  displayAspectType = DisplayAspect;
 
   /**
    * Constructor
+   * @param taskService task service
    * @param suggestionService suggestion service
    * @param {DateAdapter<any>} adapter
    * @param {MatDialog} dialog dialog
    * @param {MatDialogRef<PomodoroFinishedDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(private suggestionService: SuggestionService,
+  constructor(private taskService: TaskService,
+              private suggestionService: SuggestionService,
               private adapter: DateAdapter<any>,
               public dialog: MatDialog,
               public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -184,6 +192,47 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   //
 
   /**
+   * Handles click on button
+   * @param action
+   */
+  onButtonClicked(action: Action) {
+    switch (action) {
+      case Action.ADD: {
+        this.dialogRef.close();
+        break;
+      }
+      case Action.UPDATE: {
+        this.dialogRef.close();
+        break;
+      }
+      case Action.CONTINUE: {
+        this.dialogRef.close();
+        break;
+      }
+      case Action.DELETE: {
+        this.deleteTask();
+        break;
+      }
+      case Action.FULLSCREEN: {
+        this.goToFullscreen();
+        break;
+      }
+      case Action.REOPEN: {
+        this.reopenTask();
+        break;
+      }
+      case Action.COMPLETE: {
+        this.completeTask();
+        break;
+      }
+    }
+  }
+
+  //
+  //
+  //
+
+  /**
    * Handles task changes
    */
   private handleTaskChanges() {
@@ -200,9 +249,9 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles click on add button
+   * Adds a task
    */
-  addTask() {
+  private addTask() {
     this.tags = this.aggregateTags(this.task);
 
     this.dialogRef.close({
@@ -215,9 +264,9 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles click on update button
+   * Updates a task
    */
-  updateTask() {
+  private updateTask() {
     this.tags = this.aggregateTags(this.task);
 
     this.dialogRef.close({
@@ -230,17 +279,17 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles click on delete button
+   * Deletes a task
    */
-  deleteTask() {
+  private deleteTask() {
     this.mode = DialogMode.DELETE;
     this.dialogRef.close({action: Action.DELETE, task: this.task});
   }
 
   /**
-   * Handles click on fullscreen button
+   * Goes to fullscreen
    */
-  goToFullscreen() {
+  private goToFullscreen() {
     this.mode = DialogMode.NONE;
     this.dialogRef.close({
       action: Action.FULLSCREEN,
@@ -252,17 +301,17 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles click on complete button
+   * Completes a task
    */
-  completeTask() {
+  private completeTask() {
     this.task.completionDate = new Date();
     this.dialogRef.close({action: Action.COMPLETE, task: this.task, project: this.project});
   }
 
   /**
-   * Handles click on re-open button
+   * Re-opens a task
    */
-  reopenTask() {
+  private reopenTask() {
     this.task.completionDate = null;
     this.dialogRef.close({action: Action.REOPEN, task: this.task, project: this.project});
   }
@@ -270,6 +319,15 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   //
   // Helpers
   //
+
+  /**
+   * Determines whether the displayed task contains a specific display aspect
+   * @param displayAspect display aspect
+   * @param task task
+   */
+  public containsDisplayAspect(displayAspect: DisplayAspect, task: Task): boolean {
+    return this.taskService.containsDisplayAspect(displayAspect, task);
+  }
 
   // Tags
 
@@ -283,7 +341,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
 
     // Concatenate
     this.tags.forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
 
     return Array.from(aggregatedTags.values());

@@ -1,18 +1,20 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Task} from '../model/task.model';
+import {Task} from '../../model/task.model';
 import {Subject} from 'rxjs/Subject';
-import {EntityType} from '../model/entity-type.enum';
-import {SuggestionService} from './suggestion.service';
-import {PouchDBService} from '../../persistence/services/pouchdb.service';
-import {Project} from '../model/project.model';
-import {ProjectService} from './project.service';
-import {environment} from '../../../../environments/environment';
-import {SnackbarService} from '../../ui/services/snackbar.service';
-import {ScopeService} from './scope.service';
-import {Scope} from '../model/scope.enum';
-import {TagService} from './tag.service';
-import {RecurrenceInterval} from '../model/recurrence-interval.enum';
-import {DateService} from './date.service';
+import {EntityType} from '../../model/entity-type.enum';
+import {SuggestionService} from '../suggestion.service';
+import {PouchDBService} from '../../../persistence/services/pouchdb.service';
+import {Project} from '../../model/project.model';
+import {ProjectService} from '../project.service';
+import {environment} from '../../../../../environments/environment';
+import {SnackbarService} from '../../../ui/services/snackbar.service';
+import {ScopeService} from '../scope.service';
+import {Scope} from '../../model/scope.enum';
+import {TagService} from '../tag.service';
+import {RecurrenceInterval} from '../../model/recurrence-interval.enum';
+import {DateService} from '../date.service';
+import {DisplayAspect, TaskDisplayService} from './task-display.service';
+import {Tasklet} from '../../model/tasklet.model';
 
 /**
  * Handles tasks including
@@ -89,17 +91,19 @@ export class TaskService {
    * @param {Scope} scope scope to filter by
    */
   public findTasksByScope(scope: Scope) {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKS_DAYS));
+
     const index = {fields: ['entityType', 'scope', 'modificationDate', 'completionDate']};
     const options = {
       selector: {
         '$and': [
           {'entityType': {'$eq': EntityType.TASK}},
           {scope: {$eq: scope}},
-          {'modificationDate': {'$gt': null}}
+          {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
-      limit: environment.LIMIT_TASKS
+      limit: environment.LIMIT_TASKS_COUNT
     };
 
     this.clearTasks();
@@ -122,7 +126,7 @@ export class TaskService {
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
-      limit: environment.LIMIT_TASKS
+      limit: environment.LIMIT_TASKS_COUNT
     };
 
     this.clearTasks();
@@ -145,7 +149,7 @@ export class TaskService {
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
-      limit: environment.LIMIT_TASKS
+      limit: environment.LIMIT_TASKS_COUNT
     };
 
     this.clearTasks();
@@ -166,7 +170,7 @@ export class TaskService {
         ]
       },
       // sort: [{creationDate: 'desc'}],
-      limit: environment.LIMIT_TASKS
+      limit: environment.LIMIT_TASKS_COUNT
     };
 
     this.findTaskInternal(index, options);
@@ -242,9 +246,6 @@ export class TaskService {
   public createTask(task: Task, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (task != null) {
-        // Remove transient attributes
-        task.checked = undefined;
-
         task.scope = this.scopeService.scope;
 
         // Update related objects
@@ -387,10 +388,10 @@ export class TaskService {
   }
 
   /**
-   * Determines if a task is next
+   * Determines if a task is due today
    * @param task task
    */
-  public isTaskNext(task: Task) {
+  public isTaskToday(task: Task) {
     return task != null
       && task.completionDate == null
       && task.dueDate != null
@@ -398,7 +399,22 @@ export class TaskService {
       && (task.recurrenceInterval == null
         || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
         || task.recurrenceInterval === RecurrenceInterval.NONE)
-      && DateService.isAfter(task.dueDate, new Date());
+      && DateService.isToday(task.dueDate);
+  }
+
+  /**
+   * Determines if a task is due later than today
+   * @param task task
+   */
+  public isTaskLater(task: Task) {
+    return task != null
+      && task.completionDate == null
+      && task.dueDate != null
+      && (task.delegatedToId == null || task.delegatedToId === '')
+      && (task.recurrenceInterval == null
+        || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
+        || task.recurrenceInterval === RecurrenceInterval.NONE)
+      && DateService.isAfter(task.dueDate, DateService.getDayEnd(new Date()));
   }
 
   /**
@@ -440,32 +456,36 @@ export class TaskService {
   /**
    * Determines if a task is relevant soon
    * @param task task
-   * @param lastOccurrence last occurrence
+   * @param expectedNextOccurrence expected next occurrence
    */
-  public isTaskRelevantSoon(task: Task, lastOccurrence: Date) {
-    if (task != null && lastOccurrence != null) {
+  public isTaskRelevantSoon(task: Task, expectedNextOccurrence: Date) {
+    if (task != null && expectedNextOccurrence != null) {
       const now = new Date();
+
+      let minutesBefore = 0;
+      let minutesAfter = 0;
 
       switch (task.recurrenceInterval) {
         case RecurrenceInterval.DAILY: {
-          const nextOccurrence = DateService.addDays(lastOccurrence, 1);
-          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -15);
-          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
-          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+          minutesBefore = 15;
+          minutesAfter = 5;
+          break;
         }
         case RecurrenceInterval.WEEKLY: {
-          const nextOccurrence = DateService.addDays(lastOccurrence, 7);
-          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -15);
-          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
-          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+          minutesBefore = 15;
+          minutesAfter = 5;
+          break;
         }
         case RecurrenceInterval.MONTHLY: {
-          const nextOccurrence = DateService.addMonths(lastOccurrence, 1);
-          const minutesBeforeStart = DateService.addMinutes(nextOccurrence, -60);
-          const minutesAfterStart = DateService.addMinutes(nextOccurrence, 5);
-          return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
+          minutesBefore = 60;
+          minutesAfter = 5;
+          break;
         }
       }
+
+      const minutesBeforeStart = DateService.addMinutes(expectedNextOccurrence, -minutesBefore);
+      const minutesAfterStart = DateService.addMinutes(expectedNextOccurrence, minutesAfter);
+      return DateService.isAfter(now, minutesBeforeStart) && DateService.isBefore(now, minutesAfterStart);
     }
 
     return false;
@@ -540,6 +560,68 @@ export class TaskService {
   }
 
   // </editor-fold>
+
+  //
+  // Lookup
+  //
+
+  /**
+   * Determines the latest occurrence of a task by looking at its tasklets
+   * @param tasklets tasklets associated with this a task
+   */
+  public getLastestOccurrence(tasklets: Tasklet[]): Date {
+
+    if (tasklets.length > 0) {
+      return tasklets[0].creationDate;
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * Determines the expected next occurrence of a task by looking at its tasklets
+   * @param task task
+   * @param tasklets tasklets associated with this a task
+   */
+  public getExpectedNextOccurrence(task: Task, tasklets: Tasklet[]) {
+    const lastOccurrence = this.getLastestOccurrence(tasklets);
+
+    if (lastOccurrence != null) {
+      switch (task.recurrenceInterval) {
+        case RecurrenceInterval.DAILY: {
+          return DateService.addDays(lastOccurrence, 1);
+        }
+        case RecurrenceInterval.WEEKLY: {
+          return DateService.addDays(lastOccurrence, 7);
+        }
+        case RecurrenceInterval.MONTHLY: {
+          return DateService.addMonths(lastOccurrence, 1);
+        }
+      }
+    } else {
+      return null;
+    }
+  }
+
+  //
+  // Delegated: Display aspects
+  //
+
+  /**
+   * Determines if a given tasklet contains a display aspect
+   * @param displayAspect display aspect
+   * @param task tasks
+   */
+  public containsDisplayAspect(displayAspect: DisplayAspect, task: Task): boolean {
+    switch (displayAspect) {
+      case DisplayAspect.CAN_BE_CREATED: {
+        return TaskDisplayService.canBeCreated(task);
+      }
+      case DisplayAspect.CAN_BE_UPDATED: {
+        return TaskDisplayService.canBeUpdated(task);
+      }
+    }
+  }
 
   //
   // Notification

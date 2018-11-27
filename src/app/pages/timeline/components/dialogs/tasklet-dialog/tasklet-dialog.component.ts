@@ -14,7 +14,7 @@ import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-m
 import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
-import {TaskletService} from '../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../core/entity/services/tasklet/tasklet.service';
 import {CloneService} from '../../../../../core/entity/services/clone.service';
 
 /**
@@ -58,6 +58,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   /** Person option representing the user */
   myselfOption: string;
 
+  /** Enum for action types */
+  actionType = Action;
   /** Enum of tasklet types */
   taskletType = TaskletType;
   /** Enum of display aspects */
@@ -195,7 +197,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    */
   onTagsChanged(tags: string[]) {
     this.tags = tags.map(t => {
-      return new Tag(t, true);
+      return new Tag(t);
     });
   }
 
@@ -205,7 +207,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    */
   onPersonsChanged(persons: string[]) {
     this.persons = persons.map(p => {
-      return new Person(p, true);
+      return new Person(p);
     });
   }
 
@@ -220,46 +222,85 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     }
   }
 
+  //
+  // Button actions
+  //
+
   /**
-   * Handles the creation, updating or continuation of a task
+   * Handles click on button
+   * @param action
    */
-  private handleTaskletChanges() {
-    switch (this.mode) {
-      case DialogMode.ADD: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CREATED, this.tasklet)) {
-          this.addTasklet();
-        }
+  onButtonClicked(action: Action) {
+    switch (action) {
+      case Action.ADD: {
+        this.dialogRef.close();
         break;
       }
-      case DialogMode.UPDATE: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_UPDATED, this.tasklet)) {
-          this.updateTasklet();
-        }
+      case Action.UPDATE: {
+        this.dialogRef.close();
         break;
       }
-      case DialogMode.CONTINUE: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CONTINUED, this.tasklet)) {
-          this.continueTasklet();
-        }
+      case Action.CONTINUE: {
+        this.dialogRef.close();
         break;
       }
-      case DialogMode.DELETE: {
+      case Action.DELETE: {
+        this.deleteTasklet();
         break;
       }
-      case DialogMode.NONE: {
+      case Action.FULLSCREEN: {
+        this.goToFullscreen();
+        break;
+      }
+      case Action.POMODORO_START: {
+        this.startPomodoro();
+        break;
+      }
+      case Action.SEND_MAIL_MEETING_MINUTES: {
+        this.sendMeetingMinutes();
+        break;
+      }
+      case Action.SEND_MAIL_DAILY_SCRUM_SUMMARY: {
+        this.sendDailyScrumSummary();
         break;
       }
     }
   }
 
   //
-  // Button actions
+  //
   //
 
   /**
-   * Handles click on add button
+   * Handles the creation, updating or continuation of a task
    */
-  addTasklet() {
+  private handleTaskletChanges() {
+    switch (this.mode) {
+      case DialogMode.ADD: {
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CREATED, this.tasklet, this.task)) {
+          this.addTasklet();
+        }
+        break;
+      }
+      case DialogMode.UPDATE: {
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task)) {
+          this.updateTasklet();
+        }
+        break;
+      }
+      case DialogMode.CONTINUE: {
+        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CONTINUED, this.tasklet, this.task)) {
+          this.continueTasklet();
+        }
+        break;
+      }
+    }
+  }
+
+  /**
+   * Adds a tasklet
+   */
+  private addTasklet() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -273,9 +314,9 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles click on update button
+   * Updates a tasklet
    */
-  updateTasklet() {
+  private updateTasklet() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -289,17 +330,24 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles click on delete button
+   * Continues a tasklet
    */
-  deleteTasklet() {
+  private continueTasklet() {
+    this.dialogRef.close({action: Action.ADD, tasklet: this.tasklet, tags: this.tags, task: this.task});
+  }
+
+  /**
+   * Deletes a tasklet
+   */
+  private deleteTasklet() {
     this.mode = DialogMode.DELETE;
     this.dialogRef.close({action: Action.DELETE, tasklet: this.tasklet});
   }
 
   /**
-   * Handles click on fullscreen button
+   * Goes to fullscreen
    */
-  goToFullscreen() {
+  private goToFullscreen() {
     this.mode = DialogMode.NONE;
     this.dialogRef.close({
       action: Action.FULLSCREEN,
@@ -311,9 +359,9 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handles click on pomodoro start button
+   * Start a pomodoro
    */
-  startPomodoro() {
+  private startPomodoro() {
     this.mode = DialogMode.NONE;
     this.dialogRef.close({
       action: Action.POMODORO_START,
@@ -327,7 +375,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   /**
    * Sends meeting minutes via mail
    */
-  sendMeetingMinutes() {
+  private sendMeetingMinutes() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -343,7 +391,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   /**
    * Sends daily scrum summary via mail
    */
-  sendDailyScrumSummary() {
+  private sendDailyScrumSummary() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -356,13 +404,6 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Handles click on continue button
-   */
-  continueTasklet() {
-    this.dialogRef.close({action: Action.ADD, tasklet: this.tasklet, tags: this.tags, task: this.task});
-  }
-
   //
   // Helpers
   //
@@ -371,9 +412,10 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * Determines whether the displayed tasklet contains a specific display aspect
    * @param displayAspect display aspect
    * @param tasklet tasklet
+   * @param task task
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
-    return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
+  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task): boolean {
+    return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
   }
 
   /**
@@ -404,10 +446,10 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
     // Concatenate
     this.tags.forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
     this.inferTags(tasklet).forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
 
     return Array.from(aggregatedTags.values());
@@ -449,10 +491,10 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
     // Concatenate
     this.persons.forEach(p => {
-      aggregatedPersons.set(p.id, p);
+      aggregatedPersons.set(p.name, p);
     });
     this.inferPersons(tasklet).forEach(p => {
-      aggregatedPersons.set(p.id, p);
+      aggregatedPersons.set(p.name, p);
     });
 
     return Array.from(aggregatedPersons.values());

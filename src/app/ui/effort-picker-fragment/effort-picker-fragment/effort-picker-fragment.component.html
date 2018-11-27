@@ -1,0 +1,18 @@
+<div class="flexcontainer">
+  <mat-form-field class="effort">
+    <input matInput [ngModel]="effortRounded" (ngModelChange)="onEffortChanged($event)" name="effort"
+           placeholder="Effort" type="number">
+  </mat-form-field>
+  <mat-form-field color="primary" class="unit">
+    <mat-select [(ngModel)]="unit" name="unit" placeholder="Unit">
+      <mat-option *ngFor="let item of units" [value]="item" (click)="onUnitSelected(item)">
+        {{ item }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="flexbox"></div>
+  <mat-divider [vertical]="true"></mat-divider>
+  <div class="flexbox"></div>
+  <button mat-button *ngFor="let value of planningPokerValues" class="planning-poker-value"
+          (click)="onPlanningPokerValueClicked(value)">{{ value }}</button>
+</div>

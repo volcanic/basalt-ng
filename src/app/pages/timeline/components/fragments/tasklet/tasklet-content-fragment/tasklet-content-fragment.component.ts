@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {DisplayAspect} from '../../../../../../core/entity/services/tasklet/tasklet-display.service';
-import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 
 /**
  * Displays the content of a tasklet containing

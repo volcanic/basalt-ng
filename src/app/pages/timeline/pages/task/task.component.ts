@@ -23,8 +23,8 @@ import {SettingsService} from '../../../../core/settings/services/settings.servi
 import {SnackbarService} from '../../../../core/ui/services/snackbar.service';
 import {SuggestionService} from '../../../../core/entity/services/suggestion.service';
 import {TagService} from '../../../../core/entity/services/tag.service';
-import {TaskletService} from '../../../../core/entity/services/tasklet.service';
-import {TaskService} from '../../../../core/entity/services/task.service';
+import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
+import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {map, takeUntil} from 'rxjs/operators';
@@ -109,10 +109,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /** Enum for action types */
+  actionType = Action;
   /** Enum of media types */
-  public mediaType = Media;
+  mediaType = Media;
   /** Current media */
-  public media: Media = Media.UNDEFINED;
+  media: Media = Media.UNDEFINED;
 
   /** Vertical scroll position */
   private scrollPosLast = 0;
@@ -211,7 +213,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.findEntities();
 
-    this.route.params.subscribe(param => {
+    this.route.params.subscribe(() => {
       this.id = this.route.snapshot.paramMap.get('id');
       this.findEntities();
     });
@@ -321,7 +323,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeProjectSubscription() {
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.initializeOptions();
     });
   }
@@ -332,7 +334,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeTagSubscription() {
     this.tagService.tagsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.initializeOptions();
     });
   }
@@ -343,7 +345,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializePersonSubscription() {
     this.personService.personsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
+    ).subscribe(() => {
       this.initializeOptions();
     });
   }
@@ -521,9 +523,46 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles click on add button
+   * Handles click on button
+   * @param action
    */
-  addTask() {
+  onButtonClicked(action: Action) {
+    switch (action) {
+      case Action.ADD: {
+        this.addTask();
+        break;
+      }
+      case Action.UPDATE: {
+        this.updateTask();
+        break;
+      }
+      case Action.CONTINUE: {
+        this.continueTask();
+        break;
+      }
+      case Action.DELETE: {
+        this.deleteTask();
+        break;
+      }
+      case Action.COMPLETE: {
+        this.completeTask();
+        break;
+      }
+      case Action.REOPEN: {
+        this.reopenTask();
+        break;
+      }
+    }
+  }
+
+  //
+  //
+  //
+
+  /**
+   * Adds a task
+   */
+  private addTask() {
     this.tags = this.aggregateTags(this.task);
 
     this.onTaskEvent({
@@ -536,9 +575,9 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles click on update button
+   * Updates a task
    */
-  updateTask() {
+  private updateTask() {
     this.tags = this.aggregateTags(this.task);
 
     this.onTaskEvent({
@@ -551,16 +590,30 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles click on delete button
+   * Continues a task
    */
-  deleteTask() {
+  private continueTask() {
+    // TODO
+  }
+
+  /**
+   * Completes a task
+   */
+  private completeTask() {
+    // TODO
+  }
+
+  /**
+   * Deletes a task
+   */
+  private deleteTask() {
     this.onTaskEvent({action: Action.DELETE, task: this.task});
   }
 
   /**
-   * Handles click on continue button
+   * Re-opens a task
    */
-  continueTask() {
+  private reopenTask() {
     // TODO
   }
 
@@ -568,9 +621,9 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a task
    * @param {any} event event parameters
    */
-  onTaskEvent(event: { action: Action, task: Task, tasks?: Task[], project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
+  private onTaskEvent(event: { action: Action, task: Task, tasks?: Task[], project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
     const task = CloneService.cloneTask(event.task as Task);
-    const tasks = CloneService.cloneTasks(event.tasks as Task[]);
+    // const tasks = CloneService.cloneTasks(event.tasks as Task[]);
     const project = CloneService.cloneProject(event.project as Project);
     const delegatedTo = CloneService.clonePerson(event.delegatedTo as Person);
     const tags = CloneService.cloneTags(event.tags as Tag[]);
@@ -585,7 +638,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Create task itself
         this.taskService.createTask(task).then(() => {
-          this.filterService.updateTasksList([task], true);
+          this.filterService.updateTasksListIfNotEmpty([task]);
           this.snackbarService.showSnackbar('Added task');
         });
         break;
@@ -677,12 +730,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // New project
       if (p == null && project.name != null && project.name !== '') {
-        p = new Project(project.name, true);
+        p = new Project(project.name);
         this.projectService.createProject(p, false).then(() => {
         });
       }
 
-      this.filterService.updateProjectsList([p], true);
+      this.filterService.updateProjectsListIfNotEmpty([p]);
       task.projectId = p.id;
     } else {
       // Unassign project
@@ -702,12 +755,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // New person
       if (p == null && delegatedTo.name != null && delegatedTo.name !== '') {
-        p = new Person(delegatedTo.name, true);
+        p = new Person(delegatedTo.name);
         this.personService.createPerson(p).then(() => {
         });
       }
 
-      this.filterService.updatePersonsList([p], true);
+      this.filterService.updatePersonsListIfNotEmpty([p]);
       task.delegatedToId = p.id;
     } else {
       // Unassign delegated-to
@@ -729,13 +782,13 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         let tag = this.tagService.getTagByName(t.name);
 
         if (tag == null) {
-          tag = new Tag(t.name, true);
+          tag = new Tag(t.name);
           this.tagService.createTag(tag).then(() => {
           });
         }
 
-        this.filterService.updateTagsList([tag], true);
-        aggregatedTagIds.set(tag.id, tag.id);
+        this.filterService.updateTagsListIfNotEmpty([tag]);
+        aggregatedTagIds.set(tag.name, tag.id);
       });
 
       task.tagIds = Array.from(aggregatedTagIds.values());
@@ -743,22 +796,6 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
       // Unassign tags
       task.tagIds = [];
     }
-  }
-
-  /**
-   * Returns existing person if exists or creates a new one if not
-   * @param p person name
-   */
-  private lookupPerson(p: string): Person {
-    let person = this.personService.getPersonByName(p);
-
-    if (person == null) {
-      person = new Person(p, true);
-      this.personService.createPerson(person).then(() => {
-      });
-    }
-
-    return person;
   }
 
   //
@@ -785,10 +822,10 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Concatenate
     this.tags.forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
     this.inferTags(task).forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
 
     return Array.from(aggregatedTags.values());

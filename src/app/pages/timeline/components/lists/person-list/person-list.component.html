@@ -8,14 +8,14 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <!-- Recent -->
-    <app-person-list-item *ngFor="let p of personsRecent" [person]="p" [media]="media"
-                           (personEventEmitter)="onPersonEvent($event)">
+    <app-person-list-item *ngFor="let p of personsRecent" [person]="p" [media]="media" [active]="isInFocus(p)"
+                          (personEventEmitter)="onPersonEvent($event)">
     </app-person-list-item>
     <!-- Non-recent -->
     <div *ngIf="showMoreStatus">
       <mat-divider></mat-divider>
-      <app-person-list-item *ngFor="let p of personsNonRecent" [person]="p" [media]="media"
-                             (personEventEmitter)="onPersonEvent($event)">
+      <app-person-list-item *ngFor="let p of personsNonRecent" [person]="p" [media]="media" [active]="isInFocus(p)"
+                            (personEventEmitter)="onPersonEvent($event)">
       </app-person-list-item>
     </div>
     <button mat-button *ngIf="persons.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {takeUntil} from 'rxjs/internal/operators';
 import {Tasklet} from '../../../../core/entity/model/tasklet.model';
-import {TaskletService} from '../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
 import {FilterService} from '../../../../core/entity/services/filter.service';
 import {MatchService} from '../../../../core/entity/services/match.service';
 import {Subject} from 'rxjs/Subject';
@@ -71,8 +71,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.tasklets = (value as Tasklet[]).filter(tasklet => {
           const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
           const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
-            Array.from(this.filterService.projects.values()),
-            this.filterService.projectsNone);
+            Array.from(this.filterService.projects.values()));
 
           return matchesSearchItem && matchesProjects;
         });

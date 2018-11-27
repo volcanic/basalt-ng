@@ -1,30 +1,30 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Tasklet} from '../model/tasklet.model';
+import {Tasklet} from '../../model/tasklet.model';
 import {Subject} from 'rxjs';
-import {Person} from '../model/person.model';
-import {TaskletType} from '../model/tasklet-type.enum';
-import {DateService} from './date.service';
-import {EntityType} from '../model/entity-type.enum';
-import {SuggestionService} from './suggestion.service';
-import {PouchDBService} from '../../persistence/services/pouchdb.service';
-import {Project} from '../model/project.model';
-import {Task} from '../model/task.model';
-import {TaskService} from './task.service';
-import {ProjectService} from './project.service';
-import {environment} from '../../../../environments/environment';
-import {SnackbarService} from '../../ui/services/snackbar.service';
-import {ScopeService} from './scope.service';
-import {Scope} from '../model/scope.enum';
-import {TagService} from './tag.service';
-import {PersonService} from './person.service';
-import {MeetingMinuteItemType} from '../model/meeting-minutes/meeting-minute-item-type.enum';
-import {MeetingMinuteItem} from '../model/meeting-minutes/meeting-minute-item.model';
-import {DailyScrumItem} from '../model/daily-scrum/daily-scrum-item.model';
-import {DisplayAspect, TaskletDisplayService} from './tasklet/tasklet-display.service';
-import {Description} from '../model/description.model';
-import {TaskletTypeGroup} from '../model/tasklet-type-group.enum';
-import {TaskletTypeService} from './tasklet/tasklet-type.service';
-import {DailyScrumItemType} from '../model/daily-scrum/daily-scrum-item-type.enum';
+import {Person} from '../../model/person.model';
+import {TaskletType} from '../../model/tasklet-type.enum';
+import {DateService} from '../date.service';
+import {EntityType} from '../../model/entity-type.enum';
+import {SuggestionService} from '../suggestion.service';
+import {PouchDBService} from '../../../persistence/services/pouchdb.service';
+import {Project} from '../../model/project.model';
+import {Task} from '../../model/task.model';
+import {TaskService} from '../task/task.service';
+import {ProjectService} from '../project.service';
+import {environment} from '../../../../../environments/environment';
+import {SnackbarService} from '../../../ui/services/snackbar.service';
+import {ScopeService} from '../scope.service';
+import {Scope} from '../../model/scope.enum';
+import {TagService} from '../tag.service';
+import {PersonService} from '../person.service';
+import {MeetingMinuteItemType} from '../../model/meeting-minutes/meeting-minute-item-type.enum';
+import {MeetingMinuteItem} from '../../model/meeting-minutes/meeting-minute-item.model';
+import {DailyScrumItem} from '../../model/daily-scrum/daily-scrum-item.model';
+import {DisplayAspect, TaskletDisplayService} from './tasklet-display.service';
+import {Description} from '../../model/description.model';
+import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
+import {TaskletTypeService} from './tasklet-type.service';
+import {DailyScrumItemType} from '../../model/daily-scrum/daily-scrum-item-type.enum';
 
 /**
  * Handles tasklets including
@@ -118,16 +118,18 @@ export class TaskletService {
    * @param {Scope} scope scope to filter by
    */
   public findTaskletsByScope(scope: Scope) {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKLETS_DAYS));
+
     const index = {fields: ['entityType', 'scope', 'creationDate']};
     const options = {
       selector: {
         '$and': [
           {entityType: {$eq: EntityType.TASKLET}},
-          {creationDate: {$gt: '2018-09-01T00:00:00.000Z'}}
+          {creationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{creationDate: 'desc'}],
-      limit: environment.LIMIT_TASKLETS
+      limit: environment.LIMIT_TASKLETS_COUNT
     };
 
     this.clearTasklets();
@@ -148,7 +150,7 @@ export class TaskletService {
         ]
       },
       // sort: [{creationDate: 'desc'}],
-      limit: environment.LIMIT_TASKLETS
+      limit: environment.LIMIT_TASKLETS_COUNT
     };
 
     this.findTaskletInternal(index, options);
@@ -335,20 +337,6 @@ export class TaskletService {
   }
 
   /**
-   * Determines the latest creation time of a tasklet associated with a given task
-   * @param task task
-   */
-  public getLastestOccurrence(task: Task): Date {
-    const tasklets = this.getTaskletsByTask(task);
-
-    if (tasklets.length > 0) {
-      return tasklets[0].creationDate;
-    } else {
-      return null;
-    }
-  }
-
-  /**
    * Retrieves a project by a given tasklet
    * @param {Tasklet} tasklet tasklet to find project by
    * @returns {Project} project referenced by given tasklet, null if no such project exists
@@ -513,15 +501,16 @@ export class TaskletService {
    * Determines if a given tasklet contains a display aspect
    * @param displayAspect display aspect
    * @param tasklet tasklet
+   * @param task tasks
    * @param previousDescription previous description
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, previousDescription?: Description): boolean {
+  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task, previousDescription?: Description): boolean {
     switch (displayAspect) {
       case DisplayAspect.CAN_BE_ASSIGNED_TO_TASK: {
         return this.taskletDisplayService.canBeAssignedToTask(tasklet);
       }
       case DisplayAspect.CONTAINS_DESCRIPTION: {
-        return TaskletDisplayService.containsDescription(tasklet);
+        return this.taskletDisplayService.containsDescription(tasklet);
       }
       case DisplayAspect.CONTAINS_PREVIOUS_DESCRIPTION: {
         return TaskletDisplayService.containsPreviousDescription(previousDescription);
@@ -542,13 +531,13 @@ export class TaskletService {
         return TaskletDisplayService.containsPersons(tasklet);
       }
       case DisplayAspect.CAN_BE_CREATED: {
-        return TaskletDisplayService.canBeCreated(tasklet);
+        return this.taskletDisplayService.canBeCreated(tasklet, task);
       }
       case DisplayAspect.CAN_BE_UPDATED: {
-        return TaskletDisplayService.canBeUpdated(tasklet);
+        return this.taskletDisplayService.canBeUpdated(tasklet, task);
       }
       case DisplayAspect.CAN_BE_CONTINUED: {
-        return TaskletDisplayService.canBeContinued(tasklet);
+        return this.taskletDisplayService.canBeContinued(tasklet, task);
       }
       case DisplayAspect.IS_POMODORO_STARTED: {
         return this.taskletDisplayService.isPomodoroStarted(tasklet);

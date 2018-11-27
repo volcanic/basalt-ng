@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {Task} from '../../../core/entity/model/task.model';
-import {TaskService} from '../../../core/entity/services/task.service';
+import {TaskService} from '../../../core/entity/services/task/task.service';
 
 /**
  * Resolves task by parameter

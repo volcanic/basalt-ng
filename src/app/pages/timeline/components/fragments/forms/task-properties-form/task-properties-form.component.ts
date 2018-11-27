@@ -132,6 +132,20 @@ export class TaskPropertiesFormComponent implements OnInit {
     this.task.dueDate = value;
   }
 
+  /**
+   * Handles click on end-of-business button
+   */
+  endOfBusinessClicked() {
+    this.task.dueDate = new Date(DateService.getEndOfBusiness(new Date()));
+  }
+
+  /**
+   * Handles click on end-of-week button
+   */
+  endOfWeekClicked() {
+    this.task.dueDate = new Date(DateService.getEndOfWorkWeek(new Date()));
+  }
+
   // Recurrence interval
 
   /**
@@ -196,6 +210,17 @@ export class TaskPropertiesFormComponent implements OnInit {
     this.notify();
   }
 
+  // Effort
+
+  /**
+   * Handles effort changes
+   * @param effort effort
+   */
+  onEffortChanged(effort: number) {
+    this.task.effort = effort;
+    this.notify();
+  }
+
   // Delegated to
 
   /**
@@ -216,7 +241,7 @@ export class TaskPropertiesFormComponent implements OnInit {
    */
   onTagsChanged(tags: string[]) {
     this.tags = tags.map(t => {
-      return new Tag(t, true);
+      return new Tag(t);
     });
     this.notify();
   }

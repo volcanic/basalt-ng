@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
-import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 import {TaskletType} from '../../../../../../core/entity/model/tasklet-type.enum';
 import {Task} from '../../../../../../core/entity/model/task.model';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {Action} from '../../../../../../core/entity/model/action.enum';
-import {TaskService} from '../../../../../../core/entity/services/task.service';
+import {TaskService} from '../../../../../../core/entity/services/task/task.service';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 
 /**
@@ -100,9 +100,11 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
     this.suggestedActions = [];
 
     // Recurring tasks
+    let expectedNextOccurrence;
     this.suggestedTasks.filter(this.taskService.isTaskRecurring).filter(task => {
-      const getLastestOccurrence = this.taskletService.getLastestOccurrence(task);
-      return this.taskService.isTaskRelevantSoon(task, getLastestOccurrence);
+      const tasklets = this.taskletService.getTaskletsByTask(task);
+      expectedNextOccurrence = this.taskService.getExpectedNextOccurrence(task, tasklets);
+      return this.taskService.isTaskRelevantSoon(task, expectedNextOccurrence);
     }).slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();
@@ -110,7 +112,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskRecurringColor(task);
         suggestedAction.iconColor = this.colorService.getTaskRecurringContrast(task);
-        suggestedAction.tooltip = `${task.name} (due: ${DateService.getDateString(task.dueDate)}, ${DateService.getTimeString(task.dueDate)})`;
+        suggestedAction.tooltip = `${task.name} (expected: ${DateService.getDateString(expectedNextOccurrence)}, ${DateService.getTimeString(expectedNextOccurrence)})`;
         suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });

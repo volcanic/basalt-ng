@@ -210,6 +210,33 @@ export class DateService {
   }
 
   /**
+   * Returns the end-of-business of a give date which is 5:30 p.m. according to British standards
+   * @param date
+   */
+  static getEndOfBusiness(date: Date): Date {
+    const endOfBusiness = new Date(date);
+    endOfBusiness.setHours(17, 30);
+
+    return endOfBusiness;
+  }
+
+  /**
+   * Returns the end of a work week of a given date which is the end of business of the next Friday
+   * @param date
+   */
+  static getEndOfWorkWeek(date: Date): Date {
+    const endOfWorkWeek = DateService.getEndOfTheWeek(date);
+
+    const currentWeekDay = new Date(date).getDay();
+    const daysTillFriday = currentWeekDay === 5 ? 0 : (12 - currentWeekDay) % 7;
+
+    endOfWorkWeek.setHours(17, 30);
+    endOfWorkWeek.setDate(new Date(date).getDate() + daysTillFriday);
+
+    return endOfWorkWeek;
+  }
+
+  /**
    * Returns start of a given day
    * @param {Date} date date to get start of
    * @returns {Date} start of a given date

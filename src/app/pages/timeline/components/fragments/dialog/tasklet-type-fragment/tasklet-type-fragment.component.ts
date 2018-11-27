@@ -4,7 +4,7 @@ import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
 import {FeatureService} from '../../../../../../core/settings/services/feature.service';
-import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 import {FeatureType} from '../../../../../../core/settings/model/feature-type.enum';
 
 /**
@@ -96,6 +96,7 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
     this.taskletTypeActions = [];
     this.taskletTypeGroups.filter(group => {
       return group !== TaskletTypeGroup.UNSPECIFIED
+        && group !== TaskletTypeGroup.BREAK
         && !(group === TaskletTypeGroup.DEVELOPMENT && !this.featureService.isFeatureActive(FeatureType.DEVELOPMENT));
     }).forEach(group => {
       const action = new TaskletTypeGroupAction();
@@ -108,8 +109,7 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
         return type !== TaskletType.DEVELOPMENT
           && !(group === TaskletTypeGroup.DEVELOPMENT && !this.featureService.isFeatureActive(FeatureType.DEVELOPMENT))
           && !(type === TaskletType.DAILY_SCRUM && !this.featureService.isFeatureActive(FeatureType.SCRUM))
-          && !(type === TaskletType.POMODORO && !this.featureService.isFeatureActive(FeatureType.POMODORO))
-          && type !== TaskletType.POMODORO_BREAK;
+          && !(type === TaskletType.POMODORO && !this.featureService.isFeatureActive(FeatureType.POMODORO));
       });
       this.taskletTypeActions.push(action);
     });

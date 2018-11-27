@@ -8,7 +8,8 @@
     </button>
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
-  <button mat-button class="entity flexbox" (click)="onTagClicked()">
+  <button mat-button class="entity flexbox" [disabled]="!active"
+          (click)="onTagClicked()">
     <mat-icon svgIcon="alias_tag" class="list-icon"></mat-icon>
     <span>{{ tag.name }}</span>
   </button>

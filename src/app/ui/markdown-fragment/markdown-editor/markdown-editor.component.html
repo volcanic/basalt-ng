@@ -11,9 +11,9 @@
                   [placeholder]="placeholder"
                   matAutosizeMinRows="3"
                   matAutosizeMaxRows="12"
-                  [(ngModel)]="text"
+                  [ngModel]="text"
                   [disabled]="readonly"
-                  (change)="onTextChanged()">
+                  (ngModelChange)="onTextChanged($event)">
         </textarea>
       <button
         *ngIf="text"

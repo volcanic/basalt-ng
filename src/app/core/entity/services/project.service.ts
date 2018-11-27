@@ -8,6 +8,7 @@ import {environment} from '../../../../environments/environment';
 import {SnackbarService} from '../../ui/services/snackbar.service';
 import {ScopeService} from './scope.service';
 import {Scope} from '../model/scope.enum';
+import {DateService} from './date.service';
 
 /**
  * Handles projects including
@@ -73,17 +74,19 @@ export class ProjectService {
    * @param {Scope} scope scope to filter by
    */
   public findProjectsByScope(scope: Scope) {
-    const index = {fields: ['entityType', 'scope', 'modificationType']};
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PROJECTS_DAYS));
+
+    const index = {fields: ['entityType', 'scope', 'modificationDate']};
     const options = {
       selector: {
         $and: [
           {entityType: {$eq: EntityType.PROJECT}},
           {scope: {$eq: scope}},
-          {modificationDate: {$gt: null}}
+          {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{'modificationDate': 'desc'}],
-      limit: environment.LIMIT_PROJECTS
+      limit: environment.LIMIT_PROJECTS_COUNT
     };
 
     this.clearProjects();
@@ -134,9 +137,6 @@ export class ProjectService {
   public createProject(project: Project, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (project != null) {
-        // Remove transient attributes
-        project.checked = undefined;
-
         project.scope = this.scopeService.scope;
 
         return this.pouchDBService.put(project.id, project).then(() => {
@@ -158,9 +158,6 @@ export class ProjectService {
   public updateProject(project: Project, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (project != null) {
-        // Remove transient attributes
-        project.checked = undefined;
-
         project.modificationDate = new Date();
 
         return this.pouchDBService.upsert(project.id, project).then(() => {

@@ -6,8 +6,8 @@ import {environment} from '../environments/environment';
 import {SettingsService} from './core/settings/services/settings.service';
 import {PouchDBSettingsService} from './core/persistence/services/pouchdb-settings.service';
 import {EntityService} from './core/entity/services/entity.service';
-import {TaskService} from './core/entity/services/task.service';
-import {TaskletService} from './core/entity/services/tasklet.service';
+import {TaskService} from './core/entity/services/task/task.service';
+import {TaskletService} from './core/entity/services/tasklet/tasklet.service';
 import {ThemeService} from './core/ui/services/theme.service';
 import {OverlayContainer} from '@angular/cdk/overlay';
 

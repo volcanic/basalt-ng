@@ -4,7 +4,9 @@
     {{ meetingMinuteItem.person.name }}
   </span>
   <ul class="statements">
-    <li *ngFor="let part of meetingMinuteItemStatementParts">{{ part }}</li>
+    <li *ngFor="let part of meetingMinuteItemStatementParts">
+      <app-markdown-preview class="markdown-correction" [markdownText]="part"></app-markdown-preview>
+    </li>
   </ul>
   <span class="due-date" *ngIf="meetingMinuteItem.dueDate != null">
     {{ getDateString(meetingMinuteItem.dueDate) }} {{ getTimeString(meetingMinuteItem.dueDate) }}

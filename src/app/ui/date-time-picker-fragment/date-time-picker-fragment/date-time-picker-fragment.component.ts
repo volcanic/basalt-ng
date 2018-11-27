@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {DateService} from 'app/core/entity/services/date.service';
 
 /**
@@ -10,7 +10,7 @@ import {DateService} from 'app/core/entity/services/date.service';
   styleUrls: ['./date-time-picker-fragment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateTimePickerFragmentComponent implements OnInit {
+export class DateTimePickerFragmentComponent implements OnChanges {
 
   /** Initial date to be displayed */
   @Input() date: Date;
@@ -50,9 +50,9 @@ export class DateTimePickerFragmentComponent implements OnInit {
   //
 
   /**
-   * Handles on-init lifecycle phase
+   * Handles on-changes lifecycle phase
    */
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges) {
     this.initializeComponents();
     this.initializeOptions();
   }

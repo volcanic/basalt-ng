@@ -7,7 +7,7 @@ import {DailyScrumItem} from '../../../../../../core/entity/model/daily-scrum/da
 import {DailyScrumItemType} from '../../../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {Subject} from 'rxjs/Subject';
-import {TaskletService} from '../../../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 
 /**
  * Displays daily scrum fragment
@@ -223,7 +223,7 @@ export class DailyScrumFragmentComponent implements OnInit {
    * @param name name of the selected person
    */
   onPersonSelected(name: string) {
-    this.person = new Person(name, true);
+    this.person = new Person(name);
     this.colorPerson = this.colorService.getPersonColor(this.person);
     this.contrastPerson = this.colorService.getPersonContrast(this.person);
 

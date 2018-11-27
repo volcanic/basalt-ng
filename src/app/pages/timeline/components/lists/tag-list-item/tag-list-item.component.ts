@@ -18,14 +18,16 @@ import {AnimationState} from '../task-list-item/task-list-item.animation';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TagListItemComponent {
+export class TagListItemComponent  {
 
   /** Tag to be displayed */
   @Input() tag: Tag;
   /** Current media */
   @Input() media: Media;
+  /** Indicates if item is active */
+  @Input() active = true;
   /** Event emitter indicating tag action */
-  @Output() tagEventEmitter = new EventEmitter<{action: Action, tag: Tag, tags?: Tag[]}>();
+  @Output() tagEventEmitter = new EventEmitter<{ action: Action, tag: Tag, tags?: Tag[] }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 

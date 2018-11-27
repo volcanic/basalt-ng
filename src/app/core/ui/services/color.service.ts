@@ -301,6 +301,9 @@ export class ColorService {
       case TaskletTypeGroup.IDEA: {
         return this.materialColorService.hue(PaletteType.AMBER, HueType._600);
       }
+      case TaskletTypeGroup.TRAVEL: {
+        return this.materialColorService.hue(PaletteType.GREY, HueType._600);
+      }
       case TaskletTypeGroup.BREAK: {
         return this.materialColorService.hue(PaletteType.GREY, HueType._600);
       }

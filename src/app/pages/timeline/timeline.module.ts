@@ -7,27 +7,17 @@ import {ConfirmationDialogModule} from '../../ui/confirmation-dialog/confirmatio
 import {InformationDialogModule} from '../../ui/information-dialog/information-dialog.module';
 import {MaterialModule} from '../../ui/material/material.module';
 import {PersonDialogComponent} from './components/dialogs/person-dialog/person-dialog.component';
-import {PersonFilterDialogComponent} from './components/dialogs/person-filter-dialog/person-filter-dialog.component';
 import {ProjectDialogComponent} from './components/dialogs/project-dialog/project-dialog.component';
-import {ProjectFilterDialogComponent} from './components/dialogs/project-filter-dialog/project-filter-dialog.component';
 import {ProjectListDialogComponent} from './components/dialogs/project-list-dialog/project-list-dialog.component';
 import {TagDialogComponent} from './components/dialogs/tag-dialog/tag-dialog.component';
-import {TagFilterDialogComponent} from './components/dialogs/tag-filter-dialog/tag-filter-dialog.component';
 import {TagListDialogComponent} from './components/dialogs/tag-list-dialog/tag-list-dialog.component';
 import {TaskDialogComponent} from './components/dialogs/task-dialog/task-dialog.component';
-import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/task-list-dialog.component';
 import {TaskletDialogComponent} from './components/dialogs/tasklet-dialog/tasklet-dialog.component';
 import {UploadDialogComponent} from './components/dialogs/upload-dialog/upload-dialog.component';
 import {DailyScrumFragmentComponent} from './components/fragments/dialog/daily-scrum-fragment/daily-scrum-fragment.component';
 import {TaskletTypeFragmentComponent} from './components/fragments/dialog/tasklet-type-fragment/tasklet-type-fragment.component';
 import {PersonAutocompleteFragmentComponent} from './components/fragments/dialog/person-autocomplete-fragment/person-autocomplete-fragment.component';
 import {ProjectAutocompleteFragmentComponent} from './components/fragments/dialog/project-autocomplete-fragment/project-autocomplete-fragment.component';
-import {FilterPersonListItemComponent} from './components/lists/filter-person-list-item/filter-person-list-item.component';
-import {FilterPersonListComponent} from './components/lists/filter-person-list/filter-person-list.component';
-import {FilterProjectListItemComponent} from './components/lists/filter-project-list-item/filter-project-list-item.component';
-import {FilterProjectListComponent} from './components/lists/filter-project-list/filter-project-list.component';
-import {FilterTagListItemComponent} from './components/lists/filter-tag-list-item/filter-tag-list-item.component';
-import {FilterTagListComponent} from './components/lists/filter-tag-list/filter-tag-list.component';
 import {PersonListItemComponent} from './components/lists/person-list-item/person-list-item.component';
 import {PersonListComponent} from './components/lists/person-list/person-list.component';
 import {ProjectListItemComponent} from './components/lists/project-list-item/project-list-item.component';
@@ -82,6 +72,8 @@ import {TaskToolbarComponent} from './components/toolbars/task-toolbar/task-tool
 import {TaskletToolbarComponent} from './components/toolbars/tasklet-toolbar/tasklet-toolbar.component';
 import {PomodoroFinishedDialogModule} from '../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog.module';
 import {SuggestedActionsComponent} from './components/fragments/other/suggested-actions/suggested-actions.component';
+import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/task-list-dialog.component';
+import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort-picker-fragment.module';
 
 @NgModule({
   imports: [
@@ -109,7 +101,8 @@ import {SuggestedActionsComponent} from './components/fragments/other/suggested-
     StopWatchModule,
     MarkdownFragmentModule,
     PreviousDescriptionModule,
-    PomodoroFinishedDialogModule
+    PomodoroFinishedDialogModule,
+    EffortPickerFragmentModule
   ],
   declarations: [
     // Page
@@ -123,19 +116,15 @@ import {SuggestedActionsComponent} from './components/fragments/other/suggested-
 
     // Dialogs
     PersonDialogComponent,
-    PersonFilterDialogComponent,
 
     ProjectDialogComponent,
     ProjectListDialogComponent,
-    ProjectFilterDialogComponent,
 
     TagDialogComponent,
     TagListDialogComponent,
-    TagFilterDialogComponent,
 
     TaskDialogComponent,
     TaskListDialogComponent,
-    TaskletDialogComponent,
 
     TaskletDialogComponent,
 
@@ -144,18 +133,12 @@ import {SuggestedActionsComponent} from './components/fragments/other/suggested-
     // Lists
     PersonListComponent,
     PersonListItemComponent,
-    FilterPersonListComponent,
-    FilterPersonListItemComponent,
 
     ProjectListComponent,
     ProjectListItemComponent,
-    FilterProjectListComponent,
-    FilterProjectListItemComponent,
 
     TagListComponent,
     TagListItemComponent,
-    FilterTagListComponent,
-    FilterTagListItemComponent,
 
     TaskListComponent,
     TaskListItemComponent,
@@ -202,19 +185,15 @@ import {SuggestedActionsComponent} from './components/fragments/other/suggested-
 
     // Dialogs
     PersonDialogComponent,
-    PersonFilterDialogComponent,
 
     ProjectDialogComponent,
     ProjectListDialogComponent,
-    ProjectFilterDialogComponent,
 
     TagDialogComponent,
     TagListDialogComponent,
-    TagFilterDialogComponent,
 
     TaskDialogComponent,
     TaskListDialogComponent,
-    TaskletDialogComponent,
 
     TaskletDialogComponent,
 

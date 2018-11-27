@@ -4,6 +4,7 @@
   [title]="title"
   [media]="media"
   [scope]="scope"
+  [filterActive]="filterActive"
   [searchOptions]="searchOptions"
   (searchItemEventEmitter)="onSearchItemChanged($event)"
   (menuItemEventEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
@@ -18,13 +19,14 @@
         <app-project-effort-tree [projectDigest]="dailyDigest"></app-project-effort-tree>
       </div>
       <mat-divider></mat-divider>
-      <app-project-list [projects]="projects" [recentCount]="'3'" [media]="media"
+
+      <app-project-list [projects]="projects" [projectsFiltered]="projectsFiltered" [recentCount]="'3'" [media]="media"
                         (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
       <mat-divider></mat-divider>
-      <app-tag-list [tags]="tags" [recentCount]="'10'" [media]="media"
+      <app-tag-list [tags]="tags" [tagsFiltered]="tagsFiltered" [recentCount]="'10'" [media]="media"
                     (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
       <mat-divider></mat-divider>
-      <app-person-list [persons]="persons" [recentCount]="'10'" [media]="media"
+      <app-person-list [persons]="persons" [personsFiltered]="personsFiltered" [recentCount]="'10'" [media]="media"
                        (personEventEmitter)="onPersonEvent($event)"></app-person-list>
     </div>
   </mat-sidenav>
@@ -33,7 +35,7 @@
                position="end" [opened]="sidenavOpened"
                class="sidenav sidenav-end">
     <div [@toolbarAnimation]="scrollDirection">
-      <app-task-list [tasks]="tasks" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
+      <app-task-list [tasks]="tasks" [tasksFiltered]="tasksFiltered" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
     </div>
   </mat-sidenav>
 

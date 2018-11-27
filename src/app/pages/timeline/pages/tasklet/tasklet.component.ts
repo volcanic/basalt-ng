@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TaskletService} from '../../../../core/entity/services/tasklet.service';
+import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
 import {Tasklet} from '../../../../core/entity/model/tasklet.model';
 import {map, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
@@ -23,7 +23,7 @@ import {MatDialog, MatDialogConfig, MatIconRegistry, MatSelect, MatSidenav} from
 import {ConfirmationDialogComponent} from '../../../../ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
 import {DateService} from '../../../../core/entity/services/date.service';
-import {TaskService} from '../../../../core/entity/services/task.service';
+import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -123,6 +123,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /** Enum for action types */
+  actionType = Action;
   /** Enum of media types */
   public mediaType = Media;
   /** Current media */
@@ -218,7 +220,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.findEntities();
 
-    this.route.params.subscribe(param => {
+    this.route.params.subscribe(() => {
       this.id = this.route.snapshot.paramMap.get('id');
       this.findEntities();
     });
@@ -525,7 +527,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onTagsChanged(tags: string[]) {
     this.tags = tags.map(t => {
-      return new Tag(t, true);
+      return new Tag(t);
     });
   }
 
@@ -535,7 +537,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onPersonsChanged(persons: string[]) {
     this.persons = persons.map(p => {
-      return new Person(p, true);
+      return new Person(p);
     });
   }
 
@@ -546,6 +548,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     const taskletPomodoroBreak = new Tasklet();
     taskletPomodoroBreak.type = TaskletType.POMODORO_BREAK;
     taskletPomodoroBreak.pomodoroBreak = +this.settingsService.settings.get(SettingType.POMODORO_BREAK).value;
+
+    // Save finished pomodoro tasklet
+    this.updateTasklet();
 
     const confirmationDialogRef = this.dialog.open(PomodoroFinishedDialogComponent, <MatDialogConfig>{
       disableClose: false,
@@ -594,9 +599,50 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   //
 
   /**
-   * Handles click on add button
+   * Handles click on button
+   * @param action
    */
-  addTasklet() {
+  onButtonClicked(action: Action) {
+    switch (action) {
+      case Action.ADD: {
+        this.addTasklet();
+        break;
+      }
+      case Action.UPDATE: {
+        this.updateTasklet();
+        break;
+      }
+      case Action.CONTINUE: {
+        this.continueTasklet();
+        break;
+      }
+      case Action.DELETE: {
+        this.deleteTasklet();
+        break;
+      }
+      case Action.POMODORO_START: {
+        this.startPomodoro();
+        break;
+      }
+      case Action.SEND_MAIL_MEETING_MINUTES: {
+        this.sendMeetingMinutes();
+        break;
+      }
+      case Action.SEND_MAIL_DAILY_SCRUM_SUMMARY: {
+        this.sendDailyScrumSummary();
+        break;
+      }
+    }
+  }
+
+  //
+  //
+  //
+
+  /**
+   * Adds a tasklet
+   */
+  private addTasklet() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -610,9 +656,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles click on update button
+   * Updates a tasklet
    */
-  updateTasklet() {
+  private updateTasklet() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -626,16 +672,23 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles click on delete button
+   * Continues a tasklet
    */
-  deleteTasklet() {
+  private continueTasklet() {
+    this.onTaskletEvent({action: Action.ADD, tasklet: this.tasklet, tags: this.tags, task: this.task});
+  }
+
+  /**
+   * Deletes a tasklet
+   */
+  private deleteTasklet() {
     this.onTaskletEvent({action: Action.DELETE, tasklet: this.tasklet});
   }
 
   /**
-   * Handles click on pomodoro start button
+   * Start a pomodoro
    */
-  startPomodoro() {
+  private startPomodoro() {
     this.onTaskletEvent({
       action: Action.POMODORO_START,
       tasklet: this.tasklet,
@@ -675,13 +728,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       tags: this.tags,
       persons: this.persons
     });
-  }
-
-  /**
-   * Handles click on continue button
-   */
-  continueTasklet() {
-    this.onTaskletEvent({action: Action.ADD, tasklet: this.tasklet, tags: this.tags, task: this.task});
   }
 
   /**
@@ -838,7 +884,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       if (t == null && task.name != null && task.name !== '') {
         t = new Task(task.name);
         this.taskService.createTask(t, false).then(() => {
-          this.filterService.updateTasksList([task], true);
+          this.filterService.updateTasksListIfNotEmpty([task]);
         });
       }
 
@@ -864,7 +910,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return t != null;
       }).forEach(t => {
         const tag = this.lookupTag(t.name);
-        aggregatedTags.set(tag.id, tag);
+        aggregatedTags.set(tag.name, tag);
       });
     }
 
@@ -876,14 +922,14 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return m.topic;
       }).forEach(t => {
         const tag = this.lookupTag(t);
-        aggregatedTags.set(tag.id, tag);
+        aggregatedTags.set(tag.name, tag);
       });
     }
 
     const values = Array.from(aggregatedTags.values());
     const keys = Array.from(aggregatedTags.keys());
 
-    this.filterService.updateTagsList(values, true);
+    this.filterService.updateTagsListIfNotEmpty(values);
     tasklet.tagIds = Array.from(keys);
   }
 
@@ -895,7 +941,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     let tag = this.tagService.getTagByName(t);
 
     if (tag == null) {
-      tag = new Tag(t, true);
+      tag = new Tag(t);
       this.tagService.createTag(tag).then(() => {
       });
     }
@@ -917,7 +963,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return p != null;
       }).forEach(p => {
         const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.id, person);
+        aggregatedPersons.set(person.name, person);
       });
     }
 
@@ -931,7 +977,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return m.person;
       }).forEach(p => {
         const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.id, person);
+        aggregatedPersons.set(person.name, person);
       });
     }
 
@@ -945,14 +991,14 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         return d.person;
       }).forEach(p => {
         const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.id, person);
+        aggregatedPersons.set(person.name, person);
       });
     }
 
     const values = Array.from(aggregatedPersons.values());
     const keys = Array.from(aggregatedPersons.keys());
 
-    this.filterService.updatePersonsList(values, true);
+    this.filterService.updatePersonsListIfNotEmpty(values);
     tasklet.personIds = Array.from(keys);
   }
 
@@ -964,7 +1010,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     let person = this.personService.getPersonByName(p);
 
     if (person == null) {
-      person = new Person(p, true);
+      person = new Person(p);
       this.personService.createPerson(person).then(() => {
       });
     }
@@ -988,9 +1034,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Determines whether the displayed tasklet contains a specific display aspect
    * @param displayAspect display aspect
    * @param tasklet tasklet
+   * @param task task
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
-    return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
+  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task): boolean {
+    return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
   }
 
   // Tags
@@ -1005,10 +1052,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Concatenate
     this.tags.forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
     this.inferTags(tasklet).forEach(t => {
-      aggregatedTags.set(t.id, t);
+      aggregatedTags.set(t.name, t);
     });
 
     return Array.from(aggregatedTags.values());
@@ -1052,10 +1099,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Concatenate
     this.persons.forEach(p => {
-      aggregatedPersons.set(p.id, p);
+      aggregatedPersons.set(p.name, p);
     });
     this.inferPersons(tasklet).forEach(p => {
-      aggregatedPersons.set(p.id, p);
+      aggregatedPersons.set(p.name, p);
     });
 
     return Array.from(aggregatedPersons.values());

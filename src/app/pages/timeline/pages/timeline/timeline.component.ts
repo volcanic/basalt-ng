@@ -1,19 +1,17 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SnackbarService} from 'app/core/ui/services/snackbar.service';
 import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
-import {TaskletService} from 'app/core/entity/services/tasklet.service';
+import {TaskletService} from 'app/core/entity/services/tasklet/tasklet.service';
 import {TaskletDialogComponent} from '../../components/dialogs/tasklet-dialog/tasklet-dialog.component';
-import {TagFilterDialogComponent} from '../../components/dialogs/tag-filter-dialog/tag-filter-dialog.component';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
 import {AboutDialogComponent} from 'app/ui/about-dialog/about-dialog/about-dialog.component';
 import {environment} from 'app/../environments/environment';
-import {ProjectFilterDialogComponent} from '../../components/dialogs/project-filter-dialog/project-filter-dialog.component';
 import {UploadDialogComponent} from '../../components/dialogs/upload-dialog/upload-dialog.component';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {Project} from 'app/core/entity/model/project.model';
 import {EntityService} from 'app/core/entity/services/entity.service';
 import {ProjectService} from 'app/core/entity/services/project.service';
-import {TaskService} from 'app/core/entity/services/task.service';
+import {TaskService} from 'app/core/entity/services/task/task.service';
 import {Task} from 'app/core/entity/model/task.model';
 import {ProjectDialogComponent} from '../../components/dialogs/project-dialog/project-dialog.component';
 import {FilterService} from 'app/core/entity/services/filter.service';
@@ -22,7 +20,6 @@ import {MediaService} from 'app/core/ui/services/media.service';
 import {Media} from 'app/core/ui/model/media.enum';
 import {map, takeUntil} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/Subject';
-import {TaskListDialogComponent} from '../../components/dialogs/task-list-dialog/task-list-dialog.component';
 import {ProjectListDialogComponent} from '../../components/dialogs/project-list-dialog/project-list-dialog.component';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
 import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
@@ -34,7 +31,6 @@ import {TagDialogComponent} from '../../components/dialogs/tag-dialog/tag-dialog
 import {PersonDialogComponent} from '../../components/dialogs/person-dialog/person-dialog.component';
 import {Person} from 'app/core/entity/model/person.model';
 import {PersonService} from 'app/core/entity/services/person.service';
-import {PersonFilterDialogComponent} from '../../components/dialogs/person-filter-dialog/person-filter-dialog.component';
 import {TagListDialogComponent} from '../../components/dialogs/tag-list-dialog/tag-list-dialog.component';
 import {MatchService} from 'app/core/entity/services/match.service';
 import {ConfirmationDialogComponent} from 'app/ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
@@ -58,6 +54,7 @@ import {SettingsService} from '../../../../core/settings/services/settings.servi
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {Setting} from '../../../../core/settings/model/setting.model';
 import {DailyScrumItemType} from '../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
+import {TaskListDialogComponent} from '../../components/dialogs/task-list-dialog/task-list-dialog.component';
 
 /**
  * Displays timeline page
@@ -84,6 +81,16 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public tasksMap = new Map<string, Task>();
   /** Array of tasks */
   public tasks: Task[] = [];
+  /** Array of tasks that are currently filtered */
+  public tasksFiltered: Task[] = [];
+  /** Array of projects that are currently filtered */
+  public projectsFiltered: Project[] = [];
+  /** Array of tags that are currently filtered */
+  public tagsFiltered: Tag[] = [];
+  /** Array of persons that are currently filtered */
+  public personsFiltered: Person[] = [];
+  /** Indicates whether a filter is active */
+  public filterActive = false;
 
   /** Map of projects */
   public projectsMap = new Map<string, Project>();
@@ -91,8 +98,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public projects: Project[] = [];
   /** Array of projects with filter values */
   public projectsFilter: Project[] = [];
-  /** Flag indicating whether entities without project shall be displayed */
-  public projectsNone = false;
 
   /** Map of tags */
   public tagsMap = new Map<string, Tag>();
@@ -100,8 +105,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public tags: Tag[] = [];
   /** Array of tags with filter values */
   public tagsFilter: Tag[] = [];
-  /** Flag indicating whether entities without tag shall be displayed */
-  public tagsNone = false;
 
   /** Map of persons */
   public personsMap = new Map<string, Person>();
@@ -109,8 +112,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public persons: Person[] = [];
   /** Array of persons with filter values */
   public personsFilter: Person[] = [];
-  /** Flag indicating whether entities without person shall be displayed */
-  public personsNone = false;
 
   /** Search items options for auto-complete */
   public searchOptions = [];
@@ -307,15 +308,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private filterTasklet(tasklet: Tasklet): boolean {
     const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
     const matchesTasks = this.matchService.taskletMatchesTasks(tasklet,
-      Array.from(this.filterService.tasks.values()),
-      this.filterService.tasksNone);
+      Array.from(this.filterService.tasks.values()));
     const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
-      Array.from(this.filterService.projects.values()),
-      this.filterService.projectsNone);
-    const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()),
-      this.filterService.tagsNone);
+      Array.from(this.filterService.projects.values()));
+    const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
     const matchesPersons = this.matchService.taskletMatchesPersons(tasklet,
-      Array.from(this.filterService.persons.values()), this.filterService.personsNone);
+      Array.from(this.filterService.persons.values()));
 
     return matchesSearchItem && matchesTasks && matchesProjects && matchesTags && matchesPersons;
   }
@@ -358,12 +356,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private filterTask(task: Task): boolean {
     const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
-    const matchesProjects = this.matchService.taskMatchesProjects(task,
-      Array.from(this.filterService.projects.values()),
-      this.filterService.projectsNone);
-    const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()),
-      this.filterService.tagsNone);
-    const matchesPersons = this.matchService.taskMatchesPersons(task, Array.from(this.filterService.persons.values()), this.filterService.personsNone);
+    const matchesProjects = this.matchService.taskMatchesProjects(task, Array.from(this.filterService.projects.values()));
+    const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()));
+    const matchesPersons = this.matchService.taskMatchesPersons(task, Array.from(this.filterService.persons.values()));
 
     return matchesSearchItem && matchesProjects && matchesTags && matchesPersons;
   }
@@ -407,8 +402,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private filterProject(project: Project): boolean {
     const matchesSearchItem = this.matchService.projectMatchesEveryItem(project, this.filterService.searchItem);
     const matchesTasks = this.matchService.projectMatchesTasks(project,
-      Array.from(this.filterService.tasks.values()),
-      this.filterService.tasksNone);
+      Array.from(this.filterService.tasks.values()));
 
     return matchesSearchItem && matchesTasks;
   }
@@ -500,6 +494,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filterService.filterSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe(() => {
+      // Update filter lists and filter state
+      this.tasksFiltered = Array.from(this.filterService.tasks.values());
+      this.projectsFiltered = Array.from(this.filterService.projects.values());
+      this.tagsFiltered = Array.from(this.filterService.tags.values());
+      this.personsFiltered = Array.from(this.filterService.persons.values());
+      this.filterActive = this.filterService.searchItem.length > 0
+        || this.tasksFiltered.length > 0
+        || this.projectsFiltered.length > 0
+        || this.tagsFiltered.length > 0
+        || this.personsFiltered.length > 0;
+
       // Filter tasklets
       this.tasklets = Array.from(this.taskletService.tasklets.values()).filter(tasklet => {
         return this.filterTasklet(tasklet);
@@ -525,7 +530,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.projectsFilter = Array.from(this.filterService.projects.values()).sort((p1, p2) => {
         return p2.name < p1.name ? 1 : -1;
       });
-      this.projectsNone = this.filterService.projectsNone;
 
       // Filter tags
       this.tags = Array.from(this.tagService.tags.values()).filter(tag => {
@@ -538,7 +542,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.tagsFilter = Array.from(this.filterService.tags.values()).sort((t1, t2) => {
         return t2.name < t1.name ? 1 : -1;
       });
-      this.tagsNone = this.filterService.tagsNone;
 
       // Filter persons
       this.persons = Array.from(this.personService.persons.values()).filter(person => {
@@ -551,7 +554,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       this.personsFilter = Array.from(this.filterService.persons.values()).sort((p1, p2) => {
         return p2.name < p1.name ? 1 : -1;
       });
-      this.personsNone = this.filterService.personsNone;
     });
   }
 
@@ -909,16 +911,16 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           dialogTitle: 'Update tasklet',
           tasklet: tasklet,
           task: this.taskService.tasks.get(tasklet.taskId),
-          tags: tasklet.tagIds.map(id => {
+          tags: tasklet.tagIds != null ? tasklet.tagIds.map(id => {
             return this.tagService.tags.get(id);
           }).filter(tag => {
             return tag != null;
-          }),
-          persons: tasklet.personIds.map(id => {
+          }) : [],
+          persons: tasklet.personIds != null ? tasklet.personIds.map(id => {
             return this.personService.persons.get(id);
           }).filter(person => {
             return person != null;
-          }),
+          }) : [],
           previousDescription: null
         };
 
@@ -1108,7 +1110,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Create task itself
         this.taskService.createTask(task).then(() => {
-          this.filterService.updateTasksList([task], true);
+          this.filterService.updateTasksListIfNotEmpty([task]);
           this.snackbarService.showSnackbar('Added task');
         });
         break;
@@ -1121,7 +1123,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // Update task itself
         this.taskService.updateTask(task).then(() => {
-          this.filterService.updateTasksList([task], true);
+          this.filterService.updateTasksListIfNotEmpty([task]);
           this.snackbarService.showSnackbar('Updated task');
         });
         break;
@@ -1145,7 +1147,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
             disableClose: false,
             data: {
-              title: 'Delete person',
+              title: 'Delete task',
               text: 'Do you want to delete this task?',
               action: 'Delete',
               value: task
@@ -1227,11 +1229,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           task: task,
           project: this.projectService.projects.get(task.projectId),
           delegatedTo: this.personService.persons.get(task.delegatedToId),
-          tags: task.tagIds.map(id => {
+          tags: task.tagIds != null ? task.tagIds.map(id => {
             return this.tagService.tags.get(id);
           }).filter(tag => {
             return tag != null;
-          })
+          }) : []
         };
 
         // Open dialog
@@ -1275,9 +1277,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FILTER_SINGLE: {
-        this.filterService.uncheckTasks();
-        this.filterService.updateTasksNone(false);
-        this.filterService.updateTasksList(tasks, true);
+        this.filterService.clearTasks();
+        this.filterService.updateTasksList(tasks);
+        break;
+      }
+      case Action.FILTER_LIST: {
+        this.filterService.updateTasksList(tasks);
         break;
       }
       case Action.FULLSCREEN: {
@@ -1301,20 +1306,19 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a project
    * @param {any} event event parameters
    */
-  onProjectEvent(event: { action: Action, project?: Project, projects?: Project[], projectsNone?: boolean }) {
+  onProjectEvent(event: { action: Action, project?: Project, projects?: Project[] }) {
     const project = CloneService.cloneProject(event.project as Project);
     const projects = CloneService.cloneProjects(event.projects as Project[]);
-    const projectsNone = event.projectsNone as boolean;
 
     switch (event.action) {
       case Action.ADD: {
-        this.filterService.updateProjectsList([project], true);
+        this.filterService.updateProjectsListIfNotEmpty([project]);
         this.projectService.createProject(project, true).then(() => {
         });
         break;
       }
       case Action.UPDATE: {
-        this.filterService.updateProjectsList([project], true);
+        this.filterService.updateProjectsListIfNotEmpty([project]);
         this.projectService.updateProject(project).then(() => {
         });
         break;
@@ -1411,21 +1415,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FILTER_SINGLE: {
-        this.filterService.uncheckProjects();
-        this.filterService.updateProjectsNone(false);
-        this.filterService.updateProjectsList(projects, true);
-        break;
-      }
-      case Action.FILTER_ALL: {
-        this.filterService.updateProjects(projects, false, projectsNone);
+        this.filterService.clearProjects();
+        this.filterService.updateProjectsList(projects);
         break;
       }
       case Action.FILTER_LIST: {
         this.filterService.updateProjectsList(projects);
-        break;
-      }
-      case Action.FILTER_NONE: {
-        this.filterService.updateProjectsNone(projectsNone);
         break;
       }
     }
@@ -1435,20 +1430,19 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a tag
    * @param {any} event event parameters
    */
-  onTagEvent(event: { action: Action, tag?: Tag, tags?: Tag[], tagsNone?: boolean }) {
+  onTagEvent(event: { action: Action, tag?: Tag, tags?: Tag[] }) {
     const tag = CloneService.cloneTag(event.tag as Tag);
     const tags = CloneService.cloneTags(event.tags as Tag[]);
-    const tagsNone = event.tagsNone as boolean;
 
     switch (event.action) {
       case Action.ADD: {
-        this.filterService.updateTagsList([tag], true);
+        this.filterService.updateTagsListIfNotEmpty([tag]);
         this.tagService.createTag(tag).then(() => {
         });
         break;
       }
       case Action.UPDATE: {
-        this.filterService.updateTagsList([tag], true);
+        this.filterService.updateTagsListIfNotEmpty([tag]);
         this.tagService.updateTag(tag).then(() => {
         });
         break;
@@ -1552,21 +1546,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FILTER_SINGLE: {
-        this.filterService.uncheckTags();
-        this.filterService.updateTagsNone(false);
-        this.filterService.updateTagsList(tags, true);
-        break;
-      }
-      case Action.FILTER_ALL: {
-        this.filterService.updateTags(tags, false, tagsNone);
+        this.filterService.clearTags();
+        this.filterService.updateTagsList(tags);
         break;
       }
       case Action.FILTER_LIST: {
         this.filterService.updateTagsList(tags);
-        break;
-      }
-      case Action.FILTER_NONE: {
-        this.filterService.updateTagsNone(tagsNone);
         break;
       }
     }
@@ -1576,20 +1561,19 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles events targeting a person
    * @param {any} event event parameters
    */
-  onPersonEvent(event: { action: Action, person?: Person, persons?: Person[], personsNone?: boolean }) {
+  onPersonEvent(event: { action: Action, person?: Person, persons?: Person[] }) {
     const person = CloneService.clonePerson(event.person as Person);
     const persons = CloneService.clonePersons(event.persons as Person[]);
-    const personsNone = event.personsNone;
 
     switch (event.action) {
       case Action.ADD: {
-        this.filterService.updatePersonsList([person], true);
+        this.filterService.updatePersonsListIfNotEmpty([person]);
         this.personService.createPerson(person).then(() => {
         });
         break;
       }
       case Action.UPDATE: {
-        this.filterService.updatePersonsList([person], true);
+        this.filterService.updatePersonsListIfNotEmpty([person]);
         this.personService.updatePerson(person).then(() => {
         });
         break;
@@ -1688,21 +1672,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FILTER_SINGLE: {
-        this.filterService.uncheckPersons();
-        this.filterService.updatePersonsNone(false);
-        this.filterService.updatePersonsList(persons, true);
-        break;
-      }
-      case Action.FILTER_ALL: {
-        this.filterService.updatePersons(persons, false, personsNone);
+        this.filterService.clearPersons();
+        this.filterService.updatePersonsList(persons);
         break;
       }
       case Action.FILTER_LIST: {
         this.filterService.updatePersonsList(persons);
-        break;
-      }
-      case Action.FILTER_NONE: {
-        this.filterService.updatePersonsNone(personsNone);
         break;
       }
     }
@@ -1722,12 +1697,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sidenavStart.toggle().then(() => {
           this.settingsService.updateSetting(new Setting(SettingType.TIMELINE_SIDENAV_OPENED, this.sidenavStart.opened));
         });
-        this.sidenavEnd.toggle().then(() => {
-        });
+        this.sidenavEnd.toggle().then();
         break;
       }
       case 'settings': {
-        this.router.navigate(['/settings']);
+        this.router.navigate(['/settings']).then();
         break;
       }
       case 'task-list': {
@@ -1798,66 +1772,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'clear-filter': {
         this.filterService.clearAllFilters();
         this.snackbarService.showSnackbar('Filters cleared');
-        break;
-      }
-      case 'filter-tags': {
-        const dialogRef = this.dialog.open(TagFilterDialogComponent, {
-          disableClose: false,
-          data: {
-            dialogTitle: 'Select tags',
-            tags: Array.from(this.filterService.tags.values()),
-            tagsNone: this.filterService.tagsNone
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const tags = result.tags as Tag[];
-            const tagsNone = result.tagsNone as boolean;
-
-            this.filterService.updateTags(tags, false, tagsNone);
-            this.snackbarService.showSnackbar('Tags selected');
-          }
-        });
-        break;
-      }
-      case 'filter-projects': {
-        const dialogRef = this.dialog.open(ProjectFilterDialogComponent, {
-          disableClose: false,
-          data: {
-            dialogTitle: 'Select projects',
-            projects: Array.from(this.filterService.projects.values()),
-            projectsNone: this.filterService.projectsNone
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const projects = result.projects as Project[];
-            const projectsNone = result.projectsNone as boolean;
-
-            this.filterService.updateProjects(projects, false, projectsNone);
-            this.snackbarService.showSnackbar('Projects selected');
-          }
-        });
-        break;
-      }
-      case 'filter-persons': {
-        const dialogRef = this.dialog.open(PersonFilterDialogComponent, {
-          disableClose: false,
-          data: {
-            dialogTitle: 'Select persons',
-            persons: Array.from(this.filterService.persons.values()),
-            personsNone: this.filterService.personsNone
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (result != null) {
-            const persons = result.persons as Person[];
-            const personsNone = result.personsNone as boolean;
-
-            this.filterService.updatePersons(persons, false, personsNone);
-            this.snackbarService.showSnackbar('Persons selected');
-          }
-        });
         break;
       }
       case 'upload': {
@@ -1943,12 +1857,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // New project
       if (p == null && project.name != null && project.name !== '') {
-        p = new Project(project.name, true);
+        p = new Project(project.name);
         this.projectService.createProject(p, false).then(() => {
         });
       }
 
-      this.filterService.updateProjectsList([p], true);
+      this.filterService.updateProjectsListIfNotEmpty([p]);
       task.projectId = p.id;
     } else {
       // Unassign project
@@ -1968,12 +1882,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // New person
       if (p == null && delegatedTo.name != null && delegatedTo.name !== '') {
-        p = new Person(delegatedTo.name, true);
+        p = new Person(delegatedTo.name);
         this.personService.createPerson(p).then(() => {
         });
       }
 
-      this.filterService.updatePersonsList([p], true);
+      this.filterService.updatePersonsListIfNotEmpty([p]);
       task.delegatedToId = p.id;
     } else {
       // Unassign delegated-to
@@ -1995,12 +1909,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         let tag = this.tagService.getTagByName(t.name);
 
         if (tag == null) {
-          tag = new Tag(t.name, true);
+          tag = new Tag(t.name);
           this.tagService.createTag(tag).then(() => {
           });
         }
 
-        this.filterService.updateTagsList([tag], true);
+        this.filterService.updateTagsListIfNotEmpty([tag]);
         aggregatedTagIds.set(tag.id, tag.id);
       });
 
@@ -2028,7 +1942,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       }
 
-      this.filterService.updateTasksList([t], true);
+      this.filterService.updateTasksListIfNotEmpty([t]);
       tasklet.taskId = t.id;
     } else {
       // Unassign task
@@ -2069,7 +1983,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const values = Array.from(aggregatedTags.values());
     const keys = Array.from(aggregatedTags.keys());
 
-    this.filterService.updateTagsList(values, true);
+    this.filterService.updateTagsListIfNotEmpty(values);
     tasklet.tagIds = Array.from(keys);
   }
 
@@ -2081,7 +1995,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     let tag = this.tagService.getTagByName(t);
 
     if (tag == null) {
-      tag = new Tag(t, true);
+      tag = new Tag(t);
       this.tagService.createTag(tag).then(() => {
       });
     }
@@ -2138,7 +2052,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     const values = Array.from(aggregatedPersons.values());
     const keys = Array.from(aggregatedPersons.keys());
 
-    this.filterService.updatePersonsList(values, true);
+    this.filterService.updatePersonsListIfNotEmpty(values);
     tasklet.personIds = Array.from(keys);
   }
 
@@ -2150,7 +2064,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     let person = this.personService.getPersonByName(p);
 
     if (person == null) {
-      person = new Person(p, true);
+      person = new Person(p);
       this.personService.createPerson(person).then(() => {
       });
     }

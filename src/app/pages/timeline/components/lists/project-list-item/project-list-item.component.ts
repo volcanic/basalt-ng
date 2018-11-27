@@ -24,8 +24,10 @@ export class ProjectListItemComponent {
   @Input() project: Project;
   /** Current media */
   @Input() media: Media;
+  /** Indicates if item is active */
+  @Input() active = true;
   /** Event emitter indicating project to be updated */
-  @Output() projectEventEmitter = new EventEmitter<{action: Action, project: Project, projects?: Project[]}>();
+  @Output() projectEventEmitter = new EventEmitter<{ action: Action, project: Project, projects?: Project[] }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 

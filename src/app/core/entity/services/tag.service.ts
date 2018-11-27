@@ -1,5 +1,5 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Subject} from 'rxjs/index';
+import {Subject} from 'rxjs';
 import {Tag} from '../model/tag.model';
 import {SuggestionService} from './suggestion.service';
 import {EntityType} from '../model/entity-type.enum';
@@ -8,6 +8,7 @@ import {Scope} from '../model/scope.enum';
 import {ScopeService} from './scope.service';
 import {PouchDBService} from '../../persistence/services/pouchdb.service';
 import {SnackbarService} from '../../ui/services/snackbar.service';
+import {DateService} from './date.service';
 
 /**
  * Handles tags including
@@ -73,17 +74,19 @@ export class TagService {
    * @param {Scope} scope scope to filter by
    */
   public findTagsByScope(scope: Scope) {
-    const index = {fields: ['entityType', 'scope', 'creationDate']};
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TAGS_DAYS));
+
+    const index = {fields: ['entityType', 'scope', 'modificationDate']};
     const options = {
       selector: {
         $and: [
           {entityType: {$eq: EntityType.TAG}},
           {scope: {$eq: this.scopeService.scope}},
-          {creationDate: {$gt: null}}
+          {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
       // sort: [{'creationDate': 'desc'}],
-      limit: environment.LIMIT_TAGS
+      limit: environment.LIMIT_TAGS_COUNT
     };
 
     this.clearTags();
@@ -132,9 +135,6 @@ export class TagService {
   public createTag(tag: Tag): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
-        // Remove transient attributes
-        tag.checked = undefined;
-
         tag.scope = this.scopeService.scope;
 
         return this.pouchDBService.upsert(tag.id, tag).then(() => {
@@ -154,9 +154,6 @@ export class TagService {
   public updateTag(tag: Tag, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
-        // Remove transient attributes
-        tag.checked = undefined;
-
         tag.modificationDate = new Date();
 
         return this.pouchDBService.upsert(tag.id, tag).then(() => {

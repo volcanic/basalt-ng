@@ -8,5 +8,6 @@ export enum TaskletTypeGroup {
   COMMUNICATION = 'Communication',
   DEVELOPMENT = 'Development',
   IDEA = 'Idea',
+  TRAVEL = 'Travel',
   BREAK = 'Break',
 }

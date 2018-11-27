@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Tasklet} from '../../model/tasklet.model';
+import {Task} from '../../model/task.model';
 import {TaskletType} from '../../model/tasklet-type.enum';
 import {Description} from '../../model/description.model';
 import {TaskletTypeService} from './tasklet-type.service';
 import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
 import {DateService} from '../date.service';
+import {TaskService} from '../task/task.service';
 
 /**
  * Enum representing display aspects
@@ -36,39 +38,18 @@ export class TaskletDisplayService {
 
   /**
    * Constructor
+   * @param dateService date service
+   * @param taskService tasks service
+   * @param taskletTypeService tassklet type service
    */
   constructor(private dateService: DateService,
+              private taskService: TaskService,
               private taskletTypeService: TaskletTypeService) {
   }
 
   //
   // Helpers
   //
-
-  /**
-   * Determines whether the displayed tasklet contains a description
-   * @param tasklet tasklet
-   */
-  static containsDescription(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type === TaskletType.ACTION
-      || tasklet.type === TaskletType.POMODORO
-      || (tasklet.type === TaskletType.MEETING
-        && tasklet.description != null
-        && tasklet.description.value != null
-        && tasklet.description.value !== '')
-      || (tasklet.type === TaskletType.CALL
-        && tasklet.description != null
-        && tasklet.description.value != null
-        && tasklet.description.value !== '')
-      || tasklet.type === TaskletType.MAIL
-      || tasklet.type === TaskletType.DEVELOPMENT
-      || tasklet.type === TaskletType.CODING
-      || tasklet.type === TaskletType.DEBUGGING
-      || tasklet.type === TaskletType.DOCUMENTATION
-      || tasklet.type === TaskletType.REVIEW
-      || tasklet.type === TaskletType.TESTING
-      || tasklet.type === TaskletType.IDEA);
-  }
 
   /**
    * Determines whether the displayed tasklet contains a previous description
@@ -129,39 +110,73 @@ export class TaskletDisplayService {
   }
 
   /**
-   * Determines whether a given tasklet can be created
+   * Determines whether the displayed tasklet contains a description
    * @param tasklet tasklet
    */
-  static canBeCreated(tasklet: Tasklet): boolean {
-    return tasklet.type !== TaskletType.UNSPECIFIED;
+  containsDescription(tasklet: Tasklet): boolean {
+    return tasklet != null && (tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.POMODORO
+      || (tasklet.type === TaskletType.MEETING
+        && tasklet.description != null
+        && tasklet.description.value != null
+        && tasklet.description.value !== '')
+      || (tasklet.type === TaskletType.CALL
+        && tasklet.description != null
+        && tasklet.description.value != null
+        && tasklet.description.value !== '')
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.DEVELOPMENT
+      || tasklet.type === TaskletType.CODING
+      || tasklet.type === TaskletType.DEBUGGING
+      || tasklet.type === TaskletType.DOCUMENTATION
+      || tasklet.type === TaskletType.REVIEW
+      || tasklet.type === TaskletType.TESTING
+      || tasklet.type === TaskletType.IDEA);
+  }
+
+  /**
+   * Determines whether a given tasklet can be created
+   * @param tasklet tasklet
+   * @param task task
+   */
+  canBeCreated(tasklet: Tasklet, task: Task): boolean {
+    return tasklet.type !== TaskletType.UNSPECIFIED
+      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
+      && (!this.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0));
   }
 
   /**
    * Determines whether a given tasklet can be updated
    * @param tasklet tasklet
+   * @param task task
    */
-  static canBeUpdated(tasklet: Tasklet): boolean {
+  canBeUpdated(tasklet: Tasklet, task: Task): boolean {
     return tasklet != null
-      && tasklet.type !== TaskletType.LUNCH_BREAK
-      && tasklet.type !== TaskletType.FINISHING_TIME;
+      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
+      && (!this.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0));
   }
 
   /**
    * Determines whether a given tasklet can be continued
+   * @param tasklet tasklet
+   * @param task task
    */
-  static canBeContinued(tasklet: Tasklet): boolean {
-    return tasklet.type === TaskletType.ACTION
-      || tasklet.type === TaskletType.MEETING
-      || tasklet.type === TaskletType.DAILY_SCRUM
-      || tasklet.type === TaskletType.DEVELOPMENT
-      || tasklet.type === TaskletType.DEBUGGING
-      || tasklet.type === TaskletType.IDEA;
+  canBeContinued(tasklet: Tasklet, task: Task): boolean {
+    return tasklet != null
+      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
+      && (!this.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0))
+      && (tasklet.type === TaskletType.ACTION
+        || tasklet.type === TaskletType.MEETING
+        || tasklet.type === TaskletType.DAILY_SCRUM
+        || tasklet.type === TaskletType.DEVELOPMENT
+        || tasklet.type === TaskletType.DEBUGGING
+        || tasklet.type === TaskletType.IDEA);
   }
 
   /**
    * Determines whether a given tasklet can be templated
    */
-  static canBeTemplated(tasklet: Tasklet): boolean {
+  canBeTemplated(tasklet: Tasklet): boolean {
     return tasklet.type === TaskletType.DAILY_SCRUM;
   }
 
@@ -176,6 +191,7 @@ export class TaskletDisplayService {
       && group !== null
       && group !== TaskletTypeGroup.BREAK
       && tasklet.type !== TaskletType.UNSPECIFIED
+      && tasklet.type !== TaskletType.COMMUTE
       && tasklet.type !== TaskletType.DAILY_SCRUM;
   }
 
@@ -197,6 +213,7 @@ export class TaskletDisplayService {
 
     return tasklet != null
       && ((group != null && group === TaskletTypeGroup.BREAK)
+        || tasklet.type === TaskletType.COMMUTE
         || !DateService.isBeforeNow(tasklet.creationDate));
   }
 }

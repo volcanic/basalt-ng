@@ -24,6 +24,8 @@ export class TimelineToolbarComponent implements OnInit {
   @Input() scope: Scope;
   /** Search items options for auto-complete */
   @Input() searchOptions = [];
+  /** Indicates whether a filter is active */
+  @Input() filterActive = false;
   /** Event emitter indicating changes in search bar */
   @Output() searchItemEventEmitter = new EventEmitter<string>();
   /** Event emitter indicating menu items being clicked */

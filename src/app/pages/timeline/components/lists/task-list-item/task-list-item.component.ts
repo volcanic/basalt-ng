@@ -27,6 +27,8 @@ export class TaskListItemComponent implements OnInit {
   @Input() taskDigest: TaskDigest;
   /** Current media */
   @Input() media: Media;
+  /** Indicates if item is active */
+  @Input() active = true;
   /** Event emitter indicating task action */
   @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
   /** View child for context menu */

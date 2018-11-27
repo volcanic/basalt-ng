@@ -24,8 +24,10 @@ export class PersonListItemComponent {
   @Input() person: Person;
   /** Current media */
   @Input() media: Media;
+  /** Indicates if item is active */
+  @Input() active = true;
   /** Event emitter indicating person to be updated */
-  @Output() personEventEmitter = new EventEmitter<{action: Action, person: Person, persons?: Person[]}>();
+  @Output() personEventEmitter = new EventEmitter<{ action: Action, person: Person, persons?: Person[] }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 

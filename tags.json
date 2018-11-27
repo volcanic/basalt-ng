@@ -34,5 +34,6 @@
 { "annotation": "refs/tags/v0.33.0", "message": "Safety net"},
 { "annotation": "refs/tags/v0.34.0", "message": "Feature toggle"},
 { "annotation": "refs/tags/v0.35.0", "message": "Task history"},
-{ "annotation": "refs/tags/v0.36.0", "message": "Task suggestions"}
+{ "annotation": "refs/tags/v0.36.0", "message": "Task suggestions"},
+{ "annotation": "refs/tags/v0.37.0", "message": "Today / later"}
 ]}
