@@ -388,10 +388,10 @@ export class TaskService {
   }
 
   /**
-   * Determines if a task is next
+   * Determines if a task is due today
    * @param task task
    */
-  public isTaskNext(task: Task) {
+  public isTaskToday(task: Task) {
     return task != null
       && task.completionDate == null
       && task.dueDate != null
@@ -399,7 +399,22 @@ export class TaskService {
       && (task.recurrenceInterval == null
         || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
         || task.recurrenceInterval === RecurrenceInterval.NONE)
-      && DateService.isAfter(task.dueDate, new Date());
+      && DateService.isToday(task.dueDate);
+  }
+
+  /**
+   * Determines if a task is due later than today
+   * @param task task
+   */
+  public isTaskLater(task: Task) {
+    return task != null
+      && task.completionDate == null
+      && task.dueDate != null
+      && (task.delegatedToId == null || task.delegatedToId === '')
+      && (task.recurrenceInterval == null
+        || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
+        || task.recurrenceInterval === RecurrenceInterval.NONE)
+      && DateService.isAfter(task.dueDate, DateService.getDayEnd(new Date()));
   }
 
   /**

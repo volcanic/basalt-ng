@@ -26,8 +26,10 @@ export class TaskListComponent implements OnInit, OnChanges {
 
   /** Tasks having a due date before now */
   tasksOverdue = [];
-  /** Tasks having a due date after now */
-  tasksNext = [];
+  /** Tasks having a due date today */
+  tasksToday = [];
+  /** Tasks having a due date after today */
+  tasksLater = [];
   /** Tasks not having a due date */
   tasksInbox = [];
   /** Delegated tasks */
@@ -39,8 +41,10 @@ export class TaskListComponent implements OnInit, OnChanges {
 
   /** Background personColor for overdue badge */
   tasksOverdueBadgeColor = 'transparent';
-  /** Background personColor for next badge */
-  tasksNextBadgeColor = 'transparent';
+  /** Background personColor for today badge */
+  tasksTodayBadgeColor = 'transparent';
+  /** Background personColor for later badge */
+  tasksLaterBadgeColor = 'transparent';
   /** Background personColor for inbox badge */
   tasksInboxBadgeColor = 'transparent';
   /** Background personColor for delegated badge */
@@ -83,7 +87,8 @@ export class TaskListComponent implements OnInit, OnChanges {
    */
   initializeTaskCategories() {
     this.tasksOverdue = this.tasks.filter(this.taskService.isTaskOverdue);
-    this.tasksNext = this.tasks.filter(this.taskService.isTaskNext);
+    this.tasksToday = this.tasks.filter(this.taskService.isTaskToday);
+    this.tasksLater = this.tasks.filter(this.taskService.isTaskLater);
     this.tasksInbox = this.tasks.filter(this.taskService.isTaskInInbox).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     });
@@ -94,7 +99,8 @@ export class TaskListComponent implements OnInit, OnChanges {
     this.tasksCompleted = this.tasks.filter(this.taskService.isTaskCompleted);
 
     this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
-    this.tasksNextBadgeColor = (this.tasksNext.length > 0) ? 'accent' : 'primary';
+    this.tasksTodayBadgeColor = (this.tasksToday.length > 0) ? 'accent' : 'primary';
+    this.tasksLaterBadgeColor = (this.tasksLater.length > 0) ? 'accent' : 'primary';
     this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
     this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
   }
