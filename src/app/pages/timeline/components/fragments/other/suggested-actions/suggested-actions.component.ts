@@ -131,8 +131,22 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         this.suggestedActions.push(suggestedAction);
       });
 
-    // Next tasks
-    this.suggestedTasks.filter(this.taskService.isTaskNext)
+    // Today's tasks
+    this.suggestedTasks.filter(this.taskService.isTaskToday)
+      .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
+      .forEach(task => {
+        const suggestedAction = new SuggestedActions();
+        suggestedAction.icon = this.taskletService.getIconByTaskletType(TaskletType.ACTION);
+        suggestedAction.label = task.name;
+        suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
+        suggestedAction.iconColor = this.colorService.getTaskContrast(task);
+        suggestedAction.tooltip = `${task.name} (due: ${DateService.getDateString(task.dueDate)}, ${DateService.getTimeString(task.dueDate)})`;
+        suggestedAction.task = task;
+        this.suggestedActions.push(suggestedAction);
+      });
+
+    // Later tasks
+    this.suggestedTasks.filter(this.taskService.isTaskLater)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();
