@@ -8,7 +8,7 @@
   position: relative !important;
 }
 
-.placeholder-description {
+.placeholder-description, .placeholder-meetingminutes, .placeholder-dailyscrum {
   color: mat-color($mat-grey, 600);
   font-style: italic;
 }

@@ -11,7 +11,10 @@
                      (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
         <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
-          <app-tasklet-content-fragment [tasklet]="tasklet" [placeholderDescription]="placeholderDescription"></app-tasklet-content-fragment>
+          <app-tasklet-content-fragment [tasklet]="tasklet"
+                                        [placeholderDescription]="placeholderDescription"
+                                        [placeholderMeetingMinutes]="placeholderMeetingMinutes"
+                                        [placeholderDailyScrum]="placeholderDailyScrum"></app-tasklet-content-fragment>
         </mat-expansion-panel>
       </mat-accordion>
       <hr class="delimiter"/>
