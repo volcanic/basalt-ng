@@ -127,6 +127,14 @@ export class TimelineToolbarComponent implements OnInit {
     this.searchItemDebouncer.next(this.searchItem);
   }
 
+  /**
+   * Handles click on clear-filter button
+   */
+  onClearFiltersButtonClicked() {
+    this.menuItemEventEmitter.emit('clear-filter');
+    this.searchItem = '';
+  }
+
   //
   // Filters
   //

@@ -81,16 +81,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public tasksMap = new Map<string, Task>();
   /** Array of tasks */
   public tasks: Task[] = [];
-  /** Array of tasks that are currently filtered */
-  public tasksFiltered: Task[] = [];
-  /** Array of projects that are currently filtered */
-  public projectsFiltered: Project[] = [];
-  /** Array of tags that are currently filtered */
-  public tagsFiltered: Tag[] = [];
-  /** Array of persons that are currently filtered */
-  public personsFiltered: Person[] = [];
-  /** Indicates whether a filter is active */
-  public filterActive = false;
 
   /** Map of projects */
   public projectsMap = new Map<string, Project>();
@@ -112,6 +102,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public persons: Person[] = [];
   /** Array of persons with filter values */
   public personsFilter: Person[] = [];
+
+  /** Array of tasks that are currently filtered */
+  public tasksFiltered: Task[] = [];
+  /** Array of projects that are currently filtered */
+  public projectsFiltered: Project[] = [];
+  /** Array of tags that are currently filtered */
+  public tagsFiltered: Tag[] = [];
+  /** Array of persons that are currently filtered */
+  public personsFiltered: Person[] = [];
+  /** Indicates whether a filter is active */
+  public filterActive = false;
 
   /** Search items options for auto-complete */
   public searchOptions = [];
@@ -684,10 +685,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Clears all filters
    */
   private clearFilters() {
-    this.filterService.clearSearchItem();
-    this.filterService.clearTags();
-    this.filterService.clearProjects();
-    this.filterService.clearPersons();
+    this.filterService.clearAllFilters();
   }
 
   /**

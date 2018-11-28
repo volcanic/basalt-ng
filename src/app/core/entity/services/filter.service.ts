@@ -251,10 +251,15 @@ export class FilterService {
     });
   }
 
+  //
+  // Clear
+  //
+
   /**
    * Clears all currently set filters
    */
   public clearAllFilters() {
+    this.clearSearchItem();
     this.clearTasks();
     this.clearProjects();
     this.clearTags();

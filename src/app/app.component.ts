@@ -21,9 +21,6 @@ import {OverlayContainer} from '@angular/cdk/overlay';
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-  /** App title */
-  title = 'Basalt';
-
   /** Default app theme */
   themeClass = 'light-theme';
 
