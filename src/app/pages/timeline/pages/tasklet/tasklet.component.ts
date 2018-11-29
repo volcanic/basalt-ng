@@ -112,23 +112,22 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Person option representing the user */
   myselfOption: string;
 
-  /** Enum of tasklet types */
-  taskletType = TaskletType;
+  /** Current media */
+  public media: Media = Media.UNDEFINED;
   /** Tasklet type action */
   action: TaskletTypeAction;
 
+  /** Enum of tasklet types */
+  taskletType = TaskletType;
+  /** Enum for action types */
+  actionType = Action;
+  /** Enum of media types */
+  mediaType = Media;
   /** Enum of display aspects */
   displayAspectType = DisplayAspect;
 
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
-
-  /** Enum for action types */
-  actionType = Action;
-  /** Enum of media types */
-  public mediaType = Media;
-  /** Current media */
-  public media: Media = Media.UNDEFINED;
 
   /** Vertical scroll position */
   private scrollPosLast = 0;

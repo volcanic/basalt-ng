@@ -35,6 +35,7 @@ import {InformationDialogComponent} from '../../../../ui/information-dialog/info
 import {Animations, ScrollDirection, ScrollState} from './task.animation';
 import {Setting} from '../../../../core/settings/model/setting.model';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
+import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
 
 /**
  * Represents a tasklet type action button
@@ -109,12 +110,15 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
+  /** Current media */
+  media: Media = Media.UNDEFINED;
+
   /** Enum for action types */
   actionType = Action;
   /** Enum of media types */
   mediaType = Media;
-  /** Current media */
-  media: Media = Media.UNDEFINED;
+  /** Enum of display aspects */
+  displayAspectType = DisplayAspect;
 
   /** Vertical scroll position */
   private scrollPosLast = 0;
