@@ -882,7 +882,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       // New task
       if (t == null && task.name != null && task.name !== '') {
         t = new Task(task.name);
-        this.taskService.createTask(t, false).then(() => {
+        this.taskService.createTask(t).then(() => {
           this.filterService.updateTasksListIfNotEmpty([task]);
         });
       }

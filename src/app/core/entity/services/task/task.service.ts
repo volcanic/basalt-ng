@@ -51,7 +51,6 @@ export class TaskService {
               private projectService: ProjectService,
               private tagService: TagService,
               private suggestionService: SuggestionService,
-              private snackbarService: SnackbarService,
               private scopeService: ScopeService) {
 
     this.initializeTaskSubscription();
@@ -195,7 +194,7 @@ export class TaskService {
 
           if (task.scope == null) {
             task.scope = this.scopeService.scope;
-            this.updateTask(task, false).then(() => {
+            this.updateTask(task).then(() => {
             });
           }
 
@@ -241,9 +240,8 @@ export class TaskService {
   /**
    * Creates a new task
    * @param {Task} task tasak to be created
-   * @param {boolean} showSnack shows snackbar if true
    */
-  public createTask(task: Task, showSnack: boolean = false): Promise<any> {
+  public createTask(task: Task): Promise<any> {
     return new Promise(() => {
       if (task != null) {
         task.scope = this.scopeService.scope;
@@ -261,9 +259,6 @@ export class TaskService {
 
         // Create task
         return this.pouchDBService.upsert(task.id, task).then(() => {
-          if (showSnack) {
-            this.snackbarService.showSnackbar('Created task');
-          }
           this.tasks.set(task.id, task);
           this.task = task;
           this.notify();
@@ -275,9 +270,8 @@ export class TaskService {
   /**
    * Updates existing task
    * @param {Task} task task to be updated
-   * @param {boolean} showSnack shows snackbar if true
    */
-  public updateTask(task: Task, showSnack: boolean = false): Promise<any> {
+  public updateTask(task: Task): Promise<any> {
     return new Promise(() => {
       if (task != null) {
         // Update related objects
@@ -295,9 +289,6 @@ export class TaskService {
 
         // Update task
         return this.pouchDBService.upsert(task.id, task).then(() => {
-          if (showSnack) {
-            this.snackbarService.showSnackbar('Updated task');
-          }
           this.tasks.set(task.id, task);
           this.task = task;
           this.notify();
@@ -314,15 +305,11 @@ export class TaskService {
     return new Promise(() => {
       if (task != null) {
         this.pouchDBService.remove(task.id, task).then(() => {
-          this.snackbarService.showSnackbar('Deleted task');
           this.tasks.delete(task.id);
           this.task = null;
           this.notify();
         }).catch(() => {
-          this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
-            this.deleteTask(task).then(() => {
-            });
-          });
+          console.error('An error occurred during deletion');
         });
       }
     });

@@ -12,7 +12,6 @@ import {Task} from '../../model/task.model';
 import {TaskService} from '../task/task.service';
 import {ProjectService} from '../project.service';
 import {environment} from '../../../../../environments/environment';
-import {SnackbarService} from '../../../ui/services/snackbar.service';
 import {ScopeService} from '../scope.service';
 import {Scope} from '../../model/scope.enum';
 import {TagService} from '../tag.service';
@@ -65,7 +64,6 @@ export class TaskletService {
    * @param {PersonService} personService
    * @param {DateService} dateService
    * @param {SuggestionService} suggestionService
-   * @param {SnackbarService} snackbarService
    * @param {ScopeService} scopeService
    * @param {TaskletDisplayService} taskletDisplayService
    * @param {TaskletTypeService} taskletTypeService
@@ -77,7 +75,6 @@ export class TaskletService {
               private personService: PersonService,
               private dateService: DateService,
               private suggestionService: SuggestionService,
-              private snackbarService: SnackbarService,
               private scopeService: ScopeService,
               private taskletDisplayService: TaskletDisplayService,
               private taskletTypeService: TaskletTypeService) {
@@ -222,7 +219,7 @@ export class TaskletService {
           // Updated related objects
           this.projectService.updateProject(this.getProjectByTasklet(tasklet), false).then(() => {
           });
-          this.taskService.updateTask(this.getTaskByTasklet(tasklet), false).then(() => {
+          this.taskService.updateTask(this.getTaskByTasklet(tasklet)).then(() => {
           });
           tasklet.tagIds.forEach(id => {
             const tag = this.tagService.getTagById(id);
@@ -237,7 +234,6 @@ export class TaskletService {
 
           // Create tasklet
           return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
-            this.snackbarService.showSnackbar('Added tasklet');
             this.tasklets.set(tasklet.id, tasklet);
             this.notify();
           });
@@ -257,7 +253,7 @@ export class TaskletService {
         // Updated related objects
         this.projectService.updateProject(this.getProjectByTasklet(tasklet), false).then(() => {
         });
-        this.taskService.updateTask(this.getTaskByTasklet(tasklet), false).then(() => {
+        this.taskService.updateTask(this.getTaskByTasklet(tasklet)).then(() => {
         });
         if (tasklet.tagIds != null) {
           tasklet.tagIds.forEach(id => {
@@ -278,7 +274,6 @@ export class TaskletService {
 
         // Update tasklet
         return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
-          this.snackbarService.showSnackbar('Updated tasklet');
           this.tasklets.set(tasklet.id, tasklet);
           this.tasklet = tasklet;
           this.notify();
@@ -295,7 +290,6 @@ export class TaskletService {
     return new Promise(() => {
       if (tasklet != null) {
         return this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
-          this.snackbarService.showSnackbar('Deleted tasklet');
           this.tasklets.delete(tasklet.id);
           this.notify();
         });

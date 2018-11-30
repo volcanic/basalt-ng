@@ -1169,14 +1169,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         task.completionDate = new Date();
-        this.taskService.updateTask(task, false).then(() => {
+        this.taskService.updateTask(task).then(() => {
           this.snackbarService.showSnackbar('Completed task');
         });
         break;
       }
       case Action.REOPEN: {
         task.completionDate = null;
-        this.taskService.updateTask(task, false).then(() => {
+        this.taskService.updateTask(task).then(() => {
           this.snackbarService.showSnackbar('Re-opened task');
         });
 
@@ -1936,7 +1936,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       // New task
       if (t == null && task.name != null && task.name !== '') {
         t = new Task(task.name);
-        this.taskService.createTask(t, false).then(() => {
+        this.taskService.createTask(t).then(() => {
         });
       }
 

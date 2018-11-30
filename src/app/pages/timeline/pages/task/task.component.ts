@@ -702,14 +702,14 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         task.completionDate = new Date();
-        this.taskService.updateTask(task, false).then(() => {
+        this.taskService.updateTask(task).then(() => {
           this.snackbarService.showSnackbar('Completed task');
         });
         break;
       }
       case Action.REOPEN: {
         task.completionDate = null;
-        this.taskService.updateTask(task, false).then(() => {
+        this.taskService.updateTask(task).then(() => {
           this.snackbarService.showSnackbar('Re-opened task');
         });
 
