@@ -1,6 +1,5 @@
 /**
  * Environment settings for production environment
- * @type {{production: boolean; APP_NAME: string; DATABASE_ENTITIES: string; DATABASE_SETTINGS: string; LIMIT_PROJECTS_COUNT: number; LIMIT_TASKS_COUNT: number; LIMIT_TASKLETS_COUNT: number; LIMIT_PERSONS_COUNT: number; LIMIT_TAGS_COUNT: number; NAME: any; VERSION: any; LICENSE: string | any; HOMEPAGE: string | any; TAGS: any}}
  */
 export const environment = {
   production: true,
