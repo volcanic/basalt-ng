@@ -90,6 +90,7 @@ export class DigestService {
 
         if (nextTasklet != null && new Date(tasklet.creationDate).getDay() === new Date(nextTasklet.creationDate).getDay()
           && tasklet.type !== TaskletType.LUNCH_BREAK
+          && tasklet.type !== TaskletType.POMODORO_BREAK
           && tasklet.type !== TaskletType.COMMUTE
           && tasklet.type !== TaskletType.FINISHING_TIME) {
 
