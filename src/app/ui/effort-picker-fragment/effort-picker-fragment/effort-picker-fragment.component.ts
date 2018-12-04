@@ -151,7 +151,7 @@ export class EffortPickerFragmentComponent implements OnInit {
         break;
       }
       case PlanningPokerValue._8HOUR: {
-        this.unit = Unit.DAY;
+        this.unit = Unit.HOUR;
         this.effortInMinutes = 480;
         break;
       }
