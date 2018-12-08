@@ -16,6 +16,11 @@ import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily
 import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskletService} from '../../../../../core/entity/services/tasklet/tasklet.service';
 import {CloneService} from '../../../../../core/entity/services/clone.service';
+import {TaskService} from '../../../../../core/entity/services/task/task.service';
+import {TagService} from '../../../../../core/entity/services/tag.service';
+import {MaterialColorService} from '../../../../../core/ui/services/material-color.service';
+import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
+import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 
 /**
  * Displays tasklet dialog
@@ -44,6 +49,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /** Temporarily displayed task */
   task: Task;
+  /** Temporarily displayed tags inherited from task */
+  inheritedTags: Tag[] = [];
   /** Temporarily displayed tags */
   tags: Tag[] = [];
   /** Temporarily displayed persons */
@@ -64,18 +71,28 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   taskletType = TaskletType;
   /** Enum of display aspects */
   displayAspectType = DisplayAspect;
+  /** Enum of palettes */
+  paletteType = PaletteType;
+  /** Enum of hues */
+  hueType = HueType;
 
   /**
    * Constructor
+   * @param materialColorService material color service
    * @param personService person service
    * @param suggestionService suggestion service
+   * @param tagService tag service
    * @param taskletService tasklet service
+   * @param taskService task service
    * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
-  constructor(private personService: PersonService,
+  constructor(public materialColorService: MaterialColorService,
+              private personService: PersonService,
               private suggestionService: SuggestionService,
+              private tagService: TagService,
               private taskletService: TaskletService,
+              private taskService: TaskService,
               public dialogRef: MatDialogRef<TaskletDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
@@ -90,6 +107,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeData();
     this.initializeOptions();
+    this.initializeInheritedTags();
   }
 
   /**
@@ -139,6 +157,19 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.myselfOption = this.personService.myself.name;
   }
 
+  /**
+   * Initializes inherited tags
+   */
+  private initializeInheritedTags() {
+    if (this.task != null) {
+      this.inheritedTags = this.task.tagIds.map(id => {
+        return this.tagService.tags.get(id);
+      });
+    } else {
+      this.inheritedTags = [];
+    }
+  }
+
   //
   // Actions
   //
@@ -156,7 +187,10 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * @param taskName new task name
    */
   onTaskNameChanged(taskName: string) {
-    this.task.name = taskName;
+    this.task = this.taskService.getTaskByName(taskName);
+    this.task = (this.task != null) ? this.task : new Task();
+
+    this.initializeInheritedTags();
   }
 
   /**
