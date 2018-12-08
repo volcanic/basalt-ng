@@ -1,5 +1,8 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
+/**
+ * Enum containing time units
+ */
 enum Unit {
   MINUTE = 'mins',
   HOUR = 'hours',
@@ -7,6 +10,9 @@ enum Unit {
   // WEEK = 'weeks'
 }
 
+/**
+ * Enum containing planning poker values
+ */
 enum PlanningPokerValue {
   _0 = '0',
   _30MIN = '1/2',
@@ -18,6 +24,9 @@ enum PlanningPokerValue {
   _13HOUR = '13'
 }
 
+/**
+ * Displays effort picker
+ */
 @Component({
   selector: 'app-effort-picker-fragment',
   templateUrl: './effort-picker-fragment.component.html',
@@ -49,7 +58,7 @@ export class EffortPickerFragmentComponent implements OnInit {
 
   /**
    * Returns the factor between a given unit and minutes
-   * @param unit
+   * @param unit unit
    */
   private static getFactorComparedToMinute(unit: Unit): number {
     switch (unit) {
@@ -87,6 +96,7 @@ export class EffortPickerFragmentComponent implements OnInit {
 
   /**
    * Initializes effort in unit
+   * @param unit unit
    */
   private initEffortInUnit(unit: Unit) {
     this.effort = this.effortInMinutes / EffortPickerFragmentComponent.getFactorComparedToMinute(unit);
@@ -108,7 +118,7 @@ export class EffortPickerFragmentComponent implements OnInit {
 
   /**
    * Handles selection of a unit
-   * @param unit
+   * @param unit selected unit
    */
   onUnitSelected(unit: Unit) {
     this.initEffortInUnit(unit);
@@ -116,7 +126,7 @@ export class EffortPickerFragmentComponent implements OnInit {
 
   /**
    * Handles click on planning poker value
-   * @param value
+   * @param value value clicked on
    */
   onPlanningPokerValueClicked(value: PlanningPokerValue) {
     switch (value) {
