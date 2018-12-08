@@ -42,6 +42,9 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   /** Trigger for context menu */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
+  /** Task associated with this tasklet */
+  task: Task;
+
   /** Default theme to be used */
   themeClass = 'light-theme';
 
@@ -101,6 +104,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Handles on-changes lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
+    this.initializeTask();
     this.initializeTopic();
     this.initializeProject();
   }
@@ -127,6 +131,13 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Initializes task
+   */
+  private initializeTask() {
+    this.task = this.tasks.get(this.tasklet.taskId);
+  }
+
+  /**
    * Initializes topic
    */
   private initializeTopic() {
@@ -135,10 +146,8 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
       case TaskletType.LUNCH_BREAK:
       case TaskletType.FINISHING_TIME:
       default: {
-        const task = this.getTaskByTasklet(this.tasklet);
-
-        if (task != null) {
-          this.topic = task.name;
+        if (this.task != null) {
+          this.topic = this.task.name;
         } else {
           this.topic = this.tasklet.type;
         }
@@ -150,7 +159,10 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Initializes project
    */
   private initializeProject() {
-    this.project = this.getProjectByTasklet(this.tasklet);
+    if (this.tasklet != null && this.task != null && this.task.projectId != null) {
+      this.project = this.projects.get(this.task.projectId);
+    }
+
     this.projectColor = this.colorService.getProjectColor(this.project);
   }
 
@@ -176,38 +188,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
         this.taskletEventEmitter.emit({action: event.action, tasklet: event.tasklet});
       }
     }
-  }
-
-  //
-  // Helpers
-  //
-
-  /**
-   * Retrieves a task by a given tasklet
-   * @param {Tasklet} tasklet tasklet to find task by
-   * @returns {Task} task referenced by given tasklet, null if no such task exists
-   */
-  public getTaskByTasklet(tasklet: Tasklet): Task {
-    if (tasklet != null && tasklet.taskId != null) {
-      return this.tasks.get(tasklet.taskId);
-    }
-
-    return null;
-  }
-
-  /**
-   * Retrieves a project by a given tasklet
-   * @param {Tasklet} tasklet tasklet to find project by
-   * @returns {Project} project referenced by given tasklet, null if no such project exists
-   */
-  public getProjectByTasklet(tasklet: Tasklet): Project {
-    const task = this.getTaskByTasklet(tasklet);
-
-    if (tasklet != null && task != null && task.projectId != null) {
-      return this.projects.get(task.projectId);
-    }
-
-    return null;
   }
 
   //

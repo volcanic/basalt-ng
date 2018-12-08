@@ -52,12 +52,20 @@
             </label>
           </span>
           <span *ngFor="let p of tasklet.personIds">
-            <span class="person" *ngIf="persons.get(p) != null"><label
-              class="person-label">{{ persons.get(p).name }}</label></span>
+            <span class="person" *ngIf="persons.get(p) != null">
+              <label class="person-label">{{ persons.get(p).name }}</label>
             </span>
+          </span>
+          <span *ngFor="let t of inheritedTagIds">
+            <span class="inherited-tag" *ngIf="tags.get(t) != null">
+              <label class="tag-label">{{ tags.get(t).name }}</label>
+            </span>
+          </span>
           <span *ngFor="let t of tasklet.tagIds">
-            <span class="tag" *ngIf="tags.get(t) != null"><label class="tag-label">{{ tags.get(t).name }}</label></span>
+            <span class="tag" *ngIf="tags.get(t) != null">
+              <label class="tag-label">{{ tags.get(t).name }}</label>
             </span>
+          </span>
         </div>
         <div class="flexbox"></div>
         <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">

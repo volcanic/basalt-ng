@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
+import {Task} from '../../../../../../core/entity/model/task.model';
 import {Media} from '../../../../../../core/ui/model/media.enum';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 import {DisplayAspect} from '../../../../../../core/entity/services/tasklet/tasklet-display.service';
@@ -17,16 +18,19 @@ import {Person} from '../../../../../../core/entity/model/person.model';
   templateUrl: './tasklet-card-fragment.component.html',
   styleUrls: ['./tasklet-card-fragment.component.scss']
 })
-export class TaskletCardFragmentComponent implements OnInit {
+export class TaskletCardFragmentComponent implements OnInit, OnChanges {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
+  /** Task to be displayed */
+  @Input() task: Task;
   /** Project */
   @Input() project: Project;
   /** Topic (typically derived from task name */
   @Input() topic = '';
   /** Icon name */
   @Input() icon = '';
+
   /** Map of tags */
   @Input() tags = new Map<string, Tag>();
   /** Map of persons */
@@ -38,6 +42,9 @@ export class TaskletCardFragmentComponent implements OnInit {
 
   /** Event emitter indicating click on tasklet */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+
+  /** References to tags inherited from task */
+  inheritedTagIds = [];
 
   /** Enum for media types */
   mediaType = Media;
@@ -85,6 +92,13 @@ export class TaskletCardFragmentComponent implements OnInit {
     this.initializeExpansionPanel();
   }
 
+  /**
+   * Handles on-changes lifecycle phase
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    this.initializeInheritedTags();
+  }
+
   //
   // Initialization
   //
@@ -94,6 +108,17 @@ export class TaskletCardFragmentComponent implements OnInit {
    */
   private initializeExpansionPanel() {
     this.expansionPanelOpened = !DateService.isBeforeToday(this.tasklet.creationDate);
+  }
+
+  /**
+   * Initializes inherited tags
+   */
+  private initializeInheritedTags() {
+    if (this.task != null) {
+      this.inheritedTagIds = this.task.tagIds;
+    } else {
+      this.inheritedTagIds = [];
+    }
   }
 
   //
