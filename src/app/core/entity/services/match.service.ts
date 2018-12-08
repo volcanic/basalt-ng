@@ -186,7 +186,7 @@ export class MatchService {
    * @returns {boolean} true if tasklet matches given tags
    */
   public taskletMatchesTags(tasklet: Tasklet, tags: Tag[]): boolean {
-    return tags.length === 0 || (tasklet.tagIds != null && tasklet.tagIds.map(id => {
+    return tags.length === 0 || (tasklet != null && tasklet.tagIds != null && tasklet.tagIds.map(id => {
       return this.tagService.getTagById(id);
     }).filter(tag => {
       return tag != null;
@@ -202,7 +202,7 @@ export class MatchService {
    * @returns {boolean} true if task matches given tags
    */
   public taskMatchesTags(task: Task, tags: Tag[]): boolean {
-    return tags.length === 0 || (task.tagIds != null && task.tagIds.map(id => {
+    return tags.length === 0 || (task != null && task.tagIds != null && task.tagIds.map(id => {
       return this.tagService.getTagById(id);
     }).filter(tag => {
       return tag != null;
@@ -393,14 +393,14 @@ export class MatchService {
   public taskMatchesEveryItem(task: Task, items: string): boolean {
     const project = this.taskService.getProjectByTask(task);
     return items == null || items.trim() === '' || MatchService.splitSearchItems(items).every(item => {
-      return MatchService.taskNameMatchesSingleItem(task, item)
+      return task != null && (MatchService.taskNameMatchesSingleItem(task, item)
         || MatchService.projectNameMatchesSingleItem(project, item)
         || this.descriptionMatchesSingleItem(task.description, item)
         || (task.tagIds != null && this.tagsMatchesSingleItem(task.tagIds.map(id => {
           return this.tagService.getTagById(id);
         }).filter(tag => {
           return tag != null;
-        }), item));
+        }), item)));
     });
   }
 

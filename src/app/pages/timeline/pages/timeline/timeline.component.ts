@@ -308,15 +308,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private filterTasklet(tasklet: Tasklet): boolean {
     const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
+    const matchesInheritedSearchItem = this.matchService.taskMatchesEveryItem(this.taskService.tasks.get(tasklet.taskId), this.filterService.searchItem);
     const matchesTasks = this.matchService.taskletMatchesTasks(tasklet,
       Array.from(this.filterService.tasks.values()));
     const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
       Array.from(this.filterService.projects.values()));
     const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
+    const matchesInheritedTags = this.matchService.taskMatchesTags(this.taskService.tasks.get(tasklet.taskId), Array.from(this.filterService.tags.values()));
     const matchesPersons = this.matchService.taskletMatchesPersons(tasklet,
       Array.from(this.filterService.persons.values()));
 
-    return matchesSearchItem && matchesTasks && matchesProjects && matchesTags && matchesPersons;
+    return (matchesSearchItem || matchesInheritedSearchItem) && matchesTasks && matchesProjects && (matchesTags || matchesInheritedTags) && matchesPersons;
   }
 
   //
