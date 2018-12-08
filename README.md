@@ -69,6 +69,7 @@ Don't miss any important information. Be able to report what you spent your time
 | 0.35 | Task history |
 | 0.36 | Task suggestions |
 | 0.37 | Today / later |
+| 0.38 | Tag inheritance |
 
 ### Planned features
 
