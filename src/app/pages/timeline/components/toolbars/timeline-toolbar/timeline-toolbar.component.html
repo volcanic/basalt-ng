@@ -38,7 +38,7 @@
             [disabled]="!filterActive"
             [matTooltip]="'Clear filters'"
             [matTooltipPosition]="'left'"
-            (click)="onMenuItemClicked('clear-filter')">
+            (click)="onClearFiltersButtonClicked()">
       <mat-icon svgIcon="layers_clear"></mat-icon>
     </button>
     <button *ngIf="media > mediaType.MEDIUM"

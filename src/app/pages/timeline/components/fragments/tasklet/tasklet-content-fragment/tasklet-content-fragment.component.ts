@@ -20,6 +20,10 @@ export class TaskletContentFragmentComponent {
   @Input() tasklet: Tasklet;
   /** Placeholder text for description */
   @Input() placeholderDescription = '';
+  /** Placeholder text for meeting minutes */
+  @Input() placeholderMeetingMinutes = '';
+  /** Placeholder text for daily scrum */
+  @Input() placeholderDailyScrum = '';
 
   /** Enum of display aspects */
   displayAspectType = DisplayAspect;

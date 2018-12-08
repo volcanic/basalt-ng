@@ -10,6 +10,11 @@
   font-size: 1.2em;
 }
 
+.content {
+  width: 100%;
+  overflow: hidden;
+}
+
 .project {
   padding: 3px 10px;
   margin-top: -25px;
@@ -20,21 +25,7 @@
   0 1px 5px 0 rgba(0, 0, 0, .12);
 }
 
-.light-theme {
-  .tag {
-    background: mat-color($mat-grey, 200) !important;
-    color: mat-contrast($mat-grey, 200) !important;
-  }
-}
-
-.dark-theme {
-  .tag {
-    background: mat-color($mat-grey, 400) !important;
-    color: mat-contrast($mat-grey, 400) !important;
-  }
-}
-
-.tag {
+.tag, .inherited-tag {
   -webkit-border-radius: 2px;
   border-radius: 2px;
   margin: 6px 6px 0 0;
@@ -50,20 +41,6 @@
 
 .tag-label {
   padding: 1px;
-}
-
-.light-theme {
-  .person {
-    background: mat-color($mat-grey, 400) !important;
-    color: mat-contrast($mat-grey, 400) !important;
-  }
-}
-
-.dark-theme {
-  .person {
-    background: mat-color($mat-grey, 600) !important;
-    color: mat-contrast($mat-grey, 600) !important;
-  }
 }
 
 .person {
@@ -82,6 +59,36 @@
 
 .person-label {
   padding: 1px;
+}
+
+.light-theme {
+  .person {
+    background: mat-color($mat-grey, 400) !important;
+    color: mat-contrast($mat-grey, 400) !important;
+  }
+  .tag {
+    background: mat-color($mat-grey, 200) !important;
+    color: mat-contrast($mat-grey, 200) !important;
+  }
+  .inherited-tag {
+    background: mat-color($mat-grey, 50) !important;
+    color: mat-contrast($mat-grey, 50) !important;
+  }
+}
+
+.dark-theme {
+  .person {
+    background: mat-color($mat-grey, 600) !important;
+    color: mat-contrast($mat-grey, 600) !important;
+  }
+  .tag {
+    background: mat-color($mat-grey, 400) !important;
+    color: mat-contrast($mat-grey, 400) !important;
+  }
+  .inherited-tag {
+    background: mat-color($mat-grey, 50) !important;
+    color: mat-contrast($mat-grey, 50) !important;
+  }
 }
 
 .time {

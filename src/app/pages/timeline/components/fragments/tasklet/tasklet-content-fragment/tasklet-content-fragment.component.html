@@ -17,12 +17,19 @@
 </div>
 
 <!-- Meeting minutes -->
-<app-tasklet-meeting-minutes-fragment
-  *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
-  [tasklet]="tasklet">
-</app-tasklet-meeting-minutes-fragment>
+<div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)">
+  <app-tasklet-meeting-minutes-fragment [tasklet]="tasklet">
+  </app-tasklet-meeting-minutes-fragment>
+  <div *ngIf="tasklet.meetingMinuteItems.length === 0" class="placeholder-meetingminutes">
+    {{ placeholderMeetingMinutes }}
+  </div>
+</div>
 
 <!-- Daily Scrum -->
-<app-tasklet-daily-scrum-fragment *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)"
-                                  [tasklet]="tasklet">
-</app-tasklet-daily-scrum-fragment>
+<div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)">
+  <app-tasklet-daily-scrum-fragment [tasklet]="tasklet">
+  </app-tasklet-daily-scrum-fragment>
+  <div *ngIf="tasklet.dailyScrumItems.length === 0" class="placeholder-dailyscrum">
+    {{ placeholderDailyScrum }}
+  </div>
+</div>

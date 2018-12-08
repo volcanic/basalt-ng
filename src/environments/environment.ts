@@ -5,12 +5,11 @@
 
 /**
  * Environment settings for development environment
- * @type {{production: boolean; APP_NAME: string; DATABASE_ENTITIES: string; DATABASE_SETTINGS: string; LIMIT_PROJECTS_COUNT: number; LIMIT_TASKS_COUNT: number; LIMIT_TASKLETS_COUNT: number; LIMIT_PERSONS_COUNT: number; LIMIT_TAGS_COUNT: number; NAME: any; VERSION: any; LICENSE: string | any; HOMEPAGE: string | any; TAGS: any}}
  */
 export const environment = {
   production: false,
   APP_NAME: 'Basalt Dev',
-  DATABASE_ENTITIES: 'basalt-dev2',
+  DATABASE_ENTITIES: 'basalt-dev',
   DATABASE_SETTINGS: 'basalt_settings-dev',
 
   LIMIT_TASKLETS_COUNT: 500,

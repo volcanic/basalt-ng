@@ -81,16 +81,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public tasksMap = new Map<string, Task>();
   /** Array of tasks */
   public tasks: Task[] = [];
-  /** Array of tasks that are currently filtered */
-  public tasksFiltered: Task[] = [];
-  /** Array of projects that are currently filtered */
-  public projectsFiltered: Project[] = [];
-  /** Array of tags that are currently filtered */
-  public tagsFiltered: Tag[] = [];
-  /** Array of persons that are currently filtered */
-  public personsFiltered: Person[] = [];
-  /** Indicates whether a filter is active */
-  public filterActive = false;
 
   /** Map of projects */
   public projectsMap = new Map<string, Project>();
@@ -112,6 +102,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public persons: Person[] = [];
   /** Array of persons with filter values */
   public personsFilter: Person[] = [];
+
+  /** Array of tasks that are currently filtered */
+  public tasksFiltered: Task[] = [];
+  /** Array of projects that are currently filtered */
+  public projectsFiltered: Project[] = [];
+  /** Array of tags that are currently filtered */
+  public tagsFiltered: Tag[] = [];
+  /** Array of persons that are currently filtered */
+  public personsFiltered: Person[] = [];
+  /** Indicates whether a filter is active */
+  public filterActive = false;
 
   /** Search items options for auto-complete */
   public searchOptions = [];
@@ -307,15 +308,17 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private filterTasklet(tasklet: Tasklet): boolean {
     const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
+    const matchesInheritedSearchItem = this.matchService.taskMatchesEveryItem(this.taskService.tasks.get(tasklet.taskId), this.filterService.searchItem);
     const matchesTasks = this.matchService.taskletMatchesTasks(tasklet,
       Array.from(this.filterService.tasks.values()));
     const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
       Array.from(this.filterService.projects.values()));
     const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
+    const matchesInheritedTags = this.matchService.taskMatchesTags(this.taskService.tasks.get(tasklet.taskId), Array.from(this.filterService.tags.values()));
     const matchesPersons = this.matchService.taskletMatchesPersons(tasklet,
       Array.from(this.filterService.persons.values()));
 
-    return matchesSearchItem && matchesTasks && matchesProjects && matchesTags && matchesPersons;
+    return (matchesSearchItem || matchesInheritedSearchItem) && matchesTasks && matchesProjects && (matchesTags || matchesInheritedTags) && matchesPersons;
   }
 
   //
@@ -684,10 +687,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Clears all filters
    */
   private clearFilters() {
-    this.filterService.clearSearchItem();
-    this.filterService.clearTags();
-    this.filterService.clearProjects();
-    this.filterService.clearPersons();
+    this.filterService.clearAllFilters();
   }
 
   /**
@@ -1171,14 +1171,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         task.completionDate = new Date();
-        this.taskService.updateTask(task, false).then(() => {
+        this.taskService.updateTask(task).then(() => {
           this.snackbarService.showSnackbar('Completed task');
         });
         break;
       }
       case Action.REOPEN: {
         task.completionDate = null;
-        this.taskService.updateTask(task, false).then(() => {
+        this.taskService.updateTask(task).then(() => {
           this.snackbarService.showSnackbar('Re-opened task');
         });
 
@@ -1938,7 +1938,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       // New task
       if (t == null && task.name != null && task.name !== '') {
         t = new Task(task.name);
-        this.taskService.createTask(t, false).then(() => {
+        this.taskService.createTask(t).then(() => {
         });
       }
 

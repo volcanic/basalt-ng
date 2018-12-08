@@ -168,7 +168,7 @@ export class TaskletDisplayService {
       && (tasklet.type === TaskletType.ACTION
         || tasklet.type === TaskletType.MEETING
         || tasklet.type === TaskletType.DAILY_SCRUM
-        || tasklet.type === TaskletType.DEVELOPMENT
+        || tasklet.type === TaskletType.CODING
         || tasklet.type === TaskletType.DEBUGGING
         || tasklet.type === TaskletType.IDEA);
   }

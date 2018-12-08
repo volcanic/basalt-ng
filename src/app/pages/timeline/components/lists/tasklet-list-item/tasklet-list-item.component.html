@@ -17,7 +17,7 @@
 
   <!-- Display as card -->
   <div class="card-wrapper" *ngIf="!containsDisplayAspect(displayAspectType.IS_DISPLAYED_AS_PREVIEW, tasklet)">
-    <app-tasklet-card-fragment [tasklet]="tasklet" [project]="project" [topic]="topic" [icon]="icon"
+    <app-tasklet-card-fragment [tasklet]="tasklet" [task]="task" [project]="project" [topic]="topic" [icon]="icon"
                                [tags]="tags" [persons]="persons"
                                [media]="media" [themeClass]="themeClass"
                                (taskletEventEmitter)="onTaskletClicked($event)"></app-tasklet-card-fragment>
