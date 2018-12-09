@@ -134,6 +134,10 @@ mat-list-item.text > .mat-list-item-content {
   background-color: rgba(84, 110, 122, .4) !important;
 }
 
+.mat-drawer-side, .mat-drawer-side.mat-drawer-end {
+  border: transparent;
+}
+
 @font-face {
   font-family: 'Google Sans';
   font-style: normal;

@@ -21,7 +21,9 @@
 .sidenav {
   background: transparent;
   width: 350px;
+}
 
+.sidenav-content {
   @media #{$breakpoint-small} {
     padding-top: 88px;
   }
