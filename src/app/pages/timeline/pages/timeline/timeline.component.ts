@@ -764,7 +764,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.ADD: {
         // Create new entities if necessary
         this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, tags);
+        this.evaluateTaskletTags(tasklet, task, tags);
         this.evaluateTaskletPersons(tasklet, persons);
 
         // Create tasklet itself
@@ -776,7 +776,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.UPDATE: {
         // Create new entities if necessary
         this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, tags);
+        this.evaluateTaskletTags(tasklet, task, tags);
         this.evaluateTaskletPersons(tasklet, persons);
 
         // Update tasklet itself
@@ -1953,9 +1953,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
    * @param {Tasklet} tasklet tasklet to assign tags to
+   * @param {Task} task task the tasklet is associated to
    * @param {Tag[]} tags array of tags to be checked
    */
-  private evaluateTaskletTags(tasklet: Tasklet, tags: Tag[]) {
+  private evaluateTaskletTags(tasklet: Tasklet, task: Task, tags: Tag[]) {
     const aggregatedTags = new Map<string, Tag>();
 
     // New tag
@@ -1964,6 +1965,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         return t != null;
       }).forEach(t => {
         const tag = this.lookupTag(t.name);
+
+        // Exclude tags that are inherited from task
+        if (task.tagIds.some(id => id === tag.id)) {
+          return;
+        }
+
         aggregatedTags.set(tag.id, tag);
       });
     }
@@ -1976,6 +1983,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         return m.topic;
       }).forEach(t => {
         const tag = this.lookupTag(t);
+
+        // Exclude tags that are inherited from task
+        if (task.tagIds.some(id => id === tag.id)) {
+          return;
+        }
+
         aggregatedTags.set(tag.id, tag);
       });
     }
