@@ -1,8 +1,11 @@
-<app-tasklet-list-item *ngFor="let t of tasklets" [tasklet]="t" [media]="media"
-                       [tasks]="tasks" [projects]="projects"
-                       [tags]="tags" [persons]="persons"
-                       inViewport
-                       (taskletEventEmitter)="onTaskletEvent($event)"
-                       [inViewportOptions]="{ threshold: [0] }"
-                       (inViewportAction)="onIntersection(t)">
-</app-tasklet-list-item>
+<cdk-virtual-scroll-viewport style="height: 100vh" itemSize="3">
+  <app-tasklet-list-item *cdkVirtualFor="let tasklet of tasklets"
+                         [tasklet]="tasklet" [media]="media"
+                         [tasks]="tasks" [projects]="projects"
+                         [tags]="tags" [persons]="persons"
+                         inViewport
+                         (taskletEventEmitter)="onTaskletEvent($event)"
+                         [inViewportOptions]="{ threshold: [0] }"
+                         (inViewportAction)="onIntersection(tasklet)">
+  </app-tasklet-list-item>
+</cdk-virtual-scroll-viewport>

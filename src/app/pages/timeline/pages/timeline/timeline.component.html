@@ -44,7 +44,6 @@
       <app-suggested-actions [suggestedTasks]="tasks"
                              (taskletEventEmitter)="onTaskletEvent($event)"
                              (taskEventEmitter)="onTaskEvent($event)"></app-suggested-actions>
-
       <app-tasklet-list [tasklets]="tasklets" [media]="media" [tasks]="tasksMap" [projects]="projectsMap"
                         [tags]="tagsMap" [persons]="personsMap"
                         (taskletEventEmitter)="onTaskletEvent($event)"
