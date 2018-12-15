@@ -94,6 +94,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public tagsMap = new Map<string, Tag>();
   /** Array of tags */
   public tags: Tag[] = [];
+  /** Array of unused tags */
+  public unusedTags: Tag[] = [];
   /** Array of tags with filter values */
   public tagsFilter: Tag[] = [];
 
@@ -439,6 +441,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tags = tags.filter(tag => {
       return this.filterTag(tag);
     });
+
+    const usedTagIds = new Map<string, string>();
+    Array.from(this.taskletService.tasklets.values()).forEach(tasklet => {
+      tasklet.tagIds.forEach(tagId => {
+        usedTagIds.set(tagId, tagId);
+      });
+    });
+    Array.from(this.taskService.tasks.values()).forEach(task => {
+      task.tagIds.forEach(tagId => {
+        usedTagIds.set(tagId, tagId);
+      });
+    });
+
+    this.unusedTags = this.tagService.getUnusedTags(Array.from(usedTagIds.values()));
   }
 
   /**
@@ -1547,22 +1563,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.OPEN_DIALOG_REMOVE_UNUSED: {
-        const usedTagIds = new Map<string, string>();
-        Array.from(this.taskletService.tasklets.values()).forEach(tasklet => {
-          tasklet.tagIds.forEach(tagId => {
-            usedTagIds.set(tagId, tagId);
-          });
-        });
-        Array.from(this.taskService.tasks.values()).forEach(task => {
-          task.tagIds.forEach(tagId => {
-            usedTagIds.set(tagId, tagId);
-          });
-        });
-
         // Assemble data to be passed
         const data = {
           dialogTitle: 'Remove unused tags',
-          tags: this.tagService.getUnusedTags(Array.from(usedTagIds.values()))
+          tags: tags
         };
 
         // Open dialog
