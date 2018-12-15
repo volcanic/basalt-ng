@@ -23,7 +23,7 @@
       <app-project-list [projects]="projects" [projectsFiltered]="projectsFiltered" [recentCount]="'3'" [media]="media"
                         (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
       <mat-divider></mat-divider>
-      <app-tag-list [tags]="tags" [tagsFiltered]="tagsFiltered" [recentCount]="'10'" [media]="media"
+      <app-tag-list [tags]="tags" [tagsFiltered]="tagsFiltered" [unusedTags]="unusedTags" [recentCount]="'10'" [media]="media"
                     (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
       <mat-divider></mat-divider>
       <app-person-list [persons]="persons" [personsFiltered]="personsFiltered" [recentCount]="'10'" [media]="media"

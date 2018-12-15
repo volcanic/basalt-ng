@@ -74,6 +74,7 @@ import {PomodoroFinishedDialogModule} from '../../ui/pomodoro-finished-dialog/po
 import {SuggestedActionsComponent} from './components/fragments/other/suggested-actions/suggested-actions.component';
 import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/task-list-dialog.component';
 import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort-picker-fragment.module';
+import { UnusedTagsDialogComponent } from './components/dialogs/unused-tags-dialog/unused-tags-dialog.component';
 
 @NgModule({
   imports: [
@@ -122,6 +123,7 @@ import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort
 
     TagDialogComponent,
     TagListDialogComponent,
+    UnusedTagsDialogComponent,
 
     TaskDialogComponent,
     TaskListDialogComponent,
@@ -191,6 +193,7 @@ import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort
 
     TagDialogComponent,
     TagListDialogComponent,
+    UnusedTagsDialogComponent,
 
     TaskDialogComponent,
     TaskListDialogComponent,
