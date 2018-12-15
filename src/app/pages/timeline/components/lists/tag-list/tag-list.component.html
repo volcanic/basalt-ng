@@ -7,6 +7,7 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
+
     <!-- Recent -->
     <app-tag-list-item *ngFor="let t of tagsRecent" [tag]="t" [media]="media" [active]="isInFocus(t)"
                        (tagEventEmitter)="onTagEvent($event)">
@@ -19,6 +20,10 @@
       </app-tag-list-item>
     </div>
 
-    <button mat-button *ngIf="tags.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
+    <div class="flexcontainer">
+      <button mat-button *ngIf="tags.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
+      <div class="flexbox"></div>
+      <button mat-button (click)="onRemoveUnusedTagsClicked()">Remove unused tags</button>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>

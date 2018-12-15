@@ -217,6 +217,25 @@ export class TagService {
     return tag;
   }
 
+  /**
+   * Retrieves a list of unused tags
+   * @param usedTagIds used tag IDs
+   */
+  public getUnusedTags(usedTagIds: string[]): Tag[] {
+    const unusedTags = new Map<Tag, Tag>();
+
+    this.tags.forEach(tag => {
+      if (!usedTagIds.some(id => {
+        return id === tag.id;
+      })) {
+        unusedTags.set(tag, tag);
+      }
+    });
+
+
+    return Array.from(unusedTags.values());
+  }
+
   // </editor-fold>
 
   //

@@ -79,6 +79,13 @@ export class TagListComponent implements OnChanges {
     this.showMoreLabel = this.showMoreStatus ? 'Less' : 'More';
   }
 
+  /**
+   * Handles click on remove-unused-tags button
+   */
+  onRemoveUnusedTagsClicked() {
+    this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_REMOVE_UNUSED, tag: null});
+  }
+
   //
   // Helpers
   //

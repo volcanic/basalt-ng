@@ -31,7 +31,7 @@ export class TagDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
+   * @param {MatDialogRef<TagDialogComponent>} dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<TagDialogComponent>,
