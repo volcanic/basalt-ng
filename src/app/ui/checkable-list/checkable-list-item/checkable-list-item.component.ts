@@ -1,6 +1,9 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {SelectableItem} from '../selectable-item';
 
+/**
+ * Displays checkable list item
+ */
 @Component({
   selector: 'app-checkable-list-item',
   templateUrl: './checkable-list-item.component.html',

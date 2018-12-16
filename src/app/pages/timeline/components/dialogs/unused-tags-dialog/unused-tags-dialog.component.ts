@@ -11,6 +11,9 @@ class SelectableTag extends Tag {
   selected: boolean;
 }
 
+/**
+ * Displays unused tags dialog
+ */
 @Component({
   selector: 'app-unused-tags-dialog',
   templateUrl: './unused-tags-dialog.component.html',

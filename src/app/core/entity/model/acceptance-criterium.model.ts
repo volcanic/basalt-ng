@@ -1,8 +1,8 @@
+import {SelectableItem} from '../../../ui/checkable-list/selectable-item';
+
 /**
  * Represents an acceptance criterium
  */
-import {SelectableItem} from '../../../ui/checkable-list/selectable-item';
-
 export class AcceptanceCriterium implements SelectableItem {
 
   /** Text */
