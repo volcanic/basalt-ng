@@ -18,12 +18,14 @@ export class TagListComponent implements OnChanges {
   @Input() tags = [];
   /** Tags that are currently filtered */
   @Input() tagsFiltered: Tag[] = [];
+  /** Tags that are unused */
+  @Input() unusedTags: Tag[] = [];
   /** Number of items to be shown initially **/
   @Input() recentCount: number;
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating tag action */
-  @Output() tagEventEmitter = new EventEmitter<{ action: Action, tag: Tag }>();
+  @Output() tagEventEmitter = new EventEmitter<{ action: Action, tag: Tag, tags?: Tag[] }>();
 
   /** Recent tags */
   tagsRecent = [];
@@ -77,6 +79,13 @@ export class TagListComponent implements OnChanges {
   onMoreLessToggled() {
     this.showMoreStatus = !this.showMoreStatus;
     this.showMoreLabel = this.showMoreStatus ? 'Less' : 'More';
+  }
+
+  /**
+   * Handles click on remove-unused-tags button
+   */
+  onRemoveUnusedTagsClicked() {
+    this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_REMOVE_UNUSED, tag: null, tags: this.unusedTags });
   }
 
   //

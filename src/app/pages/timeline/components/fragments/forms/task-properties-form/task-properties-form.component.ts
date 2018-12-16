@@ -6,6 +6,8 @@ import {Project} from '../../../../../../core/entity/model/project.model';
 import {RecurrenceInterval} from '../../../../../../core/entity/model/recurrence-interval.enum';
 import {MatSlideToggleChange} from '@angular/material';
 import {DateService} from '../../../../../../core/entity/services/date.service';
+import {SelectableItem} from '../../../../../../ui/checkable-list/selectable-item';
+import {AcceptanceCriterium} from '../../../../../../core/entity/model/acceptance-criterium.model';
 
 /**
  * Displays form to set task properties
@@ -38,6 +40,9 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /** Event emitter indicating task changes */
   @Output() taskEventEmitter = new EventEmitter<{ task: Task, project: Project, delegatedTo: Person, tags: Tag[] }>();
+
+  /** Number of completed acceptance criteria */
+  completedAcceptanceCriteria = 0;
 
   /** Recurring */
   recurring = false;
@@ -73,6 +78,7 @@ export class TaskPropertiesFormComponent implements OnInit {
    */
   ngOnInit() {
     this.initializePriority();
+    this.initializeAcceptanceCriteria();
   }
 
   //
@@ -92,6 +98,17 @@ export class TaskPropertiesFormComponent implements OnInit {
         this.colorsFlags[index] = this.colorEmpty;
       }
     });
+  }
+
+  /**
+   * Initializes acceptance criteria
+   */
+  private initializeAcceptanceCriteria() {
+    if (this.task.acceptanceCriteria != null) {
+      this.completedAcceptanceCriteria = this.task.acceptanceCriteria.filter(c => {
+        return c.completed;
+      }).length;
+    }
   }
 
   //
@@ -254,6 +271,18 @@ export class TaskPropertiesFormComponent implements OnInit {
    */
   onDescriptionChanged(text: string) {
     this.task.description.value = text;
+    this.notify();
+  }
+
+  // Acceptance criteria
+
+  /**
+   * Handles acceptance criteria changes
+   * @param items acceptance criteria
+   */
+  onAcceptanceCriteriaChanged(items: SelectableItem[]) {
+    this.task.acceptanceCriteria = items as AcceptanceCriterium[];
+    this.initializeAcceptanceCriteria();
     this.notify();
   }
 

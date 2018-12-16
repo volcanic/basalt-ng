@@ -189,6 +189,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   onTaskNameChanged(taskName: string) {
     this.task = this.taskService.getTaskByName(taskName);
     this.task = (this.task != null) ? this.task : new Task();
+    this.task.name = taskName;
 
     this.initializeInheritedTags();
   }

@@ -55,6 +55,7 @@ import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {Setting} from '../../../../core/settings/model/setting.model';
 import {DailyScrumItemType} from '../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
 import {TaskListDialogComponent} from '../../components/dialogs/task-list-dialog/task-list-dialog.component';
+import {UnusedTagsDialogComponent} from '../../components/dialogs/unused-tags-dialog/unused-tags-dialog.component';
 
 /**
  * Displays timeline page
@@ -93,6 +94,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public tagsMap = new Map<string, Tag>();
   /** Array of tags */
   public tags: Tag[] = [];
+  /** Array of unused tags */
+  public unusedTags: Tag[] = [];
   /** Array of tags with filter values */
   public tagsFilter: Tag[] = [];
 
@@ -438,6 +441,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tags = tags.filter(tag => {
       return this.filterTag(tag);
     });
+
+    const usedTagIds = new Map<string, string>();
+    Array.from(this.taskletService.tasklets.values()).forEach(tasklet => {
+      tasklet.tagIds.forEach(tagId => {
+        usedTagIds.set(tagId, tagId);
+      });
+    });
+    Array.from(this.taskService.tasks.values()).forEach(task => {
+      task.tagIds.forEach(tagId => {
+        usedTagIds.set(tagId, tagId);
+      });
+    });
+
+    this.unusedTags = this.tagService.getUnusedTags(Array.from(usedTagIds.values()));
   }
 
   /**
@@ -764,7 +781,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.ADD: {
         // Create new entities if necessary
         this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, tags);
+        this.evaluateTaskletTags(tasklet, task, tags);
         this.evaluateTaskletPersons(tasklet, persons);
 
         // Create tasklet itself
@@ -776,7 +793,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       case Action.UPDATE: {
         // Create new entities if necessary
         this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, tags);
+        this.evaluateTaskletTags(tasklet, task, tags);
         this.evaluateTaskletPersons(tasklet, persons);
 
         // Update tasklet itself
@@ -1545,6 +1562,51 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+      case Action.OPEN_DIALOG_REMOVE_UNUSED: {
+        // Assemble data to be passed
+        const data = {
+          dialogTitle: 'Remove unused tags',
+          tags: tags
+        };
+
+        // Open dialog
+        const dialogRef = this.dialog.open(UnusedTagsDialogComponent, {
+          disableClose: false,
+          data: data
+        });
+
+        // Handle dialog close
+        dialogRef.afterClosed().subscribe(result => {
+          if (result != null) {
+            const tagsToDelete = result.tags as Tag[];
+
+            const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+              disableClose: false,
+              data: {
+                title: 'Delete tags',
+                text: `Do you want to delete these tags?\n${tagsToDelete.map(t => {
+                  return t.name;
+                }).join(', ')}`,
+                action: 'Delete',
+                value: tagsToDelete
+              }
+            });
+            confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
+
+              console.log(confirmationResult);
+
+              if (confirmationResult != null) {
+                (confirmationResult as Tag[]).forEach(t => {
+                  this.tagService.deleteTag(t).then(() => {
+                  });
+                  this.filterService.tags.delete(t.id);
+                });
+              }
+            });
+          }
+        });
+        break;
+      }
       case Action.FILTER_SINGLE: {
         this.filterService.clearTags();
         this.filterService.updateTagsList(tags);
@@ -1953,9 +2015,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
    * @param {Tasklet} tasklet tasklet to assign tags to
+   * @param {Task} task task the tasklet is associated to
    * @param {Tag[]} tags array of tags to be checked
    */
-  private evaluateTaskletTags(tasklet: Tasklet, tags: Tag[]) {
+  private evaluateTaskletTags(tasklet: Tasklet, task: Task, tags: Tag[]) {
     const aggregatedTags = new Map<string, Tag>();
 
     // New tag
@@ -1964,6 +2027,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         return t != null;
       }).forEach(t => {
         const tag = this.lookupTag(t.name);
+
+        // Exclude tags that are inherited from task
+        if (task.tagIds.some(id => id === tag.id)) {
+          return;
+        }
+
         aggregatedTags.set(tag.id, tag);
       });
     }
@@ -1976,6 +2045,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         return m.topic;
       }).forEach(t => {
         const tag = this.lookupTag(t);
+
+        // Exclude tags that are inherited from task
+        if (task.tagIds.some(id => id === tag.id)) {
+          return;
+        }
+
         aggregatedTags.set(tag.id, tag);
       });
     }

@@ -2,6 +2,7 @@ import {EntityType} from './entity-type.enum';
 import {Entity} from './entity.model';
 import {Description} from './description.model';
 import {RecurrenceInterval} from './recurrence-interval.enum';
+import {AcceptanceCriterium} from './acceptance-criterium.model';
 
 /**
  * Represents a task
@@ -12,6 +13,8 @@ export class Task extends Entity {
   name: string;
   /** Description */
   description: Description;
+  /** Definition of Done */
+  acceptanceCriteria: AcceptanceCriterium[];
   /** Reference to project */
   projectId: string;
   /** Due date */
@@ -38,10 +41,11 @@ export class Task extends Entity {
     this.entityType = EntityType.TASK;
     this.name = name.trim();
     this.description = new Description();
+    this.acceptanceCriteria = [];
     this.projectId = null;
     this.dueDate = null;
     this.completionDate = null;
-    this.priority = 4;
+    this.priority = 1;
     this.effort = 0;
     this.tagIds = [];
     this.recurrenceInterval = RecurrenceInterval.NONE;

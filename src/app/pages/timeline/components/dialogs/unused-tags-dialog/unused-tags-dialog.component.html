@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content>
+  <div *ngFor="let t of tags">
+    <mat-checkbox (change)="onTagSelected(t, $event)"></mat-checkbox>
+    <span class="label">{{ t.name }}</span>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="flexcontainer">
+  <button mat-button
+          (click)="dialogRef.close()">
+    Cancel
+  </button>
+  <div class="flexbox"></div>
+  <button mat-button color="warn" [disabled]="tagsSelected.length === 0"
+          (click)="onDeleteButtonClicked()">
+    Delete unused tags
+  </button>
+</mat-dialog-actions>

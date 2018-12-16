@@ -23,7 +23,7 @@
       <app-project-list [projects]="projects" [projectsFiltered]="projectsFiltered" [recentCount]="'3'" [media]="media"
                         (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
       <mat-divider></mat-divider>
-      <app-tag-list [tags]="tags" [tagsFiltered]="tagsFiltered" [recentCount]="'10'" [media]="media"
+      <app-tag-list [tags]="tags" [tagsFiltered]="tagsFiltered" [unusedTags]="unusedTags" [recentCount]="'10'" [media]="media"
                     (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
       <mat-divider></mat-divider>
       <app-person-list [persons]="persons" [personsFiltered]="personsFiltered" [recentCount]="'10'" [media]="media"
@@ -64,37 +64,35 @@
 
 <eco-fab-speed-dial #myFab class="fab" [open]=false direction="up" (mouseenter)="myFab.open = true"
                     (mouseleave)="myFab.open = false">
-  <eco-fab-speed-dial-trigger
-    [spin]="true">
-    <button mat-fab class="spin180"
-            (click)="onAddTaskletClicked()"
-            matTooltip="Start working on..." matTooltipPosition="left" matTooltipShowDelay="250">
+  <eco-fab-speed-dial-trigger [spin]="true">
+    <button mat-fab class="spin180" matTooltip="Start working on..." matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddTaskletClicked()">
       <mat-icon svgIcon="add" class="icon-accent-contrast"></mat-icon>
     </button>
   </eco-fab-speed-dial-trigger>
 
   <eco-fab-speed-dial-actions>
-    <button mat-mini-fab
-            (click)="onAddTaskClicked()"
-            matTooltip="Create new task" matTooltipPosition="left" matTooltipShowDelay="250">
+    <button mat-mini-fab class="fab-speed-dial-third" matTooltip="Create new task"
+            matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddTaskClicked()">
       <mat-icon svgIcon="turned_in_not" class="icon-accent-contrast"></mat-icon>
     </button>
 
-    <button mat-mini-fab
-            (click)="onAddProjectClicked()"
-            matTooltip="Create new project" matTooltipPosition="left" matTooltipShowDelay="250">
+    <button mat-mini-fab class="fab-speed-dial-fourth" matTooltip="Create new project"
+            matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddProjectClicked()">
       <mat-icon svgIcon="agenda" class="icon-accent-contrast"></mat-icon>
     </button>
 
-    <button mat-mini-fab
-            (click)="onAddTagClicked()"
-            matTooltip="Create new tag" matTooltipPosition="left" matTooltipShowDelay="250">
+    <button mat-mini-fab class="fab-speed-dial-fifth" matTooltip="Create new tag"
+            matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddTagClicked()">
       <mat-icon svgIcon="label_outline" class="icon-accent-contrast"></mat-icon>
     </button>
 
-    <button mat-mini-fab
-            (click)="onAddPersonClicked()"
-            matTooltip="Create new person" matTooltipPosition="left" matTooltipShowDelay="250">
+    <button mat-mini-fab class="fab-speed-dial-sixth" matTooltip="Create new person"
+            matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddPersonClicked()">
       <mat-icon svgIcon="person" class="icon-accent-contrast"></mat-icon>
     </button>
 
