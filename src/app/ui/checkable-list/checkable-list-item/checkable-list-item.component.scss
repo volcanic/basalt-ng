@@ -1,0 +1,45 @@
+@import '../../../../theme';
+
+//
+// Custom
+//
+
+.flexcontainer {
+  display: flex;
+}
+
+.flexbox {
+  flex-grow: 1;
+}
+
+.item {
+  margin-bottom: 10px;
+}
+
+.label {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+  top: 1.28125em;
+  font-weight: 400;
+  line-height: 1.125;
+  left: 0;
+  text-align: left;
+  margin-left: 8px;
+}
+
+.selected {
+  color: mat-color($mat-grey, 500);
+  text-decoration: line-through;
+
+  margin-left: -22px;
+}
+
+.unselected {
+  color: mat-color($mat-grey, 900);
+  text-decoration: none;
+}
+
+.icon-delete {
+  fill: mat-color($mat-grey, 500);
+  vertical-align: middle;
+}
