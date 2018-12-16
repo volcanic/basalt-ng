@@ -9,6 +9,7 @@ import {PouchDBService} from '../../persistence/services/pouchdb.service';
 import {ScopeService} from './scope.service';
 import {SnackbarService} from '../../ui/services/snackbar.service';
 import {DateService} from './date.service';
+import {Task} from '../model/task.model';
 
 /**
  * Handles persons including
@@ -25,6 +26,12 @@ export class PersonService {
   persons = new Map<string, Person>();
   /** Subject that can be subscribed by components that are interested in changes */
   personsSubject = new Subject<Person[]>();
+
+  /** Person in focus */
+  person: Person;
+  /** Subject that publishes person */
+  personSubject = new Subject<Person>();
+  
   /** Special person representing the user */
   myself: Person;
 
@@ -104,6 +111,26 @@ export class PersonService {
   }
 
   /**
+   * Loads person by a given ID
+   * @param {number} id ID of filter by
+   */
+  public findPersonByID(id: string) {
+    const index = {fields: ['entityType', 'id', 'creationDate']};
+    const options = {
+      selector: {
+        '$and': [
+          {entityType: {$eq: EntityType.PERSON}},
+          {id: {$eq: id}}
+        ]
+      },
+      // sort: [{creationDate: 'desc'}],
+      limit: environment.LIMIT_PERSONS_COUNT
+    };
+
+    this.findPersonInternal(index, options);
+  }
+
+  /**
    * Clears persons
    */
   private clearPersons() {
@@ -120,6 +147,28 @@ export class PersonService {
 
         result['docs'].forEach(element => {
           const person = element as Person;
+          this.persons.set(person.id, person);
+        });
+        this.notify();
+      }, error => {
+        if (isDevMode()) {
+          console.error(error);
+        }
+      }
+    );
+  }
+
+  /**
+   * Index persons and queries them afterwards
+   * @param index index to be used
+   * @param options query options
+   */
+  private findPersonInternal(index: any, options: any) {
+    this.pouchDBService.find(index, options).then(result => {
+        result['docs'].forEach(element => {
+          const person = element as Person;
+
+          this.person = person;
           this.persons.set(person.id, person);
         });
         this.notify();
@@ -240,6 +289,7 @@ export class PersonService {
    * Notifies subscribers that something has changed
    */
   private notify() {
+    this.personSubject.next(this.person);
     this.personsSubject.next(Array.from(this.persons.values()).sort((p1, p2) => {
       return p2.name < p1.name ? 1 : -1;
     }).sort((p1, p2) => {

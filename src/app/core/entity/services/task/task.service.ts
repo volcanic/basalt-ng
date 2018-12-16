@@ -218,7 +218,10 @@ export class TaskService {
   private findTaskInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         result['docs'].forEach(element => {
-          this.task = element as Task;
+          const task = element as Task;
+
+          this.task = task;
+          this.tasks.set(task.id, task);
         });
         this.notify();
       }, error => {
@@ -259,9 +262,7 @@ export class TaskService {
 
         // Create task
         return this.pouchDBService.upsert(task.id, task).then(() => {
-          this.tasks.set(task.id, task);
-          this.task = task;
-          this.notify();
+          this.findTaskByID(task.id);
         });
       }
     });
@@ -289,9 +290,7 @@ export class TaskService {
 
         // Update task
         return this.pouchDBService.upsert(task.id, task).then(() => {
-          this.tasks.set(task.id, task);
-          this.task = task;
-          this.notify();
+          this.findTaskByID(task.id);
         });
       }
     });
