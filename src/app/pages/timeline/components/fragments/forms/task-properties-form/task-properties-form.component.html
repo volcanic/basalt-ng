@@ -122,7 +122,8 @@
       <mat-icon svgIcon="timer"></mat-icon>
     </mat-expansion-panel-header>
     <div>
-      <app-effort-picker-fragment [effortInMinutes]="task.effort" (effortEventEmitter)="onEffortChanged($event)"></app-effort-picker-fragment>
+      <app-effort-picker-fragment [effortInMinutes]="task.effort"
+                                  (effortEventEmitter)="onEffortChanged($event)"></app-effort-picker-fragment>
     </div>
   </mat-expansion-panel>
 
@@ -179,6 +180,25 @@
     <app-markdown-editor [text]="task.description.value"
                          [readonly]="readonly"
                          (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
+  </mat-expansion-panel>
+
+  <!-- Definition of Done -->
+  <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Definition of Done</mat-panel-title>
+      <mat-panel-description *ngIf="task.acceptanceCriteria == null || task.acceptanceCriteria.length === 0">
+        Add acceptence criteria
+      </mat-panel-description>
+      <mat-panel-description *ngIf="task.acceptanceCriteria != null && task.acceptanceCriteria.length > 0">
+        <span class="value-set description">{{ completedAcceptanceCriteria }} / {{ task.acceptanceCriteria.length }}</span>
+      </mat-panel-description>
+      <mat-icon svgIcon="check_box"></mat-icon>
+    </mat-expansion-panel-header>
+    <app-checkable-list [items]="task.acceptanceCriteria"
+                        [readonly]="readonly"
+                        (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
+    </app-checkable-list>
+
   </mat-expansion-panel>
 
 </mat-accordion>

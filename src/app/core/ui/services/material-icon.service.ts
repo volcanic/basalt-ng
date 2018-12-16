@@ -18,7 +18,8 @@ enum IconTopic {
   IMAGE = 'image',
   MAPS = 'maps',
   NAVIGATION = 'navigation',
-  SOCIAL = 'social'
+  SOCIAL = 'social',
+  TOGGLE = 'toggle'
 }
 
 /**
@@ -96,6 +97,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.COMMUNICATION, 'forum', 'ic_forum_24px.svg'));
     icons.push(new Icon(IconTopic.COMMUNICATION, 'phone', 'ic_phone_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'add', 'ic_add_24px.svg'));
+    icons.push(new Icon(IconTopic.CONTENT, 'clear', 'ic_clear_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'filter_list', 'ic_filter_list_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'flag', 'ic_flag_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'mail', 'ic_mail_24px.svg'));
@@ -130,6 +132,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.NAVIGATION, 'refresh', 'ic_refresh_24px.svg'));
     icons.push(new Icon(IconTopic.SOCIAL, 'person', 'ic_person_24px.svg'));
     icons.push(new Icon(IconTopic.SOCIAL, 'people', 'ic_people_24px.svg'));
+    icons.push(new Icon(IconTopic.TOGGLE, 'check_box', 'ic_check_box_24px.svg'));
 
     // Aliases
     icons.push(new Icon(IconTopic.ACTION, 'alias_task', 'ic_turned_in_24px.svg'));
