@@ -8,6 +8,9 @@ import {MatSlideToggleChange} from '@angular/material';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 import {SelectableItem} from '../../../../../../ui/checkable-list/selectable-item';
 import {AcceptanceCriterium} from '../../../../../../core/entity/model/acceptance-criterium.model';
+import {MaterialColorService} from '../../../../../../core/ui/services/material-color.service';
+import {HueType} from '../../../../../../core/ui/model/hue-type.enum';
+import {PaletteType} from '../../../../../../core/ui/model/palette-type.enum';
 
 /**
  * Displays form to set task properties
@@ -50,17 +53,9 @@ export class TaskPropertiesFormComponent implements OnInit {
   /** Color for no priority */
   colorEmpty = '#cfd8dc';
   /** Colors for priorities */
-  colorsPriorities = [
-    '#990000',
-    '#9c690e',
-    '#3c8b09',
-  ];
+  colorsPriorities = [];
   /** Colors for flags */
-  colorsFlags = [
-    '#cfd8dc',
-    '#cfd8dc',
-    '#cfd8dc',
-  ];
+  colorsFlags = [];
 
   /** Reference to static method */
   getTimeString = DateService.getTimeString;
@@ -68,6 +63,13 @@ export class TaskPropertiesFormComponent implements OnInit {
   getDateString = DateService.getDateString;
   /** Reference to static method */
   getRecurrenceIntervalString = DateService.getRecurrenceIntervalString;
+
+  /**
+   * Constructor
+   * @param materialColorService material color service
+   */
+  constructor(private materialColorService: MaterialColorService) {
+  }
 
   //
   // Lifecycle hooks
@@ -77,6 +79,7 @@ export class TaskPropertiesFormComponent implements OnInit {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    this.initializeColors();
     this.initializePriority();
     this.initializeAcceptanceCriteria();
   }
@@ -84,6 +87,19 @@ export class TaskPropertiesFormComponent implements OnInit {
   //
   // Initialization
   //
+
+  private initializeColors() {
+    this.colorsPriorities = [
+      this.materialColorService.color(PaletteType.RED, HueType._600),
+      this.materialColorService.color(PaletteType.AMBER, HueType._600),
+      this.materialColorService.color(PaletteType.GREEN, HueType._600)
+    ];
+    this.colorsFlags = [
+      this.materialColorService.color(PaletteType.GREY, HueType._400),
+      this.materialColorService.color(PaletteType.GREY, HueType._400),
+      this.materialColorService.color(PaletteType.GREY, HueType._400)
+    ];
+  }
 
   /**
    * Initializes priority
@@ -206,9 +222,9 @@ export class TaskPropertiesFormComponent implements OnInit {
 
       if (priority === 4) {
         this.colorsFlags = [
-          '#cfd8dc',
-          '#cfd8dc',
-          '#cfd8dc',
+          this.materialColorService.color(PaletteType.GREY, HueType._400),
+          this.materialColorService.color(PaletteType.GREY, HueType._400),
+          this.materialColorService.color(PaletteType.GREY, HueType._400)
         ];
       }
       this.notify();
