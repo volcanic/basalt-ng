@@ -76,6 +76,9 @@ import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/tas
 import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort-picker-fragment.module';
 import {UnusedTagsDialogComponent} from './components/dialogs/unused-tags-dialog/unused-tags-dialog.component';
 import {CheckableListModule} from '../../ui/checkable-list/checkable-list.module';
+import { TaskTooltipComponent } from './components/tooltips/task-tooltip/task-tooltip.component';
+import { TaskTooltipContainerComponent } from './components/tooltips/task-tooltip-container/task-tooltip-container.component';
+import {TaskTooltipDirective} from './directives/task-tooltip.directive';
 
 @NgModule({
   imports: [
@@ -181,6 +184,10 @@ import {CheckableListModule} from '../../ui/checkable-list/checkable-list.module
     // Pipes
     TagNamesPipe,
     PersonNamesPipe,
+
+    TaskTooltipDirective,
+    TaskTooltipComponent,
+    TaskTooltipContainerComponent,
   ], entryComponents: [
     // Pages
     TimelineComponent,

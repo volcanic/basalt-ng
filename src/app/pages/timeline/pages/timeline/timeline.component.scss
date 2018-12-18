@@ -153,3 +153,11 @@
 .fab-speed-dial-sixth {
   background-color: mat-color($light-accent, 100) !important;
 }
+
+//
+// Material
+//
+
+mat-sidenav {
+  overflow-y: visible;
+}

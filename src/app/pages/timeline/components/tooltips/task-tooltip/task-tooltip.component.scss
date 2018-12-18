@@ -1,0 +1,20 @@
+
+.position-left {
+  z-index: 3;
+  transform: translate(-125%, -25%);
+}
+
+.position-top {
+  z-index: 3;
+  transform: translate(25%, -100%);
+}
+
+.position-right {
+  z-index: 3;
+  transform: translate(125%, -25%);
+}
+
+.position-bottom {
+  z-index: 3;
+  transform: translate(25%, 75%);
+}

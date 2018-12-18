@@ -9,6 +9,7 @@ import {NgModule} from '@angular/core';
 import {CoreModule} from './core/core.module';
 import {MaterialModule} from './ui/material/material.module';
 import {NewFeaturesDialogModule} from './ui/new-features-dialog/new-features-dialog.module';
+import { TaskTooltipDirective } from './pages/timeline/directives/task-tooltip.directive';
 
 @NgModule({
   declarations: [

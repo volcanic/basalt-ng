@@ -1592,9 +1592,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             });
             confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
-
-              console.log(confirmationResult);
-
               if (confirmationResult != null) {
                 (confirmationResult as Tag[]).forEach(t => {
                   this.tagService.deleteTag(t).then(() => {
