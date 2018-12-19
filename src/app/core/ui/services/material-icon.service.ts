@@ -161,5 +161,7 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('text', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_text_24px.svg'));
     iconRegistry.addSvgIcon('markdown', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_markdown_24px.svg'));
     iconRegistry.addSvgIcon('hexagon_multiple', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_hexagon_multiple_24px.svg'));
+    iconRegistry.addSvgIcon('arrow_collapse_vertical', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_arrow_collapse_vertical_24px.svg'));
+    iconRegistry.addSvgIcon('arrow_expand_vertical', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_arrow_expand_vertical_24px.svg'));
   }
 }

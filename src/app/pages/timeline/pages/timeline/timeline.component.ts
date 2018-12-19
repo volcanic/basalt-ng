@@ -1766,6 +1766,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.router.navigate(['/settings']).then();
         break;
       }
+      case 'expand-tasklets': {
+        break;
+      }
+      case 'collapse-tasklets': {
+        break;
+      }
       case 'task-list': {
         const dialogRef = this.dialog.open(TaskListDialogComponent, {
           disableClose: false,

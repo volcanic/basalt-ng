@@ -62,6 +62,17 @@
       <mat-icon svgIcon="more_vert"></mat-icon>
     </button>
     <mat-menu #menu="matMenu">
+      <button mat-menu-item class="toolbar-menu-item"
+              (click)="onMenuItemClicked('collapse-tasklets')">
+        <mat-icon svgIcon="arrow_collapse_vertical"></mat-icon>
+        <span>Collapse tasklets</span>
+      </button>
+      <button mat-menu-item class="toolbar-menu-item"
+              (click)="onMenuItemClicked('expand-tasklets')">
+        <mat-icon svgIcon="arrow_expand_vertical"></mat-icon>
+        <span>Expand tasklets</span>
+      </button>
+      <mat-divider></mat-divider>
       <div class="toolbar-expanded" *ngIf="media < mediaType.LARGE">
         <button mat-menu-item *ngIf="scope === scopeType.FREETIME" class="toolbar-menu-item"
                 (click)="onMenuItemClicked('scope-work')">
