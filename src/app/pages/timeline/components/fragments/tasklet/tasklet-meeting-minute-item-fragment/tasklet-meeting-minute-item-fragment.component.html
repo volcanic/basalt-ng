@@ -5,10 +5,10 @@
       <span class="person" *ngIf="meetingMinuteItem.person != null">
         {{ meetingMinuteItem.person.name }}
       </span>
+      <span class="due-date" *ngIf="meetingMinuteItem.dueDate != null">
+        | {{ getDateString(meetingMinuteItem.dueDate) }} {{ getTimeString(meetingMinuteItem.dueDate) }}
+      </span>
       <app-markdown-preview class="markdown-correction" [markdownText]="part"></app-markdown-preview>
     </li>
   </ul>
-  <span class="due-date" *ngIf="meetingMinuteItem.dueDate != null">
-    {{ getDateString(meetingMinuteItem.dueDate) }} {{ getTimeString(meetingMinuteItem.dueDate) }}
-  </span>
 </div>
