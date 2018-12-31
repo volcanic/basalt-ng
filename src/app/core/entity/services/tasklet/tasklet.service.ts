@@ -518,6 +518,9 @@ export class TaskletService {
       case DisplayAspect.CONTAINS_POMODORO_TASK: {
         return TaskletDisplayService.containsPomodoroTask(tasklet);
       }
+      case DisplayAspect.CONTAINS_CHECKLIST: {
+        return TaskletDisplayService.containsChecklist(tasklet);
+      }
       case DisplayAspect.CONTAINS_TAGS: {
         return TaskletDisplayService.containsTags(tasklet);
       }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckableListItemComponent } from './checkable-list-item.component';
+import { CompletableListItemComponent } from './completable-list-item.component';
 
 describe('CompletableListItemComponent', () => {
-  let component: CheckableListItemComponent;
-  let fixture: ComponentFixture<CheckableListItemComponent>;
+  let component: CompletableListItemComponent;
+  let fixture: ComponentFixture<CompletableListItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckableListItemComponent ]
+      declarations: [ CompletableListItemComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckableListItemComponent);
+    fixture = TestBed.createComponent(CompletableListItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

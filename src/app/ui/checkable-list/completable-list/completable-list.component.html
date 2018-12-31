@@ -1,0 +1,27 @@
+<app-completable-list-item *ngFor="let item of unselectedItems"
+                           [item]="item" [readonly]="readonly" (itemChangedEmitter)="onItemChanged($event)">
+</app-completable-list-item>
+
+<div *ngIf="!readonly" (click)="onNewListEntryClicked()">
+  <mat-icon class="icon-add" svgIcon="add"></mat-icon>
+  <span class="label">{{ newEntryPlaceholder }}</span>
+</div>
+
+<p>
+  <mat-divider></mat-divider>
+</p>
+
+<mat-accordion>
+  <mat-expansion-panel [expanded]="selectedItems.length > 0" [disabled]="readonly || selectedItems.length === 0">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div class="label">
+          {{ selectedItems.length }} completed item<span *ngIf="selectedItems.length !== 1">s</span>
+        </div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-completable-list-item *ngFor="let item of selectedItems"
+                               [item]="item" [readonly]="readonly" (itemChangedEmitter)="onItemChanged($event)">
+    </app-completable-list-item>
+  </mat-expansion-panel>
+</mat-accordion>

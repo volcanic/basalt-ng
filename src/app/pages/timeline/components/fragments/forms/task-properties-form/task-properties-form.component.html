@@ -194,10 +194,10 @@
       </mat-panel-description>
       <mat-icon svgIcon="check_box"></mat-icon>
     </mat-expansion-panel-header>
-    <app-checkable-list [items]="task.acceptanceCriteria"
+    <app-completable-list [items]="task.acceptanceCriteria"
                         [readonly]="readonly"
                         (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
-    </app-checkable-list>
+    </app-completable-list>
 
   </mat-expansion-panel>
 

@@ -20,6 +20,8 @@ export enum TaskletType {
   DOCUMENTATION = 'Documentation',
   REVIEW = 'Review',
   TESTING = 'Testing',
+  //
+  CHECKLIST = 'Checklist',
   // Idea
   IDEA = 'Idea',
   // Travel

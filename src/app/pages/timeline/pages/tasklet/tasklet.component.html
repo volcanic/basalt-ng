@@ -112,6 +112,11 @@
                                       [myselfOption]="myselfOption"
                                       (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
             </app-daily-scrum-fragment>
+            <app-completable-list *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)"
+                                [items]="tasklet.acceptanceCriteria"
+                                [readonly]="readonly"
+                                (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
+            </app-completable-list>
             <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
                            class="tag-area"
                            [tags]="tags | tagNames"
