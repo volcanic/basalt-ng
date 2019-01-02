@@ -504,7 +504,7 @@ export class TaskletService {
         return this.taskletDisplayService.canBeAssignedToTask(tasklet);
       }
       case DisplayAspect.CONTAINS_DESCRIPTION: {
-        return this.taskletDisplayService.containsDescription(tasklet);
+        return TaskletDisplayService.containsDescription(tasklet);
       }
       case DisplayAspect.CONTAINS_PREVIOUS_DESCRIPTION: {
         return TaskletDisplayService.containsPreviousDescription(previousDescription);
@@ -536,8 +536,11 @@ export class TaskletService {
       case DisplayAspect.CAN_BE_CONTINUED: {
         return this.taskletDisplayService.canBeContinued(tasklet, task);
       }
+      case DisplayAspect.CAN_BE_TEMPLATED: {
+        return this.taskletDisplayService.canBeContinued(tasklet, task);
+      }
       case DisplayAspect.IS_POMODORO_STARTED: {
-        return this.taskletDisplayService.isPomodoroStarted(tasklet);
+        return TaskletDisplayService.isPomodoroStarted(tasklet);
       }
       case DisplayAspect.IS_DISPLAYED_AS_PREVIEW: {
         return this.taskletDisplayService.isDisplayedAsPreview(tasklet);
