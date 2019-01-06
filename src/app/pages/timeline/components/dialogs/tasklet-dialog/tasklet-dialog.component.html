@@ -4,6 +4,7 @@
     <form #formCtrl="ngForm">
       <app-tasklet-type-fragment [tasklet]="tasklet" (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
       </app-tasklet-type-fragment>
+      <!-- Task -->
       <app-task-autocomplete-fragment
         *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
         [taskName]="task.name" [taskOptions]="taskOptions" (taskNameChangedEmitter)="onTaskNameChanged($event)">
