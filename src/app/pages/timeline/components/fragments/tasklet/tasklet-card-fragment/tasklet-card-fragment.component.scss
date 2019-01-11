@@ -41,22 +41,26 @@
   text-align: left;
 }
 
+$hue-person: 400;
+$hue-tag: 300;
+$hue-inherited-tag: 200;
+
 .light-theme {
   .time {
     background-color: mat-color($light-accent, 100);
     color: mat-contrast($light-accent, 100);
   }
   .person {
-    background: mat-color($mat-grey, 400) !important;
-    color: mat-contrast($mat-grey, 400) !important;
+    background: mat-color($mat-grey, $hue-person) !important;
+    color: mat-contrast($mat-grey, $hue-person) !important;
   }
   .tag {
-    background: mat-color($mat-grey, 200) !important;
-    color: mat-contrast($mat-grey, 200) !important;
+    background: mat-color($mat-grey, $hue-tag) !important;
+    color: mat-contrast($mat-grey, $hue-tag) !important;
   }
   .inherited-tag {
-    background: mat-color($mat-grey, 50) !important;
-    color: mat-contrast($mat-grey, 50) !important;
+    background: mat-color($mat-grey, $hue-inherited-tag) !important;
+    color: mat-contrast($mat-grey, $hue-inherited-tag) !important;
   }
 }
 
@@ -66,16 +70,16 @@
     color: mat-contrast($light-accent, 100);
   }
   .person {
-    background: mat-color($mat-grey, 600) !important;
-    color: mat-contrast($mat-grey, 600) !important;
+    background: mat-color($mat-grey, $hue-person) !important;
+    color: mat-contrast($mat-grey, $hue-person) !important;
   }
   .tag {
-    background: mat-color($mat-grey, 400) !important;
-    color: mat-contrast($mat-grey, 400) !important;
+    background: mat-color($mat-grey, $hue-tag) !important;
+    color: mat-contrast($mat-grey, $hue-tag) !important;
   }
   .inherited-tag {
-    background: mat-color($mat-grey, 50) !important;
-    color: mat-contrast($mat-grey, 50) !important;
+    background: mat-color($mat-grey, $hue-inherited-tag) !important;
+    color: mat-contrast($mat-grey, $hue-inherited-tag) !important;
   }
 }
 
