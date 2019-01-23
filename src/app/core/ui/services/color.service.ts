@@ -298,6 +298,9 @@ export class ColorService {
       case TaskletTypeGroup.DEVELOPMENT: {
         return this.materialColorService.hue(PaletteType.CYAN, HueType._700);
       }
+      case TaskletTypeGroup.ROUTINE: {
+        return this.materialColorService.hue(PaletteType.ORANGE, HueType._600);
+      }
       case TaskletTypeGroup.IDEA: {
         return this.materialColorService.hue(PaletteType.AMBER, HueType._600);
       }

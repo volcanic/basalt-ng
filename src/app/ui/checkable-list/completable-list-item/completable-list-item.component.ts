@@ -5,19 +5,17 @@ import {SelectableItem} from '../selectable-item';
  * Displays checkable list item
  */
 @Component({
-  selector: 'app-checkable-list-item',
-  templateUrl: './checkable-list-item.component.html',
-  styleUrls: ['./checkable-list-item.component.scss'],
+  selector: 'app-completable-list-item',
+  templateUrl: './completable-list-item.component.html',
+  styleUrls: ['./completable-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckableListItemComponent implements OnInit {
+export class CompletableListItemComponent implements OnInit {
 
   /** Item to be display */
   @Input() item: SelectableItem;
   /** Whether component is readonly or not */
   @Input() readonly = false;
-  /** Whether component's structure can be edited */
-  @Input() editable = true;
   /** Event emitter indicating item changes */
   @Output() itemChangedEmitter = new EventEmitter<any>();
 

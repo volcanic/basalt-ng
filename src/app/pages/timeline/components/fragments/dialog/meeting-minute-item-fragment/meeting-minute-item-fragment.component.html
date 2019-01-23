@@ -21,14 +21,14 @@
       mat-mini-fab matTooltip="Information" matTooltipPosition="above"
       [style.background]="color"
       [style.fill]="textColor">
-      <mat-icon svgIcon="comment"></mat-icon>
+      <mat-icon svgIcon="comment" [style.fill]="textColor"></mat-icon>
     </button>
     <button
       *ngIf="meetingMinuteItem.type == meetingMinuteItemType.DECISION"
       mat-mini-fab matTooltip="Decision" matTooltipPosition="above"
       [style.background]="color"
       [style.fill]="textColor">
-      <mat-icon svgIcon="gavel"></mat-icon>
+      <mat-icon svgIcon="gavel" [style.fill]="textColor"></mat-icon>
     </button>
     <button
       *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION
@@ -37,7 +37,7 @@
       mat-mini-fab matTooltip="Myself" matTooltipPosition="above"
       [style.background]="color"
       [style.fill]="textColor">
-      <mat-icon svgIcon="person"></mat-icon>
+      <mat-icon svgIcon="person" [style.fill]="textColor"></mat-icon>
     </button>
     <app-person-indicator-button *ngIf="meetingMinuteItem.type == meetingMinuteItemType.ACTION
       && meetingMinuteItem.person != null

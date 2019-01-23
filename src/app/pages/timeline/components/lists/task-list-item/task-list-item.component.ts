@@ -42,6 +42,25 @@ export class TaskListItemComponent implements OnInit {
   state = AnimationState.INACTIVE;
 
   //
+  // Helpers
+  //
+
+  /**
+   * Determines if task is complete
+   * @param task task
+   */
+  private static isTaskComplete(task: Task): boolean {
+    return task.dueDate != null
+      && task.description != null && task.description.value != null
+      && task.acceptanceCriteria != null && task.acceptanceCriteria.length > 0
+      && task.projectId != null
+      && task.dueDate != null
+      && task.priority != null
+      && task.effort != null
+      && task.tagIds != null;
+  }
+
+  //
   // Lifecycle hooks
   //
 
@@ -67,7 +86,7 @@ export class TaskListItemComponent implements OnInit {
       this.icon = 'loop';
     } else if (this.task != null && this.task.delegatedToId != null && this.task.delegatedToId !== '') {
       this.icon = 'person';
-    } else if (this.task != null && this.task.projectId != null && this.task.projectId !== '') {
+    } else if (this.task != null && TaskListItemComponent.isTaskComplete(this.task)) {
       this.icon = 'alias_task';
     } else {
       this.icon = 'alias_task_unassigned';

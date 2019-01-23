@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckableListComponent } from './checkable-list.component';
 
-describe('CheckableListComponent', () => {
+describe('CompletableListComponent', () => {
   let component: CheckableListComponent;
   let fixture: ComponentFixture<CheckableListComponent>;
 

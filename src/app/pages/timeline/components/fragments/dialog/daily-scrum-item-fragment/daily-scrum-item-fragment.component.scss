@@ -1,6 +1,14 @@
 @import "../../../../../../../flex";
 @import "../../../../../../../theme";
 
+.icon {
+  height: 16px;
+  fill: mat-color($mat-grey, 400);
+  vertical-align: middle;
+  margin-top: -2px;
+  min-width: 35px;
+}
+
 .daily-scrum-item {
   margin-bottom: 5px;
 

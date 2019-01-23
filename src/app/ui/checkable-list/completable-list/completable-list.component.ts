@@ -24,12 +24,12 @@ class Item implements SelectableItem {
  * Displays checkable list
  */
 @Component({
-  selector: 'app-checkable-list',
-  templateUrl: './checkable-list.component.html',
-  styleUrls: ['./checkable-list.component.scss'],
+  selector: 'app-completable-list',
+  templateUrl: './completable-list.component.html',
+  styleUrls: ['./completable-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckableListComponent implements OnInit {
+export class CompletableListComponent implements OnInit {
 
   /** Items to be displayed */
   @Input() items: SelectableItem[] = [];
@@ -37,10 +37,13 @@ export class CheckableListComponent implements OnInit {
   @Input() newEntryPlaceholder = 'List entry';
   /** Whether component is readonly or not */
   @Input() readonly = false;
-  /** Whether component's structure can be edited */
-  @Input() editable = true;
   /** Event emitter indicating items changes */
   @Output() itemsChangedEmitter = new EventEmitter<SelectableItem[]>();
+
+  /** List of unselected items */
+  unselectedItems: SelectableItem[] = [];
+  /** List of selected items */
+  selectedItems: SelectableItem[] = [];
 
   //
   // Lifecycle hooks
@@ -64,6 +67,13 @@ export class CheckableListComponent implements OnInit {
     this.items = this.items != null ? this.items.filter(item => {
       return item.text != null;
     }) : [];
+
+    this.unselectedItems = this.items.filter(item => {
+      return !item.selected;
+    });
+    this.selectedItems = this.items.filter(item => {
+      return item.selected;
+    });
   }
 
   //

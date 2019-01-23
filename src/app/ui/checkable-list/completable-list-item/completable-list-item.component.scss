@@ -28,8 +28,10 @@
 }
 
 .selected {
-  color: mat-color($mat-grey, 900);
-  text-decoration: none;
+  color: mat-color($mat-grey, 500);
+  text-decoration: line-through;
+
+  margin-left: -22px;
 }
 
 .unselected {

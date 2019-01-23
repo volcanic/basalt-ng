@@ -18,6 +18,7 @@ export enum DisplayAspect {
   CONTAINS_MEETING_MINUTES,
   CONTAINS_DAILY_SCRUM,
   CONTAINS_POMODORO_TASK,
+  CONTAINS_CHECKLIST,
   CONTAINS_TAGS,
   CONTAINS_PERSONS,
   CAN_BE_CREATED,
@@ -83,6 +84,14 @@ export class TaskletDisplayService {
    */
   static containsPomodoroTask(tasklet: Tasklet) {
     return tasklet != null && tasklet.type === TaskletType.POMODORO;
+  }
+
+  /**
+   * Determines whether the displayed tasklet contains a checklist
+   * @param tasklet tasklet
+   */
+  static containsChecklist(tasklet: Tasklet) {
+    return tasklet != null && tasklet.type === TaskletType.CHECKLIST;
   }
 
   /**

@@ -188,7 +188,10 @@ export class TaskletService {
   private findTaskletInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         result['docs'].forEach(element => {
-          this.tasklet = element as Tasklet;
+          const tasklet = element as Tasklet;
+
+          this.tasklet = tasklet;
+          this.tasklets.set(tasklet.id, tasklet);
         });
         this.notify();
       }, error => {
@@ -234,8 +237,7 @@ export class TaskletService {
 
           // Create tasklet
           return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
-            this.tasklets.set(tasklet.id, tasklet);
-            this.notify();
+            this.findTaskletByID(tasklet.id);
           });
         }
       }
@@ -274,9 +276,7 @@ export class TaskletService {
 
         // Update tasklet
         return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
-          this.tasklets.set(tasklet.id, tasklet);
-          this.tasklet = tasklet;
-          this.notify();
+          this.findTaskletByID(tasklet.id);
         });
       }
     });
@@ -517,6 +517,9 @@ export class TaskletService {
       }
       case DisplayAspect.CONTAINS_POMODORO_TASK: {
         return TaskletDisplayService.containsPomodoroTask(tasklet);
+      }
+      case DisplayAspect.CONTAINS_CHECKLIST: {
+        return TaskletDisplayService.containsChecklist(tasklet);
       }
       case DisplayAspect.CONTAINS_TAGS: {
         return TaskletDisplayService.containsTags(tasklet);

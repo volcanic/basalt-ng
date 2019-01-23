@@ -59,6 +59,10 @@ export class TaskletTypeService {
           this.taskletTypeGroups.set(TaskletType.TESTING, group);
           break;
         }
+        case TaskletTypeGroup.ROUTINE: {
+          this.taskletTypeGroups.set(TaskletType.CHECKLIST, group);
+          break;
+        }
         case TaskletTypeGroup.IDEA: {
           this.taskletTypeGroups.set(TaskletType.IDEA, group);
           break;
@@ -136,6 +140,9 @@ export class TaskletTypeService {
       case TaskletTypeGroup.IDEA: {
         return 'lightbulb_outline';
       }
+      case TaskletTypeGroup.ROUTINE: {
+        return 'history';
+      }
       case TaskletTypeGroup.TRAVEL: {
         return 'flight';
       }
@@ -190,6 +197,9 @@ export class TaskletTypeService {
       }
       case TaskletType.TESTING: {
         return 'test_tube';
+      }
+      case TaskletType.CHECKLIST: {
+        return 'playlist_add_check';
       }
       case TaskletType.IDEA: {
         return 'lightbulb_outline';

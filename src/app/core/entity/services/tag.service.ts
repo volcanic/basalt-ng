@@ -26,6 +26,11 @@ export class TagService {
   /** Subject that can be subscribed by components that are interested in changes */
   tagsSubject = new Subject<Tag[]>();
 
+  /** Tag in focus */
+  tag: Tag;
+  /** Subject that publishes tag */
+  tagSubject = new Subject<Tag>();
+
   /**
    * Constructor
    * @param {PouchDBService} pouchDBService
@@ -94,6 +99,26 @@ export class TagService {
   }
 
   /**
+   * Loads tag by a given ID
+   * @param {number} id ID of filter by
+   */
+  public findTagByID(id: string) {
+    const index = {fields: ['entityType', 'id', 'creationDate']};
+    const options = {
+      selector: {
+        '$and': [
+          {entityType: {$eq: EntityType.TAG}},
+          {id: {$eq: id}}
+        ]
+      },
+      // sort: [{creationDate: 'desc'}],
+      limit: environment.LIMIT_TAGS_COUNT
+    };
+
+    this.findTagInternal(index, options);
+  }
+
+  /**
    * Clears tags
    */
   private clearTags() {
@@ -109,6 +134,28 @@ export class TagService {
     this.pouchDBService.find(index, options).then(result => {
         result['docs'].forEach(element => {
           const tag = element as Tag;
+          this.tags.set(tag.id, tag);
+        });
+        this.notify();
+      }, error => {
+        if (isDevMode()) {
+          console.error(error);
+        }
+      }
+    );
+  }
+
+  /**
+   * Index tags and queries them afterwards
+   * @param index index to be used
+   * @param options query options
+   */
+  private findTagInternal(index: any, options: any) {
+    this.pouchDBService.find(index, options).then(result => {
+        result['docs'].forEach(element => {
+          const tag = element as Tag;
+
+          this.tag = tag;
           this.tags.set(tag.id, tag);
         });
         this.notify();
@@ -248,6 +295,7 @@ export class TagService {
    * Notifies subscribers that something has changed
    */
   private notify() {
+    this.tagSubject.next(this.tag);
     this.tagsSubject.next(Array.from(this.tags.values()).sort((t1, t2) => {
       return t2.name < t1.name ? 1 : -1;
     }).sort((t1, t2) => {

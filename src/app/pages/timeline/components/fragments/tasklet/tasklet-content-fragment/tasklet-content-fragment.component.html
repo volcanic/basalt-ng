@@ -33,3 +33,11 @@
     {{ placeholderDailyScrum }}
   </div>
 </div>
+
+<!-- Checklist -->
+<div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)">
+  <app-completable-list
+    [items]="tasklet.acceptanceCriteria"
+    [readonly]=true>
+  </app-completable-list>
+</div>

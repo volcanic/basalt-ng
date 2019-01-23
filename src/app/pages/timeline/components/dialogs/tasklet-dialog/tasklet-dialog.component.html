@@ -33,18 +33,23 @@
                            placeholder="Description"
                            (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
       <!-- Meeting minutes -->
-      <app-meeting-minutes-fragment
-        *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
-        [meetingMinuteItems]="tasklet.meetingMinuteItems"
-        [personOptions]="personOptions"
-        [myselfOption]="myselfOption"
-        (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
+      <app-meeting-minutes-fragment *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
+                                    [meetingMinuteItems]="tasklet.meetingMinuteItems"
+                                    [personOptions]="personOptions"
+                                    [myselfOption]="myselfOption"
+                                    (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
       <!-- Daily Scrum -->
-      <app-daily-scrum-fragment
-        *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
-        [dailyScrumItems]="tasklet.dailyScrumItems"
-        [personOptions]="personOptions">
+      <app-daily-scrum-fragment *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)"
+                                [dailyScrumItems]="tasklet.dailyScrumItems"
+                                [personOptions]="personOptions">
       </app-daily-scrum-fragment>
+      <!-- Checklist -->
+      <app-completable-list *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)"
+                          [items]="tasklet.acceptanceCriteria"
+                          [readonly]="readonly"
+                          (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
+      </app-completable-list>
+
       <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
                      [tags]="inheritedTags | tagNames"
                      [tagOptions]="tagOptions"

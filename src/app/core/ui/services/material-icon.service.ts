@@ -74,8 +74,9 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.ACTION, 'check_circle', 'ic_check_circle_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'code', 'ic_code_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'gavel', 'ic_gavel_24px.svg'));
-    icons.push(new Icon(IconTopic.ACTION, 'info', 'ic_info_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'help_outline', 'ic_help_outline_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'history', 'ic_history_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'info', 'ic_info_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'label_outline', 'ic_label_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'lightbulb_outline', 'ic_lightbulb_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'receipt', 'ic_receipt_24px.svg'));
@@ -88,6 +89,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.ALERT, 'warning', 'ic_warning_24px.svg'));
     icons.push(new Icon(IconTopic.AV, 'loop', 'ic_loop_24px.svg'));
     icons.push(new Icon(IconTopic.AV, 'play_circle_filled', 'ic_play_circle_filled_24px.svg'));
+    icons.push(new Icon(IconTopic.AV, 'playlist_add_check', 'ic_playlist_add_check_24px.svg'));
     icons.push(new Icon(IconTopic.AV, 'replay', 'ic_replay_24px.svg'));
     icons.push(new Icon(IconTopic.COMMUNICATION, 'business', 'ic_business_24px.svg'));
     icons.push(new Icon(IconTopic.COMMUNICATION, 'call', 'ic_call_24px.svg'));

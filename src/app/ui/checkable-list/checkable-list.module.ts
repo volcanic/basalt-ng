@@ -4,6 +4,8 @@ import {CheckableListComponent} from './checkable-list/checkable-list.component'
 import {CheckableListItemComponent} from './checkable-list-item/checkable-list-item.component';
 import {FormsModule} from '@angular/forms';
 import {MaterialModule} from '../material/material.module';
+import {CompletableListComponent} from './completable-list/completable-list.component';
+import {CompletableListItemComponent} from './completable-list-item/completable-list-item.component';
 
 @NgModule({
   imports: [
@@ -13,11 +15,13 @@ import {MaterialModule} from '../material/material.module';
   ],
   declarations: [
     CheckableListComponent,
-    CheckableListItemComponent
+    CheckableListItemComponent,
+    CompletableListComponent,
+    CompletableListItemComponent
   ],
   exports: [
     CheckableListComponent,
-    CheckableListItemComponent
+    CompletableListComponent
   ]
 })
 export class CheckableListModule {

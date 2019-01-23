@@ -78,7 +78,6 @@ export class PouchDBService {
    */
   public put(id: string, document: any) {
     document._id = id;
-
     return this.database.put(document);
   }
 

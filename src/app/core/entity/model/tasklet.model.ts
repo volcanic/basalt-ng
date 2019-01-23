@@ -4,6 +4,7 @@ import {Entity} from './entity.model';
 import {Description} from './description.model';
 import {MeetingMinuteItem} from './meeting-minutes/meeting-minute-item.model';
 import {DailyScrumItem} from './daily-scrum/daily-scrum-item.model';
+import {AcceptanceCriterium} from './acceptance-criterium.model';
 
 /**
  * Represents a tasklet which is a fraction of a task
@@ -38,6 +39,8 @@ export class Tasklet extends Entity {
   pomodoroBreak: number;
   /** Pomodoro start time */
   pomodoroStartTime: Date;
+  /** Definition of Done */
+  acceptanceCriteria: AcceptanceCriterium[];
 
   /**
    * Constructor
@@ -56,5 +59,7 @@ export class Tasklet extends Entity {
     this.pomodoroTask = new Description();
     this.pomodoroDuration = -1;
     this.pomodoroBreak = -1;
+
+    this.acceptanceCriteria = [];
   }
 }

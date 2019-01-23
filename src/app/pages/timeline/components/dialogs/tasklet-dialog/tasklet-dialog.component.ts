@@ -21,6 +21,8 @@ import {TagService} from '../../../../../core/entity/services/tag.service';
 import {MaterialColorService} from '../../../../../core/ui/services/material-color.service';
 import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
 import {HueType} from '../../../../../core/ui/model/hue-type.enum';
+import {SelectableItem} from '../../../../../ui/checkable-list/selectable-item';
+import {AcceptanceCriterium} from '../../../../../core/entity/model/acceptance-criterium.model';
 
 /**
  * Displays tasklet dialog
@@ -224,6 +226,14 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    */
   onDailyScrumItemsUpdated(dailyScrumItems: DailyScrumItem[]) {
     this.tasklet.dailyScrumItems = dailyScrumItems;
+  }
+
+  /**
+   * Handles acceptance criteria changes
+   * @param items acceptance criteria
+   */
+  onAcceptanceCriteriaChanged(items: SelectableItem[]) {
+    this.tasklet.acceptanceCriteria = items as AcceptanceCriterium[];
   }
 
   /**
