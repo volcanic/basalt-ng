@@ -76,6 +76,7 @@ import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/tas
 import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort-picker-fragment.module';
 import {UnusedTagsDialogComponent} from './components/dialogs/unused-tags-dialog/unused-tags-dialog.component';
 import {CheckableListModule} from '../../ui/checkable-list/checkable-list.module';
+import { TaskPopoverComponent } from './components/popovers/task-popover/task-popover.component';
 
 @NgModule({
   imports: [
@@ -181,6 +182,7 @@ import {CheckableListModule} from '../../ui/checkable-list/checkable-list.module
     // Pipes
     TagNamesPipe,
     PersonNamesPipe,
+    TaskPopoverComponent,
   ], entryComponents: [
     // Pages
     TimelineComponent,

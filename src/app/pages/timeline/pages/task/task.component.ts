@@ -35,7 +35,7 @@ import {InformationDialogComponent} from '../../../../ui/information-dialog/info
 import {Animations, ScrollDirection, ScrollState} from './task.animation';
 import {Setting} from '../../../../core/settings/model/setting.model';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
-import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
+import {DisplayAspect} from '../../../../core/entity/services/task/task-display.service';
 
 /**
  * Represents a tasklet type action button
@@ -858,5 +858,18 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     return Array.from(inferredTags.values());
+  }
+
+  //
+  // Helpers (UI)
+  //
+
+  /**
+   * Determines whether the displayed task contains a specific display aspect
+   * @param displayAspect display aspect
+   * @param task task
+   */
+  public containsDisplayAspect(displayAspect: DisplayAspect, task: Task): boolean {
+    return task != null && this.taskService.containsDisplayAspect(displayAspect, task);
   }
 }

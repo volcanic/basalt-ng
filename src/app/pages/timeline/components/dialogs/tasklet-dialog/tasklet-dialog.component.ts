@@ -460,7 +460,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * @param task task
    */
   public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task): boolean {
-    return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
+    return tasklet != null && this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
   }
 
   /**

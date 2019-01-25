@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Task} from 'app/core/entity/model/task.model';
 import {MatMenuTrigger} from '@angular/material';
 import {Animations, AnimationState} from './task-list-item.animation';
@@ -17,7 +17,8 @@ import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-in
   animations: [
     Animations.actionAnimation
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class TaskListItemComponent implements OnInit {
 
@@ -31,15 +32,20 @@ export class TaskListItemComponent implements OnInit {
   @Input() active = true;
   /** Event emitter indicating task action */
   @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
-  /** View child for context menu */
+
+  /** View child for popover menu trigger */
+  @ViewChild(MatMenuTrigger) popoverMenuTrigger: MatMenuTrigger;
+  /** View child for context menu trigger */
   @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
 
   /** Enum for media types */
   mediaType = Media;
   /** Icon name */
   icon = '';
-  /** Animation state */
-  state = AnimationState.INACTIVE;
+  /** Container animation state */
+  containerState = AnimationState.INACTIVE;
+  /** Popover animation state */
+  popoverState = AnimationState.INACTIVE;
 
   //
   // Helpers
@@ -102,13 +108,25 @@ export class TaskListItemComponent implements OnInit {
    * @param {boolean} hovered whether there is currently a hover event
    */
   onHoverContainer(hovered: boolean) {
-    this.state = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;
+    this.containerState = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;
+  }
+
+  /**
+   * Handles hover over popover
+   * @param {boolean} hovered whether there is currently a hover event
+   */
+  onHoverPopover(hovered: boolean) {
+    this.popoverState = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;
   }
 
   /**
    * Handles clicks on task item
    */
   onTaskClicked() {
+    this.popoverMenuTrigger.openMenu();
+  }
+
+  onDetailsClicked() {
     this.taskEventEmitter.emit({
       action: Action.OPEN_DIALOG_UPDATE, task: this.task
     });

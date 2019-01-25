@@ -326,7 +326,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * @param task task
    */
   public containsDisplayAspect(displayAspect: DisplayAspect, task: Task): boolean {
-    return this.taskService.containsDisplayAspect(displayAspect, task);
+    return task != null && this.taskService.containsDisplayAspect(displayAspect, task);
   }
 
   // Tags

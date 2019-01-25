@@ -121,11 +121,11 @@
                         (click)="onButtonClicked(actionType.FULLSCREEN)">
                   Go to Fullscreen
                 </button>
-                <button mat-button *ngIf="mode == modeType.UPDATE && task.completionDate != null" color="accent"
+                <button mat-button *ngIf="mode == modeType.UPDATE && task != null && task.completionDate != null" color="accent"
                         (click)="onButtonClicked(actionType.REOPEN)">
                   Re-open task
                 </button>
-                <button mat-button *ngIf="mode == modeType.UPDATE && task.completionDate == null" color="accent"
+                <button mat-button *ngIf="mode == modeType.UPDATE && task != null && task.completionDate == null" color="accent"
                         (click)="onButtonClicked(actionType.COMPLETE)">
                   Complete task
                 </button>

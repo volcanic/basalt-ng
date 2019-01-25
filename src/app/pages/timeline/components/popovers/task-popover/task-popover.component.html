@@ -1,0 +1,7 @@
+<div class="flexcontainer">
+  <mat-icon [svgIcon]=icon></mat-icon>
+  <div *ngIf="task != null">
+    <div class="task">{{ task.name }}</div>
+    <div *ngIf="project != null">{{ project.name }}</div>
+  </div>
+</div>

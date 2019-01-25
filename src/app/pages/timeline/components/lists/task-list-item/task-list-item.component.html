@@ -1,74 +1,83 @@
-  <div class="flexcontainer"
-       (mouseenter)="onHoverContainer(true)"
-       (mouseleave)="onHoverContainer(false)">
-    <mat-menu #contextMenu="matMenu">
-      <button mat-menu-item (click)="onTaskClicked()">Update task</button>
-      <button mat-menu-item (click)="onCompleteClicked()" *ngIf="task.completionDate == null"
-              class="action-buttons">Complete task
-      </button>
-      <button mat-menu-item (click)="onContinueClicked()" *ngIf="task.completionDate == null"
-              class="action-buttons">Continue task
-      </button>
-      <button mat-menu-item (click)="onReopenClicked()" *ngIf="task.completionDate != null"
-              class="action-buttons">Re-open task
-      </button>
-      <button mat-menu-item (click)="onFilterClicked()"
-              class="action-buttons">Filter by task
-      </button>
-    </mat-menu>
-    <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
-    <button mat-button class="entity flexbox" [disabled]="!active" (click)="onTaskClicked()">
-      <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
-      <span>{{ task.name }}</span>
-      <span [@actionAnimation]="state"
-            *ngIf="task.effort > 0" class="effort">
+<mat-menu #popover="matMenu" yPosition="above" class="popover">
+  <div class="popover-container"
+       (mouseenter)="onHoverPopover(true)"
+       (mouseleave)="onHoverPopover(false)">
+    <app-task-popover [task]="task"></app-task-popover>
+    <button mat-button (click)="onDetailsClicked()">DETAILS</button>
+  </div>
+</mat-menu>
+<div [matMenuTriggerFor]="popover" #popoverMenuTrigger></div>
+<div class="flexcontainer"
+     (mouseenter)="onHoverContainer(true)"
+     (mouseleave)="onHoverContainer(false)">
+  <mat-menu #contextMenu="matMenu">
+    <button mat-menu-item (click)="onTaskClicked()">Update task</button>
+    <button mat-menu-item (click)="onCompleteClicked()" *ngIf="task.completionDate == null"
+            class="action-buttons">Complete task
+    </button>
+    <button mat-menu-item (click)="onContinueClicked()" *ngIf="task.completionDate == null"
+            class="action-buttons">Continue task
+    </button>
+    <button mat-menu-item (click)="onReopenClicked()" *ngIf="task.completionDate != null"
+            class="action-buttons">Re-open task
+    </button>
+    <button mat-menu-item (click)="onFilterClicked()"
+            class="action-buttons">Filter by task
+    </button>
+  </mat-menu>
+  <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
+  <button mat-button class="entity flexbox" [disabled]="!active" (click)="onTaskClicked()">
+    <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
+    <span>{{ task.name }}</span>
+    <span [@actionAnimation]="containerState"
+          *ngIf="task.effort > 0" class="effort">
       ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
     </span>
+  </button>
+  <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
+    <button [@actionAnimation]="containerState"
+            mat-icon-button
+            class="action"
+            matTooltip="Complete"
+            [matTooltipPosition]="'above'"
+            [matTooltipShowDelay]="'250'"
+            [disableRipple]="true"
+            (click)="onCompleteClicked()">
+      <mat-icon svgIcon='check'></mat-icon>
     </button>
-    <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
-      <button [@actionAnimation]="state"
-              mat-icon-button
-              class="action"
-              matTooltip="Complete"
-              [matTooltipPosition]="'above'"
-              [matTooltipShowDelay]="'250'"
-              [disableRipple]="true"
-              (click)="onCompleteClicked()">
-        <mat-icon svgIcon='check'></mat-icon>
-      </button>
-      <button [@actionAnimation]="state"
-              mat-icon-button
-              class="action"
-              matTooltip="Continue"
-              [matTooltipPosition]="'above'"
-              [matTooltipShowDelay]="'250'"
-              [disableRipple]="true"
-              (click)="onContinueClicked()">
-        <mat-icon svgIcon='reply'></mat-icon>
-      </button>
-    </div>
-    <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flexcontainer">
-      <button [@actionAnimation]="state"
-              mat-icon-button
-              class="action"
-              matTooltip="Re-open"
-              [matTooltipPosition]="'above'"
-              [matTooltipShowDelay]="'250'"
-              [disableRipple]="true"
-              (click)="onReopenClicked()">
-        <mat-icon svgIcon='replay'></mat-icon>
-      </button>
-    </div>
-    <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
-      <button [@actionAnimation]="state"
-              mat-icon-button
-              class="action"
-              matTooltip="Filter"
-              [matTooltipPosition]="'above'"
-              [matTooltipShowDelay]="'250'"
-              [disableRipple]="true"
-              (click)="onFilterClicked()">
-        <mat-icon svgIcon='filter_list'></mat-icon>
-      </button>
-    </div>
+    <button [@actionAnimation]="containerState"
+            mat-icon-button
+            class="action"
+            matTooltip="Continue"
+            [matTooltipPosition]="'above'"
+            [matTooltipShowDelay]="'250'"
+            [disableRipple]="true"
+            (click)="onContinueClicked()">
+      <mat-icon svgIcon='reply'></mat-icon>
+    </button>
   </div>
+  <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flexcontainer">
+    <button [@actionAnimation]="containerState"
+            mat-icon-button
+            class="action"
+            matTooltip="Re-open"
+            [matTooltipPosition]="'above'"
+            [matTooltipShowDelay]="'250'"
+            [disableRipple]="true"
+            (click)="onReopenClicked()">
+      <mat-icon svgIcon='replay'></mat-icon>
+    </button>
+  </div>
+  <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
+    <button [@actionAnimation]="containerState"
+            mat-icon-button
+            class="action"
+            matTooltip="Filter"
+            [matTooltipPosition]="'above'"
+            [matTooltipShowDelay]="'250'"
+            [disableRipple]="true"
+            (click)="onFilterClicked()">
+      <mat-icon svgIcon='filter_list'></mat-icon>
+    </button>
+  </div>
+</div>

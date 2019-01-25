@@ -45,6 +45,6 @@ export class TaskletContentFragmentComponent {
    * @param tasklet tasklet
    */
   public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
-    return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
+    return tasklet != null && this.taskletService.containsDisplayAspect(displayAspect, tasklet);
   }
 }
