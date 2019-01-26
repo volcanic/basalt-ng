@@ -7,6 +7,9 @@ import {ProjectService} from '../../../../../core/entity/services/project.servic
 import {PersonService} from '../../../../../core/entity/services/person.service';
 import {TagService} from '../../../../../core/entity/services/tag.service';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
+import {Tasklet} from '../../../../../core/entity/model/tasklet.model';
+import {DigestService} from '../../../../../core/digest/services/digest/digest.service';
+import {TaskEffort} from '../../../../../core/digest/model/task-effort.model';
 
 /**
  * Displays a task popover
@@ -20,6 +23,8 @@ export class TaskPopoverComponent implements OnInit {
 
   /** Task to be displayed */
   @Input() task: Task;
+  /** Tasklets */
+  @Input() tasklets: Tasklet[];
 
   /** Project assigned to this task */
   project: Project;
@@ -28,8 +33,11 @@ export class TaskPopoverComponent implements OnInit {
   /** Tags assigned to this task */
   tags: Tag[] = [];
 
+  /** Task effort */
+  taskEffort: TaskEffort;
+
   /** Icon name */
-  icon = '';
+  icon = 'alias_task';
 
   //
   // Helpers
@@ -52,11 +60,13 @@ export class TaskPopoverComponent implements OnInit {
 
   /**
    * Constructor
+   * @param digestService digest service
    * @param personService person service
    * @param projectService project service
    * @param tagService tag service
    */
-  constructor(private personService: PersonService,
+  constructor(private digestService: DigestService,
+              private personService: PersonService,
               private projectService: ProjectService,
               private tagService: TagService) {
   }
@@ -70,11 +80,31 @@ export class TaskPopoverComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeTask(this.task);
+    this.initializeIcon();
+
+    this.taskEffort = this.digestService.getTaskEffort(this.tasklets, this.task);
   }
 
   //
   // Initialization
   //
+
+  /**
+   * Initializes task
+   * @param task task to be initialized
+   */
+  private initializeTask(task: Task) {
+    this.task = task;
+    if (task != null) {
+      this.project = this.projectService.projects.get(this.task.projectId);
+      this.tags = task.tagIds.map(id => {
+        return this.tagService.tags.get(id);
+      }).filter(tag => {
+        return tag != null;
+      });
+      this.delegatedTo = this.personService.persons.get(task.delegatedToId);
+    }
+  }
 
   /**
    * Initializes icon
@@ -91,23 +121,6 @@ export class TaskPopoverComponent implements OnInit {
       this.icon = 'alias_task';
     } else {
       this.icon = 'alias_task_unassigned';
-    }
-  }
-
-  /**
-   * Initializes task
-   * @param task task to be initialized
-   */
-  private initializeTask(task: Task) {
-    this.task = task;
-    if (task != null) {
-      this.project = this.projectService.projects.get(this.task.projectId);
-      this.tags = task.tagIds.map(id => {
-        return this.tagService.tags.get(id);
-      }).filter(tag => {
-        return tag != null;
-      });
-      this.delegatedTo = this.personService.persons.get(task.delegatedToId);
     }
   }
 }

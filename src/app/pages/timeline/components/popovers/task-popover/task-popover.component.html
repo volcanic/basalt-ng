@@ -1,7 +1,11 @@
-<div class="flexcontainer">
-  <mat-icon [svgIcon]=icon></mat-icon>
+<div class="popover-container flexcontainer">
+  <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
   <div *ngIf="task != null">
     <div class="task">{{ task.name }}</div>
     <div *ngIf="project != null">{{ project.name }}</div>
+
+    <div *ngIf="task.effort > 0" class="effort">
+      <span *ngIf="taskEffort != null && taskEffort.effort > 0">{{ taskEffort.effort }} / </span>{{ task.effort * 60 }} min
+    </div>
   </div>
 </div>

@@ -2,8 +2,11 @@
   <div class="popover-container"
        (mouseenter)="onHoverPopover(true)"
        (mouseleave)="onHoverPopover(false)">
-    <app-task-popover [task]="task"></app-task-popover>
-    <button mat-button (click)="onDetailsClicked()">DETAILS</button>
+    <app-task-popover [task]="task" [tasklets]="tasklets"></app-task-popover>
+    <div class="flexcontainer">
+      <div class="flexbox"></div>
+      <button mat-button (click)="onDetailsClicked()">DETAILS</button>
+    </div>
   </div>
 </mat-menu>
 <div [matMenuTriggerFor]="popover" #popoverMenuTrigger></div>
@@ -29,10 +32,6 @@
   <button mat-button class="entity flexbox" [disabled]="!active" (click)="onTaskClicked()">
     <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
     <span>{{ task.name }}</span>
-    <span [@actionAnimation]="containerState"
-          *ngIf="task.effort > 0" class="effort">
-      ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
-    </span>
   </button>
   <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="containerState"

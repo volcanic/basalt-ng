@@ -19,7 +19,7 @@
             </div>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t" [media]="media" [active]="isInFocus(t)"
+        <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t" [tasklets]="tasklets" [media]="media" [active]="isInFocus(t)"
                             (taskEventEmitter)="onTaskEvent($event)">
         </app-task-list-item>
       </mat-expansion-panel>
@@ -35,7 +35,7 @@
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-task-list-item *ngFor="let t of tasksToday" [task]="t" [media]="media" [active]="isInFocus(t)"
+          <app-task-list-item *ngFor="let t of tasksToday" [task]="t" [tasklets]="tasklets" [media]="media" [active]="isInFocus(t)"
                               (taskEventEmitter)="onTaskEvent($event)">
           </app-task-list-item>
         </mat-expansion-panel>
@@ -52,7 +52,7 @@
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-task-list-item *ngFor="let t of tasksLater" [task]="t" [media]="media" [active]="isInFocus(t)"
+          <app-task-list-item *ngFor="let t of tasksLater" [task]="t" [tasklets]="tasklets" [media]="media" [active]="isInFocus(t)"
                               (taskEventEmitter)="onTaskEvent($event)">
           </app-task-list-item>
         </mat-expansion-panel>

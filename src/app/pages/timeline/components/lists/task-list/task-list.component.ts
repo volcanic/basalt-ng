@@ -19,6 +19,8 @@ export class TaskListComponent implements OnInit, OnChanges {
   @Input() tasks = [];
   /** Tasks that are currently filtered */
   @Input() tasksFiltered = [];
+  /** Tasklets */
+  @Input() tasklets = [];
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */

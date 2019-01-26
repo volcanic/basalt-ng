@@ -35,7 +35,7 @@
                position="end" [opened]="sidenavOpened"
                class="sidenav sidenav-end">
     <div [@toolbarAnimation]="scrollDirection">
-      <app-task-list [tasks]="tasks" [tasksFiltered]="tasksFiltered" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
+      <app-task-list [tasks]="tasks" [tasksFiltered]="tasksFiltered" [tasklets]="tasklets" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
     </div>
   </mat-sidenav>
 

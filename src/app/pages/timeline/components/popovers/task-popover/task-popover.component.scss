@@ -1,5 +1,15 @@
 @import '../../../../../../flex';
 
+.popover-container {
+  width: 450px;
+}
+
+.list-icon {
+  margin-right: 16px;
+  height: 24px;
+  width: 48px;
+}
+
 .task {
   font-family: 'Roboto Slab', serif;
   font-weight: 700;

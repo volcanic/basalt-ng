@@ -6,6 +6,7 @@ import {Media} from 'app/core/ui/model/media.enum';
 import {TaskDigest} from 'app/core/digest/model/task-digest.model';
 import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
+import {Tasklet} from '../../../../../core/entity/model/tasklet.model';
 
 /**
  * Displays task list item
@@ -24,8 +25,8 @@ export class TaskListItemComponent implements OnInit {
 
   /** Task to be displayed */
   @Input() task: Task;
-  /** Task digest */
-  @Input() taskDigest: TaskDigest;
+  /** Tasklets */
+  @Input() tasklets: Tasklet[];
   /** Current media */
   @Input() media: Media;
   /** Indicates if item is active */

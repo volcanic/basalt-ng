@@ -20,7 +20,7 @@ export class DigestService {
 
   /**
    * Constructor
-   * @param {TaskletService} taskletService
+   * @param taskletService tasklet service
    */
   constructor(private taskletService: TaskletService) {
   }
@@ -28,7 +28,7 @@ export class DigestService {
   /**
    * Generates a digest for given day
    * @param date day to create digest for
-   * @returns {ProjectDigest} digest for the given date
+   * @returns digest for the given date
    */
   getDailyDigest(date: Date): ProjectDigest {
     const start = DateService.getDayStart(date);
@@ -55,7 +55,7 @@ export class DigestService {
   /**
    * Generates a digest for a whole week
    * @param date one day in the week to create the digest for
-   * @returns {ProjectDigest} digest for the week determined by the given date
+   * @returns digest for the week determined by the given date
    */
   getWeeklyDigest(date: Date): ProjectDigest {
     const start = DateService.getWeekStart(date);
@@ -70,10 +70,10 @@ export class DigestService {
 
   /**
    * Generates a project digest for a given period of time
-   * @param {Tasklet[]} tasklets
-   * @param {Date} start start date
-   * @param {Date} end end date
-   * @param {string} topic to be displayed as root node
+   * @param tasklets tasklets
+   * @param start start start date
+   * @param end end end date
+   * @param topic topic to be displayed as root node
    */
   getProjectDigest(tasklets: Tasklet[], start: Date, end: Date, topic: string): ProjectDigest {
     const projectDigest = new ProjectDigest();
@@ -136,6 +136,44 @@ export class DigestService {
   }
 
   /**
+   * Generates a task digest for a given task
+   * @param tasklets tasklets
+   * @param task task
+   */
+  getTaskEffort(tasklets: Tasklet[], task: Task): TaskEffort {
+    const taskEffort = new TaskEffort(task, 0);
+
+    // Iterate over all tasklets
+    if (tasklets != null) {
+      for (let index = 0; index < tasklets.length; index++) {
+        const tasklet = tasklets[index];
+        const nextTasklet = tasklets[index + 1];
+
+        if (nextTasklet != null && new Date(tasklet.creationDate).getDay() === new Date(nextTasklet.creationDate).getDay()
+          && tasklet.type !== TaskletType.LUNCH_BREAK
+          && tasklet.type !== TaskletType.POMODORO_BREAK
+          && tasklet.type !== TaskletType.COMMUTE
+          && tasklet.type !== TaskletType.FINISHING_TIME) {
+
+          // Additional minutes
+          const diff = new Date(nextTasklet.creationDate).getTime() - new Date(tasklet.creationDate).getTime();
+          const minutesNew = DateService.getRoundedMinutes((diff / 60000));
+
+          // Get existing efforts (task)
+          const t = this.taskletService.getTaskByTasklet(tasklet);
+
+          if (t.id === task.id) {
+            // Add new efforts
+            taskEffort.effort += minutesNew;
+          }
+        }
+      }
+    }
+
+    return taskEffort;
+  }
+
+  /**
    * Retrieves all tasklets of a given period
    * @param {Date} start start date
    * @param {Date} end end date
@@ -143,11 +181,11 @@ export class DigestService {
    * @returns {Tasklet[]} array of tasklets that match the given date
    */
   public getTaskletsOfPeriod(start: Date, end: Date, tasklets: Tasklet[]): Tasklet[] {
-    let taskOfPeriod = [];
+    let taskletsOfPeriod = [];
 
     if (tasklets.length > 0) {
 
-      taskOfPeriod = tasklets.filter(t => {
+      taskletsOfPeriod = tasklets.filter(t => {
 
         if (new Date(t.creationDate) > new Date(start)
           && new Date(t.creationDate) < new Date(end)) {
@@ -160,6 +198,6 @@ export class DigestService {
       });
     }
 
-    return taskOfPeriod;
+    return taskletsOfPeriod;
   }
 }
