@@ -32,7 +32,7 @@ export class TaskListItemComponent implements OnInit {
   /** Event emitter indicating task action */
   @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
   /** View child for context menu */
-  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
   /** Enum for media types */
   mediaType = Media;

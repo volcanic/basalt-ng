@@ -1,6 +1,6 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Project} from '../model/project.model';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {EntityType} from '../model/entity-type.enum';
 import {SuggestionService} from './suggestion.service';
 import {PouchDBService} from '../../persistence/services/pouchdb.service';

@@ -40,7 +40,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   /** Event emitter indicating tasklet action */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
   /** Trigger for context menu */
-  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
   /** Task associated with this tasklet */
   task: Task;

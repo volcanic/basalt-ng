@@ -133,11 +133,11 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   public sidenavOpened = false;
 
   /** Side navigation at start */
-  @ViewChild('sidenavStart') sidenavStart: MatSidenav;
+  @ViewChild('sidenavStart', {static: false}) sidenavStart: MatSidenav;
   /** Side navigation at end */
-  @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
+  @ViewChild('sidenavEnd', {static: false}) sidenavEnd: MatSidenav;
   /** Scrollable directive */
-  @ViewChild(CdkScrollable) scrollable: CdkScrollable;
+  @ViewChild(CdkScrollable, {static: false}) scrollable: CdkScrollable;
 
   /** Transparent color */
   transparent = 'transparent';

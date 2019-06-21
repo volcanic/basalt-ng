@@ -29,7 +29,7 @@ export class TagListItemComponent  {
   /** Event emitter indicating tag action */
   @Output() tagEventEmitter = new EventEmitter<{ action: Action, tag: Tag, tags?: Tag[] }>();
   /** View child for context menu */
-  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
   /** Enum for media types */
   mediaType = Media;

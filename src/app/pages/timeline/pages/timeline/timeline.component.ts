@@ -19,7 +19,7 @@ import {Tag} from 'app/core/entity/model/tag.model';
 import {MediaService} from 'app/core/ui/services/media.service';
 import {Media} from 'app/core/ui/model/media.enum';
 import {map, takeUntil} from 'rxjs/internal/operators';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {ProjectListDialogComponent} from '../../components/dialogs/project-list-dialog/project-list-dialog.component';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
 import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
@@ -156,11 +156,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public sidenavOpened = false;
 
   /** Side navigation at start */
-  @ViewChild('sidenavStart') sidenavStart: MatSidenav;
+  @ViewChild('sidenavStart', {static: false}) sidenavStart: MatSidenav;
   /** Side navigation at end */
-  @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
+  @ViewChild('sidenavEnd', {static: false}) sidenavEnd: MatSidenav;
   /** Scrollable directive */
-  @ViewChild(CdkScrollable) scrollable: CdkScrollable;
+  @ViewChild(CdkScrollable, {static: false}) scrollable: CdkScrollable;
 
   /**
    * Constructor

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Theme} from '../model/theme.enum';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
 /**
  * Handles current theme

@@ -29,7 +29,7 @@ export class ProjectListItemComponent {
   /** Event emitter indicating project to be updated */
   @Output() projectEventEmitter = new EventEmitter<{ action: Action, project: Project, projects?: Project[] }>();
   /** View child for context menu */
-  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
   /** Enum for media types */
   mediaType = Media;

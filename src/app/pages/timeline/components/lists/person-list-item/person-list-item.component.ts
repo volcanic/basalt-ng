@@ -29,7 +29,7 @@ export class PersonListItemComponent {
   /** Event emitter indicating person to be updated */
   @Output() personEventEmitter = new EventEmitter<{ action: Action, person: Person, persons?: Person[] }>();
   /** View child for context menu */
-  @ViewChild(MatMenuTrigger) contextMenuTrigger: MatMenuTrigger;
+  @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
   /** Enum for media types */
   mediaType = Media;

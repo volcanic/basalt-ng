@@ -1,5 +1,5 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {Person} from '../model/person.model';
 import {SuggestionService} from './suggestion.service';
 import {EntityType} from '../model/entity-type.enum';
@@ -9,7 +9,6 @@ import {PouchDBService} from '../../persistence/services/pouchdb.service';
 import {ScopeService} from './scope.service';
 import {SnackbarService} from '../../ui/services/snackbar.service';
 import {DateService} from './date.service';
-import {Task} from '../model/task.model';
 
 /**
  * Handles persons including
