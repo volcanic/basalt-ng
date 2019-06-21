@@ -6,7 +6,7 @@ import {MaterialColorService} from '../../../../core/ui/services/material-color.
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {Setting} from '../../../../core/settings/model/setting.model';
@@ -67,7 +67,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   settingsType = SettingType;
 
   /** Scrollable directive */
-  @ViewChild(CdkScrollable) scrollable: CdkScrollable;
+  @ViewChild(CdkScrollable, {static: false}) scrollable: CdkScrollable;
 
   /**
    * Constructor

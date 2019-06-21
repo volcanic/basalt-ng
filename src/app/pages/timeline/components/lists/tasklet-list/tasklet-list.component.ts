@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Task} from 'app/core/entity/model/task.model';

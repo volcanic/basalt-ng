@@ -4,7 +4,7 @@ import {Tasklet} from '../../../../core/entity/model/tasklet.model';
 import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
 import {FilterService} from '../../../../core/entity/services/filter.service';
 import {MatchService} from '../../../../core/entity/services/match.service';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
 /**
  * Displays calendar page

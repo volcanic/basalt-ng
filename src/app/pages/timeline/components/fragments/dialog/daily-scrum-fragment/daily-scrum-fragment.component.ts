@@ -6,7 +6,7 @@ import {Person} from '../../../../../../core/entity/model/person.model';
 import {DailyScrumItem} from '../../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
 import {DailyScrumItemType} from '../../../../../../core/entity/model/daily-scrum/daily-scrum-item-type.enum';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 
 /**

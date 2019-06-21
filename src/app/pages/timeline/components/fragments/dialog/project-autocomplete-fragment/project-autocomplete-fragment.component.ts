@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Project} from 'app/core/entity/model/project.model';
 import {CloneService} from 'app/core/entity/services/clone.service';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
 /**

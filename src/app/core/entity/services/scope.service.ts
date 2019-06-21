@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {Scope} from '../model/scope.enum';
 import {ThemeService} from '../../ui/services/theme.service';
 import {Theme} from '../../ui/model/theme.enum';

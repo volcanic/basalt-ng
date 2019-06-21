@@ -4,18 +4,19 @@
 /dist
 /tmp
 /out
-/www
-/platforms/*
+/out-tsc
+/coverage
+/reports
 
-# documentation
-/documentation
-
-# releases
-/release
+/cordova/node_modules
+/cordova/platforms
 
 # dependencies
 /node_modules
-/cordova/node_modules
+
+# profiling files
+chrome-profiler-events.json
+speed-measure-plugin.json
 
 # IDEs and editors
 /.idea
@@ -24,7 +25,7 @@
 .c9/
 *.launch
 .settings/
-.gradle
+*.sublime-workspace
 
 # IDE - VSCode
 .vscode/*
@@ -32,20 +33,20 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.history/*
 
 # misc
 /.sass-cache
 /connect.lock
-/coverage/*
+/coverage
 /libpeerconnection.log
 npm-debug.log
+yarn-error.log
 testem.log
 /typings
+/release
+/cordova
 
-# e2e
-/e2e/*.js
-/e2e/*.map
-
-#System Files
+# System Files
 .DS_Store
 Thumbs.db

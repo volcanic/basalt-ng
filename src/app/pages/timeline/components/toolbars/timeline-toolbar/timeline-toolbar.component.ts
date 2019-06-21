@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {debounceTime} from 'rxjs/operators';
-import 'rxjs/add/observable/from';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Scope} from 'app/core/entity/model/scope.enum';
 

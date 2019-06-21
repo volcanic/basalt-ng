@@ -24,6 +24,7 @@ export enum DisplayAspect {
   CAN_BE_CREATED,
   CAN_BE_UPDATED,
   CAN_BE_CONTINUED,
+  CAN_BE_TEMPLATED,
 
   IS_POMODORO_STARTED,
   IS_DISPLAYED_AS_PREVIEW
@@ -51,6 +52,31 @@ export class TaskletDisplayService {
   //
   // Helpers
   //
+
+  /**
+   * Determines whether the displayed tasklet contains a description
+   * @param tasklet tasklet
+   */
+  static containsDescription(tasklet: Tasklet): boolean {
+    return tasklet != null && (tasklet.type === TaskletType.ACTION
+      || tasklet.type === TaskletType.POMODORO
+      || (tasklet.type === TaskletType.MEETING
+        && tasklet.description != null
+        && tasklet.description.value != null
+        && tasklet.description.value !== '')
+      || (tasklet.type === TaskletType.CALL
+        && tasklet.description != null
+        && tasklet.description.value != null
+        && tasklet.description.value !== '')
+      || tasklet.type === TaskletType.MAIL
+      || tasklet.type === TaskletType.DEVELOPMENT
+      || tasklet.type === TaskletType.CODING
+      || tasklet.type === TaskletType.DEBUGGING
+      || tasklet.type === TaskletType.DOCUMENTATION
+      || tasklet.type === TaskletType.REVIEW
+      || tasklet.type === TaskletType.TESTING
+      || tasklet.type === TaskletType.IDEA);
+  }
 
   /**
    * Determines whether the displayed tasklet contains a previous description
@@ -119,28 +145,19 @@ export class TaskletDisplayService {
   }
 
   /**
-   * Determines whether the displayed tasklet contains a description
+   * Determines whether a given tasklet can be templated
+   */
+  static canBeTemplated(tasklet: Tasklet): boolean {
+    return tasklet.type === TaskletType.DAILY_SCRUM;
+  }
+
+  /**
+   * Determines whether a given tasklet is of type pomodoro and if the pomodoro session has been started
    * @param tasklet tasklet
    */
-  containsDescription(tasklet: Tasklet): boolean {
-    return tasklet != null && (tasklet.type === TaskletType.ACTION
-      || tasklet.type === TaskletType.POMODORO
-      || (tasklet.type === TaskletType.MEETING
-        && tasklet.description != null
-        && tasklet.description.value != null
-        && tasklet.description.value !== '')
-      || (tasklet.type === TaskletType.CALL
-        && tasklet.description != null
-        && tasklet.description.value != null
-        && tasklet.description.value !== '')
-      || tasklet.type === TaskletType.MAIL
-      || tasklet.type === TaskletType.DEVELOPMENT
-      || tasklet.type === TaskletType.CODING
-      || tasklet.type === TaskletType.DEBUGGING
-      || tasklet.type === TaskletType.DOCUMENTATION
-      || tasklet.type === TaskletType.REVIEW
-      || tasklet.type === TaskletType.TESTING
-      || tasklet.type === TaskletType.IDEA);
+  static isPomodoroStarted(tasklet: Tasklet): boolean {
+    return tasklet != null
+      && tasklet.type === TaskletType.POMODORO && tasklet.pomodoroStartTime != null;
   }
 
   /**
@@ -151,7 +168,7 @@ export class TaskletDisplayService {
   canBeCreated(tasklet: Tasklet, task: Task): boolean {
     return tasklet.type !== TaskletType.UNSPECIFIED
       && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
-      && (!this.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0));
+      && (!TaskletDisplayService.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0));
   }
 
   /**
@@ -162,7 +179,7 @@ export class TaskletDisplayService {
   canBeUpdated(tasklet: Tasklet, task: Task): boolean {
     return tasklet != null
       && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
-      && (!this.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0));
+      && (!TaskletDisplayService.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0));
   }
 
   /**
@@ -173,20 +190,13 @@ export class TaskletDisplayService {
   canBeContinued(tasklet: Tasklet, task: Task): boolean {
     return tasklet != null
       && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
-      && (!this.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0))
+      && (!TaskletDisplayService.containsDescription(tasklet) || (tasklet != null && tasklet.description != null && tasklet.description.value.length > 0))
       && (tasklet.type === TaskletType.ACTION
         || tasklet.type === TaskletType.MEETING
         || tasklet.type === TaskletType.DAILY_SCRUM
         || tasklet.type === TaskletType.CODING
         || tasklet.type === TaskletType.DEBUGGING
         || tasklet.type === TaskletType.IDEA);
-  }
-
-  /**
-   * Determines whether a given tasklet can be templated
-   */
-  canBeTemplated(tasklet: Tasklet): boolean {
-    return tasklet.type === TaskletType.DAILY_SCRUM;
   }
 
   /**
@@ -200,18 +210,9 @@ export class TaskletDisplayService {
       && group !== null
       && group !== TaskletTypeGroup.BREAK
       && tasklet.type !== TaskletType.UNSPECIFIED
-      && tasklet.type !== TaskletType.COMMUTE
-      && tasklet.type !== TaskletType.DAILY_SCRUM;
+      && tasklet.type !== TaskletType.COMMUTE;
   }
 
-  /**
-   * Determines whether a given tasklet is of type pomodoro and if the pomodoro session has been started
-   * @param tasklet tasklet
-   */
-  isPomodoroStarted(tasklet: Tasklet): boolean {
-    return tasklet != null
-      && tasklet.type === TaskletType.POMODORO && tasklet.pomodoroStartTime != null;
-  }
 
   /**
    * Determines whether a given tasklet shall be displayed as a preview

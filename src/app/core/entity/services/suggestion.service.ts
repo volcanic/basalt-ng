@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Tasklet} from '../model/tasklet.model';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {Project} from '../model/project.model';
 import {Task} from '../model/task.model';
 import {Person} from '../model/person.model';

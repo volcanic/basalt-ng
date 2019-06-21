@@ -4,6 +4,7 @@
     <form #formCtrl="ngForm">
       <app-tasklet-type-fragment [tasklet]="tasklet" (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
       </app-tasklet-type-fragment>
+      <!-- Task -->
       <app-task-autocomplete-fragment
         *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
         [taskName]="task.name" [taskOptions]="taskOptions" (taskNameChangedEmitter)="onTaskNameChanged($event)">
@@ -53,13 +54,15 @@
       <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
                      [tags]="inheritedTags | tagNames"
                      [tagOptions]="tagOptions"
-                     [background]="materialColorService.color(paletteType.GREY, hueType._50)"
-                     [color]="materialColorService.contrast(paletteType.GREY, hueType._50)"
+                     [background]="materialColorService.color(paletteType.GREY, hueType._200)"
+                     [color]="materialColorService.contrast(paletteType.GREY, hueType._200)"
                      [readonly]=true>
       </app-tag-chips>
       <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
                      [tags]="tags | tagNames"
                      [tagOptions]="tagOptions"
+                     [background]="materialColorService.color(paletteType.GREY, hueType._300)"
+                     [color]="materialColorService.contrast(paletteType.GREY, hueType._300)"
                      [readonly]=false
                      (tagsChangedEmitter)="onTagsChanged($event)">
       </app-tag-chips>
@@ -67,6 +70,8 @@
                      [tags]="persons | personNames"
                      [tagOptions]="personOptions"
                      [readonly]=false
+                     [background]="materialColorService.color(paletteType.GREY, hueType._400)"
+                     [color]="materialColorService.contrast(paletteType.GREY, hueType._400)"
                      placeholder="New person"
                      (tagsChangedEmitter)="onPersonsChanged($event)">
       </app-tag-chips>

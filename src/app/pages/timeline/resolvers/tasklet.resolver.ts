@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Tasklet} from '../../../core/entity/model/tasklet.model';
 import {TaskletService} from '../../../core/entity/services/tasklet/tasklet.service';
 

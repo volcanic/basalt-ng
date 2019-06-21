@@ -140,13 +140,13 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   public sidenavOpened = false;
 
   /** Side navigation at start */
-  @ViewChild('sidenavStart') sidenavStart: MatSidenav;
+  @ViewChild('sidenavStart', {static: false}) sidenavStart: MatSidenav;
   /** Side navigation at end */
-  @ViewChild('sidenavEnd') sidenavEnd: MatSidenav;
+  @ViewChild('sidenavEnd', {static: false}) sidenavEnd: MatSidenav;
   /** Scrollable directive */
-  @ViewChild(CdkScrollable) scrollable: CdkScrollable;
+  @ViewChild(CdkScrollable, {static: false}) scrollable: CdkScrollable;
   /** Tasklet type selection */
-  @ViewChild('select') select: MatSelect;
+  @ViewChild('select', {static: false}) select: MatSelect;
 
   /** Transparent color */
   transparent = 'transparent';

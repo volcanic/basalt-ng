@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import 'rxjs/add/observable/from';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Scope} from 'app/core/entity/model/scope.enum';
 
