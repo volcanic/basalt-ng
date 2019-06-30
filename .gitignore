@@ -46,8 +46,14 @@ testem.log
 /typings
 /docs
 /reports
+!reports/.gitkeep
 /release
 /cordova
+
+# Firebase
+.firebase/
+.firebaserc
+firebase.json
 
 # System Files
 .DS_Store
