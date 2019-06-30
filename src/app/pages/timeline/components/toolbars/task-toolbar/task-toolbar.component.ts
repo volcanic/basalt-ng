@@ -32,7 +32,7 @@ export class TaskToolbarComponent {
   //
 
   /** Handles click on menu item
-   * @param {string} menuItem
+   * @param menuItem menu item
    */
   onMenuItemClicked(menuItem: string): void {
     this.menuItemEventEmitter.emit(menuItem);

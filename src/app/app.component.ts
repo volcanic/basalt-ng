@@ -26,16 +26,16 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   /**
    * Constructor
-   * @param {EntityService} entityService
-   * @param {TaskService} taskService
-   * @param {TaskletService} taskletService
-   * @param {SnackbarService} snackbarService
-   * @param {PouchDBService} pouchDBService
-   * @param {PouchDBSettingsService} pouchDBSettingsService
-   * @param {SettingsService} settingsService
-   * @param {ThemeService} themeService
-   * @param {OverlayContainer} overlayContainer
-   * @param {MatSnackBar} snackBar snack bar
+   * @param entityService entity service
+   * @param taskService task service
+   * @param taskletService tasklet service
+   * @param snackbarService snackbar service
+   * @param pouchDBService pouchDB service
+   * @param pouchDBSettingsService pouchDB settings service
+   * @param settingsService settings service
+   * @param themeService theme service
+   * @param overlayContainer overlay container
+   * @param snackBar snack bar
    */
   constructor(private entityService: EntityService,
               private taskService: TaskService,
@@ -128,7 +128,7 @@ export class AppComponent implements OnInit, AfterViewInit {
    * @param action action to be triggered if action name is clicked
    */
   private openSnackBar(message: string, actionName: string, action: any) {
-    const snackbarRef = this.snackBar.open(message, actionName, <MatSnackBarConfig>{
+    const snackbarRef = this.snackBar.open(message, actionName, {
       duration: 5000,
     });
 

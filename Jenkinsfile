@@ -32,12 +32,6 @@ pipeline {
                 sh "npm run build-prod -- --verbose --base-href ${params.BASE_REF}"
             }
         }
-        stage('Test') {
-            steps {
-                sh "npm run test"
-                junit allowEmptyResults: true, testResults: 'reports/**/test-results.xml'
-            }
-        }
         stage('Lint') {
             steps {
                 sh "npm run lint-junit"
@@ -55,6 +49,12 @@ pipeline {
                   reportFiles: 'index.html',
                   reportName: "Compodoc"
                 ])
+            }
+        }
+        stage('Test') {
+            steps {
+                sh "npm run test"
+                junit allowEmptyResults: true, testResults: 'reports/**/test-results.xml'
             }
         }
         stage('Deploy') {

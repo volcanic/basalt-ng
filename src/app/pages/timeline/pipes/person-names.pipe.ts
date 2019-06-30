@@ -12,7 +12,7 @@ export class PersonNamesPipe implements PipeTransform {
   /**
    * Transforms a list of persons into a list of their names
    * @param persons lists of persons
-   * @param args
+   * @param args arguments
    */
   transform(persons: Person[], args?: any): string[] {
     return persons.map(person => {

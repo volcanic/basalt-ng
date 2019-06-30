@@ -1,3 +1,6 @@
+/**
+ * Enum of setting types
+ */
 export enum SettingType {
   //
   // Version

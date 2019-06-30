@@ -101,8 +101,8 @@ export class ColorService {
 
   /**
    * Determines a task's color
-   * @param {Task} task task to get color for
-   * @returns {string} color string derived from task name
+   * @param task task to get color for
+   * @returns color string derived from task name
    */
   getTaskColor(task: Task) {
     const hue = this.getTaskHue(task);
@@ -112,8 +112,8 @@ export class ColorService {
 
   /**
    * Determines a task's contrast
-   * @param {Task} task task to get color for
-   * @returns {string} contrast color string derived from task name
+   * @param task task to get color for
+   * @returns contrast color string derived from task name
    */
   getTaskContrast(task: Task) {
     const hue = this.getTaskHue(task);
@@ -142,8 +142,8 @@ export class ColorService {
 
   /**
    * Determines a task's overdue color
-   * @param {Task} task task to get color for
-   * @returns {string} color string derived from task name
+   * @param task task to get color for
+   * @returns color string derived from task name
    */
   getTaskOverdueColor(task: Task) {
     const hue = this.getTaskOverdueHue(task);
@@ -153,8 +153,8 @@ export class ColorService {
 
   /**
    * Determines a task's overdue contrast
-   * @param {Task} task task to get color for
-   * @returns {string} contrast color string derived from task name
+   * @param task task to get color for
+   * @returns contrast color string derived from task name
    */
   getTaskOverdueContrast(task: Task) {
     const hue = this.getTaskOverdueHue(task);
@@ -177,8 +177,8 @@ export class ColorService {
 
   /**
    * Determines a task's recurring color
-   * @param {Task} task task to get color for
-   * @returns {string} color string derived from task name
+   * @param task task to get color for
+   * @returns color string derived from task name
    */
   getTaskRecurringColor(task: Task) {
     const hue = this.getTaskRecurringHue(task);
@@ -188,8 +188,8 @@ export class ColorService {
 
   /**
    * Determines a task's recurring contrast
-   * @param {Task} task task to get color for
-   * @returns {string} contrast color string derived from task name
+   * @param task task to get color for
+   * @returns contrast color string derived from task name
    */
   getTaskRecurringContrast(task: Task) {
     const hue = this.getTaskRecurringHue(task);
@@ -212,8 +212,8 @@ export class ColorService {
 
   /**
    * Determines a project's color
-   * @param {Project} project project to get color for
-   * @returns {string} color string derived from project name
+   * @param project project to get color for
+   * @returns color string derived from project name
    */
   getProjectColor(project: Project) {
     const hue = this.getProjectHue(project);
@@ -223,8 +223,8 @@ export class ColorService {
 
   /**
    * Determines a project's contrast
-   * @param {Project} project project to get color for
-   * @returns {string} contrast color string derived from project name
+   * @param project project to get color for
+   * @returns contrast color string derived from project name
    */
   getProjectContrast(project: Project) {
     const hue = this.getProjectHue(project);
@@ -247,8 +247,8 @@ export class ColorService {
 
   /**
    * Determines a persons's color
-   * @param {Person} person person to get color for
-   * @returns {string} color string derived from project name
+   * @param person person to get color for
+   * @returns color string derived from project name
    */
   getPersonColor(person: Person) {
     const hue = this.getPersonHue(person);
@@ -258,8 +258,8 @@ export class ColorService {
 
   /**
    * Determines a persons's contrast
-   * @param {Person} person person to get contrast for
-   * @returns {string} contrast color string derived from project name
+   * @param person person to get contrast for
+   * @returns contrast color string derived from project name
    */
   getPersonContrast(person: Person) {
     const hue = this.getPersonHue(person);
@@ -282,7 +282,7 @@ export class ColorService {
 
   /**
    * Returns a color associated to tasklet type group
-   * @param {TaskletTypeGroup} group tasklet type group
+   * @param group tasklet type group
    */
   getTaskletTypeGroupColor(group: TaskletTypeGroup): Hue {
     switch (group) {

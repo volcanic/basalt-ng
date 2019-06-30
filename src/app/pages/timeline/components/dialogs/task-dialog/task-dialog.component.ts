@@ -61,9 +61,9 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * Constructor
    * @param taskService task service
    * @param suggestionService suggestion service
-   * @param {DateAdapter<any>} adapter
-   * @param {MatDialog} dialog dialog
-   * @param {MatDialogRef<PomodoroFinishedDialogComponent>} dialogRef dialog reference
+   * @param adapter date adapter
+   * @param dialog dialog
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(private taskService: TaskService,
@@ -193,7 +193,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Handles click on button
-   * @param action
+   * @param action action
    */
   onButtonClicked(action: Action) {
     switch (action) {
@@ -333,8 +333,8 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Aggregates tags
-   * @param {Task} task
-   * @returns {Tag[]}
+   * @param task task
+   * @returns tags
    */
   private aggregateTags(task: Task): Tag[] {
     const aggregatedTags = new Map<string, Tag>();

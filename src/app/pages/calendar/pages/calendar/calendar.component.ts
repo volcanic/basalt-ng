@@ -26,9 +26,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   /**
    * Constructor
-   * @param {TaskletService} taskletService tasklet service
-   * @param {MatchService} matchService match service
-   * @param {FilterService} filterService filter service
+   * @param taskletService tasklet service
+   * @param matchService match service
+   * @param filterService filter service
    */
   constructor(private taskletService: TaskletService,
               private matchService: MatchService,

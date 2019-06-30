@@ -35,7 +35,7 @@ export class DateTimePickerFragmentComponent implements OnChanges {
 
   /**
    * Adds a trailing zero to one-digit numbers
-   * @param value
+   * @param value value
    */
   static addTrailingZero(value: number) {
     if (value < 10) {
@@ -106,7 +106,7 @@ export class DateTimePickerFragmentComponent implements OnChanges {
 
   /**
    * Handles hour changes
-   * @param {number} value hour value
+   * @param value hour value
    */
   onHourSelected(value: number) {
     if (this.date == null) {
@@ -126,7 +126,7 @@ export class DateTimePickerFragmentComponent implements OnChanges {
 
   /**
    * Handles minute changes
-   * @param {number} value minute value
+   * @param value minute value
    */
   onMinuteSelected(value: number) {
     if (this.date == null) {

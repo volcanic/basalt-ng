@@ -12,8 +12,8 @@ export class TaskEffort {
 
   /**
    * Constructor
-   * @param {Task} task
-   * @param {number} effort
+   * @param task task
+   * @param effort effort
    */
   constructor(task: Task, effort: number) {
     this.task = task;

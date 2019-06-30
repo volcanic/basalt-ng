@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {FeatureType} from '../../../../core/settings/model/feature-type.enum';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {ColorService} from '../../../../core/ui/services/color.service';
@@ -14,7 +23,7 @@ class FeatureAction {
   featureType: FeatureType;
   /** Setting type */
   settingType: SettingType;
-  /** Active **/
+  /** Active */
   active = false;
   /** Label to be displayed */
   label: string;
@@ -38,7 +47,7 @@ class FeatureAction {
 export class FeatureFragmentComponent implements OnInit, OnChanges {
 
   /** Map of current settings */
-  @Input() settings = new Map<String, Setting>();
+  @Input() settings = new Map<string, Setting>();
   /** Event emitter indicating tasklet type selection */
   @Output() featureToggledEmitter = new EventEmitter<{ setting: SettingType, value: any }>();
 
@@ -114,8 +123,8 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
 
   /**
    * Handles hover over container
-   * @param {boolean} hovered whether there is currently a hover event
-   * @param {TaskletTypeGroupAction} action tasklet type group action
+   * @param hovered whether there is currently a hover event
+   * @param action tasklet type group action
    */
   onHoverContainer(hovered: boolean, action: FeatureAction) {
     this.hoveredFeature = hovered ? action.featureType : null;

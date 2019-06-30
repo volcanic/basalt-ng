@@ -21,7 +21,7 @@ export class TagListDialogComponent {
 
   /**
    * Constructor
-   * @param {MatDialogRef<ProjectDialogComponent>} dialogRef dialog reference
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,
@@ -47,7 +47,7 @@ export class TagListDialogComponent {
 
   /**
    * Handles tag events
-   * @param {any} event tag event
+   * @param event event
    */
   onTagEvent(event: { action: Action, tag: Tag }) {
     this.dialogRef.close(event);

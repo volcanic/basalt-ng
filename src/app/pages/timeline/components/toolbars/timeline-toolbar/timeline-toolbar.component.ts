@@ -81,7 +81,7 @@ export class TimelineToolbarComponent implements OnInit {
   //
 
   /** Handles click on menu item
-   * @param {string} menuItem
+   * @param menuItem menu item
    */
   onMenuItemClicked(menuItem: string): void {
     this.menuItemEventEmitter.emit(menuItem);
@@ -140,8 +140,8 @@ export class TimelineToolbarComponent implements OnInit {
 
   /**
    * Filters options according to current value of input field
-   * @param {string} value input field value
-   * @returns {string[]} array of filtered options
+   * @param value input field value
+   * @returns array of filtered options
    */
   private filterOptions(value: string): string[] {
     return this.searchOptions.filter(option =>

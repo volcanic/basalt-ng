@@ -12,11 +12,11 @@ export class ProjectDigest {
   /** Topic to be displayed as root node */
   topic: string;
   /** Map of project efforts */
-  projectEfforts = new Map<String, ProjectEffort>();
+  projectEfforts = new Map<string, ProjectEffort>();
 
   /**
    * Returns a sorted array of project efforts
-   * @returns {ProjectEffort[]} array of project efforts
+   * @returns array of project efforts
    */
   getProjectEfforts(): ProjectEffort[] {
     return Array.from(this.projectEfforts.values()).sort((e1, e2) => {
@@ -27,7 +27,7 @@ export class ProjectDigest {
 
   /**
    * Sums up the efforts of this period's project efforts
-   * @returns {number} sum of efforts
+   * @returns sum of efforts
    */
   getProjectEffortSum(): number {
     return this.getProjectEfforts()

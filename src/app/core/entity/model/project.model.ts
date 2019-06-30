@@ -11,7 +11,7 @@ export class Project extends Entity {
 
   /**
    * Constructor
-   * @param {string} name project name
+   * @param name project name
    */
   constructor(name: string) {
     super();

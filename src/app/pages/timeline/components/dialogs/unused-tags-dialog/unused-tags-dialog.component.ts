@@ -31,7 +31,7 @@ export class UnusedTagsDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {MatDialogRef<UnusedTagsDialogComponent>} dialogRef dialog reference
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<UnusedTagsDialogComponent>,

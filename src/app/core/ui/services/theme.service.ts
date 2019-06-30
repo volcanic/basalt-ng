@@ -17,7 +17,7 @@ export class ThemeService {
 
   /**
    * Switches theme
-   * @param {Theme} theme new theme
+   * @param theme new theme
    */
   switchTheme(theme: Theme) {
     this.themeSubject.next(theme);

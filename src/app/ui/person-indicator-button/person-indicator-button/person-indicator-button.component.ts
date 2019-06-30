@@ -12,7 +12,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnIn
 export class PersonIndicatorButtonComponent implements OnInit, OnChanges {
 
   /** Name of a person */
-  @Input() name: string;
+  @Input() name = '';
   /** Background personColor */
   @Input() color: string;
   /** Text personColor */

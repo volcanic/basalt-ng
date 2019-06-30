@@ -83,7 +83,7 @@ export class TagChipsComponent implements OnInit {
 
   /**
    * Handles deletion of a tag
-   * @param {string} value tag to be deleted
+   * @param value tag to be deleted
    */
   onDeleteTag(value: string) {
     if (!this.readonly) {
@@ -97,7 +97,7 @@ export class TagChipsComponent implements OnInit {
 
   /**
    * Handles key up event
-   * @param event
+   * @param event event
    */
   onKeyUp(event: any) {
     if (!this.readonly) {
@@ -137,8 +137,8 @@ export class TagChipsComponent implements OnInit {
 
   /**
    * Filters auto-complete options
-   * @param {string} value input value
-   * @returns {string[]} filtered options
+   * @param value input value
+   * @returns filtered options
    */
   filterAutoCompleteOptions(value: string): string[] {
     return this.tagOptions.filter(option =>

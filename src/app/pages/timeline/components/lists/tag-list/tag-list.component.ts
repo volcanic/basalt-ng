@@ -20,7 +20,7 @@ export class TagListComponent implements OnChanges {
   @Input() tagsFiltered: Tag[] = [];
   /** Tags that are unused */
   @Input() unusedTags: Tag[] = [];
-  /** Number of items to be shown initially **/
+  /** Number of items to be shown initially */
   @Input() recentCount: number;
   /** Current media */
   @Input() media: Media;

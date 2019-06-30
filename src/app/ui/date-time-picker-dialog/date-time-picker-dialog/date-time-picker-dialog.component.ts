@@ -20,7 +20,7 @@ export class DateTimePickerDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {MatDialogRef<DateTimePickerDialogComponent>} dialogRef dialog reference
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<DateTimePickerDialogComponent>,
@@ -56,7 +56,7 @@ export class DateTimePickerDialogComponent implements OnInit {
 
   /**
    * Handles date changes
-   * @param {Date} value date value
+   * @param value date value
    */
   onDateChanged(value: Date) {
     this.date = value;

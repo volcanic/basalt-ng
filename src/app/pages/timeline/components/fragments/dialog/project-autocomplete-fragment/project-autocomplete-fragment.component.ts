@@ -110,8 +110,8 @@ export class ProjectAutocompleteFragmentComponent implements OnInit {
 
   /**
    * Filters options according to current value of input field
-   * @param {string} value input field value
-   * @returns {string[]} array of filtered options
+   * @param value input field value
+   * @returns array of filtered options
    */
   private filterOptions(value: string): string[] {
     return this.projectOptions.filter(option =>

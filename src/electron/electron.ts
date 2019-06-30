@@ -4,12 +4,10 @@
 const {app, BrowserWindow} = require('electron');
 /**
  * Path object
- * @type {module:path}
  */
 const path = require('path');
 /**
  * URL object
- * @type {module:url}
  */
 const url = require('url');
 

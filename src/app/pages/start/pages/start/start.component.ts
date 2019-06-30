@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NotificationService} from '../../../../core/notification/services/notification.service';
+import {environment} from '../../../../../environments/environment';
 
 /**
  * Displays start page
@@ -12,7 +12,7 @@ import {NotificationService} from '../../../../core/notification/services/notifi
 export class StartComponent implements OnInit {
 
   /** App title */
-  title = 'basalt-ng';
+  title = environment.APP_NAME;
 
   //
   // Lifecycle hooks

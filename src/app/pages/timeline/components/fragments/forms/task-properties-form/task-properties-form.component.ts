@@ -135,7 +135,7 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /**
    * Handles changes in recurring flag
-   * @param {MatSlideToggleChange} event event
+   * @param event event
    */
   onRecurringChanged(event: MatSlideToggleChange) {
     this.recurring = event.checked;
@@ -148,7 +148,7 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /**
    * Handles completion date changes
-   * @param {Date} value completion date
+   * @param value completion date
    */
   onCompletionDateChanged(value: Date) {
     this.task.completionDate = value;
@@ -159,7 +159,7 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /**
    * Handles due date changes
-   * @param {Date} value due date
+   * @param value due date
    */
   onDueDateChanged(value: Date) {
     this.task.dueDate = value;
@@ -183,7 +183,7 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /**
    * Handles recurrence interval changes
-   * @param {RecurrenceInterval} value recurrence interval
+   * @param value recurrence interval
    */
   onRecurrenceIntervalChanged(value: RecurrenceInterval) {
     this.task.recurrenceInterval = value;
@@ -194,7 +194,7 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /**
    * Handles hover over priority flags
-   * @param {number} priority priority hovered over
+   * @param priority priority hovered over
    */
   onHoverFlag(priority: number) {
     if (!this.readonly) {
@@ -214,7 +214,7 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /**
    * Handles click on priority flags
-   * @param {number} priority priority clicked on
+   * @param priority priority clicked on
    */
   onClickFlag(priority: number) {
     if (!this.readonly) {
@@ -235,7 +235,7 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /**
    * Handles project changes
-   * @param {Project} project project value
+   * @param project project value
    */
   onProjectChanged(project: Project) {
     this.project = project;

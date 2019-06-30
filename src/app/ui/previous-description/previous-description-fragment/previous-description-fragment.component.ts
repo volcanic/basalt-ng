@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {Description} from 'app/core/entity/model/description.model';
 
 /**
  * Displays previous description fragment

@@ -25,7 +25,7 @@ export class IntroGuard implements CanActivate {
 
   /**
    * Checks if the guarded route can be activated
-   * @param next activated toute
+   * @param next activated route
    * @param state router state
    */
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {

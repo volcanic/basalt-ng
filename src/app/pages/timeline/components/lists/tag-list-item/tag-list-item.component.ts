@@ -42,7 +42,7 @@ export class TagListItemComponent  {
 
   /**
    * Handles hover over container
-   * @param {boolean} hovered whether there is currently a hover event
+   * @param hovered whether there is currently a hover event
    */
   onHoverContainer(hovered: boolean) {
     this.state = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;

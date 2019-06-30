@@ -17,7 +17,7 @@ export class Person extends Entity {
 
   /**
    * Constructor
-   * @param {string} name person name
+   * @param name person name
    */
   constructor(name: string) {
     super();

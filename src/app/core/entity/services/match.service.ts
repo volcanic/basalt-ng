@@ -1,8 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Tasklet} from '../model/tasklet.model';
-import {Project} from '../model/project.model';
-import {Task} from '../model/task.model';
-import {Tag} from '../model/tag.model';
 import {Description} from '../model/description.model';
 import {Person} from '../model/person.model';
 import {ProjectService} from './project.service';
@@ -13,6 +10,9 @@ import {TagService} from './tag.service';
 import {PersonService} from './person.service';
 import {MeetingMinuteItem} from '../model/meeting-minutes/meeting-minute-item.model';
 import {DailyScrumItem} from '../model/daily-scrum/daily-scrum-item.model';
+import {Project} from '../model/project.model';
+import {Tag} from '../model/tag.model';
+import {Task} from '../model/task.model';
 
 /**
  * Handles matching
@@ -22,11 +22,11 @@ export class MatchService {
 
   /**
    * Constructor
-   * @param {ProjectService} projectService
-   * @param {TaskService} taskService
-   * @param {TaskletService} taskletService
-   * @param {TagService} tagService
-   * @param {PersonService} personService
+   * @param projectService project service
+   * @param taskService task service
+   * @param taskletService tasklet service
+   * @param tagService tag service
+   * @param personService person service
    */
   constructor(private projectService: ProjectService,
               private taskService: TaskService,
@@ -37,8 +37,8 @@ export class MatchService {
 
   /**
    * Normalizes a string in order to make comparison less prone to errors
-   * @param {string} value input value
-   * @returns {string} normalized string
+   * @param value input value
+   * @returns normalized string
    */
   static normalize(value: string): string {
     return (value != null) ? value
@@ -59,9 +59,9 @@ export class MatchService {
 
   /**
    * Compares two string values
-   * @param {string} value1 first value
-   * @param {string} value2 second value
-   * @returns {number} 1 if the first values comes after the second one, otherwise -1
+   * @param value1 first value
+   * @param value2 second value
+   * @returns 1 if the first values comes after the second one, otherwise -1
    */
   static compare(value1: string, value2: string) {
     return MatchService.normalize(value1) > MatchService.normalize(value2) ? 1 : -1;
@@ -75,7 +75,7 @@ export class MatchService {
    * Determines whether a value contains a specific item
    * @param value value to check
    * @param item single word
-   * @returns {boolean} true if value includes word
+   * @returns true if value includes word
    */
   static valueMatchesSingleItem(value: string, item: string): boolean {
     return value != null
@@ -87,8 +87,8 @@ export class MatchService {
   /**
    * Splits a item into an array of items using space as an delimiter where words can be grouped by surrounding them
    * with double quotes
-   * @param {string} items search items formatted as a single string
-   * @returns {string[]} array of search items
+   * @param items search items formatted as a single string
+   * @returns array of search items
    */
   static splitSearchItems(items: string): string[] {
 
@@ -112,9 +112,9 @@ export class MatchService {
 
   /**
    * Determines whether a text matches a single item
-   * @param {string} text text to check
-   * @param {string} item search item
-   * @returns {boolean} true if text matches search item
+   * @param text text to check
+   * @param item search item
+   * @returns true if text matches search item
    */
   static textMatchesSingleItem(text: string, item: string): boolean {
     return MatchService.valueMatchesSingleItem(text, item);
@@ -122,9 +122,9 @@ export class MatchService {
 
   /**
    * Determines whether a task matches a single item
-   * @param {Task} task task to check
-   * @param {string} item search item
-   * @returns {boolean} true if task matches search item
+   * @param task task to check
+   * @param item search item
+   * @returns true if task matches search item
    */
   static taskNameMatchesSingleItem(task: Task, item: string): boolean {
     return (task != null) ? MatchService.textMatchesSingleItem(task.name, item) : false;
@@ -132,9 +132,9 @@ export class MatchService {
 
   /**
    * Determines whether a project matches a single item
-   * @param {Project} project to check
-   * @param {string} item search item
-   * @returns {boolean} true if project matches search item
+   * @param project to check
+   * @param item search item
+   * @returns true if project matches search item
    */
   static projectNameMatchesSingleItem(project: Project, item: string): boolean {
     return (project != null) ? MatchService.textMatchesSingleItem(project.name, item) : false;
@@ -142,9 +142,9 @@ export class MatchService {
 
   /**
    * Determines whether a tag's name matches a single item
-   * @param {Tag} tag tag to check
-   * @param {string} item search item
-   * @returns {boolean} true if tag's name matches search item
+   * @param tag tag to check
+   * @param item search item
+   * @returns true if tag's name matches search item
    */
   static tagNameMatchesSingleItem(tag: Tag, item: string): boolean {
     return (tag != null) ? MatchService.textMatchesSingleItem(tag.name, item) : false;
@@ -152,9 +152,9 @@ export class MatchService {
 
   /**
    * Determines whether a person's name matches a single item
-   * @param {Person} person person to check
-   * @param {string} item search item
-   * @returns {boolean} true if person's name matches search item
+   * @param person person to check
+   * @param item search item
+   * @returns true if person's name matches search item
    */
   static personNameMatchesSingleItem(person: Person, item: string): boolean {
     return (person != null) ? MatchService.textMatchesSingleItem(person.name, item) : false;
@@ -166,9 +166,9 @@ export class MatchService {
 
   /**
    * Determines if a tasklet matches a given date
-   * @param {Tasklet} tasklet to check
-   * @param {Date} date focus date
-   * @returns {boolean} true if the tasklet matches given date
+   * @param tasklet to check
+   * @param date focus date
+   * @returns true if the tasklet matches given date
    */
   static taskletMatchesDate(tasklet: Tasklet, date: Date) {
     return new Date(tasklet.creationDate) > new Date(DateService.getDayStart(date))
@@ -183,7 +183,7 @@ export class MatchService {
    * Determines whether a tasklet matches a given set of tags
    * @param tasklet tasklet to check
    * @param tags array of tags the tasklet should contain
-   * @returns {boolean} true if tasklet matches given tags
+   * @returns true if tasklet matches given tags
    */
   public taskletMatchesTags(tasklet: Tasklet, tags: Tag[]): boolean {
     return tags.length === 0 || (tasklet != null && tasklet.tagIds != null && tasklet.tagIds.map(id => {
@@ -199,7 +199,7 @@ export class MatchService {
    * Determines whether a tasklet matches a given set of tags
    * @param task task to check
    * @param tags array of tags the task should contain
-   * @returns {boolean} true if task matches given tags
+   * @returns true if task matches given tags
    */
   public taskMatchesTags(task: Task, tags: Tag[]): boolean {
     return tags.length === 0 || (task != null && task.tagIds != null && task.tagIds.map(id => {
@@ -215,7 +215,7 @@ export class MatchService {
    * Determines whether a tag matches a given set of tags
    * @param tag tag to check
    * @param tags array of tags the tag should be contained in
-   * @returns {boolean} true if tag matches given tags
+   * @returns true if tag matches given tags
    */
   public tagMatchesTags(tag: Tag, tags: Tag[]) {
     return (tag == null && tags.length === 0)
@@ -232,7 +232,7 @@ export class MatchService {
    * Determines whether a tasklet matches a given set of tasks
    * @param tasklet tasklet to check
    * @param tasks array of tasks tasklet should match
-   * @returns {boolean} true if tasklet matches given tasks
+   * @returns true if tasklet matches given tasks
    */
   public taskletMatchesTasks(tasklet: Tasklet, tasks: Task[]): boolean {
     const task = this.taskletService.getTaskByTasklet(tasklet);
@@ -244,7 +244,7 @@ export class MatchService {
    * Determines whether a task matches a given set of tasks
    * @param task task to check
    * @param tasks array of tasks task should match
-   * @returns {boolean} true if task matches given tasks
+   * @returns true if task matches given tasks
    */
   public taskMatchesTasks(task: Task, tasks: Task[]): boolean {
     return (task == null && tasks.length === 0)
@@ -257,7 +257,7 @@ export class MatchService {
    * Determines whether a project matches a given set of project
    * @param project project to check
    * @param tasks array of tasks the project should be contained in
-   * @returns {boolean} true if project matches given tasks
+   * @returns true if project matches given tasks
    */
   public projectMatchesTasks(project: Project, tasks: Task[]) {
     return tasks.length === 0
@@ -275,7 +275,7 @@ export class MatchService {
    * Determines whether a tasklet matches a given set of projects
    * @param tasklet tasklet to check
    * @param projects array of projects tasklet should match
-   * @returns {boolean} true if tasklet matches given projects
+   * @returns true if tasklet matches given projects
    */
   public taskletMatchesProjects(tasklet: Tasklet, projects: Project[]): boolean {
     const project = this.taskletService.getProjectByTasklet(tasklet);
@@ -286,7 +286,7 @@ export class MatchService {
    * Determines whether a task matches a given set of projects
    * @param task task to check
    * @param projects array of projects task should match
-   * @returns {boolean} true if task matches given projects
+   * @returns true if task matches given projects
    */
   public taskMatchesProjects(task: Task, projects: Project[]): boolean {
     const project = this.projectService.projects.get(task.projectId);
@@ -298,7 +298,7 @@ export class MatchService {
    * Determines whether a project matches a given set of project
    * @param project project to check
    * @param projects array of projects the project should be contained in
-   * @returns {boolean} true if project matches given projects
+   * @returns true if project matches given projects
    */
   public projectMatchesProjects(project: Project, projects: Project[]) {
     return (project == null && projects.length === 0)
@@ -315,7 +315,7 @@ export class MatchService {
    * Determines whether a tasklet matches a given set of persons
    * @param tasklet tasklet to check
    * @param persons array of persons tasklet should match
-   * @returns {boolean} true if tasklet matches given persons
+   * @returns true if tasklet matches given persons
    */
   public taskletMatchesPersons(tasklet: Tasklet, persons: Person[]): boolean {
     return persons.length === 0 || (tasklet.personIds != null && tasklet.personIds.map(id => {
@@ -331,7 +331,7 @@ export class MatchService {
    * Determines whether a task matches a given set of persons
    * @param task task to check
    * @param persons array of persons task should match
-   * @returns {boolean} true if task matches given persons
+   * @returns true if task matches given persons
    */
   public taskMatchesPersons(task: Task, persons: Person[]): boolean {
     return persons.length === 0 || (task.delegatedToId != null
@@ -342,7 +342,7 @@ export class MatchService {
    * Determines whether a task matches a given set of persons
    * @param person person to check
    * @param persons array of persons task should match
-   * @returns {boolean} true if task matches given persons
+   * @returns true if task matches given persons
    */
   public personMatchesPersons(person: Person, persons: Person[]) {
     return (person == null && persons.length === 0)
@@ -359,7 +359,7 @@ export class MatchService {
    * Determines whether a tasklet matches every of the specified items
    * @param tasklet tasklet to check
    * @param items multiple words in one string
-   * @returns {boolean} true if tasklet matches every search item
+   * @returns true if tasklet matches every search item
    */
   public taskletMatchesEveryItem(tasklet: Tasklet, items: string): boolean {
     const task = this.taskletService.getTaskByTasklet(tasklet);
@@ -388,7 +388,7 @@ export class MatchService {
    * Determines whether a task matches every of the specified items
    * @param task task to check
    * @param items multiple words in one string
-   * @returns {boolean} true if task matches every search item
+   * @returns true if task matches every search item
    */
   public taskMatchesEveryItem(task: Task, items: string): boolean {
     const project = this.taskService.getProjectByTask(task);
@@ -408,7 +408,7 @@ export class MatchService {
    * Determines whether a project matches every of the specified items
    * @param project project to check
    * @param items multiple words in one string
-   * @returns {boolean} true if project matches every search item
+   * @returns true if project matches every search item
    */
   public projectMatchesEveryItem(project: Project, items: string): boolean {
     return items == null || items.trim() === '' || MatchService.splitSearchItems(items).every(item => {
@@ -420,7 +420,7 @@ export class MatchService {
    * Determines whether a tag matches every of the specified items
    * @param tag tag to check
    * @param items multiple words in one string
-   * @returns {boolean} true if tag matches every search item
+   * @returns true if tag matches every search item
    */
   public tagMatchesEveryItem(tag: Tag, items: string): boolean {
     return items == null || items.trim() === '' || MatchService.splitSearchItems(items).every(item => {
@@ -432,7 +432,7 @@ export class MatchService {
    * Determines whether a person matches every of the specified items
    * @param person value to check
    * @param items multiple words in one string
-   * @returns {boolean}
+   * @returns true if person matches every item
    */
   public personMatchesEveryItem(person: Person, items: string): boolean {
     return items == null || items.trim() === '' || MatchService.splitSearchItems(items).every(item => {
@@ -446,9 +446,9 @@ export class MatchService {
 
   /**
    * Determines whether a description matches a given search item
-   * @param {Description} description description to check
-   * @param {string} item search item
-   * @returns {boolean} true if description matches search item
+   * @param description description to check
+   * @param item search item
+   * @returns true if description matches search item
    */
   private descriptionMatchesSingleItem(description: Description, item: string): boolean {
     return description.value != null && description.value.split('\n').some(s => {
@@ -458,9 +458,9 @@ export class MatchService {
 
   /**
    * Determines whether meeting minutes matches a given search item
-   * @param {MeetingMinuteItem[]} meetingMinutes meeting minutes to check
-   * @param {string} item search item
-   * @returns {boolean} true if meeting minutes match search item
+   * @param meetingMinutes meeting minutes to check
+   * @param item search item
+   * @returns true if meeting minutes match search item
    */
   private meetingMinutesMatchesSingleItem(meetingMinutes: MeetingMinuteItem[], item: string): boolean {
     return meetingMinutes != null && meetingMinutes.some(meetingMinute => {
@@ -470,9 +470,9 @@ export class MatchService {
 
   /**
    * Determines whether daily scrum matches a given search item
-   * @param {DailyScrumItem[]} dailyScrumItems daily scrum items to check
-   * @param {string} item search item
-   * @returns {boolean} true if daily scrum items match search item
+   * @param dailyScrumItems daily scrum items to check
+   * @param item search item
+   * @returns true if daily scrum items match search item
    */
   private dailyScrumMatchesSingleItem(dailyScrumItems: DailyScrumItem[], item: string): boolean {
     return dailyScrumItems != null && dailyScrumItems.some(meetingMinute => {
@@ -482,9 +482,9 @@ export class MatchService {
 
   /**
    * Determines whether at least one person of a given array matches a given search item
-   * @param {Person[]} persons array of persons to check
-   * @param {string} item search item
-   * @returns {boolean} true if at least one person matches search item
+   * @param persons array of persons to check
+   * @param item search item
+   * @returns true if at least one person matches search item
    */
   private personsMatchesSingleItem(persons: Person[], item: string): boolean {
     return persons != null && persons.some(p => {
@@ -494,9 +494,9 @@ export class MatchService {
 
   /**
    * Determines whether at least one tag of a given array matches a given search item
-   * @param {Tag[]} tags array of tags to check
-   * @param {string} item search item
-   * @returns {boolean} true if at least one tag matches search item
+   * @param tags array of tags to check
+   * @param item search item
+   * @returns true if at least one tag matches search item
    */
   private tagsMatchesSingleItem(tags: Tag[], item: string): boolean {
     return tags != null && tags.some(t => {

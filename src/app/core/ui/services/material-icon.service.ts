@@ -35,9 +35,9 @@ class Icon {
 
   /**
    * Constructor
-   * @param {IconTopic} topic
-   * @param {string} name
-   * @param {string} file
+   * @param topic topic
+   * @param name name
+   * @param file file
    */
   constructor(topic: IconTopic, name: string, file: string) {
     this.topic = topic;
@@ -154,6 +154,7 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('outlined_flag', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/baseline-outlined_flag_24px.svg'));
     iconRegistry.addSvgIcon('test_tube', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_test_tube_24px.svg'));
     iconRegistry.addSvgIcon('code_tags_check', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_code_tags_check_24px.svg'));
+    // tslint:disable-next-line:max-line-length
     iconRegistry.addSvgIcon('file_document_outline', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_file_document_outline_24px.svg'));
     iconRegistry.addSvgIcon('clock_end', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_clock_end_24px.svg'));
     iconRegistry.addSvgIcon('clock_start', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_clock_start_24px.svg'));

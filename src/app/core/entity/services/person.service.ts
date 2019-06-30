@@ -16,6 +16,7 @@ import {DateService} from './date.service';
  * <li> Persistence
  * <li> Lookup
  */
+/* tslint:disable:object-literal-key-quotes */
 @Injectable({
   providedIn: 'root'
 })
@@ -30,16 +31,16 @@ export class PersonService {
   person: Person;
   /** Subject that publishes person */
   personSubject = new Subject<Person>();
-  
+
   /** Special person representing the user */
   myself: Person;
 
   /**
    * Constructor
-   * @param {PouchDBService} pouchDBService
-   * @param {SuggestionService} suggestionService
-   * @param {SnackbarService} snackbarService
-   * @param {ScopeService} scopeService
+   * @param pouchDBService pouchDB service
+   * @param suggestionService suggestion service
+   * @param snackbarService snackbar service
+   * @param scopeService scope service
    */
   constructor(private pouchDBService: PouchDBService,
               private suggestionService: SuggestionService,
@@ -87,7 +88,7 @@ export class PersonService {
 
   /**
    * Loads persons by a given scope
-   * @param {Scope} scope scope to filter by
+   * @param scope scope to filter by
    */
   public findPersonsByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PERSONS_DAYS));
@@ -111,7 +112,7 @@ export class PersonService {
 
   /**
    * Loads person by a given ID
-   * @param {number} id ID of filter by
+   * @param id ID of filter by
    */
   public findPersonByID(id: string) {
     const index = {fields: ['entityType', 'id', 'creationDate']};
@@ -189,7 +190,7 @@ export class PersonService {
 
   /**
    * Creates a new person
-   * @param {Person} person person to be created
+   * @param person person to be created
    */
   public createPerson(person: Person): Promise<any> {
     return new Promise(() => {
@@ -207,8 +208,8 @@ export class PersonService {
 
   /**
    * Updates existing person
-   * @param {Person} person person to be updated
-   * @param {boolean} showSnack shows snackbar if true
+   * @param person person to be updated
+   * @param showSnack shows snackbar if true
    */
   public updatePerson(person: Person, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
@@ -228,7 +229,7 @@ export class PersonService {
 
   /**
    * Deletes a person
-   * @param {Person} person person to be deleted
+   * @param person person to be deleted
    */
   public deletePerson(person: Person): Promise<any> {
     return new Promise(() => {
@@ -252,8 +253,8 @@ export class PersonService {
 
   /**
    * Retrieves a person by a given ID
-   * @param {string} id ID to find person by
-   * @returns {Person} person identified by given ID, null if no such person exists
+   * @param id ID to find person by
+   * @returns person identified by given ID, null if no such person exists
    */
   public getPersonById(id: string): Person {
     return this.persons.get(id);
@@ -261,8 +262,8 @@ export class PersonService {
 
   /**
    * Retrieves a person by a given name
-   * @param {string} name name to find person by
-   * @returns {Person} person identified by given name, null if no such person exists
+   * @param name name to find person by
+   * @returns person identified by given name, null if no such person exists
    */
   public getPersonByName(name: string): Person {
     let person: Person = null;

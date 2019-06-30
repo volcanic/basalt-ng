@@ -148,9 +148,9 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param emailService email service
    * @param filterService filter service
    * @param mediaService media service
-   * @param {MaterialColorService} materialColorService
-   * @param {MaterialIconService} materialIconService
-   * @param {ScrollDispatcher} scroll scroll
+   * @param materialColorService material color service
+   * @param materialIconService material icon service
+   * @param scroll scroll
    * @param personService person service
    * @param projectService project service
    * @param scopeService scope service
@@ -165,7 +165,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param iconRegistry iconRegistry
    * @param sanitizer sanitizer
    * @param dialog dialog
-   * @param {NgZone} zone Angular zone
+   * @param zone Angular zone
    */
   constructor(private colorService: ColorService,
               private emailService: EmailService,
@@ -465,7 +465,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles click on menu items
-   * @param {string} menuItem menu item that has been clicked
+   * @param menuItem menu item that has been clicked
    */
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
@@ -475,6 +475,9 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.sidenavEnd.toggle().then(() => {
         });
+        break;
+      }
+      default: {
         break;
       }
     }
@@ -500,7 +503,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles key down event
-   * @param event
+   * @param event event
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
@@ -528,7 +531,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles click on button
-   * @param action
+   * @param action action
    */
   onButtonClicked(action: Action) {
     switch (action) {
@@ -623,9 +626,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles events targeting a task
-   * @param {any} event event parameters
+   * @param event event parameters
    */
-  private onTaskEvent(event: { action: Action, task: Task, tasks?: Task[], project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
+  private onTaskEvent(event: {
+    action: Action, task: Task, tasks?: Task[],
+    project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean
+  }) {
     const task = CloneService.cloneTask(event.task as Task);
     // const tasks = CloneService.cloneTasks(event.tasks as Task[]);
     const project = CloneService.cloneProject(event.project as Project);
@@ -665,7 +671,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         if (references) {
-          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+          this.dialog.open(InformationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Cannot delete task',
@@ -675,7 +681,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
         } else {
-          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Delete person',
@@ -774,8 +780,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Determines whether the tags assigned to a given task already exixst, otherwise creates new ones
-   * @param {Task} task task assign tags to
-   * @param {Tag[]} tags array of tags to be checked
+   * @param task task assign tags to
+   * @param tags array of tags to be checked
    */
   private evaluateTaskTags(task: Task, tags: Tag[]) {
     if (tags != null) {
@@ -818,8 +824,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Aggregates tags
-   * @param {Task} task
-   * @returns {Tag[]}
+   * @param task task
+   * @returns tags
    */
   private aggregateTags(task: Task): Tag[] {
     const aggregatedTags = new Map<string, Tag>();
@@ -837,8 +843,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Infers tags from a task's description
-   * @param {Task} task
-   * @returns {Tag[]}
+   * @param task task
+   * @returns tags
    */
   private inferTags(task: Task): Tag[] {
     const inferredTags = new Map<string, Tag>();

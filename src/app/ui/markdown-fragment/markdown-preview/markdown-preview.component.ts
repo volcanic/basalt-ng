@@ -8,7 +8,7 @@ const md = require('markdown-it')({
   html: true,
   linkify: true,
   typographer: true,
-  highlight: function (str, lang) {
+  highlight(str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
         return hljs.highlight(lang, str).value;
@@ -23,7 +23,8 @@ const md = require('markdown-it')({
 /**
  * Default renderer for markdown
  */
-const defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
+// tslint:disable-next-line:only-arrow-functions
+const defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
   return self.renderToken(tokens, idx, options);
 };
 
@@ -35,7 +36,8 @@ const defaultRender = md.renderer.rules.link_open || function (tokens, idx, opti
  * @param env env
  * @param self self
  */
-md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+// tslint:disable-next-line:only-arrow-functions
+md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
   // If you are sure other plugins can't add `target` - drop check below
   const aIndex = tokens[idx].attrIndex('target');
 

@@ -10,16 +10,24 @@ export declare type Permission = 'denied' | 'granted' | 'default';
 })
 export class NotificationService {
 
+  /** Permission */
   public permission: Permission;
 
+  /** Whether notification is supported or not */
   static isSupported(): boolean {
     return 'Notification' in window;
   }
 
+  /**
+   * Constructor
+   */
   constructor() {
     this.permission = NotificationService.isSupported() ? 'default' : 'denied';
   }
 
+  /**
+   * Open dialog that requests notification permission
+   */
   public requestPermission() {
     if (NotificationService.isSupported()) {
       Notification.requestPermission().then((result) => {

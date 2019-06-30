@@ -5,7 +5,6 @@ import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
 import {TaskletType} from 'app/core/entity/model/tasklet-type.enum';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Person} from 'app/core/entity/model/person.model';
-import {ConfirmationDialogComponent} from 'app/ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {Task} from 'app/core/entity/model/task.model';
 import {Description} from 'app/core/entity/model/description.model';
 import {Action} from 'app/core/entity/model/action.enum';
@@ -86,7 +85,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * @param tagService tag service
    * @param taskletService tasklet service
    * @param taskService task service
-   * @param {MatDialogRef<ConfirmationDialogComponent>} dialogRef dialog reference
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public materialColorService: MaterialColorService,
@@ -258,7 +257,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Handles key down event
-   * @param event
+   * @param event event
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
@@ -273,7 +272,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Handles click on button
-   * @param action
+   * @param action action
    */
   onButtonClicked(action: Action) {
     switch (action) {
@@ -483,8 +482,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Aggregates tags
-   * @param {Tasklet} tasklet
-   * @returns {Tag[]}
+   * @param tasklet tasklet
+   * @returns tags
    */
   private aggregateTags(tasklet: Tasklet): Tag[] {
     const aggregatedTags = new Map<string, Tag>();
@@ -502,8 +501,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Infers tags from a tasklet's description
-   * @param {Tasklet} tasklet
-   * @returns {Tag[]}
+   * @param tasklet tasklet
+   * @returns tags
    */
   private inferTags(tasklet: Tasklet): Tag[] {
     const inferredTags = new Map<string, Tag>();
@@ -528,8 +527,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Aggregates persons
-   * @param {Tasklet} tasklet
-   * @returns {Person[]}
+   * @param tasklet tasklet
+   * @returns persons
    */
   private aggregatePersons(tasklet: Tasklet): Person[] {
     const aggregatedPersons = new Map<string, Person>();
@@ -547,8 +546,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /**
    * Infers persons from a tasklet's description
-   * @param {Tasklet} tasklet
-   * @returns {Person[]}
+   * @param tasklet tasklet
+   * @returns persons
    */
   private inferPersons(tasklet: Tasklet): Person[] {
     const inferredPersons = new Map<string, Person>();

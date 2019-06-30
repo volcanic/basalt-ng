@@ -12,7 +12,7 @@ export class TagNamesPipe implements PipeTransform {
   /**
    * Transforms a list of tags into a list of their names
    * @param tags lists of tags
-   * @param args
+   * @param args arguments
    */
   transform(tags: Tag[], args?: any): string[] {
     return tags.map(tag => {

@@ -20,7 +20,7 @@ export class DigestService {
 
   /**
    * Constructor
-   * @param {TaskletService} taskletService
+   * @param taskletService tasklet service
    */
   constructor(private taskletService: TaskletService) {
   }
@@ -28,7 +28,7 @@ export class DigestService {
   /**
    * Generates a digest for given day
    * @param date day to create digest for
-   * @returns {ProjectDigest} digest for the given date
+   * @returns digest for the given date
    */
   getDailyDigest(date: Date): ProjectDigest {
     const start = DateService.getDayStart(date);
@@ -55,7 +55,7 @@ export class DigestService {
   /**
    * Generates a digest for a whole week
    * @param date one day in the week to create the digest for
-   * @returns {ProjectDigest} digest for the week determined by the given date
+   * @returns digest for the week determined by the given date
    */
   getWeeklyDigest(date: Date): ProjectDigest {
     const start = DateService.getWeekStart(date);
@@ -70,10 +70,10 @@ export class DigestService {
 
   /**
    * Generates a project digest for a given period of time
-   * @param {Tasklet[]} tasklets
-   * @param {Date} start start date
-   * @param {Date} end end date
-   * @param {string} topic to be displayed as root node
+   * @param tasklets tasklets
+   * @param start start date
+   * @param end end date
+   * @param topic to be displayed as root node
    */
   getProjectDigest(tasklets: Tasklet[], start: Date, end: Date, topic: string): ProjectDigest {
     const projectDigest = new ProjectDigest();
@@ -137,10 +137,10 @@ export class DigestService {
 
   /**
    * Retrieves all tasklets of a given period
-   * @param {Date} start start date
-   * @param {Date} end end date
-   * @param {Tasklet[]} tasklets array of all tasklets
-   * @returns {Tasklet[]} array of tasklets that match the given date
+   * @param start start date
+   * @param end end date
+   * @param tasklets array of all tasklets
+   * @returns array of tasklets that match the given date
    */
   public getTaskletsOfPeriod(start: Date, end: Date, tasklets: Tasklet[]): Tasklet[] {
     let taskOfPeriod = [];

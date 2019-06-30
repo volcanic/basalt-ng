@@ -11,22 +11,22 @@ export class ProjectEffort {
   /** Effort */
   effort: number;
   /** Map of task efforts */
-  taskEfforts: Map<String, TaskEffort>;
+  taskEfforts: Map<string, TaskEffort>;
 
   /**
    * Constructor
-   * @param {Project} project
-   * @param {number} effort
+   * @param project project
+   * @param effort efforts
    */
   constructor(project: Project, effort: number) {
     this.project = project;
     this.effort = effort;
-    this.taskEfforts = new Map<String, TaskEffort>();
+    this.taskEfforts = new Map<string, TaskEffort>();
   }
 
   /**
    * Returns a sorted array of task efforts
-   * @returns {TaskEffort[]} array of task efforts
+   * @returns array of task efforts
    */
   getTaskEfforts(): TaskEffort[] {
     return Array.from(this.taskEfforts.values()).sort((e1, e2) => {

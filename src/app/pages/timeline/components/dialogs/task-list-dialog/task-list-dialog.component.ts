@@ -21,7 +21,7 @@ export class TaskListDialogComponent {
 
   /**
    * Constructor
-   * @param {MatDialogRef<TaskDialogComponent>} dialogRef dialog reference
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -47,7 +47,7 @@ export class TaskListDialogComponent {
 
   /**
    * Handles task events
-   * @param {any} event task event
+   * @param event event
    */
   onTaskEvent(event: { action: Action, task: Task }) {
     this.dialogRef.close(event);

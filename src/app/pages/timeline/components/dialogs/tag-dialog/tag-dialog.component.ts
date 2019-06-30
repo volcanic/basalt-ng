@@ -1,5 +1,4 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {ConfirmationDialogComponent} from 'app/ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
@@ -31,7 +30,7 @@ export class TagDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {MatDialogRef<TagDialogComponent>} dialogRef dialog reference
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<TagDialogComponent>,
@@ -68,7 +67,7 @@ export class TagDialogComponent implements OnInit {
 
   /**
    * Handles key down event
-   * @param event
+   * @param event event
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;

@@ -7,7 +7,6 @@ import {PouchDBService} from '../../../persistence/services/pouchdb.service';
 import {Project} from '../../model/project.model';
 import {ProjectService} from '../project.service';
 import {environment} from '../../../../../environments/environment';
-import {SnackbarService} from '../../../ui/services/snackbar.service';
 import {ScopeService} from '../scope.service';
 import {Scope} from '../../model/scope.enum';
 import {TagService} from '../tag.service';
@@ -23,6 +22,7 @@ import {Tasklet} from '../../model/tasklet.model';
  * <li> Lookup
  * <li> Display options
  */
+/* tslint:disable:object-literal-key-quotes */
 @Injectable({
   providedIn: 'root'
 })
@@ -40,12 +40,11 @@ export class TaskService {
 
   /**
    * Constructor
-   * @param {PouchDBService} pouchDBService
-   * @param {ProjectService} projectService
-   * @param {TagService} tagService
-   * @param {SuggestionService} suggestionService
-   * @param {SnackbarService} snackbarService
-   * @param {ScopeService} scopeService
+   * @param pouchDBService pouchDB service
+   * @param projectService project service
+   * @param tagService tag service
+   * @param suggestionService suggestion service
+   * @param scopeService scope service
    */
   constructor(private pouchDBService: PouchDBService,
               private projectService: ProjectService,
@@ -87,7 +86,7 @@ export class TaskService {
 
   /**
    * Loads tasks by a given scope
-   * @param {Scope} scope scope to filter by
+   * @param scope scope to filter by
    */
   public findTasksByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKS_DAYS));
@@ -111,7 +110,7 @@ export class TaskService {
 
   /**
    * Loads open tasks by a given scope
-   * @param {Scope} scope scope to filter by
+   * @param scope scope to filter by
    */
   public findOpenTasksByScope(scope: Scope) {
     const index = {fields: ['entityType', 'scope', 'modificationDate', 'completionDate']};
@@ -134,7 +133,7 @@ export class TaskService {
 
   /**
    * Loads closed tasks by a given scope
-   * @param {Scope} scope scope to filter by
+   * @param scope scope to filter by
    */
   public findClosedTasksByScope(scope: Scope) {
     const index = {fields: ['entityType', 'scope', 'modificationDate', 'completionDate']};
@@ -157,7 +156,7 @@ export class TaskService {
 
   /**
    * Loads task by a given ID
-   * @param {number} id ID of filter by
+   * @param id ID of filter by
    */
   public findTaskByID(id: string) {
     const index = {fields: ['entityType', 'id', 'creationDate']};
@@ -242,7 +241,7 @@ export class TaskService {
 
   /**
    * Creates a new task
-   * @param {Task} task tasak to be created
+   * @param task tasak to be created
    */
   public createTask(task: Task): Promise<any> {
     return new Promise(() => {
@@ -270,7 +269,7 @@ export class TaskService {
 
   /**
    * Updates existing task
-   * @param {Task} task task to be updated
+   * @param task task to be updated
    */
   public updateTask(task: Task): Promise<any> {
     return new Promise(() => {
@@ -298,7 +297,7 @@ export class TaskService {
 
   /**
    * Deletes a task
-   * @param {Task} task task to be deleted
+   * @param task task to be deleted
    */
   public deleteTask(task: Task): Promise<any> {
     return new Promise(() => {
@@ -324,8 +323,8 @@ export class TaskService {
 
   /**
    * Retrieves a task by a given name
-   * @param {string} name name to find task by
-   * @returns {Task} task identified by given name, null if no such task exists
+   * @param name name to find task by
+   * @returns task identified by given name, null if no such task exists
    */
   public getTaskByName(name: string): Task {
     let task: Task = null;
@@ -341,8 +340,8 @@ export class TaskService {
 
   /**
    * Retrieves a project by a given task
-   * @param {Task} task task to find project by
-   * @returns {Project} project referenced by given task, null if no such project exists
+   * @param task task to find project by
+   * @returns project referenced by given task, null if no such project exists
    */
   public getProjectByTask(task: Task): Project {
     if (task != null && task.projectId != null) {
@@ -495,7 +494,8 @@ export class TaskService {
    * Sorts tasks based on their due date & due time, effort estimation and priority
    * @param taskA first task
    * @param taskB seconds task
-   * @return Returns -1 if taskA is of a higher order (i.e. before taskB), 0 if taskA and taskB are equal and 1 if task B is of a higher order
+   * @return Returns -1 if taskA is of a higher order (i.e. before taskB),
+   * 0 if taskA and taskB are equal and 1 if task B is of a higher order
    */
   public sortTasks(taskA: Task, taskB: Task) {
     let returnValue = 0; // 0 does not sort, < 0 places taskA first, > 0 places taskB first

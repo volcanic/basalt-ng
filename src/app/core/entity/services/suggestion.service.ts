@@ -48,7 +48,7 @@ export class SuggestionService {
 
   /**
    * Adds tasklets information to suggestions
-   * @param {Tasklet[]} tasklets new array of tasklets
+   * @param tasklets new array of tasklets
    */
   public updateByTasklets(tasklets: Tasklet[]) {
     tasklets.sort((t1, t2) => {
@@ -88,7 +88,7 @@ export class SuggestionService {
 
   /**
    * Adds tasks information to suggestions
-   * @param {Task[]} tasks new array of tasks
+   * @param tasks new array of tasks
    */
   public updateByTasks(tasks: Task[]) {
     tasks.sort((t1, t2) => {
@@ -119,7 +119,7 @@ export class SuggestionService {
 
   /**
    * Adds projects information to suggestions
-   * @param {Project[]} projects new array of projects
+   * @param projects new array of projects
    */
   public updateByProjects(projects: Project[]) {
     projects.sort((p1, p2) => {
@@ -140,7 +140,7 @@ export class SuggestionService {
 
   /**
    * Adds persons information to suggestions
-   * @param {Person[]} persons new array of persons
+   * @param persons new array of persons
    */
   public updateByPersons(persons: Person[]) {
     persons.forEach(p => {
@@ -159,7 +159,7 @@ export class SuggestionService {
 
   /**
    * Add tags information to suggestions
-   * @param {Tag[]} tags new array of tags
+   * @param tags new array of tags
    */
   public updateByTags(tags: Tag[]) {
     tags.forEach(t => {

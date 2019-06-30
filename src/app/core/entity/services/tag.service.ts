@@ -16,6 +16,7 @@ import {DateService} from './date.service';
  * <li> Persistence
  * <li> Lookup
  */
+/* tslint:disable:object-literal-key-quotes */
 @Injectable({
   providedIn: 'root'
 })
@@ -33,10 +34,10 @@ export class TagService {
 
   /**
    * Constructor
-   * @param {PouchDBService} pouchDBService
-   * @param {SuggestionService} suggestionService
-   * @param {SnackbarService} snackbarService
-   * @param {ScopeService} scopeService
+   * @param pouchDBService pouchDB service
+   * @param suggestionService suggestion service
+   * @param snackbarService snackbar service
+   * @param scopeService scope service
    */
   constructor(private pouchDBService: PouchDBService,
               private suggestionService: SuggestionService,
@@ -76,7 +77,7 @@ export class TagService {
 
   /**
    * Loads tags by a given scope
-   * @param {Scope} scope scope to filter by
+   * @param scope scope to filter by
    */
   public findTagsByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TAGS_DAYS));
@@ -100,7 +101,7 @@ export class TagService {
 
   /**
    * Loads tag by a given ID
-   * @param {number} id ID of filter by
+   * @param id ID of filter by
    */
   public findTagByID(id: string) {
     const index = {fields: ['entityType', 'id', 'creationDate']};
@@ -177,7 +178,7 @@ export class TagService {
 
   /**
    * Creats a new tag
-   * @param {Tag} tag tag to be created
+   * @param tag tag to be created
    */
   public createTag(tag: Tag): Promise<any> {
     return new Promise(() => {
@@ -195,8 +196,8 @@ export class TagService {
 
   /**
    * Updates existing tag
-   * @param {Tag} tag tag to be updated
-   * @param {boolean} showSnack shows snackbar if true
+   * @param tag tag to be updated
+   * @param showSnack shows snackbar if true
    */
   public updateTag(tag: Tag, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
@@ -216,7 +217,7 @@ export class TagService {
 
   /**
    * Deletes a tag
-   * @param {Tag} tag tag to be deleted
+   * @param tag tag to be deleted
    */
   public deleteTag(tag: Tag): Promise<any> {
     return new Promise(() => {
@@ -240,8 +241,8 @@ export class TagService {
 
   /**
    * Retrieves a tag by a given ID
-   * @param {string} id ID to find tag by
-   * @returns {Tag} tag identified by given ID, null if no such tag exists
+   * @param id ID to find tag by
+   * @returns tag identified by given ID, null if no such tag exists
    */
   public getTagById(id: string): Tag {
     return this.tags.get(id);
@@ -249,8 +250,8 @@ export class TagService {
 
   /**
    * Retrieves a tag by a given name
-   * @param {string} name name to find tag by
-   * @returns {Tag} tag identified by given name, null if no such tag exists
+   * @param name name to find tag by
+   * @returns tag identified by given name, null if no such tag exists
    */
   public getTagByName(name: string): Tag {
     let tag: Tag = null;

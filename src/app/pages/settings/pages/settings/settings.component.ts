@@ -32,7 +32,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   title = 'Settings';
 
   /** Map of current settings */
-  settings = new Map<String, Setting>();
+  settings = new Map<string, Setting>();
 
   /** Feature development */
   development: boolean;
@@ -187,7 +187,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles click on menu items
-   * @param {string} menuItem menu item that has been clicked
+   * @param menuItem menu item that has been clicked
    */
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
@@ -196,12 +196,15 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
       }
+      default: {
+        break;
+      }
     }
   }
 
   /**
    * Handles search item typed into the search field
-   * @param {string} searchItem new search item
+   * @param searchItem new search item
    */
   onSearchItemChanged(searchItem: string) {
   }

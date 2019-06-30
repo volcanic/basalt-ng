@@ -11,7 +11,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class ChatBubbleComponent {
 
   /** Text to be displayed */
-  @Input() text: string;
+  @Input() text = '';
   /** Background personColor */
   @Input() color: string;
   /** Text personColor */
@@ -46,7 +46,7 @@ export class ChatBubbleComponent {
 
   /**
    * Handles key down event
-   * @param event
+   * @param event event
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;

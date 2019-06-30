@@ -23,7 +23,7 @@ export class ConfirmationDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {MatDialogRef<PomodoroFinishedDialogComponent>} dialogRef dialog reference
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<ConfirmationDialogComponent>,

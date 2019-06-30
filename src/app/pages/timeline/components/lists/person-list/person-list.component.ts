@@ -18,7 +18,7 @@ export class PersonListComponent implements OnChanges {
   @Input() persons = [];
   /** Persons that are currently filtered */
   @Input() personsFiltered = [];
-  /** Number of items to be shown initially **/
+  /** Number of items to be shown initially */
   @Input() recentCount: number;
   /** Current media */
   @Input() media: Media;
@@ -41,7 +41,7 @@ export class PersonListComponent implements OnChanges {
 
   /**
    * Handles on-changes lifecycle phase
-   * @param changes
+   * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges) {
     this.personsRecent = this.persons.slice(0, this.recentCount);

@@ -9,7 +9,7 @@ export class UUID {
 
   /**
    * Constructor
-   * @param {string} input existing UUID if available
+   * @param input existing UUID if available
    */
   constructor(input?: string) {
     this.value = input || this.getNewUUIDString();
@@ -17,7 +17,7 @@ export class UUID {
 
   /**
    * Returns generated UUID string
-   * @returns {string} generated UUID string
+   * @returns generated UUID string
    */
   toString() {
     return this.value;
@@ -25,7 +25,7 @@ export class UUID {
 
   /**
    * Creates a new UUID string
-   * @returns {string} UUID string
+   * @returns UUID string
    */
   private getNewUUIDString(): string {
     // your favourite guid generation function could go here

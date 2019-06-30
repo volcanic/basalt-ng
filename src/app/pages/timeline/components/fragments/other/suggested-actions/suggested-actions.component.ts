@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
@@ -112,7 +121,9 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskRecurringColor(task);
         suggestedAction.iconColor = this.colorService.getTaskRecurringContrast(task);
-        suggestedAction.tooltip = `${task.name} (expected: ${DateService.getDateString(expectedNextOccurrence)}, ${DateService.getTimeString(expectedNextOccurrence)})`;
+        suggestedAction.tooltip = `${task.name}
+        (expected: ${DateService.getDateString(expectedNextOccurrence)},
+        ${DateService.getTimeString(expectedNextOccurrence)})`;
         suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
@@ -126,7 +137,9 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskOverdueColor(task);
         suggestedAction.iconColor = this.colorService.getTaskOverdueContrast(task);
-        suggestedAction.tooltip = `${task.name} (due: ${DateService.getDateString(task.dueDate)}, ${DateService.getTimeString(task.dueDate)})`;
+        suggestedAction.tooltip = `${task.name}
+        (due: ${DateService.getDateString(task.dueDate)},
+        ${DateService.getTimeString(task.dueDate)})`;
         suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
@@ -140,7 +153,9 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
         suggestedAction.iconColor = this.colorService.getTaskContrast(task);
-        suggestedAction.tooltip = `${task.name} (due: ${DateService.getDateString(task.dueDate)}, ${DateService.getTimeString(task.dueDate)})`;
+        suggestedAction.tooltip = `${task.name}
+        (due: ${DateService.getDateString(task.dueDate)},
+        ${DateService.getTimeString(task.dueDate)})`;
         suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
@@ -154,7 +169,9 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
         suggestedAction.iconColor = this.colorService.getTaskContrast(task);
-        suggestedAction.tooltip = `${task.name} (due: ${DateService.getDateString(task.dueDate)}, ${DateService.getTimeString(task.dueDate)})`;
+        suggestedAction.tooltip = `${task.name}
+        (due: ${DateService.getDateString(task.dueDate)},
+        ${DateService.getTimeString(task.dueDate)})`;
         suggestedAction.task = task;
         this.suggestedActions.push(suggestedAction);
       });
@@ -187,10 +204,10 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
 
   /**
    * Handles click on dynamic suggested action
-   * @param task
+   * @param task task
    */
   onDynamicSuggestedActionClicked(task: Task) {
-    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: task});
+    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task});
   }
 
   /**
@@ -200,6 +217,6 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
   onStaticSuggestedActionClicked(taskletType: TaskletType) {
     const tasklet = new Tasklet();
     tasklet.type = taskletType;
-    this.taskletEventEmitter.emit({action: Action.ADD, tasklet: tasklet});
+    this.taskletEventEmitter.emit({action: Action.ADD, tasklet});
   }
 }

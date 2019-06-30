@@ -48,8 +48,8 @@ export class FileDropFragmentComponent implements OnInit, OnDestroy {
 
   /**
    * Parses content of basalt file
-   * @param {string} value JSON formatted basalt file
-   * @returns {Entity[]} array of entities
+   * @param value JSON formatted basalt file
+   * @returns array of entities
    */
   static parseBasaltFile(value: string): Entity[] {
     return JSON.parse(value);
@@ -126,9 +126,10 @@ export class FileDropFragmentComponent implements OnInit, OnDestroy {
 
   /**
    * Detects if a file has been dropped
-   * @param {FileList} files array of files that have been dropped
+   * @param files array of files that have been dropped
    */
   public fileDropped(files: FileList): void {
+    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < files.length; i++) {
       this.filesSubject.next(files[i]);
     }

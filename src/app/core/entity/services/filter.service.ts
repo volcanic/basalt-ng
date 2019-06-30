@@ -1,7 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Tag} from '../model/tag.model';
-import {Task} from '../model/task.model';
-import {Project} from '../model/project.model';
 import {CloneService} from './clone.service';
 import {ProjectService} from './project.service';
 import {Subject} from 'rxjs';
@@ -10,6 +7,9 @@ import {TaskService} from './task/task.service';
 import {TagService} from './tag.service';
 import {Person} from '../model/person.model';
 import {PersonService} from './person.service';
+import {Project} from '../model/project.model';
+import {Tag} from '../model/tag.model';
+import {Task} from '../model/task.model';
 
 /**
  * Handles filter values
@@ -38,12 +38,12 @@ export class FilterService {
 
   /**
    * Constructor
-   * @param {CloneService} cloneService
-   * @param {TaskletService} taskletService
-   * @param {TaskService} taskService
-   * @param {ProjectService} projectService
-   * @param {TagService} tagService
-   * @param {PersonService} personService
+   * @param cloneService clone service
+   * @param taskletService tasklet service
+   * @param taskService task service
+   * @param projectService project service
+   * @param tagService tag service
+   * @param personService person service
    */
   constructor(private cloneService: CloneService,
               private taskletService: TaskletService,
@@ -68,7 +68,7 @@ export class FilterService {
 
   /**
    * Updates search item and notifies subscribers
-   * @param {string} searchItem new search item
+   * @param searchItem new search item
    */
   public updateSearchItem(searchItem: string) {
     this.searchItem = searchItem;
@@ -88,7 +88,7 @@ export class FilterService {
 
   /**
    * Update tasks and notifies subscribers
-   * @param {Task[]} tasks array of tasks
+   * @param tasks array of tasks
    */
   public updateTasksList(tasks: Task[]) {
     this.updateTasksListInternal(tasks);
@@ -97,7 +97,7 @@ export class FilterService {
 
   /**
    * Updates tasks and notifies subscribers
-   * @param {Task[]} tasks arry of tasks
+   * @param tasks arry of tasks
    */
   public updateTasksListIfNotEmpty(tasks: Task[]) {
     if (this.tasks.size > 0) {
@@ -107,7 +107,7 @@ export class FilterService {
 
   /**
    * Update tasks
-   * @param {Task[]} tasks array of tasks
+   * @param tasks array of tasks
    */
   private updateTasksListInternal(tasks: Task[]) {
     tasks.forEach((t: Task) => {
@@ -132,7 +132,7 @@ export class FilterService {
 
   /**
    * Update projects and notifies subscribers
-   * @param {Project[]} projects array of projects
+   * @param projects array of projects
    */
   public updateProjectsList(projects: Project[]) {
     this.updateProjectsListInternal(projects);
@@ -141,7 +141,7 @@ export class FilterService {
 
   /**
    * Updates projects and notifies subscribers
-   * @param {Project[]} projects arry of projects
+   * @param projects arry of projects
    */
   public updateProjectsListIfNotEmpty(projects: Project[]) {
     if (this.projects.size > 0) {
@@ -151,7 +151,7 @@ export class FilterService {
 
   /**
    * Update projects
-   * @param {Project[]} projects array of projects
+   * @param projects array of projects
    */
   private updateProjectsListInternal(projects: Project[]) {
     projects.forEach((p: Project) => {
@@ -176,7 +176,7 @@ export class FilterService {
 
   /**
    * Updates tags and notifies subscribers
-   * @param {Tag[]} tags arry of tags
+   * @param tags arry of tags
    */
   public updateTagsList(tags: Tag[]) {
     this.updateTagsListInternal(tags);
@@ -185,7 +185,7 @@ export class FilterService {
 
   /**
    * Updates tags and notifies subscribers
-   * @param {Tag[]} tags array of tags
+   * @param tags array of tags
    */
   public updateTagsListIfNotEmpty(tags: Tag[]) {
     if (this.tags.size > 0) {
@@ -195,7 +195,7 @@ export class FilterService {
 
   /**
    * Updates tags
-   * @param {Tag[]} tags array of tags
+   * @param tags array of tags
    */
   private updateTagsListInternal(tags: Tag[]) {
     if (tags != null) {
@@ -220,7 +220,7 @@ export class FilterService {
 
   /**
    * Updates persons and notifies subscribers
-   * @param {Person[]} persons array of persons
+   * @param persons array of persons
    */
   public updatePersonsList(persons: Person[]) {
     this.updatePersonsListInternal(persons);
@@ -229,7 +229,7 @@ export class FilterService {
 
   /**
    * Updates persons and notifies subscribers
-   * @param {Person[]} persons array of persons
+   * @param persons array of persons
    */
   public updatePersonsListIfNotEmpty(persons: Person[]) {
     if (this.persons.size > 0) {
@@ -239,7 +239,7 @@ export class FilterService {
 
   /**
    * Updates persons
-   * @param {Person[]} persons array of persons
+   * @param persons array of persons
    */
   private updatePersonsListInternal(persons: Person[]) {
     persons.forEach((p: Person) => {

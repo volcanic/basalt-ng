@@ -18,7 +18,7 @@ export class ProjectListComponent implements OnChanges {
   @Input() projects = [];
   /** Projects that are currently filtered */
   @Input() projectsFiltered = [];
-  /** Number of items to be shown initially **/
+  /** Number of items to be shown initially */
   @Input() recentCount: number;
   /** Current media */
   @Input() media: Media;
@@ -41,7 +41,7 @@ export class ProjectListComponent implements OnChanges {
 
   /**
    * Handles on-changes lifecycle phase
-   * @param changes
+   * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges) {
     this.projectsRecent = this.projects.slice(0, this.recentCount);

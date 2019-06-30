@@ -21,7 +21,7 @@ export class ProjectListDialogComponent {
 
   /**
    * Constructor
-   * @param {MatDialogRef<ProjectDialogComponent>} dialogRef dialog reference
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,
@@ -47,7 +47,7 @@ export class ProjectListDialogComponent {
 
   /**
    * Handles project events
-   * @param {any} event project event
+   * @param event project event
    */
   onProjectEvent(event: { action: Action, project: Project }) {
     this.dialogRef.close(event);

@@ -65,8 +65,8 @@ export class DateService {
 
   /**
    * Determines if a given date is today
-   * @param {Date} date date to check
-   * @returns {boolean} true if given date is today
+   * @param date date to check
+   * @returns true if given date is today
    */
   static isToday(date: Date): boolean {
     if (date != null) {
@@ -81,9 +81,9 @@ export class DateService {
 
   /**
    * Determines whether a given date is before another date
-   * @param {Date} d1 first date
-   * @param {Date} d2 second date
-   * @returns {boolean} true if first date is before seconds date
+   * @param d1 first date
+   * @param d2 second date
+   * @returns true if first date is before seconds date
    */
   static isBefore(d1: Date, d2: Date): boolean {
     return new Date(d1) < new Date(d2);
@@ -91,9 +91,9 @@ export class DateService {
 
   /**
    * Determines whether a given date is after another date
-   * @param {Date} d1 first date
-   * @param {Date} d2 second date
-   * @returns {boolean} true if first date is after seconds date
+   * @param d1 first date
+   * @param d2 second date
+   * @returns true if first date is after seconds date
    */
   static isAfter(d1: Date, d2: Date): boolean {
     return new Date(d1) > new Date(d2);
@@ -101,9 +101,9 @@ export class DateService {
 
   /**
    * Determines whether a given date is before another date regardless of time
-   * @param {Date} d1 first date
-   * @param {Date} d2 second date
-   * @returns {boolean} true if first date is before the start of seconds date
+   * @param d1 first date
+   * @param d2 second date
+   * @returns true if first date is before the start of seconds date
    */
   static isDayBefore(d1: Date, d2: Date): boolean {
     return new Date(d1).setHours(0, 0, 0, 0) < new Date(d2).setHours(0, 0, 0, 0);
@@ -111,8 +111,8 @@ export class DateService {
 
   /**
    * Determines if a given date is before now
-   * @param {Date} date date to check
-   * @returns {boolean} true if given date is before now
+   * @param date date to check
+   * @returns true if given date is before now
    */
   static isBeforeNow(date: Date): boolean {
     return DateService.isBefore(date, new Date());
@@ -120,8 +120,8 @@ export class DateService {
 
   /**
    * Determines if a given date is before today
-   * @param {Date} date date to check
-   * @returns {boolean} true if given date is before start of today
+   * @param date date to check
+   * @returns true if given date is before start of today
    */
   static isBeforeToday(date: Date): boolean {
     return DateService.isBefore(date, new Date(new Date().setHours(0, 0, 0, 0)));
@@ -129,9 +129,9 @@ export class DateService {
 
   /**
    * Determines if a given date is inside a week
-   * @param {Date} date date to check
-   * @param {Date} referenceDate reference date
-   * @returns {boolean} true if given date is inside week of reference date
+   * @param date date to check
+   * @param referenceDate reference date
+   * @returns true if given date is inside week of reference date
    */
   static isInWeek(date: Date, referenceDate: Date): boolean {
     const beginningOfTheWeek = DateService.getBeginningOfTheWeek(new Date(referenceDate));
@@ -142,8 +142,8 @@ export class DateService {
 
   /**
    * Determines if a given date is inside the current week
-   * @param {Date} date date to check
-   * @returns {boolean} true if given date is inside current week
+   * @param date date to check
+   * @returns true if given date is inside current week
    */
   static isInCurrentWeek(date: Date): boolean {
     return DateService.isInWeek(date, new Date());
@@ -151,9 +151,9 @@ export class DateService {
 
   /**
    * Determines whether a given date is within a certain amount of days in the past
-   * @param {Date} date date to be checked
-   * @param {number} days number of days in range
-   * @return {boolean} true if given date is within range
+   * @param date date to be checked
+   * @param days number of days in range
+   * @return true if given date is within range
    */
   static isWithinNextDays(date: Date, days: number): boolean {
     const rangeEnd = new Date().setDate(new Date(date).getDate() + days);
@@ -162,9 +162,9 @@ export class DateService {
 
   /**
    * Determines whether a given date is within a certain amount of days in the past
-   * @param {Date} date date to be checked
-   * @param {number} days number of days in range
-   * @return {boolean} true if given date is within range
+   * @param date date to be checked
+   * @param days number of days in range
+   * @return true if given date is within range
    */
   static isWithinLastDays(date: Date, days: number): boolean {
     const rangeStart = new Date().setDate(new Date(date).getDate() - days);
@@ -177,8 +177,8 @@ export class DateService {
 
   /**
    * Returns the beginning of the week that contains the given date
-   * @param {Date} date date to get beginning of the week for
-   * @returns {Date} week start of the week containing the given date
+   * @param date date to get beginning of the week for
+   * @returns week start of the week containing the given date
    */
   static getBeginningOfTheWeek(date: Date): Date {
     const beginningOfTheWeek = new Date();
@@ -194,8 +194,8 @@ export class DateService {
 
   /**
    * Returns the end of the week that contains the given date
-   * @param {Date} date date to get end of the week for
-   * @returns {Date} week end of the week containing the given date
+   * @param date date to get end of the week for
+   * @returns week end of the week containing the given date
    */
   static getEndOfTheWeek(date: Date): Date {
     const endOfTheWeek = new Date(date);
@@ -211,7 +211,7 @@ export class DateService {
 
   /**
    * Returns the end-of-business of a give date which is 5:30 p.m. according to British standards
-   * @param date
+   * @param date date
    */
   static getEndOfBusiness(date: Date): Date {
     const endOfBusiness = new Date(date);
@@ -222,7 +222,7 @@ export class DateService {
 
   /**
    * Returns the end of a work week of a given date which is the end of business of the next Friday
-   * @param date
+   * @param date data
    */
   static getEndOfWorkWeek(date: Date): Date {
     const endOfWorkWeek = DateService.getEndOfTheWeek(date);
@@ -238,8 +238,8 @@ export class DateService {
 
   /**
    * Returns start of a given day
-   * @param {Date} date date to get start of
-   * @returns {Date} start of a given date
+   * @param date date to get start of
+   * @returns start of a given date
    */
   static getDayStart(date: Date): Date {
     date.setHours(0, 0, 0, 0);
@@ -249,8 +249,8 @@ export class DateService {
 
   /**
    * Returns end of a given day
-   * @param {Date} date date to get end of
-   * @returns {Date} end of a given date
+   * @param date date to get end of
+   * @returns end of a given date
    */
   static getDayEnd(date: Date): Date {
     date.setHours(23, 59, 59, 999);
@@ -260,8 +260,8 @@ export class DateService {
 
   /**
    * Returns the beginning of the week that contains a given date
-   * @param {Date} date date to get week start from
-   * @returns {Date} start of the week containing the given date
+   * @param date date to get week start from
+   * @returns start of the week containing the given date
    */
   static getWeekStart(date: Date): Date {
     date = new Date(date);
@@ -275,8 +275,8 @@ export class DateService {
 
   /**
    * Returns the end of the week that contains a given date
-   * @param {Date} date date to get week end from
-   * @returns {Date} end of the week containing the given date
+   * @param date date to get week end from
+   * @returns end of the week containing the given date
    */
   static getWeekEnd(date: Date): Date {
     date = new Date(date);
@@ -317,8 +317,8 @@ export class DateService {
 
   /**
    * Returns the date component of a given date object as a string
-   * @param {Date} date date to get string for
-   * @returns {string} date string of the given date
+   * @param date date to get string for
+   * @returns date string of the given date
    */
   static getDateString(date: Date): string {
     const day = new Date(date).getDate();
@@ -329,8 +329,8 @@ export class DateService {
 
   /**
    * Returns the date component of a given date object as a string where the month is shortened
-   * @param {Date} date date to get string for
-   * @returns {string} date string of the given date
+   * @param date date to get string for
+   * @returns date string of the given date
    */
   static getSimpleDateString(date: Date): string {
     const day = new Date(date).getDate();
@@ -341,8 +341,8 @@ export class DateService {
 
   /**
    * Returns the date component of a given date object as a string where the month is shortened and the year is omitted
-   * @param {Date} date date to get string for
-   * @returns {string} date string of the given date
+   * @param date date to get string for
+   * @returns date string of the given date
    */
   static getSimpleDateWithoutYearString(date: Date): string {
     const day = new Date(date).getDate();
@@ -352,9 +352,9 @@ export class DateService {
 
   /**
    * Returns a date string of a given range (omits du
-   * @param {Date} start start date
-   * @param {Date} end end date
-   * @returns {string} string of the given range
+   * @param start start date
+   * @param end end date
+   * @returns string of the given range
    */
   static getDateRangeString(start: Date, end: Date): string {
     const sameMonth = start.getMonth() === end.getMonth();
@@ -378,8 +378,8 @@ export class DateService {
 
   /**
    * Returns the time component of a given date object as a string
-   * @param {Date} date date to get string for
-   * @returns {string} time string of the given date
+   * @param date date to get string for
+   * @returns time string of the given date
    */
   static getTimeString(date: Date): string {
     if (date != null) {
@@ -406,7 +406,7 @@ export class DateService {
 
   /**
    * Returns a string representing minutes (might be negative)
-   * @param seconds
+   * @param seconds seconds
    */
   static getMinutesString(seconds: number): string {
     const negative = seconds < 0;
@@ -419,8 +419,8 @@ export class DateService {
 
   /**
    * Returns the day of a month as a string
-   * @param {Date} date date to get string for
-   * @returns {string} month string of the given date
+   * @param date date to get string for
+   * @returns month string of the given date
    */
   static getDayOfMonthString(date: Date): string {
     return new Date(date).getDate().toString();
@@ -428,8 +428,8 @@ export class DateService {
 
   /**
    * Returns the weekday string of a given weekday
-   * @param {number} weekday index of the week, where 0 is Sunday
-   * @returns {string} weekday string of the given index
+   * @param weekday index of the week, where 0 is Sunday
+   * @returns weekday string of the given index
    */
   static getWeekDayString(weekday: number) {
     switch (weekday) {
@@ -459,8 +459,8 @@ export class DateService {
 
   /**
    * Returns the month string of a given month
-   * @param {number} month index of the month, where 0 is January
-   * @returns {string} month string of the given index
+   * @param month index of the month, where 0 is January
+   * @returns month string of the given index
    */
   static getMonthString(month: number): string {
     switch (month) {
@@ -507,8 +507,8 @@ export class DateService {
 
   /**
    * Returns a string of a given recurrence interval
-   * @param {RecurrenceInterval} recurrenceInterval recurrence interval
-   * @returns {string} string of the given recurrence interval
+   * @param recurrenceInterval recurrence interval
+   * @returns string of the given recurrence interval
    */
   static getRecurrenceIntervalString(recurrenceInterval: RecurrenceInterval): string {
     return recurrenceInterval.toString();
@@ -516,8 +516,8 @@ export class DateService {
 
   /**
    * Returns the calendar week number of a given date
-   * @param {Date} date date to get calendar week number for
-   * @returns {number} calendar week number
+   * @param date date to get calendar week number for
+   * @returns calendar week number
    */
   static getWeekNumber(date: Date): number {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -544,8 +544,8 @@ export class DateService {
 
   /**
    * Rounds a given number of minutes to MINUTES_INTERVAL
-   * @param {number} minutes minutes to round
-   * @returns {number} rounded minutes
+   * @param minutes minutes to round
+   * @returns rounded minutes
    */
   static getRoundedMinutes(minutes: number): number {
     return Math.ceil(minutes / DateService.MINUTES_INTERVAL) * DateService.MINUTES_INTERVAL;

@@ -54,7 +54,9 @@ export class StopWatchComponent implements OnInit {
     const diffMin = Math.abs(Math.floor(seconds / 60));
     const diffSec = Math.abs(Math.floor(seconds % 60));
 
-    return `${negative ? '-' : ''}${StopWatchComponent.getTwoCharacterString(diffMin)}:${StopWatchComponent.getTwoCharacterString(diffSec)}`;
+    return `${negative ? '-' : ''}
+    ${StopWatchComponent.getTwoCharacterString(diffMin)}:
+    ${StopWatchComponent.getTwoCharacterString(diffSec)}`;
   }
 
   /**

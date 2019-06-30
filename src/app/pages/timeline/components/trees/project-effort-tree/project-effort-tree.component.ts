@@ -67,9 +67,9 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
 
   /**
    * Transforms an effort node into a effort flat node
-   * @param {EffortNode} node effort node
-   * @param {number} level level of the node
-   * @returns {EffortFlatNode} effort flat node
+   * @param node effort node
+   * @param level level of the node
+   * @returns effort flat node
    */
   static transformer(node: EffortNode, level: number) {
     const flatNode = new EffortFlatNode();
@@ -83,8 +83,8 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
 
   /**
    * Retrieves a node's children
-   * @param {EffortNode} node node
-   * @returns {Observable<EffortNode[]>} children
+   * @param node node
+   * @returns children
    */
   static getChildren(node: EffortNode): Observable<EffortNode[]> {
     return observableOf(node.children);
@@ -137,7 +137,7 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
 
   /**
    * Assembles all node of the tree
-   * @returns {EffortNode[]} array of effort nodes
+   * @returns array of effort nodes
    */
   private buildTree(): EffortNode[] {
     const data: any[] = [];
@@ -175,23 +175,24 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
 
   /**
    * Retrieves a node's level
-   * @param {EffortFlatNode} node node
-   * @returns {number} level
+   * @param node node
+   * @returns level
    */
   private getLevel = (node: EffortFlatNode) => node.level;
 
   /**
    * Retrieves if a node is expandable
-   * @param {EffortFlatNode} node node
-   * @returns {boolean} true if expandable
+   * @param node node
+   * @returns true if expandable
    */
   private isExpandable = (node: EffortFlatNode) => node.expandable;
 
   /**
    * Determines whether a node has children
-   * @param {number} _
-   * @param {EffortFlatNode} _nodeData node dat
-   * @returns {boolean} true if node has children
+   * @param _ ?
+   * @param  _nodeData node dat
+   * @returns true if node has children
    */
+    // tslint:disable-next-line:variable-name
   hasChild = (_: number, _nodeData: EffortFlatNode) => _nodeData.expandable;
 }

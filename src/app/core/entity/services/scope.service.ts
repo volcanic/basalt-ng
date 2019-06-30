@@ -19,14 +19,14 @@ export class ScopeService {
 
   /**
    * Constructor
-   * @param {ThemeService} themeService
+   * @param themeService theme service
    */
   constructor(private themeService: ThemeService) {
   }
 
   /**
    * Switches scope
-   * @param {Scope} scope new scope
+   * @param scope new scope
    */
   switchScope(scope: Scope) {
     if (scope !== this.scope) {

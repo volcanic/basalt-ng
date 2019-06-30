@@ -28,10 +28,10 @@ export class ProjectService {
 
   /**
    * Constructor
-   * @param {PouchDBService} pouchDBService
-   * @param {SuggestionService} suggestionService
-   * @param {SnackbarService} snackbarService
-   * @param {ScopeService} scopeService
+   * @param pouchDBService pouchDB service
+   * @param suggestionService suggestion service
+   * @param snackbarService snackbar service
+   * @param scopeService scope service
    */
   constructor(private pouchDBService: PouchDBService,
               private suggestionService: SuggestionService,
@@ -71,7 +71,7 @@ export class ProjectService {
 
   /**
    * Loads projects by a given scope
-   * @param {Scope} scope scope to filter by
+   * @param scope scope to filter by
    */
   public findProjectsByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PROJECTS_DAYS));
@@ -131,8 +131,8 @@ export class ProjectService {
 
   /**
    * Creates a new project
-   * @param {Project} project project to be created
-   * @param {boolean} showSnack shows snackbar if true
+   * @param project project to be created
+   * @param showSnack shows snackbar if true
    */
   public createProject(project: Project, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
@@ -152,8 +152,8 @@ export class ProjectService {
 
   /**
    * Updates an existing project
-   * @param {Project} project project to be updated
-   * @param {boolean} showSnack shows snackbar if true
+   * @param project project to be updated
+   * @param showSnack shows snackbar if true
    */
   public updateProject(project: Project, showSnack: boolean = false): Promise<any> {
     return new Promise(() => {
@@ -173,7 +173,7 @@ export class ProjectService {
 
   /**
    * Deletes a project
-   * @param {Project} project project to be deleted
+   * @param project project to be deleted
    */
   public deleteProject(project: Project): Promise<any> {
     return new Promise(() => {
@@ -202,8 +202,8 @@ export class ProjectService {
 
   /**
    * Retrieves a project by a given name
-   * @param {string} name name to find project by
-   * @returns {Project} project identified by given name, null if no such project exists
+   * @param name name to find project by
+   * @returns project identified by given name, null if no such project exists
    */
   public getProjectByName(name: string): Project {
     let project: Project = null;

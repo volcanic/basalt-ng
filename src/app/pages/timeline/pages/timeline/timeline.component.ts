@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SnackbarService} from 'app/core/ui/services/snackbar.service';
-import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
+import {MatDialog, MatIconRegistry, MatSidenav} from '@angular/material';
 import {TaskletService} from 'app/core/entity/services/tasklet/tasklet.service';
 import {TaskletDialogComponent} from '../../components/dialogs/tasklet-dialog/tasklet-dialog.component';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
@@ -164,29 +164,29 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Constructor
-   * @param {DigestService} digestService
-   * @param {EmailService} emailService
-   * @param {EntityService} entityService
-   * @param {FilterService} filterService
-   * @param {MatIconRegistry} iconRegistry
-   * @param {MatchService} matchService
-   * @param {MaterialColorService} materialColorService
-   * @param {MaterialIconService} materialIconService
-   * @param {Router} router
-   * @param {MediaService} mediaService
-   * @param {DomSanitizer} sanitizer
-   * @param {ScopeService} scopeService
-   * @param {ScrollDispatcher} scroll
-   * @param {SnackbarService} snackbarService
-   * @param {SuggestionService} suggestionService
-   * @param {PersonService} personService person service
-   * @param {ProjectService} projectService project service
-   * @param {SettingsService} settingsService settings service
-   * @param {TagService} tagService tag service
-   * @param {TaskService} taskService task service
-   * @param {TaskletService} taskletService tasklet service
-   * @param {MatDialog} dialog dialog
-   * @param {NgZone} zone Angular zone
+   * @param digestService digest service
+   * @param emailService email service
+   * @param entityService entity service
+   * @param filterService filter service
+   * @param iconRegistry icon registry
+   * @param matchService match service
+   * @param materialColorService material color service
+   * @param materialIconService material icon service
+   * @param router router
+   * @param mediaService media service
+   * @param sanitizer sanitizer
+   * @param scopeService scope service
+   * @param scroll scroll
+   * @param snackbarService snackbar service
+   * @param suggestionService suggestion service
+   * @param personService person service
+   * @param projectService project service
+   * @param settingsService settings service
+   * @param tagService tag service
+   * @param taskService task service
+   * @param taskletService tasklet service
+   * @param dialog dialog
+   * @param zone Angular zone
    */
   constructor(private digestService: DigestService,
               private emailService: EmailService,
@@ -311,17 +311,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private filterTasklet(tasklet: Tasklet): boolean {
     const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-    const matchesInheritedSearchItem = this.matchService.taskMatchesEveryItem(this.taskService.tasks.get(tasklet.taskId), this.filterService.searchItem);
-    const matchesTasks = this.matchService.taskletMatchesTasks(tasklet,
-      Array.from(this.filterService.tasks.values()));
-    const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
-      Array.from(this.filterService.projects.values()));
-    const matchesTags = this.matchService.taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
-    const matchesInheritedTags = this.matchService.taskMatchesTags(this.taskService.tasks.get(tasklet.taskId), Array.from(this.filterService.tags.values()));
-    const matchesPersons = this.matchService.taskletMatchesPersons(tasklet,
-      Array.from(this.filterService.persons.values()));
+    const matchesInheritedSearchItem = this.matchService
+      .taskMatchesEveryItem(this.taskService.tasks.get(tasklet.taskId), this.filterService.searchItem);
+    const matchesTasks = this.matchService
+      .taskletMatchesTasks(tasklet, Array.from(this.filterService.tasks.values()));
+    const matchesProjects = this.matchService
+      .taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()));
+    const matchesTags = this.matchService
+      .taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
+    const matchesInheritedTags = this.matchService
+      .taskMatchesTags(this.taskService.tasks.get(tasklet.taskId), Array.from(this.filterService.tags.values()));
+    const matchesPersons = this.matchService
+      .taskletMatchesPersons(tasklet, Array.from(this.filterService.persons.values()));
 
-    return (matchesSearchItem || matchesInheritedSearchItem) && matchesTasks && matchesProjects && (matchesTags || matchesInheritedTags) && matchesPersons;
+    return (matchesSearchItem || matchesInheritedSearchItem)
+      && matchesTasks
+      && matchesProjects
+      && (matchesTags || matchesInheritedTags)
+      && matchesPersons;
   }
 
   //
@@ -769,7 +776,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles events targeting a tasklet
-   * @param {any} event event parameters
+   * @param event event parameters
    */
   onTaskletEvent(event: { action: Action, tasklet: Tasklet, task?: Task, tags?: Tag[], persons?: Person[] }) {
     const tasklet = CloneService.cloneTasklet(event.tasklet as Tasklet);
@@ -803,7 +810,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.DELETE: {
-        const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+        const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
           disableClose: false,
           data: {
             title: 'Delete tasklet',
@@ -824,10 +831,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update tasklet
         this.onTaskletEvent({
           action: Action.UPDATE,
-          tasklet: tasklet,
-          task: task,
-          tags: tags,
-          persons: persons
+          tasklet,
+          task,
+          tags,
+          persons
         });
 
         const recipients = persons.filter(p => {
@@ -857,10 +864,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update tasklet
         this.onTaskletEvent({
           action: Action.UPDATE,
-          tasklet: tasklet,
-          task: task,
-          tags: tags,
-          persons: persons
+          tasklet,
+          task,
+          tags,
+          persons
         });
 
         const recipients = persons.filter(p => {
@@ -898,7 +905,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Open dialog
         const dialogRef = this.dialog.open(TaskletDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -926,7 +933,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update tasklet',
-          tasklet: tasklet,
+          tasklet,
           task: this.taskService.tasks.get(tasklet.taskId),
           tags: tasklet.tagIds != null ? tasklet.tagIds.map(id => {
             return this.tagService.tags.get(id);
@@ -944,7 +951,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Open dialog
         const dialogRef = this.dialog.open(TaskletDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -983,7 +990,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.CONTINUE,
           dialogTitle: 'Continue tasklet',
-          tasklet: tasklet,
+          tasklet,
           task: this.taskService.tasks.get(tasklet.taskId),
           tags: tasklet.tagIds.map(id => {
             return this.tagService.tags.get(id);
@@ -995,14 +1002,14 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           }).filter(person => {
             return person != null;
           }),
-          previousDescription: previousDescription,
-          previousDailyScrumItems: previousDailyScrumItems
+          previousDescription,
+          previousDailyScrumItems
         };
 
         // Open dialog
         const continueTaskletDialogRef = this.dialog.open(TaskletDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1031,7 +1038,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.OPEN_DIALOG_CREATION_TIME: {
-        const dialogRef = this.dialog.open(DateTimePickerDialogComponent, <MatDialogConfig>{
+        const dialogRef = this.dialog.open(DateTimePickerDialogComponent, {
           disableClose: false,
           data: {
             dialogTitle: 'Set creation time',
@@ -1046,7 +1053,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.onTaskletEvent({
               action: resultingAction,
-              tasklet: tasklet,
+              tasklet,
               task: this.taskService.tasks.get(tasklet.taskId),
               tags: tasklet.tagIds.map(id => {
                 return this.tagService.tags.get(id);
@@ -1067,10 +1074,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update tasklet
         this.onTaskletEvent({
           action: Action.UPDATE,
-          tasklet: tasklet,
-          task: task,
-          tags: tags,
-          persons: persons
+          tasklet,
+          task,
+          tags,
+          persons
         });
 
         this.router.navigate([`/tasklet/${tasklet.id}`]).then(() => {
@@ -1085,10 +1092,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update tasklet
         this.onTaskletEvent({
           action: Action.UPDATE,
-          tasklet: tasklet,
-          task: task,
-          tags: tags,
-          persons: persons
+          tasklet,
+          task,
+          tags,
+          persons
         });
 
         this.router.navigate([`/tasklet/${tasklet.id}`]).then(() => {
@@ -1100,7 +1107,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles events targeting a tasklet creation date
-   * @param {Date} creationDate creation date
+   * @param creationDate creation date
    */
   onTaskletCreationDateEvent(creationDate: Date) {
     this.taskletService.addElementToDateQueue(creationDate);
@@ -1108,9 +1115,12 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles events targeting a task
-   * @param {any} event event parameters
+   * @param event event parameters
    */
-  onTaskEvent(event: { action: Action, task: Task, tasks?: Task[], project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean }) {
+  onTaskEvent(event: {
+    action: Action, task: Task, tasks?: Task[], project?: Project, delegatedTo?:
+      Person, tags?: Tag[], omitReferenceEvaluation?: boolean
+  }) {
     const task = CloneService.cloneTask(event.task as Task);
     const tasks = CloneService.cloneTasks(event.tasks as Task[]);
     const project = CloneService.cloneProject(event.project as Project);
@@ -1151,7 +1161,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         if (references) {
-          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+          this.dialog.open(InformationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Cannot delete task',
@@ -1161,7 +1171,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
         } else {
-          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Delete task',
@@ -1215,7 +1225,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Open dialog
         const dialogRef = this.dialog.open(TaskDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1243,7 +1253,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update task',
-          task: task,
+          task,
           project: this.projectService.projects.get(task.projectId),
           delegatedTo: this.personService.persons.get(task.delegatedToId),
           tags: task.tagIds != null ? task.tagIds.map(id => {
@@ -1256,7 +1266,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Open dialog
         const dialogRef = this.dialog.open(TaskDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1286,7 +1296,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.onTaskletEvent({
           action: Action.OPEN_DIALOG_CONTINUE,
-          tasklet: tasklet,
+          tasklet,
           tags: [],
           task: this.taskService.tasks.get(tasklet.taskId),
           persons: []
@@ -1306,10 +1316,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update task
         this.onTaskEvent({
           action: Action.UPDATE,
-          task: task,
-          project: project,
-          delegatedTo: delegatedTo,
-          tags: tags
+          task,
+          project,
+          delegatedTo,
+          tags
         });
 
         this.router.navigate([`/task/${task.id}`]).then(() => {
@@ -1321,7 +1331,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles events targeting a project
-   * @param {any} event event parameters
+   * @param event event parameters
    */
   onProjectEvent(event: { action: Action, project?: Project, projects?: Project[] }) {
     const project = CloneService.cloneProject(event.project as Project);
@@ -1346,7 +1356,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         if (references) {
-          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+          this.dialog.open(InformationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Cannot delete project',
@@ -1356,7 +1366,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
         } else {
-          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Delete project',
@@ -1386,7 +1396,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Open dialog
         const dialogRef = this.dialog.open(ProjectDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1408,13 +1418,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update project',
-          project: project
+          project
         };
 
         // Open dialog
         const dialogRef = this.dialog.open(ProjectDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1445,7 +1455,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles events targeting a tag
-   * @param {any} event event parameters
+   * @param event event parameters
    */
   onTagEvent(event: { action: Action, tag?: Tag, tags?: Tag[] }) {
     const tag = CloneService.cloneTag(event.tag as Tag);
@@ -1477,7 +1487,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         if (referencesTasklets || referencesTasks) {
-          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+          this.dialog.open(InformationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Cannot delete tag',
@@ -1487,7 +1497,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
         } else {
-          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Delete tag',
@@ -1517,7 +1527,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Open dialog
         const dialogRef = this.dialog.open(TagDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1539,13 +1549,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update tag',
-          tag: tag
+          tag
         };
 
         // Open dialog
         const dialogRef = this.dialog.open(TagDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1566,13 +1576,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Assemble data to be passed
         const data = {
           dialogTitle: 'Remove unused tags',
-          tags: tags
+          tags
         };
 
         // Open dialog
         const dialogRef = this.dialog.open(UnusedTagsDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1580,7 +1590,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
           if (result != null) {
             const tagsToDelete = result.tags as Tag[];
 
-            const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+            const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
               disableClose: false,
               data: {
                 title: 'Delete tags',
@@ -1621,7 +1631,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles events targeting a person
-   * @param {any} event event parameters
+   * @param event event parameters
    */
   onPersonEvent(event: { action: Action, person?: Person, persons?: Person[] }) {
     const person = CloneService.clonePerson(event.person as Person);
@@ -1648,7 +1658,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         if (referencesTasklets) {
-          this.dialog.open(InformationDialogComponent, <MatDialogConfig>{
+          this.dialog.open(InformationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Cannot delete person',
@@ -1658,7 +1668,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
         } else {
-          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Delete person',
@@ -1688,7 +1698,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         // Open dialog
         const dialogRef = this.dialog.open(PersonDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1710,13 +1720,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update person',
-          person: person
+          person
         };
 
         // Open dialog
         const dialogRef = this.dialog.open(PersonDialogComponent, {
           disableClose: false,
-          data: data
+          data
         });
 
         // Handle dialog close
@@ -1751,7 +1761,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles click on menu items
-   * @param {string} menuItem menu item that has been clicked
+   * @param menuItem menu item that has been clicked
    */
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
@@ -1783,11 +1793,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
             switch (action) {
               case Action.OPEN_DIALOG_ADD: {
-                this.onTaskEvent({action: action, task: task});
+                this.onTaskEvent({action, task});
                 break;
               }
               case Action.OPEN_DIALOG_UPDATE: {
-                this.onTaskEvent({action: action, task: task, project: project, tags: tags});
+                this.onTaskEvent({action, task, project, tags});
                 break;
               }
             }
@@ -1837,7 +1847,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'upload': {
-        this.dialog.open(UploadDialogComponent, <MatDialogConfig>{
+        this.dialog.open(UploadDialogComponent, {
           disableClose: false,
           data: {
             title: 'Upload'
@@ -1862,7 +1872,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'about': {
-        this.dialog.open(AboutDialogComponent, <MatDialogConfig>{
+        this.dialog.open(AboutDialogComponent, {
           disableClose: false,
           data: {
             title: 'About',
@@ -1890,7 +1900,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles search item typed into the search field
-   * @param {string} searchItem new search item
+   * @param searchItem new search item
    */
   onSearchItemChanged(searchItem: string) {
     this.filterService.updateSearchItem(searchItem);
@@ -1959,8 +1969,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Determines whether the tags assigned to a given task already exixst, otherwise creates new ones
-   * @param {Task} task task assign tags to
-   * @param {Tag[]} tags array of tags to be checked
+   * @param task task assign tags to
+   * @param tags array of tags to be checked
    */
   private evaluateTaskTags(task: Task, tags: Tag[]) {
     if (tags != null) {
@@ -2014,9 +2024,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
-   * @param {Tasklet} tasklet tasklet to assign tags to
-   * @param {Task} task task the tasklet is associated to
-   * @param {Tag[]} tags array of tags to be checked
+   * @param tasklet tasklet to assign tags to
+   * @param task task the tasklet is associated to
+   * @param tags array of tags to be checked
    */
   private evaluateTaskletTags(tasklet: Tasklet, task: Task, tags: Tag[]) {
     const aggregatedTags = new Map<string, Tag>();
@@ -2080,8 +2090,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Determines whether the persons assigned to a given tasklet already exixst, otherwise creates new ones
-   * @param {Tasklet} tasklet tasklet assign persons to
-   * @param {Person[]} persons array of persons to be checked
+   * @param tasklet tasklet assign persons to
+   * @param persons array of persons to be checked
    */
   private evaluateTaskletPersons(tasklet: Tasklet, persons: Person[]) {
     const aggregatedPersons = new Map<string, Person>();
@@ -2149,7 +2159,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Generates weekly digest
-   * @param {Date} date focus date
+   * @param date focus date
    */
   private generateWeeklyDigest(date: Date) {
     this.weeklyDigest = this.digestService.getWeeklyDigest(date);
@@ -2157,7 +2167,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Generates daily digests
-   * @param {Date} date focus date
+   * @param date focus date
    */
   private generateDailyDigests(date: Date) {
     this.dailyDigests = [];

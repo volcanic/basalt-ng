@@ -10,8 +10,8 @@ export class Setting {
 
   /**
    * Constructor
-   * @param {string} id key of the setting
-   * @param {any} value value of the setting
+   * @param id key of the setting
+   * @param value value of the setting
    */
   constructor(id: string, value: any) {
     this.id = id;

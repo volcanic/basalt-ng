@@ -34,7 +34,7 @@ export class Task extends Entity {
 
   /**
    * Constructor
-   * @param {string} name name of the task
+   * @param name name of the task
    */
   constructor(name: string = '') {
     super();

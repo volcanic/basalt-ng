@@ -40,7 +40,7 @@ export class IntroComponent implements OnInit, OnDestroy {
   public media: Media = Media.UNDEFINED;
 
   /** Map of current settings */
-  settings = new Map<String, Setting>();
+  settings = new Map<string, Setting>();
 
   /**
    * Constructor
@@ -130,17 +130,23 @@ export class IntroComponent implements OnInit, OnDestroy {
 
   /**
    * Handles display of new features dialog
-   * @param {string} currentVersion
+   * @param currentVersion current version
    */
   private showNewFeatures(currentVersion: string) {
     // Current version
+    // tslint:disable-next-line:radix
     const currentMajor = Number.parseInt(environment.VERSION.split('.')[0]);
+    // tslint:disable-next-line:radix
     const currentMinor = Number.parseInt(environment.VERSION.split('.')[1]);
+    // tslint:disable-next-line:radix
     const currentPatch = Number.parseInt(environment.VERSION.split('.')[2]);
 
     // Latest version
+    // tslint:disable-next-line:radix
     const latestMajor = Number.parseInt(currentVersion.split('.')[0]);
+    // tslint:disable-next-line:radix
     const latestMinor = Number.parseInt(currentVersion.split('.')[1]);
+    // tslint:disable-next-line:radix
     const latestPatch = Number.parseInt(currentVersion.split('.')[2]);
 
     if ((currentMajor > latestMajor)
@@ -154,8 +160,11 @@ export class IntroComponent implements OnInit, OnDestroy {
             gt.annotation = gt.annotation.replace(/.*v/g, '');
 
             // Tag version
+            // tslint:disable-next-line:radix
             const tagMajor = Number.parseInt(gt.annotation.split('.')[0]);
+            // tslint:disable-next-line:radix
             const tagMinor = Number.parseInt(gt.annotation.split('.')[1]);
+            // tslint:disable-next-line:radix
             const tagPatch = Number.parseInt(gt.annotation.split('.')[2]);
 
             const relevant = ((tagMajor > latestMajor)

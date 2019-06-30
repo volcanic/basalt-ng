@@ -29,7 +29,7 @@ export class PouchDBSettingsService {
 
   /**
    * Returns all documents from the DATABASE_ENTITIES
-   * @returns {any}
+   * @returns array of documents
    */
   public fetch() {
     return this.database.allDocs({include_docs: true});
@@ -44,7 +44,7 @@ export class PouchDBSettingsService {
 
   /**
    * Returns a document by a given ID
-   * @param id
+   * @param id id
    */
   public get(id: string) {
     return this.database.get(id);
@@ -54,8 +54,7 @@ export class PouchDBSettingsService {
    * Inserts a document into the DATABASE_ENTITIES
    * @param id ID of the document to be put
    * @param document document to be put
-   * @returns {wdpromise.Promise<any>|Promise<any|Observable<AjaxResponse>|
-   * Observable<Response>|IDBRequest>|Promise<R>|webdriver.promise.Promise<any>|webdriver.promise.Promise<R>|Promise<U>|any}
+   * @returns observable
    */
   public put(id: string, document: any) {
     document._id = id;
@@ -98,7 +97,7 @@ export class PouchDBSettingsService {
 
   /**
    * Synchronizes local DATABASE_ENTITIES with a remote DATABASE_SETTINGS
-   * @param remote
+   * @param remote remote
    */
   public sync(remote: string) {
     const remoteDatabase = new PouchDB(remote);
@@ -113,17 +112,17 @@ export class PouchDBSettingsService {
 
   /**
    * Synchronizes local DATABASE_ENTITIES with a remote DATABASE_SETTINGS
-   * @param {string} remote
-   * @param {string} username
-   * @param {string} password
+   * @param remote remote
+   * @param username username
+   * @param password password
    */
   public syncWithUser(remote: string, username: string, password: string) {
     const remoteDatabase = new PouchDB(remote);
     this.database.sync(remoteDatabase, {
       live: true,
       auth: {
-        username: username,
-        password: password
+        username,
+        password
       },
     }).on('change', change => {
       this.listener.emit(change);
@@ -134,7 +133,7 @@ export class PouchDBSettingsService {
 
   /**
    * Returns this services change listener
-   * @returns {EventEmitter<any>}
+   * @returns event emitter
    */
   public getChangeListener() {
     return this.listener;

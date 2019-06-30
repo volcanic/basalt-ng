@@ -50,7 +50,7 @@ export class TaskletListComponent {
 
   /**
    * Handles new elements in the viewport
-   * @param {Tasklet} tasklet tasklet being in the viewport
+   * @param tasklet tasklet being in the viewport
    */
   public onIntersection(tasklet: Tasklet) {
     this.taskletCreationDateEventEmitter.emit(tasklet.creationDate);

@@ -14,7 +14,7 @@ export class SnackbarService {
 
   /**
    * Shows snackbar with a given message
-   * @param {string} message
+   * @param message message
    */
   showSnackbar(message: string) {
     this.messageSubject.next([message, '', null]);
@@ -22,9 +22,9 @@ export class SnackbarService {
 
   /**
    * Shows snackbar with a given message, an action name and an action which is triggered when action is clicked
-   * @param {string} message
-   * @param {string} actionName
-   * @param action
+   * @param message message
+   * @param actionName action name
+   * @param action action
    */
   showSnackbarWithAction(message: string, actionName: string, action: any) {
     this.messageSubject.next([message, actionName, action]);

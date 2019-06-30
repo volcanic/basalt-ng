@@ -6,8 +6,8 @@ export class Hash {
 
   /**
    * Generates a hash value of a given string
-   * @param {string} value string value to hash
-   * @returns {number} hash value
+   * @param value string value to hash
+   * @returns hash value
    */
   static hash(value: string) {
     let hash = 0;

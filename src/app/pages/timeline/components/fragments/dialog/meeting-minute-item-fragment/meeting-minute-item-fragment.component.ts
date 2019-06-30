@@ -101,7 +101,7 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
 
   /**
    * Handles type changes
-   * @param {Person} type new type
+   * @param type new type
    */
   onMeetingMinuteItemTypeChanged(type: MeetingMinuteItemType) {
     this.meetingMinuteItem.type = type;

@@ -19,7 +19,7 @@ import {CloneService} from '../../../../core/entity/services/clone.service';
 import {FilterService} from '../../../../core/entity/services/filter.service';
 import {SnackbarService} from '../../../../core/ui/services/snackbar.service';
 import {TagService} from '../../../../core/entity/services/tag.service';
-import {MatDialog, MatDialogConfig, MatIconRegistry, MatSelect, MatSidenav} from '@angular/material';
+import {MatDialog, MatIconRegistry, MatSelect, MatSidenav} from '@angular/material';
 import {ConfirmationDialogComponent} from '../../../../ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
 import {DateService} from '../../../../core/entity/services/date.service';
@@ -40,6 +40,7 @@ import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
 import {Setting} from '../../../../core/settings/model/setting.model';
+// tslint:disable-next-line:max-line-length
 import {PomodoroFinishedDialogComponent} from '../../../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog/pomodoro-finished-dialog.component';
 
 /**
@@ -157,9 +158,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param emailService email service
    * @param filterService filter service
    * @param mediaService media service
-   * @param {MaterialColorService} materialColorService
-   * @param {MaterialIconService} materialIconService
-   * @param {ScrollDispatcher} scroll scroll
+   * @param materialColorService material color service
+   * @param materialIconService material icon service
+   * @param scroll scroll
    * @param personService person service
    * @param projectService project service
    * @param scopeService scope service
@@ -174,7 +175,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param iconRegistry iconRegistry
    * @param sanitizer sanitizer
    * @param dialog dialog
-   * @param {NgZone} zone Angular zone
+   * @param zone Angular zone
    */
   constructor(private colorService: ColorService,
               private emailService: EmailService,
@@ -378,7 +379,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       const settingScrum = this.settingsService.settings.get(SettingType.SCRUM);
 
       return type !== TaskletType.DEVELOPMENT
-        && !(this.taskletService.groupContainsType(TaskletTypeGroup.DEVELOPMENT, type) && !(settingDevelopmemt != null && settingDevelopmemt.value))
+        && !(this.taskletService.groupContainsType(TaskletTypeGroup.DEVELOPMENT, type)
+          && !(settingDevelopmemt != null && settingDevelopmemt.value))
         && !(type === TaskletType.POMODORO && !(settingPomodoro != null && settingPomodoro.value))
         && !(type === TaskletType.DAILY_SCRUM && !(settingScrum != null && settingScrum.value))
         && type !== TaskletType.POMODORO_BREAK;
@@ -445,7 +447,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles click on menu items
-   * @param {string} menuItem menu item that has been clicked
+   * @param menuItem menu item that has been clicked
    */
   onMenuItemClicked(menuItem: string) {
     switch (menuItem) {
@@ -455,6 +457,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.sidenavEnd.toggle().then(() => {
         });
+        break;
+      }
+      default: {
         break;
       }
     }
@@ -551,7 +556,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     // Save finished pomodoro tasklet
     this.updateTasklet();
 
-    const confirmationDialogRef = this.dialog.open(PomodoroFinishedDialogComponent, <MatDialogConfig>{
+    const confirmationDialogRef = this.dialog.open(PomodoroFinishedDialogComponent, {
       disableClose: false,
       data: {
         title: 'Pomodoro completed',
@@ -571,7 +576,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles key down event
-   * @param event
+   * @param event event
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
@@ -599,7 +604,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles click on button
-   * @param action
+   * @param action action
    */
   onButtonClicked(action: Action) {
     switch (action) {
@@ -731,7 +736,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Handles events targeting a tasklet
-   * @param {any} event event parameters
+   * @param event event parameters
    */
   onTaskletEvent(event: { action: Action, tasklet: Tasklet, task?: Task, tags?: Tag[], persons?: Person[] }) {
     const tasklet = CloneService.cloneTasklet(event.tasklet as Tasklet);
@@ -765,7 +770,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.DELETE: {
-        const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, <MatDialogConfig>{
+        const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
           disableClose: false,
           data: {
             title: 'Delete tasklet',
@@ -786,10 +791,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update tasklet
         this.onTaskletEvent({
           action: Action.UPDATE,
-          tasklet: tasklet,
-          task: task,
-          tags: tags,
-          persons: persons
+          tasklet,
+          task,
+          tags,
+          persons
         });
 
         const recipients = persons.filter(p => {
@@ -819,10 +824,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update tasklet
         this.onTaskletEvent({
           action: Action.UPDATE,
-          tasklet: tasklet,
-          task: task,
-          tags: tags,
-          persons: persons
+          tasklet,
+          task,
+          tags,
+          persons
         });
 
         const recipients = persons.filter(p => {
@@ -854,10 +859,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         // Update tasklet
         this.onTaskletEvent({
           action: Action.UPDATE,
-          tasklet: tasklet,
-          task: task,
-          tags: tags,
-          persons: persons
+          tasklet,
+          task,
+          tags,
+          persons
         });
 
         break;
@@ -896,8 +901,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
-   * @param {Tasklet} tasklet tasklet to assign tags to
-   * @param {Tag[]} tags array of tags to be checked
+   * @param tasklet tasklet to assign tags to
+   * @param tags array of tags to be checked
    */
   private evaluateTaskletTags(tasklet: Tasklet, tags: Tag[]) {
 
@@ -950,8 +955,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Determines whether the persons assigned to a given tasklet already exixst, otherwise creates new ones
-   * @param {Tasklet} tasklet tasklet assign persons to
-   * @param {Person[]} persons array of persons to be checked
+   * @param tasklet tasklet assign persons to
+   * @param persons array of persons to be checked
    */
   private evaluateTaskletPersons(tasklet: Tasklet, persons: Person[]) {
     const aggregatedPersons = new Map<string, Person>();
@@ -1043,8 +1048,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Aggregates tags
-   * @param {Tasklet} tasklet
-   * @returns {Tag[]}
+   * @param tasklet tasklet
+   * @returns tags
    */
   private aggregateTags(tasklet: Tasklet): Tag[] {
     const aggregatedTags = new Map<string, Tag>();
@@ -1063,8 +1068,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Infers tags from a tasklet's description
-   * @param {Tasklet} tasklet
-   * @returns {Tag[]}
+   * @param tasklet tasklet
+   * @returns tags
    */
   private inferTags(tasklet: Tasklet): Tag[] {
     const inferredTags = new Map<string, Tag>();
@@ -1090,8 +1095,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Aggregates persons
-   * @param {Tasklet} tasklet
-   * @returns {Person[]}
+   * @param tasklet tasklet
+   * @returns persons
    */
   private aggregatePersons(tasklet: Tasklet): Person[] {
     const aggregatedPersons = new Map<string, Person>();
@@ -1109,8 +1114,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Infers persons from a tasklet's description
-   * @param {Tasklet} tasklet
-   * @returns {Person[]}
+   * @param tasklet tasklet
+   * @returns persons
    */
   private inferPersons(tasklet: Tasklet): Person[] {
     const inferredPersons = new Map<string, Person>();

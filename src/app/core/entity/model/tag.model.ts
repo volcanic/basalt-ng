@@ -11,7 +11,7 @@ export class Tag extends Entity {
 
   /**
    * Constructor
-   * @param {string} name tag name
+   * @param name tag name
    */
   constructor(name: string) {
     super();

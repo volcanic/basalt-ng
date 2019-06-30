@@ -16,11 +16,11 @@ export class EntityService {
 
   /**
    * Constructor
-   * @param {ProjectService} projectService
-   * @param {TaskService} taskService
-   * @param {TaskletService} taskletService
-   * @param {TagService} tagService
-   * @param {PersonService} personService
+   * @param projectService project service
+   * @param taskService task service
+   * @param taskletService tasklet service
+   * @param tagService tag service
+   * @param personService person service
    */
   constructor(private projectService: ProjectService,
               private taskService: TaskService,

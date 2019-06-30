@@ -1,7 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Subject} from 'rxjs';
-import {DropResult, SUCCESS} from 'app/pages/timeline/components/fragments/other/file-drop-fragment/file-drop-fragment.component';
+import {
+  DropResult,
+  SUCCESS
+} from 'app/pages/timeline/components/fragments/other/file-drop-fragment/file-drop-fragment.component';
 import {SnackbarService} from 'app/core/ui/services/snackbar.service';
 import {Entity} from 'app/core/entity/model/entity.model';
 import {ProjectService} from 'app/core/entity/services/project.service';
@@ -28,13 +31,13 @@ export class UploadDialogComponent implements OnInit {
 
   /**
    * Constructor
-   * @param {EntityService} entityService
-   * @param {ProjectService} projectService
-   * @param {TaskService} taskService
-   * @param {TaskletService} taskletService
-   * @param {PouchDBService} pouchDBService
-   * @param {SnackbarService} snackbarService
-   * @param {MatDialogRef<UploadDialogComponent>} dialogRef dialog reference
+   * @param entityService entity service
+   * @param projectService project service
+   * @param taskService task service
+   * @param taskletService tasklet service
+   * @param pouchDBService pouchDB service
+   * @param snackbarService snackbar service
+   * @param dialogRef dialog reference
    * @param data dialog data
    */
   constructor(private entityService: EntityService,
@@ -73,7 +76,7 @@ export class UploadDialogComponent implements OnInit {
 
   /**
    * Handles files dropped into the dropzone
-   * @param {DropResult} result drop result
+   * @param result drop result
    */
   public onFilesUploaded(result: DropResult) {
     if (result.result.toString().toUpperCase() === SUCCESS) {

@@ -7,8 +7,6 @@ import {DateService} from '../date.service';
 import {EntityType} from '../../model/entity-type.enum';
 import {SuggestionService} from '../suggestion.service';
 import {PouchDBService} from '../../../persistence/services/pouchdb.service';
-import {Project} from '../../model/project.model';
-import {Task} from '../../model/task.model';
 import {TaskService} from '../task/task.service';
 import {ProjectService} from '../project.service';
 import {environment} from '../../../../../environments/environment';
@@ -24,6 +22,8 @@ import {Description} from '../../model/description.model';
 import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
 import {TaskletTypeService} from './tasklet-type.service';
 import {DailyScrumItemType} from '../../model/daily-scrum/daily-scrum-item-type.enum';
+import {Project} from '../../model/project.model';
+import {Task} from '../../model/task.model';
 
 /**
  * Handles tasklets including
@@ -32,6 +32,7 @@ import {DailyScrumItemType} from '../../model/daily-scrum/daily-scrum-item-type.
  * <li> Lookup
  * <li> Display options
  */
+/* tslint:disable:object-literal-key-quotes */
 @Injectable({
   providedIn: 'root'
 })
@@ -57,16 +58,16 @@ export class TaskletService {
 
   /**
    * Constructor
-   * @param {PouchDBService} pouchDBService
-   * @param {ProjectService} projectService
-   * @param {TaskService} taskService
-   * @param {TagService} tagService
-   * @param {PersonService} personService
-   * @param {DateService} dateService
-   * @param {SuggestionService} suggestionService
-   * @param {ScopeService} scopeService
-   * @param {TaskletDisplayService} taskletDisplayService
-   * @param {TaskletTypeService} taskletTypeService
+   * @param pouchDBService pouchDB service
+   * @param projectService project service
+   * @param taskService task service
+   * @param tagService tag service
+   * @param personService person service
+   * @param dateService date service
+   * @param suggestionService suggestion service
+   * @param scopeService scope service
+   * @param taskletDisplayService tasklet display service
+   * @param taskletTypeService tasklet type service
    */
   constructor(private pouchDBService: PouchDBService,
               private projectService: ProjectService,
@@ -112,7 +113,7 @@ export class TaskletService {
 
   /**
    * Loads tasklets by a given scope
-   * @param {Scope} scope scope to filter by
+   * @param scope scope to filter by
    */
   public findTaskletsByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKLETS_DAYS));
@@ -135,7 +136,7 @@ export class TaskletService {
 
   /**
    * Loads tasklet by a given ID
-   * @param {number} id ID of filter by
+   * @param id ID of filter by
    */
   public findTaskletByID(id: string) {
     const index = {fields: ['entityType', 'id', 'creationDate']};
@@ -212,7 +213,7 @@ export class TaskletService {
 
   /**
    * Creates a new tasklet
-   * @param {Tasklet} tasklet tasklet to be created
+   * @param tasklet tasklet to be created
    */
   public createTasklet(tasklet: Tasklet): Promise<any> {
     return new Promise(() => {
@@ -246,7 +247,7 @@ export class TaskletService {
 
   /**
    * Updates an existing tasklet
-   * @param {Tasklet} tasklet tasklet to be updated
+   * @param tasklet tasklet to be updated
    */
   public updateTasklet(tasklet: Tasklet): Promise<any> {
     return new Promise(() => {
@@ -284,7 +285,7 @@ export class TaskletService {
 
   /**
    * Deletes a tasklet
-   * @param {Tasklet} tasklet tasklet to be deleted
+   * @param tasklet tasklet to be deleted
    */
   public deleteTasklet(tasklet: Tasklet): Promise<any> {
     return new Promise(() => {
@@ -307,8 +308,8 @@ export class TaskletService {
 
   /**
    * Retrieves a task by a given tasklet
-   * @param {Tasklet} tasklet tasklet to find task by
-   * @returns {Task} task referenced by given tasklet, null if no such task exists
+   * @param tasklet tasklet to find task by
+   * @returns task referenced by given tasklet, null if no such task exists
    */
   public getTaskByTasklet(tasklet: Tasklet): Task {
     if (tasklet != null && tasklet.taskId != null) {
@@ -332,8 +333,8 @@ export class TaskletService {
 
   /**
    * Retrieves a project by a given tasklet
-   * @param {Tasklet} tasklet tasklet to find project by
-   * @returns {Project} project referenced by given tasklet, null if no such project exists
+   * @param tasklet tasklet to find project by
+   * @returns project referenced by given tasklet, null if no such project exists
    */
   public getProjectByTasklet(tasklet: Tasklet): Project {
     const task = this.getTaskByTasklet(tasklet);
@@ -347,9 +348,9 @@ export class TaskletService {
 
   /**
    * Returns a map of recent daily scrum activities of a given type and a given person
-   * @param {DailyScrumItemType} type daily scrum item type
-   * @param {Person} person person to get scrum activities for
-   * @returns {Map<string, string>} map of scrum activities
+   * @param type daily scrum item type
+   * @param person person to get scrum activities for
+   * @returns map of scrum activities
    */
   public getDailyScrumActivities(type: DailyScrumItemType, person: Person): Map<string, string> {
     const dailyScrumActivities = new Map<string, string>();
@@ -382,7 +383,7 @@ export class TaskletService {
   /**
    * Adds a creation date of a tasklet to the queue and publishes the latest entry.
    * This is used for the date indicator component
-   * @param {Date} date element to be added
+   * @param date element to be added
    */
   addElementToDateQueue(date: Date) {
     const BUFFER = 7;

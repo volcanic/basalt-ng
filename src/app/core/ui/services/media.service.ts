@@ -18,7 +18,7 @@ export class MediaService {
 
   /**
    * Constructor
-   * @param {BreakpointObserver} breakpointObserver breakpoint observer
+   * @param breakpointObserver breakpoint observer
    */
   constructor(public breakpointObserver: BreakpointObserver) {
     this.initializeSize();
