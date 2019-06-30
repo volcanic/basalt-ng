@@ -11,8 +11,8 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
     }
     parameters {
-        string(name: 'BASE_REF', defaultValue: 'https://amphibian.intero.berlin', description: 'URL the app shall be accessible from')
-        string(name: 'WEB_ROOT', defaultValue: '/var/www/amphibian', description: 'Web root directory for this app')
+        string(name: 'BASE_REF', defaultValue: 'https://basalt.intero.berlin', description: 'URL the app shall be accessible from')
+        string(name: 'WEB_ROOT', defaultValue: '/var/www/basalt', description: 'Web root directory for this app')
     }
     stages {
         stage('Checkout') {
