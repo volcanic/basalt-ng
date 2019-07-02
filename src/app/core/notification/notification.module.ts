@@ -3,8 +3,8 @@ import {NotificationImports} from './notification.imports';
 import {NotificationProviders} from './notification.providers';
 
 @NgModule({
-  declarations: [],
   imports: [NotificationImports],
+  declarations: [],
   providers: [NotificationProviders]
 })
 export class NotificationModule {

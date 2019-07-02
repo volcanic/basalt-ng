@@ -1,18 +1,11 @@
-import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {MaterialModule} from '../material/material.module';
 import {DateTimePickerFragmentComponent} from './date-time-picker-fragment/date-time-picker-fragment.component';
-import {FormsModule} from '@angular/forms';
+import {DateTimePickerFragmentDeclarations} from './date-time-picker-fragment.declarations';
+import {DateTimePickerFragmentImports} from './date-time-picker-fragment.imports';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MaterialModule
-  ],
-  declarations: [
-    DateTimePickerFragmentComponent
-  ],
+  imports: [DateTimePickerFragmentImports],
+  declarations: [DateTimePickerFragmentDeclarations],
   exports: [
     DateTimePickerFragmentComponent
   ]

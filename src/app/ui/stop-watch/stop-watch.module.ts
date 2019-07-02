@@ -1,17 +1,17 @@
-import {EventEmitter, Input, NgModule, OnInit, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
 import {StopWatchComponent} from './stop-watch/stop-watch.component';
-import {DateService} from '../../core/entity/services/date.service';
-import {PaletteType} from '../../core/ui/model/palette-type.enum';
-import {HueType} from '../../core/ui/model/hue-type.enum';
+import {StopWatchImports} from './stop-watch.imports';
+import {StopWatchDeclarations} from './stop-watch.declaration';
 
 @NgModule({
-  imports: [
-    CommonModule
+  imports: [StopWatchImports],
+  declarations: [StopWatchDeclarations],
+  entryComponents: [
+    StopWatchComponent
   ],
-  declarations: [StopWatchComponent],
-  entryComponents: [StopWatchComponent],
-  exports: [StopWatchComponent]
+  exports: [
+    StopWatchComponent
+  ]
 })
 export class StopWatchModule {
 }

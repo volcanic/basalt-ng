@@ -1,16 +1,11 @@
 import {NgModule} from '@angular/core';
 import {StartComponent} from './pages/start/start.component';
 import {StartImports} from './start.imports';
-import {StartProviders} from './start.providers';
-import {NotificationComponent} from './pages/notfication/notification.component';
+import {CalendarDeclarations} from './start.declaration';
 
 @NgModule({
-  declarations: [
-    StartComponent,
-    NotificationComponent
-  ],
   imports: [StartImports],
-  providers: [StartProviders],
+  declarations: [CalendarDeclarations],
   entryComponents: [
     StartComponent
   ], exports: [

@@ -1,18 +1,17 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {TaskAutocompleteFragmentComponent} from './task-autocomplete-fragment/task-autocomplete-fragment.component';
-import {FormsModule} from '@angular/forms';
-import {MaterialModule} from '../material/material.module';
+import {TaskAutocompleteImports} from './task-autocomplete.imports';
+import {TaskAutocompleteDeclarations} from './task-autocomplete.declaration';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MaterialModule
+  imports: [TaskAutocompleteImports],
+  declarations: [TaskAutocompleteDeclarations],
+  entryComponents: [
+    TaskAutocompleteFragmentComponent
   ],
-  declarations: [TaskAutocompleteFragmentComponent],
-  entryComponents: [TaskAutocompleteFragmentComponent],
-  exports: [TaskAutocompleteFragmentComponent]
+  exports: [
+    TaskAutocompleteFragmentComponent
+  ]
 })
 export class TaskAutocompleteModule {
 }

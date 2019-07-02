@@ -1,16 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {NewFeaturesDialogComponent} from './new-features-dialog/new-features-dialog.component';
-import {MaterialModule} from '../material/material.module';
+import {NewFeaturesDialogImports} from './new-features-dialog.imports';
+import {NewFeaturesDialogDeclarations} from './new-features-dialog.declaration';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MaterialModule
-  ],
-  declarations: [
-    NewFeaturesDialogComponent
-  ],
+  imports: [NewFeaturesDialogImports],
+  declarations: [NewFeaturesDialogDeclarations],
   entryComponents: [
     NewFeaturesDialogComponent
   ],

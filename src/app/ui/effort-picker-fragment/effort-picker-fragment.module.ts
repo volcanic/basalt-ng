@@ -1,20 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {EffortPickerFragmentComponent} from './effort-picker-fragment/effort-picker-fragment.component';
-import {MatButtonModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatSelectModule} from '@angular/material';
-import {FormsModule} from '@angular/forms';
+import {EffortPickerFragmentImports} from './effort-picker-fragment.imports';
+import {EffortPickerDeclarations} from './effort-picker-fragment.declaration';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule
-  ],
-  declarations: [EffortPickerFragmentComponent],
+  imports: [EffortPickerFragmentImports],
+  declarations: [EffortPickerDeclarations],
   exports: [EffortPickerFragmentComponent]
 })
 export class EffortPickerFragmentModule {

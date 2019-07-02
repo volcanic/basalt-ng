@@ -1,26 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SettingsRoutingModule} from './settings-routing.module';
 import {SettingsComponent} from './pages/settings/settings.component';
-import {SettingsToolbarComponent} from './components/toolbars/settings-toolbar/settings-toolbar.component';
-import {ScrollDispatchModule} from '@angular/cdk/scrolling';
-import {MaterialModule} from '../../ui/material/material.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SettingsImports} from './settings.imports';
+import {SettingsDeclarations} from './settings.declaration';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ScrollDispatchModule,
-    MaterialModule,
-    SettingsRoutingModule
-  ],
-  declarations: [
-    SettingsComponent,
-    SettingsToolbarComponent
-  ],
+  imports: [SettingsImports],
+  declarations: [SettingsDeclarations],
   entryComponents: [
     // Pages
     SettingsComponent

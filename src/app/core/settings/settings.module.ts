@@ -1,15 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {SettingsService} from './services/settings.service';
+import {SettingsProviders} from './settings.providers';
+import {SettingsImports} from './settings.imports';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [SettingsImports],
   declarations: [],
-  providers: [
-    SettingsService
-  ]
+  providers: [SettingsProviders]
 })
 export class SettingsModule {
 }

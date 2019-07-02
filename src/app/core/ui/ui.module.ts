@@ -1,23 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ThemeService} from './services/theme.service';
-import {SnackbarService} from './services/snackbar.service';
-import {MediaService} from './services/media.service';
-import {ColorService} from './services/color.service';
-import {MaterialColorService} from './services/material-color.service';
+import {UiImports} from './ui.imports';
+import {UiProviders} from './ui.providers';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [UiImports],
   declarations: [],
-  providers: [
-    ColorService,
-    MaterialColorService,
-    MediaService,
-    SnackbarService,
-    ThemeService
-  ]
+  providers: [UiProviders]
 })
 /**
  * Contains services related to UI

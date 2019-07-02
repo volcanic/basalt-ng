@@ -1,16 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {AboutDialogComponent} from './about-dialog/about-dialog.component';
-import {MaterialModule} from '../material/material.module';
+import {AboutDialogImports} from './about-dialog.imports';
+import {AboutDialogDeclarations} from './about-dialog.declarations';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MaterialModule
-  ],
-  declarations: [
-    AboutDialogComponent
-  ],
+  imports: [AboutDialogImports],
+  declarations: [AboutDialogDeclarations],
   entryComponents: [
     AboutDialogComponent
   ],

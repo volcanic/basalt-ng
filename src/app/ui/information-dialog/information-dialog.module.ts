@@ -1,16 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {InformationDialogComponent} from './information-dialog/information-dialog.component';
-import {MaterialModule} from '../material/material.module';
+import {InformationDialogImports} from './information-dialog.imports';
+import {InformationDialogDeclarations} from './information-dialog.declaration';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MaterialModule
-  ],
-  declarations: [
-    InformationDialogComponent
-  ],
+  imports: [InformationDialogImports],
+  declarations: [InformationDialogDeclarations],
   entryComponents: [
     InformationDialogComponent
   ],

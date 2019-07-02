@@ -6,7 +6,5 @@ import {MaterialModule} from '../../ui/material/material.module';
 export const StartImports = [
   CommonModule,
   StartRoutingModule,
-
-  // Material Design
   MaterialModule,
 ];

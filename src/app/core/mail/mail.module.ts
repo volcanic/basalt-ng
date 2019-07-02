@@ -1,13 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {EmailService} from './services/mail/email.service';
+import {MailImports} from './mail.imports';
+import {MailProviders} from './mail.providers';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [MailImports],
   declarations: [],
-  providers: [EmailService]
+  providers: [MailProviders]
 })
 /**
  * Contains services related mails

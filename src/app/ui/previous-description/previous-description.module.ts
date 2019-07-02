@@ -1,18 +1,17 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {MaterialModule} from '../material/material.module';
 import {PreviousDescriptionFragmentComponent} from './previous-description-fragment/previous-description-fragment.component';
+import {PreviousDescriptionImports} from './previous-description.imports';
+import {PreviousDescriptionDeclarations} from './previous-description.declaration';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MaterialModule
+  imports: [PreviousDescriptionImports],
+  declarations: [PreviousDescriptionDeclarations],
+  entryComponents: [
+    PreviousDescriptionFragmentComponent
   ],
-  declarations: [PreviousDescriptionFragmentComponent],
-  entryComponents: [PreviousDescriptionFragmentComponent],
-  exports: [PreviousDescriptionFragmentComponent]
+  exports: [
+    PreviousDescriptionFragmentComponent
+  ]
 })
 export class PreviousDescriptionModule {
 }

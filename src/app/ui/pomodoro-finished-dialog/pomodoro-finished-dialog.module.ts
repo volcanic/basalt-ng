@@ -1,16 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {PomodoroFinishedDialogComponent} from './pomodoro-finished-dialog/pomodoro-finished-dialog.component';
-import {MaterialModule} from '../material/material.module';
+import {PomodoroFinishedDialogDeclarations} from './pomodoro-finished-dialog.declaration';
+import {PomodoroFinishedDialogImports} from './pomodoro-finished-dialog.imports';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MaterialModule
-  ],
-  declarations: [
-    PomodoroFinishedDialogComponent
-  ],
+  imports: [PomodoroFinishedDialogImports],
+  declarations: [PomodoroFinishedDialogDeclarations],
   entryComponents: [
     PomodoroFinishedDialogComponent
   ],

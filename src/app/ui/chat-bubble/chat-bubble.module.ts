@@ -1,17 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {ChatBubbleComponent} from './chat-bubble/chat-bubble.component';
-import {MatIconModule, MatInputModule} from '@angular/material';
-import {FormsModule} from '@angular/forms';
+import {ChatBubbleDeclarations} from './chat-bubble.declaration';
+import {ChatBubbleImports} from './chat-bubble.imports';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatIconModule,
-    MatInputModule
-  ],
-  declarations: [ChatBubbleComponent],
+  imports: [ChatBubbleImports],
+  declarations: [ChatBubbleDeclarations],
   exports: [ChatBubbleComponent]
 })
 export class ChatBubbleModule {

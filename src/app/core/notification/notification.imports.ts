@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 
-/** Imports for ui module */
+/** Imports for notification module */
 export const NotificationImports  = [
   CommonModule
 ];

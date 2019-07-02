@@ -1,17 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {PouchDBService} from './services/pouchdb.service';
-import {PouchDBSettingsService} from './services/pouchdb-settings.service';
+import {PersistenceImports} from './persistence.imports';
+import {PersistenceProviders} from './persistence.providers';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
+  imports: [PersistenceImports],
   declarations: [],
-  providers: [
-    PouchDBService,
-    PouchDBSettingsService
-  ]
+  providers: [PersistenceProviders]
 })
 /**
  * Contains services related to persistence

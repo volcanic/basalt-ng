@@ -1,13 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {EntityModule} from '../entity/entity.module';
+import {DigestImports} from './digest.imports';
+import {DigestProviders} from './digest.providers';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    EntityModule
-  ],
-  declarations: []
+  imports: [DigestImports],
+  declarations: [],
+  providers: [DigestProviders]
 })
 export class DigestModule {
 }

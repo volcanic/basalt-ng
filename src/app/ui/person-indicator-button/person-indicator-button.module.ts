@@ -1,15 +1,11 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {PersonIndicatorButtonComponent} from './person-indicator-button/person-indicator-button.component';
-import {MatButtonModule, MatTooltipModule} from '@angular/material';
+import {PersonIndicatorButtonDeclarations} from './person-indicator-button.declaration';
+import {PersonIndicatorButtonImports} from './person-indicator-button.imports';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatTooltipModule
-  ],
-  declarations: [PersonIndicatorButtonComponent],
+  imports: [PersonIndicatorButtonImports],
+  declarations: [PersonIndicatorButtonDeclarations],
   exports: [PersonIndicatorButtonComponent]
 })
 export class PersonIndicatorButtonModule {
