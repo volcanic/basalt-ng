@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SuggestedActionButtonComponent } from './suggested-action-button.component';
+import {SuggestedActionButtonComponent} from './suggested-action-button.component';
+import {SuggestedActionButtonImports} from '../suggested-action-button.imports';
+import {SuggestedActionButtonDeclarations} from '../suggested-action-button.declaration';
 
 describe('SuggestedActionButtonComponent', () => {
   let component: SuggestedActionButtonComponent;
@@ -8,9 +10,10 @@ describe('SuggestedActionButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SuggestedActionButtonComponent ]
+      imports: [SuggestedActionButtonImports],
+      declarations: [SuggestedActionButtonDeclarations]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

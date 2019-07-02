@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CompletableListItemComponent } from './completable-list-item.component';
+import {CompletableListItemComponent} from './completable-list-item.component';
+import {CheckableListDeclarations} from '../checkable-list.declaration';
+import {CheckableListImports} from '../checkable-list.imports';
 
 describe('CompletableListItemComponent', () => {
   let component: CompletableListItemComponent;
@@ -8,9 +10,10 @@ describe('CompletableListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CompletableListItemComponent ]
+      imports: [CheckableListImports],
+      declarations: [CheckableListDeclarations],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TaskletPreviewFragmentComponent} from './tasklet-preview-fragment.component';
+import {TimelineImports} from '../../../../timeline.imports';
+import {TimelineDeclarations} from '../../../../timeline.declaration';
 
 describe('TaskletPreviewFragmentComponent', () => {
   let component: TaskletPreviewFragmentComponent;
@@ -8,7 +10,8 @@ describe('TaskletPreviewFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletPreviewFragmentComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
       .compileComponents();
   }));

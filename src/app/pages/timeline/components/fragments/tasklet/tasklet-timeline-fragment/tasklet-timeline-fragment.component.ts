@@ -50,6 +50,8 @@ export class TaskletTimelineFragmentComponent implements OnInit {
    * Initializes icon
    */
   private initializeIcon() {
-    this.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
+    if (this.tasklet != null) {
+      this.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
+    }
   }
 }

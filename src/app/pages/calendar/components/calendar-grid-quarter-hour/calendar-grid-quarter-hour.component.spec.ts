@@ -1,20 +1,23 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {CalendarGridHourComponent} from './calendar-grid-quarter-hour.component';
+import {CalendarGridQuarterHourComponent} from './calendar-grid-quarter-hour.component';
+import {CalendarImports} from '../../calendar.imports';
+import {CalendarDeclarations} from '../../calendar.declaration';
 
-describe('CalendarGridHourComponent', () => {
-  let component: CalendarGridHourComponent;
-  let fixture: ComponentFixture<CalendarGridHourComponent>;
+describe('CalendarGridQuarterHourComponent', () => {
+  let component: CalendarGridQuarterHourComponent;
+  let fixture: ComponentFixture<CalendarGridQuarterHourComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CalendarGridHourComponent]
+      imports: [CalendarImports],
+      declarations: [CalendarDeclarations],
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CalendarGridHourComponent);
+    fixture = TestBed.createComponent(CalendarGridQuarterHourComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

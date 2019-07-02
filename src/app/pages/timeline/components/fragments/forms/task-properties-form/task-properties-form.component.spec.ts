@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TaskPropertiesFormComponent } from './task-properties-form.component';
+import {TaskPropertiesFormComponent} from './task-properties-form.component';
+import {TimelineImports} from '../../../../timeline.imports';
+import {TimelineDeclarations} from '../../../../timeline.declaration';
 
 describe('TaskPropertiesFormComponent', () => {
   let component: TaskPropertiesFormComponent;
@@ -8,9 +10,10 @@ describe('TaskPropertiesFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskPropertiesFormComponent ]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

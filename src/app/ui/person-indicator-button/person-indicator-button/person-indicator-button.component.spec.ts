@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PersonIndicatorButtonComponent } from './person-indicator-button.component';
+import {PersonIndicatorButtonComponent} from './person-indicator-button.component';
+import {PersonIndicatorButtonImports} from '../person-indicator-button.imports';
+import {PersonIndicatorButtonDeclarations} from '../person-indicator-button.declaration';
 
 describe('PersonIndicatorButtonComponent', () => {
   let component: PersonIndicatorButtonComponent;
@@ -8,9 +10,10 @@ describe('PersonIndicatorButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PersonIndicatorButtonComponent ]
+      imports: [PersonIndicatorButtonImports],
+      declarations: [PersonIndicatorButtonDeclarations],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

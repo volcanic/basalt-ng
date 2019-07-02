@@ -2,6 +2,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FileDropFragmentComponent} from './file-drop-fragment.component';
 import {FileUploadModule} from 'ng2-file-upload';
+import {TimelineImports} from '../../../../timeline.imports';
+import {TimelineDeclarations} from '../../../../timeline.declaration';
 
 describe('FileDropFragmentComponent', () => {
   let component: FileDropFragmentComponent;
@@ -9,12 +11,8 @@ describe('FileDropFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        FileDropFragmentComponent
-      ],
-      imports: [
-        FileUploadModule
-      ]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
       .compileComponents();
   }));

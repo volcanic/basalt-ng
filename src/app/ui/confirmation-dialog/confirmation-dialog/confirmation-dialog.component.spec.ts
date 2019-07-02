@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ConfirmationDialogComponent} from './confirmation-dialog.component';
+import {ConfirmationDialogImports} from '../confirmation-dialog.imports';
+import {ConfirmationDialogDeclarations} from '../confirmation-dialog.declaration';
 
 describe('PomodoroFinishedDialogComponent', () => {
   let component: ConfirmationDialogComponent;
@@ -8,7 +10,8 @@ describe('PomodoroFinishedDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ConfirmationDialogComponent]
+      imports: [ConfirmationDialogImports],
+      declarations: [ConfirmationDialogDeclarations],
     })
       .compileComponents();
   }));

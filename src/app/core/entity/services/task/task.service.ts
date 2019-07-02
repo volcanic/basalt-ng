@@ -22,6 +22,7 @@ import {Tasklet} from '../../model/tasklet.model';
  * <li> Lookup
  * <li> Display options
  */
+
 /* tslint:disable:object-literal-key-quotes */
 @Injectable({
   providedIn: 'root'
@@ -188,19 +189,21 @@ export class TaskService {
    */
   private findTasksInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const task = element as Task;
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const task = element as Task;
 
-          if (task.scope == null) {
-            task.scope = this.scopeService.scope;
-            this.updateTask(task).then(() => {
-            });
-          }
+            if (task.scope == null) {
+              task.scope = this.scopeService.scope;
+              this.updateTask(task).then(() => {
+              });
+            }
 
-          this.tasks.set(task.id, task);
-        });
+            this.tasks.set(task.id, task);
+          });
 
-        this.notify();
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);
@@ -216,13 +219,15 @@ export class TaskService {
    */
   private findTaskInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const task = element as Task;
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const task = element as Task;
 
-          this.task = task;
-          this.tasks.set(task.id, task);
-        });
-        this.notify();
+            this.task = task;
+            this.tasks.set(task.id, task);
+          });
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);

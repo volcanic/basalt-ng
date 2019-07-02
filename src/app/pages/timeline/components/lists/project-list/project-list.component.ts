@@ -44,11 +44,13 @@ export class ProjectListComponent implements OnChanges {
    * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges) {
-    this.projectsRecent = this.projects.slice(0, this.recentCount);
-    if (this.projects.length > this.recentCount) {
-      this.projectsNonRecent = this.projects.slice(this.recentCount, this.projects.length - 1).sort((p1, p2) => {
-        return p2.name < p1.name ? 1 : -1;
-      });
+    if (this.projects != null) {
+      this.projectsRecent = this.projects.slice(0, this.recentCount);
+      if (this.projects.length > this.recentCount) {
+        this.projectsNonRecent = this.projects.slice(this.recentCount, this.projects.length - 1).sort((p1, p2) => {
+          return p2.name < p1.name ? 1 : -1;
+        });
+      }
     }
   }
 

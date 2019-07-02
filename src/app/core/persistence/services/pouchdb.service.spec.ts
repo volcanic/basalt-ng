@@ -9,7 +9,7 @@ describe('PouchdbService', () => {
     });
   });
 
-  it('should ...', inject([PouchDBService], (service: PouchDBService) => {
+  xit('should ...', inject([PouchDBService], (service: PouchDBService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -46,22 +46,24 @@ export class TaskletDailyScrumItemFragmentComponent implements OnInit {
    * Initializes icon
    */
   private initializeIcon() {
-    switch (this.dailyScrumItem.type) {
-      case DailyScrumItemType.DONE: {
-        this.icon = 'check_circle';
-        break;
-      }
-      case DailyScrumItemType.DOING: {
-        this.icon = 'today';
-        break;
-      }
-      case DailyScrumItemType.WILL_DO: {
-        this.icon = 'refresh';
-        break;
-      }
-      case DailyScrumItemType.IMPEDIMENT: {
-        this.icon = 'warning';
-        break;
+    if (this.dailyScrumItem != null && this.dailyScrumItem.type != null) {
+      switch (this.dailyScrumItem.type) {
+        case DailyScrumItemType.DONE: {
+          this.icon = 'check_circle';
+          break;
+        }
+        case DailyScrumItemType.DOING: {
+          this.icon = 'today';
+          break;
+        }
+        case DailyScrumItemType.WILL_DO: {
+          this.icon = 'refresh';
+          break;
+        }
+        case DailyScrumItemType.IMPEDIMENT: {
+          this.icon = 'warning';
+          break;
+        }
       }
     }
   }
@@ -70,7 +72,7 @@ export class TaskletDailyScrumItemFragmentComponent implements OnInit {
    * Initializes meeting minute item statement parts
    */
   private initializeDailyScrumItemStatementParts() {
-    if (this.dailyScrumItem.statement != null) {
+    if (this.dailyScrumItem != null && this.dailyScrumItem.statement != null) {
       this.dailyScrumItemStatementParts = this.dailyScrumItem.statement.split('\n').map(p => {
         return p.trim();
       });

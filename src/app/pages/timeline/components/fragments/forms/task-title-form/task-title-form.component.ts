@@ -30,8 +30,10 @@ export class TaskTitleFormComponent {
    * @param text text
    */
   onNameChanged(text: string) {
-    this.task.name = text;
-    this.notify();
+    if (this.task != null) {
+      this.task.name = text;
+      this.notify();
+    }
   }
 
   //

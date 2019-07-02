@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {FeatureFragmentComponent} from './feature-fragment.component';
+import {IntroImports} from '../../intro.imports';
+import {IntroDeclarations} from '../../intro.declaration';
 
 describe('RecurrenceIntervalFragmentComponent', () => {
   let component: FeatureFragmentComponent;
@@ -8,7 +10,8 @@ describe('RecurrenceIntervalFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FeatureFragmentComponent]
+      imports: [IntroImports],
+      declarations: [IntroDeclarations]
     })
       .compileComponents();
   }));

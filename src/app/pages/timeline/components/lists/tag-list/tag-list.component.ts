@@ -46,11 +46,13 @@ export class TagListComponent implements OnChanges {
    * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges) {
-    this.tagsRecent = this.tags.slice(0, this.recentCount);
-    if (this.tags.length > this.recentCount) {
-      this.tagsNonRecent = this.tags.slice(this.recentCount, this.tags.length - 1).sort((p1, p2) => {
-        return p2.name < p1.name ? 1 : -1;
-      });
+    if (this.tags != null) {
+      this.tagsRecent = this.tags.slice(0, this.recentCount);
+      if (this.tags.length > this.recentCount) {
+        this.tagsNonRecent = this.tags.slice(this.recentCount, this.tags.length - 1).sort((p1, p2) => {
+          return p2.name < p1.name ? 1 : -1;
+        });
+      }
     }
   }
 
@@ -85,7 +87,7 @@ export class TagListComponent implements OnChanges {
    * Handles click on remove-unused-tags button
    */
   onRemoveUnusedTagsClicked() {
-    this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_REMOVE_UNUSED, tag: null, tags: this.unusedTags });
+    this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_REMOVE_UNUSED, tag: null, tags: this.unusedTags});
   }
 
   //

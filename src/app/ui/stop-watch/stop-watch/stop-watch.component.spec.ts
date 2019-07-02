@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { StopWatchComponent } from './stop-watch.component';
+import {StopWatchComponent} from './stop-watch.component';
+import {StopWatchImports} from '../stop-watch.imports';
+import {StopWatchDeclarations} from '../stop-watch.declaration';
 
 describe('StopWatchComponent', () => {
   let component: StopWatchComponent;
@@ -8,9 +10,10 @@ describe('StopWatchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StopWatchComponent ]
+      imports: [StopWatchImports],
+      declarations: [StopWatchDeclarations]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

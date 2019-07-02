@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RelativeTimeFragmentComponent } from './relative-time-fragment.component';
+import {RelativeTimeFragmentComponent} from './relative-time-fragment.component';
+import {TimelineImports} from '../../../../timeline.imports';
+import {TimelineDeclarations} from '../../../../timeline.declaration';
 
 describe('RelativeTimeFragmentComponent', () => {
   let component: RelativeTimeFragmentComponent;
@@ -8,9 +10,10 @@ describe('RelativeTimeFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RelativeTimeFragmentComponent ]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

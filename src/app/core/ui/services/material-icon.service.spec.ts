@@ -1,11 +1,14 @@
 import {inject, TestBed} from '@angular/core/testing';
 
 import {MaterialIconService} from './material-icon.service';
+import {UiImports} from '../ui.imports';
+import {UiProviders} from '../ui.providers';
 
 describe('MaterialIconService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MaterialIconService]
+      imports: [UiImports],
+      providers: [UiProviders]
     });
   });
 

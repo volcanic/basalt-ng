@@ -16,6 +16,7 @@ import {DateService} from './date.service';
  * <li> Persistence
  * <li> Lookup
  */
+
 /* tslint:disable:object-literal-key-quotes */
 @Injectable({
   providedIn: 'root'
@@ -133,11 +134,13 @@ export class TagService {
    */
   private findTagsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const tag = element as Tag;
-          this.tags.set(tag.id, tag);
-        });
-        this.notify();
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const tag = element as Tag;
+            this.tags.set(tag.id, tag);
+          });
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);
@@ -153,13 +156,15 @@ export class TagService {
    */
   private findTagInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const tag = element as Tag;
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const tag = element as Tag;
 
-          this.tag = tag;
-          this.tags.set(tag.id, tag);
-        });
-        this.notify();
+            this.tag = tag;
+            this.tags.set(tag.id, tag);
+          });
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);

@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MainComponent } from './main.component';
+import {MainComponent} from './main.component';
+import {TimelineImports} from '../../timeline.imports';
+import {TimelineDeclarations} from '../../timeline.declaration';
+import {Router} from '@angular/router';
 
 describe('MainComponent', () => {
   let component: MainComponent;
@@ -8,9 +11,17 @@ describe('MainComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainComponent ]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
+      providers: [
+        {
+          provide: Router, useClass: class {
+            navigate = jasmine.createSpy('navigate');
+          }
+        },
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

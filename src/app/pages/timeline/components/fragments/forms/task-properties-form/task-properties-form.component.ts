@@ -105,15 +105,17 @@ export class TaskPropertiesFormComponent implements OnInit {
    * Initializes priority
    */
   private initializePriority() {
-    const taskPriority = this.task.priority;
+    if (this.task != null) {
+      const taskPriority = this.task.priority;
 
-    this.colorsFlags.forEach((flagColor, index) => {
-      if (index === taskPriority) {
-        this.colorsFlags[index] = this.colorsPriorities[this.task.priority];
-      } else {
-        this.colorsFlags[index] = this.colorEmpty;
-      }
-    });
+      this.colorsFlags.forEach((flagColor, index) => {
+        if (index === taskPriority) {
+          this.colorsFlags[index] = this.colorsPriorities[this.task.priority];
+        } else {
+          this.colorsFlags[index] = this.colorEmpty;
+        }
+      });
+    }
   }
 
   /**
@@ -218,7 +220,9 @@ export class TaskPropertiesFormComponent implements OnInit {
    */
   onClickFlag(priority: number) {
     if (!this.readonly) {
-      this.task.priority = priority;
+      if (this.task != null) {
+        this.task.priority = priority;
+      }
 
       if (priority === 4) {
         this.colorsFlags = [
@@ -310,6 +314,11 @@ export class TaskPropertiesFormComponent implements OnInit {
    * Informs subscribers that something has changed
    */
   private notify() {
-    this.taskEventEmitter.emit({task: this.task, project: this.project, delegatedTo: this.delegatedTo, tags: this.tags});
+    this.taskEventEmitter.emit({
+      task: this.task,
+      project: this.project,
+      delegatedTo: this.delegatedTo,
+      tags: this.tags
+    });
   }
 }

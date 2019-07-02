@@ -1,8 +1,8 @@
-import {PersonNamePipe} from './person-names.pipe';
+import {PersonNamesPipe} from './person-names.pipe';
 
-describe('PersonNamePipe', () => {
+describe('PersonNamesPipe', () => {
   it('create an instance', () => {
-    const pipe = new PersonNamePipe();
+    const pipe = new PersonNamesPipe();
     expect(pipe).toBeTruthy();
   });
 });

@@ -107,12 +107,14 @@ export class ProjectService {
    */
   private findProjectsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const project = element as Project;
-          this.projects.set(project.id, project);
-        });
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const project = element as Project;
+            this.projects.set(project.id, project);
+          });
 
-        this.notify();
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);

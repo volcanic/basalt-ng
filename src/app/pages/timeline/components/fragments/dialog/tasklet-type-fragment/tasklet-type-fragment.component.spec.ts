@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TaskletTypeFragmentComponent} from './tasklet-type-fragment.component';
+import {TimelineImports} from '../../../../timeline.imports';
+import {TimelineDeclarations} from '../../../../timeline.declaration';
 
 describe('RecurrenceIntervalFragmentComponent', () => {
   let component: TaskletTypeFragmentComponent;
@@ -8,7 +10,8 @@ describe('RecurrenceIntervalFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletTypeFragmentComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
       .compileComponents();
   }));

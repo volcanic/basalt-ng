@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PreviousDescriptionFragmentComponent} from './previous-description-fragment.component';
+import {PreviousDescriptionImports} from '../previous-description.imports';
+import {PreviousDescriptionDeclarations} from '../previous-description.declaration';
 
 describe('PreviousDescriptionFragmentComponent', () => {
   let component: PreviousDescriptionFragmentComponent;
@@ -8,7 +10,8 @@ describe('PreviousDescriptionFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PreviousDescriptionFragmentComponent]
+      imports: [PreviousDescriptionImports],
+      declarations: [PreviousDescriptionDeclarations],
     })
       .compileComponents();
   }));

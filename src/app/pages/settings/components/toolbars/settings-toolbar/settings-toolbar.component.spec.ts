@@ -1,6 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {SettingsToolbarComponent} from './settings-toolbar.component';
+import {SettingsImports} from '../../../settings.imports';
+import {SettingsDeclarations} from '../../../settings.declaration';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('SettingsToolbarComponent', () => {
   let component: SettingsToolbarComponent;
@@ -8,7 +11,11 @@ describe('SettingsToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SettingsToolbarComponent]
+      imports: [
+        SettingsImports,
+        BrowserAnimationsModule
+      ],
+      declarations: [SettingsDeclarations],
     })
       .compileComponents();
   }));

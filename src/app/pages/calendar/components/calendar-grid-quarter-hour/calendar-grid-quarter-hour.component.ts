@@ -38,7 +38,7 @@ export class CalendarGridQuarterHourComponent implements OnInit {
    * Initializes start time
    */
   private initializeStartTime() {
-    if (this.quarterHour.start.getMinutes() === 0) {
+    if (this.quarterHour != null && this.quarterHour.start.getMinutes() === 0) {
       this.startTime = DateService.getTimeString(this.quarterHour.start);
     }
   }

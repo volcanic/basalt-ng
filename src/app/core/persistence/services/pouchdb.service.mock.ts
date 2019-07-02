@@ -1,8 +1,4 @@
 import {EventEmitter, Injectable, isDevMode} from '@angular/core';
-import {environment} from '../../../../environments/environment';
-import PouchDB from 'pouchdb';
-import PouchdbFind from 'pouchdb-find';
-import PouchdbUpsert from 'pouchdb-upsert';
 
 /**
  * Handles pouchdb operations for entity database
@@ -10,7 +6,7 @@ import PouchdbUpsert from 'pouchdb-upsert';
 @Injectable({
   providedIn: 'root'
 })
-export class PouchDBService {
+export class PouchDBMServiceMock {
 
   /** Indicates of PouchDB connection is instantiated */
   private readonly isInstantiated: boolean;
@@ -23,11 +19,7 @@ export class PouchDBService {
    * Constructor
    */
   public constructor() {
-    PouchDB.plugin(require(PouchdbFind));
-    PouchDB.plugin(require(PouchdbUpsert));
-
     if (!this.isInstantiated) {
-      this.database = new PouchDB(environment.DATABASE_ENTITIES);
       this.isInstantiated = true;
     }
   }
@@ -38,11 +30,9 @@ export class PouchDBService {
    * @param options options to query documents by
    * @returns array of documents
    */
-  public find(index: any, options) {
-    return this.database.createIndex({
-      index
-    }).then(() => {
-      return this.database.find(options);
+  public find(index: any, options): Promise<any> {
+    return new Promise((result, error) => {
+      result();
     });
   }
 
@@ -51,14 +41,12 @@ export class PouchDBService {
    * @returns array of documents
    */
   public fetch() {
-    return this.database.allDocs({include_docs: true});
   }
 
   /**
    * Compacts the DATABASE_ENTITIES
    */
   public compact() {
-    this.database.compact();
   }
 
   /**
@@ -66,7 +54,6 @@ export class PouchDBService {
    * @param id ID of a document to be found
    */
   public get(id: string) {
-    return this.database.get(id);
   }
 
   /**
@@ -76,8 +63,6 @@ export class PouchDBService {
    * @returns observable
    */
   public put(id: string, document: any) {
-    document._id = id;
-    return this.database.put(document);
   }
 
   /**
@@ -87,12 +72,6 @@ export class PouchDBService {
    * @returns observable
    */
   public upsert(id: string, document: any) {
-
-    document._id = id;
-
-    return this.database.upsert(id, () => {
-      return document;
-    });
   }
 
   /**
@@ -101,11 +80,6 @@ export class PouchDBService {
    * @returns observable
    */
   public bulk(documents: any[]) {
-    documents.forEach(d => {
-      d._id = d.id;
-    });
-
-    return this.database.bulkDocs(documents);
   }
 
   /**
@@ -114,22 +88,12 @@ export class PouchDBService {
    * @param document document to be removed
    */
   public remove(id: string, document: any) {
-    return this.database.remove(document._id, document._rev);
   }
 
   /**
    * Deletes all documents from the DATABASE_ENTITIES
    */
   public clear() {
-    this.fetch().then(result => {
-      result.rows.forEach(r => {
-        this.database.remove(r.doc);
-      });
-    }, error => {
-      if (isDevMode()) {
-        console.error(error);
-      }
-    });
   }
 
   /**
@@ -137,14 +101,6 @@ export class PouchDBService {
    * @param remote remote string
    */
   public sync(remote: string) {
-    const remoteDatabase = new PouchDB(remote);
-    this.database.sync(remoteDatabase, {
-      live: true
-    }).on('change', change => {
-      this.listener.emit(change);
-    }).on('error', error => {
-      console.error(JSON.stringify(error));
-    });
   }
 
   /**
@@ -154,18 +110,6 @@ export class PouchDBService {
    * @param password password used for authentication
    */
   public syncWithUser(remote: string, username: string, password: string) {
-    const remoteDatabase = new PouchDB(remote);
-    this.database.sync(remoteDatabase, {
-      live: true,
-      auth: {
-        username,
-        password
-      },
-    }).on('change', change => {
-      this.listener.emit(change);
-    }).on('error', error => {
-      console.error(JSON.stringify(error));
-    });
   }
 
   /**

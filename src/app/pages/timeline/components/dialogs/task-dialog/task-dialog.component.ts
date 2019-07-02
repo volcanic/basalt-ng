@@ -134,7 +134,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    */
   private initializeInput() {
     this.adapter.setLocale('en-GB');
-    this.readonly = this.task.completionDate != null;
+    this.readonly = this.task != null && this.task.completionDate != null;
   }
 
   /**

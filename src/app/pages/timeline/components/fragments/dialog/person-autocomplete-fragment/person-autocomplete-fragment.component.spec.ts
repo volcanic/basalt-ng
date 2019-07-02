@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PersonAutocompleteFragmentComponent} from './person-autocomplete-fragment.component';
+import {TimelineImports} from '../../../../timeline.imports';
+import {TimelineDeclarations} from '../../../../timeline.declaration';
 
 describe('PersonAutocompleteFragmentComponent', () => {
   let component: PersonAutocompleteFragmentComponent;
@@ -8,7 +10,8 @@ describe('PersonAutocompleteFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PersonAutocompleteFragmentComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
       .compileComponents();
   }));

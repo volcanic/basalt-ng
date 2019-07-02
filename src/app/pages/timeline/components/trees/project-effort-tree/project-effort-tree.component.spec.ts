@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ProjectEffortTreeComponent} from './project-effort-tree.component';
+import {TimelineImports} from '../../../timeline.imports';
+import {TimelineDeclarations} from '../../../timeline.declaration';
 
 describe('ProjectEffortTreeComponent', () => {
   let component: ProjectEffortTreeComponent;
@@ -8,7 +10,8 @@ describe('ProjectEffortTreeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProjectEffortTreeComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
       .compileComponents();
   }));

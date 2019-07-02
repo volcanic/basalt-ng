@@ -107,7 +107,7 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
    * Initializes expansion panel
    */
   private initializeExpansionPanel() {
-    this.expansionPanelOpened = !DateService.isBeforeToday(this.tasklet.creationDate);
+    this.expansionPanelOpened = this.tasklet != null && !DateService.isBeforeToday(this.tasklet.creationDate);
   }
 
   /**

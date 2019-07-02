@@ -95,32 +95,34 @@ export class DailyScrumItemFragmentComponent implements OnInit {
    * Initializes indicator colors
    */
   private initializeColors() {
-    if (this.dailyScrumItem.person != null) {
-      this.personColor = this.colorService.getPersonColor(this.dailyScrumItem.person);
-      this.personTextColor = this.colorService.getPersonContrast(this.dailyScrumItem.person);
-    }
+    if (this.dailyScrumItem != null) {
+      if (this.dailyScrumItem.person != null) {
+        this.personColor = this.colorService.getPersonColor(this.dailyScrumItem.person);
+        this.personTextColor = this.colorService.getPersonContrast(this.dailyScrumItem.person);
+      }
 
-    if (this.dailyScrumItem.type != null) {
-      switch (this.dailyScrumItem.type) {
-        case DailyScrumItemType.DONE: {
-          this.actionColor = this.colorDone;
-          this.actionTextColor = this.contrastDone;
-          break;
-        }
-        case DailyScrumItemType.DOING: {
-          this.actionColor = this.colorDoing;
-          this.actionTextColor = this.contrastDoing;
-          break;
-        }
-        case DailyScrumItemType.WILL_DO: {
-          this.actionColor = this.colorWillDo;
-          this.actionTextColor = this.contrastWillDo;
-          break;
-        }
-        case DailyScrumItemType.IMPEDIMENT: {
-          this.actionColor = this.colorImpediment;
-          this.actionTextColor = this.contrastImpediment;
-          break;
+      if (this.dailyScrumItem.type != null) {
+        switch (this.dailyScrumItem.type) {
+          case DailyScrumItemType.DONE: {
+            this.actionColor = this.colorDone;
+            this.actionTextColor = this.contrastDone;
+            break;
+          }
+          case DailyScrumItemType.DOING: {
+            this.actionColor = this.colorDoing;
+            this.actionTextColor = this.contrastDoing;
+            break;
+          }
+          case DailyScrumItemType.WILL_DO: {
+            this.actionColor = this.colorWillDo;
+            this.actionTextColor = this.contrastWillDo;
+            break;
+          }
+          case DailyScrumItemType.IMPEDIMENT: {
+            this.actionColor = this.colorImpediment;
+            this.actionTextColor = this.contrastImpediment;
+            break;
+          }
         }
       }
     }
@@ -130,7 +132,7 @@ export class DailyScrumItemFragmentComponent implements OnInit {
    * Initializes type
    */
   private initializeType() {
-    if (this.dailyScrumItem.type != null) {
+    if (this.dailyScrumItem != null && this.dailyScrumItem.type != null) {
       switch (this.dailyScrumItem.type) {
         case DailyScrumItemType.DONE: {
           this.typeIcon = 'check_circle';

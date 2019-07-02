@@ -1,6 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ProjectListDialogComponent} from './project-list-dialog.component';
+import {TimelineImports} from '../../../timeline.imports';
+import {TimelineDeclarations} from '../../../timeline.declaration';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 describe('ProjectListDialogComponent', () => {
   let component: ProjectListDialogComponent;
@@ -8,7 +11,15 @@ describe('ProjectListDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ProjectListDialogComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
+      providers: [
+        {provide: MAT_DIALOG_DATA, useValue: {}}, {
+          provide: MatDialogRef, useValue: {
+            close: jasmine.createSpy('close')
+          }
+        }
+      ],
     })
       .compileComponents();
   }));

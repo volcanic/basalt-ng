@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MarkdownPreviewComponent } from './markdown-preview.component';
+import {MarkdownPreviewComponent} from './markdown-preview.component';
+import {MarkdownFragmentImports} from '../markdown-fragment.imports';
+import {MarkdownFragmentDeclarations} from '../markdown-fragment.declaration';
 
 describe('MarkdownPreviewComponent', () => {
   let component: MarkdownPreviewComponent;
@@ -8,9 +10,10 @@ describe('MarkdownPreviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MarkdownPreviewComponent ]
+      imports: [MarkdownFragmentImports],
+      declarations: [MarkdownFragmentDeclarations],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

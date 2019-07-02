@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MeetingMinutesFragmentComponent } from './meeting-minutes-fragment.component';
+import {MeetingMinutesFragmentComponent} from './meeting-minutes-fragment.component';
+import {TimelineImports} from '../../../../timeline.imports';
+import {TimelineDeclarations} from '../../../../timeline.declaration';
 
 describe('MeetingMinutesFragmentComponent', () => {
   let component: MeetingMinutesFragmentComponent;
@@ -8,9 +10,10 @@ describe('MeetingMinutesFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MeetingMinutesFragmentComponent ]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

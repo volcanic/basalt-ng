@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TaskletDailyScrumFragmentComponent} from './tasklet-daily-scrum-fragment.component';
+import {TimelineImports} from '../../../../timeline.imports';
+import {TimelineDeclarations} from '../../../../timeline.declaration';
 
 describe('TaskletDailyScrumFragmentComponent', () => {
   let component: TaskletDailyScrumFragmentComponent;
@@ -8,7 +10,8 @@ describe('TaskletDailyScrumFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletDailyScrumFragmentComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
       .compileComponents();
   }));

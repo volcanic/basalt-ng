@@ -1,6 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TagDialogComponent} from './tag-dialog.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {TimelineImports} from '../../../timeline.imports';
+import {TimelineDeclarations} from '../../../timeline.declaration';
 
 describe('TagDialogComponent', () => {
   let component: TagDialogComponent;
@@ -8,7 +11,15 @@ describe('TagDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TagDialogComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
+      providers: [
+        {provide: MAT_DIALOG_DATA, useValue: {}}, {
+          provide: MatDialogRef, useValue: {
+            close: jasmine.createSpy('close')
+          }
+        }
+      ],
     })
       .compileComponents();
   }));

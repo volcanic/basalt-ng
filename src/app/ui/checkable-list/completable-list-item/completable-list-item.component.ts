@@ -37,7 +37,7 @@ export class CompletableListItemComponent implements OnInit {
    * Initializes style sheet
    */
   private initializeStyleSheet() {
-    this.itemClass = this.item.selected ? 'selected' : 'unselected';
+    this.itemClass = this.item != null && this.item.selected ? 'selected' : 'unselected';
   }
 
   //

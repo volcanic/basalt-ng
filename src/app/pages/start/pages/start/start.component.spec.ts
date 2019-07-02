@@ -1,6 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {StartComponent} from './start.component';
+import {StartImports} from '../../start.imports';
+import {CalendarDeclarations} from '../../start.declaration';
+import {Router} from '@angular/router';
 
 describe('StartComponent', () => {
   let component: StartComponent;
@@ -8,7 +11,15 @@ describe('StartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [StartComponent]
+      imports: [StartImports],
+      declarations: [CalendarDeclarations],
+      providers: [
+        {
+          provide: Router, useClass: class {
+            navigate = jasmine.createSpy('navigate');
+          }
+        },
+      ]
     })
       .compileComponents();
   }));

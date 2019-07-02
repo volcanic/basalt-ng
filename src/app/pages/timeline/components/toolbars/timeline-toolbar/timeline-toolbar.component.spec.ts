@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TimelineToolbarComponent} from './timeline-toolbar.component';
+import {TimelineImports} from '../../../timeline.imports';
+import {TimelineDeclarations} from '../../../timeline.declaration';
 
 describe('SettingsToolbarComponent', () => {
   let component: TimelineToolbarComponent;
@@ -8,7 +10,8 @@ describe('SettingsToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TimelineToolbarComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
       .compileComponents();
   }));

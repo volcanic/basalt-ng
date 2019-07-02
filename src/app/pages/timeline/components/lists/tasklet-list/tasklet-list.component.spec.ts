@@ -1,6 +1,8 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TaskletListComponent} from './tasklet-list.component';
+import {TimelineImports} from '../../../timeline.imports';
+import {TimelineDeclarations} from '../../../timeline.declaration';
 
 describe('TaskletListComponent', () => {
   let component: TaskletListComponent;
@@ -8,7 +10,8 @@ describe('TaskletListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TaskletListComponent]
+      imports: [TimelineImports],
+      declarations: [TimelineDeclarations],
     })
       .compileComponents();
   }));

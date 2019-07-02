@@ -95,25 +95,27 @@ export class TaskListComponent implements OnInit, OnChanges {
    * Initializes task categories
    */
   initializeTaskCategories() {
-    this.tasksOverdue = this.tasks.filter(this.taskService.isTaskOverdue);
-    this.tasksToday = this.tasks.filter(this.taskService.isTaskToday);
-    this.tasksLater = this.tasks.filter(this.taskService.isTaskLater);
-    this.tasksInbox = this.tasks.filter(this.taskService.isTaskInInbox).sort((t1, t2) => {
-      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
-    });
-    this.tasksDelegated = this.tasks.filter(this.taskService.isTaskDelegated);
-    this.tasksRecurring = this.tasks.filter(this.taskService.isTaskRecurring).sort((t1, t2) => {
-      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
-    });
-    this.tasksCompleted = this.tasks.filter(this.taskService.isTaskCompleted).sort((t1, t2) => {
-      return new Date(t2.completionDate).getTime() > new Date(t1.completionDate).getTime() ? 1 : -1;
-    });
+    if (this.tasks != null) {
+      this.tasksOverdue = this.tasks.filter(this.taskService.isTaskOverdue);
+      this.tasksToday = this.tasks.filter(this.taskService.isTaskToday);
+      this.tasksLater = this.tasks.filter(this.taskService.isTaskLater);
+      this.tasksInbox = this.tasks.filter(this.taskService.isTaskInInbox).sort((t1, t2) => {
+        return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+      });
+      this.tasksDelegated = this.tasks.filter(this.taskService.isTaskDelegated);
+      this.tasksRecurring = this.tasks.filter(this.taskService.isTaskRecurring).sort((t1, t2) => {
+        return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+      });
+      this.tasksCompleted = this.tasks.filter(this.taskService.isTaskCompleted).sort((t1, t2) => {
+        return new Date(t2.completionDate).getTime() > new Date(t1.completionDate).getTime() ? 1 : -1;
+      });
 
-    this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
-    this.tasksTodayBadgeColor = (this.tasksToday.length > 0) ? 'accent' : 'primary';
-    this.tasksLaterBadgeColor = (this.tasksLater.length > 0) ? 'accent' : 'primary';
-    this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
-    this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
+      this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
+      this.tasksTodayBadgeColor = (this.tasksToday.length > 0) ? 'accent' : 'primary';
+      this.tasksLaterBadgeColor = (this.tasksLater.length > 0) ? 'accent' : 'primary';
+      this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
+      this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
+    }
   }
 
   //

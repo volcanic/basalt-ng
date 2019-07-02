@@ -32,6 +32,7 @@ import {Task} from '../../model/task.model';
  * <li> Lookup
  * <li> Display options
  */
+
 /* tslint:disable:object-literal-key-quotes */
 @Injectable({
   providedIn: 'root'
@@ -168,11 +169,13 @@ export class TaskletService {
    */
   private findTaskletsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const tasklet = element as Tasklet;
-          this.tasklets.set(tasklet.id, tasklet);
-        });
-        this.notify();
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const tasklet = element as Tasklet;
+            this.tasklets.set(tasklet.id, tasklet);
+          });
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);
@@ -188,13 +191,15 @@ export class TaskletService {
    */
   private findTaskletInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const tasklet = element as Tasklet;
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const tasklet = element as Tasklet;
 
-          this.tasklet = tasklet;
-          this.tasklets.set(tasklet.id, tasklet);
-        });
-        this.notify();
+            this.tasklet = tasklet;
+            this.tasklets.set(tasklet.id, tasklet);
+          });
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);

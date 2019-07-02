@@ -75,15 +75,17 @@ export class MeetingMinuteItemFragmentComponent implements OnInit {
    * Initializes the color picked by a hash value generated from a name
    */
   private initializeColor() {
-    if (this.meetingMinuteItem.type === MeetingMinuteItemType.INFORMATION) {
-      this.color = this.colorInformation;
-      this.textColor = this.contrastInformation;
-    } else if (this.meetingMinuteItem.type === MeetingMinuteItemType.DECISION) {
-      this.color = this.colorDecision;
-      this.textColor = this.contrastDecision;
-    } else if (this.meetingMinuteItem.type === MeetingMinuteItemType.ACTION && this.meetingMinuteItem.person != null) {
-      this.color = this.colorService.getPersonColor(this.meetingMinuteItem.person);
-      this.textColor = this.colorService.getPersonContrast(this.meetingMinuteItem.person);
+    if (this.meetingMinuteItem != null) {
+      if (this.meetingMinuteItem.type === MeetingMinuteItemType.INFORMATION) {
+        this.color = this.colorInformation;
+        this.textColor = this.contrastInformation;
+      } else if (this.meetingMinuteItem.type === MeetingMinuteItemType.DECISION) {
+        this.color = this.colorDecision;
+        this.textColor = this.contrastDecision;
+      } else if (this.meetingMinuteItem.type === MeetingMinuteItemType.ACTION && this.meetingMinuteItem.person != null) {
+        this.color = this.colorService.getPersonColor(this.meetingMinuteItem.person);
+        this.textColor = this.colorService.getPersonContrast(this.meetingMinuteItem.person);
+      }
     }
   }
 

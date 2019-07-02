@@ -16,6 +16,7 @@ import {DateService} from './date.service';
  * <li> Persistence
  * <li> Lookup
  */
+
 /* tslint:disable:object-literal-key-quotes */
 @Injectable({
   providedIn: 'root'
@@ -144,12 +145,13 @@ export class PersonService {
    */
   private findPersonsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-
-        result['docs'].forEach(element => {
-          const person = element as Person;
-          this.persons.set(person.id, person);
-        });
-        this.notify();
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const person = element as Person;
+            this.persons.set(person.id, person);
+          });
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);
@@ -165,13 +167,15 @@ export class PersonService {
    */
   private findPersonInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
-        result['docs'].forEach(element => {
-          const person = element as Person;
+        if (result != null) {
+          result['docs'].forEach(element => {
+            const person = element as Person;
 
-          this.person = person;
-          this.persons.set(person.id, person);
-        });
-        this.notify();
+            this.person = person;
+            this.persons.set(person.id, person);
+          });
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);
