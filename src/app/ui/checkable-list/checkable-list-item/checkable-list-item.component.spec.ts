@@ -5,7 +5,7 @@ import {CheckableListImports} from '../checkable-list.imports';
 import {CheckableListDeclarations} from '../checkable-list.declaration';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-describe('CompletableListItemComponent', () => {
+describe('CheckableListItemComponent', () => {
   let component: CheckableListItemComponent;
   let fixture: ComponentFixture<CheckableListItemComponent>;
 

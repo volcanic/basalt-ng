@@ -33,6 +33,9 @@ describe('TaskletComponent', () => {
   let component: TaskletComponent;
   let fixture: ComponentFixture<TaskletComponent>;
 
+  const mockNgZone = jasmine.createSpyObj('mockNgZone', ['run', 'runOutsideAngular']);
+  mockNgZone.run.and.callFake(fn => fn());
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TimelineImports],
@@ -62,7 +65,7 @@ describe('TaskletComponent', () => {
         MatIconRegistry,
         DomSanitizer,
         MatDialog,
-        NgZone,
+        {provide: NgZone, useValue: mockNgZone},
         {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
         {
