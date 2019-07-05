@@ -17,9 +17,10 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-                sh "rm -rf ${WORKSPACE}/dist"
-                sh "rm -rf ${WORKSPACE}/reports"
-                sh "rm -rf ${WORKSPACE}/coverage"
+                sh "rm -rf ${WORKSPACE}/dist/*"
+                sh "rm -rf ${WORKSPACE}/reports/*"
+                sh "rm -rf ${WORKSPACE}/coverage/*"
+                sh "mkdir -p ${WORKSPACE}/reports"
             }
         }
         stage('Checkout') {
