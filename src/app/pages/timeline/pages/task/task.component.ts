@@ -8,7 +8,7 @@ import {Person} from '../../../../core/entity/model/person.model';
 import {TaskletType} from '../../../../core/entity/model/tasklet-type.enum';
 import {Subject} from 'rxjs';
 import {Media} from '../../../../core/ui/model/media.enum';
-import {MatDialog, MatDialogConfig, MatIconRegistry, MatSidenav} from '@angular/material';
+import {MatDialog, MatIconRegistry, MatSidenav} from '@angular/material';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
 import {ColorService} from '../../../../core/ui/services/color.service';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
@@ -199,9 +199,6 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.initializeParameters();
-    this.initializeResolvedData();
-
     this.initializeTaskletSubscription();
     this.initializeTaskSubscription();
     this.initializeProjectSubscription();
@@ -215,12 +212,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.initializeSettings();
 
-    this.findEntities();
-
-    this.route.params.subscribe(() => {
-      this.id = this.route.snapshot.paramMap.get('id');
-      this.findEntities();
-    });
+    this.initializeData();
   }
 
   /**
@@ -258,12 +250,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Initializes resolved data
    */
-  private initializeResolvedData() {
-    const resolved = this.route.snapshot.data['task'];
-    if (resolved != null) {
-      this.initializeTask(resolved as Task);
-      this.initializeTaskletTypeAction();
-    }
+  private initializeResolvedData(): Task {
+    return this.route.snapshot.data['task'];
   }
 
   /**
@@ -415,6 +403,26 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sidenavOpened = this.settingsService.isSettingActive(SettingType.TASK_SIDENAV_OPENED);
       }
     });
+  }
+
+  /**
+   * Initializes data
+   */
+  private initializeData() {
+    const resolved = this.initializeResolvedData();
+    if (resolved != null) {
+      // Take data from resolver
+      this.initializeTask(resolved as Task);
+      this.initializeTaskletTypeAction();
+    } else {
+      // Load data from scratch
+      this.route.params.pipe(
+        takeUntil(this.unsubscribeSubject)
+      ).subscribe(() => {
+        this.initializeParameters();
+        this.findEntities();
+      });
+    }
   }
 
   /**
