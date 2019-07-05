@@ -1,6 +1,6 @@
 import {BasaltPage} from './app.po';
 
-describe('basalt App', function () {
+describe('basalt App', () => {
   let page: BasaltPage;
 
   beforeEach(() => {

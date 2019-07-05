@@ -11,7 +11,7 @@ describe('DateTimePickerFragmentComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [DateTimePickerFragmentImports, BrowserAnimationsModule,],
+      imports: [DateTimePickerFragmentImports, BrowserAnimationsModule],
       declarations: [DateTimePickerFragmentDeclarations],
     })
       .compileComponents();
