@@ -1071,15 +1071,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FULLSCREEN: {
-        // Update tasklet
-        this.onTaskletEvent({
-          action: Action.UPDATE,
-          tasklet,
-          task,
-          tags,
-          persons
-        });
-
         this.router.navigate([`/tasklet/${tasklet.id}`]).then(() => {
         });
         break;
@@ -1313,15 +1304,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.FULLSCREEN: {
-        // Update task
-        this.onTaskEvent({
-          action: Action.UPDATE,
-          task,
-          project,
-          delegatedTo,
-          tags
-        });
-
         this.router.navigate([`/task/${task.id}`]).then(() => {
         });
         break;
