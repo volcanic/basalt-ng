@@ -23,8 +23,8 @@ export class PouchDBService {
    * Constructor
    */
   public constructor() {
-    PouchDB.plugin(require(PouchdbFind));
-    PouchDB.plugin(require(PouchdbUpsert));
+    PouchDB.plugin(PouchdbFind);
+    PouchDB.plugin(PouchdbUpsert);
 
     if (!this.isInstantiated) {
       this.database = new PouchDB(environment.DATABASE_ENTITIES);
@@ -87,7 +87,6 @@ export class PouchDBService {
    * @returns observable
    */
   public upsert(id: string, document: any) {
-
     document._id = id;
 
     return this.database.upsert(id, () => {

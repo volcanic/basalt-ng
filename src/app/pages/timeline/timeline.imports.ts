@@ -22,6 +22,7 @@ import {PomodoroFinishedDialogModule} from '../../ui/pomodoro-finished-dialog/po
 import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort-picker-fragment.module';
 import {CheckableListModule} from '../../ui/checkable-list/checkable-list.module';
 import {MaterialModule} from '../../ui/material/material.module';
+import {EntityModule} from '../../core/entity/entity.module';
 
 /** Imports for timeline module */
 export const TimelineImports = [
@@ -34,6 +35,8 @@ export const TimelineImports = [
   FileUploadModule,
 
   TimelineRoutingModule,
+
+  EntityModule,
 
   AboutDialogModule,
   ConfirmationDialogModule,

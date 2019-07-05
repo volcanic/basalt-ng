@@ -7,12 +7,10 @@ import {
   MatInputModule,
   MatSelectModule
 } from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 /** Imports for effort picker module */
 export const EffortPickerFragmentImports = [
   CommonModule,
-  BrowserAnimationsModule,
   FormsModule,
   MatButtonModule,
   MatDividerModule,

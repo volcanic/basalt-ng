@@ -3,6 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {CompletableListItemComponent} from './completable-list-item.component';
 import {CheckableListDeclarations} from '../checkable-list.declaration';
 import {CheckableListImports} from '../checkable-list.imports';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('CompletableListItemComponent', () => {
   let component: CompletableListItemComponent;
@@ -10,7 +11,7 @@ describe('CompletableListItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [CheckableListImports],
+      imports: [CheckableListImports, BrowserAnimationsModule],
       declarations: [CheckableListDeclarations],
     })
       .compileComponents();

@@ -3,6 +3,7 @@ import {DateTimePickerDialogComponent} from './date-time-picker-dialog.component
 import {DateTimePickerDialogImports} from '../date-time-picker-dialog.imports';
 import {DateTimePickerDialogDeclarations} from '../date-time-picker-dialog.declaration';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 describe('DateTimePickerDialogComponent', () => {
@@ -11,7 +12,7 @@ describe('DateTimePickerDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [DateTimePickerDialogImports],
+      imports: [DateTimePickerDialogImports, BrowserAnimationsModule],
       declarations: [DateTimePickerDialogDeclarations],
       providers: [
         {provide: MAT_DIALOG_DATA, useValue: {}}, {
