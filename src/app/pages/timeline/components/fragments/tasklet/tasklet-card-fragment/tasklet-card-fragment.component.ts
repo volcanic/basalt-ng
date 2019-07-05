@@ -3,7 +3,7 @@ import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {Task} from '../../../../../../core/entity/model/task.model';
 import {Media} from '../../../../../../core/ui/model/media.enum';
 import {DateService} from '../../../../../../core/entity/services/date.service';
-import {DisplayAspect} from '../../../../../../core/entity/services/tasklet/tasklet-display.service';
+import {TaskletDisplayAspect} from '../../../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 import {Project} from '../../../../../../core/entity/model/project.model';
 import {Action} from '../../../../../../core/entity/model/action.enum';
@@ -51,7 +51,7 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   /** Enum for action types */
   actionType = Action;
   /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
+  displayAspectType = TaskletDisplayAspect;
 
   /** Expansion panel state */
   expansionPanelOpened = false;
@@ -141,7 +141,7 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
    * @param displayAspect display aspect
    * @param tasklet tasklet
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet): boolean {
     return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
   }
 }

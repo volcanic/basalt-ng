@@ -9,7 +9,7 @@ import {CloneService} from 'app/core/entity/services/clone.service';
 import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
-import {DisplayAspect} from '../../../../../core/entity/services/task/task-display.service';
+import {TaskDisplayAspect} from '../../../../../core/entity/services/task/task-display.service';
 import {TaskService} from '../../../../../core/entity/services/task/task.service';
 
 /**
@@ -57,7 +57,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
   /** Enum for action types */
   actionType = Action;
   /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
+  displayAspectType = TaskDisplayAspect;
 
   /**
    * Constructor
@@ -337,7 +337,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * @param displayAspect display aspect
    * @param task task
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, task: Task): boolean {
+  public containsDisplayAspect(displayAspect: TaskDisplayAspect, task: Task): boolean {
     return this.taskService.containsDisplayAspect(displayAspect, task);
   }
 

@@ -12,7 +12,7 @@ import {SuggestionService} from 'app/core/entity/services/suggestion.service';
 import {MeetingMinuteItem} from 'app/core/entity/model/meeting-minutes/meeting-minute-item.model';
 import {PersonService} from 'app/core/entity/services/person.service';
 import {DailyScrumItem} from '../../../../../core/entity/model/daily-scrum/daily-scrum-item.model';
-import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
+import {TaskletDisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskletService} from '../../../../../core/entity/services/tasklet/tasklet.service';
 import {CloneService} from '../../../../../core/entity/services/clone.service';
 import {TaskService} from '../../../../../core/entity/services/task/task.service';
@@ -71,7 +71,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   /** Enum of tasklet types */
   taskletType = TaskletType;
   /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
+  displayAspectType = TaskletDisplayAspect;
   /** Enum of palettes */
   paletteType = PaletteType;
   /** Enum of hues */
@@ -321,19 +321,19 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   private handleTaskletChanges() {
     switch (this.mode) {
       case DialogMode.ADD: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CREATED, this.tasklet, this.task)) {
+        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_CREATED, this.tasklet, this.task)) {
           this.addTasklet();
         }
         break;
       }
       case DialogMode.UPDATE: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task)) {
+        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task)) {
           this.updateTasklet();
         }
         break;
       }
       case DialogMode.CONTINUE: {
-        if (this.containsDisplayAspect(DisplayAspect.CAN_BE_CONTINUED, this.tasklet, this.task)) {
+        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_CONTINUED, this.tasklet, this.task)) {
           this.continueTasklet();
         }
         break;
@@ -458,7 +458,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * @param tasklet tasklet
    * @param task task
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task): boolean {
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task): boolean {
     return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
   }
 

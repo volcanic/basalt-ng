@@ -35,7 +35,7 @@ import {InformationDialogComponent} from '../../../../ui/information-dialog/info
 import {Animations, ScrollDirection, ScrollState} from './task.animation';
 import {Setting} from '../../../../core/settings/model/setting.model';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
-import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
+import {TaskDisplayAspect} from '../../../../core/entity/services/task/task-display.service';
 
 /**
  * Represents a tasklet type action button
@@ -118,7 +118,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Enum of media types */
   mediaType = Media;
   /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
+  displayAspectType = TaskDisplayAspect;
 
   /** Vertical scroll position */
   private scrollPosLast = 0;
@@ -826,6 +826,15 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   public getIconByTaskletType(type: TaskletType): string {
     return this.taskletService.getIconByTaskletType(type);
+  }
+
+  /**
+   * Determines whether the displayed task contains a specific display aspect
+   * @param displayAspect display aspect
+   * @param task task
+   */
+  public containsDisplayAspect(displayAspect: TaskDisplayAspect, task: Task): boolean {
+    return this.taskService.containsDisplayAspect(displayAspect, task);
   }
 
   // Tags

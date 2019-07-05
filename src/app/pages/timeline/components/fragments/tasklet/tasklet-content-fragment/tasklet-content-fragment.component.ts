@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
-import {DisplayAspect} from '../../../../../../core/entity/services/tasklet/tasklet-display.service';
+import {TaskletDisplayAspect} from '../../../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 
 /**
@@ -26,7 +26,7 @@ export class TaskletContentFragmentComponent {
   @Input() placeholderDailyScrum = '';
 
   /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
+  displayAspectType = TaskletDisplayAspect;
 
   /**
    * Constructor
@@ -44,7 +44,7 @@ export class TaskletContentFragmentComponent {
    * @param displayAspect display aspect
    * @param tasklet tasklet
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet): boolean {
     return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
   }
 }

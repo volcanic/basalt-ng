@@ -38,7 +38,7 @@ import {ProjectService} from '../../../../core/entity/services/project.service';
 import {ScopeService} from '../../../../core/entity/services/scope.service';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
-import {DisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
+import {TaskletDisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
 import {Setting} from '../../../../core/settings/model/setting.model';
 // tslint:disable-next-line:max-line-length
 import {PomodoroFinishedDialogComponent} from '../../../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog/pomodoro-finished-dialog.component';
@@ -125,7 +125,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Enum of media types */
   mediaType = Media;
   /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
+  displayAspectType = TaskletDisplayAspect;
 
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
@@ -483,7 +483,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles click on tasklet type action button
    */
   ontTaskletTypeActionButtonClicked() {
-    if (this.containsDisplayAspect(DisplayAspect.IS_POMODORO_STARTED, this.tasklet)) {
+    if (this.containsDisplayAspect(TaskletDisplayAspect.IS_POMODORO_STARTED, this.tasklet)) {
       this.snackbarService.showSnackbar('Tasklet type cannot be changed after pomodoro session has been started');
     } else {
       this.select.open();
@@ -1054,7 +1054,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param tasklet tasklet
    * @param task task
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task): boolean {
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task): boolean {
     return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
   }
 

@@ -11,7 +11,7 @@ import {TaskService} from '../task/task.service';
 /**
  * Enum representing display aspects
  */
-export enum DisplayAspect {
+export enum TaskletDisplayAspect {
   CAN_BE_ASSIGNED_TO_TASK,
   CONTAINS_DESCRIPTION,
   CONTAINS_PREVIOUS_DESCRIPTION,

@@ -17,7 +17,7 @@ import {PersonService} from '../person.service';
 import {MeetingMinuteItemType} from '../../model/meeting-minutes/meeting-minute-item-type.enum';
 import {MeetingMinuteItem} from '../../model/meeting-minutes/meeting-minute-item.model';
 import {DailyScrumItem} from '../../model/daily-scrum/daily-scrum-item.model';
-import {DisplayAspect, TaskletDisplayService} from './tasklet-display.service';
+import {TaskletDisplayAspect, TaskletDisplayService} from './tasklet-display.service';
 import {Description} from '../../model/description.model';
 import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
 import {TaskletTypeService} from './tasklet-type.service';
@@ -504,51 +504,51 @@ export class TaskletService {
    * @param task tasks
    * @param previousDescription previous description
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet, task?: Task, previousDescription?: Description): boolean {
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task, previousDescription?: Description): boolean {
     switch (displayAspect) {
-      case DisplayAspect.CAN_BE_ASSIGNED_TO_TASK: {
+      case TaskletDisplayAspect.CAN_BE_ASSIGNED_TO_TASK: {
         return this.taskletDisplayService.canBeAssignedToTask(tasklet);
       }
-      case DisplayAspect.CONTAINS_DESCRIPTION: {
+      case TaskletDisplayAspect.CONTAINS_DESCRIPTION: {
         return TaskletDisplayService.containsDescription(tasklet);
       }
-      case DisplayAspect.CONTAINS_PREVIOUS_DESCRIPTION: {
+      case TaskletDisplayAspect.CONTAINS_PREVIOUS_DESCRIPTION: {
         return TaskletDisplayService.containsPreviousDescription(previousDescription);
       }
-      case DisplayAspect.CONTAINS_MEETING_MINUTES: {
+      case TaskletDisplayAspect.CONTAINS_MEETING_MINUTES: {
         return TaskletDisplayService.containsMeetingMinutes(tasklet);
       }
-      case DisplayAspect.CONTAINS_DAILY_SCRUM: {
+      case TaskletDisplayAspect.CONTAINS_DAILY_SCRUM: {
         return TaskletDisplayService.containsDailyScrum(tasklet);
       }
-      case DisplayAspect.CONTAINS_POMODORO_TASK: {
+      case TaskletDisplayAspect.CONTAINS_POMODORO_TASK: {
         return TaskletDisplayService.containsPomodoroTask(tasklet);
       }
-      case DisplayAspect.CONTAINS_CHECKLIST: {
+      case TaskletDisplayAspect.CONTAINS_CHECKLIST: {
         return TaskletDisplayService.containsChecklist(tasklet);
       }
-      case DisplayAspect.CONTAINS_TAGS: {
+      case TaskletDisplayAspect.CONTAINS_TAGS: {
         return TaskletDisplayService.containsTags(tasklet);
       }
-      case DisplayAspect.CONTAINS_PERSONS: {
+      case TaskletDisplayAspect.CONTAINS_PERSONS: {
         return TaskletDisplayService.containsPersons(tasklet);
       }
-      case DisplayAspect.CAN_BE_CREATED: {
+      case TaskletDisplayAspect.CAN_BE_CREATED: {
         return this.taskletDisplayService.canBeCreated(tasklet, task);
       }
-      case DisplayAspect.CAN_BE_UPDATED: {
+      case TaskletDisplayAspect.CAN_BE_UPDATED: {
         return this.taskletDisplayService.canBeUpdated(tasklet, task);
       }
-      case DisplayAspect.CAN_BE_CONTINUED: {
+      case TaskletDisplayAspect.CAN_BE_CONTINUED: {
         return this.taskletDisplayService.canBeContinued(tasklet, task);
       }
-      case DisplayAspect.CAN_BE_TEMPLATED: {
+      case TaskletDisplayAspect.CAN_BE_TEMPLATED: {
         return this.taskletDisplayService.canBeContinued(tasklet, task);
       }
-      case DisplayAspect.IS_POMODORO_STARTED: {
+      case TaskletDisplayAspect.IS_POMODORO_STARTED: {
         return TaskletDisplayService.isPomodoroStarted(tasklet);
       }
-      case DisplayAspect.IS_DISPLAYED_AS_PREVIEW: {
+      case TaskletDisplayAspect.IS_DISPLAYED_AS_PREVIEW: {
         return this.taskletDisplayService.isDisplayedAsPreview(tasklet);
       }
     }

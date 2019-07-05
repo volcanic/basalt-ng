@@ -4,7 +4,7 @@ import {Task} from '../../model/task.model';
 /**
  * Enum representing display aspects
  */
-export enum DisplayAspect {
+export enum TaskDisplayAspect {
   CAN_BE_CREATED,
   CAN_BE_UPDATED,
   CAN_BE_CONTINUED,

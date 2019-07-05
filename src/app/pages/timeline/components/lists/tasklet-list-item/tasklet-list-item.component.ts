@@ -21,7 +21,7 @@ import {Action} from 'app/core/entity/model/action.enum';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Person} from 'app/core/entity/model/person.model';
 import {TaskletService} from '../../../../../core/entity/services/tasklet/tasklet.service';
-import {DisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
+import {TaskletDisplayAspect} from '../../../../../core/entity/services/tasklet/tasklet-display.service';
 
 /**
  * Displays tasklet list item
@@ -65,7 +65,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   /** Enum for tasklet types */
   taskletType = TaskletType;
   /** Enum of display aspects */
-  displayAspectType = DisplayAspect;
+  displayAspectType = TaskletDisplayAspect;
 
   /** Icon name */
   icon = '';
@@ -211,7 +211,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * @param displayAspect display aspect
    * @param tasklet tasklet
    */
-  public containsDisplayAspect(displayAspect: DisplayAspect, tasklet: Tasklet): boolean {
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet): boolean {
     return this.taskletService.containsDisplayAspect(displayAspect, tasklet);
   }
 }
