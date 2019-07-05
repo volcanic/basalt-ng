@@ -260,7 +260,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes resolved data
    */
   private initializeResolvedData() {
-    return this.route.snapshot.data != null ? this.route.snapshot.data['tasklet'] : null;
+    return (this.route.snapshot != null && this.route.snapshot.data != null) ? this.route.snapshot.data['tasklet'] : null;
   }
 
   /**

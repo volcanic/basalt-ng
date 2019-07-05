@@ -251,7 +251,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes resolved data
    */
   private initializeResolvedData(): Task {
-    return this.route.snapshot.data != null ? this.route.snapshot.data['task'] : null;
+    return (this.route.snapshot != null && this.route.snapshot.data != null) ? this.route.snapshot.data['task'] : null;
   }
 
   /**

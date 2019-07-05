@@ -5,7 +5,7 @@ import {CheckableListDeclarations} from '../checkable-list.declaration';
 import {CheckableListImports} from '../checkable-list.imports';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-describe('CompletableListItemComponent', () => {
+xdescribe('CompletableListItemComponent', () => {
   let component: CompletableListItemComponent;
   let fixture: ComponentFixture<CompletableListItemComponent>;
 
@@ -23,7 +23,7 @@ describe('CompletableListItemComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
