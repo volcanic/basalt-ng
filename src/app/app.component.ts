@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, isDevMode, OnInit} from '@angular/core';
 import {SnackbarService} from './core/ui/services/snackbar.service';
 import {PouchDBService} from './core/persistence/services/pouchdb.service';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {environment} from '../environments/environment';
 import {SettingsService} from './core/settings/services/settings.service';
 import {PouchDBSettingsService} from './core/persistence/services/pouchdb-settings.service';
@@ -113,8 +113,10 @@ export class AppComponent implements OnInit, AfterViewInit {
    * Initializes database sync
    */
   private initializeDatabaseSync() {
-    this.pouchDBService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
-    this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_SETTINGS}`);
+    if (isDevMode()) {
+      this.pouchDBService.sync(`http://localhost:5984/${environment.DATABASE_ENTITIES}`);
+      this.pouchDBSettingsService.sync(`http://localhost:5984/${environment.DATABASE_SETTINGS}`);
+    }
   }
 
   //
