@@ -15,6 +15,13 @@ pipeline {
         string(name: 'WEB_ROOT', defaultValue: '/var/www/basalt', description: 'Web root directory for this app')
     }
     stages {
+        stage('Clean') {
+            steps {
+                sh "rm -rf ${WORKSPACE}/dist"
+                sh "rm -rf ${WORKSPACE}/reports"
+                sh "rm -rf ${WORKSPACE}/coverage"
+            }
+        }
         stage('Checkout') {
             steps {
                 git url: 'git@github.com:florianschwanz/basalt-ng.git', branch: 'master'
