@@ -3,6 +3,8 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '
 import {SettingsService} from '../core/settings/services/settings.service';
 import {FeatureService} from '../core/settings/services/feature.service';
 import {SettingType} from '../core/settings/model/setting-type.enum';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 /**
  * Checks if it is necessary to show intro page
@@ -11,6 +13,9 @@ import {SettingType} from '../core/settings/model/setting-type.enum';
   providedIn: 'root',
 })
 export class IntroGuard implements CanActivate {
+
+  /** Helper subject used to finish other subscriptions */
+  private unsubscribeSubject = new Subject();
 
   /**
    * Constructor
@@ -31,7 +36,13 @@ export class IntroGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise((resolve) => {
       this.settingsService.fetch();
-      this.settingsService.settingsSubject.subscribe(value => {
+      this.settingsService.settingsSubject.pipe(
+        takeUntil(this.unsubscribeSubject
+        )).subscribe(() => {
+
+        this.unsubscribeSubject.next();
+        this.unsubscribeSubject.complete();
+
         if (this.isFeatureMissing() || this.isSemaphoreSet()) {
           resolve(true);
         } else {
