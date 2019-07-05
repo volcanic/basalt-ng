@@ -32,6 +32,8 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
 
   /** Task to be displayed */
   task: Task;
+  /** Task as passed to this dialog */
+  taskBefore: Task;
   /** Recurring */
   recurring = false;
 
@@ -142,6 +144,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    */
   private initializeTask() {
     this.task = CloneService.cloneTask(this.data.task);
+    this.taskBefore = CloneService.cloneTask(this.data.task);
   }
 
   /**
@@ -236,16 +239,25 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * Handles task changes
    */
   private handleTaskChanges() {
-    switch (this.mode) {
-      case DialogMode.ADD: {
-        this.addTask();
-        break;
-      }
-      case DialogMode.UPDATE: {
-        this.updateTask();
-        break;
+    if (this.hasChanged()) {
+      switch (this.mode) {
+        case DialogMode.ADD: {
+          this.addTask();
+          break;
+        }
+        case DialogMode.UPDATE: {
+          this.updateTask();
+          break;
+        }
       }
     }
+  }
+
+  /**
+   * Determines task has changed
+   */
+  private hasChanged(): boolean {
+    return JSON.stringify(this.task) !== JSON.stringify(this.taskBefore);
   }
 
   /**
