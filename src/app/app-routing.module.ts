@@ -3,9 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {IntroGuard} from './guards/intro.guard';
 
 const routes: Routes = [
-    {path: '', redirectTo: 'intro', pathMatch: 'full'},
-    // Intro module
-    {path: 'intro', loadChildren: './pages/intro/intro.module#IntroModule', canActivate: [IntroGuard]},
     // Timeline module
     {path: 'tasklet', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
     {path: 'task/:id', loadChildren: './pages/timeline/timeline.module#TimelineModule'},
@@ -16,12 +13,15 @@ const routes: Routes = [
     {path: 'calendar', loadChildren: './pages/calendar/calendar.module#CalendarModule'},
     // Settings module
     {path: 'settings', loadChildren: './pages/settings/settings.module#SettingsModule'},
+    // Intro module
+    {path: 'intro', loadChildren: './pages/intro/intro.module#IntroModule', canActivate: [IntroGuard]},
     // Default
+    {path: '', redirectTo: 'intro', pathMatch: 'full'},
   ]
 ;
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {enableTracing: false})],
+  imports: [RouterModule.forRoot(routes, {enableTracing: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
