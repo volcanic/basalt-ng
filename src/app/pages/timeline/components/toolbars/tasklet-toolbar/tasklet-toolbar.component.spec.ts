@@ -4,7 +4,7 @@ import {TaskletToolbarComponent} from './tasklet-toolbar.component';
 import {TimelineImports} from '../../../timeline.imports';
 import {TimelineDeclarations} from '../../../timeline.declaration';
 
-describe('SettingsToolbarComponent', () => {
+describe('TaskletToolbarComponent', () => {
   let component: TaskletToolbarComponent;
   let fixture: ComponentFixture<TaskletToolbarComponent>;
 

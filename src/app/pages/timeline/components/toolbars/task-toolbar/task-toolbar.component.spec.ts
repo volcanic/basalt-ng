@@ -4,7 +4,7 @@ import {TaskToolbarComponent} from './task-toolbar.component';
 import {TimelineImports} from '../../../timeline.imports';
 import {TimelineDeclarations} from '../../../timeline.declaration';
 
-describe('SettingsToolbarComponent', () => {
+describe('TaskToolbarComponent', () => {
   let component: TaskToolbarComponent;
   let fixture: ComponentFixture<TaskToolbarComponent>;
 

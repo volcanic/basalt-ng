@@ -68,7 +68,7 @@ export class TaskletMeetingMinuteItemFragmentComponent implements OnInit {
    * Initializes meeting minute item statement parts
    */
   private initializeMeetingMinuteItemStatementParts() {
-    if (this.meetingMinuteItem.statement != null) {
+    if (this.meetingMinuteItem != null && this.meetingMinuteItem.statement != null) {
       this.meetingMinuteItemStatementParts = this.meetingMinuteItem.statement.split('\n').map(p => {
         return p.trim();
       });
