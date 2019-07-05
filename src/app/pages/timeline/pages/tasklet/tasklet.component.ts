@@ -209,8 +209,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.initializeParameters();
-    this.initializeResolvedData();
     this.initializeTaskletSubscription();
 
     this.initializeMaterial();
@@ -218,7 +216,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.initializeSettings();
 
-    this.findEntities();
+    this.initializeData();
 
     this.route.params.subscribe(() => {
       this.id = this.route.snapshot.paramMap.get('id');
@@ -262,11 +260,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes resolved data
    */
   private initializeResolvedData() {
-    const resolved = this.route.snapshot.data['tasklet'];
-    if (resolved != null) {
-      this.initializeTasklet(resolved as Tasklet);
-      this.initializeTaskletTypeAction();
-    }
+    return this.route.snapshot.data['tasklet'];
   }
 
   /**
@@ -397,6 +391,26 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         this.sidenavOpened = this.settingsService.isSettingActive(SettingType.TASKLET_SIDENAV_OPENED);
       }
     });
+  }
+
+  /**
+   * Initializes data
+   */
+  private initializeData() {
+    const resolved = this.initializeResolvedData();
+    if (resolved != null) {
+      // Take data from resolver
+      this.initializeTasklet(resolved as Tasklet);
+      this.initializeTaskletTypeAction();
+    } else {
+      // Load data from scratch
+      this.route.params.pipe(
+        takeUntil(this.unsubscribeSubject)
+      ).subscribe(() => {
+        this.initializeParameters();
+        this.findEntities();
+      });
+    }
   }
 
   /**
