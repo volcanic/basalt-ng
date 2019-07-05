@@ -4,7 +4,7 @@ import {TaskletMeetingMinuteItemFragmentComponent} from './tasklet-meeting-minut
 import {TimelineImports} from '../../../../timeline.imports';
 import {TimelineDeclarations} from '../../../../timeline.declaration';
 
-describe('TaskletDailyScrumItemFragmentComponent', () => {
+describe('TaskletMeetingMinuteItemFragmentComponent', () => {
   let component: TaskletMeetingMinuteItemFragmentComponent;
   let fixture: ComponentFixture<TaskletMeetingMinuteItemFragmentComponent>;
 

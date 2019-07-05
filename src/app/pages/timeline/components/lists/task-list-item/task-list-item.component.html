@@ -1,4 +1,4 @@
-  <div class="flexcontainer"
+  <div *ngIf="task != null" class="flexcontainer"
        (mouseenter)="onHoverContainer(true)"
        (mouseleave)="onHoverContainer(false)">
     <mat-menu #contextMenu="matMenu">

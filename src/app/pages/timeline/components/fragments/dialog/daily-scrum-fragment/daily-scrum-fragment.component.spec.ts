@@ -4,9 +4,11 @@ import {DailyScrumFragmentComponent} from './daily-scrum-fragment.component';
 import {TimelineImports} from '../../../../timeline.imports';
 import {TimelineDeclarations} from '../../../../timeline.declaration';
 import {PouchDBService} from '../../../../../../core/persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../../../../core/persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../../../../core/persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../../../../core/persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../../../../core/persistence/services/pouchdb-settings.service.mock';
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe('DailyScrumFragmentComponent', () => {
   let component: DailyScrumFragmentComponent;
@@ -17,7 +19,7 @@ describe('DailyScrumFragmentComponent', () => {
       imports: [TimelineImports],
       declarations: [TimelineDeclarations],
       providers: [
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
       ]
     })

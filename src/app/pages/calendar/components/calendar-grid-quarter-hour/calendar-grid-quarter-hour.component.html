@@ -1,3 +1,4 @@
 <div class="quarter-hour time-step">
-  <span *ngIf="quarterHour != null && quarterHour.start.getMinutes() === 0">{{ startTime }}</span>
+  <span
+    *ngIf="quarterHour != null && quarterHour.start != null && quarterHour.start.getMinutes() === 0">{{ startTime }}</span>
 </div>

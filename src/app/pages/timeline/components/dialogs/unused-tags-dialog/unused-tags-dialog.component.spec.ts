@@ -5,6 +5,8 @@ import {TimelineImports} from '../../../timeline.imports';
 import {TimelineDeclarations} from '../../../timeline.declaration';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
 describe('UnusedTagsDialogComponent', () => {
   let component: UnusedTagsDialogComponent;
   let fixture: ComponentFixture<UnusedTagsDialogComponent>;

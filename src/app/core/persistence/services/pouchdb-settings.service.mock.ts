@@ -29,7 +29,9 @@ export class PouchDBSettingsServiceMock {
    * @returns array of documents
    */
   public fetch() {
-    return this.database.allDocs({include_docs: true});
+    return new Promise((resolve) => {
+      resolve();
+    });
   }
 
   /**
@@ -81,15 +83,6 @@ export class PouchDBSettingsServiceMock {
    * Deletes all documents from the DATABASE_ENTITIES
    */
   public clear() {
-    this.fetch().then(result => {
-      result.rows.forEach(r => {
-        this.database.remove(r.doc);
-      });
-    }, error => {
-      if (isDevMode()) {
-        console.error(error);
-      }
-    });
   }
 
   /**

@@ -3,6 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {TaskPropertiesFormComponent} from './task-properties-form.component';
 import {TimelineImports} from '../../../../timeline.imports';
 import {TimelineDeclarations} from '../../../../timeline.declaration';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('TaskPropertiesFormComponent', () => {
   let component: TaskPropertiesFormComponent;
@@ -10,7 +11,7 @@ describe('TaskPropertiesFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TimelineImports],
+      imports: [TimelineImports, BrowserAnimationsModule],
       declarations: [TimelineDeclarations],
     })
       .compileComponents();

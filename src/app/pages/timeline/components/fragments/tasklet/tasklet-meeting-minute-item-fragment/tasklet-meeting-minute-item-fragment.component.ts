@@ -46,18 +46,20 @@ export class TaskletMeetingMinuteItemFragmentComponent implements OnInit {
    * Initializes icon
    */
   private initializeIcon() {
-    switch (this.meetingMinuteItem.type) {
-      case MeetingMinuteItemType.INFORMATION: {
-        this.icon = 'comment';
-        break;
-      }
-      case MeetingMinuteItemType.DECISION: {
-        this.icon = 'gavel';
-        break;
-      }
-      case MeetingMinuteItemType.ACTION: {
-        this.icon = 'person';
-        break;
+    if (this.meetingMinuteItem != null) {
+      switch (this.meetingMinuteItem.type) {
+        case MeetingMinuteItemType.INFORMATION: {
+          this.icon = 'comment';
+          break;
+        }
+        case MeetingMinuteItemType.DECISION: {
+          this.icon = 'gavel';
+          break;
+        }
+        case MeetingMinuteItemType.ACTION: {
+          this.icon = 'person';
+          break;
+        }
       }
     }
   }

@@ -49,8 +49,10 @@ export class CompletableListItemComponent implements OnInit {
    * @param event selection state
    */
   onItemSelected(event: any) {
-    this.item.selected = event.checked;
-    this.itemChangedEmitter.emit();
+    if (this.item != null) {
+      this.item.selected = event.checked;
+      this.itemChangedEmitter.emit();
+    }
   }
 
   /**
@@ -58,15 +60,19 @@ export class CompletableListItemComponent implements OnInit {
    * @param text text
    */
   onTextChanged(text: string) {
-    this.item.text = text;
-    this.itemChangedEmitter.emit();
+    if (this.item != null) {
+      this.item.text = text;
+      this.itemChangedEmitter.emit();
+    }
   }
 
   /**
    * Handles click on delete button
    */
   onDeleteClicked() {
-    this.item.text = null;
-    this.itemChangedEmitter.emit();
+    if (this.item != null) {
+      this.item.text = null;
+      this.itemChangedEmitter.emit();
+    }
   }
 }

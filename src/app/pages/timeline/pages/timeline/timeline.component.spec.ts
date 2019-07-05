@@ -3,7 +3,7 @@ import {TimelineComponent} from './timeline.component';
 import {TimelineImports} from '../../timeline.imports';
 import {TimelineDeclarations} from '../../timeline.declaration';
 import {PouchDBService} from '../../../../core/persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../../core/persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../../core/persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../../core/persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../../core/persistence/services/pouchdb-settings.service.mock';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
@@ -27,7 +27,8 @@ import {ProjectService} from '../../../../core/entity/services/project.service';
 import {TagService} from '../../../../core/entity/services/tag.service';
 import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
-import {NgZone} from '@angular/core';
+import {NgZone, NO_ERRORS_SCHEMA} from '@angular/core';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('TimelineComponent', () => {
   let component: TimelineComponent;
@@ -35,7 +36,7 @@ describe('TimelineComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TimelineImports],
+      imports: [TimelineImports, RouterTestingModule],
       declarations: [TimelineDeclarations],
       providers: [
         DigestService,
@@ -47,7 +48,6 @@ describe('TimelineComponent', () => {
         MaterialColorService,
         MaterialIconService,
         MediaService,
-        Router,
         DomSanitizer,
         ScopeService,
         ScrollDispatcher,
@@ -61,9 +61,10 @@ describe('TimelineComponent', () => {
         TaskletService,
         MatDialog,
         NgZone,
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));

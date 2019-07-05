@@ -3,9 +3,10 @@ import {TaskListComponent} from './task-list.component';
 import {TimelineImports} from '../../../timeline.imports';
 import {TimelineDeclarations} from '../../../timeline.declaration';
 import {PouchDBService} from '../../../../../core/persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../../../core/persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../../../core/persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../../../core/persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../../../core/persistence/services/pouchdb-settings.service.mock';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
@@ -13,10 +14,10 @@ describe('TaskListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TimelineImports],
+      imports: [TimelineImports, BrowserAnimationsModule],
       declarations: [TimelineDeclarations],
       providers: [
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
       ]
     })

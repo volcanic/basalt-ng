@@ -11,6 +11,7 @@ import {SettingsService} from '../../../../core/settings/services/settings.servi
 import {Router} from '@angular/router';
 import {MatDialog, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('IntroComponent', () => {
   let component: IntroComponent;
@@ -18,7 +19,7 @@ describe('IntroComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IntroImports],
+      imports: [IntroImports, HttpClientModule],
       declarations: [IntroDeclarations],
       providers: [
         FeatureService,

@@ -1,5 +1,4 @@
-<div [class]="themeClass">
-
+<div *ngIf="tasklet != null" [class]="themeClass">
   <!-- Top attachment -->
   <div class="top-attached" *ngIf="tasklet != null && tasklet.type === taskletType.FINISHING_TIME">
     {{ weekday }}, {{ date }}

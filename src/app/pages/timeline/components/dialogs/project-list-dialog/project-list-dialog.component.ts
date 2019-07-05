@@ -17,7 +17,7 @@ export class ProjectListDialogComponent {
   /** Dialog title */
   dialogTitle = '';
   /** Array of projects to be displayed */
-  projects: Project[];
+  projects = [];
 
   /**
    * Constructor

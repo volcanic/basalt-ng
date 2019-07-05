@@ -4,6 +4,8 @@ import {MeetingMinuteItemFragmentComponent} from './meeting-minute-item-fragment
 import {TimelineImports} from '../../../../timeline.imports';
 import {TimelineDeclarations} from '../../../../timeline.declaration';
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
 describe('MeetingMinuteItemFragmentComponent', () => {
   let component: MeetingMinuteItemFragmentComponent;
   let fixture: ComponentFixture<MeetingMinuteItemFragmentComponent>;

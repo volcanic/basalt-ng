@@ -44,7 +44,7 @@
             </span>
           </div>
         </div>
-        <div class="tags-holder"
+        <div *ngIf="tasklet != null" class="tags-holder"
              (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
           <span>
             <span class="time" *ngIf="media <= mediaType.MEDIUM">

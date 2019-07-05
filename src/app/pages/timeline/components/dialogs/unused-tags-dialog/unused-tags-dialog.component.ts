@@ -27,7 +27,7 @@ export class UnusedTagsDialogComponent implements OnInit {
   /** Tags to be displayed */
   tags: SelectableTag[];
   /** Selected tags */
-  tagsSelected: Tag[] = [];
+  tagsSelected = [];
 
   /**
    * Constructor

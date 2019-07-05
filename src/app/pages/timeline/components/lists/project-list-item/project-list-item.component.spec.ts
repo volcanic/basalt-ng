@@ -4,7 +4,7 @@ import {ProjectListItemComponent} from './project-list-item.component';
 import {TimelineImports} from '../../../timeline.imports';
 import {TimelineDeclarations} from '../../../timeline.declaration';
 import {PouchDBService} from '../../../../../core/persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../../../core/persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../../../core/persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../../../core/persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../../../core/persistence/services/pouchdb-settings.service.mock';
 
@@ -17,7 +17,7 @@ describe('ProjectListItemComponent', () => {
       imports: [TimelineImports],
       declarations: [TimelineDeclarations],
       providers: [
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
       ]
     })

@@ -4,6 +4,7 @@ import {PersonDialogComponent} from './person-dialog.component';
 import {TimelineImports} from '../../../timeline.imports';
 import {TimelineDeclarations} from '../../../timeline.declaration';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('PersonDialogComponent', () => {
   let component: PersonDialogComponent;
@@ -11,7 +12,7 @@ describe('PersonDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TimelineImports],
+      imports: [TimelineImports, BrowserAnimationsModule],
       declarations: [TimelineDeclarations],
       providers: [
         {provide: MAT_DIALOG_DATA, useValue: {}}, {

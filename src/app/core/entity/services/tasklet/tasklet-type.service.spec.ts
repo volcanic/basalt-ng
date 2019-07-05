@@ -4,7 +4,7 @@ import {TaskletTypeService} from './tasklet-type.service';
 import {EntityImports} from '../../entity.imports';
 import {EntityProviders} from '../../entity.providers';
 import {PouchDBService} from '../../../persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../persistence/services/pouchdb-settings.service.mock';
 import {SettingsService} from '../../../settings/services/settings.service';
@@ -15,7 +15,7 @@ describe('TaskletTypeService', () => {
       imports: [EntityImports],
       providers: [
         EntityProviders,
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
         SettingsService
       ]

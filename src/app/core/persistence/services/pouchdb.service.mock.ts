@@ -1,4 +1,4 @@
-import {EventEmitter, Injectable, isDevMode} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 
 /**
  * Handles pouchdb operations for entity database
@@ -6,7 +6,7 @@ import {EventEmitter, Injectable, isDevMode} from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class PouchDBMServiceMock {
+export class PouchDBServiceMock {
 
   /** Indicates of PouchDB connection is instantiated */
   private readonly isInstantiated: boolean;

@@ -4,7 +4,7 @@ import {DigestService} from './digest.service';
 import {DigestImports} from '../../digest.imports';
 import {TaskletService} from '../../../entity/services/tasklet/tasklet.service';
 import {PouchDBService} from '../../../persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../persistence/services/pouchdb-settings.service.mock';
 
@@ -15,7 +15,7 @@ describe('DigestService', () => {
       providers: [
         DigestService,
         TaskletService,
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock}
       ],
     });

@@ -1,7 +1,7 @@
 <div (keydown)="onKeyDown($event)">
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
-  <mat-dialog-content>
-    <form #formCtrl="ngForm">
+  <div *ngIf="person != null">
+    <mat-dialog-content>
       <div>
         <mat-form-field class="wide-box">
           <input matInput required name="person" type="text" placeholder="Person" ngControl="controlPerson"
@@ -46,19 +46,22 @@
         </mat-expansion-panel>
 
       </mat-accordion>
-    </form>
-  </mat-dialog-content>
-  <mat-dialog-actions class="flexcontainer">
-    <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deletePerson()">
-      Delete person
-    </button>
-    <div class="flexbox"></div>
-    <button mat-button *ngIf="mode == modeType.ADD" (click)="addPerson()" [disabled]="!formCtrl.form.valid">
-      Add person
-    </button>
-    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updatePerson()" [disabled]="!formCtrl.form.valid">
-      Update person
-    </button>
-  </mat-dialog-actions>
+
+    </mat-dialog-content>
+    <mat-dialog-actions class="flexcontainer">
+      <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deletePerson()">
+        Delete person
+      </button>
+      <div class="flexbox"></div>
+      <button mat-button *ngIf="mode == modeType.ADD" (click)="addPerson()"
+              [disabled]="person.name == null || person.name.length < 1">
+        Add person
+      </button>
+      <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updatePerson()"
+              [disabled]="person.name == null || person.name.length < 1">
+        Update person
+      </button>
+    </mat-dialog-actions>
+  </div>
 </div>
 

@@ -122,7 +122,7 @@ export class TaskPropertiesFormComponent implements OnInit {
    * Initializes acceptance criteria
    */
   private initializeAcceptanceCriteria() {
-    if (this.task.acceptanceCriteria != null) {
+    if (this.task != null && this.task.acceptanceCriteria != null) {
       this.completedAcceptanceCriteria = this.task.acceptanceCriteria.filter(c => {
         return c.selected;
       }).length;
@@ -301,9 +301,11 @@ export class TaskPropertiesFormComponent implements OnInit {
    * @param items acceptance criteria
    */
   onAcceptanceCriteriaChanged(items: SelectableItem[]) {
-    this.task.acceptanceCriteria = items as AcceptanceCriterium[];
-    this.initializeAcceptanceCriteria();
-    this.notify();
+    if (this.task != null) {
+      this.task.acceptanceCriteria = items as AcceptanceCriterium[];
+      this.initializeAcceptanceCriteria();
+      this.notify();
+    }
   }
 
   //

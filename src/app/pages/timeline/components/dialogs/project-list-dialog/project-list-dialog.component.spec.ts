@@ -4,6 +4,7 @@ import {ProjectListDialogComponent} from './project-list-dialog.component';
 import {TimelineImports} from '../../../timeline.imports';
 import {TimelineDeclarations} from '../../../timeline.declaration';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('ProjectListDialogComponent', () => {
   let component: ProjectListDialogComponent;
@@ -11,7 +12,7 @@ describe('ProjectListDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TimelineImports],
+      imports: [TimelineImports, BrowserAnimationsModule],
       declarations: [TimelineDeclarations],
       providers: [
         {provide: MAT_DIALOG_DATA, useValue: {}}, {

@@ -17,7 +17,7 @@ export class TagListDialogComponent {
   /** Dialog title */
   dialogTitle = '';
   /** Array of tags to be displayed */
-  tags: Tag[];
+  tags = [];
 
   /**
    * Constructor

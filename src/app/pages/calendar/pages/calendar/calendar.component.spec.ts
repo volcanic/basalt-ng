@@ -4,7 +4,7 @@ import {CalendarComponent} from './calendar.component';
 import {CalendarImports} from '../../calendar.imports';
 import {CalendarDeclarations} from '../../calendar.declaration';
 import {PouchDBService} from '../../../../core/persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../../core/persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../../core/persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../../core/persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../../core/persistence/services/pouchdb-settings.service.mock';
 import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
@@ -20,7 +20,7 @@ describe('CalendarComponent', () => {
       imports: [CalendarImports],
       declarations: [CalendarDeclarations],
       providers: [
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
         TaskletService,
         MatchService,

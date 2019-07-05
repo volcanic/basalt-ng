@@ -1,7 +1,8 @@
 <div (keydown)="onKeyDown($event)">
+
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
-  <mat-dialog-content>
-    <form #formCtrl="ngForm">
+  <div *ngIf="tag != null">
+    <mat-dialog-content>
       <div>
         <mat-form-field class="wide-box">
           <input matInput required name="tag" type="text" placeholder="Tag" ngControl="controlTag"
@@ -9,18 +10,20 @@
                  [(ngModel)]="tag.name">
         </mat-form-field>
       </div>
-    </form>
-  </mat-dialog-content>
-  <mat-dialog-actions class="flexcontainer">
-    <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteTag()">
-      Delete tag
-    </button>
-    <div class="flexbox"></div>
-    <button mat-button *ngIf="mode == modeType.ADD" (click)="addTag()" [disabled]="!formCtrl.form.valid">
-      Add tag
-    </button>
-    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTag()" [disabled]="!formCtrl.form.valid">
-      Update tag
-    </button>
-  </mat-dialog-actions>
+    </mat-dialog-content>
+    <mat-dialog-actions class="flexcontainer">
+      <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteTag()">
+        Delete tag
+      </button>
+      <div class="flexbox"></div>
+      <button mat-button *ngIf="mode == modeType.ADD" (click)="addTag()"
+              [disabled]="tag.name == null || tag.name.length < 1">
+        Add tag
+      </button>
+      <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateTag()"
+              [disabled]="tag.name == null || tag.name.length < 1">
+        Update tag
+      </button>
+    </mat-dialog-actions>
+  </div>
 </div>

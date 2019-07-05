@@ -136,10 +136,12 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Initializes date
    */
   private initializeDate() {
-    this.time = DateService.getTimeString(new Date(this.tasklet.creationDate));
-    this.weekday = DateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
-    this.date = DateService.getDateString(new Date(this.tasklet.creationDate));
-    this.simpleDate = DateService.getSimpleDateWithoutYearString(new Date(this.tasklet.creationDate));
+    if (this.tasklet != null) {
+      this.time = DateService.getTimeString(new Date(this.tasklet.creationDate));
+      this.weekday = DateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
+      this.date = DateService.getDateString(new Date(this.tasklet.creationDate));
+      this.simpleDate = DateService.getSimpleDateWithoutYearString(new Date(this.tasklet.creationDate));
+    }
   }
 
   /**

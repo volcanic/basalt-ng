@@ -1,7 +1,7 @@
 import {async, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {AppImports} from './app.imports';
-import {PouchDBMServiceMock} from './core/persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from './core/persistence/services/pouchdb.service.mock';
 import {PouchDBService} from './core/persistence/services/pouchdb.service';
 import {EntityService} from './core/entity/services/entity.service';
 import {TaskService} from './core/entity/services/task/task.service';
@@ -27,7 +27,7 @@ describe('AppComponent', () => {
         TaskService,
         TaskletService,
         SnackbarService,
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
         SettingsService,
         ThemeService,

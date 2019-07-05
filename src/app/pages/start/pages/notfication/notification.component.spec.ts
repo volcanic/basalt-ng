@@ -4,7 +4,8 @@ import {NotificationComponent} from './notification.component';
 import {StartImports} from '../../start.imports';
 import {CalendarDeclarations} from '../../start.declaration';
 import {NotificationService} from '../../../../core/notification/services/notification.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {of} from 'rxjs';
 
 describe('NotificationComponent', () => {
   let component: NotificationComponent;
@@ -21,6 +22,11 @@ describe('NotificationComponent', () => {
             navigate = jasmine.createSpy('navigate');
           }
         },
+        {
+          provide: ActivatedRoute, useValue: {
+            params: of({id: 'mock'})
+          }
+        }
       ]
     })
       .compileComponents();

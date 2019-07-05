@@ -3,7 +3,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {StartComponent} from './start.component';
 import {StartImports} from '../../start.imports';
 import {CalendarDeclarations} from '../../start.declaration';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {of} from 'rxjs';
 
 describe('StartComponent', () => {
   let component: StartComponent;
@@ -19,6 +20,11 @@ describe('StartComponent', () => {
             navigate = jasmine.createSpy('navigate');
           }
         },
+        {
+          provide: ActivatedRoute, useValue: {
+            params: of({id: 'mock'})
+          }
+        }
       ]
     })
       .compileComponents();

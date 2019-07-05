@@ -21,7 +21,7 @@
     </div>
 
     <div class="flexcontainer">
-      <button mat-button *ngIf="tags.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
+      <button mat-button *ngIf="tags != null && tags.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
       <div class="flexbox"></div>
       <button mat-button [disabled]="unusedTags.length === 0" (click)="onRemoveUnusedTagsClicked()">Remove unused tags</button>
     </div>

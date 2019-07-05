@@ -1,5 +1,7 @@
-<mat-form-field class="wide-box">
-  <input *ngIf="task != null" matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
-         [disabled]="readonly"
-         [ngModel]="task.name" (ngModelChange)="onNameChanged($event)">
-</mat-form-field>
+<div *ngIf="task != null">
+  <mat-form-field class="wide-box">
+    <input matInput required name="task" type="text" placeholder="Task" ngControl="controlTask"
+           [disabled]="readonly"
+           [ngModel]="task.name" (ngModelChange)="onNameChanged($event)">
+  </mat-form-field>
+</div>

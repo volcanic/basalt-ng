@@ -4,7 +4,7 @@ import {TaskService} from './task.service';
 import {EntityProviders} from '../../entity.providers';
 import {EntityImports} from '../../entity.imports';
 import {PouchDBService} from '../../../persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../persistence/services/pouchdb-settings.service.mock';
 import {ProjectService} from '../project.service';
@@ -18,7 +18,7 @@ describe('TaskService', () => {
       imports: [EntityImports],
       providers: [
         EntityProviders,
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
         ProjectService,
         TagService,

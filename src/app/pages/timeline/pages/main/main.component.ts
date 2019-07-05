@@ -32,12 +32,14 @@ export class MainComponent implements OnInit {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    if (this.router.url != null && this.router.url.startsWith('/timeline')) {
-      this.currentComponent = TimelineComponent;
-    } else if (this.router.url.startsWith('/tasklet')) {
-      this.currentComponent = TaskletComponent;
-    } else if (this.router.url.startsWith('/task')) {
-      this.currentComponent = TaskComponent;
+    if (this.router.url != null) {
+      if (this.router.url.startsWith('/timeline')) {
+        this.currentComponent = TimelineComponent;
+      } else if (this.router.url.startsWith('/tasklet')) {
+        this.currentComponent = TaskletComponent;
+      } else if (this.router.url.startsWith('/task')) {
+        this.currentComponent = TaskComponent;
+      }
     }
   }
 }

@@ -17,7 +17,7 @@ export class TaskListDialogComponent {
   /** Dialog title */
   dialogTitle = '';
   /** Array of tasks to be displayed */
-  tasks: Task[];
+  tasks = [];
 
   /**
    * Constructor

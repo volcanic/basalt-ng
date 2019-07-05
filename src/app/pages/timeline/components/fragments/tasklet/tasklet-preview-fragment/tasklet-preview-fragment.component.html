@@ -1,4 +1,4 @@
-<div class="tasklet-preview flexcontainer">
+<div *ngIf="tasklet != null" class="tasklet-preview flexcontainer">
   <div class="attachments">
     <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
       <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached-without-connector"

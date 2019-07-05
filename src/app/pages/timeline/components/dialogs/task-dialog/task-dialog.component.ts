@@ -151,7 +151,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * Initializes recurring flag
    */
   private initializeRecurring() {
-    this.recurring = this.task.recurrenceInterval != null
+    this.recurring = this.task != null && this.task.recurrenceInterval != null
       && this.task.recurrenceInterval !== RecurrenceInterval.UNSPECIFIED
       && this.task.recurrenceInterval !== RecurrenceInterval.NONE;
   }

@@ -4,7 +4,7 @@ import {TaskletComponent} from './tasklet.component';
 import {TimelineImports} from '../../timeline.imports';
 import {TimelineDeclarations} from '../../timeline.declaration';
 import {PouchDBService} from '../../../../core/persistence/services/pouchdb.service';
-import {PouchDBMServiceMock} from '../../../../core/persistence/services/pouchdb.service.mock';
+import {PouchDBServiceMock} from '../../../../core/persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../../core/persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../../core/persistence/services/pouchdb-settings.service.mock';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
@@ -27,6 +27,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {NgZone} from '@angular/core';
+import {of} from 'rxjs';
 
 describe('TaskletComponent', () => {
   let component: TaskletComponent;
@@ -53,14 +54,18 @@ describe('TaskletComponent', () => {
         TagService,
         TaskletService,
         TaskService,
-        ActivatedRoute,
         Router,
         MatIconRegistry,
         DomSanitizer,
         MatDialog,
         NgZone,
-        {provide: PouchDBService, useClass: PouchDBMServiceMock},
+        {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
+        {
+          provide: ActivatedRoute, useValue: {
+            params: of({id: 'mock'})
+          }
+        }
       ]
     })
       .compileComponents();
