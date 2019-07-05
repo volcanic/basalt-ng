@@ -5,6 +5,8 @@ import {TimelineImports} from '../../../../timeline.imports';
 import {TimelineDeclarations} from '../../../../timeline.declaration';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
 describe('TaskPropertiesFormComponent', () => {
   let component: TaskPropertiesFormComponent;
   let fixture: ComponentFixture<TaskPropertiesFormComponent>;
