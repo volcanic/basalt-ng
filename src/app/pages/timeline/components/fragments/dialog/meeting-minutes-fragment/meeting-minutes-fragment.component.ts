@@ -125,11 +125,11 @@ export class MeetingMinutesFragmentComponent implements OnInit {
    */
   onKeyDown(event: any) {
     if (event.ctrlKey) {
-      const KEY_CODE_ENTER = 13;
-      if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+      if (event.key === 'Enter' && event.ctrlKey) {
         this.addInformation(this.text);
       } else {
-        switch (String.fromCharCode(event.keyCode).toUpperCase()) {
+        const upperCaseKey = event.key.toUpperCase();
+        switch (upperCaseKey) {
           case this.SHORTCUT_INFORMATION: {
             this.addInformation(this.text);
             break;

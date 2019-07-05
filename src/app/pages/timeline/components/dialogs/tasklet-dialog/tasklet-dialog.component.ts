@@ -271,8 +271,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * @param event event
    */
   onKeyDown(event: any) {
-    const KEY_CODE_ENTER = 13;
-    if (event.key === KEY_CODE_ENTER && event.ctrlKey) {
+    if (event.key === 'Enter' && event.ctrlKey) {
       this.handleTaskletChanges();
     }
   }
