@@ -48,12 +48,14 @@ export class SettingsService {
   public fetch() {
     this.settings.clear();
     this.pouchDBSettingsService.fetch().then(result => {
-        result.rows.forEach(r => {
-          const setting = r.doc as Setting;
-          this.settings.set(setting.id, setting);
-        });
+        if (result != null) {
+          result.rows.forEach(r => {
+            const setting = r.doc as Setting;
+            this.settings.set(setting.id, setting);
+          });
 
-        this.notify();
+          this.notify();
+        }
       }, error => {
         if (isDevMode()) {
           console.error(error);
