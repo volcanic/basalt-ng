@@ -54,7 +54,11 @@ describe('TaskletComponent', () => {
         TagService,
         TaskletService,
         TaskService,
-        Router,
+        {
+          provide: Router, useClass: class {
+            navigate = jasmine.createSpy('navigate');
+          }
+        },
         MatIconRegistry,
         DomSanitizer,
         MatDialog,

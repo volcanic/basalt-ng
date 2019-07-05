@@ -16,7 +16,6 @@ import {MatchService} from '../../../../core/entity/services/match.service';
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 import {MediaService} from '../../../../core/ui/services/media.service';
-import {Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ScopeService} from '../../../../core/entity/services/scope.service';
 import {ScrollDispatcher} from '@angular/cdk/overlay';
@@ -33,6 +32,9 @@ import {RouterTestingModule} from '@angular/router/testing';
 describe('TimelineComponent', () => {
   let component: TimelineComponent;
   let fixture: ComponentFixture<TimelineComponent>;
+
+  const mockNgZone = jasmine.createSpyObj('mockNgZone', ['run', 'runOutsideAngular']);
+  mockNgZone.run.and.callFake(fn => fn());
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -60,7 +62,7 @@ describe('TimelineComponent', () => {
         TaskService,
         TaskletService,
         MatDialog,
-        NgZone,
+        {provide: NgZone, useValue: mockNgZone},
         {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
       ],
