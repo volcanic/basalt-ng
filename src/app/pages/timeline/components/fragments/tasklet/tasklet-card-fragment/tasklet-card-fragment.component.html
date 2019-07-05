@@ -53,9 +53,11 @@
               </label>
             </span>
           </span>
-          <span *ngFor="let p of tasklet.personIds">
-            <span class="person" *ngIf="persons.get(p) != null">
-              <label class="label">{{ persons.get(p).name }}</label>
+          <span *ngIf="tasklet != null">
+            <span *ngFor="let p of tasklet.personIds">
+              <span class="person" *ngIf="persons.get(p) != null">
+                <label class="label">{{ persons.get(p).name }}</label>
+              </span>
             </span>
           </span>
           <span *ngFor="let t of inheritedTagIds">

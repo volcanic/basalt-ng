@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {MatMenuTrigger} from '@angular/material';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {DateService} from 'app/core/entity/services/date.service';
@@ -117,7 +127,9 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Initializes icon
    */
   private initializeIcon() {
-    this.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
+    if (this.tasklet != null) {
+      this.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
+    }
   }
 
   /**

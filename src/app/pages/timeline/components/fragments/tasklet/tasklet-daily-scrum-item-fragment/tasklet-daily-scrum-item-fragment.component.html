@@ -1,6 +1,6 @@
 <div class="flexcontainer">
   <mat-icon class="icon" [svgIcon]="icon"></mat-icon>
-  <span class="type" *ngIf="dailyScrumItem.type != null">
+  <span class="type" *ngIf="dailyScrumItem != null && dailyScrumItem.type != null">
     {{ dailyScrumItem.type }}
   </span>
   <ul class="statements">

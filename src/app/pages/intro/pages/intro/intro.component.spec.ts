@@ -33,7 +33,14 @@ describe('IntroComponent', () => {
         },
         MatDialog,
         MatIconRegistry,
-        DomSanitizer
+        {
+          provide: DomSanitizer,
+          useValue: {
+            sanitize: () => 'safeString',
+            bypassSecurityTrustHtml: () => 'safeString',
+            bypassSecurityTrustResourceUrl: () => 'safeString'
+          }
+        }
       ]
     })
       .compileComponents();

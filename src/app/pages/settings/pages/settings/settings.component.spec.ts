@@ -16,6 +16,9 @@ describe('SettingsComponent', () => {
   let component: SettingsComponent;
   let fixture: ComponentFixture<SettingsComponent>;
 
+  const mockNgZone = jasmine.createSpyObj('mockNgZone', ['run', 'runOutsideAngular']);
+  mockNgZone.run.and.callFake(fn => fn());
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SettingsImports],
@@ -32,7 +35,7 @@ describe('SettingsComponent', () => {
         DomSanitizer,
         ScrollDispatcher,
         SettingsService,
-        NgZone
+        {provide: NgZone, useValue: mockNgZone},
       ]
     })
       .compileComponents();

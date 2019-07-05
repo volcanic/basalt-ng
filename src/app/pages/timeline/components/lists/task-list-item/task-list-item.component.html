@@ -3,13 +3,13 @@
        (mouseleave)="onHoverContainer(false)">
     <mat-menu #contextMenu="matMenu">
       <button mat-menu-item (click)="onTaskClicked()">Update task</button>
-      <button mat-menu-item (click)="onCompleteClicked()" *ngIf="task.completionDate == null"
+      <button mat-menu-item (click)="onCompleteClicked()" *ngIf="task != null && task.completionDate == null"
               class="action-buttons">Complete task
       </button>
-      <button mat-menu-item (click)="onContinueClicked()" *ngIf="task.completionDate == null"
+      <button mat-menu-item (click)="onContinueClicked()" *ngIf="task != null && task.completionDate == null"
               class="action-buttons">Continue task
       </button>
-      <button mat-menu-item (click)="onReopenClicked()" *ngIf="task.completionDate != null"
+      <button mat-menu-item (click)="onReopenClicked()" *ngIf="task != null && task.completionDate != null"
               class="action-buttons">Re-open task
       </button>
       <button mat-menu-item (click)="onFilterClicked()"
@@ -25,7 +25,7 @@
       ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
     </span>
     </button>
-    <div *ngIf="task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
+    <div *ngIf="task != null && task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
       <button [@actionAnimation]="state"
               mat-icon-button
               class="action"
@@ -47,7 +47,7 @@
         <mat-icon svgIcon='reply'></mat-icon>
       </button>
     </div>
-    <div *ngIf="task.completionDate != null && media > mediaType.MEDIUM" class="flexcontainer">
+    <div *ngIf="task != null && task.completionDate != null && media > mediaType.MEDIUM" class="flexcontainer">
       <button [@actionAnimation]="state"
               mat-icon-button
               class="action"

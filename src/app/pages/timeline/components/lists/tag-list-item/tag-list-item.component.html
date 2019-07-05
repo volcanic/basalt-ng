@@ -11,7 +11,7 @@
   <button mat-button class="entity flexbox" [disabled]="!active"
           (click)="onTagClicked()">
     <mat-icon svgIcon="alias_tag" class="list-icon"></mat-icon>
-    <span>{{ tag.name }}</span>
+    <span *ngIf="tag != null">{{ tag.name }}</span>
   </button>
   <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"
