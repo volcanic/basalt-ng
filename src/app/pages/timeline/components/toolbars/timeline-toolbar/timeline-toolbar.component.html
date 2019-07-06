@@ -25,7 +25,7 @@
     </mat-form-field>
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let option of searchOptionsFiltered" [value]="option"
-                  (click)="onOptionSelected($event)">
+                  (click)="onOptionSelected()">
         {{ option }}
       </mat-option>
     </mat-autocomplete>
@@ -41,7 +41,7 @@
             (click)="onClearFiltersButtonClicked()">
       <mat-icon svgIcon="layers_clear"></mat-icon>
     </button>
-    <button *ngIf="media > mediaType.MEDIUM"
+    <button *ngIf="media > mediaType.MEDIUM && env.FEATURE_TOGGLE_SCOPE"
             mat-button
             class="toolbar-menu-item"
             [matTooltip]="'Switch scope'"
@@ -63,17 +63,19 @@
     </button>
     <mat-menu #menu="matMenu">
       <div class="toolbar-expanded" *ngIf="media < mediaType.LARGE">
-        <button mat-menu-item *ngIf="scope === scopeType.FREETIME" class="toolbar-menu-item"
-                (click)="onMenuItemClicked('scope-work')">
-          <mat-icon svgIcon="business"></mat-icon>
-          <span>Switch to work</span>
-        </button>
-        <button mat-menu-item *ngIf="scope === scopeType.WORK" class="toolbar-menu-item"
-                (click)="onMenuItemClicked('scope-freetime')">
-          <mat-icon svgIcon="nature"></mat-icon>
-          <span>Switch to freetime</span>
-        </button>
-        <mat-divider></mat-divider>
+        <div *ngIf="env.FEATURE_TOGGLE_SCOPE">
+          <button mat-menu-item *ngIf="scope === scopeType.FREETIME" class="toolbar-menu-item"
+                  (click)="onMenuItemClicked('scope-work')">
+            <mat-icon svgIcon="business"></mat-icon>
+            <span>Switch to work</span>
+          </button>
+          <button mat-menu-item *ngIf="scope === scopeType.WORK" class="toolbar-menu-item"
+                  (click)="onMenuItemClicked('scope-freetime')">
+            <mat-icon svgIcon="nature"></mat-icon>
+            <span>Switch to freetime</span>
+          </button>
+          <mat-divider></mat-divider>
+        </div>
         <button mat-menu-item (click)="onMenuItemClicked('task-list')">
           <mat-icon svgIcon="turned_in_not"></mat-icon>
           <span>Tasks</span>

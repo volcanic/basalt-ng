@@ -162,6 +162,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Scrollable directive */
   @ViewChild(CdkScrollable, {static: false}) scrollable: CdkScrollable;
 
+  /** Environment */
+  env = environment;
+
   /**
    * Constructor
    * @param digestService digest service

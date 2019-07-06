@@ -19,6 +19,9 @@ export const environment = {
   LIMIT_TAGS_DAYS: 60,
   LIMIT_PERSONS_DAYS: 60,
 
+  FEATURE_TOGGLE_SUGGESTED_ACTIONS: true,
+  FEATURE_TOGGLE_SCOPE: false,
+
   NAME: require('../../package.json').name,
   VERSION: require('../../package.json').version,
   LICENSE: require('../../package.json').license,

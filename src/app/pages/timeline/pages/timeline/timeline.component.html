@@ -49,7 +49,8 @@
 
   <mat-sidenav-content cdkScrollable>
     <div class="content">
-      <app-suggested-actions [suggestedTasks]="tasks"
+      <app-suggested-actions *ngIf="env.FEATURE_TOGGLE_SUGGESTED_ACTIONS"
+                             [suggestedTasks]="tasks"
                              (taskletEventEmitter)="onTaskletEvent($event)"
                              (taskEventEmitter)="onTaskEvent($event)"></app-suggested-actions>
 

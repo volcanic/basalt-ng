@@ -3,6 +3,7 @@ import {debounceTime} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Scope} from 'app/core/entity/model/scope.enum';
+import {environment} from '../../../../../../environments/environment';
 
 /**
  * Displays timeline toolbar
@@ -41,6 +42,9 @@ export class TimelineToolbarComponent implements OnInit {
   searchItemDebouncer = new Subject();
   /** Filtered search items options for auto-complete */
   searchOptionsFiltered: string[];
+
+  /** Environment */
+  env = environment;
 
   //
   // Lifecycle hooks
