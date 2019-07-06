@@ -5,6 +5,27 @@
     <div class="top-connection-line"></div>
   </div>
 
+  <!-- Context menu -->
+  <div class="flexcontainer">
+    <div class="flexbox"></div>
+    <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
+    <mat-menu #contextMenu="matMenu">
+      <button mat-menu-item
+              (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
+        Update tasklet
+      </button>
+      <button mat-menu-item
+              (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">
+        Update creation time
+      </button>
+      <button mat-menu-item *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)"
+              (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CONTINUE, tasklet: tasklet})">
+        Continue tasklet
+      </button>
+    </mat-menu>
+    <div class="flexbox"></div>
+  </div>
+
   <!-- Display as preview -->
   <div *ngIf="containsDisplayAspect(displayAspectType.IS_DISPLAYED_AS_PREVIEW, tasklet)">
     <div class="tasklet-preview">
