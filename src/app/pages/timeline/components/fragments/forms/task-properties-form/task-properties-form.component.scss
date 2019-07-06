@@ -38,6 +38,9 @@
 
 .mat-expansion-panel {
   display: inherit;
+  box-shadow: 0 0 0 transparent,
+  0 0 0 transparent,
+  0 0 0 transparent !important;
 }
 
 .mat-expansion-panel:not([class*=mat-elevation-z]) {

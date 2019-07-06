@@ -10,6 +10,8 @@
                  position="start" [opened]="sidenavOpened"
                  class="sidenav sidenav-start">
       <div [@toolbarAnimation]="scrollDirection">
+        <div class="sidenav-inner-container">
+        </div>
       </div>
     </mat-sidenav>
 
@@ -17,16 +19,18 @@
                  position="end" [opened]="sidenavOpened"
                  class="sidenav sidenav-end">
       <div [@toolbarAnimation]="scrollDirection">
-        <div class="tasklet" *ngFor="let tasklet of tasklets">
-          <div class="flexcontainer">
-            <app-tasklet-timeline-fragment [tasklet]="tasklet"
-                                           [backgroundColor]="action.backgroundColor"
-                                           [iconColor]="action.iconColor"
-                                           [media]="media"></app-tasklet-timeline-fragment>
-            <div class="tasklet-previous">
-              <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
-              <app-tasklet-content-fragment [tasklet]="tasklet"
-                                            [placeholderDescription]="placeholderDescription"></app-tasklet-content-fragment>
+        <div class="sidenav-inner-container">
+          <div class="tasklet" *ngFor="let tasklet of tasklets">
+            <div class="flexcontainer">
+              <app-tasklet-timeline-fragment [tasklet]="tasklet"
+                                             [backgroundColor]="action.backgroundColor"
+                                             [iconColor]="action.iconColor"
+                                             [media]="media"></app-tasklet-timeline-fragment>
+              <div class="tasklet-previous">
+                <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
+                <app-tasklet-content-fragment [tasklet]="tasklet"
+                                              [placeholderDescription]="placeholderDescription"></app-tasklet-content-fragment>
+              </div>
             </div>
           </div>
         </div>
@@ -113,9 +117,9 @@
                                       (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
             </app-daily-scrum-fragment>
             <app-completable-list *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)"
-                                [items]="tasklet.acceptanceCriteria"
-                                [readonly]="readonly"
-                                (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
+                                  [items]="tasklet.acceptanceCriteria"
+                                  [readonly]="readonly"
+                                  (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
             </app-completable-list>
             <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
                            class="tag-area"

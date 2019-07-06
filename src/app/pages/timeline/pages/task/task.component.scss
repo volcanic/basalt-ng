@@ -13,16 +13,10 @@
 .sidenav {
   background: transparent;
   width: 350px;
+}
 
-  @media #{$breakpoint-small} {
-    padding: 88px 20px;
-  }
-  @media #{$breakpoint-medium} {
-    padding: 88px 20px;
-  }
-  @media #{$breakpoint-large} {
-    padding: 88px 20px;
-  }
+.sidenav-inner-container {
+  padding-top: 88px !important;
 }
 
 .sidenav-start {

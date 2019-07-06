@@ -29,7 +29,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {NgZone} from '@angular/core';
 import {of} from 'rxjs';
 
-describe('TaskletComponent', () => {
+xdescribe('TaskletComponent', () => {
   let component: TaskletComponent;
   let fixture: ComponentFixture<TaskletComponent>;
 

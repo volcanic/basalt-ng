@@ -10,24 +10,29 @@
   (menuItemEventEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
 
 <mat-sidenav-container class="sidenav-container" layout="column">
+  <div class="sidenav-inner-container"></div>
   <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
                position="start" [opened]="sidenavOpened"
                class="sidenav sidenav-start">
     <div [@toolbarAnimation]="scrollDirection">
-      <app-project-effort-tree [projectDigest]="weeklyDigest"></app-project-effort-tree>
-      <div *ngFor="let dailyDigest of dailyDigests">
-        <app-project-effort-tree [projectDigest]="dailyDigest"></app-project-effort-tree>
-      </div>
-      <mat-divider></mat-divider>
+      <div class="sidenav-inner-container">
+        <app-project-effort-tree [projectDigest]="weeklyDigest"></app-project-effort-tree>
+        <div *ngFor="let dailyDigest of dailyDigests">
+          <app-project-effort-tree [projectDigest]="dailyDigest"></app-project-effort-tree>
+        </div>
+        <mat-divider></mat-divider>
 
-      <app-project-list [projects]="projects" [projectsFiltered]="projectsFiltered" [recentCount]="'3'" [media]="media"
-                        (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
-      <mat-divider></mat-divider>
-      <app-tag-list [tags]="tags" [tagsFiltered]="tagsFiltered" [unusedTags]="unusedTags" [recentCount]="'10'" [media]="media"
-                    (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
-      <mat-divider></mat-divider>
-      <app-person-list [persons]="persons" [personsFiltered]="personsFiltered" [recentCount]="'10'" [media]="media"
-                       (personEventEmitter)="onPersonEvent($event)"></app-person-list>
+        <app-project-list [projects]="projects" [projectsFiltered]="projectsFiltered" [recentCount]="'3'"
+                          [media]="media"
+                          (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
+        <mat-divider></mat-divider>
+        <app-tag-list [tags]="tags" [tagsFiltered]="tagsFiltered" [unusedTags]="unusedTags" [recentCount]="'10'"
+                      [media]="media"
+                      (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
+        <mat-divider></mat-divider>
+        <app-person-list [persons]="persons" [personsFiltered]="personsFiltered" [recentCount]="'10'" [media]="media"
+                         (personEventEmitter)="onPersonEvent($event)"></app-person-list>
+      </div>
     </div>
   </mat-sidenav>
 
@@ -35,7 +40,10 @@
                position="end" [opened]="sidenavOpened"
                class="sidenav sidenav-end">
     <div [@toolbarAnimation]="scrollDirection">
-      <app-task-list [tasks]="tasks" [tasksFiltered]="tasksFiltered" [media]="media" (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
+      <div class="sidenav-inner-container">
+        <app-task-list [tasks]="tasks" [tasksFiltered]="tasksFiltered" [media]="media"
+                       (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
+      </div>
     </div>
   </mat-sidenav>
 
