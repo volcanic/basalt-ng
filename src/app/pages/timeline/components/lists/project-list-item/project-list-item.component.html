@@ -9,7 +9,8 @@
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
   <button mat-button class="entity flexbox" [disabled]="!active" (click)="onProjectClicked()">
-    <mat-icon svgIcon="alias_project" class="list-icon"></mat-icon>
+    <mat-icon *ngIf="project.color == null" svgIcon="alias_project" class="list-icon"></mat-icon>
+    <mat-icon *ngIf="project.color != null" [style.fill]="project.color" svgIcon="alias_project" class="list-icon"></mat-icon>
     <span *ngIf="project != null">{{ project.name }}</span>
   </button>
   <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
