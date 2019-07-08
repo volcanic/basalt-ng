@@ -5,15 +5,23 @@
 // Custom
 //
 
+.list-icon {
+  margin-right: 16px;
+}
+
+.icon {
+  vertical-align: middle;
+}
+
+.list-label {
+  flex-grow: 1;
+}
+
 .entity {
   overflow: hidden;
   text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.list-icon {
-  margin-right: 16px;
 }
 
 .action{

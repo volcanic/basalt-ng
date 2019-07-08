@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 /**
  * Displays a color picker
@@ -19,9 +19,7 @@ export class ColorPickerComponent {
   /** Currently selected color */
   @Input() selected: string;
   /** Event emitter indicating color selection */
-  @Output() colorSelectedEmitter = new EventEmitter<string>();
-  /** Event emitter indicating contrast selection */
-  @Output() contrastSelectedEmitter = new EventEmitter<string>();
+  @Output() colorSelectedEmitter = new EventEmitter<{ color: string, contrast: string }>();
 
   /**
    * Checks if a color is disabled
@@ -42,7 +40,6 @@ export class ColorPickerComponent {
    * @param index index
    */
   onColorSelected(index: number) {
-    this.colorSelectedEmitter.emit(this.colorOptions[index]);
-    this.contrastSelectedEmitter.emit(this.contrastOptions[index]);
+    this.colorSelectedEmitter.emit({color: this.colorOptions[index], contrast: this.contrastOptions[index]});
   }
 }

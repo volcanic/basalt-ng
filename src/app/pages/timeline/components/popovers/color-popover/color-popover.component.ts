@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {Project} from '../../../../../core/entity/model/project.model';
 import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 import {ColorService} from '../../../../../core/ui/services/color.service';
@@ -47,7 +47,6 @@ export class ColorPopoverComponent implements OnChanges {
    * Handles on-changes lifecycle phase
    */
   ngOnChanges() {
-    console.log(`ngOnChanges`);
     this.initializeColorOptions();
   }
 

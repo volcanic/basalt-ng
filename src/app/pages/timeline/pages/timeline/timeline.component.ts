@@ -409,6 +409,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.projects = projects.filter(project => {
       return this.filterProject(project);
     });
+
+    // Digests
+    this.generateWeeklyDigest(this.indicatedDate);
+    this.generateDailyDigests(this.indicatedDate);
   }
 
   /**
@@ -1589,9 +1593,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
               }
             });
             confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
-
-              console.log(confirmationResult);
-
               if (confirmationResult != null) {
                 (confirmationResult as Tag[]).forEach(t => {
                   this.tagService.deleteTag(t).then(() => {
@@ -1650,7 +1651,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
             data: {
               title: 'Cannot delete person',
               text: `There are still tasks associated with this person.`,
-              action: 'Okay',
+              action: `Okay`,
               value: person
             }
           });

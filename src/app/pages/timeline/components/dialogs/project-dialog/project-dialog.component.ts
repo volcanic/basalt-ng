@@ -125,18 +125,11 @@ export class ProjectDialogComponent implements OnInit {
 
   /**
    * Handles color selection
-   * @param color color
+   * @param event event
    */
-  onColorSelected(color: string) {
-    this.project.color = color;
-  }
-
-  /**
-   * Handles contrast selection
-   * @param contrast contrast
-   */
-  onContrastSelected(contrast: string) {
-    this.project.contrast = contrast;
+  onColorSelected(event: { color: string, contrast: string }) {
+    this.project.color = event.color;
+    this.project.contrast = event.contrast;
   }
 
   //
