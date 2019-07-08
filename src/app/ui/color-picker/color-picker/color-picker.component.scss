@@ -1,0 +1,19 @@
+@import '../../../../theme';
+
+.container {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.color-swatch {
+  margin: 5px;
+}
+
+.label {
+  color: mat-color($mat-grey, 700);
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100px;
+}

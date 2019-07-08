@@ -1,0 +1,17 @@
+<div class="container">
+  <span *ngFor="let option of colorOptions; let i = index">
+    <button *ngIf="!isDisabled(option)"
+            mat-mini-fab class="color-swatch"
+            (click)="onColorSelected(i)"
+            [style.backgroundColor]=option>
+      <mat-icon *ngIf="selected != null && selected == option" [style.fill]="contrastOptions[i]"
+                svgIcon="check"></mat-icon>
+    </button>
+    <button *ngIf="isDisabled(option)"
+            mat-mini-fab class="color-swatch" disabled=true
+            (click)="onColorSelected(i)">
+      <mat-icon *ngIf="selected != null && selected == option" [style.fill]="contrastOptions[i]"
+                svgIcon="check"></mat-icon>
+    </button>
+  </span>
+</div>
