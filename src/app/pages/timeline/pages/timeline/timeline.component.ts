@@ -1375,7 +1375,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.ADD,
           dialogTitle: 'Add project',
-          project: new Project('')
+          project: new Project(''),
+          projects: Array.from(this.projectService.projects.values())
         };
 
         // Open dialog
@@ -1403,7 +1404,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update project',
-          project
+          project,
+          projects: Array.from(this.projectService.projects.values())
         };
 
         // Open dialog

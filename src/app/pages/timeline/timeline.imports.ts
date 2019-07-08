@@ -23,6 +23,7 @@ import {EffortPickerFragmentModule} from '../../ui/effort-picker-fragment/effort
 import {CheckableListModule} from '../../ui/checkable-list/checkable-list.module';
 import {MaterialModule} from '../../ui/material/material.module';
 import {EntityModule} from '../../core/entity/entity.module';
+import {ColorPickerModule} from '../../ui/color-picker/color-picker.module';
 
 /** Imports for timeline module */
 export const TimelineImports = [
@@ -39,6 +40,7 @@ export const TimelineImports = [
   EntityModule,
 
   AboutDialogModule,
+  ColorPickerModule,
   ConfirmationDialogModule,
   ChatBubbleModule,
   InformationDialogModule,
