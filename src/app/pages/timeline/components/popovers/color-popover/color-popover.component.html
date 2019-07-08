@@ -1,0 +1,5 @@
+<div class="container">
+  <app-color-picker [colorOptions]="colorOptions" [contrastOptions]="contrastOptions"
+                    [colorsDisabled]="colorsDisabled" [selected]="project.color"
+                    (colorSelectedEmitter)="onColorSelected($event)"></app-color-picker>
+</div>
