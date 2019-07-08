@@ -10,7 +10,7 @@ import {RecurrenceInterval} from '../model/recurrence-interval.enum';
 export class DateService {
 
   /** Minutes to round up or down to */
-  public static MINUTES_INTERVAL = 5;
+  public static MINUTES_INTERVAL = 15;
 
   //
   // Manipulation
