@@ -177,9 +177,7 @@ export class TaskletDisplayService {
    */
   canBeUpdated(tasklet: Tasklet, task: Task): boolean {
     return tasklet != null
-      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
-      && (!TaskletDisplayService.containsDescription(tasklet)
-        || (tasklet.description != null && tasklet.description.value.length > 0));
+      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0));
   }
 
   /**
@@ -190,8 +188,6 @@ export class TaskletDisplayService {
   canBeContinued(tasklet: Tasklet, task: Task): boolean {
     return tasklet != null
       && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
-      && (!TaskletDisplayService.containsDescription(tasklet)
-        || (tasklet.description != null && tasklet.description.value.length > 0))
       && (tasklet.type === TaskletType.ACTION
         || tasklet.type === TaskletType.MEETING
         || tasklet.type === TaskletType.DAILY_SCRUM
