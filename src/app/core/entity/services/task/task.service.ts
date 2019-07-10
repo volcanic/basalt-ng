@@ -378,7 +378,7 @@ export class TaskService {
   }
 
   /**
-   * Determines if a task is due today
+   * Determines if a task is due today and is not yet over due
    * @param task task
    */
   public isTaskToday(task: Task) {
@@ -389,7 +389,8 @@ export class TaskService {
       && (task.recurrenceInterval == null
         || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
         || task.recurrenceInterval === RecurrenceInterval.NONE)
-      && DateService.isToday(task.dueDate);
+      && DateService.isToday(task.dueDate)
+      && DateService.isAfter(task.dueDate, new Date());
   }
 
   /**
