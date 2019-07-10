@@ -167,9 +167,7 @@ export class TaskletDisplayService {
    */
   canBeCreated(tasklet: Tasklet, task: Task): boolean {
     return tasklet.type !== TaskletType.UNSPECIFIED
-      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
-      && (!TaskletDisplayService.containsDescription(tasklet)
-        || (tasklet.description != null && tasklet.description.value.length > 0));
+      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0));
   }
 
   /**
