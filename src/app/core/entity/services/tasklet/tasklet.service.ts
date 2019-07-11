@@ -24,6 +24,7 @@ import {TaskletTypeService} from './tasklet-type.service';
 import {DailyScrumItemType} from '../../model/daily-scrum/daily-scrum-item-type.enum';
 import {Project} from '../../model/project.model';
 import {Task} from '../../model/task.model';
+import {SnackbarService} from '../../../ui/services/snackbar.service';
 
 /**
  * Handles tasklets including
@@ -59,27 +60,29 @@ export class TaskletService {
 
   /**
    * Constructor
+   * @param dateService date service
+   * @param personService person service
    * @param pouchDBService pouchDB service
    * @param projectService project service
-   * @param taskService task service
-   * @param tagService tag service
-   * @param personService person service
-   * @param dateService date service
+   * @param snackbarService snackbar service
    * @param suggestionService suggestion service
    * @param scopeService scope service
    * @param taskletDisplayService tasklet display service
    * @param taskletTypeService tasklet type service
+   * @param taskService task service
+   * @param tagService tag service
    */
-  constructor(private pouchDBService: PouchDBService,
-              private projectService: ProjectService,
-              private taskService: TaskService,
-              private tagService: TagService,
+  constructor(private dateService: DateService,
               private personService: PersonService,
-              private dateService: DateService,
-              private suggestionService: SuggestionService,
+              private pouchDBService: PouchDBService,
+              private projectService: ProjectService,
               private scopeService: ScopeService,
+              private snackbarService: SnackbarService,
+              private suggestionService: SuggestionService,
               private taskletDisplayService: TaskletDisplayService,
-              private taskletTypeService: TaskletTypeService) {
+              private taskletTypeService: TaskletTypeService,
+              private taskService: TaskService,
+              private tagService: TagService,) {
     this.initializeTaskletSubscription();
     this.findTaskletsByScope(this.scopeService.scope);
   }
@@ -298,6 +301,14 @@ export class TaskletService {
         return this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
           this.tasklets.delete(tasklet.id);
           this.notify();
+        }).catch((error) => {
+          if (isDevMode()) {
+            console.error(error);
+          }
+          this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
+            this.deleteTasklet(tasklet).then(() => {
+            });
+          });
         });
       }
     });
