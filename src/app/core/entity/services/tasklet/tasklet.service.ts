@@ -82,7 +82,7 @@ export class TaskletService {
               private taskletDisplayService: TaskletDisplayService,
               private taskletTypeService: TaskletTypeService,
               private taskService: TaskService,
-              private tagService: TagService,) {
+              private tagService: TagService) {
     this.initializeTaskletSubscription();
     this.findTaskletsByScope(this.scopeService.scope);
   }
