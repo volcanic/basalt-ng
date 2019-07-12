@@ -76,12 +76,15 @@ export class UploadDialogComponent implements OnInit {
 
   /**
    * Handles files dropped into the dropzone
-   * @param result drop result
+   * @param dropResult drop result
    */
-  public onFilesUploaded(result: DropResult) {
-    if (result.result.toString().toUpperCase() === SUCCESS) {
-      this.dropContent.next(result.payload);
+  public onFilesUploaded(dropResult: DropResult) {
+    if (dropResult.result.toString().toUpperCase() === SUCCESS.toUpperCase()) {
+      this.dropContent.next(dropResult.payload);
+      console.log(`${JSON.stringify(dropResult.result)}`);
+      this.snackbarService.showSnackbar('Imported file');
     } else {
+      console.error(`${JSON.stringify(dropResult)}`);
       this.snackbarService.showSnackbar('ERROR: Failed to parse dropped file.');
     }
   }
