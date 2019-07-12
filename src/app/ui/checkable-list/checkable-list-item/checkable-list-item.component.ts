@@ -50,7 +50,9 @@ export class CheckableListItemComponent implements OnInit, AfterViewInit {
    * Handles after-view-init lifecycle phase
    */
   ngAfterViewInit() {
-    this.input.first.nativeElement.focus();
+    if (this.input.first != null) {
+      this.input.first.nativeElement.focus();
+    }
   }
 
   //

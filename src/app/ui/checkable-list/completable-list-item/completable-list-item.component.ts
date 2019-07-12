@@ -48,7 +48,7 @@ export class CompletableListItemComponent implements OnInit, AfterViewInit {
    * Handles after-view-init lifecycle phase
    */
   ngAfterViewInit() {
-    if (!this.item.selected) {
+    if (!this.item.selected && this.input.first != null) {
       this.input.first.nativeElement.focus();
     }
   }
