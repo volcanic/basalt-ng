@@ -18,6 +18,8 @@ export class ColorPickerComponent {
   @Input() colorsDisabled: string[];
   /** Currently selected color */
   @Input() selected: string;
+  /** Whether or not there should be a reset option */
+  @Input() reset = false;
   /** Event emitter indicating color selection */
   @Output() colorSelectedEmitter = new EventEmitter<{ color: string, contrast: string }>();
 
@@ -41,5 +43,12 @@ export class ColorPickerComponent {
    */
   onColorSelected(index: number) {
     this.colorSelectedEmitter.emit({color: this.colorOptions[index], contrast: this.contrastOptions[index]});
+  }
+
+  /**
+   * Handles color selection
+   */
+  onColorDeselected() {
+    this.colorSelectedEmitter.emit(null);
   }
 }

@@ -10,9 +10,8 @@
         </mat-form-field>
       </div>
       <app-color-picker [colorOptions]="colorOptions" [contrastOptions]="contrastOptions"
-                        [colorsDisabled]="colorsDisabled" [selected]="project.color"
-                        (colorSelectedEmitter)="onColorSelected($event)"
-                        (contrastSelectedEmitter)="onContrastSelected($event)"></app-color-picker>
+                        [colorsDisabled]="colorsDisabled" [selected]="project.color" [reset]="true"
+                        (colorSelectedEmitter)="onColorSelected($event)"></app-color-picker>
     </mat-dialog-content>
     <mat-dialog-actions class="flexcontainer">
       <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteProject()">

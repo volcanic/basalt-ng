@@ -9,6 +9,10 @@
   margin: 5px;
 }
 
+.no-shadow {
+  box-shadow: none !important;
+}
+
 .label {
   color: mat-color($mat-grey, 700);
   overflow: hidden;
