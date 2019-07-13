@@ -59,7 +59,7 @@ export class ColorPopoverComponent implements OnChanges {
    */
   private initializeColorOptions() {
     const hueOptions = this.colorService.projectOptionPalettes.map(palette => {
-      return this.materialColorService.hue(palette, HueType._100);
+      return this.materialColorService.hue(palette, HueType._500);
     });
 
     this.colorOptions = hueOptions.map(hue => {

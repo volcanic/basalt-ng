@@ -74,19 +74,13 @@ export class ColorService {
 
   /** Array of available project palettes to be chosen by the user */
   projectOptionPalettes = [
-    PaletteType.RED,
-    PaletteType.PINK,
-    PaletteType.PURPLE,
     PaletteType.DEEP_PURPLE,
     PaletteType.INDIGO,
-    PaletteType.BLUE,
     PaletteType.LIGHT_BLUE,
     PaletteType.CYAN,
     PaletteType.TEAL,
-    PaletteType.GREEN,
     PaletteType.LIGHT_GREEN,
     PaletteType.LIME,
-    PaletteType.YELLOW,
     PaletteType.AMBER,
     PaletteType.ORANGE,
     PaletteType.DEEP_ORANGE,
