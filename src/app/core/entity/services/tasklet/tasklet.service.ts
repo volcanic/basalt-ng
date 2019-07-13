@@ -601,7 +601,7 @@ export class TaskletService {
    * @param group tasklet type group
    */
   public getIconByTaskletTypeGroup(group: TaskletTypeGroup): string {
-    return this.taskletTypeService.getIconByTaskletTypeGroup(group);
+    return TaskletTypeService.getIconByTaskletTypeGroup(group);
   }
 
   /**
@@ -609,7 +609,7 @@ export class TaskletService {
    * @param type tasklet type
    */
   public getIconByTaskletType(type: TaskletType): string {
-    return this.taskletTypeService.getIconByTaskletType(type);
+    return TaskletTypeService.getIconByTaskletType(type);
   }
 
   //

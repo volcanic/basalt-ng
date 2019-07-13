@@ -12,6 +12,7 @@ export enum TaskletType {
   MEETING = 'Meeting',
   MAIL = 'Mail',
   CHAT = 'Chat',
+  // Scrum
   DAILY_SCRUM = 'Daily Scrum',
   // Development
   DEVELOPMENT = 'Development', // deprecated

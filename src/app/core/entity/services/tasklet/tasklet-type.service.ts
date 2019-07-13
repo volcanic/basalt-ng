@@ -15,6 +15,112 @@ export class TaskletTypeService {
   taskletTypeGroups = new Map<TaskletType, TaskletTypeGroup>();
 
   /**
+   * Retrieves an icon by tasklet type
+   * @param group tasklet type group
+   */
+  static getIconByTaskletTypeGroup(group: TaskletTypeGroup): string {
+    switch (group) {
+      case TaskletTypeGroup.UNSPECIFIED: {
+        return 'help';
+      }
+      case TaskletTypeGroup.ACTION: {
+        return 'turned_in_not';
+      }
+      case TaskletTypeGroup.COMMUNICATION: {
+        return 'chat';
+      }
+      case TaskletTypeGroup.SCRUM: {
+        return 'scrum';
+      }
+      case TaskletTypeGroup.DEVELOPMENT: {
+        return 'code_braces';
+      }
+      case TaskletTypeGroup.IDEA: {
+        return 'lightbulb_outline';
+      }
+      case TaskletTypeGroup.ROUTINE: {
+        return 'history';
+      }
+      case TaskletTypeGroup.TRAVEL: {
+        return 'flight';
+      }
+      case TaskletTypeGroup.BREAK: {
+        return 'local_cafe';
+      }
+    }
+  }
+
+  /**
+   * Retrieves an icon by tasklet type
+   * @param type tasklet type
+   */
+  static getIconByTaskletType(type: TaskletType): string {
+    switch (type) {
+      case TaskletType.UNSPECIFIED: {
+        return 'help';
+      }
+      case TaskletType.ACTION: {
+        return 'turned_in_not';
+      }
+      case TaskletType.POMODORO: {
+        return 'circle_slice_3';
+      }
+      case TaskletType.CALL: {
+        return 'call';
+      }
+      case TaskletType.MEETING: {
+        return 'people';
+      }
+      case TaskletType.MAIL: {
+        return 'mail';
+      }
+      case TaskletType.CHAT: {
+        return 'chat';
+      }
+      case TaskletType.DAILY_SCRUM: {
+        return 'scrum';
+      }
+      case TaskletType.CODING:
+      case TaskletType.DEVELOPMENT: {
+        return 'code';
+      }
+      case TaskletType.DEBUGGING: {
+        return 'bug_report';
+      }
+      case TaskletType.DOCUMENTATION: {
+        return 'file_document_outline';
+      }
+      case TaskletType.REVIEW: {
+        return 'code_tags_check';
+      }
+      case TaskletType.TESTING: {
+        return 'test_tube';
+      }
+      case TaskletType.CHECKLIST: {
+        return 'playlist_add_check';
+      }
+      case TaskletType.IDEA: {
+        return 'lightbulb_outline';
+      }
+      case TaskletType.COMMUTE: {
+        return 'directions_bike';
+      }
+      case TaskletType.TRAVEL: {
+        return 'flight';
+      }
+      case TaskletType.LUNCH_BREAK: {
+        return 'local_dining';
+      }
+      case TaskletType.POMODORO_BREAK: {
+        return 'circle_slice_1';
+      }
+      case TaskletType.FINISHING_TIME: {
+        return 'directions_run';
+      }
+    }
+  }
+
+  /**
    * Constructor
    * @param settingsService settings service
    */
@@ -48,6 +154,9 @@ export class TaskletTypeService {
           this.taskletTypeGroups.set(TaskletType.MEETING, group);
           this.taskletTypeGroups.set(TaskletType.MAIL, group);
           this.taskletTypeGroups.set(TaskletType.CHAT, group);
+          break;
+        }
+        case TaskletTypeGroup.SCRUM: {
           this.taskletTypeGroups.set(TaskletType.DAILY_SCRUM, group);
           break;
         }
@@ -117,108 +226,5 @@ export class TaskletTypeService {
    */
   public groupContainsType(group: TaskletTypeGroup, type: TaskletType) {
     return this.taskletTypeGroups.get(type) === group;
-  }
-
-  /**
-   * Retrieves an icon by tasklet type
-   * @param group tasklet type group
-   */
-  public getIconByTaskletTypeGroup(group: TaskletTypeGroup): string {
-    switch (group) {
-      case TaskletTypeGroup.UNSPECIFIED: {
-        return 'help';
-      }
-      case TaskletTypeGroup.ACTION: {
-        return 'turned_in_not';
-      }
-      case TaskletTypeGroup.COMMUNICATION: {
-        return 'chat';
-      }
-      case TaskletTypeGroup.DEVELOPMENT: {
-        return 'code_braces';
-      }
-      case TaskletTypeGroup.IDEA: {
-        return 'lightbulb_outline';
-      }
-      case TaskletTypeGroup.ROUTINE: {
-        return 'history';
-      }
-      case TaskletTypeGroup.TRAVEL: {
-        return 'flight';
-      }
-      case TaskletTypeGroup.BREAK: {
-        return 'local_cafe';
-      }
-    }
-  }
-
-  /**
-   * Retrieves an icon by tasklet type
-   * @param type tasklet type
-   */
-  public getIconByTaskletType(type: TaskletType): string {
-    switch (type) {
-      case TaskletType.UNSPECIFIED: {
-        return 'help';
-      }
-      case TaskletType.ACTION: {
-        return 'turned_in_not';
-      }
-      case TaskletType.POMODORO: {
-        return 'circle_slice_3';
-      }
-      case TaskletType.CALL: {
-        return 'call';
-      }
-      case TaskletType.MEETING: {
-        return 'people';
-      }
-      case TaskletType.MAIL: {
-        return 'mail';
-      }
-      case TaskletType.CHAT: {
-        return 'chat';
-      }
-      case TaskletType.DAILY_SCRUM: {
-        return 'scrum';
-      }
-      case TaskletType.CODING:
-      case TaskletType.DEVELOPMENT: {
-        return 'code';
-      }
-      case TaskletType.DEBUGGING: {
-        return 'bug_report';
-      }
-      case TaskletType.DOCUMENTATION: {
-        return 'file_document_outline';
-      }
-      case TaskletType.REVIEW: {
-        return 'code_tags_check';
-      }
-      case TaskletType.TESTING: {
-        return 'test_tube';
-      }
-      case TaskletType.CHECKLIST: {
-        return 'playlist_add_check';
-      }
-      case TaskletType.IDEA: {
-        return 'lightbulb_outline';
-      }
-      case TaskletType.COMMUTE: {
-        return 'directions_bike';
-      }
-      case TaskletType.TRAVEL: {
-        return 'flight';
-      }
-      case TaskletType.LUNCH_BREAK: {
-        return 'local_dining';
-      }
-      case TaskletType.POMODORO_BREAK: {
-        return 'circle_slice_1';
-      }
-      case TaskletType.FINISHING_TIME: {
-        return 'directions_run';
-      }
-    }
   }
 }
