@@ -1,5 +1,5 @@
 <div [class]="themeClass">
-  <mat-card>
+  <mat-card [attr.style]="cardStyle">
     <mat-card-header (click)="onExpansionPanelToggled()">
       <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
       <mat-card-title class="topic">{{ topic }}</mat-card-title>
