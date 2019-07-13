@@ -3,6 +3,9 @@ import {Project} from 'app/core/entity/model/project.model';
 import {DialogMode} from 'app/core/entity/model/dialog-mode.enum';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Action} from 'app/core/entity/model/action.enum';
+import {ColorService} from '../../../../../core/ui/services/color.service';
+import {MaterialColorService} from '../../../../../core/ui/services/material-color.service';
+import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 
 /**
  * Displays project dialog
@@ -24,17 +27,29 @@ export class ProjectDialogComponent implements OnInit {
 
   /** Project to be displayed */
   project: Project;
+  /** Array of all projects */
+  projects: Project[];
+  /** Project color options */
+  colorOptions = [];
+  /** Project contrast options */
+  contrastOptions = [];
+  /** Disabled colors */
+  colorsDisabled = [];
 
   /** Readonly dialog if true */
   readonly = false;
 
   /**
    * Constructor
+   * @param colorService color service
    * @param dialogRef dialog reference
    * @param data dialog data
+   * @param materialColorService material color service
    */
-  constructor(public dialogRef: MatDialogRef<ProjectDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private colorService: ColorService,
+              public dialogRef: MatDialogRef<ProjectDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private materialColorService: MaterialColorService) {
   }
 
   //
@@ -46,6 +61,7 @@ export class ProjectDialogComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeData();
+    this.initializeColorOptions();
   }
 
   //
@@ -59,6 +75,28 @@ export class ProjectDialogComponent implements OnInit {
     this.mode = this.data.mode;
     this.dialogTitle = this.data.dialogTitle;
     this.project = this.data.project;
+    this.projects = this.data.projects;
+  }
+
+  /**
+   * Initializes color options
+   */
+  private initializeColorOptions() {
+    const hueOptions = this.colorService.projectOptionPalettes.map(palette => {
+      return this.materialColorService.hue(palette, HueType._500);
+    });
+
+    this.colorOptions = hueOptions.map(hue => {
+      return hue.color;
+    });
+    this.contrastOptions = hueOptions.map(hue => {
+      return hue.contrast;
+    });
+    this.colorsDisabled = this.colorOptions.filter(color => {
+      return this.project.color !== color && this.projects.some(project => {
+        return project.color != null && project.color === color;
+      });
+    });
   }
 
   //
@@ -82,6 +120,20 @@ export class ProjectDialogComponent implements OnInit {
           break;
         }
       }
+    }
+  }
+
+  /**
+   * Handles color selection
+   * @param event event
+   */
+  onColorSelected(event: { color: string, contrast: string }) {
+    if (event != null) {
+      this.project.color = event.color;
+      this.project.contrast = event.contrast;
+    } else {
+      this.project.color = null;
+      this.project.contrast = null;
     }
   }
 

@@ -18,7 +18,9 @@
     </mat-menu>
     <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
     <button mat-button class="entity flexbox" [disabled]="!active" (click)="onTaskClicked()">
-      <mat-icon [svgIcon]=icon class="list-icon"></mat-icon>
+      <mat-icon *ngIf="projectColor == null" class="list-icon" [svgIcon]="icon"></mat-icon>
+      <mat-icon *ngIf="projectColor != null" class="list-icon" [svgIcon]="icon"
+                [style.fill]="projectColor"></mat-icon>
       <span>{{ task.name }}</span>
       <span [@actionAnimation]="state"
             *ngIf="task.effort > 0" class="effort">

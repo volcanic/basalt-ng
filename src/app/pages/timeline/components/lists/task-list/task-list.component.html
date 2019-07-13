@@ -57,7 +57,8 @@
               [matBadgeColor]="tasksInboxBadgeColor">Inbox</span>
         </div>
       </mat-expansion-panel-header>
-      <app-task-list-item *ngFor="let t of tasksInbox" [task]="t" [media]="media" [active]="isInFocus(t)"
+      <app-task-list-item *ngFor="let t of tasksInbox"
+                          [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
                           (taskEventEmitter)="onTaskEvent($event)">
       </app-task-list-item>
     </mat-expansion-panel>

@@ -9,6 +9,7 @@ import {Project} from '../../../../../../core/entity/model/project.model';
 import {Action} from '../../../../../../core/entity/model/action.enum';
 import {Tag} from '../../../../../../core/entity/model/tag.model';
 import {Person} from '../../../../../../core/entity/model/person.model';
+import {DomSanitizer} from '@angular/platform-browser';
 
 /**
  * Displays tasklet as card
@@ -55,6 +56,8 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
 
   /** Expansion panel state */
   expansionPanelOpened = false;
+  /** Custom card style */
+  cardStyle: any;
 
   /** Placeholder for emtpy description */
   placeholderDescription = 'Click here to add description';
@@ -78,7 +81,8 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
    * Constructor
    * @param taskletService tasklet service
    */
-  constructor(private taskletService: TaskletService) {
+  constructor(private sanitizer: DomSanitizer,
+              private taskletService: TaskletService) {
   }
 
   //
@@ -97,6 +101,7 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     this.initializeInheritedTags();
+    this.initializeCardStyle();
   }
 
   //
@@ -119,6 +124,14 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
     } else {
       this.inheritedTagIds = [];
     }
+  }
+
+  /**
+   * Initializes card style
+   */
+  private initializeCardStyle() {
+    this.cardStyle = (this.project != null && this.project.color != null)
+      ? this.sanitizer.bypassSecurityTrustStyle(`border-left: 2px solid ${this.project.color}`) : '';
   }
 
   //

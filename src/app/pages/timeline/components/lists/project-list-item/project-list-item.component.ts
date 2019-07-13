@@ -22,23 +22,37 @@ export class ProjectListItemComponent {
 
   /** Project to be displayed */
   @Input() project: Project;
+  /** Array of all projects */
+  @Input() projects: Project[];
   /** Current media */
   @Input() media: Media;
   /** Indicates if item is active */
   @Input() active = true;
   /** Event emitter indicating project to be updated */
   @Output() projectEventEmitter = new EventEmitter<{ action: Action, project: Project, projects?: Project[] }>();
+  /** View child for popover menu trigger */
+  @ViewChild(MatMenuTrigger, {static: false}) popoverMenuTrigger: MatMenuTrigger;
   /** View child for context menu */
   @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
   /** Enum for media types */
   mediaType = Media;
-  /** Animation state */
+  /** Container animation state */
   state = AnimationState.INACTIVE;
+  /** Popover animation state */
+  popoverState = AnimationState.INACTIVE;
 
   //
   // Actions
   //
+
+  /**
+   * Handles events targeting a project
+   * @param event event parameters
+   */
+  onProjectEvent(event: { action: Action, project: Project, projects?: Project[] }) {
+    this.projectEventEmitter.emit(event);
+  }
 
   /**
    * Handles hover over container
@@ -46,6 +60,21 @@ export class ProjectListItemComponent {
    */
   onHoverContainer(hovered: boolean) {
     this.state = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;
+  }
+
+  /**
+   * Handles hover over popover
+   * @param hovered whether there is currently a hover event
+   */
+  onHoverPopover(hovered: boolean) {
+    this.popoverState = hovered ? AnimationState.ACTIVE : AnimationState.INACTIVE;
+  }
+
+  /**
+   * Handles click on project icon
+   */
+  onProjectIconClicked() {
+    this.popoverMenuTrigger.openMenu();
   }
 
   /**

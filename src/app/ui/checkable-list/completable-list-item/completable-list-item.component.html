@@ -3,6 +3,6 @@
     <mat-checkbox [disabled]="readonly" [ngModel]="item.selected" (change)="onItemSelected($event)"></mat-checkbox>
     <input #label matInput class="label" autocomplete="off" [disabled]="readonly" [ngModel]="item.text" (ngModelChange)="onTextChanged($event)"/>
     <div class="flexbox"></div>
-    <mat-icon *ngIf="!readonly"class="icon-delete" svgIcon="clear" (click)="onDeleteClicked()"></mat-icon>
+    <mat-icon *ngIf="!readonly" class="icon-delete" svgIcon="clear" (click)="onDeleteClicked()"></mat-icon>
   </div>
 </div>

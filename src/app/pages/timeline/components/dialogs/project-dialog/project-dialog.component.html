@@ -1,7 +1,7 @@
 <div (keydown)="onKeyDown($event)">
   <div *ngIf="project != null">
-  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
-  <mat-dialog-content>
+    <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+    <mat-dialog-content>
       <div>
         <mat-form-field class="wide-box">
           <input matInput required name="project" type="text" placeholder="Project" ngControl="controlProject"
@@ -9,18 +9,23 @@
                  [(ngModel)]="project.name">
         </mat-form-field>
       </div>
-  </mat-dialog-content>
-  <mat-dialog-actions class="flexcontainer">
-    <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteProject()">
-      Delete project
-    </button>
-    <div class="flexbox"></div>
-    <button mat-button *ngIf="mode == modeType.ADD" (click)="addProject()" [disabled]="project.name == null || project.name.length < 1">
-      Add project
-    </button>
-    <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateProject()" [disabled]="project.name == null || project.name.length < 1">
-      Update project
-    </button>
-  </mat-dialog-actions>
+      <app-color-picker [colorOptions]="colorOptions" [contrastOptions]="contrastOptions"
+                        [colorsDisabled]="colorsDisabled" [selected]="project.color" [reset]="true"
+                        (colorSelectedEmitter)="onColorSelected($event)"></app-color-picker>
+    </mat-dialog-content>
+    <mat-dialog-actions class="flexcontainer">
+      <button mat-button color="warn" *ngIf="mode == modeType.UPDATE" (click)="deleteProject()">
+        Delete project
+      </button>
+      <div class="flexbox"></div>
+      <button mat-button *ngIf="mode == modeType.ADD" (click)="addProject()"
+              [disabled]="project.name == null || project.name.length < 1">
+        Add project
+      </button>
+      <button mat-button *ngIf="mode == modeType.UPDATE" (click)="updateProject()"
+              [disabled]="project.name == null || project.name.length < 1">
+        Update project
+      </button>
+    </mat-dialog-actions>
   </div>
 </div>

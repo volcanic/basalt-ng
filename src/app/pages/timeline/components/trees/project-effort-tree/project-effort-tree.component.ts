@@ -105,7 +105,7 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
   /**
    * Handles on-change lifecycle phase
    */
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges) {
     this.initializeTree();
     this.initializeTreeData();
   }
