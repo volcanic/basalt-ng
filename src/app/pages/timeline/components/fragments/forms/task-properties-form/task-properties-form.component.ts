@@ -63,6 +63,8 @@ export class TaskPropertiesFormComponent implements OnInit {
   getDateString = DateService.getDateString;
   /** Reference to static method */
   getRecurrenceIntervalString = DateService.getRecurrenceIntervalString;
+  /** Reference to static method */
+  getDayOfWeekString = DateService.getDayOfWeekString;
 
   /**
    * Constructor
@@ -82,6 +84,9 @@ export class TaskPropertiesFormComponent implements OnInit {
     this.initializeColors();
     this.initializePriority();
     this.initializeAcceptanceCriteria();
+    console.log(this.task);
+    console.log(this.task.dueDate);
+    console.log(new Date(this.task.dueDate).getDay());
   }
 
   //

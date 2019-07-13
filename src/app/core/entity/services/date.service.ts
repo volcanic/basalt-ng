@@ -426,12 +426,16 @@ export class DateService {
     return new Date(date).getDate().toString();
   }
 
+  static getDayOfWeekString(date: Date): string {
+    return DateService.getWeekDayString(new Date(date).getDay());
+  }
+
   /**
    * Returns the weekday string of a given weekday
    * @param weekday index of the week, where 0 is Sunday
    * @returns weekday string of the given index
    */
-  static getWeekDayString(weekday: number) {
+  static getWeekDayString(weekday: number): string {
     switch (weekday) {
       case 0: {
         return 'Sunday';

@@ -33,7 +33,7 @@
         <mat-panel-title>Due date</mat-panel-title>
         <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
         <mat-panel-description *ngIf="task.dueDate != null" class="value-set">
-          {{ getTimeString(task.dueDate) }}, {{ getDateString(task.dueDate) }}
+          {{ getDayOfWeekString(task.dueDate).substring(0, 3) }}, {{ getTimeString(task.dueDate) }}, {{ getDateString(task.dueDate) }}
         </mat-panel-description>
         <mat-icon svgIcon="today"></mat-icon>
       </mat-expansion-panel-header>
