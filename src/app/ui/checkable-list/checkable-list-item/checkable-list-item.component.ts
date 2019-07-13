@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChildren
+} from '@angular/core';
 import {SelectableItem} from '../selectable-item';
 
 /**
@@ -10,7 +19,7 @@ import {SelectableItem} from '../selectable-item';
   styleUrls: ['./checkable-list-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CheckableListItemComponent implements OnInit {
+export class CheckableListItemComponent implements OnInit, AfterViewInit {
 
   /** Item to be display */
   @Input() item: SelectableItem;
@@ -20,6 +29,8 @@ export class CheckableListItemComponent implements OnInit {
   @Input() editable = true;
   /** Event emitter indicating item changes */
   @Output() itemChangedEmitter = new EventEmitter<any>();
+
+  @ViewChildren('label') input;
 
   /** CSS class */
   itemClass = '';
@@ -34,6 +45,19 @@ export class CheckableListItemComponent implements OnInit {
   ngOnInit() {
     this.initializeStyleSheet();
   }
+
+  /**
+   * Handles after-view-init lifecycle phase
+   */
+  ngAfterViewInit() {
+    if (this.input.first != null) {
+      this.input.first.nativeElement.focus();
+    }
+  }
+
+  //
+  // Initialization
+  //
 
   /**
    * Initializes style sheet

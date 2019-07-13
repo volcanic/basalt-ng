@@ -91,6 +91,8 @@ export class SuggestionService {
    * @param tasks new array of tasks
    */
   public updateByTasks(tasks: Task[]) {
+    this.taskOptions.clear();
+
     tasks.sort((t1, t2) => {
       return (new Date(t1.modificationDate) < new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
@@ -122,6 +124,8 @@ export class SuggestionService {
    * @param projects new array of projects
    */
   public updateByProjects(projects: Project[]) {
+    this.projectOptions.clear();
+
     projects.sort((p1, p2) => {
       return (new Date(p1.modificationDate) < new Date(p2.modificationDate)) ? 1 : -1;
     }).forEach(p => {
@@ -143,6 +147,8 @@ export class SuggestionService {
    * @param persons new array of persons
    */
   public updateByPersons(persons: Person[]) {
+    this.personOptions.clear();
+
     persons.forEach(p => {
       if (p != null) {
         // Add person name to search options
@@ -162,6 +168,8 @@ export class SuggestionService {
    * @param tags new array of tags
    */
   public updateByTags(tags: Tag[]) {
+    this.tagOptions.clear();
+
     tags.forEach(t => {
       if (t != null) {
         // Add person name to search options

@@ -59,6 +59,7 @@ import {TaskPropertiesFormComponent} from './components/fragments/forms/task-pro
 import {SuggestedActionsComponent} from './components/fragments/other/suggested-actions/suggested-actions.component';
 import {TagNamesPipe} from './pipes/tag-names.pipe';
 import {PersonNamesPipe} from './pipes/person-names.pipe';
+import {ColorPopoverComponent} from './components/popovers/color-popover/color-popover.component';
 
 /** Declarations for timeline module */
 export const TimelineDeclarations = [
@@ -103,6 +104,9 @@ export const TimelineDeclarations = [
 
   TaskletListComponent,
   TaskletListItemComponent,
+
+  // Popovers
+  ColorPopoverComponent,
 
   // Trees
   ProjectEffortTreeComponent,

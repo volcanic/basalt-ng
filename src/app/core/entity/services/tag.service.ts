@@ -231,6 +231,14 @@ export class TagService {
           this.snackbarService.showSnackbar('Deleted tag');
           this.tags.delete(tag.id);
           this.notify();
+        }).catch((error) => {
+          if (isDevMode()) {
+            console.error(error);
+          }
+          this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
+            this.deleteTag(tag).then(() => {
+            });
+          });
         });
       }
     });

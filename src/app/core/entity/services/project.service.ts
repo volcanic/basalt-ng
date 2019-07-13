@@ -184,7 +184,10 @@ export class ProjectService {
           this.snackbarService.showSnackbar('Deleted project');
           this.projects.delete(project.id);
           this.notify();
-        }).catch(() => {
+        }).catch((error) => {
+          if (isDevMode()) {
+            console.error(error);
+          }
           this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
             this.deleteProject(project).then(() => {
             });

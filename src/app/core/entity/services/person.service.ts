@@ -242,6 +242,14 @@ export class PersonService {
           this.snackbarService.showSnackbar('Deleted person');
           this.persons.delete(person.id);
           this.notify();
+        }).catch((error) => {
+          if (isDevMode()) {
+            console.error(error);
+          }
+          this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
+            this.deletePerson(person).then(() => {
+            });
+          });
         });
       }
     });

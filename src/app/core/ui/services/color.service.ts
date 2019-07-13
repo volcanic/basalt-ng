@@ -72,6 +72,20 @@ export class ColorService {
     this.materialColorService.hue(PaletteType.LIME, HueType._300),
   ];
 
+  /** Array of available project palettes to be chosen by the user */
+  projectOptionPalettes = [
+    PaletteType.DEEP_PURPLE,
+    PaletteType.INDIGO,
+    PaletteType.LIGHT_BLUE,
+    PaletteType.CYAN,
+    PaletteType.TEAL,
+    PaletteType.LIGHT_GREEN,
+    PaletteType.LIME,
+    PaletteType.AMBER,
+    PaletteType.ORANGE,
+    PaletteType.DEEP_ORANGE,
+  ];
+
   /** Array of available person colors */
   personHues = [
     this.materialColorService.hue(PaletteType.RED, HueType._500),
@@ -241,8 +255,12 @@ export class ColorService {
       return null;
     }
 
-    return this.projectHues[
-    Math.abs(Hash.hash(project.name.toLowerCase().replace(' ', ''))) % this.projectHues.length];
+    if (project.color != null) {
+      return new Hue(null, project.color, project.contrast);
+    } else {
+      const index = Math.abs(Hash.hash(project.name.toLowerCase().replace(' ', '')));
+      return this.projectHues[index % this.projectHues.length];
+    }
   }
 
   /**
@@ -294,6 +312,9 @@ export class ColorService {
       }
       case TaskletTypeGroup.COMMUNICATION: {
         return this.materialColorService.hue(PaletteType.LIME, HueType._600);
+      }
+      case TaskletTypeGroup.SCRUM: {
+        return this.materialColorService.hue(PaletteType.LIGHT_BLUE, HueType._600);
       }
       case TaskletTypeGroup.DEVELOPMENT: {
         return this.materialColorService.hue(PaletteType.CYAN, HueType._700);

@@ -8,6 +8,10 @@ export class Project extends Entity {
 
   /** Name */
   name: string;
+  /** Color */
+  color: string;
+  /** Color */
+  contrast: string;
 
   /**
    * Constructor

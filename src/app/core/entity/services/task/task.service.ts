@@ -14,6 +14,7 @@ import {RecurrenceInterval} from '../../model/recurrence-interval.enum';
 import {DateService} from '../date.service';
 import {TaskDisplayAspect, TaskDisplayService} from './task-display.service';
 import {Tasklet} from '../../model/tasklet.model';
+import {SnackbarService} from '../../../ui/services/snackbar.service';
 
 /**
  * Handles tasks including
@@ -43,15 +44,17 @@ export class TaskService {
    * Constructor
    * @param pouchDBService pouchDB service
    * @param projectService project service
-   * @param tagService tag service
+   * @param snackbarService snackbar service
    * @param suggestionService suggestion service
    * @param scopeService scope service
+   * @param tagService tag service
    */
   constructor(private pouchDBService: PouchDBService,
               private projectService: ProjectService,
-              private tagService: TagService,
+              private snackbarService: SnackbarService,
               private suggestionService: SuggestionService,
-              private scopeService: ScopeService) {
+              private scopeService: ScopeService,
+              private tagService: TagService) {
 
     this.initializeTaskSubscription();
     this.findTasksByScope(this.scopeService.scope);
@@ -311,8 +314,14 @@ export class TaskService {
           this.tasks.delete(task.id);
           this.task = null;
           this.notify();
-        }).catch(() => {
-          console.error('An error occurred during deletion');
+        }).catch((error) => {
+          if (isDevMode()) {
+            console.error(error);
+          }
+          this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
+            this.deleteTask(task).then(() => {
+            });
+          });
         });
       }
     });
@@ -378,7 +387,7 @@ export class TaskService {
   }
 
   /**
-   * Determines if a task is due today
+   * Determines if a task is due today and is not yet over due
    * @param task task
    */
   public isTaskToday(task: Task) {
@@ -389,7 +398,8 @@ export class TaskService {
       && (task.recurrenceInterval == null
         || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
         || task.recurrenceInterval === RecurrenceInterval.NONE)
-      && DateService.isToday(task.dueDate);
+      && DateService.isToday(task.dueDate)
+      && DateService.isAfter(task.dueDate, new Date());
   }
 
   /**

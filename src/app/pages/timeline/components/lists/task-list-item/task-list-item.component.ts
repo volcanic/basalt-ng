@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {Task} from 'app/core/entity/model/task.model';
 import {MatMenuTrigger} from '@angular/material';
 import {Animations, AnimationState} from './task-list-item.animation';
@@ -6,6 +16,7 @@ import {Media} from 'app/core/ui/model/media.enum';
 import {TaskDigest} from 'app/core/digest/model/task-digest.model';
 import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
+import {Project} from '../../../../../core/entity/model/project.model';
 
 /**
  * Displays task list item
@@ -19,10 +30,12 @@ import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-in
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskListItemComponent implements OnInit {
+export class TaskListItemComponent implements OnInit, OnChanges {
 
   /** Task to be displayed */
   @Input() task: Task;
+  /** Map of projects */
+  @Input() projectsMap = new Map<string, Project>();
   /** Task digest */
   @Input() taskDigest: TaskDigest;
   /** Current media */
@@ -33,6 +46,9 @@ export class TaskListItemComponent implements OnInit {
   @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
+
+  /** Project color */
+  projectColor: string;
 
   /** Enum for media types */
   mediaType = Media;
@@ -71,6 +87,13 @@ export class TaskListItemComponent implements OnInit {
     this.initializeIcon();
   }
 
+  /**
+   * Handles on-changes lifecycle phase
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    this.initializeIconColor();
+  }
+
   //
   // Initialization
   //
@@ -91,6 +114,14 @@ export class TaskListItemComponent implements OnInit {
     } else {
       this.icon = 'alias_task_unassigned';
     }
+  }
+
+  /**
+   * Initializes icon color
+   */
+  private initializeIconColor() {
+    const project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
+    this.projectColor = (project != null && project.color != null) ? project.color : '';
   }
 
   //

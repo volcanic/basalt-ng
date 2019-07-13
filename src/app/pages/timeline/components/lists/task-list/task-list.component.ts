@@ -12,6 +12,7 @@ import {Task} from '../../../../../core/entity/model/task.model';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Action} from 'app/core/entity/model/action.enum';
 import {TaskService} from '../../../../../core/entity/services/task/task.service';
+import {Project} from '../../../../../core/entity/model/project.model';
 
 /**
  * Displays task list
@@ -28,6 +29,8 @@ export class TaskListComponent implements OnInit, OnChanges {
   @Input() tasks = [];
   /** Tasks that are currently filtered */
   @Input() tasksFiltered = [];
+  /** Map of projects */
+  @Input() projectsMap = new Map<string, Project>();
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */

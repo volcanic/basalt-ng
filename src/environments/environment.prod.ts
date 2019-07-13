@@ -21,6 +21,8 @@ export const environment = {
 
   FEATURE_TOGGLE_SUGGESTED_ACTIONS: true,
   FEATURE_TOGGLE_SCOPE: false,
+  FEATURE_TOGGLE_SCRUM: false,
+  FEATURE_TOGGLE_DEVELOPMENT: true,
 
   NAME: require('../../package.json').name,
   VERSION: require('../../package.json').version,

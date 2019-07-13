@@ -1,3 +1,11 @@
+<mat-menu #popover="matMenu" yPosition="above" class="popover">
+  <div class="popover-container"
+       (mouseenter)="onHoverPopover(true)"
+       (mouseleave)="onHoverPopover(false)">
+    <app-color-popover [project]="project" [projects]="projects" (projectEventEmitter)="onProjectEvent($event)"></app-color-popover>
+  </div>
+</mat-menu>
+<div [matMenuTriggerFor]="popover" #popoverMenuTrigger></div>
 <div class="flexcontainer"
      (mouseenter)="onHoverContainer(true)"
      (mouseleave)="onHoverContainer(false)">
@@ -8,9 +16,17 @@
     </button>
   </mat-menu>
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
-  <button mat-button class="entity flexbox" [disabled]="!active" (click)="onProjectClicked()">
-    <mat-icon svgIcon="alias_project" class="list-icon"></mat-icon>
-    <span *ngIf="project != null">{{ project.name }}</span>
+  <button mat-button class="entity flexbox" [disabled]="!active">
+    <span class="flexcontainer">
+      <span class="list-icon">
+        <mat-icon *ngIf="project.color == null" class="icon" svgIcon="alias_project"
+                  (click)="onProjectIconClicked()"></mat-icon>
+        <mat-icon *ngIf="project.color != null" class="icon" svgIcon="alias_project"
+                  [style.fill]="project.color"
+                  (click)="onProjectIconClicked()"></mat-icon>
+      </span>
+      <span *ngIf="project != null" class="list-label" (click)="onProjectClicked()">{{ project.name }}</span>
+    </span>
   </button>
   <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
     <button [@actionAnimation]="state"

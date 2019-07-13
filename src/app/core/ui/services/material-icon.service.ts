@@ -126,6 +126,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.NAVIGATION, 'arrow_back', 'ic_arrow_back_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'check', 'ic_check_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'chevron_right', 'ic_chevron_right_24px.svg'));
+    icons.push(new Icon(IconTopic.NAVIGATION, 'close', 'ic_close_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'close_18', 'ic_close_18px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'expand_more', 'ic_expand_more_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'menu', 'ic_menu_24px.svg'));
