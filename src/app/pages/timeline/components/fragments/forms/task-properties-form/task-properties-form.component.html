@@ -2,60 +2,19 @@
 
   <div *ngIf="task != null">
     <!-- Project -->
-    <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Project
-        </mat-panel-title>
-        <mat-panel-description *ngIf="project == null">Assign this task to a project</mat-panel-description>
-        <mat-panel-description *ngIf="project != null">
-          <span class="value-set">{{ project.name }}</span>
-        </mat-panel-description>
-        <mat-icon svgIcon="agenda"></mat-icon>
-      </mat-expansion-panel-header>
-      <div>
+    <div class="basalt-mat-expansion-panel mat-expansion-panel-header">
+      <mat-panel-title>
+        Project
+      </mat-panel-title>
+      <mat-panel-description>
         <app-project-autocomplete-fragment
           [project]="project"
           [projectOptions]="projectOptionNames"
           [readonly]="readonly"
           (projectChangedEmitter)="onProjectChanged($event)"></app-project-autocomplete-fragment>
-      </div>
-    </mat-expansion-panel>
-
-    <!-- Recurring Toggle -->
-    <mat-slide-toggle
-      color="accent"
-      [checked]="recurring"
-      [disabled]="readonly"
-      (change)="onRecurringChanged($event)">
-      Recurring task
-    </mat-slide-toggle>
-
-    <!-- Due Date -->
-    <mat-expansion-panel *ngIf="!recurring" [disabled]="readonly"
-                         (opened)="false" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Due date</mat-panel-title>
-        <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
-        <mat-panel-description *ngIf="task.dueDate != null" class="value-set">
-          {{ getDayOfWeekString(task.dueDate).substring(0, 3) }}, {{ getTimeString(task.dueDate) }}, {{
-          getDateString(task.dueDate) }}
-        </mat-panel-description>
-        <mat-icon svgIcon="today"></mat-icon>
-      </mat-expansion-panel-header>
-
-      <div class="flexcontainer">
-        <app-date-time-picker-fragment
-          [date]="task.dueDate"
-          (dateChangedEmitter)="onDueDateChanged($event)">
-        </app-date-time-picker-fragment>
-        <div class="flexbox"></div>
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="flexbox"></div>
-        <button mat-button (click)="endOfBusinessClicked()">End of business</button>
-        <button mat-button (click)="endOfWeekClicked()">End of week</button>
-      </div>
-    </mat-expansion-panel>
+      </mat-panel-description>
+      <mat-icon svgIcon="agenda"></mat-icon>
+    </div>
 
     <!-- Completion date (if completed) -->
     <mat-expansion-panel
@@ -75,60 +34,74 @@
     </mat-expansion-panel>
 
     <!-- Recurrence Interval -->
-    <mat-expansion-panel *ngIf="recurring" [disabled]="readonly"
-                         (opened)="false" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Recurrence interval</mat-panel-title>
-        <mat-panel-description *ngIf="task.recurrenceInterval == null">Select a recurrence interval
-        </mat-panel-description>
-        <mat-panel-description *ngIf="task.recurrenceInterval != null" class="value-set">
-          {{ getRecurrenceIntervalString(task.recurrenceInterval) }}
-        </mat-panel-description>
-        <mat-icon svgIcon="loop"></mat-icon>
-      </mat-expansion-panel-header>
-      <app-recurrence-interval-fragment [recurrenceInterval]="task.recurrenceInterval"
-                                        (recurrenceIntervalChangedEmitter)="onRecurrenceIntervalChanged($event)">
-      </app-recurrence-interval-fragment>
-    </mat-expansion-panel>
+    <div *ngIf="recurring" class="basalt-mat-expansion-panel mat-expansion-panel-header">
+      <mat-panel-title>Recurrence interval</mat-panel-title>
+      <mat-panel-description>
+        <app-recurrence-interval-fragment [recurrenceInterval]="task.recurrenceInterval"
+                                          (recurrenceIntervalChangedEmitter)="onRecurrenceIntervalChanged($event)">
+        </app-recurrence-interval-fragment>
+      </mat-panel-description>
+      <mat-icon class="clickable" (click)="onRecurringChanged()" svgIcon="loop"></mat-icon>
+    </div>
 
-    <!-- Effort -->
-    <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Estimated effort</mat-panel-title>
-        <mat-panel-description *ngIf="task.effort == null || task.effort <= 0">Estimate the effort
-        </mat-panel-description>
-        <mat-panel-description *ngIf="task.effort > 0">
-          <span class="value-set">{{ task.effort }} minutes</span>
-        </mat-panel-description>
-        <mat-icon svgIcon="timer"></mat-icon>
-      </mat-expansion-panel-header>
-      <div>
-        <app-effort-picker-fragment [effortInMinutes]="task.effort"
-                                    (effortEventEmitter)="onEffortChanged($event)"></app-effort-picker-fragment>
-      </div>
-    </mat-expansion-panel>
+    <!-- Due Date -->
+    <div *ngIf="!recurring" class="basalt-mat-expansion-panel mat-expansion-panel-header extra-height">
+      <mat-panel-title>Due date</mat-panel-title>
+      <mat-panel-description>
+        <div class="flexcontainer">
+          <app-date-time-picker-fragment
+            [date]="task.dueDate"
+            (dateChangedEmitter)="onDueDateChanged($event)">
+          </app-date-time-picker-fragment>
+        </div>
+      </mat-panel-description>
+      <mat-icon class="clickable" (click)="onRecurringChanged()" svgIcon="today"></mat-icon>
+    </div>
 
     <!-- Priority -->
-    <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Priority</mat-panel-title>
-        <mat-panel-description *ngIf="task.priority > 3 || task.priority < 0">Select a priority
-        </mat-panel-description>
-        <mat-panel-description *ngIf="task.priority <= 3 && task.priority >= 0">
-          <span class="value-set">Priority {{ task.priority + 1 }}</span>
-        </mat-panel-description>
-        <mat-icon svgIcon="flag"></mat-icon>
-      </mat-expansion-panel-header>
-      <mat-icon class="priority" svgIcon="outlined_flag" (click)="onClickFlag(-1)"></mat-icon>
-      <mat-icon *ngFor="let item of colorsPriorities; let i = index"
-                class="priority"
-                svgIcon="flag"
-                [style.fill]="colorsFlags[i]"
-                (mouseenter)="onHoverFlag(i)"
-                (mouseleave)="onLeaveFlag()"
-                (click)="onClickFlag(i)">
-      </mat-icon>
-    </mat-expansion-panel>
+    <div class="basalt-mat-expansion-panel mat-expansion-panel-header">
+      <mat-panel-title>Priority</mat-panel-title>
+      <mat-panel-description>
+        <div class="flexcontainer">
+          <mat-icon *ngFor="let item of colorsPriorities; let i = index"
+                    class="priority"
+                    svgIcon="flag"
+                    [style.fill]="colorsFlags[i]"
+                    (mouseenter)="onHoverFlag(i)"
+                    (mouseleave)="onLeaveFlag()"
+                    (click)="onClickFlag(i)">
+          </mat-icon>
+        </div>
+      </mat-panel-description>
+      <mat-icon svgIcon="flag"></mat-icon>
+    </div>
+
+    <!-- Effort -->
+    <div class="basalt-mat-expansion-panel mat-expansion-panel-header">
+      <mat-panel-title>Estimated effort</mat-panel-title>
+      <mat-panel-description>
+        <div>
+          <app-effort-picker-fragment [effortInMinutes]="task.effort"
+                                      (effortEventEmitter)="onEffortChanged($event)"></app-effort-picker-fragment>
+        </div>
+      </mat-panel-description>
+      <mat-icon svgIcon="timer"></mat-icon>
+    </div>
+
+    <!-- Tags -->
+    <div class="basalt-mat-expansion-panel mat-expansion-panel-header">
+      <mat-panel-title>
+        Tags
+      </mat-panel-title>
+      <mat-panel-description>
+        <app-tag-chips [tags]="tags | tagNames"
+                       [tagOptions]="tagOptions"
+                       [readonly]=false
+                       (tagsChangedEmitter)="onTagsChanged($event)">
+        </app-tag-chips>
+      </mat-panel-description>
+      <mat-icon svgIcon="label_outline"></mat-icon>
+    </div>
 
     <!-- Description -->
     <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
@@ -167,46 +140,20 @@
                             [focusNewElement]="'true'"
                             (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
       </app-completable-list>
-
     </mat-expansion-panel>
 
     <!-- Delegation -->
-    <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>Delegated to</mat-panel-title>
-        <mat-panel-description *ngIf="delegatedTo == null">Delegate to someone else
-        </mat-panel-description>
-        <mat-panel-description *ngIf="delegatedTo != null">
-          <span class="value-set">{{ delegatedTo.name }}</span>
-        </mat-panel-description>
-        <mat-icon svgIcon="person"></mat-icon>
-      </mat-expansion-panel-header>
-      <div>
-        <app-person-autocomplete-fragment
-          [person]="delegatedTo"
-          [personOptions]="personOptionNames"
-          (personChangedEmitter)="onDelegatedToChanged($event)"></app-person-autocomplete-fragment>
-      </div>
-    </mat-expansion-panel>
-
-    <!-- Tags -->
-    <mat-expansion-panel [disabled]="readonly" (opened)="false" hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Tags
-        </mat-panel-title>
-        <mat-panel-description *ngIf="tags == null || tags.length == 0">Select tags</mat-panel-description>
-        <mat-panel-description *ngIf="tags != null && tags.length > 0" class="justify-left">
-          <span class="value-set" *ngFor="let tag of tags.slice(0, 3)">{{ tag.name }}<span>, </span></span>
-        </mat-panel-description>
-        <mat-icon svgIcon="label_outline"></mat-icon>
-      </mat-expansion-panel-header>
-      <app-tag-chips [tags]="tags | tagNames"
-                     [tagOptions]="tagOptionNames"
-                     [readonly]=false
-                     (tagsChangedEmitter)="onTagsChanged($event)">
-      </app-tag-chips>
-    </mat-expansion-panel>
+    <div class="basalt-mat-expansion-panel mat-expansion-panel-header">
+      <mat-panel-title>Delegated to</mat-panel-title>
+      <mat-panel-description>
+        <div>
+          <app-person-autocomplete-fragment
+            [person]="delegatedTo"
+            [personOptions]="personOptions"
+            (personChangedEmitter)="onDelegatedToChanged($event)"></app-person-autocomplete-fragment>
+        </div>
+      </mat-panel-description>
+      <mat-icon svgIcon="person"></mat-icon>
+    </div>
   </div>
-
 </mat-accordion>

@@ -29,7 +29,20 @@
 }
 
 .priority {
-  padding: 0 10px;
+  padding-right: 10px;
+}
+
+.basalt-mat-expansion-panel {
+  min-height: 36px;
+  cursor: default;
+}
+
+.basalt-mat-expansion-panel.extra-height {
+  height: 72px;
+}
+
+.clickable {
+  cursor: pointer;
 }
 
 //

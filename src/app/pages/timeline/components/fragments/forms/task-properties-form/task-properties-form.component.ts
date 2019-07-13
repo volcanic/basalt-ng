@@ -92,6 +92,7 @@ export class TaskPropertiesFormComponent implements OnInit, OnChanges {
     this.initializePriority();
     this.initializeRecurringState();
     this.initializeAcceptanceCriteria();
+    this.recurring = this.task.recurrenceInterval === RecurrenceInterval.NONE ? false : true;
   }
 
   /**
@@ -190,8 +191,8 @@ export class TaskPropertiesFormComponent implements OnInit, OnChanges {
    * Handles changes in recurring flag
    * @param event event
    */
-  onRecurringChanged(event: MatSlideToggleChange) {
-    this.recurring = event.checked;
+  onRecurringChanged() {
+    this.recurring = !this.recurring;
     if (!this.recurring) {
       this.task.recurrenceInterval = RecurrenceInterval.NONE;
     }

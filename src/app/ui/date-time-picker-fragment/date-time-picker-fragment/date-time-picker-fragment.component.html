@@ -1,7 +1,6 @@
 <mat-form-field>
   <input matInput
          name="date"
-         placeholder="Date"
          [(ngModel)]="day"
          [matDatepicker]="picker"
          (ngModelChange)="onDateChanged($event)">
@@ -13,7 +12,7 @@
 </mat-form-field>
 
 <mat-form-field color="primary" class="time-select">
-  <mat-select [(ngModel)]="hour" name="hour" placeholder="Hours">
+  <mat-select [(ngModel)]="hour" name="hour">
     <mat-option *ngFor="let item of hours" [value]="item" (click)="onHourSelected(item)">
       {{ addTrailingZero(item) }}
     </mat-option>
@@ -21,7 +20,7 @@
 </mat-form-field>
 :
 <mat-form-field color="primary" class="time-select">
-  <mat-select [(ngModel)]="minute" name="minute" placeholder="Minutes">
+  <mat-select [(ngModel)]="minute" name="minute">
     <mat-option *ngFor="let item of minutes" [value]="item" (click)="onMinuteSelected(item)">
       {{ addTrailingZero(item) }}
     </mat-option>
