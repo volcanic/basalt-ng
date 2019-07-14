@@ -28,6 +28,7 @@ export class CompletableListItemComponent implements OnInit, AfterViewInit {
   /** Event emitter indicating item changes */
   @Output() itemChangedEmitter = new EventEmitter<any>();
 
+  /** Input view child */
   @ViewChildren('label') input;
 
   /** CSS class */

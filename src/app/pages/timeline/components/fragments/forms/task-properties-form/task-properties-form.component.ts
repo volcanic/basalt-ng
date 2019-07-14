@@ -90,6 +90,9 @@ export class TaskPropertiesFormComponent implements OnInit {
   // Initialization
   //
 
+  /**
+   * INitializes colors
+   */
   private initializeColors() {
     this.colorsPriorities = [
       this.materialColorService.color(PaletteType.RED, HueType._600),
