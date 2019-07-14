@@ -13,12 +13,12 @@ import {Tag} from '../../../../core/entity/model/tag.model';
 import {Person} from '../../../../core/entity/model/person.model';
 import {DialogMode} from '../../../../core/entity/model/dialog-mode.enum';
 import {Action} from '../../../../core/entity/model/action.enum';
-import {PersonService} from '../../../../core/entity/services/person.service';
+import {PersonService} from '../../../../core/entity/services/person/person.service';
 import {SuggestionService} from '../../../../core/entity/services/suggestion.service';
 import {CloneService} from '../../../../core/entity/services/clone.service';
 import {FilterService} from '../../../../core/entity/services/filter.service';
 import {SnackbarService} from '../../../../core/ui/services/snackbar.service';
-import {TagService} from '../../../../core/entity/services/tag.service';
+import {TagService} from '../../../../core/entity/services/tag/tag.service';
 import {MatDialog, MatIconRegistry, MatSelect, MatSidenav} from '@angular/material';
 import {ConfirmationDialogComponent} from '../../../../ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
@@ -34,7 +34,7 @@ import {Animations, ScrollDirection, ScrollState} from './tasklet.animation';
 import {TaskletTypeGroup} from '../../../../core/entity/model/tasklet-type-group.enum';
 import {ColorService} from '../../../../core/ui/services/color.service';
 import {Project} from '../../../../core/entity/model/project.model';
-import {ProjectService} from '../../../../core/entity/services/project.service';
+import {ProjectService} from '../../../../core/entity/services/project/project.service';
 import {ScopeService} from '../../../../core/entity/services/scope.service';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
@@ -86,6 +86,17 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /** Tasklet to be displayed */
   tasklet: Tasklet = new Tasklet();
+
+  /** Map of tasks */
+  public tasksMap = new Map<string, Task>();
+  /** Array of tasks */
+  public tasks: Task[] = [];
+
+  /** Map of projects */
+  public projectsMap = new Map<string, Project>();
+  /** Array of projects */
+  public projects: Project[] = [];
+
   /** Description of previous tasklet */
   previousDescription = new Description();
 
@@ -209,7 +220,12 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    this.tasksMap = new Map(this.taskService.tasks);
+    this.projectsMap = new Map(this.projectService.projects);
+
     this.initializeTaskletSubscription();
+    this.initializeTaskSubscription();
+    this.initializeProjectSubscription();
 
     this.initializeMaterial();
     this.initializeMediaSubscription();
@@ -318,6 +334,28 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
+   * Initializes task subscription
+   */
+  private initializeTaskSubscription() {
+    this.taskService.tasksSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.tasksMap = (value as Map<string, Task>);
+    });
+  }
+
+  /**
+   * Initializes project subscription
+   */
+  private initializeProjectSubscription() {
+    this.projectService.projectsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.projectsMap = (value as Map<string, Project>);
+    });
+  }
+
+  /**
    * Initializes material colors and icons
    */
   private initializeMaterial() {
@@ -369,7 +407,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.action.group = group;
     this.action.backgroundColor = this.colorService.getTaskletTypeGroupColor(group).color;
     this.action.iconColor = this.colorService.getTaskletTypeGroupColor(group).contrast;
-    this.action.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
+    this.action.icon = TaskletService.getIconByTaskletType(this.tasklet.type);
     this.action.label = this.tasklet.type.toString();
     this.action.taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]).filter(type => {
       const settingDevelopmemt = this.settingsService.settings.get(SettingType.DEVELOPMENT);
@@ -598,7 +636,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
-    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+    if (event.key === KEY_CODE_ENTER && event.ctrlKey) {
       switch (this.mode) {
         case DialogMode.ADD: {
           this.addTasklet();
@@ -770,7 +808,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         this.evaluateTaskletPersons(tasklet, persons);
 
         // Create tasklet itself
-        this.taskletService.createTasklet(tasklet).then(() => {
+        this.taskletService.createTasklet(tasklet, this.tasksMap, this.projectsMap).then(() => {
           this.snackbarService.showSnackbar('Added tasklet');
         });
         break;
@@ -782,7 +820,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
         this.evaluateTaskletPersons(tasklet, persons);
 
         // Update tasklet itself
-        this.taskletService.updateTasklet(tasklet).then(() => {
+        this.taskletService.updateTasklet(tasklet, this.tasksMap, this.projectsMap).then(() => {
           this.snackbarService.showSnackbar('Updated tasklet');
         });
         break;
@@ -1049,7 +1087,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param type tasklet type
    */
   public getIconByTaskletType(type: TaskletType): string {
-    return this.taskletService.getIconByTaskletType(type);
+    return TaskletService.getIconByTaskletType(type);
   }
 
   /**

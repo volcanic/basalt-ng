@@ -8,12 +8,12 @@ import {EntityType} from '../../model/entity-type.enum';
 import {SuggestionService} from '../suggestion.service';
 import {PouchDBService} from '../../../persistence/services/pouchdb.service';
 import {TaskService} from '../task/task.service';
-import {ProjectService} from '../project.service';
+import {ProjectService} from '../project/project.service';
 import {environment} from '../../../../../environments/environment';
 import {ScopeService} from '../scope.service';
 import {Scope} from '../../model/scope.enum';
-import {TagService} from '../tag.service';
-import {PersonService} from '../person.service';
+import {TagService} from '../tag/tag.service';
+import {PersonService} from '../person/person.service';
 import {MeetingMinuteItemType} from '../../model/meeting-minutes/meeting-minute-item-type.enum';
 import {MeetingMinuteItem} from '../../model/meeting-minutes/meeting-minute-item.model';
 import {DailyScrumItem} from '../../model/daily-scrum/daily-scrum-item.model';
@@ -46,7 +46,7 @@ export class TaskletService {
   /** Map of all tasklets */
   tasklets = new Map<string, Tasklet>();
   /** Subject that publishes tasklets */
-  taskletsSubject = new Subject<Tasklet[]>();
+  taskletsSubject = new Subject<Map<string, Tasklet>>();
 
   /** Tasklet in focus */
   tasklet: Tasklet;
@@ -57,6 +57,66 @@ export class TaskletService {
   dateQueue = [];
   /** Subject that publishes dates scrolled by */
   dateQueueSubject = new Subject<Date>();
+
+  /**
+   * Retrieves a task by a given tasklet
+   * @param tasklet tasklet to find task by
+   * @param tasksMap tasks map
+   * @returns task referenced by given tasklet, null if no such task exists
+   */
+  static getTaskByTasklet(tasklet: Tasklet, tasksMap: Map<string, Task>): Task {
+    if (tasklet != null && tasklet.taskId != null) {
+      return tasksMap.get(tasklet.taskId);
+    }
+
+    return null;
+  }
+
+  /**
+   * Retrieves a project by a given tasklet
+   * @param tasklet tasklet to find project by
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @returns project referenced by given tasklet, null if no such project exists
+   */
+  static getProjectByTasklet(tasklet: Tasklet, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): Project {
+    const task = TaskletService.getTaskByTasklet(tasklet, tasksMap);
+
+    if (tasklet != null && task != null && task.projectId != null) {
+      return projectsMap.get(task.projectId);
+    }
+
+    return null;
+  }
+
+  /**
+   * Retrieves an icon by tasklet type
+   * @param group tasklet type group
+   */
+  static getIconByTaskletTypeGroup(group: TaskletTypeGroup): string {
+    return TaskletTypeService.getIconByTaskletTypeGroup(group);
+  }
+
+  /**
+   * Retrieves an icon by tasklet type
+   * @param type tasklet type
+   */
+  static getIconByTaskletType(type: TaskletType): string {
+    return TaskletTypeService.getIconByTaskletType(type);
+  }
+
+  //
+  // Sort
+  //
+
+  /**
+   * Sorts tags by creation date
+   * @param t1 tasklet
+   * @param t2 tasklet
+   */
+  static sortTaskletsByCreationDate(t1: Tasklet, t2: Tasklet) {
+    return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
+  }
 
   /**
    * Constructor
@@ -91,14 +151,12 @@ export class TaskletService {
   // Initialization
   //
 
-  // <editor-fold desc="Initialization">
-
   /**
    * Initializes tasklet subscription
    */
   private initializeTaskletSubscription() {
     this.taskletsSubject.subscribe((value) => {
-      (value as Tasklet[]).forEach(tasklet => {
+      Array.from(value.values()).forEach(tasklet => {
           this.tasklets.set(tasklet.id, tasklet);
         }
       );
@@ -107,13 +165,9 @@ export class TaskletService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Queries
   //
-
-  // <editor-fold desc="Queries">
 
   /**
    * Loads tasklets by a given scope
@@ -211,27 +265,25 @@ export class TaskletService {
     );
   }
 
-  // </editor-fold>
-
   //
   // Persistence
   //
 
-  // <editor-fold desc="Persistence">
-
   /**
    * Creates a new tasklet
    * @param tasklet tasklet to be created
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
    */
-  public createTasklet(tasklet: Tasklet): Promise<any> {
+  public createTasklet(tasklet: Tasklet, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): Promise<any> {
     return new Promise(() => {
         if (tasklet != null) {
           tasklet.scope = this.scopeService.scope;
 
           // Updated related objects
-          this.projectService.updateProject(this.getProjectByTasklet(tasklet), false).then(() => {
+          this.projectService.updateProject(TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap), false).then(() => {
           });
-          this.taskService.updateTask(this.getTaskByTasklet(tasklet)).then(() => {
+          this.taskService.updateTask(TaskletService.getTaskByTasklet(tasklet, tasksMap)).then(() => {
           });
           tasklet.tagIds.forEach(id => {
             const tag = this.tagService.getTagById(id);
@@ -256,15 +308,17 @@ export class TaskletService {
   /**
    * Updates an existing tasklet
    * @param tasklet tasklet to be updated
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
    */
-  public updateTasklet(tasklet: Tasklet): Promise<any> {
+  public updateTasklet(tasklet: Tasklet, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): Promise<any> {
     return new Promise(() => {
       if (tasklet != null) {
 
         // Updated related objects
-        this.projectService.updateProject(this.getProjectByTasklet(tasklet), false).then(() => {
+        this.projectService.updateProject(TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap), false).then(() => {
         });
-        this.taskService.updateTask(this.getTaskByTasklet(tasklet)).then(() => {
+        this.taskService.updateTask(TaskletService.getTaskByTasklet(tasklet, tasksMap)).then(() => {
         });
         if (tasklet.tagIds != null) {
           tasklet.tagIds.forEach(id => {
@@ -314,26 +368,9 @@ export class TaskletService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Lookup
   //
-
-  // <editor-fold desc="Lookup">
-
-  /**
-   * Retrieves a task by a given tasklet
-   * @param tasklet tasklet to find task by
-   * @returns task referenced by given tasklet, null if no such task exists
-   */
-  public getTaskByTasklet(tasklet: Tasklet): Task {
-    if (tasklet != null && tasklet.taskId != null) {
-      return this.taskService.tasks.get(tasklet.taskId);
-    }
-
-    return null;
-  }
 
   /**
    * Retrieves a list of tasklets that are associated with a given task
@@ -347,20 +384,6 @@ export class TaskletService {
     }).reverse();
   }
 
-  /**
-   * Retrieves a project by a given tasklet
-   * @param tasklet tasklet to find project by
-   * @returns project referenced by given tasklet, null if no such project exists
-   */
-  public getProjectByTasklet(tasklet: Tasklet): Project {
-    const task = this.getTaskByTasklet(tasklet);
-
-    if (tasklet != null && task != null && task.projectId != null) {
-      return this.projectService.projects.get(task.projectId);
-    }
-
-    return null;
-  }
 
   /**
    * Returns a map of recent daily scrum activities of a given type and a given person
@@ -388,13 +411,9 @@ export class TaskletService {
     return dailyScrumActivities;
   }
 
-  // </editor-fold>
-
   //
   // Helpers
   //
-
-  // <editor-fold desc="Util">
 
   /**
    * Adds a creation date of a tasklet to the queue and publishes the latest entry.
@@ -502,8 +521,6 @@ export class TaskletService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Delegated: Display aspects
   //
@@ -596,37 +613,15 @@ export class TaskletService {
     return this.taskletTypeService.groupContainsType(group, type);
   }
 
-  /**
-   * Retrieves an icon by tasklet type
-   * @param group tasklet type group
-   */
-  public getIconByTaskletTypeGroup(group: TaskletTypeGroup): string {
-    return TaskletTypeService.getIconByTaskletTypeGroup(group);
-  }
-
-  /**
-   * Retrieves an icon by tasklet type
-   * @param type tasklet type
-   */
-  public getIconByTaskletType(type: TaskletType): string {
-    return TaskletTypeService.getIconByTaskletType(type);
-  }
-
   //
   // Notification
   //
-
-  // <editor-fold desc="Notification">
 
   /**
    * Informs subscribers that something has changed
    */
   public notify() {
     this.taskletSubject.next(this.tasklet);
-    this.taskletsSubject.next(Array.from(this.tasklets.values()).sort((t1, t2) => {
-      return new Date(t2.creationDate).getTime() - new Date(t1.creationDate).getTime();
-    }));
+    this.taskletsSubject.next(this.tasklets);
   }
-
-  // </editor-fold>
 }

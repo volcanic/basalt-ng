@@ -1,20 +1,21 @@
 import {Injectable, isDevMode} from '@angular/core';
-import {Project} from '../model/project.model';
+import {Project} from '../../model/project.model';
 import {Subject} from 'rxjs';
-import {EntityType} from '../model/entity-type.enum';
-import {SuggestionService} from './suggestion.service';
-import {PouchDBService} from '../../persistence/services/pouchdb.service';
-import {environment} from '../../../../environments/environment';
-import {SnackbarService} from '../../ui/services/snackbar.service';
-import {ScopeService} from './scope.service';
-import {Scope} from '../model/scope.enum';
-import {DateService} from './date.service';
+import {EntityType} from '../../model/entity-type.enum';
+import {SuggestionService} from '../suggestion.service';
+import {PouchDBService} from '../../../persistence/services/pouchdb.service';
+import {environment} from '../../../../../environments/environment';
+import {SnackbarService} from '../../../ui/services/snackbar.service';
+import {ScopeService} from '../scope.service';
+import {Scope} from '../../model/scope.enum';
+import {DateService} from '../date.service';
 
 /**
  * Handles projects including
  * <li> Queries
  * <li> Persistence
  * <li> Lookup
+ * <li> Sort
  */
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,29 @@ export class ProjectService {
   /** Map of all projects */
   projects = new Map<string, Project>();
   /** Subject that can be subscribed by components that are interested in changes */
-  projectsSubject = new Subject<Project[]>();
+  projectsSubject = new Subject<Map<string, Project>>();
+
+  //
+  // Sort
+  //
+
+  /**
+   * Sorts projects by name
+   * @param p1 project
+   * @param p2 project
+   */
+  static sortProjectsByName(p1: Project, p2: Project) {
+    return p2.name < p1.name ? 1 : -1;
+  }
+
+  /**
+   * Sorts projects by modification date
+   * @param p1 project
+   * @param p2 project
+   */
+  static sortProjectsByModificationDate(p1: Project, p2: Project) {
+    return new Date(p2.modificationDate).getTime() - new Date(p1.modificationDate).getTime();
+  }
 
   /**
    * Constructor
@@ -45,14 +68,12 @@ export class ProjectService {
   // Initialization
   //
 
-  // <editor-fold desc="Initialization">
-
   /**
    * Initializes project subscription
    */
   private initializeProjectSubscription() {
     this.projectsSubject.subscribe((value) => {
-      (value as Project[]).forEach(project => {
+      Array.from(value.values()).forEach(project => {
           this.projects.set(project.id, project);
         }
       );
@@ -61,13 +82,9 @@ export class ProjectService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Queries
   //
-
-  // <editor-fold desc="Queries">
 
   /**
    * Loads projects by a given scope
@@ -123,13 +140,9 @@ export class ProjectService {
     );
   }
 
-  // </editor-fold>
-
   //
   // Persistence
   //
-
-  // <editor-fold desc="Persistence">
 
   /**
    * Creates a new project
@@ -197,13 +210,9 @@ export class ProjectService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Lookup
   //
-
-  // <editor-fold desc="Lookup">
 
   /**
    * Retrieves a project by a given name
@@ -222,24 +231,14 @@ export class ProjectService {
     return project;
   }
 
-  // </editor-fold>
-
   //
   // Notification
   //
-
-  // <editor-fold desc="Notification">
 
   /**
    * Informs subscribers that something has changed
    */
   private notify() {
-    this.projectsSubject.next(Array.from(this.projects.values()).sort((p1, p2) => {
-      return p2.name < p1.name ? 1 : -1;
-    }).sort((p1, p2) => {
-      return new Date(p2.modificationDate).getTime() - new Date(p1.modificationDate).getTime();
-    }));
+    this.projectsSubject.next(this.projects);
   }
-
-  // </editor-fold>
 }

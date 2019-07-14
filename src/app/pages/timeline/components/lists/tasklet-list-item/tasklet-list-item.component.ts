@@ -128,7 +128,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   private initializeIcon() {
     if (this.tasklet != null) {
-      this.icon = this.taskletService.getIconByTaskletType(this.tasklet.type);
+      this.icon = TaskletService.getIconByTaskletType(this.tasklet.type);
     }
   }
 

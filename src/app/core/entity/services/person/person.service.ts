@@ -1,20 +1,21 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Subject} from 'rxjs';
-import {Person} from '../model/person.model';
-import {SuggestionService} from './suggestion.service';
-import {EntityType} from '../model/entity-type.enum';
-import {environment} from '../../../../environments/environment';
-import {Scope} from '../model/scope.enum';
-import {PouchDBService} from '../../persistence/services/pouchdb.service';
-import {ScopeService} from './scope.service';
-import {SnackbarService} from '../../ui/services/snackbar.service';
-import {DateService} from './date.service';
+import {Person} from '../../model/person.model';
+import {SuggestionService} from '../suggestion.service';
+import {EntityType} from '../../model/entity-type.enum';
+import {environment} from '../../../../../environments/environment';
+import {Scope} from '../../model/scope.enum';
+import {PouchDBService} from '../../../persistence/services/pouchdb.service';
+import {ScopeService} from '../scope.service';
+import {SnackbarService} from '../../../ui/services/snackbar.service';
+import {DateService} from '../date.service';
 
 /**
  * Handles persons including
  * <li> Queries
  * <li> Persistence
  * <li> Lookup
+ * <li> Sort
  */
 
 /* tslint:disable:object-literal-key-quotes */
@@ -26,7 +27,7 @@ export class PersonService {
   /** Map of all persons */
   persons = new Map<string, Person>();
   /** Subject that can be subscribed by components that are interested in changes */
-  personsSubject = new Subject<Person[]>();
+  personsSubject = new Subject<Map<string, Person>>();
 
   /** Person in focus */
   person: Person;
@@ -35,6 +36,28 @@ export class PersonService {
 
   /** Special person representing the user */
   myself: Person;
+
+  //
+  // Sort
+  //
+
+  /**
+   * Sorts persons by name
+   * @param p1 person
+   * @param p2 person
+   */
+  static sortPersonsByName(p1: Person, p2: Person) {
+    return p2.name < p1.name ? 1 : -1;
+  }
+
+  /**
+   * Sorts persons by modification date
+   * @param p1 person
+   * @param p2 person
+   */
+  static sortPersonsByModificationDate(p1: Person, p2: Person) {
+    return new Date(p2.modificationDate).getTime() - new Date(p1.modificationDate).getTime();
+  }
 
   /**
    * Constructor
@@ -56,8 +79,6 @@ export class PersonService {
   // Initialization
   //
 
-  // <editor-fold desc="Initialization">
-
   /**
    * Initializes a special person representing the user
    */
@@ -70,7 +91,7 @@ export class PersonService {
    */
   private initializePersonSubscription() {
     this.personsSubject.subscribe((value) => {
-      (value as Person[]).forEach(person => {
+      Array.from(value.values()).forEach(person => {
           this.persons.set(person.id, person);
         }
       );
@@ -79,13 +100,9 @@ export class PersonService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Queries
   //
-
-  // <editor-fold desc="Queries">
 
   /**
    * Loads persons by a given scope
@@ -109,26 +126,6 @@ export class PersonService {
 
     this.clearPersons();
     this.findPersonsInternal(index, options);
-  }
-
-  /**
-   * Loads person by a given ID
-   * @param id ID of filter by
-   */
-  public findPersonByID(id: string) {
-    const index = {fields: ['entityType', 'id', 'creationDate']};
-    const options = {
-      selector: {
-        '$and': [
-          {entityType: {$eq: EntityType.PERSON}},
-          {id: {$eq: id}}
-        ]
-      },
-      // sort: [{creationDate: 'desc'}],
-      limit: environment.LIMIT_PERSONS_COUNT
-    };
-
-    this.findPersonInternal(index, options);
   }
 
   /**
@@ -160,37 +157,9 @@ export class PersonService {
     );
   }
 
-  /**
-   * Index persons and queries them afterwards
-   * @param index index to be used
-   * @param options query options
-   */
-  private findPersonInternal(index: any, options: any) {
-    this.pouchDBService.find(index, options).then(result => {
-        if (result != null) {
-          result['docs'].forEach(element => {
-            const person = element as Person;
-
-            this.person = person;
-            this.persons.set(person.id, person);
-          });
-          this.notify();
-        }
-      }, error => {
-        if (isDevMode()) {
-          console.error(error);
-        }
-      }
-    );
-  }
-
-  // </editor-fold>
-
   //
   // Persistence
   //
-
-  // <editor-fold desc="Persistence">
 
   /**
    * Creates a new person
@@ -255,13 +224,9 @@ export class PersonService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Lookup
   //
-
-  // <editor-fold desc="Lookup">
 
   /**
    * Retrieves a person by a given ID
@@ -289,25 +254,15 @@ export class PersonService {
     return person;
   }
 
-  // </editor-fold>
-
   //
   // Notification
   //
-
-  // <editor-fold desc="Notification">
 
   /**
    * Notifies subscribers that something has changed
    */
   private notify() {
     this.personSubject.next(this.person);
-    this.personsSubject.next(Array.from(this.persons.values()).sort((p1, p2) => {
-      return p2.name < p1.name ? 1 : -1;
-    }).sort((p1, p2) => {
-      return new Date(p2.modificationDate).getTime() - new Date(p1.modificationDate).getTime();
-    }));
+    this.personsSubject.next(this.persons);
   }
-
-  // </editor-fold>
 }

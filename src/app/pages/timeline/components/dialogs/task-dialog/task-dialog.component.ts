@@ -185,7 +185,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
-    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+    if (event.key === KEY_CODE_ENTER && event.ctrlKey) {
       this.handleTaskChanges();
     }
   }
@@ -338,7 +338,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * @param task task
    */
   public containsDisplayAspect(displayAspect: TaskDisplayAspect, task: Task): boolean {
-    return this.taskService.containsDisplayAspect(displayAspect, task);
+    return TaskService.containsDisplayAspect(displayAspect, task);
   }
 
   // Tags

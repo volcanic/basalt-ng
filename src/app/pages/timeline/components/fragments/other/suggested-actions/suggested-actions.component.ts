@@ -110,10 +110,10 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
 
     // Recurring tasks
     let expectedNextOccurrence;
-    this.suggestedTasks.filter(this.taskService.isTaskRecurring).filter(task => {
+    this.suggestedTasks.filter(TaskService.isTaskRecurring).filter(task => {
       const tasklets = this.taskletService.getTaskletsByTask(task);
-      expectedNextOccurrence = this.taskService.getExpectedNextOccurrence(task, tasklets);
-      return this.taskService.isTaskRelevantSoon(task, expectedNextOccurrence);
+      expectedNextOccurrence = TaskService.getExpectedNextOccurrence(task, tasklets);
+      return TaskService.isTaskRelevantSoon(task, expectedNextOccurrence);
     }).slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();
@@ -129,7 +129,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
       });
 
     // Overdue tasks
-    this.suggestedTasks.filter(this.taskService.isTaskOverdue)
+    this.suggestedTasks.filter(TaskService.isTaskOverdue)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();
@@ -145,11 +145,11 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
       });
 
     // Today's tasks
-    this.suggestedTasks.filter(this.taskService.isTaskToday)
+    this.suggestedTasks.filter(TaskService.isTaskToday)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();
-        suggestedAction.icon = this.taskletService.getIconByTaskletType(TaskletType.ACTION);
+        suggestedAction.icon = TaskletService.getIconByTaskletType(TaskletType.ACTION);
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
         suggestedAction.iconColor = this.colorService.getTaskContrast(task);
@@ -161,11 +161,11 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
       });
 
     // Later tasks
-    this.suggestedTasks.filter(this.taskService.isTaskLater)
+    this.suggestedTasks.filter(TaskService.isTaskLater)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();
-        suggestedAction.icon = this.taskletService.getIconByTaskletType(TaskletType.ACTION);
+        suggestedAction.icon = TaskletService.getIconByTaskletType(TaskletType.ACTION);
         suggestedAction.label = task.name;
         suggestedAction.backgroundColor = this.colorService.getTaskColor(task);
         suggestedAction.iconColor = this.colorService.getTaskContrast(task);
@@ -183,7 +183,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
   private initializeStaticSuggestedActions() {
     const suggestedActionLunchBreak = new SuggestedActions();
     suggestedActionLunchBreak.taskletType = TaskletType.LUNCH_BREAK;
-    suggestedActionLunchBreak.icon = this.taskletService.getIconByTaskletType(TaskletType.LUNCH_BREAK);
+    suggestedActionLunchBreak.icon = TaskletService.getIconByTaskletType(TaskletType.LUNCH_BREAK);
     suggestedActionLunchBreak.label = TaskletType.LUNCH_BREAK.toString();
     suggestedActionLunchBreak.backgroundColor = this.colorService.getTaskletTypeGroupColor(TaskletTypeGroup.BREAK).color;
     suggestedActionLunchBreak.iconColor = this.colorService.getTaskletTypeGroupColor(TaskletTypeGroup.BREAK).contrast;
@@ -191,7 +191,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
 
     const suggestedActionFinishingTime = new SuggestedActions();
     suggestedActionFinishingTime.taskletType = TaskletType.FINISHING_TIME;
-    suggestedActionFinishingTime.icon = this.taskletService.getIconByTaskletType(TaskletType.FINISHING_TIME);
+    suggestedActionFinishingTime.icon = TaskletService.getIconByTaskletType(TaskletType.FINISHING_TIME);
     suggestedActionFinishingTime.label = TaskletType.FINISHING_TIME.toString();
     suggestedActionFinishingTime.backgroundColor = this.colorService.getTaskletTypeGroupColor(TaskletTypeGroup.BREAK).color;
     suggestedActionFinishingTime.iconColor = this.colorService.getTaskletTypeGroupColor(TaskletTypeGroup.BREAK).contrast;

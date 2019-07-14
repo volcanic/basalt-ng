@@ -5,6 +5,7 @@ import {Task} from 'app/core/entity/model/task.model';
 import {Project} from 'app/core/entity/model/project.model';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {Person} from 'app/core/entity/model/person.model';
+import {Action} from '../../../../../core/entity/model/action.enum';
 
 /**
  * Displays tasklet list
@@ -32,7 +33,7 @@ export class TaskletListComponent {
   @Input() persons = new Map<string, Person>();
 
   /** Event emitter indicating tasklet action */
-  @Output() taskletEventEmitter = new EventEmitter<{ Action, Tasklet }>();
+  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
   /** Event emitter indicating new creation date to queue */
   @Output() taskletCreationDateEventEmitter = new EventEmitter<Date>();
 

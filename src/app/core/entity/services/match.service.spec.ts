@@ -7,11 +7,11 @@ import {PouchDBService} from '../../persistence/services/pouchdb.service';
 import {PouchDBServiceMock} from '../../persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../persistence/services/pouchdb-settings.service.mock';
-import {ProjectService} from './project.service';
+import {ProjectService} from './project/project.service';
 import {TaskService} from './task/task.service';
 import {TaskletService} from './tasklet/tasklet.service';
-import {TagService} from './tag.service';
-import {PersonService} from './person.service';
+import {TagService} from './tag/tag.service';
+import {PersonService} from './person/person.service';
 
 describe('MatchService', () => {
   beforeEach(() => {

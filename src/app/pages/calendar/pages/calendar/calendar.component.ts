@@ -68,13 +68,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        this.tasklets = (value as Tasklet[]).filter(tasklet => {
+        /*
+        this.tasklets = Array.from((value as Tasklet[])).filter(tasklet => {
           const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
           const matchesProjects = this.matchService.taskletMatchesProjects(tasklet,
             Array.from(this.filterService.projects.values()));
 
           return matchesSearchItem && matchesProjects;
         });
+        */
       }
     });
   }

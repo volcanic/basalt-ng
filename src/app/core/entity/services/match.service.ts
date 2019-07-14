@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {Tasklet} from '../model/tasklet.model';
 import {Description} from '../model/description.model';
 import {Person} from '../model/person.model';
-import {ProjectService} from './project.service';
+import {ProjectService} from './project/project.service';
 import {TaskletService} from './tasklet/tasklet.service';
 import {TaskService} from './task/task.service';
 import {DateService} from './date.service';
-import {TagService} from './tag.service';
-import {PersonService} from './person.service';
+import {TagService} from './tag/tag.service';
+import {PersonService} from './person/person.service';
 import {MeetingMinuteItem} from '../model/meeting-minutes/meeting-minute-item.model';
 import {DailyScrumItem} from '../model/daily-scrum/daily-scrum-item.model';
 import {Project} from '../model/project.model';
@@ -182,44 +182,44 @@ export class MatchService {
   /**
    * Determines whether a tasklet matches a given set of tags
    * @param tasklet tasklet to check
-   * @param tags array of tags the tasklet should contain
+   * @param tagsMap tags map
    * @returns true if tasklet matches given tags
    */
-  public taskletMatchesTags(tasklet: Tasklet, tags: Tag[]): boolean {
-    return tags.length === 0 || (tasklet != null && tasklet.tagIds != null && tasklet.tagIds.map(id => {
+  public taskletMatchesTags(tasklet: Tasklet, tagsMap: Map<string, Tag>): boolean {
+    return tagsMap.size === 0 || (tasklet != null && tasklet.tagIds != null && tasklet.tagIds.map(id => {
       return this.tagService.getTagById(id);
     }).filter(tag => {
       return tag != null;
     }).some(tag => {
-      return this.tagMatchesTags(tag, tags);
+      return this.tagMatchesTags(tag, tagsMap);
     }));
   }
 
   /**
    * Determines whether a tasklet matches a given set of tags
    * @param task task to check
-   * @param tags array of tags the task should contain
+   * @param tagsMap tags map
    * @returns true if task matches given tags
    */
-  public taskMatchesTags(task: Task, tags: Tag[]): boolean {
-    return tags.length === 0 || (task != null && task.tagIds != null && task.tagIds.map(id => {
+  public taskMatchesTags(task: Task, tagsMap: Map<string, Tag>): boolean {
+    return tagsMap.size === 0 || (task != null && task.tagIds != null && task.tagIds.map(id => {
       return this.tagService.getTagById(id);
     }).filter(tag => {
       return tag != null;
     }).some(tag => {
-      return this.tagMatchesTags(tag, tags);
+      return this.tagMatchesTags(tag, tagsMap);
     }));
   }
 
   /**
    * Determines whether a tag matches a given set of tags
    * @param tag tag to check
-   * @param tags array of tags the tag should be contained in
+   * @param tagsMap tags map
    * @returns true if tag matches given tags
    */
-  public tagMatchesTags(tag: Tag, tags: Tag[]) {
-    return (tag == null && tags.length === 0)
-      || tags.some(t => {
+  public tagMatchesTags(tag: Tag, tagsMap: Map<string, Tag>) {
+    return (tag == null && tagsMap.size === 0)
+      || Array.from(tagsMap.values()).some(t => {
         return tag != null && tag.id != null && t.id === tag.id;
       });
   }
@@ -231,24 +231,24 @@ export class MatchService {
   /**
    * Determines whether a tasklet matches a given set of tasks
    * @param tasklet tasklet to check
-   * @param tasks array of tasks tasklet should match
+   * @param tasksMap tasks map
    * @returns true if tasklet matches given tasks
    */
-  public taskletMatchesTasks(tasklet: Tasklet, tasks: Task[]): boolean {
-    const task = this.taskletService.getTaskByTasklet(tasklet);
+  public taskletMatchesTasks(tasklet: Tasklet, tasksMap: Map<string, Task>): boolean {
+    const task = TaskletService.getTaskByTasklet(tasklet, tasksMap);
 
-    return tasks.length === 0 || this.taskMatchesTasks(task, tasks);
+    return tasksMap.size === 0 || this.taskMatchesTasks(task, tasksMap);
   }
 
   /**
    * Determines whether a task matches a given set of tasks
    * @param task task to check
-   * @param tasks array of tasks task should match
+   * @param tasksMap tasks map
    * @returns true if task matches given tasks
    */
-  public taskMatchesTasks(task: Task, tasks: Task[]): boolean {
-    return (task == null && tasks.length === 0)
-      || tasks.some(t => {
+  public taskMatchesTasks(task: Task, tasksMap: Map<string, Task>): boolean {
+    return (task == null && tasksMap.size === 0)
+      || Array.from(tasksMap.values()).some(t => {
         return task != null && task.id != null && t.id === task.id;
       });
   }
@@ -274,35 +274,36 @@ export class MatchService {
   /**
    * Determines whether a tasklet matches a given set of projects
    * @param tasklet tasklet to check
-   * @param projects array of projects tasklet should match
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
    * @returns true if tasklet matches given projects
    */
-  public taskletMatchesProjects(tasklet: Tasklet, projects: Project[]): boolean {
-    const project = this.taskletService.getProjectByTasklet(tasklet);
-    return projects.length === 0 || this.projectMatchesProjects(project, projects);
+  public taskletMatchesProjects(tasklet: Tasklet, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): boolean {
+    const project = TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap);
+    return projectsMap.size === 0 || this.projectMatchesProjects(project, projectsMap);
   }
 
   /**
    * Determines whether a task matches a given set of projects
    * @param task task to check
-   * @param projects array of projects task should match
+   * @param projectsMap projects map
    * @returns true if task matches given projects
    */
-  public taskMatchesProjects(task: Task, projects: Project[]): boolean {
+  public taskMatchesProjects(task: Task, projectsMap: Map<string, Project>): boolean {
     const project = this.projectService.projects.get(task.projectId);
 
-    return projects.length === 0 || this.projectMatchesProjects(project, projects);
+    return projectsMap.size === 0 || this.projectMatchesProjects(project, projectsMap);
   }
 
   /**
    * Determines whether a project matches a given set of project
    * @param project project to check
-   * @param projects array of projects the project should be contained in
+   * @param projectsMap projects map
    * @returns true if project matches given projects
    */
-  public projectMatchesProjects(project: Project, projects: Project[]) {
-    return (project == null && projects.length === 0)
-      || projects.some(p => {
+  public projectMatchesProjects(project: Project, projectsMap: Map<string, Project>) {
+    return (project == null && projectsMap.size === 0)
+      || Array.from(projectsMap.values()).some(p => {
         return project != null && project.id != null && p.id === project.id;
       });
   }
@@ -314,39 +315,39 @@ export class MatchService {
   /**
    * Determines whether a tasklet matches a given set of persons
    * @param tasklet tasklet to check
-   * @param persons array of persons tasklet should match
+   * @param personsMap persons map
    * @returns true if tasklet matches given persons
    */
-  public taskletMatchesPersons(tasklet: Tasklet, persons: Person[]): boolean {
-    return persons.length === 0 || (tasklet.personIds != null && tasklet.personIds.map(id => {
+  public taskletMatchesPersons(tasklet: Tasklet, personsMap: Map<string, Person>): boolean {
+    return personsMap.size === 0 || (tasklet.personIds != null && tasklet.personIds.map(id => {
       return this.personService.getPersonById(id);
     }).filter(person => {
       return person != null;
     }).some(person => {
-      return this.personMatchesPersons(person, persons);
+      return this.personMatchesPersons(person, personsMap);
     }));
   }
 
   /**
    * Determines whether a task matches a given set of persons
    * @param task task to check
-   * @param persons array of persons task should match
+   * @param personsMap persons map
    * @returns true if task matches given persons
    */
-  public taskMatchesPersons(task: Task, persons: Person[]): boolean {
-    return persons.length === 0 || (task.delegatedToId != null
-      && this.personMatchesPersons(this.personService.getPersonById(task.delegatedToId), persons));
+  public taskMatchesPersons(task: Task, personsMap: Map<string, Person>): boolean {
+    return personsMap.size === 0 || (task.delegatedToId != null
+      && this.personMatchesPersons(this.personService.getPersonById(task.delegatedToId), personsMap));
   }
 
   /**
    * Determines whether a task matches a given set of persons
    * @param person person to check
-   * @param persons array of persons task should match
+   * @param personsMap persons map
    * @returns true if task matches given persons
    */
-  public personMatchesPersons(person: Person, persons: Person[]) {
-    return (person == null && persons.length === 0)
-      || persons.some(p => {
+  public personMatchesPersons(person: Person, personsMap: Map<string, Person>) {
+    return (person == null && personsMap.size === 0)
+      || Array.from(personsMap.values()).some(p => {
         return person != null && person.name != null && p.name === person.name;
       });
   }
@@ -358,12 +359,14 @@ export class MatchService {
   /**
    * Determines whether a tasklet matches every of the specified items
    * @param tasklet tasklet to check
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
    * @param items multiple words in one string
    * @returns true if tasklet matches every search item
    */
-  public taskletMatchesEveryItem(tasklet: Tasklet, items: string): boolean {
-    const task = this.taskletService.getTaskByTasklet(tasklet);
-    const project = this.taskletService.getProjectByTasklet(tasklet);
+  public taskletMatchesEveryItem(tasklet: Tasklet, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>, items: string): boolean {
+    const task = TaskletService.getTaskByTasklet(tasklet, tasksMap);
+    const project = TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap);
 
     return items == null || items.trim() === '' || MatchService.splitSearchItems(items).every(item => {
       return MatchService.taskNameMatchesSingleItem(task, item)

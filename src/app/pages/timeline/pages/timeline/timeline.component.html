@@ -16,9 +16,9 @@
                class="sidenav sidenav-start">
     <div [@toolbarAnimation]="scrollDirection">
       <div class="sidenav-inner-container">
-        <app-project-effort-tree [projectDigest]="weeklyDigest"></app-project-effort-tree>
+        <app-project-effort-tree [projectDigest]="weeklyDigest" opened=true></app-project-effort-tree>
         <div *ngFor="let dailyDigest of dailyDigests">
-          <app-project-effort-tree [projectDigest]="dailyDigest"></app-project-effort-tree>
+          <app-project-effort-tree [projectDigest]="dailyDigest" opened=false></app-project-effort-tree>
         </div>
         <mat-divider></mat-divider>
 

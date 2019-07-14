@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Entity} from '../model/entity.model';
-import {ProjectService} from './project.service';
+import {ProjectService} from './project/project.service';
 import {TaskService} from './task/task.service';
 import {TaskletService} from './tasklet/tasklet.service';
-import {TagService} from './tag.service';
-import {PersonService} from './person.service';
+import {TagService} from './tag/tag.service';
+import {PersonService} from './person/person.service';
 
 /**
  * Handles entities

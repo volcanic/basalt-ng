@@ -1,20 +1,21 @@
 import {Injectable, isDevMode} from '@angular/core';
 import {Subject} from 'rxjs';
-import {Tag} from '../model/tag.model';
-import {SuggestionService} from './suggestion.service';
-import {EntityType} from '../model/entity-type.enum';
-import {environment} from '../../../../environments/environment';
-import {Scope} from '../model/scope.enum';
-import {ScopeService} from './scope.service';
-import {PouchDBService} from '../../persistence/services/pouchdb.service';
-import {SnackbarService} from '../../ui/services/snackbar.service';
-import {DateService} from './date.service';
+import {Tag} from '../../model/tag.model';
+import {SuggestionService} from '../suggestion.service';
+import {EntityType} from '../../model/entity-type.enum';
+import {environment} from '../../../../../environments/environment';
+import {Scope} from '../../model/scope.enum';
+import {ScopeService} from '../scope.service';
+import {PouchDBService} from '../../../persistence/services/pouchdb.service';
+import {SnackbarService} from '../../../ui/services/snackbar.service';
+import {DateService} from '../date.service';
 
 /**
  * Handles tags including
  * <li> Queries
  * <li> Persistence
  * <li> Lookup
+ * <li> Sort
  */
 
 /* tslint:disable:object-literal-key-quotes */
@@ -26,12 +27,34 @@ export class TagService {
   /** Map of all tags */
   tags = new Map<string, Tag>();
   /** Subject that can be subscribed by components that are interested in changes */
-  tagsSubject = new Subject<Tag[]>();
+  tagsSubject = new Subject<Map<string, Tag>>();
 
   /** Tag in focus */
   tag: Tag;
   /** Subject that publishes tag */
   tagSubject = new Subject<Tag>();
+
+  //
+  // Sort
+  //
+
+  /**
+   * Sorts tags by name
+   * @param t1 tags
+   * @param t2 tags
+   */
+  static sortTagsByName(t1: Tag, t2: Tag) {
+    return t2.name < t1.name ? 1 : -1;
+  }
+
+  /**
+   * Sorts tags by modification date
+   * @param t1 tag
+   * @param t2 tag
+   */
+  static sortTagsByModificationDate(t1: Tag, t2: Tag) {
+    return new Date(t2.modificationDate).getTime() - new Date(t1.modificationDate).getTime();
+  }
 
   /**
    * Constructor
@@ -52,14 +75,12 @@ export class TagService {
   // Initialization
   //
 
-  // <editor-fold desc="Initialization">
-
   /**
    * Initializes tag subscription
    */
   private initializeTagSubscription() {
     this.tagsSubject.subscribe((value) => {
-      (value as Tag[]).forEach(tag => {
+      Array.from(value.values()).forEach(tag => {
           this.tags.set(tag.id, tag);
         }
       );
@@ -68,13 +89,9 @@ export class TagService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Queries
   //
-
-  // <editor-fold desc="Queries">
 
   /**
    * Loads tags by a given scope
@@ -98,26 +115,6 @@ export class TagService {
 
     this.clearTags();
     this.findTagsInternal(index, options);
-  }
-
-  /**
-   * Loads tag by a given ID
-   * @param id ID of filter by
-   */
-  public findTagByID(id: string) {
-    const index = {fields: ['entityType', 'id', 'creationDate']};
-    const options = {
-      selector: {
-        '$and': [
-          {entityType: {$eq: EntityType.TAG}},
-          {id: {$eq: id}}
-        ]
-      },
-      // sort: [{creationDate: 'desc'}],
-      limit: environment.LIMIT_TAGS_COUNT
-    };
-
-    this.findTagInternal(index, options);
   }
 
   /**
@@ -149,37 +146,9 @@ export class TagService {
     );
   }
 
-  /**
-   * Index tags and queries them afterwards
-   * @param index index to be used
-   * @param options query options
-   */
-  private findTagInternal(index: any, options: any) {
-    this.pouchDBService.find(index, options).then(result => {
-        if (result != null) {
-          result['docs'].forEach(element => {
-            const tag = element as Tag;
-
-            this.tag = tag;
-            this.tags.set(tag.id, tag);
-          });
-          this.notify();
-        }
-      }, error => {
-        if (isDevMode()) {
-          console.error(error);
-        }
-      }
-    );
-  }
-
-  // </editor-fold>
-
   //
   // Persistence
   //
-
-  // <editor-fold desc="Persistence">
 
   /**
    * Creats a new tag
@@ -244,13 +213,9 @@ export class TagService {
     });
   }
 
-  // </editor-fold>
-
   //
   // Lookup
   //
-
-  // <editor-fold desc="Lookup">
 
   /**
    * Retrieves a tag by a given ID
@@ -297,25 +262,15 @@ export class TagService {
     return Array.from(unusedTags.values());
   }
 
-  // </editor-fold>
-
   //
   // Notification
   //
-
-  // <editor-fold desc="Notification">
 
   /**
    * Notifies subscribers that something has changed
    */
   private notify() {
     this.tagSubject.next(this.tag);
-    this.tagsSubject.next(Array.from(this.tags.values()).sort((t1, t2) => {
-      return t2.name < t1.name ? 1 : -1;
-    }).sort((t1, t2) => {
-      return new Date(t2.modificationDate).getTime() - new Date(t1.modificationDate).getTime();
-    }));
+    this.tagsSubject.next(this.tags);
   }
-
-  // </editor-fold>
 }

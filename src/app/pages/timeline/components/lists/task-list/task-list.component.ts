@@ -99,17 +99,17 @@ export class TaskListComponent implements OnInit, OnChanges {
    */
   initializeTaskCategories() {
     if (this.tasks != null) {
-      this.tasksOverdue = this.tasks.filter(this.taskService.isTaskOverdue);
-      this.tasksToday = this.tasks.filter(this.taskService.isTaskToday);
-      this.tasksLater = this.tasks.filter(this.taskService.isTaskLater);
-      this.tasksInbox = this.tasks.filter(this.taskService.isTaskInInbox).sort((t1, t2) => {
+      this.tasksOverdue = this.tasks.filter(TaskService.isTaskOverdue);
+      this.tasksToday = this.tasks.filter(TaskService.isTaskToday);
+      this.tasksLater = this.tasks.filter(TaskService.isTaskLater);
+      this.tasksInbox = this.tasks.filter(TaskService.isTaskInInbox).sort((t1, t2) => {
         return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
       });
-      this.tasksDelegated = this.tasks.filter(this.taskService.isTaskDelegated);
-      this.tasksRecurring = this.tasks.filter(this.taskService.isTaskRecurring).sort((t1, t2) => {
+      this.tasksDelegated = this.tasks.filter(TaskService.isTaskDelegated);
+      this.tasksRecurring = this.tasks.filter(TaskService.isTaskRecurring).sort((t1, t2) => {
         return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
       });
-      this.tasksCompleted = this.tasks.filter(this.taskService.isTaskCompleted).sort((t1, t2) => {
+      this.tasksCompleted = this.tasks.filter(TaskService.isTaskCompleted).sort((t1, t2) => {
         return new Date(t2.completionDate).getTime() > new Date(t1.completionDate).getTime() ? 1 : -1;
       });
 
@@ -131,13 +131,6 @@ export class TaskListComponent implements OnInit, OnChanges {
    */
   onTaskEvent(event: any) {
     this.taskEventEmitter.emit(event);
-  }
-
-  /**
-   * Handles click on add button
-   */
-  onAddClicked() {
-    this.onTaskEvent({action: Action.OPEN_DIALOG_ADD, task: null});
   }
 
   //

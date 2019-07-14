@@ -16,13 +16,13 @@ import {FilterService} from '../../../../core/entity/services/filter.service';
 import {MediaService} from '../../../../core/ui/services/media.service';
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
-import {PersonService} from '../../../../core/entity/services/person.service';
-import {ProjectService} from '../../../../core/entity/services/project.service';
+import {PersonService} from '../../../../core/entity/services/person/person.service';
+import {ProjectService} from '../../../../core/entity/services/project/project.service';
 import {ScopeService} from '../../../../core/entity/services/scope.service';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {SnackbarService} from '../../../../core/ui/services/snackbar.service';
 import {SuggestionService} from '../../../../core/entity/services/suggestion.service';
-import {TagService} from '../../../../core/entity/services/tag.service';
+import {TagService} from '../../../../core/entity/services/tag/tag.service';
 import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
 import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -827,7 +827,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param type tasklet type
    */
   public getIconByTaskletType(type: TaskletType): string {
-    return this.taskletService.getIconByTaskletType(type);
+    return TaskletService.getIconByTaskletType(type);
   }
 
   /**
@@ -836,7 +836,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param task task
    */
   public containsDisplayAspect(displayAspect: TaskDisplayAspect, task: Task): boolean {
-    return this.taskService.containsDisplayAspect(displayAspect, task);
+    return TaskService.containsDisplayAspect(displayAspect, task);
   }
 
   // Tags

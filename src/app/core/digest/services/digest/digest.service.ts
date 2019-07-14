@@ -19,63 +19,17 @@ import {Task} from '../../../entity/model/task.model';
 export class DigestService {
 
   /**
-   * Constructor
-   * @param taskletService tasklet service
-   */
-  constructor(private taskletService: TaskletService) {
-  }
-
-  /**
-   * Generates a digest for given day
-   * @param date day to create digest for
-   * @returns digest for the given date
-   */
-  getDailyDigest(date: Date): ProjectDigest {
-    const start = DateService.getDayStart(date);
-    const end = DateService.getDayEnd(date);
-
-    const tasklets = this.getTaskletsOfPeriod(start, end, Array.from(this.taskletService.tasklets.values()));
-    const firstTasklet = tasklets[0];
-    const lastTasklet = tasklets[tasklets.length - 1];
-
-    if (firstTasklet != null && lastTasklet != null) {
-      const firstTaskletStart = firstTasklet.creationDate;
-      const lastTaskletEnd = tasklets[tasklets.length - 1].creationDate;
-      const topic = DateService.getWeekDayString(new Date(start).getDay()) +
-        ' [ ' + DateService.getTimeString(firstTaskletStart) + ' - ' + DateService.getTimeString(lastTaskletEnd) + ' ]';
-
-      return this.getProjectDigest(tasklets, start, end, topic);
-    } else {
-      const topic = DateService.getWeekDayString(new Date(start).getDay());
-
-      return this.getProjectDigest(tasklets, start, end, topic);
-    }
-  }
-
-  /**
-   * Generates a digest for a whole week
-   * @param date one day in the week to create the digest for
-   * @returns digest for the week determined by the given date
-   */
-  getWeeklyDigest(date: Date): ProjectDigest {
-    const start = DateService.getWeekStart(date);
-    const end = DateService.getWeekEnd(date);
-
-    const tasklets = this.getTaskletsOfPeriod(start, end, Array.from(this.taskletService.tasklets.values()));
-    const topic = 'Week ' + DateService.getWeekNumber(new Date(start))
-      + ' (' + DateService.getDateRangeString(new Date(start), new Date(end)) + ')';
-
-    return this.getProjectDigest(tasklets, start, end, topic);
-  }
-
-  /**
    * Generates a project digest for a given period of time
    * @param tasklets tasklets
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
    * @param start start date
    * @param end end date
    * @param topic to be displayed as root node
    */
-  getProjectDigest(tasklets: Tasklet[], start: Date, end: Date, topic: string): ProjectDigest {
+  static getProjectDigest(tasklets: Tasklet[],
+                          tasksMap: Map<string, Task>, projectsMap: Map<string, Project>,
+                          start: Date, end: Date, topic: string): ProjectDigest {
     const projectDigest = new ProjectDigest();
 
     if (tasklets.length !== 0) {
@@ -99,7 +53,7 @@ export class DigestService {
           const minutesNew = DateService.getRoundedMinutes((diff / 60000));
 
           // Get existing efforts (project)
-          let project = this.taskletService.getProjectByTasklet(tasklet);
+          let project = TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap);
           if (project == null) {
             project = new Project(PlaceholderValues.UNSPECIFIED_PROJECT);
             project.id = PlaceholderValues.EMPTY_PROJECT_ID;
@@ -111,7 +65,7 @@ export class DigestService {
           }
 
           // Get existing efforts (task)
-          let task = this.taskletService.getTaskByTasklet(tasklet);
+          let task = TaskletService.getTaskByTasklet(tasklet, tasksMap);
           if (task == null) {
             task = new Task(PlaceholderValues.UNSPECIFIED_TASK);
             task.id = PlaceholderValues.EMPTY_TASK_ID;
@@ -134,6 +88,63 @@ export class DigestService {
 
     return projectDigest;
   }
+
+  /**
+   * Constructor
+   * @param taskletService tasklet service
+   */
+  constructor(private taskletService: TaskletService) {
+  }
+
+  /**
+   * Generates a digest for given day
+   * @param date day to create digest for
+   * @param tasklets tasklets
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @returns digest for the given date
+   */
+  getDailyDigest(date: Date, tasklets: Tasklet[], tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): ProjectDigest {
+    const start = DateService.getDayStart(date);
+    const end = DateService.getDayEnd(date);
+
+    const taskletsOfPeriod = this.getTaskletsOfPeriod(start, end, tasklets);
+    const firstTasklet = taskletsOfPeriod[0];
+    const lastTasklet = taskletsOfPeriod[taskletsOfPeriod.length - 1];
+
+    if (firstTasklet != null && lastTasklet != null) {
+      const firstTaskletStart = firstTasklet.creationDate;
+      const lastTaskletEnd = taskletsOfPeriod[taskletsOfPeriod.length - 1].creationDate;
+      const topic = DateService.getWeekDayString(new Date(start).getDay()) +
+        ' [ ' + DateService.getTimeString(firstTaskletStart) + ' - ' + DateService.getTimeString(lastTaskletEnd) + ' ]';
+
+      return DigestService.getProjectDigest(taskletsOfPeriod, tasksMap, projectsMap, start, end, topic);
+    } else {
+      const topic = DateService.getWeekDayString(new Date(start).getDay());
+
+      return DigestService.getProjectDigest(taskletsOfPeriod, tasksMap, projectsMap, start, end, topic);
+    }
+  }
+
+  /**
+   * Generates a digest for a whole week
+   * @param date one day in the week to create the digest for
+   * @param tasklets tasklets
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @returns digest for the week determined by the given date
+   */
+  getWeeklyDigest(date: Date, tasklets: Tasklet[], tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): ProjectDigest {
+    const start = DateService.getWeekStart(date);
+    const end = DateService.getWeekEnd(date);
+
+    const taskletsOfPeriod = this.getTaskletsOfPeriod(start, end, tasklets);
+    const topic = 'Week ' + DateService.getWeekNumber(new Date(start))
+      + ' (' + DateService.getDateRangeString(new Date(start), new Date(end)) + ')';
+
+    return DigestService.getProjectDigest(taskletsOfPeriod, tasksMap, projectsMap, start, end, topic);
+  }
+
 
   /**
    * Retrieves all tasklets of a given period

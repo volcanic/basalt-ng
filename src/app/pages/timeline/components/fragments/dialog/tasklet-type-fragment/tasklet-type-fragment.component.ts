@@ -90,7 +90,9 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     // Update color of all actions
-    this.taskletTypeActions.forEach(this.updateActionColor);
+    this.taskletTypeActions.forEach(action => {
+      return this.updateActionColor(action);
+    });
   }
 
   //
@@ -124,7 +126,9 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
     this.selectedGroup = action.group;
 
     // Update color of all actions
-    this.taskletTypeActions.forEach(this.updateActionColor);
+    this.taskletTypeActions.forEach(a => {
+      this.updateActionColor(a);
+    });
   }
 
   /**
@@ -188,7 +192,7 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    * @param type tasklet type
    */
   public getIconByTaskletType(type: TaskletType): string {
-    return this.taskletService.getIconByTaskletType(type);
+    return TaskletService.getIconByTaskletType(type);
   }
 
   /**
@@ -226,7 +230,7 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
     action.group = group;
     action.backgroundColor = this.getGroupColor(group);
     action.iconColor = this.getGroupContrast(group);
-    action.icon = this.taskletService.getIconByTaskletTypeGroup(group);
+    action.icon = TaskletService.getIconByTaskletTypeGroup(group);
     action.label = group.toString();
     action.taskletTypes = this.taskletService.getTaskletTypesByGroup(group).filter(type => {
       return type !== TaskletType.DEVELOPMENT

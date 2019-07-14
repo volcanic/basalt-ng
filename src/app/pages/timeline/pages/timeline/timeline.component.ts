@@ -10,7 +10,7 @@ import {UploadDialogComponent} from '../../components/dialogs/upload-dialog/uplo
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {Project} from 'app/core/entity/model/project.model';
 import {EntityService} from 'app/core/entity/services/entity.service';
-import {ProjectService} from 'app/core/entity/services/project.service';
+import {ProjectService} from 'app/core/entity/services/project/project.service';
 import {TaskService} from 'app/core/entity/services/task/task.service';
 import {Task} from 'app/core/entity/model/task.model';
 import {ProjectDialogComponent} from '../../components/dialogs/project-dialog/project-dialog.component';
@@ -26,11 +26,11 @@ import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
 import {DateService} from 'app/core/entity/services/date.service';
 import {Scope} from 'app/core/entity/model/scope.enum';
 import {ScopeService} from 'app/core/entity/services/scope.service';
-import {TagService} from 'app/core/entity/services/tag.service';
+import {TagService} from 'app/core/entity/services/tag/tag.service';
 import {TagDialogComponent} from '../../components/dialogs/tag-dialog/tag-dialog.component';
 import {PersonDialogComponent} from '../../components/dialogs/person-dialog/person-dialog.component';
 import {Person} from 'app/core/entity/model/person.model';
-import {PersonService} from 'app/core/entity/services/person.service';
+import {PersonService} from 'app/core/entity/services/person/person.service';
 import {TagListDialogComponent} from '../../components/dialogs/tag-list-dialog/tag-list-dialog.component';
 import {MatchService} from 'app/core/entity/services/match.service';
 import {ConfirmationDialogComponent} from 'app/ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
@@ -75,6 +75,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   /** App title */
   title = environment.APP_NAME;
 
+  /** Map of tasklets */
+  public taskletsMap = new Map<string, Tasklet>();
   /** Array of tasklets */
   public tasklets: Tasklet[] = [];
 
@@ -224,16 +226,11 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.tasksMap = new Map(this.taskService.tasks);
-    this.projectsMap = new Map(this.projectService.projects);
-    this.tagsMap = new Map(this.tagService.tags);
-    this.personsMap = new Map(this.personService.persons);
-
-    this.initializeTasklets(Array.from(this.taskletService.tasklets.values()));
-    this.initializeTasks(Array.from(this.taskService.tasks.values()));
-    this.initializeProjects(Array.from(this.projectService.projects.values()));
-    this.initializeTags(Array.from(this.tagService.tags.values()));
-    this.initializePersons(Array.from(this.personService.persons.values()));
+    this.initializeTasklets(new Map(this.taskletService.tasklets));
+    this.initializeTasks(new Map(this.taskService.tasks));
+    this.initializeProjects(new Map(this.projectService.projects));
+    this.initializeTags(new Map(this.tagService.tags));
+    this.initializePersons(new Map(this.personService.persons));
 
     this.initializeTaskletSubscription();
     this.initializeTaskSubscription();
@@ -244,7 +241,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeFilterSubscription();
     this.initializeSuggestionSubscription();
 
-    this.initializeDateSubscription();
     this.initializeWeeklyDigest();
     this.initializeDailyDigests();
 
@@ -256,6 +252,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.clearFilters();
     this.findEntities();
+
+    this.initializeDateSubscription();
   }
 
   /**
@@ -289,19 +287,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        this.initializeTasklets(value as Tasklet[]);
+        this.initializeTasklets(value as Map<string, Tasklet>);
       }
     });
   }
 
   /**
    * Initializes tasklets by filtering them
-   * @param tasklets tasklets
+   * @param taskletsMap tasklets map
    */
-  private initializeTasklets(tasklets: Tasklet[]) {
-    this.tasklets = tasklets.filter(tasklet => {
+  private initializeTasklets(taskletsMap: Map<string, Tasklet>) {
+    this.taskletsMap = new Map(taskletsMap);
+    this.tasklets = Array.from(taskletsMap.values()).filter(tasklet => {
       return this.filterTasklet(tasklet);
-    });
+    }).sort(TaskletService.sortTaskletsByCreationDate);
 
     // Digests
     this.generateWeeklyDigest(this.indicatedDate);
@@ -313,19 +312,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param tasklet tasklet
    */
   private filterTasklet(tasklet: Tasklet): boolean {
-    const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.filterService.searchItem);
-    const matchesInheritedSearchItem = this.matchService
-      .taskMatchesEveryItem(this.taskService.tasks.get(tasklet.taskId), this.filterService.searchItem);
-    const matchesTasks = this.matchService
-      .taskletMatchesTasks(tasklet, Array.from(this.filterService.tasks.values()));
-    const matchesProjects = this.matchService
-      .taskletMatchesProjects(tasklet, Array.from(this.filterService.projects.values()));
-    const matchesTags = this.matchService
-      .taskletMatchesTags(tasklet, Array.from(this.filterService.tags.values()));
-    const matchesInheritedTags = this.matchService
-      .taskMatchesTags(this.taskService.tasks.get(tasklet.taskId), Array.from(this.filterService.tags.values()));
-    const matchesPersons = this.matchService
-      .taskletMatchesPersons(tasklet, Array.from(this.filterService.persons.values()));
+    const matchesSearchItem = this.matchService.taskletMatchesEveryItem(tasklet, this.tasksMap, this.projectsMap, this.filterService.searchItem);
+    const matchesInheritedSearchItem = this.matchService.taskMatchesEveryItem(this.taskService.tasks.get(tasklet.taskId), this.filterService.searchItem);
+    const matchesTasks = this.matchService.taskletMatchesTasks(tasklet, this.filterService.tasks);
+    const matchesProjects = this.matchService.taskletMatchesProjects(tasklet, this.tasksMap, this.filterService.projects);
+    const matchesTags = this.matchService.taskletMatchesTags(tasklet, this.filterService.tags);
+    const matchesInheritedTags = this.matchService.taskMatchesTags(this.taskService.tasks.get(tasklet.taskId), this.filterService.tags);
+    const matchesPersons = this.matchService.taskletMatchesPersons(tasklet, this.filterService.persons);
 
     return (matchesSearchItem || matchesInheritedSearchItem)
       && matchesTasks
@@ -345,25 +338,25 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.taskService.tasksSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
-      // Create new instance to trigger change detection of child components
-      this.tasksMap = new Map(this.taskService.tasks);
-      // Notify parent service (if a task's name is changed the label on a tasklet shall be updated as well)
-      this.taskletService.notify();
-
       if (value != null) {
-        this.initializeTasks(value as Task[]);
+        // Initialize tasks
+        this.initializeTasks(value as Map<string, Task>);
+
+        // Notify parent service (if a task's name is changed the label on a tasklet shall be updated as well)
+        this.taskletService.notify();
       }
     });
   }
 
   /**
    * Initializes tasks by filtering them
-   * @param tasks tasks
+   * @param tasksMap tasks map
    */
-  private initializeTasks(tasks: Task[]) {
-    this.tasks = tasks.filter(task => {
+  private initializeTasks(tasksMap: Map<string, Task>) {
+    this.tasksMap = new Map(tasksMap);
+    this.tasks = Array.from(tasksMap.values()).filter(task => {
       return this.filterTask(task);
-    }).sort(this.taskService.sortTasks);
+    }).sort(TaskService.sortTasks);
   }
 
   /**
@@ -372,9 +365,9 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private filterTask(task: Task): boolean {
     const matchesSearchItem = this.matchService.taskMatchesEveryItem(task, this.filterService.searchItem);
-    const matchesProjects = this.matchService.taskMatchesProjects(task, Array.from(this.filterService.projects.values()));
-    const matchesTags = this.matchService.taskMatchesTags(task, Array.from(this.filterService.tags.values()));
-    const matchesPersons = this.matchService.taskMatchesPersons(task, Array.from(this.filterService.persons.values()));
+    const matchesProjects = this.matchService.taskMatchesProjects(task, this.filterService.projects);
+    const matchesTags = this.matchService.taskMatchesTags(task, this.filterService.tags);
+    const matchesPersons = this.matchService.taskMatchesPersons(task, this.filterService.persons);
 
     return matchesSearchItem && matchesProjects && matchesTags && matchesPersons;
   }
@@ -390,25 +383,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
-      // Create new instance to trigger change detection of child components
-      this.projectsMap = new Map(this.projectService.projects);
-      // Notify parent service (if a project's name is changed the lable on a tasklet shall be updated as well)
-      this.taskletService.notify();
+      // Initialize projects
+      this.initializeProjects(value as Map<string, Project>);
 
-      if (value != null) {
-        this.initializeProjects((value as Project[]));
-      }
+      // Notify parent service (if a task's name is changed the label on a tasklet shall be updated as well)
+      this.taskletService.notify();
     });
   }
 
   /**
    * Initializes projects by filtering them
-   * @param projects projects
+   * @param projectsMap projects map
    */
-  private initializeProjects(projects: Project[]) {
-    this.projects = projects.filter(project => {
+  private initializeProjects(projectsMap: Map<string, Project>) {
+    this.projectsMap = new Map(projectsMap);
+    this.projects = Array.from(projectsMap.values()).filter(project => {
       return this.filterProject(project);
-    });
+    }).sort(ProjectService.sortProjectsByName)
+      .sort(ProjectService.sortProjectsByModificationDate);
 
     // Digests
     this.generateWeeklyDigest(this.indicatedDate);
@@ -438,23 +430,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tagService.tagsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
-      // Create new instance to trigger change detection of child components
-      this.tagsMap = new Map(this.tagService.tags);
+      // Initialize tags
+      this.initializeTags(value as Map<string, Tag>);
 
-      if (value != null) {
-        this.initializeTags(value as Tag[]);
-      }
+      // Notify parent service (if a task's name is changed the label on a tasklet shall be updated as well)
+      this.taskletService.notify();
     });
   }
 
   /**
    * Initializes tags by filtering them
-   * @param tags tags
+   * @param tagsMap tags map
    */
-  private initializeTags(tags: Tag[]) {
-    this.tags = tags.filter(tag => {
+  private initializeTags(tagsMap: Map<string, Tag>) {
+    this.tagsMap = new Map(tagsMap);
+    this.tags = Array.from(tagsMap.values()).filter(tag => {
       return this.filterTag(tag);
-    });
+    }).sort(TagService.sortTagsByName)
+      .sort(TagService.sortTagsByModificationDate);
 
     const usedTagIds = new Map<string, string>();
     Array.from(this.taskletService.tasklets.values()).forEach(tasklet => {
@@ -490,23 +483,24 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     this.personService.personsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
-      // Create new instance to trigger change detection of child components
-      this.personsMap = new Map(this.personService.persons);
+      // Initialize persons
+      this.initializePersons(value as Map<string, Person>);
 
-      if (value != null) {
-        this.initializePersons(value as Person[]);
-      }
+      // Notify parent service (if a task's name is changed the label on a tasklet shall be updated as well)
+      this.taskletService.notify();
     });
   }
 
   /**
    * Initializes persons by filtering them
-   * @param persons persons
+   * @param personsMap persons map
    */
-  private initializePersons(persons: Person[]) {
-    this.persons = persons.filter(person => {
+  private initializePersons(personsMap: Map<string, Person>) {
+    this.personsMap = new Map(personsMap);
+    this.persons = Array.from(personsMap.values()).filter(person => {
       return this.filterPerson(person);
-    });
+    }).sort(PersonService.sortPersonsByName)
+      .sort(PersonService.sortPersonsByModificationDate);
   }
 
   /**
@@ -609,16 +603,18 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes date subscription
    */
   private initializeDateSubscription() {
-    this.taskletService.dateQueueSubject.subscribe(date => {
-      // Date indicator
-      this.indicatedDate = date;
-      this.indicatedDay = DateService.getDayOfMonthString(date);
-      this.indicatedMonth = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
+    setTimeout(() => {
+      this.taskletService.dateQueueSubject.subscribe(date => {
+        // Date indicator
+        this.indicatedDate = date;
+        this.indicatedDay = DateService.getDayOfMonthString(date);
+        this.indicatedMonth = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
 
-      // Digests
-      this.generateWeeklyDigest(this.indicatedDate);
-      this.generateDailyDigests(this.indicatedDate);
-    });
+        // Digests
+        this.generateWeeklyDigest(this.indicatedDate);
+        this.generateDailyDigests(this.indicatedDate);
+      });
+    }, 5000);
   }
 
   /**
@@ -799,7 +795,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.evaluateTaskletPersons(tasklet, persons);
 
         // Create tasklet itself
-        this.taskletService.createTasklet(tasklet).then(() => {
+        this.taskletService.createTasklet(tasklet, this.tasksMap, this.projectsMap).then(() => {
           this.snackbarService.showSnackbar('Added tasklet');
         });
         break;
@@ -811,7 +807,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.evaluateTaskletPersons(tasklet, persons);
 
         // Update tasklet itself
-        this.taskletService.updateTasklet(tasklet).then(() => {
+        this.taskletService.updateTasklet(tasklet, this.tasksMap, this.projectsMap).then(() => {
           this.snackbarService.showSnackbar('Updated tasklet');
         });
         break;
@@ -2150,7 +2146,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param date focus date
    */
   private generateWeeklyDigest(date: Date) {
-    this.weeklyDigest = this.digestService.getWeeklyDigest(date);
+    this.weeklyDigest = this.digestService.getWeeklyDigest(date, this.tasklets, this.tasksMap, this.projectsMap);
   }
 
   /**
@@ -2165,7 +2161,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
     // Iterate over all weekdays
     [0, 1, 2, 3, 4, 5, 6].forEach(index => {
       const focusDate = new Date(day.setDate(weekStart.getDate() + index));
-      const dailyDigest = this.digestService.getDailyDigest(focusDate);
+      const dailyDigest = this.digestService.getDailyDigest(focusDate, this.tasklets, this.tasksMap, this.projectsMap);
 
       if (dailyDigest.getProjectEffortSum() > 0) {
         this.dailyDigests.push(dailyDigest);

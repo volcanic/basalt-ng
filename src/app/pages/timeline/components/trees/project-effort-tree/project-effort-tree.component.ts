@@ -1,9 +1,19 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChildren
+} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {Observable, of as observableOf} from 'rxjs';
 import {ColorService} from 'app/core/ui/services/color.service';
 import {ProjectDigest} from 'app/core/digest/model/project-digest.model';
+import {DateService} from '../../../../../core/entity/services/date.service';
 
 /**
  * Represents a tree node
@@ -46,10 +56,12 @@ export class EffortFlatNode {
   styleUrls: ['./project-effort-tree.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProjectEffortTreeComponent implements OnInit, OnChanges {
+export class ProjectEffortTreeComponent implements OnInit, AfterViewInit, OnChanges {
 
   /** Project digest to be displayed */
   @Input() projectDigest: ProjectDigest;
+  /** Whether or not the tree is opened by default */
+  @Input() opened: false;
 
   /** Tree control */
   treeControl: FlatTreeControl<EffortFlatNode>;
@@ -57,13 +69,6 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
   treeFlattener: MatTreeFlattener<EffortNode, EffortFlatNode>;
   /** Data source */
   dataSource: MatTreeFlatDataSource<EffortNode, EffortFlatNode>;
-
-  /**
-   * Constructor
-   * @param colorService color service
-   */
-  constructor(private colorService: ColorService) {
-  }
 
   /**
    * Transforms an effort node into a effort flat node
@@ -90,6 +95,13 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
     return observableOf(node.children);
   }
 
+  /**
+   * Constructor
+   * @param colorService color service
+   */
+  constructor(private colorService: ColorService) {
+  }
+
   //
   // Lifecycle hooks
   //
@@ -103,11 +115,19 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Handles after-view-init lifecycle phase
+   */
+  ngAfterViewInit() {
+    this.initializeTreeExpansion();
+  }
+
+  /**
    * Handles on-change lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
     this.initializeTree();
     this.initializeTreeData();
+    this.initializeTreeExpansion();
   }
 
   //
@@ -129,6 +149,15 @@ export class ProjectEffortTreeComponent implements OnInit, OnChanges {
    */
   private initializeTreeData() {
     this.dataSource.data = this.buildTree();
+  }
+
+  /**
+   * Initializes tree expansion
+   */
+  private initializeTreeExpansion() {
+    if (this.opened || DateService.isToday(this.projectDigest.start)) {
+      this.treeControl.expandAll();
+    }
   }
 
   //

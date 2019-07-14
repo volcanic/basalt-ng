@@ -10,9 +10,9 @@ import {PouchDBSettingsServiceMock} from '../../persistence/services/pouchdb-set
 import {CloneService} from './clone.service';
 import {TaskletService} from './tasklet/tasklet.service';
 import {TaskService} from './task/task.service';
-import {ProjectService} from './project.service';
-import {TagService} from './tag.service';
-import {PersonService} from './person.service';
+import {ProjectService} from './project/project.service';
+import {TagService} from './tag/tag.service';
+import {PersonService} from './person/person.service';
 
 describe('FilterService', () => {
   beforeEach(() => {
