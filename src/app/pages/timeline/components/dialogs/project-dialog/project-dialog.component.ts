@@ -93,7 +93,7 @@ export class ProjectDialogComponent implements OnInit {
       return hue.contrast;
     });
     this.colorsDisabled = this.colorOptions.filter(color => {
-      return this.project.color !== color && this.projects.some(project => {
+      return this.project != null && this.project.color !== color && this.projects.some(project => {
         return project.color != null && project.color === color;
       });
     });

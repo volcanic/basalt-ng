@@ -18,7 +18,7 @@
   <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
   <button mat-button class="entity flexbox" [disabled]="!active">
     <span class="flexcontainer">
-      <span class="list-icon">
+      <span *ngIf="project != null" class="list-icon">
         <mat-icon *ngIf="project.color == null" class="icon" svgIcon="alias_project"
                   (click)="onProjectIconClicked()"></mat-icon>
         <mat-icon *ngIf="project.color != null" class="icon" svgIcon="alias_project"

@@ -1,5 +1,6 @@
 <div class="container">
-  <app-color-picker [colorOptions]="colorOptions" [contrastOptions]="contrastOptions"
+  <app-color-picker *ngIf="project != null"
+                    [colorOptions]="colorOptions" [contrastOptions]="contrastOptions"
                     [colorsDisabled]="colorsDisabled" [selected]="project.color"
                     (colorSelectedEmitter)="onColorSelected($event)"></app-color-picker>
 </div>

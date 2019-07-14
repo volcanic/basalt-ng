@@ -102,7 +102,11 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    */
   initializeTaskletTypeGroups() {
     this.taskletTypeActions = [];
-    this.taskletTypeGroups.filter(this.filterTaskletTypes).forEach(this.initializeTaskletTypeGroup);
+    this.taskletTypeGroups.filter(group => {
+      return this.filterTaskletTypes(group);
+    }).forEach(group => {
+      this.initializeTaskletTypeGroup(group);
+    });
   }
 
   //
@@ -195,21 +199,22 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
     return group !== TaskletTypeGroup.UNSPECIFIED
       && group !== TaskletTypeGroup.BREAK
       && !(group === TaskletTypeGroup.SCRUM && this.isTaskletTypeScrumEnabled())
-      && !(group === TaskletTypeGroup.DEVELOPMENT && this.isTaskletTypeDevelopmentEnabled());
+      && !(group === TaskletTypeGroup.DEVELOPMENT && this.isTaskletTypeDevelopmentEnabled())
+      ;
   }
 
   /**
    * Determines whether tasklet type scrum is enabled
    */
   private isTaskletTypeScrumEnabled(): boolean {
-    return !this.featureService.isFeatureActive(FeatureType.SCRUM) || !environment.FEATURE_TOGGLE_SCRUM;
+    return !(this.featureService.isFeatureActive(FeatureType.SCRUM) || !environment.FEATURE_TOGGLE_SCRUM);
   }
 
   /**
    * Determines whether tasklet type development is enabled
    */
   private isTaskletTypeDevelopmentEnabled(): boolean {
-    return !this.featureService.isFeatureActive(FeatureType.DEVELOPMENT) || !environment.FEATURE_TOGGLE_DEVELOPMENT;
+    return !(this.featureService.isFeatureActive(FeatureType.DEVELOPMENT) || !environment.FEATURE_TOGGLE_DEVELOPMENT);
   }
 
   /**

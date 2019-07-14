@@ -238,7 +238,9 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes parameters
    */
   private initializeParameters() {
-    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.route.snapshot != null) {
+      this.id = this.route.snapshot.paramMap.get('id');
+    }
 
     if (this.id === null) {
       this.mode = DialogMode.ADD;

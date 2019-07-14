@@ -11,11 +11,11 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class ColorPickerComponent {
 
   /** Color options */
-  @Input() colorOptions: string[];
+  @Input() colorOptions = [];
   /** Contrast options */
-  @Input() contrastOptions: string[];
+  @Input() contrastOptions = [];
   /** Disabled colors */
-  @Input() colorsDisabled: string[];
+  @Input() colorsDisabled = [];
   /** Currently selected color */
   @Input() selected: string;
   /** Whether or not there should be a reset option */

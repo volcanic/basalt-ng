@@ -7,6 +7,11 @@ import {PouchDBService} from '../../../../../../core/persistence/services/pouchd
 import {PouchDBServiceMock} from '../../../../../../core/persistence/services/pouchdb.service.mock';
 import {PouchDBSettingsService} from '../../../../../../core/persistence/services/pouchdb-settings.service';
 import {PouchDBSettingsServiceMock} from '../../../../../../core/persistence/services/pouchdb-settings.service.mock';
+import {ColorService} from '../../../../../../core/ui/services/color.service';
+import {FeatureService} from '../../../../../../core/settings/services/feature.service';
+import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
+import {MaterialColorService} from '../../../../../../core/ui/services/material-color.service';
+import {SettingsService} from '../../../../../../core/settings/services/settings.service';
 
 describe('TaskletTypeFragmentComponent', () => {
   let component: TaskletTypeFragmentComponent;
@@ -17,6 +22,11 @@ describe('TaskletTypeFragmentComponent', () => {
       imports: [TimelineImports],
       declarations: [TimelineDeclarations],
       providers: [
+        ColorService,
+        FeatureService,
+        MaterialColorService,
+        SettingsService,
+        TaskletService,
         {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
       ]

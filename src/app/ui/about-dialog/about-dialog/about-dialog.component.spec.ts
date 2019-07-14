@@ -5,7 +5,7 @@ import {AboutDialogImports} from '../about-dialog.imports';
 import {AboutDialogDeclarations} from '../about-dialog.declarations';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
-describe('AboutDialogComponent', () => {
+xdescribe('AboutDialogComponent', () => {
   let component: AboutDialogComponent;
   let fixture: ComponentFixture<AboutDialogComponent>;
 

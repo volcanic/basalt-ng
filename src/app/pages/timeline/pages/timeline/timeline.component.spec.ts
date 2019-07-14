@@ -28,6 +28,8 @@ import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
 import {NgZone, NO_ERRORS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
 
 xdescribe('TimelineComponent', () => {
   let component: TimelineComponent;
@@ -65,6 +67,11 @@ xdescribe('TimelineComponent', () => {
         {provide: NgZone, useValue: mockNgZone},
         {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
+        {
+          provide: ActivatedRoute, useValue: {
+            params: of({id: 'mock'})
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

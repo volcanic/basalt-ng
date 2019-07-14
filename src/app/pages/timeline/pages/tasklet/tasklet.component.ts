@@ -219,7 +219,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initializeData();
 
     this.route.params.subscribe(() => {
-      this.id = this.route.snapshot.paramMap.get('id');
+      if (this.route.snapshot != null) {
+        this.id = this.route.snapshot.paramMap.get('id');
+      }
       this.findEntities();
     });
   }
@@ -247,7 +249,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Initializes parameters
    */
   private initializeParameters() {
-    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.route.snapshot != null) {
+      this.id = this.route.snapshot.paramMap.get('id');
+    }
 
     if (this.id === null) {
       this.mode = DialogMode.ADD;
