@@ -155,7 +155,7 @@ export class ProjectEffortTreeComponent implements OnInit, AfterViewInit, OnChan
    * Initializes tree expansion
    */
   private initializeTreeExpansion() {
-    if (this.opened || DateService.isToday(this.projectDigest.start)) {
+    if (this.opened || (this.projectDigest != null && DateService.isToday(this.projectDigest.start))) {
       this.treeControl.expandAll();
     }
   }
