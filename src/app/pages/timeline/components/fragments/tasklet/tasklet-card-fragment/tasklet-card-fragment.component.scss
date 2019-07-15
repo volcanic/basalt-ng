@@ -229,6 +229,10 @@ mat-card-header {
 
 .mat-card-header-text {
   margin: 0 !important;
+
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
 }
 
 mat-card-content {
