@@ -461,6 +461,11 @@ export class DateService {
     return new Date(date).getDate().toString();
   }
 
+  /**
+   * Returns day of the week as a string
+   * @param date date to get string for
+   * @return week string for the given date
+   */
   static getDayOfWeekString(date: Date): string {
     return DateService.getWeekDayString(new Date(date).getDay());
   }
