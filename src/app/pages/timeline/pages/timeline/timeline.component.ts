@@ -135,7 +135,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   public media: Media = Media.UNDEFINED;
 
   /** Enum of scope types */
-  public scopeType = Scope;
+  // public scopeType = Scope;
   /** Current scope */
   public scope: Scope = Scope.UNDEFINED;
 
@@ -450,15 +450,20 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
       .sort(TagService.sortTagsByModificationDate);
 
     const usedTagIds = new Map<string, string>();
-    Array.from(this.taskletService.tasklets.values()).forEach(tasklet => {
-      tasklet.tagIds.forEach(tagId => {
-        usedTagIds.set(tagId, tagId);
-      });
+    Array.from(this.taskletsMap.values()).forEach(tasklet => {
+      if (tasklet != null && tasklet.tagIds != null) {
+        tasklet.tagIds.forEach(tagId => {
+          usedTagIds.set(tagId, tagId);
+        });
+      }
     });
-    Array.from(this.taskService.tasks.values()).forEach(task => {
-      task.tagIds.forEach(tagId => {
-        usedTagIds.set(tagId, tagId);
-      });
+
+    Array.from(this.tasksMap.values()).forEach(task => {
+      if (task != null && task.tagIds != null) {
+        task.tagIds.forEach(tagId => {
+          usedTagIds.set(tagId, tagId);
+        });
+      }
     });
 
     this.unusedTags = this.tagService.getUnusedTags(Array.from(usedTagIds.values()));
