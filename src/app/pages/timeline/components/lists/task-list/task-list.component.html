@@ -9,7 +9,8 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <app-task-list-item *ngFor="let t of tasksOverdue" [task]="t" [media]="media" [active]="isInFocus(t)"
+    <app-task-list-item *ngFor="let t of tasksOverdue"
+                        [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
                         (taskEventEmitter)="onTaskEvent($event)">
     </app-task-list-item>
   </mat-expansion-panel>
@@ -25,7 +26,8 @@
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <app-task-list-item *ngFor="let t of tasksToday" [task]="t" [media]="media" [active]="isInFocus(t)"
+      <app-task-list-item *ngFor="let t of tasksToday"
+                          [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
                           (taskEventEmitter)="onTaskEvent($event)">
       </app-task-list-item>
     </mat-expansion-panel>
@@ -42,7 +44,8 @@
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <app-task-list-item *ngFor="let t of tasksLater" [task]="t" [media]="media" [active]="isInFocus(t)"
+      <app-task-list-item *ngFor="let t of tasksLater"
+                          [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
                           (taskEventEmitter)="onTaskEvent($event)">
       </app-task-list-item>
     </mat-expansion-panel>
@@ -75,7 +78,8 @@
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <app-task-list-item *ngFor="let t of tasksDelegated" [task]="t" [media]="media" [active]="isInFocus(t)"
+      <app-task-list-item *ngFor="let t of tasksDelegated"
+                          [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
                           (taskEventEmitter)="onTaskEvent($event)">
       </app-task-list-item>
     </mat-expansion-panel>
@@ -92,7 +96,8 @@
           </div>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <app-task-list-item *ngFor="let t of tasksRecurring" [task]="t" [media]="media" [active]="isInFocus(t)"
+      <app-task-list-item *ngFor="let t of tasksRecurring"
+                          [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
                           (taskEventEmitter)="onTaskEvent($event)">
       </app-task-list-item>
     </mat-expansion-panel>
@@ -105,7 +110,8 @@
           <span>Completed</span>
         </div>
       </mat-expansion-panel-header>
-      <app-task-list-item *ngFor="let t of tasksCompleted" [task]="t" [media]="media" [active]="isInFocus(t)"
+      <app-task-list-item *ngFor="let t of tasksCompleted"
+                          [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
                           (taskEventEmitter)="onTaskEvent($event)">
       </app-task-list-item>
     </mat-expansion-panel>
