@@ -242,11 +242,15 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
     if (this.hasChanged()) {
       switch (this.mode) {
         case DialogMode.ADD: {
-          this.addTask();
+          if (TaskService.containsDisplayAspect(TaskDisplayAspect.CAN_BE_CREATED, this.task)) {
+            this.addTask();
+          }
           break;
         }
         case DialogMode.UPDATE: {
-          this.updateTask();
+          if (TaskService.containsDisplayAspect(TaskDisplayAspect.CAN_BE_UPDATED, this.task)) {
+            this.updateTask();
+          }
           break;
         }
       }

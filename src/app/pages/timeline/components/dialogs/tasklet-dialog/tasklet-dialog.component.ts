@@ -333,8 +333,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
         break;
       }
       case DialogMode.CONTINUE: {
-        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_CONTINUED, this.tasklet, this.task)) {
-          this.continueTasklet();
+        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task)) {
+          this.updateTasklet();
         }
         break;
       }
