@@ -133,6 +133,19 @@ export class DateService {
    * @param referenceDate reference date
    * @returns true if given date is inside week of reference date
    */
+  static isInDay(date: Date, referenceDate: Date): boolean {
+    const beginningOfTheDay = DateService.getStartOfDay(referenceDate);
+    const endOfTheDay = DateService.getEndOfDay(referenceDate);
+
+    return new Date(date) >= beginningOfTheDay && new Date(date) <= endOfTheDay;
+  }
+
+  /**
+   * Determines if a given date is inside a week
+   * @param date date to check
+   * @param referenceDate reference date
+   * @returns true if given date is inside week of reference date
+   */
   static isInWeek(date: Date, referenceDate: Date): boolean {
     const beginningOfTheWeek = DateService.getBeginningOfTheWeek(new Date(referenceDate));
     const endOfTheWeek = DateService.getEndOfTheWeek(new Date(referenceDate));
@@ -207,6 +220,28 @@ export class DateService {
     endOfTheWeek.setDate(new Date(date).getDate() + daysTillSunday);
 
     return endOfTheWeek;
+  }
+
+  /**
+   * Returns the start-of-day of a give date which is 0:00 a.m.
+   * @param date date
+   */
+  static getStartOfDay(date: Date): Date {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0);
+
+    return startOfDay;
+  }
+
+  /**
+   * Returns the end-of-day of a give date which is 11:59 p.m.
+   * @param date date
+   */
+  static getEndOfDay(date: Date): Date {
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59);
+
+    return endOfDay;
   }
 
   /**

@@ -219,6 +219,11 @@ mat-card-header {
 
   display: flex;
   box-sizing: border-box;
+
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+
   width: 100%;
 }
 

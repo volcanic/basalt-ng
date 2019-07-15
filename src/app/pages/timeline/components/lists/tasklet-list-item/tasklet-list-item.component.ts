@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {MatMenuTrigger} from '@angular/material';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {DateService} from 'app/core/entity/services/date.service';
@@ -83,11 +73,13 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   date = '';
   /** Simple creation date */
   simpleDate = '';
+  /** Calendar week */
+  calendarWeek = '';
 
-  /** Reference to static service methods */
-  isToday = DateService.isToday;
-  /** Reference to static service methods */
-  isWithinNextDays = DateService.isWithinNextDays;
+  /** Whether or not the tasklet is the last of its week */
+  isLastOfWeek = false;
+  /** Whether or not the tasklet is the last of its day */
+  isLastOfDay = false;
 
   /**
    * Constructor
@@ -141,6 +133,10 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
       this.weekday = DateService.getWeekDayString(new Date(this.tasklet.creationDate).getDay());
       this.date = DateService.getDateString(new Date(this.tasklet.creationDate));
       this.simpleDate = DateService.getSimpleDateWithoutYearString(new Date(this.tasklet.creationDate));
+      this.calendarWeek = DateService.getWeekNumber(new Date(this.tasklet.creationDate)).toString();
+
+      this.isLastOfWeek = this.taskletService.isLastOfWeek(this.tasklet);
+      this.isLastOfDay = this.taskletService.isLastOfDay(this.tasklet);
     }
   }
 

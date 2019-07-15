@@ -411,6 +411,34 @@ export class TaskletService {
     return dailyScrumActivities;
   }
 
+  /**
+   * Determines if a given date is the last of its week
+   * @param tasklet tasklet
+   */
+  public isLastOfWeek(tasklet: Tasklet): boolean {
+    const taskletsOfWeek = Array.from(this.tasklets.values()).filter(t => {
+      return DateService.isInWeek(t.creationDate, tasklet.creationDate);
+    });
+
+    return taskletsOfWeek != null
+      && taskletsOfWeek.length > 0
+      && taskletsOfWeek.sort(TaskletService.sortTaskletsByCreationDate)[0].id === tasklet.id;
+  }
+
+  /**
+   * Determines if a given date is the last of its day
+   * @param tasklet tasklet
+   */
+  public isLastOfDay(tasklet: Tasklet): boolean {
+    const taskletsOfDay = Array.from(this.tasklets.values()).filter(t => {
+      return DateService.isInDay(t.creationDate, tasklet.creationDate);
+    });
+
+    return taskletsOfDay != null
+      && taskletsOfDay.length > 0
+      && taskletsOfDay.sort(TaskletService.sortTaskletsByCreationDate)[0].id === tasklet.id;
+  }
+
   //
   // Helpers
   //

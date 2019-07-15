@@ -1,8 +1,14 @@
 <div *ngIf="tasklet != null" [class]="themeClass">
   <!-- Top attachment -->
-  <div class="top-attached" *ngIf="tasklet != null && tasklet.type === taskletType.FINISHING_TIME">
-    {{ weekday }}, {{ date }}
-    <div class="top-connection-line"></div>
+  <div class="top-attached" *ngIf="isLastOfWeek">
+    <mat-chip class="week-indicator">
+      Week {{ calendarWeek }}
+    </mat-chip>
+  </div>
+  <div class="top-attached" *ngIf="isLastOfDay">
+    <mat-chip class="day-indicator">
+      {{ weekday }}, {{ date }}
+    </mat-chip>
   </div>
 
   <!-- Context menu -->
