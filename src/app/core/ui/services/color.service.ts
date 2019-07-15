@@ -58,18 +58,10 @@ export class ColorService {
 
   /** Array of available project colors */
   projectHues = [
-    this.materialColorService.hue(PaletteType.TEAL, HueType._100),
-    this.materialColorService.hue(PaletteType.TEAL, HueType._200),
-    this.materialColorService.hue(PaletteType.TEAL, HueType._300),
-    this.materialColorService.hue(PaletteType.GREEN, HueType._100),
-    this.materialColorService.hue(PaletteType.GREEN, HueType._200),
-    this.materialColorService.hue(PaletteType.GREEN, HueType._300),
-    this.materialColorService.hue(PaletteType.LIGHT_GREEN, HueType._100),
-    this.materialColorService.hue(PaletteType.LIGHT_GREEN, HueType._200),
-    this.materialColorService.hue(PaletteType.LIGHT_GREEN, HueType._300),
-    this.materialColorService.hue(PaletteType.LIME, HueType._100),
-    this.materialColorService.hue(PaletteType.LIME, HueType._200),
-    this.materialColorService.hue(PaletteType.LIME, HueType._300),
+    this.materialColorService.hue(PaletteType.GREY, HueType._100),
+    this.materialColorService.hue(PaletteType.GREY, HueType._200),
+    this.materialColorService.hue(PaletteType.GREY, HueType._300),
+    this.materialColorService.hue(PaletteType.GREY, HueType._300),
   ];
 
   /** Array of available project palettes to be chosen by the user */

@@ -26,7 +26,9 @@ export class EffortNode {
   /** Effort of the node */
   effort: number;
   /** Background color */
-  color = 'transparent';
+  backgroundColor = 'transparent';
+  /** Color */
+  color = 'black';
 }
 
 /**
@@ -40,7 +42,9 @@ export class EffortFlatNode {
   /** Effort of the node */
   effort: number;
   /** Background color */
-  color = 'transparent';
+  backgroundColor = 'transparent';
+  /** Text color */
+  color = 'black';
   /** Level of the node */
   level: number;
   /** Whether the node is expandable */
@@ -80,6 +84,7 @@ export class ProjectEffortTreeComponent implements OnInit, AfterViewInit, OnChan
     const flatNode = new EffortFlatNode();
     flatNode.topic = node.topic;
     flatNode.effort = node.effort;
+    flatNode.backgroundColor = node.backgroundColor;
     flatNode.color = node.color;
     flatNode.level = level;
     flatNode.expandable = !!node.children;
@@ -192,7 +197,8 @@ export class ProjectEffortTreeComponent implements OnInit, AfterViewInit, OnChan
         const projectEffortNode = new EffortNode();
         projectEffortNode.topic = pe.project.name;
         projectEffortNode.effort = pe.effort;
-        projectEffortNode.color = this.colorService.getProjectColor(pe.project);
+        projectEffortNode.backgroundColor = this.colorService.getProjectColor(pe.project);
+        projectEffortNode.color = this.colorService.getProjectContrast(pe.project);
         projectEffortNode.children = taskNodes;
 
         node.children.push(projectEffortNode);
