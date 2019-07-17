@@ -18,8 +18,8 @@ export class ColorPopoverComponent implements OnChanges {
 
   /** Project to be displayed */
   @Input() project: Project;
-  /** Array of all projects */
-  @Input() projects: Project[];
+  /** Map of projects */
+  @Input() projectsMap = new Map<string, Project>();
   /** Event emitter indicating project to be updated */
   @Output() projectEventEmitter = new EventEmitter<{ action: Action, project: Project, projects?: Project[] }>();
 
@@ -69,7 +69,7 @@ export class ColorPopoverComponent implements OnChanges {
       return hue.contrast;
     });
     this.colorsDisabled = this.colorOptions.filter(color => {
-      return this.project != null && this.project.color !== color && this.projects.some(project => {
+      return this.project != null && this.project.color !== color && Array.from(this.projectsMap.values()).some(project => {
         return project.color != null && project.color === color;
       });
     });

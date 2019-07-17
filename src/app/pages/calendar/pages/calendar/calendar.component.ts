@@ -62,8 +62,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
    * Initializes tasklet subscription
    */
   private initializeTaskletSubscription() {
-    this.tasklets = Array.from(this.taskletService.tasklets.values());
-
     this.taskletService.taskletsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {

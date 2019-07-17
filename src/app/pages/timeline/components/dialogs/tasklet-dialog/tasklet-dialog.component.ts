@@ -57,6 +57,13 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   /** Temporarily displayed persons */
   persons: Person[] = [];
 
+  /** Map of taskslets */
+  taskletsMap = new Map<string, Task>();
+  /** Map of tasks */
+  tasksMap = new Map<string, Task>();
+  /** Map of tag */
+  tagsMap = new Map<string, Tag>();
+
   /** Task options */
   taskOptions: string[];
   /** Tag options */
@@ -134,6 +141,10 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.persons = this.data.persons != null ? CloneService.clonePersons(this.data.persons) : [];
     this.previousDescription = this.data.previousDescription != null ? CloneService.cloneDescription(this.data.previousDescription) : null;
     this.previousDailyScrumItems = this.data.previousDailyScrumItems;
+
+    this.taskletsMap = this.data.taskletsMap;
+    this.tasksMap = this.data.tasksMap;
+    this.tagsMap = this.data.tagMap;
   }
 
   /**
@@ -164,7 +175,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   private initializeInheritedTags() {
     if (this.task != null) {
       this.inheritedTags = this.task.tagIds.map(id => {
-        return this.tagService.tags.get(id);
+        return this.tagsMap.get(id);
       });
     } else {
       this.inheritedTags = [];
@@ -188,7 +199,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * @param taskName new task name
    */
   onTaskNameChanged(taskName: string) {
-    this.task = this.taskService.getTaskByName(taskName);
+    this.task = this.taskService.getTaskByName(taskName, this.tasksMap);
     this.task = (this.task != null) ? this.task : new Task();
     this.task.name = taskName;
 

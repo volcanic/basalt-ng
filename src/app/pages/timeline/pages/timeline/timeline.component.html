@@ -11,6 +11,7 @@
 
 <mat-sidenav-container class="sidenav-container" layout="column">
   <div class="sidenav-inner-container"></div>
+
   <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
                position="start" [opened]="sidenavOpened"
                class="sidenav sidenav-start">
@@ -21,16 +22,16 @@
           <app-project-effort-tree [projectDigest]="dailyDigest" opened=false></app-project-effort-tree>
         </div>
         <mat-divider></mat-divider>
-
-        <app-project-list [projects]="projects" [projectsFiltered]="projectsFiltered" [recentCount]="'3'"
-                          [media]="media"
+        <app-project-list [projectsMap]="projectsMapFiltered" [projectsMapFilter]="projectsMapFilter"
+                          [recentCount]="'3'" [media]="media"
                           (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
         <mat-divider></mat-divider>
-        <app-tag-list [tags]="tags" [tagsFiltered]="tagsFiltered" [unusedTags]="unusedTags" [recentCount]="'10'"
-                      [media]="media"
+        <app-tag-list [tagsMap]="tagsMapFiltered" [tagsMapFilter]="tagsMapFilter" [tagsMapUnused]="tagsMapUnused"
+                      [recentCount]="'10'" [media]="media"
                       (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
         <mat-divider></mat-divider>
-        <app-person-list [persons]="persons" [personsFiltered]="personsFiltered" [recentCount]="'10'" [media]="media"
+        <app-person-list [personsMap]="personsMapFiltered" [personsMapFilter]="personsMapFilter"
+                         [recentCount]="'10'" [media]="media"
                          (personEventEmitter)="onPersonEvent($event)"></app-person-list>
       </div>
     </div>
@@ -41,7 +42,8 @@
                class="sidenav sidenav-end">
     <div [@toolbarAnimation]="scrollDirection">
       <div class="sidenav-inner-container">
-        <app-task-list [tasks]="tasks" [projectsMap]="projectsMap" [tasksFiltered]="tasksFiltered" [media]="media"
+        <app-task-list [tasksMap]="tasksMapFiltered" [tasksMapFiltered]="tasksMapFilter" [projectsMap]="projectsMap"
+                       [media]="media"
                        (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
       </div>
     </div>
@@ -50,12 +52,13 @@
   <mat-sidenav-content cdkScrollable>
     <div class="content">
       <app-suggested-actions *ngIf="env.FEATURE_TOGGLE_SUGGESTED_ACTIONS"
-                             [suggestedTasks]="tasks"
+                             [suggestedTasks]="tasksMap"
+                             [taskletsMap]="taskletsMap"
                              (taskletEventEmitter)="onTaskletEvent($event)"
                              (taskEventEmitter)="onTaskEvent($event)"></app-suggested-actions>
 
-      <app-tasklet-list [tasklets]="tasklets" [media]="media" [tasks]="tasksMap" [projects]="projectsMap"
-                        [tags]="tagsMap" [persons]="personsMap"
+      <app-tasklet-list [taskletsMap]="taskletsMapFiltered" [tasksMap]="tasksMap" [projectsMap]="projectsMap"
+                        [tagsMap]="tagsMap" [personsMap]="personsMap" [media]="media"
                         (taskletEventEmitter)="onTaskletEvent($event)"
                         (taskletCreationDateEventEmitter)="onTaskletCreationDateEvent($event)"></app-tasklet-list>
     </div>
@@ -108,11 +111,3 @@
 
   </eco-fab-speed-dial-actions>
 </eco-fab-speed-dial>
-
-<!-- Old Floating Action Button
-<button mat-fab class="fab" [@fabAnimation]="scrollDirection"
-        (click)="onAddTaskletClicked()">
-  <mat-icon svgIcon="add" class="icon-accent-contrast"></mat-icon>
-</button>
--->
-

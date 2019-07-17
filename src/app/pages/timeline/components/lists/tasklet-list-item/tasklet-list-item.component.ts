@@ -26,19 +26,22 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
+  /** Map of tasklets */
+  @Input() taskletsMap = new Map<string, Tasklet>();
+  /** Map of tasks */
+  @Input() tasksMap = new Map<string, Task>();
+  /** Map of projects */
+  @Input() projectsMap = new Map<string, Project>();
+  /** Map of tags */
+  @Input() tagsMap = new Map<string, Tag>();
+  /** Map of persons */
+  @Input() personsMap = new Map<string, Person>();
   /** Current media */
   @Input() media: Media;
 
-  /** Map of tasks */
-  @Input() tasks = new Map<string, Task>();
-  /** Map of projects */
-  @Input() projects = new Map<string, Project>();
-  /** Map of tags */
-  @Input() tags = new Map<string, Tag>();
-  /** Map of persons */
-  @Input() persons = new Map<string, Person>();
   /** Event emitter indicating tasklet action */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+
   /** Trigger for context menu */
   @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
@@ -135,8 +138,8 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
       this.simpleDate = DateService.getSimpleDateWithoutYearString(new Date(this.tasklet.creationDate));
       this.calendarWeek = DateService.getWeekNumber(new Date(this.tasklet.creationDate)).toString();
 
-      this.isLastOfWeek = this.taskletService.isLastOfWeek(this.tasklet);
-      this.isLastOfDay = this.taskletService.isLastOfDay(this.tasklet);
+      this.isLastOfWeek = this.taskletService.isLastOfWeek(this.tasklet, this.taskletsMap);
+      this.isLastOfDay = this.taskletService.isLastOfDay(this.tasklet, this.taskletsMap);
     }
   }
 
@@ -144,7 +147,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Initializes task
    */
   private initializeTask() {
-    this.task = this.tasks.get(this.tasklet.taskId);
+    this.task = this.tasksMap.get(this.tasklet.taskId);
   }
 
   /**
@@ -170,7 +173,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   private initializeProject() {
     if (this.tasklet != null && this.task != null && this.task.projectId != null) {
-      this.project = this.projects.get(this.task.projectId);
+      this.project = this.projectsMap.get(this.task.projectId);
     }
 
     this.projectColor = this.colorService.getProjectColor(this.project);

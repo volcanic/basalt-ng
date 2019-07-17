@@ -22,8 +22,8 @@ export class ProjectListItemComponent {
 
   /** Project to be displayed */
   @Input() project: Project;
-  /** Array of all projects */
-  @Input() projects: Project[];
+  /** Map of projects */
+  @Input() projectsMap = new Map<string, Project>();
   /** Current media */
   @Input() media: Media;
   /** Indicates if item is active */

@@ -48,10 +48,10 @@ export class SuggestionService {
 
   /**
    * Adds tasklets information to suggestions
-   * @param tasklets new array of tasklets
+   * @param taskletMap tasklets map
    */
-  public updateByTasklets(tasklets: Tasklet[]) {
-    tasklets.sort((t1, t2) => {
+  public updateByTasklets(taskletMap: Map<string, Tasklet>) {
+    Array.from(taskletMap.values()).sort((t1, t2) => {
       return (new Date(t1.modificationDate) < new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
       if (t != null) {

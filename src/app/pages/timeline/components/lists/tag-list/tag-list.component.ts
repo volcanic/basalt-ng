@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Outp
 import {Action} from 'app/core/entity/model/action.enum';
 import {Tag} from '../../../../../core/entity/model/tag.model';
 import {Media} from '../../../../../core/ui/model/media.enum';
+import {TagService} from '../../../../../core/entity/services/tag/tag.service';
 
 /**
  * Displays tag list
@@ -14,12 +15,12 @@ import {Media} from '../../../../../core/ui/model/media.enum';
 })
 export class TagListComponent implements OnChanges {
 
-  /** Tags to be displayed */
-  @Input() tags = [];
-  /** Tags that are currently filtered */
-  @Input() tagsFiltered: Tag[] = [];
-  /** Tags that are unused */
-  @Input() unusedTags: Tag[] = [];
+  /** Map of tags */
+  @Input() tagsMap = new Map<string, Tag>();
+  /** Map of tags used for filtering */
+  @Input() tagsMapFilter = new Map<string, Tag>();
+  /** Map of unused tags */
+  @Input() tagsMapUnused = new Map<string, Tag>();
   /** Number of items to be shown initially */
   @Input() recentCount: number;
   /** Current media */
@@ -46,10 +47,25 @@ export class TagListComponent implements OnChanges {
    * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges) {
-    if (this.tags != null) {
-      this.tagsRecent = this.tags.slice(0, this.recentCount);
-      if (this.tags.length > this.recentCount) {
-        this.tagsNonRecent = this.tags.slice(this.recentCount, this.tags.length - 1).sort((p1, p2) => {
+    this.initializeTags();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes tags
+   */
+  private initializeTags() {
+    const tags = Array.from(this.tagsMap.values())
+      .sort(TagService.sortTagsByName)
+      .sort(TagService.sortTagsByModificationDate);
+
+    if (tags != null) {
+      this.tagsRecent = tags.slice(0, this.recentCount);
+      if (tags.length > this.recentCount) {
+        this.tagsNonRecent = tags.slice(this.recentCount, tags.length - 1).sort((p1, p2) => {
           return p2.name < p1.name ? 1 : -1;
         });
       }
@@ -69,13 +85,6 @@ export class TagListComponent implements OnChanges {
   }
 
   /**
-   * Handles click on add button
-   */
-  onAddClicked() {
-    this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_ADD, tag: null});
-  }
-
-  /**
    * Handles toggling of more/less button
    */
   onMoreLessToggled() {
@@ -87,7 +96,7 @@ export class TagListComponent implements OnChanges {
    * Handles click on remove-unused-tags button
    */
   onRemoveUnusedTagsClicked() {
-    this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_REMOVE_UNUSED, tag: null, tags: this.unusedTags});
+    this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_REMOVE_UNUSED, tag: null, tags: Array.from(this.tagsMapUnused.values())});
   }
 
   //
@@ -99,7 +108,7 @@ export class TagListComponent implements OnChanges {
    * @param tag tag
    */
   isInFocus(tag: Tag) {
-    return this.tagsFiltered.length === 0 || this.tagsFiltered.some(t => {
+    return this.tagsMapFilter.size === 0 || Array.from(this.tagsMapFilter.values()).some(t => {
       return tag != null && t != null && t.name === tag.name;
     });
   }

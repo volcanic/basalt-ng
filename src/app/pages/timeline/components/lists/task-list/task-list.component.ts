@@ -1,18 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {Task} from '../../../../../core/entity/model/task.model';
-import {Media} from 'app/core/ui/model/media.enum';
-import {Action} from 'app/core/entity/model/action.enum';
 import {TaskService} from '../../../../../core/entity/services/task/task.service';
 import {Project} from '../../../../../core/entity/model/project.model';
+import {Media} from '../../../../../core/ui/model/media.enum';
+import {Action} from '../../../../../core/entity/model/action.enum';
 
 /**
  * Displays task list
@@ -23,14 +14,15 @@ import {Project} from '../../../../../core/entity/model/project.model';
   styleUrls: ['./task-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskListComponent implements OnInit, OnChanges {
+export class TaskListComponent implements OnChanges {
 
-  /** Tasks to be displayed */
-  @Input() tasks = [];
-  /** Tasks that are currently filtered */
-  @Input() tasksFiltered = [];
+  /** Map of tasks */
+  @Input() tasksMap = new Map<string, Task>();
+  /** Map of Ttasks that are currently filtered */
+  @Input() tasksMapFiltered = new Map<string, Task>();
   /** Map of projects */
   @Input() projectsMap = new Map<string, Project>();
+
   /** Current media */
   @Input() media: Media;
   /** Event emitter indicating task action */
@@ -76,18 +68,11 @@ export class TaskListComponent implements OnInit, OnChanges {
   //
 
   /**
-   * Handles on-init lifecycle phase
-   */
-  ngOnInit() {
-    this.initializeTaskCategories();
-  }
-
-  /**
    * Handles on-changes lifecycle phase
    * @param changes changes
    */
-  ngOnChanges(changes: SimpleChanges): void {
-    this.initializeTaskCategories();
+  ngOnChanges(changes: SimpleChanges) {
+    this.initializeTasks();
   }
 
   //
@@ -95,21 +80,25 @@ export class TaskListComponent implements OnInit, OnChanges {
   //
 
   /**
-   * Initializes task categories
+   * Initializes tasks
    */
-  initializeTaskCategories() {
-    if (this.tasks != null) {
-      this.tasksOverdue = this.tasks.filter(TaskService.isTaskOverdue);
-      this.tasksToday = this.tasks.filter(TaskService.isTaskToday);
-      this.tasksLater = this.tasks.filter(TaskService.isTaskLater);
-      this.tasksInbox = this.tasks.filter(TaskService.isTaskInInbox).sort((t1, t2) => {
+  private initializeTasks() {
+    const tasks = Array.from(this.tasksMap.values())
+      .sort(TaskService.sortTasks);
+
+
+    if (tasks != null) {
+      this.tasksOverdue = tasks.filter(TaskService.isTaskOverdue);
+      this.tasksToday = tasks.filter(TaskService.isTaskToday);
+      this.tasksLater = tasks.filter(TaskService.isTaskLater);
+      this.tasksInbox = tasks.filter(TaskService.isTaskInInbox).sort((t1, t2) => {
         return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
       });
-      this.tasksDelegated = this.tasks.filter(TaskService.isTaskDelegated);
-      this.tasksRecurring = this.tasks.filter(TaskService.isTaskRecurring).sort((t1, t2) => {
+      this.tasksDelegated = tasks.filter(TaskService.isTaskDelegated);
+      this.tasksRecurring = tasks.filter(TaskService.isTaskRecurring).sort((t1, t2) => {
         return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
       });
-      this.tasksCompleted = this.tasks.filter(TaskService.isTaskCompleted).sort((t1, t2) => {
+      this.tasksCompleted = tasks.filter(TaskService.isTaskCompleted).sort((t1, t2) => {
         return new Date(t2.completionDate).getTime() > new Date(t1.completionDate).getTime() ? 1 : -1;
       });
 
@@ -142,7 +131,7 @@ export class TaskListComponent implements OnInit, OnChanges {
    * @param task task
    */
   isInFocus(task: Task) {
-    return this.tasksFiltered.length === 0 || this.tasksFiltered.some(t => {
+    return this.tasksMapFiltered.size === 0 || Array.from(this.tasksMapFiltered.values()).some(t => {
       return task != null && t != null && t.name === task.name;
     });
   }

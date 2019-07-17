@@ -16,8 +16,8 @@ export class ProjectListDialogComponent {
 
   /** Dialog title */
   dialogTitle = '';
-  /** Array of projects to be displayed */
-  projects = [];
+  /** Map of projects */
+  projectsMap = new Map<string, Project>();
 
   /**
    * Constructor
@@ -38,7 +38,7 @@ export class ProjectListDialogComponent {
    */
   private initializeData() {
     this.dialogTitle = this.data.dialogTitle;
-    this.projects = this.data.projects;
+    this.projectsMap = this.data.projectsMap;
   }
 
   //

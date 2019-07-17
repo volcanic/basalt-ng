@@ -187,7 +187,7 @@ export class MatchService {
    */
   public taskletMatchesTags(tasklet: Tasklet, tagsMap: Map<string, Tag>): boolean {
     return tagsMap.size === 0 || (tasklet != null && tasklet.tagIds != null && tasklet.tagIds.map(id => {
-      return this.tagService.getTagById(id);
+      return tagsMap.get(id);
     }).filter(tag => {
       return tag != null;
     }).some(tag => {
@@ -203,7 +203,7 @@ export class MatchService {
    */
   public taskMatchesTags(task: Task, tagsMap: Map<string, Tag>): boolean {
     return tagsMap.size === 0 || (task != null && task.tagIds != null && task.tagIds.map(id => {
-      return this.tagService.getTagById(id);
+      return tagsMap.get(id);
     }).filter(tag => {
       return tag != null;
     }).some(tag => {
@@ -289,8 +289,9 @@ export class MatchService {
    * @param projectsMap projects map
    * @returns true if task matches given projects
    */
-  public taskMatchesProjects(task: Task, projectsMap: Map<string, Project>): boolean {
-    const project = this.projectService.projects.get(task.projectId);
+  public taskMatchesProjects(task: Task,
+                             projectsMap: Map<string, Project>): boolean {
+    const project = projectsMap.get(task.projectId);
 
     return projectsMap.size === 0 || this.projectMatchesProjects(project, projectsMap);
   }
@@ -320,7 +321,7 @@ export class MatchService {
    */
   public taskletMatchesPersons(tasklet: Tasklet, personsMap: Map<string, Person>): boolean {
     return personsMap.size === 0 || (tasklet.personIds != null && tasklet.personIds.map(id => {
-      return this.personService.getPersonById(id);
+      return personsMap.get(id);
     }).filter(person => {
       return person != null;
     }).some(person => {
@@ -334,9 +335,10 @@ export class MatchService {
    * @param personsMap persons map
    * @returns true if task matches given persons
    */
-  public taskMatchesPersons(task: Task, personsMap: Map<string, Person>): boolean {
+  public taskMatchesPersons(task: Task,
+                            personsMap: Map<string, Person>): boolean {
     return personsMap.size === 0 || (task.delegatedToId != null
-      && this.personMatchesPersons(this.personService.getPersonById(task.delegatedToId), personsMap));
+      && this.personMatchesPersons(personsMap.get(task.delegatedToId), personsMap));
   }
 
   /**
@@ -359,12 +361,18 @@ export class MatchService {
   /**
    * Determines whether a tasklet matches every of the specified items
    * @param tasklet tasklet to check
+   * @param items multiple words in one string
    * @param tasksMap tasks map
    * @param projectsMap projects map
-   * @param items multiple words in one string
+   * @param personsMap persons map
+   * @param tagsMap tags map
    * @returns true if tasklet matches every search item
    */
-  public taskletMatchesEveryItem(tasklet: Tasklet, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>, items: string): boolean {
+  public taskletMatchesEveryItem(tasklet: Tasklet, items: string,
+                                 tasksMap: Map<string, Task>,
+                                 projectsMap: Map<string, Project>,
+                                 personsMap: Map<string, Person>,
+                                 tagsMap: Map<string, Tag>): boolean {
     const task = TaskletService.getTaskByTasklet(tasklet, tasksMap);
     const project = TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap);
 
@@ -375,12 +383,12 @@ export class MatchService {
         || this.meetingMinutesMatchesSingleItem(tasklet.meetingMinuteItems, item)
         || this.dailyScrumMatchesSingleItem(tasklet.dailyScrumItems, item)
         || (tasklet.personIds != null && this.personsMatchesSingleItem(tasklet.personIds.map(id => {
-          return this.personService.getPersonById(id);
+          return personsMap.get(id);
         }).filter(person => {
           return person != null;
         }), item))
         || (tasklet.tagIds != null && this.tagsMatchesSingleItem(tasklet.tagIds.map(id => {
-          return this.tagService.getTagById(id);
+          return tagsMap.get(id);
         }).filter(tag => {
           return tag != null;
         }), item));
@@ -391,16 +399,21 @@ export class MatchService {
    * Determines whether a task matches every of the specified items
    * @param task task to check
    * @param items multiple words in one string
+   * @param projectsMap projects map
+   * @param tagsMap tags map
    * @returns true if task matches every search item
    */
-  public taskMatchesEveryItem(task: Task, items: string): boolean {
-    const project = this.taskService.getProjectByTask(task);
+  public taskMatchesEveryItem(task: Task,
+                              items: string,
+                              projectsMap: Map<string, Project>,
+                              tagsMap: Map<string, Tag>): boolean {
+    const project = TaskService.getProjectByTask(task, projectsMap);
     return items == null || items.trim() === '' || MatchService.splitSearchItems(items).every(item => {
       return task != null && (MatchService.taskNameMatchesSingleItem(task, item)
         || MatchService.projectNameMatchesSingleItem(project, item)
         || this.descriptionMatchesSingleItem(task.description, item)
         || (task.tagIds != null && this.tagsMatchesSingleItem(task.tagIds.map(id => {
-          return this.tagService.getTagById(id);
+          return tagsMap.get(id);
         }).filter(tag => {
           return tag != null;
         }), item)));

@@ -25,6 +25,7 @@ import {DailyScrumItemType} from '../../model/daily-scrum/daily-scrum-item-type.
 import {Project} from '../../model/project.model';
 import {Task} from '../../model/task.model';
 import {SnackbarService} from '../../../ui/services/snackbar.service';
+import {Tag} from '../../model/tag.model';
 
 /**
  * Handles tasklets including
@@ -43,18 +44,10 @@ export class TaskletService {
   /** Name of default topic */
   static TOPIC_GENERAL = 'General';
 
-  /** Map of all tasklets */
-  tasklets = new Map<string, Tasklet>();
   /** Subject that publishes tasklets */
   taskletsSubject = new Subject<Map<string, Tasklet>>();
-
-  /** Tasklet in focus */
-  tasklet: Tasklet;
-  /** Subject that publishes tasklet */
+  /** Subject that publishes a tasklet */
   taskletSubject = new Subject<Tasklet>();
-
-  /** Queue containing recent dates scrolled by */
-  dateQueue = [];
   /** Subject that publishes dates scrolled by */
   dateQueueSubject = new Subject<Date>();
 
@@ -156,12 +149,7 @@ export class TaskletService {
    */
   private initializeTaskletSubscription() {
     this.taskletsSubject.subscribe((value) => {
-      Array.from(value.values()).forEach(tasklet => {
-          this.tasklets.set(tasklet.id, tasklet);
-        }
-      );
-
-      this.suggestionService.updateByTasklets(Array.from(this.tasklets.values()));
+      this.suggestionService.updateByTasklets(value as Map<string, Tasklet>);
     });
   }
 
@@ -188,7 +176,6 @@ export class TaskletService {
       limit: environment.LIMIT_TASKLETS_COUNT
     };
 
-    this.clearTasklets();
     this.findTaskletsInternal(index, options);
   }
 
@@ -213,13 +200,6 @@ export class TaskletService {
   }
 
   /**
-   * Clears tasklets
-   */
-  private clearTasklets() {
-    this.tasklets.clear();
-  }
-
-  /**
    * Index tasklets and queries them afterwards
    * @param index index to be used
    * @param options query options
@@ -227,11 +207,13 @@ export class TaskletService {
   private findTaskletsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         if (result != null) {
+          const tasklets = new Map<string, Tasklet>();
+
           result['docs'].forEach(element => {
             const tasklet = element as Tasklet;
-            this.tasklets.set(tasklet.id, tasklet);
+            tasklets.set(tasklet.id, tasklet);
           });
-          this.notify();
+          this.notifyTasklets(tasklets);
         }
       }, error => {
         if (isDevMode()) {
@@ -250,12 +232,8 @@ export class TaskletService {
     this.pouchDBService.find(index, options).then(result => {
         if (result != null) {
           result['docs'].forEach(element => {
-            const tasklet = element as Tasklet;
-
-            this.tasklet = tasklet;
-            this.tasklets.set(tasklet.id, tasklet);
+            this.notifyTasklet(element as Tasklet);
           });
-          this.notify();
         }
       }, error => {
         if (isDevMode()) {
@@ -272,33 +250,39 @@ export class TaskletService {
   /**
    * Creates a new tasklet
    * @param tasklet tasklet to be created
+   * @param taskletsMap tasklets map
    * @param tasksMap tasks map
    * @param projectsMap projects map
+   * @param personsMap persons map
+   * @param tagsMap tags map
    */
-  public createTasklet(tasklet: Tasklet, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): Promise<any> {
+  public createTasklet(tasklet: Tasklet, taskletsMap: Map<string, Tasklet>, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>,
+                       personsMap: Map<string, Person>, tagsMap: Map<string, Tag>): Promise<any> {
     return new Promise(() => {
         if (tasklet != null) {
           tasklet.scope = this.scopeService.scope;
 
           // Updated related objects
-          this.projectService.updateProject(TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap), false).then(() => {
+          this.projectService.updateProject(TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap), projectsMap).then(() => {
           });
-          this.taskService.updateTask(TaskletService.getTaskByTasklet(tasklet, tasksMap)).then(() => {
+          this.taskService.updateTask(TaskletService.getTaskByTasklet(tasklet, tasksMap), tasksMap, projectsMap, tagsMap).then(() => {
           });
           tasklet.tagIds.forEach(id => {
-            const tag = this.tagService.getTagById(id);
-            this.tagService.updateTag(tag, false).then(() => {
+            const tag = tagsMap.get(id);
+            this.tagService.updateTag(tag, tagsMap).then(() => {
             });
           });
           tasklet.personIds.forEach(id => {
-            const person = this.personService.getPersonById(id);
-            this.personService.updatePerson(person, false).then(() => {
+            const person = personsMap.get(id);
+            this.personService.updatePerson(person, personsMap).then(() => {
             });
           });
 
           // Create tasklet
           return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
-            this.findTaskletByID(tasklet.id);
+            taskletsMap.set(tasklet.id, tasklet);
+            this.notifyTasklet(tasklet);
+            this.notifyTasklets(taskletsMap);
           });
         }
       }
@@ -308,29 +292,33 @@ export class TaskletService {
   /**
    * Updates an existing tasklet
    * @param tasklet tasklet to be updated
+   * @param taskletsMap tasklets map
    * @param tasksMap tasks map
    * @param projectsMap projects map
+   * @param personsMap persons map
+   * @param tagsMap tags map
    */
-  public updateTasklet(tasklet: Tasklet, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): Promise<any> {
+  public updateTasklet(tasklet: Tasklet, taskletsMap: Map<string, Tasklet>, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>,
+                       personsMap: Map<string, Person>, tagsMap: Map<string, Tag>): Promise<any> {
     return new Promise(() => {
       if (tasklet != null) {
 
         // Updated related objects
-        this.projectService.updateProject(TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap), false).then(() => {
+        this.projectService.updateProject(TaskletService.getProjectByTasklet(tasklet, tasksMap, projectsMap), projectsMap).then(() => {
         });
-        this.taskService.updateTask(TaskletService.getTaskByTasklet(tasklet, tasksMap)).then(() => {
+        this.taskService.updateTask(TaskletService.getTaskByTasklet(tasklet, tasksMap), tasksMap, projectsMap, tagsMap).then(() => {
         });
         if (tasklet.tagIds != null) {
           tasklet.tagIds.forEach(id => {
-            const tag = this.tagService.getTagById(id);
-            this.tagService.updateTag(tag, false).then(() => {
+            const tag = tagsMap.get(id);
+            this.tagService.updateTag(tag, tagsMap).then(() => {
             });
           });
         }
         if (tasklet.personIds != null) {
           tasklet.personIds.forEach(id => {
-            const person = this.personService.getPersonById(id);
-            this.personService.updatePerson(person, false).then(() => {
+            const person = personsMap.get(id);
+            this.personService.updatePerson(person, personsMap).then(() => {
             });
           });
         }
@@ -339,7 +327,9 @@ export class TaskletService {
 
         // Update tasklet
         return this.pouchDBService.upsert(tasklet.id, tasklet).then(() => {
-          this.findTaskletByID(tasklet.id);
+          taskletsMap.set(tasklet.id, tasklet);
+          this.notifyTasklet(tasklet);
+          this.notifyTasklets(taskletsMap);
         });
       }
     });
@@ -348,19 +338,20 @@ export class TaskletService {
   /**
    * Deletes a tasklet
    * @param tasklet tasklet to be deleted
+   * @param taskletsMap tasklets map
    */
-  public deleteTasklet(tasklet: Tasklet): Promise<any> {
+  public deleteTasklet(tasklet: Tasklet, taskletsMap: Map<string, Tasklet>): Promise<any> {
     return new Promise(() => {
       if (tasklet != null) {
         return this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
-          this.tasklets.delete(tasklet.id);
-          this.notify();
+          taskletsMap.delete(tasklet.id);
+          this.notifyTasklets(taskletsMap);
         }).catch((error) => {
           if (isDevMode()) {
             console.error(error);
           }
           this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
-            this.deleteTasklet(tasklet).then(() => {
+            this.deleteTasklet(tasklet, taskletsMap).then(() => {
             });
           });
         });
@@ -375,9 +366,10 @@ export class TaskletService {
   /**
    * Retrieves a list of tasklets that are associated with a given task
    * @param task task
+   * @param taskletsMap tasklets map
    */
-  public getTaskletsByTask(task: Task): Tasklet[] {
-    return Array.from(this.tasklets.values()).filter(tasklet => {
+  public getTaskletsByTask(task: Task, taskletsMap: Map<string, Tasklet>): Tasklet[] {
+    return Array.from(taskletsMap.values()).filter(tasklet => {
       return tasklet != null && task != null && tasklet.taskId === task.id;
     }).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
@@ -387,14 +379,15 @@ export class TaskletService {
 
   /**
    * Returns a map of recent daily scrum activities of a given type and a given person
+   * @param taskletsMap tasklets map
    * @param type daily scrum item type
    * @param person person to get scrum activities for
    * @returns map of scrum activities
    */
-  public getDailyScrumActivities(type: DailyScrumItemType, person: Person): Map<string, string> {
+  public getDailyScrumActivities(taskletsMap: Map<string, Tasklet>, type: DailyScrumItemType, person: Person): Map<string, string> {
     const dailyScrumActivities = new Map<string, string>();
 
-    (Array.from(this.tasklets.values()).filter(t => {
+    (Array.from(taskletsMap.values()).filter(t => {
       return t.type === TaskletType.DAILY_SCRUM;
     }).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
@@ -414,9 +407,10 @@ export class TaskletService {
   /**
    * Determines if a given date is the last of its week
    * @param tasklet tasklet
+   * @param taskletsMap tasklets map
    */
-  public isLastOfWeek(tasklet: Tasklet): boolean {
-    const taskletsOfWeek = Array.from(this.tasklets.values()).filter(t => {
+  public isLastOfWeek(tasklet: Tasklet, taskletsMap: Map<string, Tasklet>): boolean {
+    const taskletsOfWeek = Array.from(taskletsMap.values()).filter(t => {
       return DateService.isInWeek(t.creationDate, tasklet.creationDate);
     });
 
@@ -428,9 +422,10 @@ export class TaskletService {
   /**
    * Determines if a given date is the last of its day
    * @param tasklet tasklet
+   * @param taskletsMap tasklets map
    */
-  public isLastOfDay(tasklet: Tasklet): boolean {
-    const taskletsOfDay = Array.from(this.tasklets.values()).filter(t => {
+  public isLastOfDay(tasklet: Tasklet, taskletsMap: Map<string, Tasklet>): boolean {
+    const taskletsOfDay = Array.from(taskletsMap.values()).filter(t => {
       return DateService.isInDay(t.creationDate, tasklet.creationDate);
     });
 
@@ -451,15 +446,16 @@ export class TaskletService {
   addElementToDateQueue(date: Date) {
     const BUFFER = 7;
 
-    this.dateQueue.push(date);
+    let dateQueue = [];
+    dateQueue.push(date);
 
     // Evict queue
-    if (this.dateQueue.length > BUFFER) {
-      this.dateQueue = this.dateQueue.slice(this.dateQueue.length - BUFFER);
+    if (dateQueue.length > BUFFER) {
+      dateQueue = dateQueue.slice(dateQueue.length - BUFFER);
     }
 
     // Sort queue values
-    const sortedDateQueue = this.dateQueue.slice().sort((d1: Date, d2: Date) => {
+    const sortedDateQueue = dateQueue.slice().sort((d1: Date, d2: Date) => {
       return new Date(d2).getTime() - new Date(d1).getTime();
     });
 
@@ -647,9 +643,17 @@ export class TaskletService {
 
   /**
    * Informs subscribers that something has changed
+   * @param tasklet tasklet
    */
-  public notify() {
-    this.taskletSubject.next(this.tasklet);
-    this.taskletsSubject.next(this.tasklets);
+  public notifyTasklet(tasklet: Tasklet) {
+    this.taskletSubject.next(tasklet);
+  }
+
+  /**
+   * Informs subscribers that something has changed
+   * @param taskletsMap tasklets map
+   */
+  public notifyTasklets(taskletsMap: Map<string, Tasklet>) {
+    this.taskletsSubject.next(taskletsMap);
   }
 }

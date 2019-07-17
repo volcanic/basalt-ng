@@ -2,7 +2,7 @@
   <div class="popover-container"
        (mouseenter)="onHoverPopover(true)"
        (mouseleave)="onHoverPopover(false)">
-    <app-color-popover [project]="project" [projects]="projects" (projectEventEmitter)="onProjectEvent($event)"></app-color-popover>
+    <app-color-popover [project]="project" [projectsMap]="projectsMap" (projectEventEmitter)="onProjectEvent($event)"></app-color-popover>
   </div>
 </mat-menu>
 <div [matMenuTriggerFor]="popover" #popoverMenuTrigger></div>

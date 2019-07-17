@@ -16,8 +16,8 @@ export class TagListDialogComponent {
 
   /** Dialog title */
   dialogTitle = '';
-  /** Array of tags to be displayed */
-  tags = [];
+  /** Map of tags */
+  tagsMap = new Map<string, Tag>();
 
   /**
    * Constructor
@@ -38,7 +38,7 @@ export class TagListDialogComponent {
    */
   private initializeData() {
     this.dialogTitle = this.data.dialogTitle;
-    this.tags = this.data.tags;
+    this.tagsMap = this.data.tagsMap;
   }
 
   //

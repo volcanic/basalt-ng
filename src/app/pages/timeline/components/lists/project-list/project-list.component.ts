@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Outp
 import {Action} from 'app/core/entity/model/action.enum';
 import {Project} from '../../../../../core/entity/model/project.model';
 import {Media} from '../../../../../core/ui/model/media.enum';
+import {ProjectService} from '../../../../../core/entity/services/project/project.service';
 
 /**
  * Displays project list
@@ -14,10 +15,10 @@ import {Media} from '../../../../../core/ui/model/media.enum';
 })
 export class ProjectListComponent implements OnChanges {
 
-  /** Projects to be displayed */
-  @Input() projects = [];
-  /** Projects that are currently filtered */
-  @Input() projectsFiltered = [];
+  /** Map of projects */
+  @Input() projectsMap = new Map<string, Project>();
+  /** Map of projects used for filtering */
+  @Input() projectsMapFilter = new Map<string, Project>();
   /** Number of items to be shown initially */
   @Input() recentCount: number;
   /** Current media */
@@ -44,10 +45,25 @@ export class ProjectListComponent implements OnChanges {
    * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges) {
-    if (this.projects != null) {
-      this.projectsRecent = this.projects.slice(0, this.recentCount);
-      if (this.projects.length > this.recentCount) {
-        this.projectsNonRecent = this.projects.slice(this.recentCount, this.projects.length - 1).sort((p1, p2) => {
+    this.initializeProjects();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes projects
+   */
+  private initializeProjects() {
+    const projects = Array.from(this.projectsMap.values())
+      .sort(ProjectService.sortProjectsByName)
+      .sort(ProjectService.sortProjectsByModificationDate);
+
+    if (projects != null) {
+      this.projectsRecent = projects.slice(0, this.recentCount);
+      if (projects.length > this.recentCount) {
+        this.projectsNonRecent = projects.slice(this.recentCount, projects.length - 1).sort((p1, p2) => {
           return p2.name < p1.name ? 1 : -1;
         });
       }
@@ -67,13 +83,6 @@ export class ProjectListComponent implements OnChanges {
   }
 
   /**
-   * Handles click on add button
-   */
-  onAddClicked() {
-    this.projectEventEmitter.emit({action: Action.OPEN_DIALOG_ADD, project: null});
-  }
-
-  /**
    * Handles toggling of more/less button
    */
   onMoreLessToggled() {
@@ -90,7 +99,7 @@ export class ProjectListComponent implements OnChanges {
    * @param project project
    */
   isInFocus(project: Project) {
-    return this.projectsFiltered.length === 0 || this.projectsFiltered.some(p => {
+    return this.projectsMapFilter.size === 0 || Array.from(this.projectsMapFilter.values()).some(p => {
       return project != null && p != null && p.name === project.name;
     });
   }

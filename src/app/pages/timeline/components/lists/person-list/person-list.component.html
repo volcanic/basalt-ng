@@ -18,6 +18,6 @@
                             (personEventEmitter)="onPersonEvent($event)">
       </app-person-list-item>
     </div>
-    <button mat-button *ngIf="persons.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
+    <button mat-button *ngIf="personsMap.size > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
   </mat-expansion-panel>
 </mat-accordion>

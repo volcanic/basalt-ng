@@ -24,14 +24,9 @@ import {DateService} from '../date.service';
 })
 export class TagService {
 
-  /** Map of all tags */
-  tags = new Map<string, Tag>();
-  /** Subject that can be subscribed by components that are interested in changes */
+  /** Subject that publishes tags */
   tagsSubject = new Subject<Map<string, Tag>>();
-
-  /** Tag in focus */
-  tag: Tag;
-  /** Subject that publishes tag */
+  /** Subject that publishes a tag */
   tagSubject = new Subject<Tag>();
 
   //
@@ -80,12 +75,7 @@ export class TagService {
    */
   private initializeTagSubscription() {
     this.tagsSubject.subscribe((value) => {
-      Array.from(value.values()).forEach(tag => {
-          this.tags.set(tag.id, tag);
-        }
-      );
-
-      this.suggestionService.updateByTags(Array.from(this.tags.values()));
+      this.suggestionService.updateByTags(Array.from((value as Map<string, Tag>).values()));
     });
   }
 
@@ -113,15 +103,7 @@ export class TagService {
       limit: environment.LIMIT_TAGS_COUNT
     };
 
-    this.clearTags();
     this.findTagsInternal(index, options);
-  }
-
-  /**
-   * Clears tags
-   */
-  private clearTags() {
-    this.tags.clear();
   }
 
   /**
@@ -132,11 +114,13 @@ export class TagService {
   private findTagsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         if (result != null) {
+          const tags = new Map<string, Tag>();
+
           result['docs'].forEach(element => {
             const tag = element as Tag;
-            this.tags.set(tag.id, tag);
+            tags.set(tag.id, tag);
           });
-          this.notify();
+          this.notifyTags(tags);
         }
       }, error => {
         if (isDevMode()) {
@@ -153,16 +137,17 @@ export class TagService {
   /**
    * Creats a new tag
    * @param tag tag to be created
+   * @param tagsMap tags map
    */
-  public createTag(tag: Tag): Promise<any> {
+  public createTag(tag: Tag, tagsMap: Map<string, Tag>): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
         tag.scope = this.scopeService.scope;
 
         return this.pouchDBService.upsert(tag.id, tag).then(() => {
-          this.snackbarService.showSnackbar('Added tag');
-          this.tags.set(tag.id, tag);
-          this.notify();
+          tagsMap.set(tag.id, tag);
+          this.notifyTag(tag);
+          this.notifyTags(tagsMap);
         });
       }
     });
@@ -171,19 +156,17 @@ export class TagService {
   /**
    * Updates existing tag
    * @param tag tag to be updated
-   * @param showSnack shows snackbar if true
+   * @param tagsMap tags map
    */
-  public updateTag(tag: Tag, showSnack: boolean = false): Promise<any> {
+  public updateTag(tag: Tag, tagsMap: Map<string, Tag>): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
         tag.modificationDate = new Date();
 
         return this.pouchDBService.upsert(tag.id, tag).then(() => {
-          if (showSnack) {
-            this.snackbarService.showSnackbar('Updated tag');
-          }
-          this.tags.set(tag.id, tag);
-          this.notify();
+          tagsMap.set(tag.id, tag);
+          this.notifyTag(tag);
+          this.notifyTags(tagsMap);
         });
       }
     });
@@ -192,20 +175,20 @@ export class TagService {
   /**
    * Deletes a tag
    * @param tag tag to be deleted
+   * @param tagsMap tag map
    */
-  public deleteTag(tag: Tag): Promise<any> {
+  public deleteTag(tag: Tag, tagsMap: Map<string, Tag>): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
-        return this.pouchDBService.remove(tag.id, tag).then(() => {
-          this.snackbarService.showSnackbar('Deleted tag');
-          this.tags.delete(tag.id);
-          this.notify();
+        this.pouchDBService.remove(tag.id, tag).then(() => {
+          tagsMap.delete(tag.id);
+          this.notifyTags(tagsMap);
         }).catch((error) => {
           if (isDevMode()) {
             console.error(error);
           }
           this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
-            this.deleteTag(tag).then(() => {
+            this.deleteTag(tag, tagsMap).then(() => {
             });
           });
         });
@@ -218,23 +201,15 @@ export class TagService {
   //
 
   /**
-   * Retrieves a tag by a given ID
-   * @param id ID to find tag by
-   * @returns tag identified by given ID, null if no such tag exists
-   */
-  public getTagById(id: string): Tag {
-    return this.tags.get(id);
-  }
-
-  /**
    * Retrieves a tag by a given name
    * @param name name to find tag by
+   * @param tagsMap tags map
    * @returns tag identified by given name, null if no such tag exists
    */
-  public getTagByName(name: string): Tag {
+  public getTagByName(name: string, tagsMap: Map<string, Tag>): Tag {
     let tag: Tag = null;
 
-    Array.from(this.tags.values()).forEach(t => {
+    Array.from(tagsMap.values()).forEach(t => {
       if (t.name === name) {
         tag = t;
       }
@@ -245,21 +220,22 @@ export class TagService {
 
   /**
    * Retrieves a list of unused tags
-   * @param usedTagIds used tag IDs
+   * @param usedTagIds used tag IDs map
+   * @param tagsMap tags map
    */
-  public getUnusedTags(usedTagIds: string[]): Tag[] {
-    const unusedTags = new Map<Tag, Tag>();
+  public getUnusedTags(usedTagIds: Map<string, string>, tagsMap: Map<string, Tag>): Map<string, Tag> {
+    const unusedTags = new Map<string, Tag>();
 
-    this.tags.forEach(tag => {
-      if (!usedTagIds.some(id => {
+    Array.from(tagsMap.values()).forEach(tag => {
+      if (!Array.from(usedTagIds.values()).some(id => {
         return id === tag.id;
       })) {
-        unusedTags.set(tag, tag);
+        unusedTags.set(tag.id, tag);
       }
     });
 
 
-    return Array.from(unusedTags.values());
+    return unusedTags;
   }
 
   //
@@ -268,9 +244,17 @@ export class TagService {
 
   /**
    * Notifies subscribers that something has changed
+   * @param tag tag
    */
-  private notify() {
-    this.tagSubject.next(this.tag);
-    this.tagsSubject.next(this.tags);
+  public notifyTag(tag: Tag) {
+    this.tagSubject.next(tag);
+  }
+
+  /**
+   * Notifies subscribers that something has changed
+   * @param tagsMap tags map
+   */
+  public notifyTags(tagsMap: Map<string, Tag>) {
+    this.tagsSubject.next(tagsMap);
   }
 }

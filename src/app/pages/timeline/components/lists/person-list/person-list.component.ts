@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Outp
 import {Action} from 'app/core/entity/model/action.enum';
 import {Person} from '../../../../../core/entity/model/person.model';
 import {Media} from '../../../../../core/ui/model/media.enum';
+import {PersonService} from '../../../../../core/entity/services/person/person.service';
 
 /**
  * Displays person list
@@ -14,10 +15,10 @@ import {Media} from '../../../../../core/ui/model/media.enum';
 })
 export class PersonListComponent implements OnChanges {
 
-  /** Persons to be displayed */
-  @Input() persons = [];
-  /** Persons that are currently filtered */
-  @Input() personsFiltered = [];
+  /** Map of persons */
+  @Input() personsMap = new Map<string, Person>();
+  /** Map of persons used for filtering */
+  @Input() personsMapFilter = new Map<string, Person>();
   /** Number of items to be shown initially */
   @Input() recentCount: number;
   /** Current media */
@@ -44,9 +45,24 @@ export class PersonListComponent implements OnChanges {
    * @param changes changes
    */
   ngOnChanges(changes: SimpleChanges) {
-    this.personsRecent = this.persons.slice(0, this.recentCount);
-    if (this.persons.length > this.recentCount) {
-      this.personsNonRecent = this.persons.slice(this.recentCount, this.persons.length - 1).sort((p1, p2) => {
+    this.initializePersons();
+  }
+
+  //
+  // Initialization
+  //
+
+  /**
+   * Initializes persons
+   */
+  private initializePersons() {
+    const persons = Array.from(this.personsMap.values())
+      .sort(PersonService.sortPersonsByName)
+      .sort(PersonService.sortPersonsByModificationDate);
+
+    this.personsRecent = persons.slice(0, this.recentCount);
+    if (persons.length > this.recentCount) {
+      this.personsNonRecent = persons.slice(this.recentCount, persons.length - 1).sort((p1, p2) => {
         return p2.name < p1.name ? 1 : -1;
       });
     }
@@ -62,13 +78,6 @@ export class PersonListComponent implements OnChanges {
    */
   onPersonEvent(event: any) {
     this.personEventEmitter.emit(event);
-  }
-
-  /**
-   * Handles click on add button
-   */
-  onAddClicked() {
-    this.personEventEmitter.emit({action: Action.OPEN_DIALOG_ADD, person: null});
   }
 
   /**
@@ -88,7 +97,7 @@ export class PersonListComponent implements OnChanges {
    * @param person person
    */
   isInFocus(person: Person) {
-    return this.personsFiltered.length === 0 || this.personsFiltered.some(p => {
+    return this.personsMapFilter.size === 0 || Array.from(this.personsMapFilter.values()).some(p => {
       return person != null && p != null && p.name === person.name;
     });
   }

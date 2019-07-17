@@ -16,8 +16,8 @@ export class TaskListDialogComponent {
 
   /** Dialog title */
   dialogTitle = '';
-  /** Array of tasks to be displayed */
-  tasks = [];
+  /** Map of tasks */
+  tasksMap = new Map<string, Task>();
 
   /**
    * Constructor
@@ -38,7 +38,7 @@ export class TaskListDialogComponent {
    */
   private initializeData() {
     this.dialogTitle = this.data.dialogTitle;
-    this.tasks = this.data.tasks;
+    this.tasksMap = this.data.tasksMap;
   }
 
   //

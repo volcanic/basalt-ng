@@ -5,6 +5,11 @@ import {TaskService} from './task/task.service';
 import {TaskletService} from './tasklet/tasklet.service';
 import {TagService} from './tag/tag.service';
 import {PersonService} from './person/person.service';
+import {Tasklet} from '../model/tasklet.model';
+import {Task} from '../model/task.model';
+import {Project} from '../model/project.model';
+import {Tag} from '../model/tag.model';
+import {Person} from '../model/person.model';
 
 /**
  * Handles entities
@@ -35,14 +40,24 @@ export class EntityService {
 
   /**
    * Downloads a file containing a JSON formatted array of all entities
+   * @param taskletsMap tasklets map
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @param personsMap persons map
+   * @param tagsMap tags map
    */
-  public downloadEntities() {
+  public downloadEntities(taskletsMap: Map<string, Tasklet>,
+                          tasksMap: Map<string, Task>,
+                          projectsMap: Map<string, Project>,
+                          personsMap: Map<string, Person>,
+                          tagsMap: Map<string, Tag>
+  ) {
     const entities =
-      (Array.from(this.projectService.projects.values()) as Entity[]).concat(
-        (Array.from(this.taskService.tasks.values()) as Entity[]).concat(
-          (Array.from(this.taskletService.tasklets.values()) as Entity[]).concat(
-            (Array.from(this.tagService.tags.values()) as Entity[]).concat(
-              Array.from(this.personService.persons.values())))));
+      (Array.from(taskletsMap.values()) as Entity[]).concat(
+        (Array.from(tasksMap.values()) as Entity[]).concat(
+          (Array.from(projectsMap.values()) as Entity[]).concat(
+            (Array.from(personsMap.values()) as Entity[]).concat(
+              Array.from(tagsMap.values())))));
 
     const fileContents = JSON.stringify(Array.from(entities.values()));
     const filename = 'entities.basalt';

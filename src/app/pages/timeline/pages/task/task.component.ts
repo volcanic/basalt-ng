@@ -75,12 +75,22 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   public mode: DialogMode = DialogMode.NONE;
 
   /** Task to be displayed */
-  task: Task;
+  task: Task = new Task();
   /** Recurring */
   recurring = false;
-
   /** Readonly dialog if true */
   readonly = false;
+
+  /** Map of tasklets */
+  public taskletsMap = new Map<string, Tasklet>();
+  /** Map of tasks */
+  public tasksMap = new Map<string, Task>();
+  /** Map of projects */
+  public projectsMap = new Map<string, Project>();
+  /** Map of persons */
+  public personsMap = new Map<string, Person>();
+  /** Map of tags */
+  public tagsMap = new Map<string, Tag>();
 
   /** Project assigned to this task */
   project: Project;
@@ -273,6 +283,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
+        this.initializeTasks(value as Map<string, Task>);
         this.initializeOptions();
       }
     });
@@ -285,17 +296,25 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeTask(task: Task) {
     this.task = task;
     if (task != null) {
-      this.project = this.projectService.projects.get(this.task.projectId);
+      this.project = this.projectsMap.get(this.task.projectId);
       this.tags = task.tagIds.map(id => {
-        return this.tagService.tags.get(id);
+        return this.tagsMap.get(id);
       }).filter(tag => {
         return tag != null;
       });
-      this.delegatedTo = this.personService.persons.get(task.delegatedToId);
+      this.delegatedTo = this.personsMap.get(task.delegatedToId);
 
       // After task has been initialized associated tasklets can be determined
       this.taskletService.findTaskletsByScope(this.scopeService.scope);
     }
+  }
+
+  /**
+   * Initializes tasks
+   * @param tasks tasks
+   */
+  private initializeTasks(tasks: Map<string, Task>) {
+    this.tasksMap = tasks;
   }
 
   /**
@@ -306,9 +325,16 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
       takeUntil(this.unsubscribeSubject)
     ).subscribe((value) => {
       if (value != null) {
-        this.tasklets = this.taskletService.getTaskletsByTask(this.task);
+        this.initializeTasklets(value as Map<string, Tasklet>);
       }
     });
+  }
+
+  /**
+   * Initialize tasklets
+   */
+  private initializeTasklets(taskletsMap: Map<string, Tasklet>) {
+    this.tasklets = this.taskletService.getTaskletsByTask(this.task, taskletsMap);
   }
 
   /**
@@ -317,20 +343,18 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializeProjectSubscription() {
     this.projectService.projectsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe(() => {
+    ).subscribe((value) => {
+      this.initializeProjects(value as Map<string, Project>);
       this.initializeOptions();
     });
   }
 
   /**
-   * Initializes tag subscription
+   * Initializes projects
+   * @param projects projects
    */
-  private initializeTagSubscription() {
-    this.tagService.tagsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe(() => {
-      this.initializeOptions();
-    });
+  private initializeProjects(projects: Map<string, Project>) {
+    this.projectsMap = projects;
   }
 
   /**
@@ -339,9 +363,38 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private initializePersonSubscription() {
     this.personService.personsSubject.pipe(
       takeUntil(this.unsubscribeSubject)
-    ).subscribe(() => {
+    ).subscribe((value) => {
+      this.initializePersons(value as Map<string, Person>);
       this.initializeOptions();
     });
+  }
+
+  /**
+   * Initializes persons
+   * @param persons persons
+   */
+  private initializePersons(persons: Map<string, Person>) {
+    this.personsMap = persons;
+  }
+
+  /**
+   * Initializes tag subscription
+   */
+  private initializeTagSubscription() {
+    this.tagService.tagsSubject.pipe(
+      takeUntil(this.unsubscribeSubject)
+    ).subscribe((value) => {
+      this.initializeTags(value as Map<string, Tag>);
+      this.initializeOptions();
+    });
+  }
+
+  /**
+   * Initializes tags
+   * @param tags tags
+   */
+  private initializeTags(tags: Map<string, Tag>) {
+    this.tagsMap = tags;
   }
 
   /**
@@ -517,7 +570,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
-    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+    if (event.key === KEY_CODE_ENTER && event.ctrlKey) {
       switch (this.mode) {
         case DialogMode.ADD: {
           this.addTask();
@@ -657,7 +710,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         this.evaluateTaskTags(task, tags);
 
         // Create task itself
-        this.taskService.createTask(task).then(() => {
+        this.taskService.createTask(task, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
           this.filterService.updateTasksListIfNotEmpty([task]);
           this.snackbarService.showSnackbar('Added task');
         });
@@ -670,13 +723,13 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         this.evaluateTaskTags(task, tags);
 
         // Update task itself
-        this.taskService.updateTask(task).then(() => {
+        this.taskService.updateTask(task, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
           this.snackbarService.showSnackbar('Updated task');
         });
         break;
       }
       case Action.DELETE: {
-        const references = Array.from(this.taskletService.tasklets.values()).some((tasklet: Tasklet) => {
+        const references = Array.from(this.taskletsMap.values()).some((tasklet: Tasklet) => {
           return tasklet.taskId === task.id;
         });
 
@@ -702,7 +755,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
           });
           confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
             if (confirmationResult != null) {
-              this.taskService.deleteTask(confirmationResult as Task).then(() => {
+              this.taskService.deleteTask((confirmationResult as Task), this.tasksMap).then(() => {
               });
             }
           });
@@ -718,14 +771,14 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         task.completionDate = new Date();
-        this.taskService.updateTask(task).then(() => {
+        this.taskService.updateTask(task, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
           this.snackbarService.showSnackbar('Completed task');
         });
         break;
       }
       case Action.REOPEN: {
         task.completionDate = null;
-        this.taskService.updateTask(task).then(() => {
+        this.taskService.updateTask(task, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
           this.snackbarService.showSnackbar('Re-opened task');
         });
 
@@ -746,12 +799,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private evaluateTaskProject(task: Task, project: Project) {
     if (project != null && project.name != null && project.name !== '') {
       // Assign project
-      let p = this.projectService.getProjectByName(project.name);
+      let p = this.projectService.getProjectByName(project.name, this.projectsMap);
 
       // New project
       if (p == null && project.name != null && project.name !== '') {
         p = new Project(project.name);
-        this.projectService.createProject(p, false).then(() => {
+        this.projectService.createProject(p, this.projectsMap).then(() => {
         });
       }
 
@@ -771,12 +824,12 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   private evaluateTaskDelegatedTo(task: Task, delegatedTo: Person) {
     if (delegatedTo != null && delegatedTo.name != null && delegatedTo.name !== '') {
       // Assign delegatedTo
-      let p = this.personService.getPersonByName(delegatedTo.name);
+      let p = this.personService.getPersonByName(delegatedTo.name, this.personsMap);
 
       // New person
       if (p == null && delegatedTo.name != null && delegatedTo.name !== '') {
         p = new Person(delegatedTo.name);
-        this.personService.createPerson(p).then(() => {
+        this.personService.createPerson(p, this.personsMap).then(() => {
         });
       }
 
@@ -799,11 +852,11 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // New tag
       tags.forEach(t => {
-        let tag = this.tagService.getTagByName(t.name);
+        let tag = this.tagService.getTagByName(t.name, this.tagsMap);
 
         if (tag == null) {
           tag = new Tag(t.name);
-          this.tagService.createTag(tag).then(() => {
+          this.tagService.createTag(tag, this.tagsMap).then(() => {
           });
         }
 

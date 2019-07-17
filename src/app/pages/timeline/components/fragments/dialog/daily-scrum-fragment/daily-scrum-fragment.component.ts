@@ -8,6 +8,7 @@ import {DailyScrumItemType} from '../../../../../../core/entity/model/daily-scru
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {Subject} from 'rxjs';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
+import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 
 /**
  * Displays daily scrum fragment
@@ -22,6 +23,8 @@ export class DailyScrumFragmentComponent implements OnInit {
 
   /** Array of daily scrum items */
   @Input() dailyScrumItems: DailyScrumItem[] = [];
+  /** Map of tasklets */
+  @Input() taskletsMap = new Map<string, Tasklet>();
   /** Array of person options */
   @Input() personOptions: string[] = [];
   /** Additional person option representing the user */
@@ -119,7 +122,7 @@ export class DailyScrumFragmentComponent implements OnInit {
    * Initialize auto-complete options
    */
   private initializeOptions() {
-    this.dailyScrumOptions = Array.from(this.taskletService.getDailyScrumActivities(DailyScrumItemType.WILL_DO, this.person).values());
+    this.dailyScrumOptions = Array.from(this.taskletService.getDailyScrumActivities(this.taskletsMap, DailyScrumItemType.WILL_DO, this.person).values());
     this.optionsFiltered = this.dailyScrumOptions;
   }
 
@@ -227,7 +230,7 @@ export class DailyScrumFragmentComponent implements OnInit {
     this.colorPerson = this.colorService.getPersonColor(this.person);
     this.contrastPerson = this.colorService.getPersonContrast(this.person);
 
-    this.dailyScrumOptions = Array.from(this.taskletService.getDailyScrumActivities(DailyScrumItemType.WILL_DO, this.person).values());
+    this.dailyScrumOptions = Array.from(this.taskletService.getDailyScrumActivities(this.taskletsMap, DailyScrumItemType.WILL_DO, this.person).values());
     this.optionsFiltered = this.filterOptions(this.text);
   }
 

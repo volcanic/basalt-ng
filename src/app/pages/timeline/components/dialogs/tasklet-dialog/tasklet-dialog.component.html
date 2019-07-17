@@ -41,8 +41,11 @@
                                     (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
       <!-- Daily Scrum -->
       <app-daily-scrum-fragment *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)"
+                                [taskletsMap]="taskletsMap"
                                 [dailyScrumItems]="tasklet.dailyScrumItems"
-                                [personOptions]="personOptions">
+                                [personOptions]="personOptions"
+                                [myselfOption]="myselfOption"
+                                (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
       </app-daily-scrum-fragment>
       <!-- Checklist -->
       <app-completable-list *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)"

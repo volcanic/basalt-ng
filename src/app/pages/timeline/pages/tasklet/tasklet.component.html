@@ -111,6 +111,7 @@
               [myselfOption]="myselfOption"
               (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
             <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
+                                      [taskletsMap]="taskletsMap"
                                       [dailyScrumItems]="tasklet.dailyScrumItems"
                                       [personOptions]="personOptions"
                                       [myselfOption]="myselfOption"

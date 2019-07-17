@@ -1,8 +1,8 @@
-<app-tasklet-list-item *ngFor="let t of tasklets" [tasklet]="t" [media]="media"
-                       [tasks]="tasks" [projects]="projects"
-                       [tags]="tags" [persons]="persons"
+<app-tasklet-list-item *ngFor="let t of tasklets"
                        inViewport
-                       (taskletEventEmitter)="onTaskletEvent($event)"
+                       [tasklet]="t" [media]="media"
+                       [tasksMap]="tasksMap" [projectsMap]="projectsMap" [tagsMap]="tagsMap" [personsMap]="personsMap"
                        [inViewportOptions]="{ threshold: [0] }"
+                       (taskletEventEmitter)="onTaskletEvent($event)"
                        (inViewportAction)="onIntersection(t)">
 </app-tasklet-list-item>

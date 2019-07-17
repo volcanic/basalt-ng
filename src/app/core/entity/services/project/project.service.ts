@@ -22,10 +22,10 @@ import {DateService} from '../date.service';
 })
 export class ProjectService {
 
-  /** Map of all projects */
-  projects = new Map<string, Project>();
-  /** Subject that can be subscribed by components that are interested in changes */
+  /** Subject that publishes projects */
   projectsSubject = new Subject<Map<string, Project>>();
+  /** Subject that publishes a project */
+  projectSubject = new Subject<Project>();
 
   //
   // Sort
@@ -73,12 +73,7 @@ export class ProjectService {
    */
   private initializeProjectSubscription() {
     this.projectsSubject.subscribe((value) => {
-      Array.from(value.values()).forEach(project => {
-          this.projects.set(project.id, project);
-        }
-      );
-
-      this.suggestionService.updateByProjects(Array.from(this.projects.values()));
+      this.suggestionService.updateByProjects(Array.from((value as Map<string, Project>).values()));
     });
   }
 
@@ -106,15 +101,7 @@ export class ProjectService {
       limit: environment.LIMIT_PROJECTS_COUNT
     };
 
-    this.clearProjects();
     this.findProjectsInternal(index, options);
-  }
-
-  /**
-   * Clears projects
-   */
-  private clearProjects() {
-    this.projects.clear();
   }
 
   /**
@@ -125,12 +112,14 @@ export class ProjectService {
   private findProjectsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         if (result != null) {
+          const projects = new Map<string, Project>();
+
           result['docs'].forEach(element => {
             const project = element as Project;
-            this.projects.set(project.id, project);
+            projects.set(project.id, project);
           });
 
-          this.notify();
+          this.notifyProjects(projects);
         }
       }, error => {
         if (isDevMode()) {
@@ -147,19 +136,17 @@ export class ProjectService {
   /**
    * Creates a new project
    * @param project project to be created
-   * @param showSnack shows snackbar if true
+   * @param projectsMap projects map
    */
-  public createProject(project: Project, showSnack: boolean = false): Promise<any> {
+  public createProject(project: Project, projectsMap: Map<string, Project>): Promise<any> {
     return new Promise(() => {
       if (project != null) {
         project.scope = this.scopeService.scope;
 
         return this.pouchDBService.put(project.id, project).then(() => {
-          if (showSnack) {
-            this.snackbarService.showSnackbar('Created project');
-          }
-          this.projects.set(project.id, project);
-          this.notify();
+          projectsMap.set(project.id, project);
+          this.notifyProject(project);
+          this.notifyProjects(projectsMap);
         });
       }
     });
@@ -168,19 +155,17 @@ export class ProjectService {
   /**
    * Updates an existing project
    * @param project project to be updated
-   * @param showSnack shows snackbar if true
+   * @param projectsMap projects map
    */
-  public updateProject(project: Project, showSnack: boolean = false): Promise<any> {
+  public updateProject(project: Project, projectsMap: Map<string, Project>): Promise<any> {
     return new Promise(() => {
       if (project != null) {
         project.modificationDate = new Date();
 
         return this.pouchDBService.upsert(project.id, project).then(() => {
-          if (showSnack) {
-            this.snackbarService.showSnackbar('Updated project');
-          }
-          this.projects.set(project.id, project);
-          this.notify();
+          projectsMap.set(project.id, project);
+          this.notifyProject(project);
+          this.notifyProjects(projectsMap);
         });
       }
     });
@@ -189,20 +174,20 @@ export class ProjectService {
   /**
    * Deletes a project
    * @param project project to be deleted
+   * @param projectsMap project map
    */
-  public deleteProject(project: Project): Promise<any> {
+  public deleteProject(project: Project, projectsMap: Map<string, Project>): Promise<any> {
     return new Promise(() => {
       if (project != null) {
         this.pouchDBService.remove(project.id, project).then(() => {
-          this.snackbarService.showSnackbar('Deleted project');
-          this.projects.delete(project.id);
-          this.notify();
+          projectsMap.delete(project.id);
+          this.notifyProjects(projectsMap);
         }).catch((error) => {
           if (isDevMode()) {
             console.error(error);
           }
           this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
-            this.deleteProject(project).then(() => {
+            this.deleteProject(project, projectsMap).then(() => {
             });
           });
         });
@@ -217,12 +202,13 @@ export class ProjectService {
   /**
    * Retrieves a project by a given name
    * @param name name to find project by
+   * @param projectsMap projects map
    * @returns project identified by given name, null if no such project exists
    */
-  public getProjectByName(name: string): Project {
+  public getProjectByName(name: string, projectsMap: Map<string, Project>): Project {
     let project: Project = null;
 
-    Array.from(this.projects.values()).forEach(p => {
+    Array.from(projectsMap.values()).forEach(p => {
       if (p.name === name) {
         project = p;
       }
@@ -237,8 +223,17 @@ export class ProjectService {
 
   /**
    * Informs subscribers that something has changed
+   * @param project project
    */
-  private notify() {
-    this.projectsSubject.next(this.projects);
+  public notifyProject(project: Project) {
+    this.projectSubject.next(project);
+  }
+
+  /**
+   * Informs subscribers that something has changed
+   * @param projectsMap projects map
+   */
+  public notifyProjects(projectsMap: Map<string, Project>) {
+    this.projectsSubject.next(projectsMap);
   }
 }

@@ -24,14 +24,9 @@ import {DateService} from '../date.service';
 })
 export class PersonService {
 
-  /** Map of all persons */
-  persons = new Map<string, Person>();
-  /** Subject that can be subscribed by components that are interested in changes */
+  /** Subject that publishes persons */
   personsSubject = new Subject<Map<string, Person>>();
-
-  /** Person in focus */
-  person: Person;
-  /** Subject that publishes person */
+  /** Subject that publishes a person */
   personSubject = new Subject<Person>();
 
   /** Special person representing the user */
@@ -91,12 +86,7 @@ export class PersonService {
    */
   private initializePersonSubscription() {
     this.personsSubject.subscribe((value) => {
-      Array.from(value.values()).forEach(person => {
-          this.persons.set(person.id, person);
-        }
-      );
-
-      this.suggestionService.updateByPersons(Array.from(this.persons.values()));
+      this.suggestionService.updateByPersons(Array.from((value as Map<string, Person>).values()));
     });
   }
 
@@ -124,15 +114,7 @@ export class PersonService {
       limit: environment.LIMIT_PERSONS_COUNT
     };
 
-    this.clearPersons();
     this.findPersonsInternal(index, options);
-  }
-
-  /**
-   * Clears persons
-   */
-  private clearPersons() {
-    this.persons.clear();
   }
 
   /**
@@ -143,11 +125,13 @@ export class PersonService {
   private findPersonsInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         if (result != null) {
+          const persons = new Map<string, Person>();
+
           result['docs'].forEach(element => {
             const person = element as Person;
-            this.persons.set(person.id, person);
+            persons.set(person.id, person);
           });
-          this.notify();
+          this.notifyPersons(persons);
         }
       }, error => {
         if (isDevMode()) {
@@ -164,16 +148,18 @@ export class PersonService {
   /**
    * Creates a new person
    * @param person person to be created
+   * @param personsMap persons map
    */
-  public createPerson(person: Person): Promise<any> {
+  public createPerson(person: Person, personsMap: Map<string, Person>): Promise<any> {
     return new Promise(() => {
       if (person != null) {
         person.scope = this.scopeService.scope;
 
         return this.pouchDBService.upsert(person.id, person).then(() => {
           this.snackbarService.showSnackbar('Added person');
-          this.persons.set(person.id, person);
-          this.notify();
+          personsMap.set(person.id, person);
+          this.notifyPerson(person);
+          this.notifyPersons(personsMap);
         });
       }
     });
@@ -182,19 +168,17 @@ export class PersonService {
   /**
    * Updates existing person
    * @param person person to be updated
-   * @param showSnack shows snackbar if true
+   * @param personsMap persons map
    */
-  public updatePerson(person: Person, showSnack: boolean = false): Promise<any> {
+  public updatePerson(person: Person, personsMap: Map<string, Person>): Promise<any> {
     return new Promise(() => {
       if (person != null) {
         person.modificationDate = new Date();
 
         return this.pouchDBService.upsert(person.id, person).then(() => {
-          if (showSnack) {
-            this.snackbarService.showSnackbar('Updated person');
-          }
-          this.persons.set(person.id, person);
-          this.notify();
+          personsMap.set(person.id, person);
+          this.notifyPerson(person);
+          this.notifyPersons(personsMap);
         });
       }
     });
@@ -203,20 +187,20 @@ export class PersonService {
   /**
    * Deletes a person
    * @param person person to be deleted
+   * @param personsMap person map
    */
-  public deletePerson(person: Person): Promise<any> {
+  public deletePerson(person: Person, personsMap: Map<string, Person>): Promise<any> {
     return new Promise(() => {
       if (person != null) {
-        return this.pouchDBService.remove(person.id, person).then(() => {
-          this.snackbarService.showSnackbar('Deleted person');
-          this.persons.delete(person.id);
-          this.notify();
+        this.pouchDBService.remove(person.id, person).then(() => {
+          personsMap.delete(person.id);
+          this.notifyPersons(personsMap);
         }).catch((error) => {
           if (isDevMode()) {
             console.error(error);
           }
           this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
-            this.deletePerson(person).then(() => {
+            this.deletePerson(person, personsMap).then(() => {
             });
           });
         });
@@ -229,23 +213,15 @@ export class PersonService {
   //
 
   /**
-   * Retrieves a person by a given ID
-   * @param id ID to find person by
-   * @returns person identified by given ID, null if no such person exists
-   */
-  public getPersonById(id: string): Person {
-    return this.persons.get(id);
-  }
-
-  /**
    * Retrieves a person by a given name
    * @param name name to find person by
+   * @param personsMap persons map
    * @returns person identified by given name, null if no such person exists
    */
-  public getPersonByName(name: string): Person {
+  public getPersonByName(name: string, personsMap: Map<string, Person>): Person {
     let person: Person = null;
 
-    Array.from(this.persons.values()).forEach(p => {
+    Array.from(personsMap.values()).forEach(p => {
       if (p.name === name) {
         person = p;
       }
@@ -260,9 +236,17 @@ export class PersonService {
 
   /**
    * Notifies subscribers that something has changed
+   * @param person person
    */
-  private notify() {
-    this.personSubject.next(this.person);
-    this.personsSubject.next(this.persons);
+  public notifyPerson(person) {
+    this.personSubject.next(person);
+  }
+
+  /**
+   * Notifies subscribers that something has changed
+   * @param personsMap persons map
+   */
+  public notifyPersons(personsMap: Map<string, Person>) {
+    this.personsSubject.next(personsMap);
   }
 }

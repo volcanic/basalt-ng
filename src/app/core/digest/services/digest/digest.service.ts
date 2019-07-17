@@ -99,16 +99,16 @@ export class DigestService {
   /**
    * Generates a digest for given day
    * @param date day to create digest for
-   * @param tasklets tasklets
+   * @param taskletsMap tasklets map
    * @param tasksMap tasks map
    * @param projectsMap projects map
    * @returns digest for the given date
    */
-  getDailyDigest(date: Date, tasklets: Tasklet[], tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): ProjectDigest {
+  getDailyDigest(date: Date, taskletsMap: Map<string, Tasklet>, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): ProjectDigest {
     const start = DateService.getDayStart(date);
     const end = DateService.getDayEnd(date);
 
-    const taskletsOfPeriod = this.getTaskletsOfPeriod(start, end, tasklets);
+    const taskletsOfPeriod = this.getTaskletsOfPeriod(start, end, taskletsMap);
     const firstTasklet = taskletsOfPeriod[0];
     const lastTasklet = taskletsOfPeriod[taskletsOfPeriod.length - 1];
 
@@ -129,16 +129,16 @@ export class DigestService {
   /**
    * Generates a digest for a whole week
    * @param date one day in the week to create the digest for
-   * @param tasklets tasklets
+   * @param taskletsMap tasklets map
    * @param tasksMap tasks map
    * @param projectsMap projects map
    * @returns digest for the week determined by the given date
    */
-  getWeeklyDigest(date: Date, tasklets: Tasklet[], tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): ProjectDigest {
+  getWeeklyDigest(date: Date, taskletsMap: Map<string, Tasklet>, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>): ProjectDigest {
     const start = DateService.getWeekStart(date);
     const end = DateService.getWeekEnd(date);
 
-    const taskletsOfPeriod = this.getTaskletsOfPeriod(start, end, tasklets);
+    const taskletsOfPeriod = this.getTaskletsOfPeriod(start, end, taskletsMap);
     const topic = 'Week ' + DateService.getWeekNumber(new Date(start))
       + ' (' + DateService.getDateRangeString(new Date(start), new Date(end)) + ')';
 
@@ -150,15 +150,15 @@ export class DigestService {
    * Retrieves all tasklets of a given period
    * @param start start date
    * @param end end date
-   * @param tasklets array of all tasklets
+   * @param taskletsMap tasklets map
    * @returns array of tasklets that match the given date
    */
-  public getTaskletsOfPeriod(start: Date, end: Date, tasklets: Tasklet[]): Tasklet[] {
+  public getTaskletsOfPeriod(start: Date, end: Date, taskletsMap: Map<string, Tasklet>): Tasklet[] {
     let taskOfPeriod = [];
 
-    if (tasklets.length > 0) {
+    if (taskletsMap.size > 0) {
 
-      taskOfPeriod = tasklets.filter(t => {
+      taskOfPeriod = Array.from(taskletsMap.values()).filter(t => {
 
         if (new Date(t.creationDate) > new Date(start)
           && new Date(t.creationDate) < new Date(end)) {

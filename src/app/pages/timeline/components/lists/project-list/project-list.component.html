@@ -8,16 +8,16 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <!-- Recent -->
-    <app-project-list-item *ngFor="let p of projectsRecent" [project]="p" [projects]="projects" [media]="media" [active]="isInFocus(p)"
+    <app-project-list-item *ngFor="let p of projectsRecent" [project]="p" [projectsMap]="projectsMap" [media]="media" [active]="isInFocus(p)"
                            (projectEventEmitter)="onProjectEvent($event)">
     </app-project-list-item>
     <!-- Non-recent -->
     <div *ngIf="showMoreStatus">
       <mat-divider></mat-divider>
-      <app-project-list-item *ngFor="let p of projectsNonRecent" [project]="p" [projects]="projects" [media]="media" [active]="isInFocus(p)"
+      <app-project-list-item *ngFor="let p of projectsNonRecent" [project]="p" [projectsMap]="projectsMap" [media]="media" [active]="isInFocus(p)"
                              (projectEventEmitter)="onProjectEvent($event)">
       </app-project-list-item>
     </div>
-    <button mat-button *ngIf="projects.length > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
+    <button mat-button *ngIf="projectsMap.size > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
   </mat-expansion-panel>
 </mat-accordion>

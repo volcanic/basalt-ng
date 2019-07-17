@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ColorService} from '../../../../../../core/ui/services/color.service';
 import {TaskletTypeGroup} from '../../../../../../core/entity/model/tasklet-type-group.enum';
 import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
@@ -51,8 +42,11 @@ class SuggestedActions {
 })
 export class SuggestedActionsComponent implements OnInit, OnChanges {
 
-  /** List of suggested tasks */
-  @Input() suggestedTasks: Task[] = [];
+  /** Map of suggested tasks */
+  @Input() suggestedTasks = new Map<string, Task>();
+  /** Map of tasklets */
+  @Input() taskletsMap = new Map<string, Tasklet>();
+
   /** Event emitter indicating tasklet action */
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
   /** Event emitter indicating task action */
@@ -110,8 +104,8 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
 
     // Recurring tasks
     let expectedNextOccurrence;
-    this.suggestedTasks.filter(TaskService.isTaskRecurring).filter(task => {
-      const tasklets = this.taskletService.getTaskletsByTask(task);
+    Array.from(this.suggestedTasks.values()).filter(TaskService.isTaskRecurring).filter(task => {
+      const tasklets = this.taskletService.getTaskletsByTask(task, this.taskletsMap);
       expectedNextOccurrence = TaskService.getExpectedNextOccurrence(task, tasklets);
       return TaskService.isTaskRelevantSoon(task, expectedNextOccurrence);
     }).slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
@@ -129,7 +123,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
       });
 
     // Overdue tasks
-    this.suggestedTasks.filter(TaskService.isTaskOverdue)
+    Array.from(this.suggestedTasks.values()).filter(TaskService.isTaskOverdue)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();
@@ -145,7 +139,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
       });
 
     // Today's tasks
-    this.suggestedTasks.filter(TaskService.isTaskToday)
+    Array.from(this.suggestedTasks.values()).filter(TaskService.isTaskToday)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();
@@ -161,7 +155,7 @@ export class SuggestedActionsComponent implements OnInit, OnChanges {
       });
 
     // Later tasks
-    this.suggestedTasks.filter(TaskService.isTaskLater)
+    Array.from(this.suggestedTasks.values()).filter(TaskService.isTaskLater)
       .slice(0, this.MAX_NUMBER_DYNAMIC - this.suggestedActions.length)
       .forEach(task => {
         const suggestedAction = new SuggestedActions();

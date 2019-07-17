@@ -9,7 +9,6 @@ import {TaskletDialogComponent} from './components/dialogs/tasklet-dialog/taskle
 import {UploadDialogComponent} from './components/dialogs/upload-dialog/upload-dialog.component';
 import {TimelineComponent} from './pages/timeline/timeline.component';
 import {TaskletComponent} from './pages/tasklet/tasklet.component';
-import {TaskletResolver} from './resolvers/tasklet.resolver';
 import {TaskComponent} from './pages/task/task.component';
 import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/task-list-dialog.component';
 import {UnusedTagsDialogComponent} from './components/dialogs/unused-tags-dialog/unused-tags-dialog.component';
@@ -41,9 +40,7 @@ import {TimelineDeclarations} from './timeline.declaration';
     TaskletDialogComponent,
 
     UploadDialogComponent
-  ], providers: [
-    TaskletResolver
-  ], exports: [
+  ], providers: [], exports: [
     TimelineComponent
   ]
 })

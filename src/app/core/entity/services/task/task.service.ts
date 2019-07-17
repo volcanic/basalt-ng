@@ -15,6 +15,7 @@ import {DateService} from '../date.service';
 import {TaskDisplayAspect, TaskDisplayService} from './task-display.service';
 import {Tasklet} from '../../model/tasklet.model';
 import {SnackbarService} from '../../../ui/services/snackbar.service';
+import {Tag} from '../../model/tag.model';
 
 /**
  * Handles tasks including
@@ -31,14 +32,9 @@ import {SnackbarService} from '../../../ui/services/snackbar.service';
 })
 export class TaskService {
 
-  /** Map of all tasks */
-  tasks = new Map<string, Task>();
-  /** Subject that can be subscribed by components that are interested in changes */
+  /** Subject that publishes tasks */
   tasksSubject = new Subject<Map<string, Task>>();
-
-  /** Task in focus */
-  task: Task;
-  /** Subject that publishes task */
+  /** Subject that publishes a task */
   taskSubject = new Subject<Task>();
 
   //
@@ -237,6 +233,20 @@ export class TaskService {
   //
 
   /**
+   * Retrieves a project by a given task
+   * @param task task to find project by
+   * @param projectsMap projects map
+   * @returns project referenced by given task, null if no such project exists
+   */
+  static getProjectByTask(task: Task, projectsMap: Map<string, Project>): Project {
+    if (task != null && task.projectId != null) {
+      return projectsMap.get(task.projectId);
+    }
+
+    return null;
+  }
+
+  /**
    * Determines the latest occurrence of a task by looking at its tasklets
    * @param tasklets tasklets associated with this a task
    */
@@ -323,12 +333,7 @@ export class TaskService {
    */
   private initializeTaskSubscription() {
     this.tasksSubject.subscribe((value) => {
-      (Array.from(value.values())).forEach(task => {
-          this.tasks.set(task.id, task);
-        }
-      );
-
-      this.suggestionService.updateByTasks(Array.from(this.tasks.values()));
+      this.suggestionService.updateByTasks(Array.from((value as Map<string, Task>).values()));
     });
   }
 
@@ -356,7 +361,6 @@ export class TaskService {
       limit: environment.LIMIT_TASKS_COUNT
     };
 
-    this.clearTasks();
     this.findTasksInternal(index, options);
   }
 
@@ -381,13 +385,6 @@ export class TaskService {
   }
 
   /**
-   * Clears tasks
-   */
-  private clearTasks() {
-    this.tasks.clear();
-  }
-
-  /**
    * Index tasks and queries them afterwards
    * @param index index to be used
    * @param options query options
@@ -395,19 +392,14 @@ export class TaskService {
   private findTasksInternal(index: any, options: any) {
     this.pouchDBService.find(index, options).then(result => {
         if (result != null) {
+          const tasks = new Map<string, Task>();
+
           result['docs'].forEach(element => {
             const task = element as Task;
-
-            if (task.scope == null) {
-              task.scope = this.scopeService.scope;
-              this.updateTask(task).then(() => {
-              });
-            }
-
-            this.tasks.set(task.id, task);
+            tasks.set(task.id, task);
           });
 
-          this.notify();
+          this.notifyTasks(tasks);
         }
       }, error => {
         if (isDevMode()) {
@@ -426,12 +418,8 @@ export class TaskService {
     this.pouchDBService.find(index, options).then(result => {
         if (result != null) {
           result['docs'].forEach(element => {
-            const task = element as Task;
-
-            this.task = task;
-            this.tasks.set(task.id, task);
+            this.notifyTask(element as Task);
           });
-          this.notify();
         }
       }, error => {
         if (isDevMode()) {
@@ -447,27 +435,32 @@ export class TaskService {
 
   /**
    * Creates a new task
-   * @param task tasak to be created
+   * @param task task to be created
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @param tagsMap tags map
    */
-  public createTask(task: Task): Promise<any> {
+  public createTask(task: Task, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>, tagsMap: Map<string, Tag>): Promise<any> {
     return new Promise(() => {
       if (task != null) {
         task.scope = this.scopeService.scope;
 
         // Update related objects
-        this.projectService.updateProject(this.getProjectByTask(task), false).then(() => {
+        this.projectService.updateProject(TaskService.getProjectByTask(task, projectsMap), projectsMap).then(() => {
         });
         if (task.tagIds != null) {
           task.tagIds.forEach(id => {
-            const tag = this.tagService.getTagById(id);
-            this.tagService.updateTag(tag, false).then(() => {
+            const tag = tagsMap.get(id);
+            this.tagService.updateTag(tag, tagsMap).then(() => {
             });
           });
         }
 
         // Create task
         return this.pouchDBService.upsert(task.id, task).then(() => {
-          this.findTaskByID(task.id);
+          tasksMap.set(task.id, task);
+          this.notifyTask(task);
+          this.notifyTasks(tasksMap);
         });
       }
     });
@@ -476,17 +469,20 @@ export class TaskService {
   /**
    * Updates existing task
    * @param task task to be updated
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @param tagsMap tags map
    */
-  public updateTask(task: Task): Promise<any> {
+  public updateTask(task: Task, tasksMap: Map<string, Task>, projectsMap: Map<string, Project>, tagsMap: Map<string, Tag>): Promise<any> {
     return new Promise(() => {
       if (task != null) {
         // Update related objects
-        this.projectService.updateProject(this.getProjectByTask(task), false).then(() => {
+        this.projectService.updateProject(TaskService.getProjectByTask(task, projectsMap), projectsMap).then(() => {
         });
         if (task.tagIds != null) {
           task.tagIds.forEach(id => {
-            const tag = this.tagService.getTagById(id);
-            this.tagService.updateTag(tag, false).then(() => {
+            const tag = tagsMap.get(id);
+            this.tagService.updateTag(tag, tagsMap).then(() => {
             });
           });
         }
@@ -495,7 +491,9 @@ export class TaskService {
 
         // Update task
         return this.pouchDBService.upsert(task.id, task).then(() => {
-          this.findTaskByID(task.id);
+          tasksMap.set(task.id, task);
+          this.notifyTask(task);
+          this.notifyTasks(tasksMap);
         });
       }
     });
@@ -504,20 +502,20 @@ export class TaskService {
   /**
    * Deletes a task
    * @param task task to be deleted
+   * @param tasksMap task map
    */
-  public deleteTask(task: Task): Promise<any> {
+  public deleteTask(task: Task, tasksMap: Map<string, Task>): Promise<any> {
     return new Promise(() => {
       if (task != null) {
         this.pouchDBService.remove(task.id, task).then(() => {
-          this.tasks.delete(task.id);
-          this.task = null;
-          this.notify();
+          tasksMap.delete(task.id);
+          this.notifyTasks(tasksMap);
         }).catch((error) => {
           if (isDevMode()) {
             console.error(error);
           }
           this.snackbarService.showSnackbarWithAction('An error occurred during deletion', 'RETRY', () => {
-            this.deleteTask(task).then(() => {
+            this.deleteTask(task, tasksMap).then(() => {
             });
           });
         });
@@ -532,12 +530,13 @@ export class TaskService {
   /**
    * Retrieves a task by a given name
    * @param name name to find task by
+   * @param tasksMap tasks map
    * @returns task identified by given name, null if no such task exists
    */
-  public getTaskByName(name: string): Task {
+  public getTaskByName(name: string, tasksMap: Map<string, Task>): Task {
     let task: Task = null;
 
-    Array.from(this.tasks.values()).forEach(t => {
+    Array.from(tasksMap.values()).forEach(t => {
       if (t.name === name) {
         task = t;
       }
@@ -546,28 +545,23 @@ export class TaskService {
     return task;
   }
 
-  /**
-   * Retrieves a project by a given task
-   * @param task task to find project by
-   * @returns project referenced by given task, null if no such project exists
-   */
-  public getProjectByTask(task: Task): Project {
-    if (task != null && task.projectId != null) {
-      return this.projectService.projects.get(task.projectId);
-    }
-
-    return null;
-  }
-
   //
   // Notification
   //
 
   /**
    * Informs subscribers that something has changed
+   * @param task task
    */
-  public notify() {
-    this.taskSubject.next(this.task);
-    this.tasksSubject.next(this.tasks);
+  public notifyTask(task: Task) {
+    this.taskSubject.next(task);
+  }
+
+  /**
+   * Informs subscribers that something has changed
+   * @param tasksMap tasks map
+   */
+  public notifyTasks(tasksMap: Map<string, Task>) {
+    this.tasksSubject.next(tasksMap);
   }
 }
