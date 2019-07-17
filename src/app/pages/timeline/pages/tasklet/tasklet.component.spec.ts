@@ -28,6 +28,8 @@ import {MatDialog, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {NgZone} from '@angular/core';
 import {of} from 'rxjs';
+import {HttpClientModule} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 xdescribe('TaskletComponent', () => {
   let component: TaskletComponent;
@@ -38,7 +40,7 @@ xdescribe('TaskletComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TimelineImports],
+      imports: [TimelineImports, HttpClientModule, BrowserAnimationsModule],
       declarations: [TimelineDeclarations],
       providers: [
         ColorService,

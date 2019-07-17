@@ -83,30 +83,32 @@ export class TaskListComponent implements OnChanges {
    * Initializes tasks
    */
   private initializeTasks() {
-    const tasks = Array.from(this.tasksMap.values())
-      .sort(TaskService.sortTasks);
+    if (this.tasksMap != null) {
+      const tasks = Array.from(this.tasksMap.values())
+        .sort(TaskService.sortTasks);
 
 
-    if (tasks != null) {
-      this.tasksOverdue = tasks.filter(TaskService.isTaskOverdue);
-      this.tasksToday = tasks.filter(TaskService.isTaskToday);
-      this.tasksLater = tasks.filter(TaskService.isTaskLater);
-      this.tasksInbox = tasks.filter(TaskService.isTaskInInbox).sort((t1, t2) => {
-        return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
-      });
-      this.tasksDelegated = tasks.filter(TaskService.isTaskDelegated);
-      this.tasksRecurring = tasks.filter(TaskService.isTaskRecurring).sort((t1, t2) => {
-        return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
-      });
-      this.tasksCompleted = tasks.filter(TaskService.isTaskCompleted).sort((t1, t2) => {
-        return new Date(t2.completionDate).getTime() > new Date(t1.completionDate).getTime() ? 1 : -1;
-      });
+      if (tasks != null) {
+        this.tasksOverdue = tasks.filter(TaskService.isTaskOverdue);
+        this.tasksToday = tasks.filter(TaskService.isTaskToday);
+        this.tasksLater = tasks.filter(TaskService.isTaskLater);
+        this.tasksInbox = tasks.filter(TaskService.isTaskInInbox).sort((t1, t2) => {
+          return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+        });
+        this.tasksDelegated = tasks.filter(TaskService.isTaskDelegated);
+        this.tasksRecurring = tasks.filter(TaskService.isTaskRecurring).sort((t1, t2) => {
+          return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+        });
+        this.tasksCompleted = tasks.filter(TaskService.isTaskCompleted).sort((t1, t2) => {
+          return new Date(t2.completionDate).getTime() > new Date(t1.completionDate).getTime() ? 1 : -1;
+        });
 
-      this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
-      this.tasksTodayBadgeColor = (this.tasksToday.length > 0) ? 'accent' : 'primary';
-      this.tasksLaterBadgeColor = (this.tasksLater.length > 0) ? 'accent' : 'primary';
-      this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
-      this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
+        this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
+        this.tasksTodayBadgeColor = (this.tasksToday.length > 0) ? 'accent' : 'primary';
+        this.tasksLaterBadgeColor = (this.tasksLater.length > 0) ? 'accent' : 'primary';
+        this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
+        this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';
+      }
     }
   }
 

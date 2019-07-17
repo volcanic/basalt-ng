@@ -1154,9 +1154,6 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case Action.UPDATE: {
-        console.log(`onTaskEvent ${JSON.stringify(task)}`);
-        console.log(`onTaskEvent ${JSON.stringify(project)}`);
-
         // Create new entities if necessary
         this.evaluateTaskProject(task, project);
         this.evaluateTaskDelegatedTo(task, delegatedTo);

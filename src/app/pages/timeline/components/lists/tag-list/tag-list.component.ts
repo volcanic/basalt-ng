@@ -58,16 +58,18 @@ export class TagListComponent implements OnChanges {
    * Initializes tags
    */
   private initializeTags() {
-    const tags = Array.from(this.tagsMap.values())
-      .sort(TagService.sortTagsByName)
-      .sort(TagService.sortTagsByModificationDate);
+    if (this.tagsMap != null) {
+      const tags = Array.from(this.tagsMap.values())
+        .sort(TagService.sortTagsByName)
+        .sort(TagService.sortTagsByModificationDate);
 
-    if (tags != null) {
-      this.tagsRecent = tags.slice(0, this.recentCount);
-      if (tags.length > this.recentCount) {
-        this.tagsNonRecent = tags.slice(this.recentCount, tags.length - 1).sort((p1, p2) => {
-          return p2.name < p1.name ? 1 : -1;
-        });
+      if (tags != null) {
+        this.tagsRecent = tags.slice(0, this.recentCount);
+        if (tags.length > this.recentCount) {
+          this.tagsNonRecent = tags.slice(this.recentCount, tags.length - 1).sort((p1, p2) => {
+            return p2.name < p1.name ? 1 : -1;
+          });
+        }
       }
     }
   }

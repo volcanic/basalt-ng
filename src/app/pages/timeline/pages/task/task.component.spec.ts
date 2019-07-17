@@ -11,6 +11,9 @@ import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {RouterTestingModule} from '@angular/router/testing';
+import {HttpClientModule} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
 
 describe('TaskComponent', () => {
   let component: TaskComponent;
@@ -18,9 +21,10 @@ describe('TaskComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TimelineImports, RouterTestingModule],
+      imports: [TimelineImports, HttpClientModule, BrowserAnimationsModule, RouterTestingModule],
       declarations: [TimelineDeclarations],
       providers: [
+        MaterialIconService,
         {provide: PouchDBService, useClass: PouchDBServiceMock},
         {provide: PouchDBSettingsService, useClass: PouchDBSettingsServiceMock},
         {

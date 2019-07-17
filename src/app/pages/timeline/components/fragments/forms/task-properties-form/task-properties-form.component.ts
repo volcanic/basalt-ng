@@ -289,8 +289,6 @@ export class TaskPropertiesFormComponent implements OnInit {
   onProjectChanged(project: Project) {
     this.project = this.evaluateProject(project.name, this.projectOptions);
     this.task.projectId = this.project.id;
-    console.log(`onProjectChanged ${JSON.stringify(this.project)}`);
-    console.log(`onProjectChanged ${JSON.stringify(this.task)}`);
     this.notify();
   }
 

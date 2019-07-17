@@ -227,9 +227,6 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * Handles task changes
    */
   private handleTaskChanges() {
-    console.log(`before ${this.taskBefore.projectId}`);
-    console.log(`after ${this.task.projectId}`);
-
     if (this.hasChanged()) {
       switch (this.mode) {
         case DialogMode.ADD: {
@@ -252,8 +249,6 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * Determines task has changed
    */
   private hasChanged(): boolean {
-    console.log(`FOO ${JSON.stringify(this.task)}`);
-    console.log(`BAR ${JSON.stringify(this.taskBefore)}`);
     return JSON.stringify(this.task) !== JSON.stringify(this.taskBefore);
   }
 
