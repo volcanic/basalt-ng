@@ -105,7 +105,7 @@
       <div>
         <app-project-autocomplete-fragment
           [project]="project"
-          [projectOptions]="projectOptions"
+          [projectOptions]="projectOptionNames"
           [readonly]="readonly"
           (projectChangedEmitter)="onProjectChanged($event)"></app-project-autocomplete-fragment>
       </div>
@@ -142,7 +142,7 @@
       <div>
         <app-person-autocomplete-fragment
           [person]="delegatedTo"
-          [personOptions]="personOptions"
+          [personOptions]="personOptionNames"
           (personChangedEmitter)="onDelegatedToChanged($event)"></app-person-autocomplete-fragment>
       </div>
     </mat-expansion-panel>

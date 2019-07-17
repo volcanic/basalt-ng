@@ -35,14 +35,21 @@ export class TaskPropertiesFormComponent implements OnInit {
   @Input() readonly = false;
 
   /** Project options */
-  @Input() projectOptions: string[];
-  /** Tag options */
-  @Input() tagOptions: string[];
+  @Input() projectOptions = new Map<string, Project>();
   /** Person options */
-  @Input() personOptions: string[];
+  @Input() personOptions = new Map<string, Person>();
+  /** Tag options */
+  @Input() tagOptions = new Map<string, Tag>();
 
   /** Event emitter indicating task changes */
   @Output() taskEventEmitter = new EventEmitter<{ task: Task, project: Project, delegatedTo: Person, tags: Tag[] }>();
+
+  /** Project option names */
+  projectOptionNames = [];
+  /** Tag option names */
+  tagOptionNames = [];
+  /** Person option names */
+  personOptionNames = [];
 
   /** Number of completed acceptance criteria */
   completedAcceptanceCriteria = 0;
@@ -51,7 +58,7 @@ export class TaskPropertiesFormComponent implements OnInit {
   recurring = false;
 
   /** Color for no priority */
-  colorEmpty = '#cfd8dc';
+  colorEmpty = '';
   /** Colors for priorities */
   colorsPriorities = [];
   /** Colors for flags */
@@ -82,6 +89,7 @@ export class TaskPropertiesFormComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeColors();
+    this.initializeOptions();
     this.initializePriority();
     this.initializeRecurringState();
     this.initializeAcceptanceCriteria();
@@ -95,6 +103,7 @@ export class TaskPropertiesFormComponent implements OnInit {
    * INitializes colors
    */
   private initializeColors() {
+    this.colorEmpty = this.materialColorService.color(PaletteType.GREY, HueType._300);
     this.colorsPriorities = [
       this.materialColorService.color(PaletteType.RED, HueType._600),
       this.materialColorService.color(PaletteType.AMBER, HueType._600),
@@ -105,6 +114,27 @@ export class TaskPropertiesFormComponent implements OnInit {
       this.materialColorService.color(PaletteType.GREY, HueType._400),
       this.materialColorService.color(PaletteType.GREY, HueType._400)
     ];
+  }
+
+  /**
+   * Initializes options
+   */
+  private initializeOptions() {
+    this.projectOptionNames = Array.from(this.projectOptions.values()).sort((p1, p2) => {
+      return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
+    }).map(project => {
+      return project.name;
+    });
+    this.personOptionNames = Array.from(this.personOptions.values()).sort((p1, p2) => {
+      return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
+    }).map(person => {
+      return person.name;
+    });
+    this.tagOptionNames = Array.from(this.tagOptions.values()).sort((p1, p2) => {
+      return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
+    }).map(tag => {
+      return tag.name;
+    });
   }
 
   /**
@@ -254,11 +284,13 @@ export class TaskPropertiesFormComponent implements OnInit {
 
   /**
    * Handles project changes
-   * @param project project value
+   * @param project project
    */
   onProjectChanged(project: Project) {
-    this.project = project;
-    this.task.projectId = project.id;
+    this.project = this.evaluateProject(project.name, this.projectOptions);
+    this.task.projectId = this.project.id;
+    console.log(`onProjectChanged ${JSON.stringify(this.project)}`);
+    console.log(`onProjectChanged ${JSON.stringify(this.task)}`);
     this.notify();
   }
 
@@ -280,7 +312,7 @@ export class TaskPropertiesFormComponent implements OnInit {
    * @param delegatedTo delegated to value
    */
   onDelegatedToChanged(delegatedTo: Person) {
-    this.delegatedTo = delegatedTo;
+    this.delegatedTo = this.evaluatePerson(delegatedTo.name, this.personOptions);
     this.task.delegatedToId = delegatedTo.id;
     this.notify();
   }
@@ -321,6 +353,36 @@ export class TaskPropertiesFormComponent implements OnInit {
       this.initializeAcceptanceCriteria();
       this.notify();
     }
+  }
+
+  //
+  // Helpers
+  //
+
+  /**
+   * Checks if a given project's name correlates to any exiting project
+   * @param projectName project name
+   * @param projectsMap map of existing projects
+   */
+  private evaluateProject(projectName: string, projectsMap: Map<string, Project>) {
+    const projectsWithSameName = Array.from(projectsMap.values()).filter(p => {
+      return projectName === p.name;
+    });
+
+    return (projectsWithSameName != null && projectsWithSameName.length > 0) ? projectsWithSameName[0] : new Project(projectName);
+  }
+
+  /**
+   * Checks if a given person's name correlates to any exiting person
+   * @param personName person name
+   * @param personsMap map of existing persons
+   */
+  private evaluatePerson(personName: string, personsMap: Map<string, Person>) {
+    const personsWithSameName = Array.from(personsMap.values()).filter(p => {
+      return personName === p.name;
+    });
+
+    return (personsWithSameName != null && personsWithSameName.length > 0) ? personsWithSameName[0] : new Person(personName);
   }
 
   //

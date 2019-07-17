@@ -5,8 +5,8 @@
       <app-task-title-form [task]="task" [readonly]="readonly"
                            (taskEventEmitter)="onTaskNameChanged($event)"></app-task-title-form>
       <app-task-properties-form [task]="task" [project]="project" [delegatedTo]="delegatedTo" [tags]="tags"
-                                [readonly]="readonly" [projectOptions]="projectOptions" [tagOptions]="tagOptions"
-                                [personOptions]="personOptions"
+                                [readonly]="readonly" [projectOptions]="projectOptions" [personOptions]="personOptions"
+                                [tagOptions]="tagOptions"
                                 (taskEventEmitter)="onTaskChanged($event)">
       </app-task-properties-form>
     </mat-dialog-content>
