@@ -1,5 +1,6 @@
 <app-checkable-list-item *ngFor="let item of items"
-                         [item]="item" [readonly]="readonly" [editable]="editable" (itemChangedEmitter)="onItemChanged($event)">
+                         [item]="item" [readonly]="readonly" [editable]="editable" [focusNewElement]="focusNewElement"
+                         (itemChangedEmitter)="onItemChanged($event)">
 </app-checkable-list-item>
 
 <div *ngIf="!readonly && editable" (click)="onNewListEntryClicked()">

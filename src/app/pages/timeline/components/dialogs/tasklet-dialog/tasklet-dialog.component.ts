@@ -65,11 +65,11 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   tagsMap = new Map<string, Tag>();
 
   /** Task options */
-  taskOptions: string[];
+  taskOptionNames: string[];
   /** Tag options */
-  tagOptions: string[];
+  tagOptionNames: string[];
   /** Person options */
-  personOptions: string[];
+  personOptionNames: string[];
   /** Person option representing the user */
   myselfOption: string;
 
@@ -151,17 +151,17 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * Initializes options
    */
   private initializeOptions() {
-    this.taskOptions = Array.from(this.suggestionService.taskOptions.values()).sort((t1, t2) => {
+    this.taskOptionNames = Array.from(this.suggestionService.taskOptions.values()).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     }).map(t => {
       return t.name;
     });
-    this.tagOptions = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
+    this.tagOptionNames = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     }).map(t => {
       return t.name;
     });
-    this.personOptions = Array.from(this.suggestionService.personOptions.values()).sort((p1, p2) => {
+    this.personOptionNames = Array.from(this.suggestionService.personOptions.values()).sort((p1, p2) => {
       return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
     }).map(p => {
       return p.name;

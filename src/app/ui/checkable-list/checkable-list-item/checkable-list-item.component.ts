@@ -27,6 +27,8 @@ export class CheckableListItemComponent implements OnInit, AfterViewInit {
   @Input() readonly = false;
   /** Whether component's structure can be edited */
   @Input() editable = true;
+  /** Whether input fields of new elememnts should be focussed or not */
+  @Input() focusNewElement = false;
   /** Event emitter indicating item changes */
   @Output() itemChangedEmitter = new EventEmitter<any>();
 
@@ -51,7 +53,7 @@ export class CheckableListItemComponent implements OnInit, AfterViewInit {
    * Handles after-view-init lifecycle phase
    */
   ngAfterViewInit() {
-    if (this.input.first != null) {
+    if (this.focusNewElement && this.input.first != null) {
       this.input.first.nativeElement.focus();
     }
   }

@@ -199,6 +199,7 @@
       </mat-expansion-panel-header>
       <app-completable-list [items]="task.acceptanceCriteria"
                             [readonly]="readonly"
+                            [focusNewElement]="'true'"
                             (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
       </app-completable-list>
 

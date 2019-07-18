@@ -37,6 +37,8 @@ export class CompletableListComponent implements OnInit {
   @Input() newEntryPlaceholder = 'List entry';
   /** Whether component is readonly or not */
   @Input() readonly = false;
+  /** Whether input fields of new elememnts should be focussed or not */
+  @Input() focusNewElement = false;
   /** Event emitter indicating items changes */
   @Output() itemsChangedEmitter = new EventEmitter<SelectableItem[]>();
 

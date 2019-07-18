@@ -7,7 +7,7 @@
       <!-- Task -->
       <app-task-autocomplete-fragment
         *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
-        [taskName]="task.name" [taskOptions]="taskOptions" (taskNameChangedEmitter)="onTaskNameChanged($event)">
+        [taskName]="task.name" [taskOptions]="taskOptionNames" (taskNameChangedEmitter)="onTaskNameChanged($event)">
       </app-task-autocomplete-fragment>
       <!-- Previous description and daily scrum items-->
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
@@ -36,34 +36,35 @@
       <!-- Meeting minutes -->
       <app-meeting-minutes-fragment *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
                                     [meetingMinuteItems]="tasklet.meetingMinuteItems"
-                                    [personOptions]="personOptions"
+                                    [personOptions]="personOptionNames"
                                     [myselfOption]="myselfOption"
                                     (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
       <!-- Daily Scrum -->
       <app-daily-scrum-fragment *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DAILY_SCRUM, tasklet)"
                                 [taskletsMap]="taskletsMap"
                                 [dailyScrumItems]="tasklet.dailyScrumItems"
-                                [personOptions]="personOptions"
+                                [personOptions]="personOptionNames"
                                 [myselfOption]="myselfOption"
                                 (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
       </app-daily-scrum-fragment>
       <!-- Checklist -->
       <app-completable-list *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)"
-                          [items]="tasklet.acceptanceCriteria"
-                          [readonly]="readonly"
-                          (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
+                            [items]="tasklet.acceptanceCriteria"
+                            [readonly]="readonly"
+                            [focusNewElement]="'true'"
+                            (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
       </app-completable-list>
 
       <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
                      [tags]="inheritedTags | tagNames"
-                     [tagOptions]="tagOptions"
+                     [tagOptions]="tagOptionNames"
                      [background]="materialColorService.color(paletteType.GREY, hueType._200)"
                      [color]="materialColorService.contrast(paletteType.GREY, hueType._200)"
                      [readonly]=true>
       </app-tag-chips>
       <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
                      [tags]="tags | tagNames"
-                     [tagOptions]="tagOptions"
+                     [tagOptions]="tagOptionNames"
                      [background]="materialColorService.color(paletteType.GREY, hueType._300)"
                      [color]="materialColorService.contrast(paletteType.GREY, hueType._300)"
                      [readonly]=false
@@ -71,7 +72,7 @@
       </app-tag-chips>
       <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_PERSONS, tasklet)"
                      [tags]="persons | personNames"
-                     [tagOptions]="personOptions"
+                     [tagOptions]="personOptionNames"
                      [background]="materialColorService.color(paletteType.GREY, hueType._400)"
                      [color]="materialColorService.contrast(paletteType.GREY, hueType._400)"
                      [readonly]=false

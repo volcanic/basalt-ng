@@ -21,7 +21,8 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <app-completable-list-item *ngFor="let item of selectedItems"
-                               [item]="item" [readonly]="readonly" (itemChangedEmitter)="onItemChanged($event)">
+                               [item]="item" [readonly]="readonly" [focusNewElement]="focusNewElement"
+                               (itemChangedEmitter)="onItemChanged($event)">
     </app-completable-list-item>
   </mat-expansion-panel>
 </mat-accordion>

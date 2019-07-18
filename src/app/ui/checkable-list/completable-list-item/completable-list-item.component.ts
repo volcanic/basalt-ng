@@ -25,6 +25,8 @@ export class CompletableListItemComponent implements OnInit, AfterViewInit {
   @Input() item: SelectableItem;
   /** Whether component is readonly or not */
   @Input() readonly = false;
+  /** Whether input fields of new elememnts should be focussed or not */
+  @Input() focusNewElement = false;
   /** Event emitter indicating item changes */
   @Output() itemChangedEmitter = new EventEmitter<any>();
 
@@ -49,7 +51,7 @@ export class CompletableListItemComponent implements OnInit, AfterViewInit {
    * Handles after-view-init lifecycle phase
    */
   ngAfterViewInit() {
-    if (!this.item.selected && this.input.first != null) {
+    if (this.focusNewElement && !this.item.selected && this.input.first != null) {
       this.input.first.nativeElement.focus();
     }
   }
