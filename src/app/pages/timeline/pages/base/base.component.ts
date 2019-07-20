@@ -120,6 +120,24 @@ export class BaseComponent implements OnDestroy {
 
   /**
    * Constructor
+   * @param dialog dialog
+   * @param emailService email service
+   * @param filterService filter service
+   * @param iconRegistry icon registry
+   * @param materialColorService material color service
+   * @param materialIconService material icon service
+   * @param mediaService media service
+   * @param projectService project service
+   * @param personService person service
+   * @param router router
+   * @param sanitizer sanitzer
+   * @param scopeService scope service
+   * @param settingsService settings service
+   * @param snackbarService snackbar service
+   * @param suggestionService suggestion service
+   * @param tagService tag service
+   * @param taskletService tasklet service
+   * @param taskService task service
    */
   constructor(protected dialog: MatDialog,
               protected emailService: EmailService,

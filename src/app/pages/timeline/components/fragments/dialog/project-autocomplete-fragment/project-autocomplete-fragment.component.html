@@ -1,4 +1,4 @@
-<div class="searchbox">
+<div class="searchbox" *ngIf="project != null">
   <input class="search-input" matInput name="search" type="text" placeholder="Project"
          [ngModel]="project.name"
          (ngModelChange)="onProjectNameChanged($event)"
