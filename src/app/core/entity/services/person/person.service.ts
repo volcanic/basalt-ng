@@ -96,6 +96,27 @@ export class PersonService {
 
   /**
    * Loads persons by a given scope
+   */
+  public findPersons() {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PERSONS_DAYS));
+
+    const index = {fields: ['entityType', 'modificationDate']};
+    const options = {
+      selector: {
+        $and: [
+          {entityType: {$eq: EntityType.PERSON}},
+          {modificationDate: {$gt: startDate.toISOString()}}
+        ]
+      },
+      sort: [{'modificationDate': 'desc'}],
+      limit: environment.LIMIT_PERSONS_COUNT
+    };
+
+    this.findPersonsInternal(index, options);
+  }
+
+  /**
+   * Loads persons by a given scope
    * @param scope scope to filter by
    */
   public findPersonsByScope(scope: Scope) {

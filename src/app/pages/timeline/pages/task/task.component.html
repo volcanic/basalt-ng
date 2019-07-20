@@ -1,13 +1,11 @@
-<!--
 <app-task-toolbar
   [@toolbarAnimation]="scrollDirection"
   class="fixed"
   [media]="media"
   (menuItemEventEmitter)="onMenuItemClicked($event)"></app-task-toolbar>
--->
 
 <div (keydown)="onKeyDown($event)" class="main">
-  <mat-sidenav-container class="sidenav-container" layout="column">
+  <mat-sidenav-container class="sidenav-container">
     <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
                  position="start" [opened]="sidenavOpened"
                  class="sidenav sidenav-start">
@@ -30,7 +28,7 @@
       <div *ngIf="task != null" class="content">
         <form #formCtrl="ngForm">
           <!-- Pseudo form field to make other input fields work -->
-          <mat-form-field style="width: 0; height: 0;"><input matInput=""/></mat-form-field>
+          <mat-form-field style="width: 0; height: 0;"><input label="pseudo" title="pseudo" matInput/></mat-form-field>
 
           <div class="header-buttons">
             <div class="icon-wrapper">
@@ -63,6 +61,7 @@
           </div>
           <div class="main">
 
+            <!--
             <div *ngIf="!propertiesOpened" class="information-buttons">
               <div class="icon-wrapper">
                 <div class="more">
@@ -75,6 +74,7 @@
                 <div class="flexbox"></div>
               </div>
             </div>
+            -->
 
             <div *ngIf="task != null && propertiesOpened" class="information">
               <app-task-properties-form [task]="task" [project]="project" [delegatedTo]="delegatedTo" [tags]="tags"
@@ -130,12 +130,12 @@
                   Complete task
                 </button>
                 <button mat-button *ngIf="mode == modeType.ADD"
-                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, task)"
+                        [disabled]="!containsDisplayAspect(taskDisplayAspectType.CAN_BE_CREATED, task)"
                         (click)="onButtonClicked(actionType.ADD)">
                   Add task
                 </button>
                 <button mat-button *ngIf="mode == modeType.UPDATE"
-                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, task)"
+                        [disabled]="!containsDisplayAspect(taskDisplayAspectType.CAN_BE_UPDATED, task)"
                         (click)="onButtonClicked(actionType.UPDATE)">
                   Update task
                 </button>

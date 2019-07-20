@@ -61,7 +61,6 @@ export class ProjectService {
               private snackbarService: SnackbarService,
               private scopeService: ScopeService) {
     this.initializeProjectSubscription();
-    this.findProjectsByScope(this.scopeService.scope);
   }
 
   //
@@ -80,6 +79,27 @@ export class ProjectService {
   //
   // Queries
   //
+
+  /**
+   * Loads projects by a given scope
+   */
+  public findProjects() {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PROJECTS_DAYS));
+
+    const index = {fields: ['entityType', 'modificationDate']};
+    const options = {
+      selector: {
+        $and: [
+          {entityType: {$eq: EntityType.PROJECT}},
+          {modificationDate: {$gt: startDate.toISOString()}}
+        ]
+      },
+      sort: [{'modificationDate': 'desc'}],
+      limit: environment.LIMIT_PROJECTS_COUNT
+    };
+
+    this.findProjectsInternal(index, options);
+  }
 
   /**
    * Loads projects by a given scope

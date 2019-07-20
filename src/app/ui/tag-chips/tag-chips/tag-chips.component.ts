@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import {debounceTime} from 'rxjs/operators';
   styleUrls: ['./tag-chips.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TagChipsComponent implements OnInit {
+export class TagChipsComponent implements OnChanges {
 
   /** Tags to be displayed */
   @Input() tags: string[] = [];
@@ -40,9 +40,9 @@ export class TagChipsComponent implements OnInit {
   //
 
   /**
-   * Handles on-init lifecycle phase
+   * Handles on-changes lifecycle phase
    */
-  ngOnInit() {
+  ngOnChanges() {
     this.initializeOptions();
     this.initializeDebouncer();
   }
@@ -55,6 +55,7 @@ export class TagChipsComponent implements OnInit {
    * Initialize auto-complete options
    */
   private initializeOptions() {
+    console.log(`tagOptions ${this.tagOptions.length}`);
     this.optionsFiltered = this.tagOptions;
   }
 

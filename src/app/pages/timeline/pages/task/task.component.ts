@@ -6,7 +6,6 @@ import {Project} from '../../../../core/entity/model/project.model';
 import {Tag} from '../../../../core/entity/model/tag.model';
 import {Person} from '../../../../core/entity/model/person.model';
 import {TaskletType} from '../../../../core/entity/model/tasklet-type.enum';
-import {Subject} from 'rxjs';
 import {Media} from '../../../../core/ui/model/media.enum';
 import {MatDialog, MatIconRegistry, MatSidenav} from '@angular/material';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/overlay';
@@ -27,15 +26,13 @@ import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.s
 import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
-import {map, takeUntil} from 'rxjs/operators';
-import {ConfirmationDialogComponent} from '../../../../ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
+import {map} from 'rxjs/operators';
 import {Action} from '../../../../core/entity/model/action.enum';
-import {CloneService} from '../../../../core/entity/services/clone.service';
-import {InformationDialogComponent} from '../../../../ui/information-dialog/information-dialog/information-dialog.component';
 import {Animations, ScrollDirection, ScrollState} from './task.animation';
 import {Setting} from '../../../../core/settings/model/setting.model';
 import {SettingType} from '../../../../core/settings/model/setting-type.enum';
 import {TaskDisplayAspect} from '../../../../core/entity/services/task/task-display.service';
+import {BaseComponent} from '../base/base.component';
 
 /**
  * Represents a tasklet type action button
@@ -65,12 +62,12 @@ class TaskletTypeAction {
     Animations.dateIndicatorAnimation,
   ]
 })
-export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TaskComponent
+  extends BaseComponent
+  implements OnInit, AfterViewInit, OnDestroy {
 
   /** ID passed as an argument */
   id: string;
-  /** Enum of dialog modes */
-  public modeType = DialogMode;
   /** Current dialog mode */
   public mode: DialogMode = DialogMode.NONE;
 
@@ -80,17 +77,6 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   recurring = false;
   /** Readonly dialog if true */
   readonly = false;
-
-  /** Map of tasklets */
-  public taskletsMap = new Map<string, Tasklet>();
-  /** Map of tasks */
-  public tasksMap = new Map<string, Task>();
-  /** Map of projects */
-  public projectsMap = new Map<string, Project>();
-  /** Map of persons */
-  public personsMap = new Map<string, Person>();
-  /** Map of tags */
-  public tagsMap = new Map<string, Tag>();
 
   /** Project assigned to this task */
   project: Project;
@@ -109,26 +95,11 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Tag options */
   tagOptions = new Map<string, Tag>();
 
-  /** Enum of tasklet types */
-  taskletType = TaskletType;
   /** Tasklet type action */
   action: TaskletTypeAction;
 
   /** Placeholder text for description */
   placeholderDescription = 'empty';
-
-  /** Helper subject used to finish other subscriptions */
-  private unsubscribeSubject = new Subject();
-
-  /** Current media */
-  media: Media = Media.UNDEFINED;
-
-  /** Enum for action types */
-  actionType = Action;
-  /** Enum of media types */
-  mediaType = Media;
-  /** Enum of display aspects */
-  displayAspectType = TaskDisplayAspect;
 
   /** Vertical scroll position */
   private scrollPosLast = 0;
@@ -138,7 +109,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   public scrollState: ScrollState = ScrollState.NON_SCROLLING;
 
   /** Indicates whether properties form is opened */
-  propertiesOpened = false;
+  propertiesOpened = true;
   /** Sidenav state */
   public sidenavOpened = false;
 
@@ -152,77 +123,154 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Transparent color */
   transparent = 'transparent';
 
+  /** Reference to static method */
+  containsDisplayAspect = TaskComponent.containsDisplayAspect;
+  /** Reference to static method */
+  getIconByTaskletType = TaskComponent.getIconByTaskletType;
+
+  //
+  // Static methods
+  //
+
+  /**
+   * Determines whether the displayed task contains a specific display aspect
+   * @param displayAspect display aspect
+   * @param task task
+   */
+  static containsDisplayAspect(displayAspect: TaskDisplayAspect, task: Task): boolean {
+    return TaskService.containsDisplayAspect(displayAspect, task);
+  }
+
+  /**
+   * Retrieves an icon by tasklet type
+   * @param type tasklet type
+   */
+  static getIconByTaskletType(type: TaskletType): string {
+    return TaskletService.getIconByTaskletType(type);
+  }
+
   /**
    * Constructor
    * @param colorService color service
+   * @param dialog dialog
    * @param emailService email service
    * @param filterService filter service
+   * @param iconRegistry iconRegistry
    * @param mediaService media service
    * @param materialColorService material color service
    * @param materialIconService material icon service
-   * @param scroll scroll
    * @param personService person service
    * @param projectService project service
+   * @param route route
+   * @param router router
+   * @param sanitizer sanitizer
    * @param scopeService scope service
+   * @param scroll scroll
    * @param settingsService settings service
    * @param snackbarService snackbar service
    * @param tagService tag service
    * @param suggestionService suggestion service
    * @param taskletService tasklet service
    * @param taskService task service
-   * @param route route
-   * @param router router
-   * @param iconRegistry iconRegistry
-   * @param sanitizer sanitizer
-   * @param dialog dialog
    * @param zone Angular zone
    */
   constructor(private colorService: ColorService,
-              private emailService: EmailService,
-              private filterService: FilterService,
-              private mediaService: MediaService,
-              private materialColorService: MaterialColorService,
-              private materialIconService: MaterialIconService,
-              private personService: PersonService,
-              private projectService: ProjectService,
-              private scopeService: ScopeService,
-              private scroll: ScrollDispatcher,
-              private settingsService: SettingsService,
-              private snackbarService: SnackbarService,
-              private suggestionService: SuggestionService,
-              private tagService: TagService,
-              private taskletService: TaskletService,
-              private taskService: TaskService,
+              protected dialog: MatDialog,
+              protected emailService: EmailService,
+              protected filterService: FilterService,
+              protected iconRegistry: MatIconRegistry,
+              protected mediaService: MediaService,
+              protected materialColorService: MaterialColorService,
+              protected materialIconService: MaterialIconService,
+              protected personService: PersonService,
+              protected projectService: ProjectService,
               private route: ActivatedRoute,
-              private router: Router,
-              private iconRegistry: MatIconRegistry,
-              private sanitizer: DomSanitizer,
-              public dialog: MatDialog,
-              public zone: NgZone) {
+              protected router: Router,
+              protected sanitizer: DomSanitizer,
+              protected scopeService: ScopeService,
+              private scroll: ScrollDispatcher,
+              protected settingsService: SettingsService,
+              protected snackbarService: SnackbarService,
+              protected suggestionService: SuggestionService,
+              protected tagService: TagService,
+              protected taskletService: TaskletService,
+              protected taskService: TaskService,
+              protected zone: NgZone) {
+    super(dialog,
+      emailService,
+      filterService,
+      iconRegistry,
+      materialColorService,
+      materialIconService,
+      mediaService,
+      projectService,
+      personService,
+      router,
+      sanitizer,
+      scopeService,
+      settingsService,
+      snackbarService,
+      suggestionService,
+      tagService,
+      taskletService,
+      taskService);
   }
 
   //
   // Lifecycle hooks
   //
 
+  // <editor-fold defaultstate="collapsed" desc="Lifecycle hooks">
+
   /**
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.initializeTaskletSubscription();
-    this.initializeTaskSubscription();
-    this.initializeProjectSubscription();
-    this.initializeTagSubscription();
-    this.initializePersonSubscription();
-
-    this.initializeOptions();
+    this.initializeTaskletsSubscription().subscribe((value) => {
+      console.log(`onTaskletsFound ${value.size}`);
+      this.initializeTasklets(value as Map<string, Tasklet>);
+    });
+    this.initializeTaskSubscription().subscribe((value) => {
+      console.log(`onTaskFound ${value != null}`);
+      this.initializeTask(value as Task);
+      this.initializeTaskletTypeAction();
+    });
+    this.initializeTasksSubscription().subscribe((value) => {
+      console.log(`onTasksFound ${value.size}`);
+      this.initializeTasks(value as Map<string, Task>);
+      this.initializeOptions();
+    });
+    this.initializeProjectsSubscription().subscribe((value) => {
+      console.log(`onProjectsFound ${value.size}`);
+      this.initializeProjects(value as Map<string, Project>);
+      this.initializeOptions();
+    });
+    this.initializePersonsSubscription().subscribe((value) => {
+      console.log(`onPersonsFound ${value.size}`);
+      this.initializePersons(value as Map<string, Person>);
+      this.initializeOptions();
+    });
+    this.initializeTagsSubscription().subscribe((value) => {
+      console.log(`onTagsFound ${value.size}`);
+      this.initializeTags(value as Map<string, Tag>);
+      this.initializeOptions();
+    });
+    this.initializeMediaSubscription().subscribe((value) => {
+      this.media = value as Media;
+    });
 
     this.initializeMaterial();
-    this.initializeMediaSubscription();
-
     this.initializeSettings();
 
-    this.initializeData();
+    this.route.params.subscribe(() => {
+      if (this.route.snapshot != null) {
+        this.id = this.route.snapshot.paramMap.get('id');
+      }
+      this.initializeMode();
+
+      this.taskService.findTaskByID(this.id);
+      this.findEntities();
+    });
   }
 
   /**
@@ -236,58 +284,16 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
-    this.unsubscribeSubject.next();
-    this.unsubscribeSubject.complete();
+    super.ngOnDestroy();
   }
+
+  // </editor-fold>
 
   //
   // Initialization
   //
 
-  /**
-   * Initializes parameters
-   */
-  private initializeParameters() {
-    if (this.route.snapshot != null) {
-      this.id = this.route.snapshot.paramMap.get('id');
-    }
-
-    if (this.id === null) {
-      this.mode = DialogMode.ADD;
-    } else {
-      this.mode = DialogMode.UPDATE;
-    }
-  }
-
-  /**
-   * Initializes resolved data
-   */
-  private initializeResolvedData(): Task {
-    return (this.route.snapshot != null && this.route.snapshot.data != null) ? this.route.snapshot.data['task'] : null;
-  }
-
-  /**
-   * Initializes task subscription
-   */
-  private initializeTaskSubscription() {
-    this.taskService.taskSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        this.initializeTask(value as Task);
-        this.initializeTaskletTypeAction();
-      }
-    });
-
-    this.taskService.tasksSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        this.initializeTasks(value as Map<string, Task>);
-        this.initializeOptions();
-      }
-    });
-  }
+  // <editor-fold defaultstate="collapsed" desc="Initialization">
 
   /**
    * Initializes task
@@ -295,18 +301,19 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTask(task: Task) {
     this.task = task;
-    if (task != null) {
-      this.project = this.projectsMap.get(this.task.projectId);
-      this.tags = task.tagIds.map(id => {
-        return this.tagsMap.get(id);
-      }).filter(tag => {
-        return tag != null;
-      });
-      this.delegatedTo = this.personsMap.get(task.delegatedToId);
 
-      // After task has been initialized associated tasklets can be determined
-      this.taskletService.findTaskletsByScope(this.scopeService.scope);
-    }
+    this.project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
+    this.tasklets = this.taskletService
+      .getTaskletsByTask(this.task, this.taskletsMap)
+      .sort(TaskletService.sortTaskletsByCreationDate);
+
+    this.delegatedTo = (this.task != null && this.personsMap != null) ? this.personsMap.get(this.task.delegatedToId) : null;
+
+    this.tags = (this.task != null) ? this.task.tagIds.map(id => {
+      return this.tagsMap.get(id);
+    }).filter(tag => {
+      return tag != null;
+    }) : [];
   }
 
   /**
@@ -318,35 +325,13 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Initializes tasklet subscription
-   */
-  private initializeTaskletSubscription() {
-    this.taskletService.taskletsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        this.initializeTasklets(value as Map<string, Tasklet>);
-      }
-    });
-  }
-
-  /**
    * Initialize tasklets
    */
   private initializeTasklets(taskletsMap: Map<string, Tasklet>) {
-    this.tasklets = this.taskletService.getTaskletsByTask(this.task, taskletsMap);
-  }
-
-  /**
-   * Initializes project subscription
-   */
-  private initializeProjectSubscription() {
-    this.projectService.projectsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.initializeProjects(value as Map<string, Project>);
-      this.initializeOptions();
-    });
+    this.taskletsMap = taskletsMap;
+    this.tasklets = this.taskletService
+      .getTaskletsByTask(this.task, this.taskletsMap)
+      .sort(TaskletService.sortTaskletsByCreationDate);
   }
 
   /**
@@ -355,18 +340,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeProjects(projects: Map<string, Project>) {
     this.projectsMap = projects;
-  }
-
-  /**
-   * Initializes person subscription
-   */
-  private initializePersonSubscription() {
-    this.personService.personsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.initializePersons(value as Map<string, Person>);
-      this.initializeOptions();
-    });
+    this.project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
   }
 
   /**
@@ -375,18 +349,7 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializePersons(persons: Map<string, Person>) {
     this.personsMap = persons;
-  }
-
-  /**
-   * Initializes tag subscription
-   */
-  private initializeTagSubscription() {
-    this.tagService.tagsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.initializeTags(value as Map<string, Tag>);
-      this.initializeOptions();
-    });
+    this.delegatedTo = (this.task != null && this.personsMap != null) ? this.personsMap.get(this.task.delegatedToId) : null;
   }
 
   /**
@@ -395,26 +358,11 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTags(tags: Map<string, Tag>) {
     this.tagsMap = tags;
-  }
-
-  /**
-   * Initializes material colors and icons
-   */
-  private initializeMaterial() {
-    this.materialColorService.initializeColors();
-    this.materialIconService.initializeIcons(this.iconRegistry, this.sanitizer);
-  }
-
-  /**
-   * Initializes media subscription
-   */
-  private initializeMediaSubscription() {
-    this.media = this.mediaService.media;
-    this.mediaService.mediaSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.media = value as Media;
-    });
+    this.tags = (this.task != null) ? this.task.tagIds.map(id => {
+      return this.tagsMap.get(id);
+    }).filter(tag => {
+      return tag != null;
+    }) : [];
   }
 
   /**
@@ -449,31 +397,14 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Initializes data
+   * Initializes mode
    */
-  private initializeData() {
-    const resolved = this.initializeResolvedData();
-    if (resolved != null) {
-      // Take data from resolver
-      this.initializeTask(resolved as Task);
-      this.initializeTaskletTypeAction();
+  private initializeMode() {
+    if (this.id === null) {
+      this.mode = DialogMode.ADD;
     } else {
-      // Load data from scratch
-      this.route.params.pipe(
-        takeUntil(this.unsubscribeSubject)
-      ).subscribe(() => {
-        this.initializeParameters();
-        this.findEntities();
-      });
+      this.mode = DialogMode.UPDATE;
     }
-  }
-
-  /**
-   * Triggers entity retrieval from database
-   */
-  private findEntities() {
-    this.taskService.findTaskByID(this.id);
-    this.taskService.findTasksByScope(this.scopeService.scope);
   }
 
   /**
@@ -510,9 +441,13 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
       })).subscribe();
   }
 
+  // </editor-fold>
+
   //
   // Actions
   //
+
+  // <editor-fold defaultstate="collapsed" desc="Actions">
 
   /**
    * Handles click on menu items
@@ -576,9 +511,13 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // </editor-fold>
+
   //
   // Button actions
   //
+
+  // <editor-fold defaultstate="collapsed" desc="Button actions">
 
   /**
    * Handles click on button
@@ -612,6 +551,8 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
+
+  // </editor-fold>
 
   //
   //
@@ -676,213 +617,6 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Handles events targeting a task
-   * @param event event parameters
-   */
-  private onTaskEvent(event: {
-    action: Action, task: Task, tasks?: Task[],
-    project?: Project, delegatedTo?: Person, tags?: Tag[], omitReferenceEvaluation?: boolean
-  }) {
-    const task = CloneService.cloneTask(event.task as Task);
-    // const tasks = CloneService.cloneTasks(event.tasks as Task[]);
-    const project = CloneService.cloneProject(event.project as Project);
-    const delegatedTo = CloneService.clonePerson(event.delegatedTo as Person);
-    const tags = CloneService.cloneTags(event.tags as Tag[]);
-    const omitReferenceEvaluation = event.omitReferenceEvaluation;
-
-    switch (event.action) {
-      case Action.ADD: {
-        // Create new entities if necessary
-        this.evaluateTaskProject(task, project);
-        this.evaluateTaskDelegatedTo(task, delegatedTo);
-        this.evaluateTaskTags(task, tags);
-
-        // Create task itself
-        this.taskService.createTask(task, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-          this.filterService.updateTasksListIfNotEmpty([task]);
-          this.snackbarService.showSnackbar('Added task');
-        });
-        break;
-      }
-      case Action.UPDATE: {
-        // Create new entities if necessary
-        this.evaluateTaskProject(task, project);
-        this.evaluateTaskDelegatedTo(task, delegatedTo);
-        this.evaluateTaskTags(task, tags);
-
-        // Update task itself
-        this.taskService.updateTask(task, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-          this.snackbarService.showSnackbar('Updated task');
-        });
-        break;
-      }
-      case Action.DELETE: {
-        const references = Array.from(this.taskletsMap.values()).some((tasklet: Tasklet) => {
-          return tasklet.taskId === task.id;
-        });
-
-        if (references) {
-          this.dialog.open(InformationDialogComponent, {
-            disableClose: false,
-            data: {
-              title: 'Cannot delete task',
-              text: `There are still tasklets associated with this task.`,
-              action: 'Okay',
-              value: task
-            }
-          });
-        } else {
-          const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
-            disableClose: false,
-            data: {
-              title: 'Delete person',
-              text: 'Do you want to delete this task?',
-              action: 'Delete',
-              value: task
-            }
-          });
-          confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
-            if (confirmationResult != null) {
-              this.taskService.deleteTask((confirmationResult as Task), this.tasksMap).then(() => {
-              });
-            }
-          });
-        }
-        break;
-      }
-      case Action.COMPLETE: {
-        if (!omitReferenceEvaluation) {
-          // Create new entities if necessary
-          this.evaluateTaskProject(task, project);
-          this.evaluateTaskDelegatedTo(task, delegatedTo);
-          this.evaluateTaskTags(task, tags);
-        }
-
-        task.completionDate = new Date();
-        this.taskService.updateTask(task, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-          this.snackbarService.showSnackbar('Completed task');
-        });
-        break;
-      }
-      case Action.REOPEN: {
-        task.completionDate = null;
-        this.taskService.updateTask(task, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-          this.snackbarService.showSnackbar('Re-opened task');
-        });
-
-        break;
-      }
-    }
-  }
-
-  //
-  // Helpers
-  //
-
-  /**
-   * Determines whether the project assigned to a given task already exists, otherwise creates a new one
-   * @param task task to assign project to
-   * @param project project to be checked
-   */
-  private evaluateTaskProject(task: Task, project: Project) {
-    if (project != null && project.name != null && project.name !== '') {
-      // Assign project
-      let p = this.projectService.getProjectByName(project.name, this.projectsMap);
-
-      // New project
-      if (p == null && project.name != null && project.name !== '') {
-        p = new Project(project.name);
-        this.projectService.createProject(p, this.projectsMap).then(() => {
-        });
-      }
-
-      this.filterService.updateProjectsListIfNotEmpty([p]);
-      task.projectId = p.id;
-    } else {
-      // Unassign project
-      task.projectId = null;
-    }
-  }
-
-  /**
-   * Determines whether the delegated-to assigned to a given task already exists, otherwise creates a new person
-   * @param task task to be delegated
-   * @param delegatedTo person to delegate a task to
-   */
-  private evaluateTaskDelegatedTo(task: Task, delegatedTo: Person) {
-    if (delegatedTo != null && delegatedTo.name != null && delegatedTo.name !== '') {
-      // Assign delegatedTo
-      let p = this.personService.getPersonByName(delegatedTo.name, this.personsMap);
-
-      // New person
-      if (p == null && delegatedTo.name != null && delegatedTo.name !== '') {
-        p = new Person(delegatedTo.name);
-        this.personService.createPerson(p, this.personsMap).then(() => {
-        });
-      }
-
-      this.filterService.updatePersonsListIfNotEmpty([p]);
-      task.delegatedToId = p.id;
-    } else {
-      // Unassign delegated-to
-      task.delegatedToId = null;
-    }
-  }
-
-  /**
-   * Determines whether the tags assigned to a given task already exixst, otherwise creates new ones
-   * @param task task assign tags to
-   * @param tags array of tags to be checked
-   */
-  private evaluateTaskTags(task: Task, tags: Tag[]) {
-    if (tags != null) {
-      const aggregatedTagIds = new Map<string, string>();
-
-      // New tag
-      tags.forEach(t => {
-        let tag = this.tagService.getTagByName(t.name, this.tagsMap);
-
-        if (tag == null) {
-          tag = new Tag(t.name);
-          this.tagService.createTag(tag, this.tagsMap).then(() => {
-          });
-        }
-
-        this.filterService.updateTagsListIfNotEmpty([tag]);
-        aggregatedTagIds.set(tag.name, tag.id);
-      });
-
-      task.tagIds = Array.from(aggregatedTagIds.values());
-    } else {
-      // Unassign tags
-      task.tagIds = [];
-    }
-  }
-
-  //
-  // Helpers (UI)
-  //
-
-  /**
-   * Retrieves an icon by tasklet type
-   * @param type tasklet type
-   */
-  public getIconByTaskletType(type: TaskletType): string {
-    return TaskletService.getIconByTaskletType(type);
-  }
-
-  /**
-   * Determines whether the displayed task contains a specific display aspect
-   * @param displayAspect display aspect
-   * @param task task
-   */
-  public containsDisplayAspect(displayAspect: TaskDisplayAspect, task: Task): boolean {
-    return TaskService.containsDisplayAspect(displayAspect, task);
-  }
-
-  // Tags
-
-  /**
    * Aggregates tags
    * @param task task
    * @returns tags
@@ -894,35 +628,10 @@ export class TaskComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tags.forEach(t => {
       aggregatedTags.set(t.name, t);
     });
-    this.inferTags(task).forEach(t => {
+    this.inferTags(task.description.value).forEach(t => {
       aggregatedTags.set(t.name, t);
     });
 
     return Array.from(aggregatedTags.values());
-  }
-
-  /**
-   * Infers tags from a task's description
-   * @param task task
-   * @returns tags
-   */
-  private inferTags(task: Task): Tag[] {
-    const inferredTags = new Map<string, Tag>();
-
-    if (task.description != null && task.description.value != null) {
-      task.description.value.split('\n').forEach(line => {
-        line.split(' ').forEach(word => {
-          if (word.startsWith('#')
-            && word.length > 1 // Exclude single hashes
-            && word.charAt(1) !== '#' // Exclude markdown tags
-          ) {
-            const hashtag = word.replace('#', '');
-            inferredTags.set(hashtag, new Tag(hashtag));
-          }
-        });
-      });
-    }
-
-    return Array.from(inferredTags.values());
   }
 }

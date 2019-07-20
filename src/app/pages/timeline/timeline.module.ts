@@ -14,12 +14,14 @@ import {TaskListDialogComponent} from './components/dialogs/task-list-dialog/tas
 import {UnusedTagsDialogComponent} from './components/dialogs/unused-tags-dialog/unused-tags-dialog.component';
 import {TimelineImports} from './timeline.imports';
 import {TimelineDeclarations} from './timeline.declaration';
+import {BaseComponent} from './pages/base/base.component';
 
 @NgModule({
   imports: [TimelineImports],
   declarations: [TimelineDeclarations],
   entryComponents: [
     // Pages
+    BaseComponent,
     TimelineComponent,
     TaskletComponent,
     TaskComponent,

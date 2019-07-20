@@ -5,7 +5,7 @@
   (menuItemEventEmitter)="onMenuItemClicked($event)"></app-tasklet-toolbar>
 
 <div (keydown)="onKeyDown($event)" class="main">
-  <mat-sidenav-container class="sidenav-container" layout="column">
+  <mat-sidenav-container class="sidenav-container">
     <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
                  position="start" [opened]="sidenavOpened"
                  class="sidenav sidenav-start">
@@ -22,7 +22,8 @@
         <div class="sidenav-inner-container">
           <div class="tasklet" *ngFor="let tasklet of tasklets">
             <div class="flexcontainer">
-              <app-tasklet-timeline-fragment [tasklet]="tasklet"
+              <app-tasklet-timeline-fragment *ngIf="action != null"
+                                             [tasklet]="tasklet"
                                              [backgroundColor]="action.backgroundColor"
                                              [iconColor]="action.iconColor"
                                              [media]="media"></app-tasklet-timeline-fragment>
@@ -41,7 +42,7 @@
       <div *ngIf="tasklet != null" class="content">
         <form #formCtrl="ngForm">
           <!-- Pseudo form field to make other input fields work -->
-          <mat-form-field style="width: 0; height: 0;"><input matInput=""/></mat-form-field>
+          <mat-form-field style="width: 0; height: 0;"><input label="pseudo" title="pseudo" matInput/></mat-form-field>
 
           <div class="header-buttons">
             <div class="icon-wrapper">
@@ -61,7 +62,7 @@
               <div *ngIf="action != null">
                 <button mat-fab class="tasklet-type"
                         [style.backgroundColor]="action.backgroundColor"
-                        (click)="ontTaskletTypeActionButtonClicked()">
+                        (click)="onTaskletTypeActionButtonClicked()">
                   <mat-icon [svgIcon]="action.icon" [style.fill]="action.iconColor"></mat-icon>
                 </button>
                 <mat-select #select class="typeSelect">
@@ -74,14 +75,14 @@
               </div>
               <div *ngIf="task != null">
                 <app-task-autocomplete-fragment
-                  *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
+                  *ngIf="containsDisplayAspect(taskletDisplayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
                   class="task"
-                  [taskName]="task.name" [taskOptions]="taskOptions"
+                  [taskName]="task.name" [taskOptions]="taskOptionNames"
                   (taskNameChangedEmitter)="onTaskNameChanged($event)">
                 </app-task-autocomplete-fragment>
                 <div *ngIf="project != null" [style.color]="action.backgroundColor">{{ project.name }}</div>
               </div>
-              <app-pomodoro-timer *ngIf="containsDisplayAspect(displayAspectType.IS_POMODORO_STARTED, tasklet)"
+              <app-pomodoro-timer *ngIf="containsDisplayAspect(taskletDisplayAspectType.IS_POMODORO_STARTED, tasklet)"
                                   class="pomodoro-timer"
                                   [pomodoroDuration]="tasklet.pomodoroDuration"
                                   [pomodoroStartTime]="tasklet.pomodoroStartTime"
@@ -92,48 +93,47 @@
             </div>
           </div>
           <div class="main">
-            <div *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)">
-              <app-markdown-editor *ngIf="!containsDisplayAspect(displayAspectType.IS_POMODORO_STARTED, tasklet)"
+            <div *ngIf="containsDisplayAspect(taskletDisplayAspectType.CONTAINS_POMODORO_TASK, tasklet)">
+              <app-markdown-editor *ngIf="!containsDisplayAspect(taskletDisplayAspectType.IS_POMODORO_STARTED, tasklet)"
                                    [text]="tasklet.pomodoroTask.value"
                                    placeholder="Pomodoro Task"
                                    (textChangedEmitter)="onPomodoroTaskChanged($event)"></app-markdown-editor>
-              <app-markdown-preview *ngIf="containsDisplayAspect(displayAspectType.IS_POMODORO_STARTED, tasklet)"
+              <app-markdown-preview *ngIf="containsDisplayAspect(taskletDisplayAspectType.IS_POMODORO_STARTED, tasklet)"
                                     [markdownText]="tasklet.pomodoroTask.value"></app-markdown-preview>
             </div>
-            <app-markdown-editor *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_DESCRIPTION, tasklet)"
+            <app-markdown-editor *ngIf="containsDisplayAspect(taskletDisplayAspectType.CONTAINS_DESCRIPTION, tasklet)"
                                  [text]="tasklet.description.value"
                                  placeholder="Description"
                                  (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
             <app-meeting-minutes-fragment
-              *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
+              *ngIf="containsDisplayAspect(taskletDisplayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
               [meetingMinuteItems]="tasklet.meetingMinuteItems"
-              [personOptions]="personOptions"
+              [personOptions]="personOptionNames"
               [myselfOption]="myselfOption"
               (meetingMinuteItemsUpdatedEmitter)="onMeetingMinuteItemsUpdated($event)"></app-meeting-minutes-fragment>
             <app-daily-scrum-fragment *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
                                       [taskletsMap]="taskletsMap"
                                       [dailyScrumItems]="tasklet.dailyScrumItems"
-                                      [personOptions]="personOptions"
+                                      [personOptions]="personOptionNames"
                                       [myselfOption]="myselfOption"
                                       (dailyScrumItemsUpdatedEmitter)="onDailyScrumItemsUpdated($event)">
             </app-daily-scrum-fragment>
-            <app-completable-list *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)"
+            <app-completable-list *ngIf="containsDisplayAspect(taskletDisplayAspectType.CONTAINS_CHECKLIST, tasklet)"
                                   [items]="tasklet.acceptanceCriteria"
                                   [readonly]="readonly"
+                                  [focusNewElement]="'true'"
                                   (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
             </app-completable-list>
-            <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_TAGS, tasklet)"
+            <app-tag-chips *ngIf="containsDisplayAspect(taskletDisplayAspectType.CONTAINS_TAGS, tasklet)"
                            class="tag-area"
                            [tags]="tags | tagNames"
-                           [tagOptions]="tagOptions"
-                           [readonly]=false
+                           [tagOptions]="tagOptionNames"
                            (tagsChangedEmitter)="onTagsChanged($event)">
             </app-tag-chips>
-            <app-tag-chips *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_PERSONS, tasklet)"
+            <app-tag-chips *ngIf="containsDisplayAspect(taskletDisplayAspectType.CONTAINS_PERSONS, tasklet)"
                            class="tag-area"
                            [tags]="persons | personNames"
-                           [tagOptions]="personOptions"
-                           [readonly]=false
+                           [tagOptions]="personOptionNames"
                            placeholder="New person"
                            (tagsChangedEmitter)="onPersonsChanged($event)">
             </app-tag-chips>
@@ -152,13 +152,13 @@
                 </button>
                 <div class="flexbox"></div>
                 <button mat-button
-                        *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_POMODORO_TASK, tasklet)
-                        && !containsDisplayAspect(displayAspectType.IS_POMODORO_STARTED, tasklet)"
+                        *ngIf="containsDisplayAspect(taskletDisplayAspectType.CONTAINS_POMODORO_TASK, tasklet)
+                        && !containsDisplayAspect(taskletDisplayAspectType.IS_POMODORO_STARTED, tasklet)"
                         [disabled]="tasklet.pomodoroStartTime != null"
                         (click)="onButtonClicked(actionType.POMODORO_START)">
                   Start Pomodoro
                 </button>
-                <button mat-button *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
+                <button mat-button *ngIf="containsDisplayAspect(taskletDisplayAspectType.CONTAINS_MEETING_MINUTES, tasklet)"
                         (click)="onButtonClicked(actionType.SEND_MAIL_MEETING_MINUTES)">
                   Send Meeting Minutes
                 </button>
@@ -167,17 +167,17 @@
                   Send Daily Scrum Summary
                 </button>
                 <button mat-button *ngIf="mode == modeType.ADD"
-                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet, task)"
+                        [disabled]="!containsDisplayAspect(taskletDisplayAspectType.CAN_BE_CREATED, tasklet, task)"
                         (click)="onButtonClicked(actionType.ADD)">
                   Add tasklet
                 </button>
                 <button mat-button *ngIf="mode == modeType.UPDATE"
-                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet, task)"
+                        [disabled]="!containsDisplayAspect(taskletDisplayAspectType.CAN_BE_UPDATED, tasklet, task)"
                         (click)="onButtonClicked(actionType.UPDATE)">
                   Update tasklet
                 </button>
                 <button mat-button *ngIf="mode == modeType.CONTINUE"
-                        [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet, task)"
+                        [disabled]="!containsDisplayAspect(taskletDisplayAspectType.CAN_BE_CONTINUED, tasklet, task)"
                         (click)="onButtonClicked(actionType.CONTINUE)">
                   Continue tasklet
                 </button>

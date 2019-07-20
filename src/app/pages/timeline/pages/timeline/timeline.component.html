@@ -9,7 +9,7 @@
   (searchItemEventEmitter)="onSearchItemChanged($event)"
   (menuItemEventEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
 
-<mat-sidenav-container class="sidenav-container" layout="column">
+<mat-sidenav-container class="sidenav-container">
   <div class="sidenav-inner-container"></div>
 
   <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
@@ -107,7 +107,5 @@
             (click)="onAddPersonClicked()">
       <mat-icon svgIcon="person" class="icon-accent-contrast"></mat-icon>
     </button>
-
-
   </eco-fab-speed-dial-actions>
 </eco-fab-speed-dial>

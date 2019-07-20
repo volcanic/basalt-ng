@@ -321,7 +321,6 @@ export class TaskService {
               private tagService: TagService) {
 
     this.initializeTaskSubscription();
-    this.findTasksByScope(this.scopeService.scope);
   }
 
   //
@@ -340,6 +339,27 @@ export class TaskService {
   //
   // Queries
   //
+
+  /**
+   * Loads tasks by a given scope
+   */
+  public findTasks() {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKS_DAYS));
+
+    const index = {fields: ['entityType', 'modificationDate', 'completionDate']};
+    const options = {
+      selector: {
+        '$and': [
+          {'entityType': {'$eq': EntityType.TASK}},
+          {modificationDate: {$gt: startDate.toISOString()}}
+        ]
+      },
+      sort: [{'modificationDate': 'desc'}],
+      limit: environment.LIMIT_TASKS_COUNT
+    };
+
+    this.findTasksInternal(index, options);
+  }
 
   /**
    * Loads tasks by a given scope

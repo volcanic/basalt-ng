@@ -54,7 +54,7 @@ export class SuggestionService {
     Array.from(taskletMap.values()).sort((t1, t2) => {
       return (new Date(t1.modificationDate) < new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
-      if (t != null) {
+      if (t != null && t.description != null) {
         // Add description lines to search items
         if (t.description.value != null && t.creationDate) {
           t.description.value.split('\n').forEach(v => {
@@ -96,7 +96,7 @@ export class SuggestionService {
     tasks.sort((t1, t2) => {
       return (new Date(t1.modificationDate) < new Date(t2.modificationDate)) ? 1 : -1;
     }).forEach(t => {
-      if (t != null) {
+      if (t != null && t.description != null) {
         // Add description lines to search items
         if (t.description.value != null && t.creationDate) {
           t.description.value.split('\n').forEach(v => {

@@ -1,5 +1,6 @@
 import {Pipe, PipeTransform} from '@angular/core';
 import {Tag} from '../../../core/entity/model/tag.model';
+import {TagService} from '../../../core/entity/services/tag/tag.service';
 
 /**
  * Transforms a list of tags into a list of their names
@@ -11,7 +12,7 @@ export class TagNamesPipe implements PipeTransform {
 
   /**
    * Transforms a list of tags into a list of their names
-   * @param tags lists of tags
+   * @param tags tags
    * @param args arguments
    */
   transform(tags: Tag[], args?: any): string[] {

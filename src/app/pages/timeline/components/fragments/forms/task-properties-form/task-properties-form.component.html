@@ -33,7 +33,8 @@
         <mat-panel-title>Due date</mat-panel-title>
         <mat-panel-description *ngIf="task.dueDate == null">Select a due date</mat-panel-description>
         <mat-panel-description *ngIf="task.dueDate != null" class="value-set">
-          {{ getDayOfWeekString(task.dueDate).substring(0, 3) }}, {{ getTimeString(task.dueDate) }}, {{ getDateString(task.dueDate) }}
+          {{ getDayOfWeekString(task.dueDate).substring(0, 3) }}, {{ getTimeString(task.dueDate) }}, {{
+          getDateString(task.dueDate) }}
         </mat-panel-description>
         <mat-icon svgIcon="today"></mat-icon>
       </mat-expansion-panel-header>
@@ -160,7 +161,7 @@
         <mat-icon svgIcon="label_outline"></mat-icon>
       </mat-expansion-panel-header>
       <app-tag-chips [tags]="tags | tagNames"
-                     [tagOptions]="tagOptions"
+                     [tagOptions]="tagOptionNames"
                      [readonly]=false
                      (tagsChangedEmitter)="onTagsChanged($event)">
       </app-tag-chips>
@@ -178,7 +179,8 @@
         </mat-panel-description>
         <mat-icon svgIcon="short_text"></mat-icon>
       </mat-expansion-panel-header>
-      <app-markdown-editor [text]="task.description.value"
+      <app-markdown-editor *ngIf="task.description != null"
+                           [text]="task.description.value"
                            [readonly]="readonly"
                            (textChangedEmitter)="onDescriptionChanged($event)"></app-markdown-editor>
     </mat-expansion-panel>

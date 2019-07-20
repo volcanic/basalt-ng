@@ -2,8 +2,7 @@ import {AfterViewInit, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@a
 import {ActivatedRoute, Router} from '@angular/router';
 import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
 import {Tasklet} from '../../../../core/entity/model/tasklet.model';
-import {map, takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {TaskletType} from '../../../../core/entity/model/tasklet-type.enum';
 import {Task} from '../../../../core/entity/model/task.model';
 import {Description} from '../../../../core/entity/model/description.model';
@@ -15,14 +14,11 @@ import {DialogMode} from '../../../../core/entity/model/dialog-mode.enum';
 import {Action} from '../../../../core/entity/model/action.enum';
 import {PersonService} from '../../../../core/entity/services/person/person.service';
 import {SuggestionService} from '../../../../core/entity/services/suggestion.service';
-import {CloneService} from '../../../../core/entity/services/clone.service';
 import {FilterService} from '../../../../core/entity/services/filter.service';
 import {SnackbarService} from '../../../../core/ui/services/snackbar.service';
 import {TagService} from '../../../../core/entity/services/tag/tag.service';
 import {MatDialog, MatIconRegistry, MatSelect, MatSidenav} from '@angular/material';
-import {ConfirmationDialogComponent} from '../../../../ui/confirmation-dialog/confirmation-dialog/confirmation-dialog.component';
 import {EmailService} from '../../../../core/mail/services/mail/email.service';
-import {DateService} from '../../../../core/entity/services/date.service';
 import {TaskService} from '../../../../core/entity/services/task/task.service';
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
@@ -42,6 +38,7 @@ import {TaskletDisplayAspect} from '../../../../core/entity/services/tasklet/tas
 import {Setting} from '../../../../core/settings/model/setting.model';
 // tslint:disable-next-line:max-line-length
 import {PomodoroFinishedDialogComponent} from '../../../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog/pomodoro-finished-dialog.component';
+import {BaseComponent} from '../base/base.component';
 
 /**
  * Represents a tasklet type action button
@@ -75,29 +72,17 @@ class TaskletTypeAction {
     Animations.dateIndicatorAnimation,
   ]
 })
-export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TaskletComponent
+  extends BaseComponent
+  implements OnInit, AfterViewInit, OnDestroy {
 
   /** ID passed as an argument */
   id: string;
-  /** Enum of dialog modes */
-  public modeType = DialogMode;
   /** Current dialog mode */
   public mode: DialogMode = DialogMode.NONE;
 
   /** Tasklet to be displayed */
   tasklet: Tasklet = new Tasklet();
-
-  /** Map of tasklets */
-  public taskletsMap = new Map<string, Tasklet>();
-  /** Map of tasks */
-  public tasksMap = new Map<string, Task>();
-  /** Map of projects */
-  public projectsMap = new Map<string, Project>();
-  /** Map of persons */
-  public personsMap = new Map<string, Person>();
-  /** Map of tags */
-  public tagsMap = new Map<string, Tag>();
-
   /** Description of previous tasklet */
   previousDescription = new Description();
 
@@ -117,30 +102,16 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   placeholderDescription = 'Empty';
 
   /** Task options */
-  taskOptions: string[];
+  taskOptionNames: string[];
   /** Tag options */
-  tagOptions: string[];
+  tagOptionNames: string[];
   /** Person options */
-  personOptions: string[];
+  personOptionNames: string[];
   /** Person option representing the user */
   myselfOption: string;
 
-  /** Current media */
-  public media: Media = Media.UNDEFINED;
   /** Tasklet type action */
   action: TaskletTypeAction;
-
-  /** Enum of tasklet types */
-  taskletType = TaskletType;
-  /** Enum for action types */
-  actionType = Action;
-  /** Enum of media types */
-  mediaType = Media;
-  /** Enum of display aspects */
-  displayAspectType = TaskletDisplayAspect;
-
-  /** Helper subject used to finish other subscriptions */
-  private unsubscribeSubject = new Subject();
 
   /** Vertical scroll position */
   private scrollPosLast = 0;
@@ -164,17 +135,37 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Transparent color */
   transparent = 'transparent';
 
+  /** Reference to static method */
+  getIconByTaskletType = TaskletComponent.getIconByTaskletType;
+
+  //
+  // Static methods
+  //
+
+  /**
+   * Retrieves an icon by tasklet type
+   * @param type tasklet type
+   */
+  static getIconByTaskletType(type: TaskletType): string {
+    return TaskletService.getIconByTaskletType(type);
+  }
+
   /**
    * Constructor
    * @param colorService color service
+   * @param dialog dialog
    * @param emailService email service
    * @param filterService filter service
+   * @param iconRegistry iconRegistry
    * @param mediaService media service
    * @param materialColorService material color service
    * @param materialIconService material icon service
    * @param scroll scroll
    * @param personService person service
    * @param projectService project service
+   * @param route route
+   * @param router router
+   * @param sanitizer sanitizer
    * @param scopeService scope service
    * @param settingsService settings service
    * @param snackbarService snackbar service
@@ -182,62 +173,105 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * @param suggestionService suggestion service
    * @param taskletService tasklet service
    * @param taskService task service
-   * @param route route
-   * @param router router
-   * @param iconRegistry iconRegistry
-   * @param sanitizer sanitizer
-   * @param dialog dialog
    * @param zone Angular zone
    */
   constructor(private colorService: ColorService,
-              private emailService: EmailService,
-              private filterService: FilterService,
-              private mediaService: MediaService,
-              private materialColorService: MaterialColorService,
-              private materialIconService: MaterialIconService,
-              private personService: PersonService,
-              private projectService: ProjectService,
-              private scopeService: ScopeService,
-              private scroll: ScrollDispatcher,
-              private settingsService: SettingsService,
-              private snackbarService: SnackbarService,
-              private suggestionService: SuggestionService,
-              private tagService: TagService,
-              private taskletService: TaskletService,
-              private taskService: TaskService,
+              protected dialog: MatDialog,
+              protected emailService: EmailService,
+              protected filterService: FilterService,
+              protected iconRegistry: MatIconRegistry,
+              protected mediaService: MediaService,
+              protected materialColorService: MaterialColorService,
+              protected materialIconService: MaterialIconService,
+              protected personService: PersonService,
+              protected projectService: ProjectService,
               private route: ActivatedRoute,
-              private router: Router,
-              private iconRegistry: MatIconRegistry,
-              private sanitizer: DomSanitizer,
-              public dialog: MatDialog,
-              public zone: NgZone) {
+              protected router: Router,
+              protected sanitizer: DomSanitizer,
+              protected scopeService: ScopeService,
+              private scroll: ScrollDispatcher,
+              protected settingsService: SettingsService,
+              protected snackbarService: SnackbarService,
+              protected suggestionService: SuggestionService,
+              protected tagService: TagService,
+              protected taskletService: TaskletService,
+              protected taskService: TaskService,
+              protected zone: NgZone) {
+    super(dialog,
+      emailService,
+      filterService,
+      iconRegistry,
+      materialColorService,
+      materialIconService,
+      mediaService,
+      projectService,
+      personService,
+      router,
+      sanitizer,
+      scopeService,
+      settingsService,
+      snackbarService,
+      suggestionService,
+      tagService,
+      taskletService,
+      taskService);
   }
 
   //
   // Lifecycle hooks
   //
 
+  // <editor-fold defaultstate="collapsed" desc="Lifecycle hooks">
+
   /**
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.initializeTaskletSubscription();
-    this.initializeTaskSubscription();
-    this.initializeProjectSubscription();
-    this.initializePersonSubscription();
-    this.initializeTagSubscription();
+    this.initializeTaskletSubscription().subscribe((value) => {
+      console.log(`onTaskletFound ${value != null}`);
+      this.initializeTasklet(value as Tasklet);
+      this.initializeTaskletTypeAction();
+    });
+    this.initializeTaskletsSubscription().subscribe((value) => {
+      console.log(`onTaskletsFound ${value.size}`);
+      this.initializeTasklets(value as Map<string, Tasklet>);
+      this.initializeOptions();
+    });
+    this.initializeTasksSubscription().subscribe((value) => {
+      console.log(`onTasksFound ${value.size}`);
+      this.initializeTasks(value as Map<string, Task>);
+      this.initializeTasklet(this.tasklet);
+      this.initializeOptions();
+    });
+    this.initializeProjectsSubscription().subscribe((value) => {
+      console.log(`onProjectsFound ${value.size}`);
+      this.initializeProjects(value as Map<string, Project>);
+      this.initializeOptions();
+    });
+    this.initializePersonsSubscription().subscribe((value) => {
+      console.log(`onPersonsFound ${value.size}`);
+      this.initializePersons(value as Map<string, Person>);
+      this.initializeOptions();
+    });
+    this.initializeTagsSubscription().subscribe((value) => {
+      console.log(`onTagsFound ${value.size}`);
+      this.initializeTags(value as Map<string, Tag>);
+      this.initializeOptions();
+    });
+    this.initializeMediaSubscription().subscribe((value) => {
+      this.media = value as Media;
+    });
 
     this.initializeMaterial();
-    this.initializeMediaSubscription();
-
     this.initializeSettings();
-
-    this.initializeData();
 
     this.route.params.subscribe(() => {
       if (this.route.snapshot != null) {
         this.id = this.route.snapshot.paramMap.get('id');
       }
+      this.initializeMode();
+
+      this.taskletService.findTaskletByID(this.id);
       this.findEntities();
     });
   }
@@ -253,58 +287,16 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
-    this.unsubscribeSubject.next();
-    this.unsubscribeSubject.complete();
+    super.ngOnDestroy();
   }
+
+  // </editor-fold>
 
   //
   // Initialization
   //
 
-  /**
-   * Initializes parameters
-   */
-  private initializeParameters() {
-    if (this.route.snapshot != null) {
-      this.id = this.route.snapshot.paramMap.get('id');
-    }
-
-    if (this.id === null) {
-      this.mode = DialogMode.ADD;
-    } else {
-      this.mode = DialogMode.UPDATE;
-    }
-  }
-
-  /**
-   * Initializes resolved data
-   */
-  private initializeResolvedData() {
-    return (this.route.snapshot != null && this.route.snapshot.data != null) ? this.route.snapshot.data['tasklet'] : null;
-  }
-
-  /**
-   * Initializes tasklet subscription
-   */
-  private initializeTaskletSubscription() {
-    this.taskletService.taskletSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        this.initializeTasklet(value as Tasklet);
-        this.initializeTaskletTypeAction();
-      }
-    });
-
-    this.taskletService.taskletsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      if (value != null) {
-        this.initializeTasklets(value as Map<string, Tasklet>);
-        this.initializeOptions();
-      }
-    });
-  }
+  // <editor-fold defaultstate="collapsed" desc="Initialization">
 
   /**
    * Initializes tasklet
@@ -312,26 +304,28 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTasklet(tasklet: Tasklet) {
     this.tasklet = tasklet;
-    if (tasklet != null) {
-      this.task = this.tasksMap.get(tasklet.taskId);
-      if (this.task != null) {
-        this.project = this.projectsMap.get(this.task.projectId);
-        this.tasklets = this.taskletService.getTaskletsByTask(this.task, this.taskletsMap).filter(t => {
-          // Exclude current tasklet from history
-          return t.id !== this.tasklet.id;
-        });
-      }
-      this.tags = tasklet.tagIds.map(id => {
-        return this.tagsMap.get(id);
-      }).filter(tag => {
-        return tag != null;
-      });
-      this.persons = tasklet.personIds.map(id => {
-        return this.personsMap.get(id);
-      }).filter(person => {
-        return person != null;
-      });
-    }
+
+    this.task = (this.tasklet != null) ? this.tasksMap.get(this.tasklet.taskId) : null;
+    this.project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
+
+    this.tasklets = (this.tasklet != null) ? this.taskletService
+      .getTaskletsByTask(this.task, this.taskletsMap)
+      .filter(t => {
+        // Exclude current tasklet from history
+        return t.id !== this.tasklet.id;
+      }).sort(TaskletService.sortTaskletsByCreationDate) : [];
+
+    this.persons = (this.tasklet != null) ? this.tasklet.personIds.map(id => {
+      return this.personsMap.get(id);
+    }).filter(person => {
+      return person != null;
+    }) : [];
+
+    this.tags = (this.tasklet != null) ? this.tasklet.tagIds.map(id => {
+      return this.tagsMap.get(id);
+    }).filter(tag => {
+      return tag != null;
+    }) : [];
   }
 
   /**
@@ -340,20 +334,9 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTasklets(taskletsMap: Map<string, Tasklet>) {
     this.taskletsMap = new Map(taskletsMap);
-    this.tasklets = Array.from(taskletsMap.values())
+    this.tasklets = this.taskletService
+      .getTaskletsByTask(this.task, taskletsMap)
       .sort(TaskletService.sortTaskletsByCreationDate);
-  }
-
-  /**
-   * Initializes task subscription
-   */
-  private initializeTaskSubscription() {
-    this.taskService.tasksSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.initializeTasks(value as Map<string, Task>);
-      this.initializeOptions();
-    });
   }
 
   /**
@@ -362,18 +345,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTasks(tasks: Map<string, Task>) {
     this.tasksMap = tasks;
-  }
-
-  /**
-   * Initializes project subscription
-   */
-  private initializeProjectSubscription() {
-    this.projectService.projectsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.initializeProjects(value as Map<string, Project>);
-      this.initializeOptions();
-    });
+    this.task = (this.tasklet != null) ? this.tasksMap.get(this.tasklet.taskId) : null;
   }
 
   /**
@@ -382,18 +354,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeProjects(projects: Map<string, Project>) {
     this.projectsMap = projects;
-  }
-
-  /**
-   * Initializes person subscription
-   */
-  private initializePersonSubscription() {
-    this.personService.personsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.initializePersons(value as Map<string, Person>);
-      this.initializeOptions();
-    });
+    this.project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
   }
 
   /**
@@ -402,18 +363,11 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializePersons(persons: Map<string, Person>) {
     this.personsMap = persons;
-  }
-
-  /**
-   * Initializes tag subscription
-   */
-  private initializeTagSubscription() {
-    this.tagService.tagsSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.initializeTags(value as Map<string, Tag>);
-      this.initializeOptions();
-    });
+    this.persons = (this.tasklet != null) ? this.tasklet.personIds.map(id => {
+      return this.personsMap.get(id);
+    }).filter(person => {
+      return person != null;
+    }) : [];
   }
 
   /**
@@ -422,43 +376,28 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private initializeTags(tags: Map<string, Tag>) {
     this.tagsMap = tags;
-  }
-
-  /**
-   * Initializes material colors and icons
-   */
-  private initializeMaterial() {
-    this.materialColorService.initializeColors();
-    this.materialIconService.initializeIcons(this.iconRegistry, this.sanitizer);
-  }
-
-  /**
-   * Initializes media subscription
-   */
-  private initializeMediaSubscription() {
-    this.media = this.mediaService.media;
-    this.mediaService.mediaSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.media = value as Media;
-    });
+    this.tags = (this.tasklet != null) ? this.tasklet.tagIds.map(id => {
+      return this.tagsMap.get(id);
+    }).filter(tag => {
+      return tag != null;
+    }) : [];
   }
 
   /**
    * Initializes options
    */
   private initializeOptions() {
-    this.taskOptions = Array.from(this.suggestionService.taskOptions.values()).sort((t1, t2) => {
+    this.taskOptionNames = Array.from(this.suggestionService.taskOptions.values()).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     }).map(t => {
       return t.name;
     });
-    this.tagOptions = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
+    this.tagOptionNames = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     }).map(t => {
       return t.name;
     });
-    this.personOptions = Array.from(this.suggestionService.personOptions.values()).sort((p1, p2) => {
+    this.personOptionNames = Array.from(this.suggestionService.personOptions.values()).sort((p1, p2) => {
       return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
     }).map(p => {
       return p.name;
@@ -505,31 +444,14 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * Initializes data
+   * Initializes mode
    */
-  private initializeData() {
-    const resolved = this.initializeResolvedData();
-    if (resolved != null) {
-      // Take data from resolver
-      this.initializeTasklet(resolved as Tasklet);
-      this.initializeTaskletTypeAction();
+  private initializeMode() {
+    if (this.id === null) {
+      this.mode = DialogMode.ADD;
     } else {
-      // Load data from scratch
-      this.route.params.pipe(
-        takeUntil(this.unsubscribeSubject)
-      ).subscribe(() => {
-        this.initializeParameters();
-        this.findEntities();
-      });
+      this.mode = DialogMode.UPDATE;
     }
-  }
-
-  /**
-   * Triggers entity retrieval from database
-   */
-  private findEntities() {
-    this.taskletService.findTaskletByID(this.id);
-    this.taskletService.findTaskletsByScope(this.scopeService.scope);
   }
 
   /**
@@ -566,9 +488,13 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       })).subscribe();
   }
 
+  // </editor-fold>
+
   //
   // Actions
   //
+
+  // <editor-fold defaultstate="collapsed" desc="Actions">
 
   /**
    * Handles click on menu items
@@ -593,7 +519,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Handles click on tasklet type action button
    */
-  ontTaskletTypeActionButtonClicked() {
+  onTaskletTypeActionButtonClicked() {
     if (this.containsDisplayAspect(TaskletDisplayAspect.IS_POMODORO_STARTED, this.tasklet)) {
       this.snackbarService.showSnackbar('Tasklet type cannot be changed after pomodoro session has been started');
     } else {
@@ -723,9 +649,13 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // </editor-fold>
+
   //
   // Button actions
   //
+
+  // <editor-fold defaultstate="collapsed" desc="Button action">
 
   /**
    * Handles click on button
@@ -763,6 +693,8 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
+
+  // </editor-fold>
 
   //
   //
@@ -830,7 +762,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Sends meeting minutes via mail
    */
-  sendMeetingMinutes() {
+  private sendMeetingMinutes() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -846,7 +778,7 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Sends daily scrum summary via mail
    */
-  sendDailyScrumSummary() {
+  private sendDailyScrumSummary() {
     this.tags = this.aggregateTags(this.tasklet);
     this.persons = this.aggregatePersons(this.tasklet);
 
@@ -857,306 +789,6 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
       tags: this.tags,
       persons: this.persons
     });
-  }
-
-  /**
-   * Handles events targeting a tasklet
-   * @param event event parameters
-   */
-  onTaskletEvent(event: { action: Action, tasklet: Tasklet, task?: Task, tags?: Tag[], persons?: Person[] }) {
-    const tasklet = CloneService.cloneTasklet(event.tasklet as Tasklet);
-    const task = CloneService.cloneTask(event.task as Task);
-    const tags = CloneService.cloneTags(event.tags as Tag[]);
-    const persons = CloneService.clonePersons(event.persons as Person[]);
-
-    switch (event.action) {
-      case Action.ADD: {
-        // Create new entities if necessary
-        this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, tags);
-        this.evaluateTaskletPersons(tasklet, persons);
-
-        // Create tasklet itself
-        this.taskletService.createTasklet(tasklet, this.taskletsMap, this.tasksMap, this.projectsMap, this.personsMap, this.tagsMap).then(() => {
-          this.snackbarService.showSnackbar('Added tasklet');
-        });
-        break;
-      }
-      case Action.UPDATE: {
-        // Create new entities if necessary
-        this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, tags);
-        this.evaluateTaskletPersons(tasklet, persons);
-
-        // Update tasklet itself
-        this.taskletService.updateTasklet(tasklet, this.taskletsMap, this.tasksMap, this.projectsMap, this.personsMap, this.tagsMap).then(() => {
-          this.snackbarService.showSnackbar('Updated tasklet');
-        });
-        break;
-      }
-      case Action.DELETE: {
-        const confirmationDialogRef = this.dialog.open(ConfirmationDialogComponent, {
-          disableClose: false,
-          data: {
-            title: 'Delete tasklet',
-            text: 'Do you want to delete this tasklet?',
-            action: 'Delete',
-            value: tasklet
-          }
-        });
-        confirmationDialogRef.afterClosed().subscribe(confirmationResult => {
-          if (confirmationResult != null) {
-            this.taskletService.deleteTasklet((confirmationResult as Tasklet), this.taskletsMap).then(() => {
-            });
-          }
-        });
-        break;
-      }
-      case Action.SEND_MAIL_MEETING_MINUTES: {
-        // Update tasklet
-        this.onTaskletEvent({
-          action: Action.UPDATE,
-          tasklet,
-          task,
-          tags,
-          persons
-        });
-
-        const recipients = persons.filter(p => {
-          return p.email != null;
-        }).map(p => {
-          return p.email;
-        });
-        const subject = task.name;
-        let body = `Please find the meeting minutes below\n`;
-
-        this.taskletService.getTopics(tasklet).forEach(topic => {
-          body += `\nTopic ${topic}`;
-          this.taskletService.getMeetingMinuteItemsByTopic(tasklet, topic).forEach(item => {
-            body += `\n -`;
-            if (item.person != null) {
-              body += ` ${item.person.name} `;
-            }
-            body += ` ${item.type.toString()}: `;
-            body += ` ${item.statement}`;
-          });
-        });
-
-        this.emailService.sendMail(recipients, [], `Meeting Minutes - ${subject}`, body);
-        break;
-      }
-      case Action.SEND_MAIL_DAILY_SCRUM_SUMMARY: {
-        // Update tasklet
-        this.onTaskletEvent({
-          action: Action.UPDATE,
-          tasklet,
-          task,
-          tags,
-          persons
-        });
-
-        const recipients = persons.filter(p => {
-          return p.email != null;
-        }).map(p => {
-          return p.email;
-        });
-        const subject = `Daily scrum ${DateService.getSimpleDateString(tasklet.creationDate)}`;
-        let body = `Please find the summary of Daily Scrum below\n`;
-
-        this.taskletService.getParticipants(tasklet).forEach(participant => {
-          body += `\nParticipant ${participant}`;
-          this.taskletService.getDailyScrumActivitiesByParticipant(tasklet, participant).forEach(item => {
-            body += `\n -`;
-            body += ` ${item.type.toString()}: `;
-            body += ` ${item.statement}`;
-          });
-        });
-
-        this.emailService.sendMail(recipients, [], subject, body);
-        break;
-      }
-      case Action.POMODORO_START: {
-        // Set pomodoro duration and start time
-        tasklet.pomodoroDuration = +this.settingsService.settings.get(SettingType.POMODORO_DURATION).value;
-        tasklet.pomodoroBreak = +this.settingsService.settings.get(SettingType.POMODORO_BREAK).value;
-        tasklet.pomodoroStartTime = new Date();
-
-        // Update tasklet
-        this.onTaskletEvent({
-          action: Action.UPDATE,
-          tasklet,
-          task,
-          tags,
-          persons
-        });
-
-        break;
-      }
-    }
-  }
-
-  //
-  // Helpers
-  //
-
-  /**
-   * Determines whether the task assigned to a given tasklet already exists, otherwise creates a new one
-   * @param tasklet tasklet to assign task to
-   * @param task task to be checked
-   */
-  private evaluateTaskletTask(tasklet: Tasklet, task: Task) {
-    if (task != null && task.name != null && task.name !== '') {
-      // Assign task
-      let t = this.taskService.getTaskByName(task.name, this.tasksMap);
-
-      // New task
-      if (t == null && task.name != null && task.name !== '') {
-        t = new Task(task.name);
-        this.taskService.createTask(t, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-          this.filterService.updateTasksListIfNotEmpty([task]);
-        });
-      }
-
-      tasklet.taskId = t.id;
-    } else {
-      // Unassign task
-      tasklet.taskId = null;
-    }
-  }
-
-  /**
-   * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
-   * @param tasklet tasklet to assign tags to
-   * @param tags array of tags to be checked
-   */
-  private evaluateTaskletTags(tasklet: Tasklet, tags: Tag[]) {
-
-    const aggregatedTags = new Map<string, Tag>();
-
-    // New tag
-    if (tags != null) {
-      tags.filter(t => {
-        return t != null;
-      }).forEach(t => {
-        const tag = this.lookupTag(t.name);
-        aggregatedTags.set(tag.name, tag);
-      });
-    }
-
-    // Infer tags from meeting minutes
-    if (tasklet.meetingMinuteItems != null) {
-      tasklet.meetingMinuteItems.filter(m => {
-        return m.topic != null;
-      }).map(m => {
-        return m.topic;
-      }).forEach(t => {
-        const tag = this.lookupTag(t);
-        aggregatedTags.set(tag.name, tag);
-      });
-    }
-
-    const values = Array.from(aggregatedTags.values());
-    const keys = Array.from(aggregatedTags.keys());
-
-    this.filterService.updateTagsListIfNotEmpty(values);
-    tasklet.tagIds = Array.from(keys);
-  }
-
-  /**
-   * Returns existing tag if exists or creates a new one if not
-   * @param t tag name
-   */
-  private lookupTag(t: string): Tag {
-    let tag = this.tagService.getTagByName(t, this.tagsMap);
-
-    if (tag == null) {
-      tag = new Tag(t);
-      this.tagService.createTag(tag, this.tagsMap).then(() => {
-      });
-    }
-
-    return tag;
-  }
-
-  /**
-   * Determines whether the persons assigned to a given tasklet already exixst, otherwise creates new ones
-   * @param tasklet tasklet assign persons to
-   * @param persons array of persons to be checked
-   */
-  private evaluateTaskletPersons(tasklet: Tasklet, persons: Person[]) {
-    const aggregatedPersons = new Map<string, Person>();
-
-    // New person
-    if (persons != null) {
-      persons.filter(p => {
-        return p != null;
-      }).forEach(p => {
-        const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.name, person);
-      });
-    }
-
-    // Infer persons from meeting minutes
-    if (tasklet.meetingMinuteItems != null) {
-      tasklet.meetingMinuteItems.filter(m => {
-        return m.person != null;
-      }).filter(m => {
-        return m.person.name !== this.personService.myself.name;
-      }).map(m => {
-        return m.person;
-      }).forEach(p => {
-        const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.name, person);
-      });
-    }
-
-    // Infer persons from daily scrum
-    if (tasklet.dailyScrumItems != null) {
-      tasklet.dailyScrumItems.filter(d => {
-        return d.person != null;
-      }).filter(m => {
-        return m.person.name !== this.personService.myself.name;
-      }).map(d => {
-        return d.person;
-      }).forEach(p => {
-        const person = this.lookupPerson(p.name);
-        aggregatedPersons.set(person.name, person);
-      });
-    }
-
-    const values = Array.from(aggregatedPersons.values());
-    const keys = Array.from(aggregatedPersons.keys());
-
-    this.filterService.updatePersonsListIfNotEmpty(values);
-    tasklet.personIds = Array.from(keys);
-  }
-
-  /**
-   * Returns existing person if exists or creates a new one if not
-   * @param p person name
-   */
-  private lookupPerson(p: string): Person {
-    let person = this.personService.getPersonByName(p, this.personsMap);
-
-    if (person == null) {
-      person = new Person(p);
-      this.personService.createPerson(person, this.personsMap).then(() => {
-      });
-    }
-
-    return person;
-  }
-
-  //
-  // Helpers (UI)
-  //
-
-  /**
-   * Retrieves an icon by tasklet type
-   * @param type tasklet type
-   */
-  public getIconByTaskletType(type: TaskletType): string {
-    return TaskletService.getIconByTaskletType(type);
   }
 
   /**
@@ -1183,38 +815,13 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tags.forEach(t => {
       aggregatedTags.set(t.name, t);
     });
-    this.inferTags(tasklet).forEach(t => {
+    this.inferTags(tasklet.description.value).forEach(t => {
       aggregatedTags.set(t.name, t);
     });
 
     return Array.from(aggregatedTags.values());
   }
 
-
-  /**
-   * Infers tags from a tasklet's description
-   * @param tasklet tasklet
-   * @returns tags
-   */
-  private inferTags(tasklet: Tasklet): Tag[] {
-    const inferredTags = new Map<string, Tag>();
-
-    if (tasklet.description != null && tasklet.description.value != null) {
-      tasklet.description.value.split('\n').forEach(line => {
-        line.split(' ').forEach(word => {
-          if (word.startsWith('#')
-            && word.length > 1 // Exclude single hashes
-            && word.charAt(1) !== '#' // Exclude markdown tags
-          ) {
-            const hashtag = word.replace('#', '');
-            inferredTags.set(hashtag, new Tag(hashtag));
-          }
-        });
-      });
-    }
-
-    return Array.from(inferredTags.values());
-  }
 
   // Persons
 
@@ -1230,32 +837,10 @@ export class TaskletComponent implements OnInit, AfterViewInit, OnDestroy {
     this.persons.forEach(p => {
       aggregatedPersons.set(p.name, p);
     });
-    this.inferPersons(tasklet).forEach(p => {
+    this.inferPersons(tasklet.description.value).forEach(p => {
       aggregatedPersons.set(p.name, p);
     });
 
     return Array.from(aggregatedPersons.values());
-  }
-
-  /**
-   * Infers persons from a tasklet's description
-   * @param tasklet tasklet
-   * @returns persons
-   */
-  private inferPersons(tasklet: Tasklet): Person[] {
-    const inferredPersons = new Map<string, Person>();
-
-    if (tasklet.description != null && tasklet.description.value != null) {
-      tasklet.description.value.split('\n').forEach(line => {
-        line.split(' ').forEach(word => {
-          if (word.startsWith('@')) {
-            const mention = word.replace('@', '').replace('_', ' ');
-            inferredPersons.set(mention, new Person(mention));
-          }
-        });
-      });
-    }
-
-    return Array.from(inferredPersons.values());
   }
 }

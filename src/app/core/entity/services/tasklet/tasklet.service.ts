@@ -137,7 +137,6 @@ export class TaskletService {
               private taskService: TaskService,
               private tagService: TagService) {
     this.initializeTaskletSubscription();
-    this.findTaskletsByScope(this.scopeService.scope);
   }
 
   //
@@ -159,6 +158,27 @@ export class TaskletService {
 
   /**
    * Loads tasklets by a given scope
+   */
+  public findTasklets() {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKLETS_DAYS));
+
+    const index = {fields: ['entityType', 'creationDate']};
+    const options = {
+      selector: {
+        '$and': [
+          {entityType: {$eq: EntityType.TASKLET}},
+          {creationDate: {$gt: startDate.toISOString()}}
+        ]
+      },
+      sort: [{creationDate: 'desc'}],
+      limit: environment.LIMIT_TASKLETS_COUNT
+    };
+
+    this.findTaskletsInternal(index, options);
+  }
+
+  /**
+   * Loads tasklets by a given scope
    * @param scope scope to filter by
    */
   public findTaskletsByScope(scope: Scope) {
@@ -169,6 +189,7 @@ export class TaskletService {
       selector: {
         '$and': [
           {entityType: {$eq: EntityType.TASKLET}},
+          {scope: {$eq: scope}},
           {creationDate: {$gt: startDate.toISOString()}}
         ]
       },
@@ -369,11 +390,11 @@ export class TaskletService {
    * @param taskletsMap tasklets map
    */
   public getTaskletsByTask(task: Task, taskletsMap: Map<string, Tasklet>): Tasklet[] {
-    return Array.from(taskletsMap.values()).filter(tasklet => {
+    return (taskletsMap != null) ? Array.from(taskletsMap.values()).filter(tasklet => {
       return tasklet != null && task != null && tasklet.taskId === task.id;
     }).sort((t1, t2) => {
       return (new Date(t1.creationDate) > new Date(t2.creationDate)) ? 1 : -1;
-    }).reverse();
+    }).reverse() : [];
   }
 
 

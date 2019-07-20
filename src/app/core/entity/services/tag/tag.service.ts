@@ -63,7 +63,6 @@ export class TagService {
               private snackbarService: SnackbarService,
               private scopeService: ScopeService) {
     this.initializeTagSubscription();
-    this.findTagsByScope(this.scopeService.scope);
   }
 
   //
@@ -85,6 +84,27 @@ export class TagService {
 
   /**
    * Loads tags by a given scope
+   */
+  public findTags() {
+    const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TAGS_DAYS));
+
+    const index = {fields: ['entityType', 'modificationDate']};
+    const options = {
+      selector: {
+        $and: [
+          {entityType: {$eq: EntityType.TAG}},
+          {modificationDate: {$gt: startDate.toISOString()}}
+        ]
+      },
+      // sort: [{'modificationDate': 'desc'}],
+      limit: environment.LIMIT_TAGS_COUNT
+    };
+
+    this.findTagsInternal(index, options);
+  }
+
+  /**
+   * Loads tags by a given scope
    * @param scope scope to filter by
    */
   public findTagsByScope(scope: Scope) {
@@ -99,7 +119,7 @@ export class TagService {
           {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
-      // sort: [{'creationDate': 'desc'}],
+      // sort: [{'modificationDate': 'desc'}],
       limit: environment.LIMIT_TAGS_COUNT
     };
 

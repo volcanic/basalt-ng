@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Person} from 'app/core/entity/model/person.model';
 import {CloneService} from 'app/core/entity/services/clone.service';
 import {Subject} from 'rxjs';
@@ -12,7 +12,7 @@ import {debounceTime} from 'rxjs/operators';
   templateUrl: './person-autocomplete-fragment.component.html',
   styleUrls: ['./person-autocomplete-fragment.component.scss']
 })
-export class PersonAutocompleteFragmentComponent implements OnInit {
+export class PersonAutocompleteFragmentComponent implements OnInit, OnChanges {
 
   /** Person to be displayed */
   @Input() person: Person;
@@ -34,9 +34,15 @@ export class PersonAutocompleteFragmentComponent implements OnInit {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    this.initializeDebouncer();
+  }
+
+  /**
+   * Handles on-changes lifecycle phase
+   */
+  ngOnChanges() {
     this.initializePerson();
     this.initializeOptions();
-    this.initializeDebouncer();
   }
 
   //

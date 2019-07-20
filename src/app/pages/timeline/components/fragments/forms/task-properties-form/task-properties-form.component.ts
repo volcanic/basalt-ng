@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {Tag} from '../../../../../../core/entity/model/tag.model';
 import {Task} from '../../../../../../core/entity/model/task.model';
 import {Person} from '../../../../../../core/entity/model/person.model';
@@ -21,7 +21,7 @@ import {PaletteType} from '../../../../../../core/ui/model/palette-type.enum';
   styleUrls: ['./task-properties-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskPropertiesFormComponent implements OnInit {
+export class TaskPropertiesFormComponent implements OnInit, OnChanges {
 
   /** Task to be displayed */
   @Input() task: Task;
@@ -30,7 +30,7 @@ export class TaskPropertiesFormComponent implements OnInit {
   /** Delegated to affiliated to this task */
   @Input() delegatedTo: Person;
   /** Tags assigned to this task */
-  @Input() tags: Tag[] = [];
+  @Input() tags = [];
   /** Readonly dialog if true */
   @Input() readonly = false;
 
@@ -89,10 +89,16 @@ export class TaskPropertiesFormComponent implements OnInit {
    */
   ngOnInit() {
     this.initializeColors();
-    this.initializeOptions();
     this.initializePriority();
     this.initializeRecurringState();
     this.initializeAcceptanceCriteria();
+  }
+
+  /**
+   * Handles on-changes lifecycle phase
+   */
+  ngOnChanges() {
+    this.initializeOptions();
   }
 
   //
@@ -100,7 +106,7 @@ export class TaskPropertiesFormComponent implements OnInit {
   //
 
   /**
-   * INitializes colors
+   * Initializes colors
    */
   private initializeColors() {
     this.colorEmpty = this.materialColorService.color(PaletteType.GREY, HueType._300);
@@ -325,6 +331,13 @@ export class TaskPropertiesFormComponent implements OnInit {
     this.tags = tags.map(t => {
       return new Tag(t);
     });
+    this.task.tagIds = this.tags.map(tag => {
+      return this.evaluateTag(tag.name, this.tagOptions);
+    }).map(tag => {
+      return (tag != null) ? tag.id : null;
+    }).filter(tag => {
+      return tag != null;
+    });
     this.notify();
   }
 
@@ -381,6 +394,19 @@ export class TaskPropertiesFormComponent implements OnInit {
     });
 
     return (personsWithSameName != null && personsWithSameName.length > 0) ? personsWithSameName[0] : new Person(personName);
+  }
+
+  /**
+   * Checks if a given tag's name correlates to any exiting tag
+   * @param tagName tag name
+   * @param tagsMap map of existing tags
+   */
+  private evaluateTag(tagName: string, tagsMap: Map<string, Tag>) {
+    const tagsWithSameName = Array.from(tagsMap.values()).filter(p => {
+      return tagName === p.name;
+    });
+
+    return (tagsWithSameName != null && tagsWithSameName.length > 0) ? tagsWithSameName[0] : new Tag(tagName);
   }
 
   //
