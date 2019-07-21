@@ -55,7 +55,6 @@ export class TagChipsComponent implements OnChanges {
    * Initialize auto-complete options
    */
   private initializeOptions() {
-    console.log(`tagOptions ${this.tagOptions.length}`);
     this.optionsFiltered = this.tagOptions;
   }
 

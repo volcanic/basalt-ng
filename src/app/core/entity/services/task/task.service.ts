@@ -346,7 +346,7 @@ export class TaskService {
   public findTasks() {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKS_DAYS));
 
-    const index = {fields: ['entityType', 'modificationDate', 'completionDate']};
+    const index = {fields: ['entityType', 'modificationDate']};
     const options = {
       selector: {
         '$and': [
@@ -354,7 +354,7 @@ export class TaskService {
           {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
-      sort: [{'modificationDate': 'desc'}],
+      // sort: [{'modificationDate': 'desc'}],
       limit: environment.LIMIT_TASKS_COUNT
     };
 
@@ -368,7 +368,7 @@ export class TaskService {
   public findTasksByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKS_DAYS));
 
-    const index = {fields: ['entityType', 'scope', 'modificationDate', 'completionDate']};
+    const index = {fields: ['entityType', 'scope', 'modificationDate']};
     const options = {
       selector: {
         '$and': [

@@ -394,7 +394,6 @@ export class BaseComponent implements OnDestroy {
         break;
       }
       case Action.UPDATE: {
-        console.log(`onTaskletEvent UPDATE ${JSON.stringify(tasklet)}`);
         // Create new entities if necessary
         this.evaluateTaskletTask(tasklet, task);
         this.evaluateTaskletTags(tasklet, task, tags);

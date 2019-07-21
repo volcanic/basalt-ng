@@ -94,7 +94,7 @@ export class ProjectService {
           {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
-      sort: [{'modificationDate': 'desc'}],
+      // sort: [{'modificationDate': 'desc'}],
       limit: environment.LIMIT_PROJECTS_COUNT
     };
 

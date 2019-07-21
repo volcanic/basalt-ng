@@ -108,7 +108,7 @@ export class PersonService {
           {modificationDate: {$gt: startDate.toISOString()}}
         ]
       },
-      sort: [{'modificationDate': 'desc'}],
+      // sort: [{'modificationDate': 'desc'}],
       limit: environment.LIMIT_PERSONS_COUNT
     };
 

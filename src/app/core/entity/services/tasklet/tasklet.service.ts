@@ -170,7 +170,7 @@ export class TaskletService {
           {creationDate: {$gt: startDate.toISOString()}}
         ]
       },
-      sort: [{creationDate: 'desc'}],
+      // sort: [{creationDate: 'desc'}],
       limit: environment.LIMIT_TASKLETS_COUNT
     };
 
