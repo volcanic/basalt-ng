@@ -19,21 +19,6 @@ import {Person} from '../model/person.model';
 })
 export class EntityService {
 
-  /**
-   * Constructor
-   * @param projectService project service
-   * @param taskService task service
-   * @param taskletService tasklet service
-   * @param tagService tag service
-   * @param personService person service
-   */
-  constructor(private projectService: ProjectService,
-              private taskService: TaskService,
-              private taskletService: TaskletService,
-              private tagService: TagService,
-              private personService: PersonService) {
-  }
-
   //
   // Import/Export
   //
@@ -46,7 +31,7 @@ export class EntityService {
    * @param personsMap persons map
    * @param tagsMap tags map
    */
-  public downloadEntities(taskletsMap: Map<string, Tasklet>,
+  static downloadEntities(taskletsMap: Map<string, Tasklet>,
                           tasksMap: Map<string, Task>,
                           projectsMap: Map<string, Project>,
                           personsMap: Map<string, Person>,

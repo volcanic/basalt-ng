@@ -58,65 +58,65 @@ import {TaskDisplayAspect} from '../../../../core/entity/services/task/task-disp
 export class BaseComponent implements OnDestroy {
 
   /** App title */
-  protected title = environment.APP_NAME;
+  public title = environment.APP_NAME;
 
   /** Current scope */
-  protected scope: Scope = Scope.UNDEFINED;
+  public scope: Scope = Scope.UNDEFINED;
   /** Current media */
-  protected media: Media = Media.UNDEFINED;
+  public media: Media = Media.UNDEFINED;
 
   /** Map of tasklets */
-  protected taskletsMap = new Map<string, Tasklet>();
+  public taskletsMap = new Map<string, Tasklet>();
   /** Array of filtered tasklets */
-  protected taskletsMapFiltered = new Map<string, Tasklet>();
+  public taskletsMapFiltered = new Map<string, Tasklet>();
 
   /** Map of tasks */
-  protected tasksMap = new Map<string, Task>();
+  public tasksMap = new Map<string, Task>();
   /** Map of tasks used for filtering */
-  protected tasksMapFilter = new Map<string, Task>();
+  public tasksMapFilter = new Map<string, Task>();
   /** Map of filtered tasks */
-  protected tasksMapFiltered = new Map<string, Task>();
+  public tasksMapFiltered = new Map<string, Task>();
 
   /** Map of projects */
-  protected projectsMap = new Map<string, Project>();
+  public projectsMap = new Map<string, Project>();
   /** Map of projects used for filtering */
-  protected projectsMapFilter = new Map<string, Project>();
+  public projectsMapFilter = new Map<string, Project>();
   /** Map of filtered projects */
-  protected projectsMapFiltered = new Map<string, Project>();
+  public projectsMapFiltered = new Map<string, Project>();
 
   /** Map of persons */
-  protected personsMap = new Map<string, Person>();
+  public personsMap = new Map<string, Person>();
   /** Map of person used for filtering */
-  protected personsMapFilter = new Map<string, Person>();
+  public personsMapFilter = new Map<string, Person>();
   /** Map of filtered persons */
-  protected personsMapFiltered = new Map<string, Person>();
+  public personsMapFiltered = new Map<string, Person>();
 
   /** Map of tags */
-  protected tagsMap = new Map<string, Tag>();
+  public tagsMap = new Map<string, Tag>();
   /** Map of tags used for filtering */
-  protected tagsMapFilter = new Map<string, Tag>();
+  public tagsMapFilter = new Map<string, Tag>();
   /** Map of filtered tags */
-  protected tagsMapFiltered = new Map<string, Tag>();
+  public tagsMapFiltered = new Map<string, Tag>();
 
   /** Enum of tasklet types */
-  protected taskletType = TaskletType;
+  public taskletType = TaskletType;
   /** Enum for action types */
-  protected actionType = Action;
+  public actionType = Action;
   /** Enum of dialog modes */
-  protected modeType = DialogMode;
+  public modeType = DialogMode;
   /** Enum of tasklet display aspects */
-  protected taskletDisplayAspectType = TaskletDisplayAspect;
+  public taskletDisplayAspectType = TaskletDisplayAspect;
   /** Enum of task display aspects */
-  protected taskDisplayAspectType = TaskDisplayAspect;
+  public taskDisplayAspectType = TaskDisplayAspect;
   /** Enum of media types */
-  protected mediaType = Media;
+  public mediaType = Media;
   /** Enum of scope types */
-  protected scopeType = Scope;
+  public scopeType = Scope;
   /** Environment */
-  protected env = environment;
+  public env = environment;
 
   /** Helper subject used to finish other subscriptions */
-  protected unsubscribeSubject = new Subject();
+  public unsubscribeSubject = new Subject();
 
   /**
    * Constructor

@@ -680,7 +680,7 @@ export class TimelineComponent
         break;
       }
       case 'download': {
-        this.entityService.downloadEntities(this.taskletsMap,
+        EntityService.downloadEntities(this.taskletsMap,
           this.tasksMap,
           this.projectsMap,
           this.personsMap,

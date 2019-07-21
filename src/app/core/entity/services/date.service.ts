@@ -257,7 +257,7 @@ export class DateService {
 
   /**
    * Returns the end of a work week of a given date which is the end of business of the next Friday
-   * @param date data
+   * @param date date
    */
   static getEndOfWorkWeek(date: Date): Date {
     const endOfWorkWeek = DateService.getEndOfTheWeek(date);
