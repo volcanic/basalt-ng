@@ -57,8 +57,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   /** Temporarily displayed persons */
   persons: Person[] = [];
 
-  /** Map of taskslets */
-  taskletsMap = new Map<string, Task>();
+  /** Map of tasklets */
+  taskletsMap = new Map<string, Tasklet>();
   /** Map of tasks */
   tasksMap = new Map<string, Task>();
   /** Map of tag */
@@ -272,7 +272,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    */
   onKeyDown(event: any) {
     const KEY_CODE_ENTER = 13;
-    if (event.keyCode === KEY_CODE_ENTER && event.ctrlKey) {
+    if (event.key === KEY_CODE_ENTER && event.ctrlKey) {
       this.handleTaskletChanges();
     }
   }
@@ -382,13 +382,6 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
       tags: this.tags,
       persons: this.persons
     });
-  }
-
-  /**
-   * Continues a tasklet
-   */
-  private continueTasklet() {
-    this.dialogRef.close({action: Action.ADD, tasklet: this.tasklet, tags: this.tags, task: this.task});
   }
 
   /**

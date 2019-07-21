@@ -1,4 +1,13 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChildren
+} from '@angular/core';
 
 /**
  * Displays markdown editor
@@ -17,6 +26,8 @@ export class MarkdownEditorComponent {
   @Input() placeholder = '';
   /** Whether component is readonly or not */
   @Input() readonly = false;
+  /** Whether input fields of new elememnts should be focussed or not */
+  @Input() focusNewElement = false;
   /** Event emitter indicating changes in description */
   @Output() textChangedEmitter = new EventEmitter<string>();
 
