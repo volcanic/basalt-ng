@@ -487,11 +487,15 @@ export class BaseComponent implements OnDestroy {
         break;
       }
       case Action.OPEN_DIALOG_ADD: {
+        // Create default tasklet
+        const t = new Tasklet();
+        t.type = TaskletType.ACTION;
+
         // Assemble data to be passed
         const data = {
           mode: DialogMode.ADD,
           dialogTitle: 'Add tasklet',
-          tasklet: new Tasklet(),
+          tasklet: t,
           task: new Task(),
           tags: [],
           persons: [],
