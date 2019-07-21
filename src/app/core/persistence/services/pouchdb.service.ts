@@ -110,10 +110,13 @@ export class PouchDBService {
   /**
    * Removes a document by a given ID
    * @param id ID of the document to be removed
-   * @param document document to be removed
    */
-  public remove(id: string, document: any) {
-    return this.database.remove(document._id, document._rev);
+  public remove(id: string) {
+    return this.database.get(id).then(document => {
+      return this.database.remove(document._id, document._rev);
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   /**

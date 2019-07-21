@@ -527,7 +527,7 @@ export class TaskService {
   public deleteTask(task: Task, tasksMap: Map<string, Task>): Promise<any> {
     return new Promise(() => {
       if (task != null) {
-        this.pouchDBService.remove(task.id, task).then(() => {
+        this.pouchDBService.remove(task.id).then(() => {
           tasksMap.delete(task.id);
           this.notifyTasks(tasksMap);
         }).catch((error) => {

@@ -364,7 +364,7 @@ export class TaskletService {
   public deleteTasklet(tasklet: Tasklet, taskletsMap: Map<string, Tasklet>): Promise<any> {
     return new Promise(() => {
       if (tasklet != null) {
-        return this.pouchDBService.remove(tasklet.id, tasklet).then(() => {
+        return this.pouchDBService.remove(tasklet.id).then(() => {
           taskletsMap.delete(tasklet.id);
           this.notifyTasklets(taskletsMap);
         }).catch((error) => {

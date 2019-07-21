@@ -200,7 +200,7 @@ export class TagService {
   public deleteTag(tag: Tag, tagsMap: Map<string, Tag>): Promise<any> {
     return new Promise(() => {
       if (tag != null) {
-        this.pouchDBService.remove(tag.id, tag).then(() => {
+        this.pouchDBService.remove(tag.id).then(() => {
           tagsMap.delete(tag.id);
           this.notifyTags(tagsMap);
         }).catch((error) => {

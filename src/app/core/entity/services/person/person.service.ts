@@ -213,7 +213,7 @@ export class PersonService {
   public deletePerson(person: Person, personsMap: Map<string, Person>): Promise<any> {
     return new Promise(() => {
       if (person != null) {
-        this.pouchDBService.remove(person.id, person).then(() => {
+        this.pouchDBService.remove(person.id).then(() => {
           personsMap.delete(person.id);
           this.notifyPersons(personsMap);
         }).catch((error) => {

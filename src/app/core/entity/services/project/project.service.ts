@@ -199,7 +199,7 @@ export class ProjectService {
   public deleteProject(project: Project, projectsMap: Map<string, Project>): Promise<any> {
     return new Promise(() => {
       if (project != null) {
-        this.pouchDBService.remove(project.id, project).then(() => {
+        this.pouchDBService.remove(project.id).then(() => {
           projectsMap.delete(project.id);
           this.notifyProjects(projectsMap);
         }).catch((error) => {
