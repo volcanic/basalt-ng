@@ -10,10 +10,12 @@
       <mat-accordion class="headers-align"
                      (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
-          <app-tasklet-content-fragment [tasklet]="tasklet"
-                                        [placeholderDescription]="placeholderDescription"
-                                        [placeholderMeetingMinutes]="placeholderMeetingMinutes"
-                                        [placeholderDailyScrum]="placeholderDailyScrum"></app-tasklet-content-fragment>
+          <ng-template matExpansionPanelContent>
+            <app-tasklet-content-fragment [tasklet]="tasklet"
+                                          [placeholderDescription]="placeholderDescription"
+                                          [placeholderMeetingMinutes]="placeholderMeetingMinutes"
+                                          [placeholderDailyScrum]="placeholderDailyScrum"></app-tasklet-content-fragment>
+          </ng-template>
         </mat-expansion-panel>
       </mat-accordion>
       <hr class="delimiter"/>
