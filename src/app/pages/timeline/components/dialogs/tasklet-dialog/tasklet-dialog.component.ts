@@ -173,7 +173,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * Initializes inherited tags
    */
   private initializeInheritedTags() {
-    if (this.task != null) {
+    if (this.task != null && this.task.tagIds != null) {
       this.inheritedTags = this.task.tagIds.map(id => {
         return this.tagsMap.get(id);
       });

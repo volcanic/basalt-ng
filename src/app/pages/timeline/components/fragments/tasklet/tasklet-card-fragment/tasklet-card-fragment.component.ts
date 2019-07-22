@@ -119,7 +119,7 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
    * Initializes inherited tags
    */
   private initializeInheritedTags() {
-    if (this.task != null) {
+    if (this.task != null && this.task.tagIds != null) {
       this.inheritedTagIds = this.task.tagIds;
     } else {
       this.inheritedTagIds = [];
