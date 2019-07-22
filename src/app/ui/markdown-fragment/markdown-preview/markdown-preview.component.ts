@@ -24,7 +24,7 @@ const md = require('markdown-it')({
  * Default renderer for markdown
  */
 // tslint:disable-next-line:only-arrow-functions
-const defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, env, self) {
+const defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
   return self.renderToken(tokens, idx, options);
 };
 
@@ -37,7 +37,7 @@ const defaultRender = md.renderer.rules.link_open || function (tokens, idx, opti
  * @param self self
  */
 // tslint:disable-next-line:only-arrow-functions
-md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
   // If you are sure other plugins can't add `target` - drop check below
   const aIndex = tokens[idx].attrIndex('target');
 
@@ -78,7 +78,7 @@ export class MarkdownPreviewComponent implements OnChanges {
    * Handles on-change lifecycle phase
    * @param changes simple changes
    */
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges) {
     this.updateMarkdown();
   }
 
