@@ -27,6 +27,11 @@ export class ProjectService {
   /** Subject that publishes a project */
   projectSubject = new Subject<Project>();
 
+  /** Map of projects */
+  private projects: Map<string, Project>;
+  /** Single project */
+  private project: Project;
+
   //
   // Sort
   //
@@ -77,13 +82,42 @@ export class ProjectService {
   }
 
   //
+  // Fetch
+  //
+
+  /**
+   * Fetches projects
+   * @param forceReload force reload
+   */
+  public fetchProjects(forceReload = false) {
+    if (this.projects != null && !forceReload) {
+      this.projectsSubject.next(this.projects);
+    } else {
+      this.findProjects();
+    }
+  }
+
+  /**
+   * Fetches projects by scope
+   * @param scope scope to filter by
+   * @param forceReload force reload
+   */
+  public fetchProjectsByScope(scope: Scope, forceReload = false) {
+    if (this.projects != null && !forceReload) {
+      this.projectsSubject.next(this.projects);
+    } else {
+      this.findProjectsByScope(scope);
+    }
+  }
+
+  //
   // Queries
   //
 
   /**
    * Loads projects by a given scope
    */
-  public findProjects() {
+  private findProjects() {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PROJECTS_DAYS));
 
     const index = {fields: ['entityType', 'modificationDate']};
@@ -105,7 +139,7 @@ export class ProjectService {
    * Loads projects by a given scope
    * @param scope scope to filter by
    */
-  public findProjectsByScope(scope: Scope) {
+  private findProjectsByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PROJECTS_DAYS));
 
     const index = {fields: ['entityType', 'scope', 'modificationDate']};

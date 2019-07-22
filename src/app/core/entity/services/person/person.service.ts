@@ -29,6 +29,11 @@ export class PersonService {
   /** Subject that publishes a person */
   personSubject = new Subject<Person>();
 
+  /** Map of persons */
+  private persons: Map<string, Person>;
+  /** Single person */
+  private person: Person;
+
   /** Special person representing the user */
   myself: Person;
 
@@ -91,13 +96,42 @@ export class PersonService {
   }
 
   //
+  // Fetch
+  //
+
+  /**
+   * Fetches persons
+   * @param forceReload force reload
+   */
+  public fetchPersons(forceReload = false) {
+    if (this.persons != null && !forceReload) {
+      this.personsSubject.next(this.persons);
+    } else {
+      this.findPersons();
+    }
+  }
+
+  /**
+   * Fetches persons by scope
+   * @param scope scope to filter by
+   * @param forceReload force reload
+   */
+  public fetchPersonsByScope(scope: Scope, forceReload = false) {
+    if (this.persons != null && !forceReload) {
+      this.personsSubject.next(this.persons);
+    } else {
+      this.findPersonsByScope(scope);
+    }
+  }
+
+  //
   // Queries
   //
 
   /**
    * Loads persons by a given scope
    */
-  public findPersons() {
+  private findPersons() {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PERSONS_DAYS));
 
     const index = {fields: ['entityType', 'modificationDate']};
@@ -119,7 +153,7 @@ export class PersonService {
    * Loads persons by a given scope
    * @param scope scope to filter by
    */
-  public findPersonsByScope(scope: Scope) {
+  private findPersonsByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_PERSONS_DAYS));
 
     const index = {fields: ['entityType', 'scope', 'modificationDate']};

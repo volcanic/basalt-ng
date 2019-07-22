@@ -37,6 +37,11 @@ export class TaskService {
   /** Subject that publishes a task */
   taskSubject = new Subject<Task>();
 
+  /** Map of tasks */
+  private tasks: Map<string, Task>;
+  /** Single task */
+  private task: Task;
+
   //
   // Sort
   //
@@ -337,13 +342,55 @@ export class TaskService {
   }
 
   //
+  // Fetch
+  //
+
+  /**
+   * Fetches tasks
+   * @param forceReload force reload
+   */
+  public fetchTasks(forceReload = false) {
+    if (this.tasks != null && !forceReload) {
+      this.tasksSubject.next(this.tasks);
+    } else {
+      this.findTasks();
+    }
+  }
+
+  /**
+   * Fetches tasks by scope
+   * @param scope scope to filter by
+   * @param forceReload force reload
+   */
+  public fetchTasksByScope(scope: Scope, forceReload = false) {
+    if (this.tasks != null && !forceReload) {
+      this.tasksSubject.next(this.tasks);
+    } else {
+      this.findTasksByScope(scope);
+    }
+  }
+
+  /**
+   * Fetches a task by id
+   * @param id ID of filter by
+   * @param forceReload force reload
+   */
+  public fetchTaskByID(id: string, forceReload = false) {
+    if (this.tasks != null && !forceReload) {
+      this.tasksSubject.next(this.tasks);
+    } else {
+      this.findTaskByID(id);
+    }
+  }
+
+  //
   // Queries
   //
 
   /**
    * Loads tasks by a given scope
    */
-  public findTasks() {
+  private findTasks() {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKS_DAYS));
 
     const index = {fields: ['entityType', 'modificationDate']};
@@ -365,7 +412,7 @@ export class TaskService {
    * Loads tasks by a given scope
    * @param scope scope to filter by
    */
-  public findTasksByScope(scope: Scope) {
+  private findTasksByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKS_DAYS));
 
     const index = {fields: ['entityType', 'scope', 'modificationDate']};
@@ -388,7 +435,7 @@ export class TaskService {
    * Loads task by a given ID
    * @param id ID of filter by
    */
-  public findTaskByID(id: string) {
+  private findTaskByID(id: string) {
     const index = {fields: ['entityType', 'id', 'creationDate']};
     const options = {
       selector: {

@@ -271,7 +271,7 @@ export class TaskletComponent
       }
       this.initializeMode();
 
-      this.taskletService.findTaskletByID(this.id);
+      this.taskletService.fetchTaskletByID(this.id);
       this.findEntities();
     });
   }

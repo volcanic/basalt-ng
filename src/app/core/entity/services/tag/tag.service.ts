@@ -29,6 +29,11 @@ export class TagService {
   /** Subject that publishes a tag */
   tagSubject = new Subject<Tag>();
 
+  /** Map of tags */
+  private tags: Map<string, Tag>;
+  /** Single tag */
+  private tag: Tag;
+
   //
   // Sort
   //
@@ -79,13 +84,42 @@ export class TagService {
   }
 
   //
+  // Fetch
+  //
+
+  /**
+   * Fetches tags
+   * @param forceReload force reload
+   */
+  public fetchTags(forceReload = false) {
+    if (this.tags != null && !forceReload) {
+      this.tagsSubject.next(this.tags);
+    } else {
+      this.findTags();
+    }
+  }
+
+  /**
+   * Fetches tags by scope
+   * @param scope scope to filter by
+   * @param forceReload force reload
+   */
+  public fetchTagsByScope(scope: Scope, forceReload = false) {
+    if (this.tags != null && !forceReload) {
+      this.tagsSubject.next(this.tags);
+    } else {
+      this.findTagsByScope(scope);
+    }
+  }
+
+  //
   // Queries
   //
 
   /**
    * Loads tags by a given scope
    */
-  public findTags() {
+  private findTags() {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TAGS_DAYS));
 
     const index = {fields: ['entityType', 'modificationDate']};
@@ -107,7 +141,7 @@ export class TagService {
    * Loads tags by a given scope
    * @param scope scope to filter by
    */
-  public findTagsByScope(scope: Scope) {
+  private findTagsByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TAGS_DAYS));
 
     const index = {fields: ['entityType', 'scope', 'modificationDate']};

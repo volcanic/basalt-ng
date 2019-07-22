@@ -51,6 +51,11 @@ export class TaskletService {
   /** Subject that publishes dates scrolled by */
   dateQueueSubject = new Subject<Date>();
 
+  /** Map of tasklets */
+  private tasklets: Map<string, Tasklet>;
+  /** Single tasklet */
+  private tasklet: Tasklet;
+
   /**
    * Retrieves a task by a given tasklet
    * @param tasklet tasklet to find task by
@@ -136,6 +141,7 @@ export class TaskletService {
               private taskletTypeService: TaskletTypeService,
               private taskService: TaskService,
               private tagService: TagService) {
+    this.initializeTaskletsSubscription();
     this.initializeTaskletSubscription();
   }
 
@@ -144,12 +150,64 @@ export class TaskletService {
   //
 
   /**
+   * Initializes tasklets subscription
+   */
+  private initializeTaskletsSubscription() {
+    this.taskletsSubject.subscribe((value) => {
+      this.tasklets = value as Map<string, Tasklet>;
+      this.suggestionService.updateByTasklets(value as Map<string, Tasklet>);
+    });
+  }
+
+  /**
    * Initializes tasklet subscription
    */
   private initializeTaskletSubscription() {
-    this.taskletsSubject.subscribe((value) => {
-      this.suggestionService.updateByTasklets(value as Map<string, Tasklet>);
+    this.taskletSubject.subscribe((value) => {
+      this.tasklet = value as Tasklet;
     });
+  }
+
+  //
+  // Fetch
+  //
+
+  /**
+   * Fetches tasklets
+   * @param forceReload force reload
+   */
+  public fetchTasklets(forceReload = false) {
+    if (this.tasklets != null && !forceReload) {
+      this.taskletsSubject.next(this.tasklets);
+    } else {
+      this.findTasklets();
+    }
+  }
+
+  /**
+   * Fetches tasklets by scope
+   * @param scope scope to filter by
+   * @param forceReload force reload
+   */
+  public fetchTaskletsByScope(scope: Scope, forceReload = false) {
+    if (this.tasklets != null && !forceReload) {
+      this.taskletsSubject.next(this.tasklets);
+    } else {
+      this.findTaskletsByScope(scope);
+    }
+  }
+
+  /**
+   * Fetches a tasklet by id
+   * @param id ID of filter by
+   * @param forceReload force reload
+   */
+  public fetchTaskletByID(id: string, forceReload = false) {
+    if (this.tasklets != null && !forceReload) {
+      this.taskletsSubject.next(this.tasklets);
+    } else {
+      this.findTaskletByID(id);
+    }
   }
 
   //
@@ -159,7 +217,7 @@ export class TaskletService {
   /**
    * Loads tasklets by a given scope
    */
-  public findTasklets() {
+  private findTasklets() {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKLETS_DAYS));
 
     const index = {fields: ['entityType', 'creationDate']};
@@ -181,7 +239,7 @@ export class TaskletService {
    * Loads tasklets by a given scope
    * @param scope scope to filter by
    */
-  public findTaskletsByScope(scope: Scope) {
+  private findTaskletsByScope(scope: Scope) {
     const startDate = DateService.addDays(new Date(), -(environment.LIMIT_TASKLETS_DAYS));
 
     const index = {fields: ['entityType', 'scope', 'creationDate']};
@@ -204,7 +262,7 @@ export class TaskletService {
    * Loads tasklet by a given ID
    * @param id ID of filter by
    */
-  public findTaskletByID(id: string) {
+  private findTaskletByID(id: string) {
     const index = {fields: ['entityType', 'id', 'creationDate']};
     const options = {
       selector: {

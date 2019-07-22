@@ -345,23 +345,14 @@ export class BaseComponent implements OnDestroy {
 
   /**
    * Triggers entity retrieval from database
+   * @param forceReload force reload
    */
-  protected findEntities(onlyIfEmpty = false) {
-    if (!onlyIfEmpty || this.taskletsMap.size === 0) {
-      this.taskletService.findTasklets();
-    }
-    if (!onlyIfEmpty || this.tasksMap.size === 0) {
-      this.taskService.findTasks();
-    }
-    if (!onlyIfEmpty || this.projectsMap.size === 0) {
-      this.projectService.findProjects();
-    }
-    if (!onlyIfEmpty || this.personsMap.size === 0) {
-      this.personService.findPersons();
-    }
-    if (!onlyIfEmpty || this.tagsMap.size === 0) {
-      this.tagService.findTags();
-    }
+  protected findEntities(forceReload = false) {
+    this.taskletService.fetchTasklets(forceReload);
+    this.taskService.fetchTasks(forceReload);
+    this.projectService.fetchProjects(forceReload);
+    this.personService.fetchPersons(forceReload);
+    this.tagService.fetchTags(forceReload);
   }
 
   //

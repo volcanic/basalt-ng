@@ -268,7 +268,7 @@ export class TaskComponent
       }
       this.initializeMode();
 
-      this.taskService.findTaskByID(this.id);
+      this.taskService.fetchTaskByID(this.id);
       this.findEntities();
     });
   }
