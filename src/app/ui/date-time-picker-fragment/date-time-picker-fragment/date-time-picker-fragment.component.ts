@@ -76,6 +76,9 @@ export class DateTimePickerFragmentComponent implements OnChanges {
    * Initializes options
    */
   private initializeOptions() {
+    this.hours = [];
+    this.minutes = [];
+
     for (let h = 0; h < 24; h++) {
       this.hours.push(h);
     }
