@@ -243,6 +243,7 @@ export class TaskComponent
     this.initializeProjectsSubscription().subscribe((value) => {
       console.log(`onProjectsFound ${value.size}`);
       this.initializeProjects(value as Map<string, Project>);
+      this.initializeTaskletTypeAction();
       this.initializeOptions();
     });
     this.initializePersonsSubscription().subscribe((value) => {
