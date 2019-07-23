@@ -75,4 +75,12 @@ describe('DateService', () => {
 
     expect(DateService.isInWeek(d1, today)).toBeFalsy();
   }));
+
+  it('should determine Sunday after a given day', inject([DateService], (service: DateService) => {
+    const today = new Date('2019-07-23');
+    const sunday = DateService.getWeekEnd(today);
+
+    expect(sunday.getDay()).toBe(0);
+    expect(sunday.getDate()).toBe(28);
+  }));
 });

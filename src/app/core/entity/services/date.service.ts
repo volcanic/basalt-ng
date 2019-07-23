@@ -316,10 +316,22 @@ export class DateService {
   static getWeekEnd(date: Date): Date {
     date = new Date(date);
 
-    const day = date.getDay();
-    const diff: number = date.getDate() - day + (day === 0 ? 0 : 7);
-    const sunday = new Date(date.setDate(diff));
+    // Day of the month (1-31)
+    const dayOfTheMonth = date.getDate();
 
+    // Day of the week (0=Sunday, 1=Monday and so on)
+    const dayOfTheWeek = date.getDay();
+
+    // Day of the month of last Sunday
+    const dayOnTheMonthOfLastSunday = dayOfTheMonth - dayOfTheWeek;
+
+    // Days until next Sunday
+    const daysUntilNextSunday = (dayOfTheWeek === 0 ? 0 : 7);
+
+    // Day of the month of next Sunday
+    const dayOfTheMonthOfNextSunday = dayOnTheMonthOfLastSunday + daysUntilNextSunday;
+
+    const sunday = new Date(date.setDate(dayOfTheMonthOfNextSunday));
 
     return DateService.getDayEnd(sunday);
   }
