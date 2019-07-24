@@ -102,13 +102,13 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.initializeIcon();
-    this.initializeDate();
   }
 
   /**
    * Handles on-changes lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
+    this.initializeDate();
     this.initializeTask();
     this.initializeTopic();
     this.initializeProject();

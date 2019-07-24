@@ -24,10 +24,10 @@ $attachment-width: 48px;
     box-sizing: border-box; /* Opera/IE 8+ */
   }
   @media #{$breakpoint-medium} {
-    width: 450px + $attachment-width;
+    width: 450px + $attachment-width - 18px;
   }
   @media #{$breakpoint-large} {
-    width: 450px + $attachment-width;
+    width: 450px + $attachment-width - 18px;
   }
 }
 
@@ -53,7 +53,7 @@ $attachment-width: 48px;
 }
 
 .week-indicator {
-  color: mat-color($mat-grey, 500) !important;
+  color: mat-color($mat-grey, 300) !important;
   background: transparent !important;
 
   font-size: 25px;
@@ -63,8 +63,8 @@ $attachment-width: 48px;
 }
 
 .day-indicator {
-  color: mat-color($mat-grey, 400);
-  background: mat-color($mat-grey, 100);
+  color: mat-color($mat-grey, 600);
+  background: transparent !important;
 
   font-size: 25px;
   font-weight: 400;
