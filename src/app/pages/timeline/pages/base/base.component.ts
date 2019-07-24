@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../../../../../environments/environment';
 import {Tasklet} from '../../../../core/entity/model/tasklet.model';
 import {Task} from '../../../../core/entity/model/task.model';
@@ -55,7 +55,7 @@ import {TaskDisplayAspect} from '../../../../core/entity/services/task/task-disp
   templateUrl: './base.component.html',
   styleUrls: ['./base.component.scss']
 })
-export class BaseComponent implements OnDestroy {
+export class BaseComponent implements OnInit, OnDestroy {
 
   /** App title */
   public title = environment.APP_NAME;
@@ -165,6 +165,13 @@ export class BaseComponent implements OnDestroy {
   //
 
   // <editor-fold defaultstate="collapsed" desc="Lifecycle hooks">
+
+  /**
+   * Handles on-init lifecycle phase
+   */
+  ngOnInit() {
+    this.mediaService.fetchMedia();
+  }
 
   /**
    * Handles on-destroy lifecycle phase

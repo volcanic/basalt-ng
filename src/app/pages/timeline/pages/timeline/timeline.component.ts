@@ -179,6 +179,8 @@ export class TimelineComponent
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this.initializeTaskletsSubscription().subscribe((value) => {
       console.log(`onTaskletsFound ${value.size}`);
       this.initializeTasklets(value as Map<string, Tasklet>);

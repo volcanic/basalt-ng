@@ -227,6 +227,8 @@ export class TaskletComponent
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this.initializeTaskletSubscription().subscribe((value) => {
       console.log(`onTaskletFound ${value != null}`);
       this.initializeTasklet(value as Tasklet);
