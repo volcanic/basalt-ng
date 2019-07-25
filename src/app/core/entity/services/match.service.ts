@@ -467,9 +467,11 @@ export class MatchService {
    * @returns true if description matches search item
    */
   private descriptionMatchesSingleItem(description: Description, item: string): boolean {
-    return description.value != null && description.value.split('\n').some(s => {
-      return MatchService.textMatchesSingleItem(s, item);
-    });
+    return description != null
+      && description.value != null
+      && description.value.split('\n').some(s => {
+        return MatchService.textMatchesSingleItem(s, item);
+      });
   }
 
   /**
