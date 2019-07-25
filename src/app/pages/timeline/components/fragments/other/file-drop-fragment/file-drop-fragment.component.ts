@@ -98,7 +98,7 @@ export class FileDropFragmentComponent implements OnInit, OnDestroy {
           reader.onload = (e) => {
             observer.next((e.target as any).result);
           };
-          reader.readAsBinaryString(file);
+          reader.readAsText(file);
           return () => {
             reader.abort();
           };
