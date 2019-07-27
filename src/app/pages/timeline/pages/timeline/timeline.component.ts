@@ -749,6 +749,22 @@ export class TimelineComponent
   // Button actions
   //
 
+  /**
+   * Handles key down events
+   */
+  onKeyDown(keyboardEvent: KeyboardEvent) {
+    if (keyboardEvent.ctrlKey && keyboardEvent.altKey) {
+      switch (keyboardEvent.key) {
+        case 'n':
+          this.onAddTaskClicked();
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+
   // <editor-fold defaultstate="collapsed" desc="Button action">
 
   /**
