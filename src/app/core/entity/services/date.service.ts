@@ -80,6 +80,23 @@ export class DateService {
   }
 
   /**
+   * Determines if a given date is tomorrow
+   * @param date date to check
+   * @returns true if given date is tomorrow
+   */
+  static isTomorrow(date: Date): boolean {
+    if (date != null) {
+      const tomorrow = new Date();
+      tomorrow.setDate(new Date().getDate() + 1);
+
+      return DateService.isAfter(date, DateService.getDayStart(tomorrow)) &&
+        DateService.isBefore(date, DateService.getDayEnd(tomorrow));
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Determines whether a given date is before another date
    * @param d1 first date
    * @param d2 second date
