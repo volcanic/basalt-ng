@@ -86,6 +86,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.ACTION, 'turned_in', 'ic_turned_in_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'work', 'ic_work_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'watch_later', 'ic_watch_later_24px.svg'));
     icons.push(new Icon(IconTopic.ALERT, 'warning', 'ic_warning_24px.svg'));
     icons.push(new Icon(IconTopic.AV, 'loop', 'ic_loop_24px.svg'));
     icons.push(new Icon(IconTopic.AV, 'play_circle_filled', 'ic_play_circle_filled_24px.svg'));
