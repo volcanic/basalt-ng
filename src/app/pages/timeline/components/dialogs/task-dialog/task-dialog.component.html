@@ -9,7 +9,6 @@
       <mat-icon svgIcon='fullscreen'></mat-icon>
     </button>
     <button mat-button
-            color="warn"
             class="float-right"
             matTooltip="Delete"
             [matTooltipPosition]="'above'"
@@ -29,7 +28,10 @@
       </app-task-properties-form>
     </mat-dialog-content>
     <mat-dialog-actions class="flexcontainer">
-
+      <button mat-button
+              (click)="onButtonClicked(actionType.CANCEL)">
+        Cancel
+      </button>
       <div class="flexbox"></div>
 
       <button mat-button *ngIf="mode == modeType.UPDATE && task.completionDate != null" color="accent"
