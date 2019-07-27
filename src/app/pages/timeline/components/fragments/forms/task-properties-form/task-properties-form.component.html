@@ -53,6 +53,20 @@
             [date]="task.dueDate"
             (dateChangedEmitter)="onDueDateChanged($event)">
           </app-date-time-picker-fragment>
+          <button mat-icon-button
+                  class="action auto-height"
+                  matTooltip="Postpone"
+                  [matTooltipPosition]="'above'"
+                  [disableRipple]="true"
+                  (click)="select.open()">
+            <mat-icon svgIcon='watch_later'></mat-icon>
+          </button>
+          <mat-select #select class="typeSelect">
+            <mat-option (click)="onPostponeClicked('later')">Later (8:00pm)</mat-option>
+            <mat-option (click)="onPostponeClicked('tomorrow')">Tomorrow (8:00am)</mat-option>
+            <mat-option (click)="onPostponeClicked('this_weekend')">This weekend (8:00am Sat)</mat-option>
+            <mat-option (click)="onPostponeClicked('next_week')">Next week (8:00 Mon)</mat-option>
+          </mat-select>
         </div>
       </mat-panel-description>
       <mat-icon class="clickable" (click)="onRecurringChanged()" svgIcon="today"></mat-icon>
