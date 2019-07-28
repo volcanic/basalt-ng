@@ -607,13 +607,13 @@ export class TimelineComponent
           disableClose: false,
           data: {
             dialogTitle: 'Tasks',
-            tasksMap: this.tasksMap.values()
+            tasksMap: this.tasksMap
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            const action = result.Action as Action;
-            const task = result.value as Task;
+            const action = result.action as Action;
+            const task = result.task as Task;
             const project = result.project as Project;
             const tags = result.tags as Tag[];
 
@@ -636,7 +636,7 @@ export class TimelineComponent
           disableClose: false,
           data: {
             dialogTitle: 'Projects',
-            projectsMap: this.projectsMap.values()
+            projectsMap: this.projectsMap
           }
         });
         dialogRef.afterClosed().subscribe(result => {
