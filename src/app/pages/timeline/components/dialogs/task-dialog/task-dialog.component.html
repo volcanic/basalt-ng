@@ -1,5 +1,22 @@
 <div (keydown)="onKeyDown($event)">
-  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+  <div>
+    <h2 mat-dialog-title style="display:inline">{{ dialogTitle }}</h2>
+    <button mat-button
+            class="float-right"
+            matTooltip="Go to Fullscreen"
+            [matTooltipPosition]="'above'"
+            (click)="onButtonClicked(actionType.FULLSCREEN)">
+      <mat-icon svgIcon='fullscreen'></mat-icon>
+    </button>
+    <button mat-button
+            class="float-right"
+            matTooltip="Delete"
+            [matTooltipPosition]="'above'"
+            *ngIf="mode == modeType.UPDATE"
+            (click)="onButtonClicked(actionType.DELETE)">
+      <mat-icon svgIcon='delete'></mat-icon>
+    </button>
+  </div>
   <div *ngIf="task != null">
     <mat-dialog-content>
       <app-task-title-form [task]="task" [readonly]="readonly"
@@ -11,15 +28,12 @@
       </app-task-properties-form>
     </mat-dialog-content>
     <mat-dialog-actions class="flexcontainer">
-      <button mat-button color="warn" *ngIf="mode == modeType.UPDATE"
-              (click)="onButtonClicked(actionType.DELETE)">
-        Delete task
+      <button mat-button
+              (click)="onButtonClicked(actionType.CANCEL)">
+        Cancel
       </button>
       <div class="flexbox"></div>
-      <button mat-button
-              (click)="onButtonClicked(actionType.FULLSCREEN)">
-        Go to Fullscreen
-      </button>
+
       <button mat-button *ngIf="mode == modeType.UPDATE && task.completionDate != null" color="accent"
               (click)="onButtonClicked(actionType.REOPEN)">
         Re-open task

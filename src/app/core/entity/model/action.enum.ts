@@ -8,6 +8,7 @@ export enum Action {
   ADD,
   UPDATE,
   CONTINUE,
+  CANCEL,
   DELETE,
   COMPLETE,
   REOPEN,
