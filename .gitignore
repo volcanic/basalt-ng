@@ -51,9 +51,9 @@ testem.log
 /cordova
 
 # Firebase
-.firebase/
-.firebaserc
-firebase.json
+# .firebase/
+# .firebaserc
+# firebase.json
 
 # System Files
 .DS_Store
