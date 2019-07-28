@@ -90,9 +90,9 @@ export class TaskPropertiesFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.initializeColors();
     this.initializePriority();
+    this.initializeRecurring();
     this.initializeRecurringState();
     this.initializeAcceptanceCriteria();
-    this.recurring = this.task.recurrenceInterval === RecurrenceInterval.NONE ? false : true;
   }
 
   /**
@@ -158,6 +158,15 @@ export class TaskPropertiesFormComponent implements OnInit, OnChanges {
           this.colorsFlags[index] = this.colorEmpty;
         }
       });
+    }
+  }
+
+  /**
+   * Initializes recurring
+   */
+  private initializeRecurring() {
+    if (this.task != null) {
+      this.recurring = this.task.recurrenceInterval !== RecurrenceInterval.NONE;
     }
   }
 

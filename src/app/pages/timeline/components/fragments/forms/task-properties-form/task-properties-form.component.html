@@ -109,7 +109,7 @@
       </mat-panel-title>
       <mat-panel-description>
         <app-tag-chips [tags]="tags | tagNames"
-                       [tagOptions]="tagOptions"
+                       [tagOptions]="tagOptionNames"
                        [readonly]=false
                        (tagsChangedEmitter)="onTagsChanged($event)">
         </app-tag-chips>
@@ -163,7 +163,7 @@
         <div>
           <app-person-autocomplete-fragment
             [person]="delegatedTo"
-            [personOptions]="personOptions"
+            [personOptions]="personOptionNames"
             (personChangedEmitter)="onDelegatedToChanged($event)"></app-person-autocomplete-fragment>
         </div>
       </mat-panel-description>

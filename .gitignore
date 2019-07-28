@@ -51,7 +51,7 @@ testem.log
 /cordova
 
 # Firebase
-# .firebase/
+.firebase/*.cache
 # .firebaserc
 # firebase.json
 
