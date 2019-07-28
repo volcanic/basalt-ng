@@ -101,11 +101,9 @@ export class TagChipsComponent implements OnChanges {
    */
   onKeyUp(event: any) {
     if (!this.readonly) {
-      const KEY_CODE_ENTER = 13;
-      const KEY_CODE_COMMA = 188;
 
       if (this.value !== '' && this.value !== ','
-        && (event.keyCode === KEY_CODE_ENTER || event.keyCode === KEY_CODE_COMMA)) {
+        && (event.key === 'Enter' || event.key === ',')) {
         this.tags.push(this.value.replace(/,/, ''));
         this.value = '';
         this.notify();

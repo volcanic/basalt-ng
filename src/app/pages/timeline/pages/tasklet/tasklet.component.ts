@@ -632,8 +632,7 @@ export class TaskletComponent
    * @param event event
    */
   onKeyDown(event: any) {
-    const KEY_CODE_ENTER = 13;
-    if (event.key === KEY_CODE_ENTER && event.ctrlKey) {
+    if (event.key === 'Enter' && event.ctrlKey) {
       switch (this.mode) {
         case DialogMode.ADD: {
           this.addTasklet();
