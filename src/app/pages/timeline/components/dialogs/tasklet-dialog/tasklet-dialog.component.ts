@@ -23,6 +23,7 @@ import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 import {SelectableItem} from '../../../../../ui/checkable-list/selectable-item';
 import {AcceptanceCriterium} from '../../../../../core/entity/model/acceptance-criterium.model';
 import {Project} from '../../../../../core/entity/model/project.model';
+import {ProjectService} from '../../../../../core/entity/services/project/project.service';
 
 /**
  * Displays tasklet dialog
@@ -64,15 +65,19 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   taskletsMap = new Map<string, Tasklet>();
   /** Map of tasks */
   tasksMap = new Map<string, Task>();
+  /** Map of projects */
+  projectsMap = new Map<string, Project>();
   /** Map of tag */
   tagsMap = new Map<string, Tag>();
 
   /** Task options */
   taskOptionNames: string[];
-  /** Tag options */
-  tagOptionNames: string[];
+  /** Project options */
+  projectOptionNames: string[];
   /** Person options */
   personOptionNames: string[];
+  /** Tag options */
+  tagOptionNames: string[];
   /** Person option representing the user */
   myselfOption: string;
 
@@ -91,6 +96,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * Constructor
    * @param materialColorService material color service
    * @param personService person service
+   * @param projectService project service
    * @param suggestionService suggestion service
    * @param tagService tag service
    * @param taskletService tasklet service
@@ -100,6 +106,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    */
   constructor(public materialColorService: MaterialColorService,
               private personService: PersonService,
+              private projectService: ProjectService,
               private suggestionService: SuggestionService,
               private tagService: TagService,
               private taskletService: TaskletService,
@@ -148,6 +155,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
     this.taskletsMap = this.data.taskletsMap;
     this.tasksMap = this.data.tasksMap;
+    this.projectsMap = this.data.projectsMap;
     this.tagsMap = this.data.tagMap;
   }
 
@@ -160,7 +168,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     }).map(t => {
       return t.name;
     });
-    this.tagOptionNames = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
+    this.projectOptionNames = Array.from(this.suggestionService.projectOptions.values()).sort((t1, t2) => {
       return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
     }).map(t => {
       return t.name;
@@ -169,6 +177,11 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
       return new Date(p2.modificationDate).getTime() > new Date(p1.modificationDate).getTime() ? 1 : -1;
     }).map(p => {
       return p.name;
+    });
+    this.tagOptionNames = Array.from(this.suggestionService.tagOptions.values()).sort((t1, t2) => {
+      return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
+    }).map(t => {
+      return t.name;
     });
     this.myselfOption = this.personService.myself.name;
   }
@@ -207,7 +220,17 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.task = (this.task != null) ? this.task : new Task();
     this.task.name = taskName;
 
+    this.project = this.projectsMap.get(this.task.projectId);
+
     this.initializeInheritedTags();
+  }
+
+  /**
+   * Handles projec name changes
+   * @param projectName new project name
+   */
+  onProjectNameChanged(projectName: string) {
+    this.project = this.projectService.getProjectByName(projectName, this.projectsMap);
   }
 
   /**
@@ -336,7 +359,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   private handleTaskletChanges() {
     switch (this.mode) {
       case DialogMode.ADD: {
-        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_CREATED, this.tasklet, this.task)) {
+        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_CREATED, this.tasklet, this.task, this.project)) {
           this.addTasklet();
         }
         break;
@@ -367,6 +390,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
       action: Action.ADD,
       tasklet: this.tasklet,
       task: this.task,
+      project: this.project,
       tags: this.tags,
       persons: this.persons
     });
@@ -383,6 +407,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
       action: Action.UPDATE,
       tasklet: this.tasklet,
       task: this.task,
+      project: this.project,
       tags: this.tags,
       persons: this.persons
     });
@@ -465,9 +490,10 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    * @param displayAspect display aspect
    * @param tasklet tasklet
    * @param task task
+   * @param project project
    */
-  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task): boolean {
-    return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task);
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task, project?: Project): boolean {
+    return this.taskletService.containsDisplayAspect(displayAspect, tasklet, task, project);
   }
 
   /**
@@ -572,5 +598,27 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     }
 
     return Array.from(inferredPersons.values());
+  }
+
+  //
+  // Lookup
+  //
+
+  /**
+   * Retrieves a project by a given name
+   * @param name name to find project by
+   * @param projectsMap projects map
+   * @returns project identified by given name, null if no such project exists
+   */
+  public getProjectByName(name: string, projectsMap: Map<string, Project>): Project {
+    let project: Project = null;
+
+    Array.from(projectsMap.values()).forEach(p => {
+      if (p.name === name) {
+        project = p;
+      }
+    });
+
+    return project;
   }
 }

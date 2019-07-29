@@ -9,13 +9,17 @@
         <app-task-autocomplete-fragment
           *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
           class="flexbox"
-          [taskName]="task.name" [taskOptions]="taskOptionNames" (taskNameChangedEmitter)="onTaskNameChanged($event)">
+          [taskName]="task != null ? task.name : null"
+          [taskOptions]="taskOptionNames"
+          (taskNameChangedEmitter)="onTaskNameChanged($event)">
         </app-task-autocomplete-fragment>
         <!-- Project -->
         <app-project-picker-fragment
-          *ngIf="project != null"
-          [projectName]="project.name"
-          [projectColor]="project.color">
+          [projectName]="project != null ? project.name : null"
+          [projectColor]="project != null ? project.color : null"
+          [projectOptionNames]="projectOptionNames"
+          [readonly]="mode !== modeType.ADD || task.projectId !== null"
+          (projectNameChangedEmitter)="onProjectNameChanged($event)">
         </app-project-picker-fragment>
       </div>
       <!-- Previous description and daily scrum items-->
@@ -116,17 +120,17 @@
       Send Daily Scrum Summary
     </button>
     <button mat-button *ngIf="mode == modeType.ADD"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet, task)"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet, task, project)"
             (click)="onButtonClicked(actionType.ADD)">
       Add tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.UPDATE"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet, task)"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet, task, project)"
             (click)="onButtonClicked(actionType.UPDATE)">
       Update tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.CONTINUE"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet, task)"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet, task, project)"
             (click)="onButtonClicked(actionType.CONTINUE)">
       Continue tasklet
     </button>

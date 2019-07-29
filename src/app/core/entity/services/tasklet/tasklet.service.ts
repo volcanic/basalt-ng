@@ -633,9 +633,10 @@ export class TaskletService {
    * @param displayAspect display aspect
    * @param tasklet tasklet
    * @param task tasks
+   * @param project project
    * @param previousDescription previous description
    */
-  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task, previousDescription?: Description): boolean {
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task, project?: Project, previousDescription?: Description): boolean {
     switch (displayAspect) {
       case TaskletDisplayAspect.CAN_BE_ASSIGNED_TO_TASK: {
         return this.taskletDisplayService.canBeAssignedToTask(tasklet);
@@ -665,7 +666,7 @@ export class TaskletService {
         return TaskletDisplayService.containsPersons(tasklet);
       }
       case TaskletDisplayAspect.CAN_BE_CREATED: {
-        return this.taskletDisplayService.canBeCreated(tasklet, task);
+        return this.taskletDisplayService.canBeCreated(tasklet, task, project);
       }
       case TaskletDisplayAspect.CAN_BE_UPDATED: {
         return this.taskletDisplayService.canBeUpdated(tasklet, task);

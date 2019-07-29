@@ -365,9 +365,10 @@ export class BaseComponent implements OnDestroy {
    * Handles events targeting a tasklet
    * @param event event parameters
    */
-  onTaskletEvent(event: { action: Action, tasklet: Tasklet, task?: Task, tags?: Tag[], persons?: Person[] }) {
+  onTaskletEvent(event: { action: Action, tasklet: Tasklet, task?: Task, project?: Project, tags?: Tag[], persons?: Person[] }) {
     const tasklet = CloneService.cloneTasklet(event.tasklet as Tasklet);
     const task = CloneService.cloneTask(event.task as Task);
+    const project = CloneService.cloneProject(event.project as Project);
     const tags = CloneService.cloneTags(event.tags as Tag[]);
     const persons = CloneService.clonePersons(event.persons as Person[]);
 
@@ -494,6 +495,7 @@ export class BaseComponent implements OnDestroy {
           previousDescription: null,
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
+          projectsMap: this.projectsMap,
           tagMap: this.tagsMap,
         };
 
@@ -509,6 +511,7 @@ export class BaseComponent implements OnDestroy {
             const resultingAction = result.action as Action;
             const resultingTasklet = result.tasklet as Tasklet;
             const resultingTask = result.task as Task;
+            const resultingProject = result.project as Project;
             const resultingTags = result.tags as Tag[];
             const resultingPersons = result.persons as Person[];
 
@@ -516,6 +519,7 @@ export class BaseComponent implements OnDestroy {
               action: resultingAction,
               tasklet: resultingTasklet,
               task: resultingTask,
+              project: resultingProject,
               tags: resultingTags,
               persons: resultingPersons
             });
@@ -547,6 +551,7 @@ export class BaseComponent implements OnDestroy {
           previousDescription: null,
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
+          projectsMap: this.projectsMap,
           tagMap: this.tagsMap,
         };
 
@@ -562,6 +567,7 @@ export class BaseComponent implements OnDestroy {
             const resultingAction = result.action as Action;
             const resultingTasklet = result.tasklet as Tasklet;
             const resultingTask = result.task as Task;
+            const resultingProject = result.project as Project;
             const resultingTags = result.tags as Tag[];
             const resultingPersons = result.persons as Person[];
 
@@ -569,6 +575,7 @@ export class BaseComponent implements OnDestroy {
               action: resultingAction,
               tasklet: resultingTasklet,
               task: resultingTask,
+              project: resultingProject,
               tags: resultingTags,
               persons: resultingPersons
             });
@@ -612,6 +619,7 @@ export class BaseComponent implements OnDestroy {
           previousDailyScrumItems,
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
+          projectsMap: this.projectsMap,
           tagMap: this.tagsMap,
         };
 

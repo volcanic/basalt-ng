@@ -7,6 +7,7 @@ import {TaskletTypeService} from './tasklet-type.service';
 import {TaskletTypeGroup} from '../../model/tasklet-type-group.enum';
 import {DateService} from '../date.service';
 import {TaskService} from '../task/task.service';
+import {Project} from '../../model/project.model';
 
 /**
  * Enum representing display aspects
@@ -164,10 +165,14 @@ export class TaskletDisplayService {
    * Determines whether a given tasklet can be created
    * @param tasklet tasklet
    * @param task task
+   * @param project project
    */
-  canBeCreated(tasklet: Tasklet, task: Task): boolean {
+  canBeCreated(tasklet: Tasklet, task: Task, project: Project): boolean {
+    const hasConnectionToTask = !this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0);
+    const hasConnectionToProject = project != null && project.name != null && project.name.length > 0;
+
     return tasklet.type !== TaskletType.UNSPECIFIED
-      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0));
+      && (hasConnectionToTask || hasConnectionToProject);
   }
 
   /**
@@ -176,8 +181,10 @@ export class TaskletDisplayService {
    * @param task task
    */
   canBeUpdated(tasklet: Tasklet, task: Task): boolean {
+    const hasConnectionToTask = !this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0);
+
     return tasklet != null
-      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0));
+      && hasConnectionToTask;
   }
 
   /**
@@ -186,8 +193,10 @@ export class TaskletDisplayService {
    * @param task task
    */
   canBeContinued(tasklet: Tasklet, task: Task): boolean {
+    const hasConnectionToTask = !this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0);
+
     return tasklet != null
-      && (!this.canBeAssignedToTask(tasklet) || (task != null && task.name != null && task.name.length > 0))
+      && hasConnectionToTask
       && (tasklet.type === TaskletType.ACTION
         || tasklet.type === TaskletType.MEETING
         || tasklet.type === TaskletType.DAILY_SCRUM
