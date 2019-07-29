@@ -1,6 +1,6 @@
 # Basalt
 
-[![Basalt logo](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)
+![Basalt Logo](./src/assets/logos/basalt_logo.svg?raw=true "Title")
 
 Basalt is available as
 * a web app
