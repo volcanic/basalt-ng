@@ -1,6 +1,6 @@
 # Basalt
 
-![Basalt logo](https://gitlab.intero.berlin/basalt-app/basalt-ng/blob/UX/basalt-icon-refresh/src/assets/logos/basalt_logo.svg)
+[![Basalt logo](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)](https://github.com/florianschwanz/basalt-ng/blob/master/src/assets/logos/logo-144x144.png)
 
 Basalt is available as
 * a web app
@@ -13,9 +13,9 @@ Visit [https://basalt.intero.berlin/](https://basalt.intero.berlin/) for a live 
 
 Basalt is an Angular based web application that helps you structure your work in a multi-tasking environment - you may call it a have-done list.
 
-<img src="https://gitlab.intero.berlin/basalt-app/basalt-ng/blob/UX/basalt-icon-refresh/doc/screenshots/v0.18/01-overview.png" alt="Screenshot overview" height=35% width=35% />
-<img src="https://gitlab.intero.berlin/basalt-app/basalt-ng/blob/UX/basalt-icon-refresh/doc/screenshots/v0.18/04-add.png" alt="Screenshot add" height=35% width=35% />
-<img src="https://gitlab.intero.berlin/basalt-app/basalt-ng/blob/UX/basalt-icon-refresh/doc/screenshots/v0.19/01-overview-mobile.png" alt="Screenshot overview mobile" height=35% width=25% />
+<img src="https://github.com/florianschwanz/basalt-ng/blob/master/doc/screenshots/v0.18/01-overview.png" alt="Screenshot overview" height=35% width=35% />
+<img src="https://github.com/florianschwanz/basalt-ng/blob/master/doc/screenshots/v0.18/04-add.png" alt="Screenshot add" height=35% width=35% />
+<img src="https://github.com/florianschwanz/basalt-ng/blob/master/doc/screenshots/v0.19/01-overview-mobile.png" alt="Screenshot overview mobile" height=35% width=25% />
 
 In order to structure your work you can note what you just did as a _tasklet_ which is a small work item belonging to a larger topic. That way you keep track of
 * all your current tasks
@@ -100,8 +100,3 @@ Call the following commands to build and start the app locally
 npm install
 npm run start
 ```
-
-img[src~="thumbnail"] {
-   width:150px;
-   height:100px;
-}
