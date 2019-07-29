@@ -4,11 +4,20 @@
     <form #formCtrl="ngForm">
       <app-tasklet-type-fragment [tasklet]="tasklet" (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
       </app-tasklet-type-fragment>
-      <!-- Task -->
-      <app-task-autocomplete-fragment
-        *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
-        [taskName]="task.name" [taskOptions]="taskOptionNames" (taskNameChangedEmitter)="onTaskNameChanged($event)">
-      </app-task-autocomplete-fragment>
+      <div class="flexcontainer">
+        <!-- Task -->
+        <app-task-autocomplete-fragment
+          *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
+          class="flexbox"
+          [taskName]="task.name" [taskOptions]="taskOptionNames" (taskNameChangedEmitter)="onTaskNameChanged($event)">
+        </app-task-autocomplete-fragment>
+        <!-- Project -->
+        <app-project-picker-fragment
+          *ngIf="project != null"
+          [projectName]="project.name"
+          [projectColor]="project.color">
+        </app-project-picker-fragment>
+      </div>
       <!-- Previous description and daily scrum items-->
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescriptionText]="previousDescription.value"></app-previous-description-fragment>

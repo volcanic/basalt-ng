@@ -22,6 +22,7 @@ import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
 import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 import {SelectableItem} from '../../../../../ui/checkable-list/selectable-item';
 import {AcceptanceCriterium} from '../../../../../core/entity/model/acceptance-criterium.model';
+import {Project} from '../../../../../core/entity/model/project.model';
 
 /**
  * Displays tasklet dialog
@@ -50,6 +51,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /** Temporarily displayed task */
   task: Task;
+  /** Temporarily displayed project */
+  project: Project;
   /** Temporarily displayed tags inherited from task */
   inheritedTags: Tag[] = [];
   /** Temporarily displayed tags */
@@ -137,6 +140,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.dialogTitle = this.data.dialogTitle;
     this.tasklet = this.data.tasklet != null ? CloneService.cloneTasklet(this.data.tasklet) : new Tasklet();
     this.task = this.data.task != null ? CloneService.cloneTask(this.data.task) : new Task();
+    this.project = this.data.project != null ? CloneService.cloneProject(this.data.project) : null;
     this.tags = this.data.tags != null ? CloneService.cloneTags(this.data.tags) : [];
     this.persons = this.data.persons != null ? CloneService.clonePersons(this.data.persons) : [];
     this.previousDescription = this.data.previousDescription != null ? CloneService.cloneDescription(this.data.previousDescription) : null;

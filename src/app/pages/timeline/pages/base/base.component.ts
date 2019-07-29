@@ -488,6 +488,7 @@ export class BaseComponent implements OnDestroy {
           dialogTitle: 'Add tasklet',
           tasklet: t,
           task: new Task(),
+          project: null,
           tags: [],
           persons: [],
           previousDescription: null,
@@ -523,12 +524,16 @@ export class BaseComponent implements OnDestroy {
         break;
       }
       case Action.OPEN_DIALOG_UPDATE: {
+        const t = this.tasksMap.get(tasklet.taskId);
+        const p = (t != null) ? this.projectsMap.get(t.projectId) : null;
+
         // Assemble data to be passed
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update tasklet',
           tasklet,
-          task: this.tasksMap.get(tasklet.taskId),
+          task: t,
+          project: p,
           tags: tasklet.tagIds != null ? tasklet.tagIds.map(id => {
             return this.tagsMap.get(id);
           }).filter(tag => {
@@ -583,12 +588,16 @@ export class BaseComponent implements OnDestroy {
         tasklet.dailyScrumItems = [];
         tasklet.creationDate = new Date();
 
+        const t = this.tasksMap.get(tasklet.taskId);
+        const p = (t != null) ? this.projectsMap.get(t.projectId) : null;
+
         // Assemble data to be passed
         const data = {
           mode: DialogMode.CONTINUE,
           dialogTitle: 'Continue tasklet',
           tasklet,
-          task: this.tasksMap.get(tasklet.taskId),
+          task: t,
+          project: p,
           tags: tasklet.tagIds.map(id => {
             return this.tagsMap.get(id);
           }).filter(tag => {

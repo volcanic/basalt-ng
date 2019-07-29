@@ -24,6 +24,7 @@ import {CheckableListModule} from '../../ui/checkable-list/checkable-list.module
 import {MaterialModule} from '../../ui/material/material.module';
 import {EntityModule} from '../../core/entity/entity.module';
 import {ColorPickerModule} from '../../ui/color-picker/color-picker.module';
+import {ProjectPickerModule} from '../../ui/project-picker/project-picker.module';
 
 /** Imports for timeline module */
 export const TimelineImports = [
@@ -48,6 +49,7 @@ export const TimelineImports = [
   DateTimePickerDialogModule,
   DateTimePickerFragmentModule,
   EcoFabSpeedDialModule,
+  ProjectPickerModule,
   SuggestedActionButtonModule,
   TagChipsModule,
   TaskAutocompleteModule,
