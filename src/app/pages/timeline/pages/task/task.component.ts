@@ -227,32 +227,26 @@ export class TaskComponent
    */
   ngOnInit() {
     this.initializeTaskletsSubscription().subscribe((value) => {
-      console.log(`onTaskletsFound ${value.size}`);
       this.initializeTasklets(value as Map<string, Tasklet>);
     });
     this.initializeTaskSubscription().subscribe((value) => {
-      console.log(`onTaskFound ${value != null}`);
       this.initializeTask(value as Task);
       this.initializeTaskletTypeAction();
     });
     this.initializeTasksSubscription().subscribe((value) => {
-      console.log(`onTasksFound ${value.size}`);
       this.initializeTasks(value as Map<string, Task>);
       this.initializeOptions();
     });
     this.initializeProjectsSubscription().subscribe((value) => {
-      console.log(`onProjectsFound ${value.size}`);
       this.initializeProjects(value as Map<string, Project>);
       this.initializeTaskletTypeAction();
       this.initializeOptions();
     });
     this.initializePersonsSubscription().subscribe((value) => {
-      console.log(`onPersonsFound ${value.size}`);
       this.initializePersons(value as Map<string, Person>);
       this.initializeOptions();
     });
     this.initializeTagsSubscription().subscribe((value) => {
-      console.log(`onTagsFound ${value.size}`);
       this.initializeTags(value as Map<string, Tag>);
       this.initializeOptions();
     });

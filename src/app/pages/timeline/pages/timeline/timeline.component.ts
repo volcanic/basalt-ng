@@ -180,33 +180,28 @@ export class TimelineComponent
    */
   ngOnInit() {
     this.initializeTaskletsSubscription().subscribe((value) => {
-      console.log(`onTaskletsFound ${value.size}`);
       this.initializeTasklets(value as Map<string, Tasklet>);
       this.initializeTaskletsFiltered(value as Map<string, Tasklet>);
       this.generateWeeklyDigest(this.indicatedDate);
       this.generateDailyDigests(this.indicatedDate);
     });
     this.initializeTasksSubscription().subscribe((value) => {
-      console.log(`onTasksFound ${value.size}`);
       this.initializeTasks(value as Map<string, Task>);
       this.initializeTasksFiltered(value as Map<string, Task>);
       this.generateWeeklyDigest(this.indicatedDate);
       this.generateDailyDigests(this.indicatedDate);
     });
     this.initializeProjectsSubscription().subscribe((value) => {
-      console.log(`onProjectsFound ${value.size}`);
       this.initializeProjects(value as Map<string, Project>);
       this.initializeProjectsFiltered(value as Map<string, Project>);
       this.generateWeeklyDigest(this.indicatedDate);
       this.generateDailyDigests(this.indicatedDate);
     });
     this.initializePersonsSubscription().subscribe((value) => {
-      console.log(`onPersonsFound ${value.size}`);
       this.initializePersons(value as Map<string, Person>);
       this.initializePersonsFiltered(value as Map<string, Person>);
     });
     this.initializeTagsSubscription().subscribe((value) => {
-      console.log(`onTagsFound ${value.size}`);
       this.initializeTags(value as Map<string, Tag>);
       this.initializeTagsFiltered(value as Map<string, Tag>);
       this.initializeTagsUnused(this.taskletsMap, this.tasksMap);
