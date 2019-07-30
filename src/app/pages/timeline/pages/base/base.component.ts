@@ -282,6 +282,9 @@ export class BaseComponent implements OnDestroy {
     );
   }
 
+  /**
+   * Initializes media subscription
+   */
   protected initializeMediaSubscription(): Observable<Media> {
     return this.mediaService.mediaSubject.pipe(
       takeUntil(this.unsubscribeSubject),
