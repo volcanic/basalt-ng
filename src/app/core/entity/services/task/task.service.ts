@@ -609,11 +609,11 @@ export class TaskService {
    * @returns task identified by given name, null if no such task exists
    */
   public getTaskByName(name: string, tasksMap: Map<string, Task>): Task {
-    return Array.from(tasksMap.values()).filter(t => {
+    return (tasksMap != null) ? Array.from(tasksMap.values()).filter(t => {
       return t.name === name;
     }).find(() => {
       return true;
-    });
+    }) : null;
   }
 
   /**

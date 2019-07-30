@@ -260,11 +260,11 @@ export class ProjectService {
    * @returns project identified by given name, null if no such project exists
    */
   public getProjectByName(name: string, projectsMap: Map<string, Project>): Project {
-    return Array.from(projectsMap.values()).filter(p => {
+    return projectsMap != null ? Array.from(projectsMap.values()).filter(p => {
       return p.name === name;
     }).find(() => {
       return true;
-    });
+    }) : null;
   }
 
   //
