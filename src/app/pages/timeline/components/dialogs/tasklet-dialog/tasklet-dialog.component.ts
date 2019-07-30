@@ -92,6 +92,9 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   /** Enum of hues */
   hueType = HueType;
 
+  /** Project picker readonly */
+  projectPickerReadonly = true;
+
   /**
    * Constructor
    * @param materialColorService material color service
@@ -126,6 +129,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.initializeData();
     this.initializeOptions();
     this.initializeInheritedTags();
+    this.initializeProjectPickerReadonly();
   }
 
   /**
@@ -199,6 +203,18 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Initializes project picker readonly
+   */
+  private initializeProjectPickerReadonly() {
+    const taskAlreadyExists = this.task != null && this.taskService.getTaskByName(this.task.name, this.tasksMap) != null;
+
+    // Project cannot be changed anymore if ...
+    this.projectPickerReadonly = taskAlreadyExists // ... task already exists,
+      && this.project != null // ... the project is not empty AND
+      && !this.task.proxy; // ... the task is not a proxy task
+  }
+
   //
   // Actions
   //
@@ -222,6 +238,7 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
     this.project = this.projectsMap.get(this.task.projectId);
 
+    this.initializeProjectPickerReadonly();
     this.initializeInheritedTags();
   }
 
@@ -231,6 +248,9 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
    */
   onProjectNameChanged(projectName: string) {
     this.project = this.projectService.getProjectByName(projectName, this.projectsMap);
+    this.task.projectId = (this.project != null) ? this.project.id : null;
+
+    this.initializeProjectPickerReadonly();
   }
 
   /**
@@ -365,13 +385,13 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
         break;
       }
       case DialogMode.UPDATE: {
-        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task)) {
+        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task, this.project)) {
           this.updateTasklet();
         }
         break;
       }
       case DialogMode.CONTINUE: {
-        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task)) {
+        if (this.containsDisplayAspect(TaskletDisplayAspect.CAN_BE_UPDATED, this.tasklet, this.task, this.project)) {
           this.updateTasklet();
         }
         break;

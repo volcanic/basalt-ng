@@ -62,8 +62,10 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
 
   /** Icon name */
   icon = '';
-  /** Topic (typically derived from task name */
-  topic = '';
+  /** Title (typically derived from task name */
+  title = '';
+  /** Subtitle (typically derived from project name */
+  subtitle = '';
   /** Project */
   project: Project;
   /** Project personColor */
@@ -110,8 +112,8 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     this.initializeTask();
-    this.initializeTopic();
     this.initializeProject();
+    this.initializeTopic();
   }
 
   //
@@ -150,23 +152,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     this.task = this.tasksMap.get(this.tasklet.taskId);
   }
 
-  /**
-   * Initializes topic
-   */
-  private initializeTopic() {
-    switch (this.tasklet.type) {
-      case TaskletType.DAILY_SCRUM:
-      case TaskletType.LUNCH_BREAK:
-      case TaskletType.FINISHING_TIME:
-      default: {
-        if (this.task != null) {
-          this.topic = this.task.name;
-        } else {
-          this.topic = this.tasklet.type;
-        }
-      }
-    }
-  }
 
   /**
    * Initializes project
@@ -177,6 +162,31 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     }
 
     this.projectColor = this.colorService.getProjectColor(this.project);
+  }
+
+  /**
+   * Initializes topic
+   */
+  private initializeTopic() {
+    switch (this.tasklet.type) {
+      case TaskletType.DAILY_SCRUM:
+      case TaskletType.LUNCH_BREAK:
+      case TaskletType.FINISHING_TIME:
+      default: {
+        if (this.task != null) {
+          if (this.task.proxy) {
+            this.title = this.project != null ? this.project.name : '';
+            this.subtitle = '';
+          } else {
+            this.title = this.task.name;
+            this.subtitle = this.project != null ? this.project.name : '';
+          }
+          this.title = this.task.proxy && this.project != null ? this.project.name : this.task.name;
+        } else {
+          this.title = this.tasklet.type;
+        }
+      }
+    }
   }
 
   //

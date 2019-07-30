@@ -1381,6 +1381,9 @@ export class BaseComponent implements OnDestroy {
         });
       }
 
+      // Assign task to project
+      t.projectId = project != null ? project.id : null;
+
       // Assign tasklet to task
       this.filterService.updateTasksListIfNotEmpty([t]);
       tasklet.taskId = t.id;
@@ -1391,7 +1394,7 @@ export class BaseComponent implements OnDestroy {
 
       // Create new proxy task
       if (proxyTask == null && p != null && p.id != null) {
-        proxyTask = new Task(`proxy for project ${p.id}`);
+        proxyTask = new Task(`Proxy`);
         proxyTask.proxy = true;
         proxyTask.projectId = p.id;
 

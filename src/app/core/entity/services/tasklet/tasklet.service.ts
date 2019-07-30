@@ -669,13 +669,13 @@ export class TaskletService {
         return this.taskletDisplayService.canBeCreated(tasklet, task, project);
       }
       case TaskletDisplayAspect.CAN_BE_UPDATED: {
-        return this.taskletDisplayService.canBeUpdated(tasklet, task);
+        return this.taskletDisplayService.canBeUpdated(tasklet, task, project);
       }
       case TaskletDisplayAspect.CAN_BE_CONTINUED: {
-        return this.taskletDisplayService.canBeContinued(tasklet, task);
+        return this.taskletDisplayService.canBeContinued(tasklet, task, project);
       }
       case TaskletDisplayAspect.CAN_BE_TEMPLATED: {
-        return this.taskletDisplayService.canBeContinued(tasklet, task);
+        return this.taskletDisplayService.canBeContinued(tasklet, task, project);
       }
       case TaskletDisplayAspect.IS_POMODORO_STARTED: {
         return TaskletDisplayService.isPomodoroStarted(tasklet);

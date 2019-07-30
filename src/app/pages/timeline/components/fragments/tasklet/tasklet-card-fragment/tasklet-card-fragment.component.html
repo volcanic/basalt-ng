@@ -2,8 +2,8 @@
   <mat-card [attr.style]="cardStyle">
     <mat-card-header (click)="onExpansionPanelToggled()">
       <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
-      <mat-card-title class="topic">{{ topic }}</mat-card-title>
-      <mat-card-subtitle *ngIf="project != null">{{ project.name }}</mat-card-subtitle>
+      <mat-card-title class="title">{{ title }}</mat-card-title>
+      <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content class="content">

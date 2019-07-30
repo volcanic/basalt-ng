@@ -9,7 +9,7 @@
         <app-task-autocomplete-fragment
           *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
           class="flexbox"
-          [taskName]="task != null ? task.name : null"
+          [taskName]="task != null && !task.proxy ? task.name : null"
           [taskOptions]="taskOptionNames"
           (taskNameChangedEmitter)="onTaskNameChanged($event)">
         </app-task-autocomplete-fragment>
@@ -18,7 +18,7 @@
           [projectName]="project != null ? project.name : null"
           [projectColor]="project != null ? project.color : null"
           [projectOptionNames]="projectOptionNames"
-          [readonly]="mode !== modeType.ADD || task.projectId !== null"
+          [readonly]="projectPickerReadonly"
           (projectNameChangedEmitter)="onProjectNameChanged($event)">
         </app-project-picker-fragment>
       </div>

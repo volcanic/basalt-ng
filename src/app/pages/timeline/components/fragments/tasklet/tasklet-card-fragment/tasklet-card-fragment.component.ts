@@ -27,8 +27,10 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   @Input() task: Task;
   /** Project */
   @Input() project: Project;
-  /** Topic (typically derived from task name */
-  @Input() topic = '';
+  /** Topic (typically derived from task name) */
+  @Input() title = '';
+  /** Subtitle (typically derived from project name) */
+  @Input() subtitle = '';
   /** Icon name */
   @Input() icon = '';
 
@@ -79,6 +81,7 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
 
   /**
    * Constructor
+   * @param sanitizer sanitizer
    * @param taskletService tasklet service
    */
   constructor(private sanitizer: DomSanitizer,
