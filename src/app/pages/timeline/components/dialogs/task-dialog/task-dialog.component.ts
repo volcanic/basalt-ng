@@ -39,6 +39,8 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
 
   /** Readonly dialog if true */
   readonly = false;
+  /** Set when dialog was cancelled and should not be updated on destruction */
+  wasCancelled = false;
 
   /** Project assigned to this task */
   project: Project;
@@ -95,7 +97,9 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * Handles on-destroy lifecycle phase
    */
   ngOnDestroy() {
-    this.handleTaskChanges();
+    if (!this.wasCancelled) {
+      this.handleTaskChanges();
+    }
   }
 
   /**
@@ -172,8 +176,7 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
    * @param event event
    */
   onKeyDown(event: any) {
-    const KEY_CODE_ENTER = 13;
-    if (event.key === KEY_CODE_ENTER && event.ctrlKey) {
+    if (event.key === 'Enter' && event.ctrlKey) {
       this.handleTaskChanges();
     }
   }
@@ -197,6 +200,11 @@ export class TaskDialogComponent implements OnInit, OnDestroy {
         break;
       }
       case Action.CONTINUE: {
+        this.dialogRef.close();
+        break;
+      }
+      case Action.CANCEL: {
+        this.wasCancelled = true;
         this.dialogRef.close();
         break;
       }

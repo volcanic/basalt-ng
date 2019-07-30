@@ -21,6 +21,12 @@ export class MediaService {
    * @param breakpointObserver breakpoint observer
    */
   constructor(public breakpointObserver: BreakpointObserver) {
+  }
+
+  /**
+   * Fetches media and breakpoints
+   */
+  public fetchMedia() {
     this.initializeSize();
     this.initializeBreakpoints();
   }

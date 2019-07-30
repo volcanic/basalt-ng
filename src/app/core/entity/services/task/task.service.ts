@@ -139,10 +139,28 @@ export class TaskService {
   }
 
   /**
+   * Determines if a task is due today and is not yet over due
+   * @param task task
+   */
+  static isTaskTomorrow(task: Task) {
+    return task != null
+      && task.completionDate == null
+      && task.dueDate != null
+      && (task.delegatedToId == null || task.delegatedToId === '')
+      && (task.recurrenceInterval == null
+        || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
+        || task.recurrenceInterval === RecurrenceInterval.NONE)
+      && DateService.isTomorrow(task.dueDate);
+  }
+
+  /**
    * Determines if a task is due later than today
    * @param task task
    */
   static isTaskLater(task: Task) {
+    const tomorrow = new Date();
+    tomorrow.setDate(new Date().getDate() + 1);
+
     return task != null
       && !task.proxy
       && task.completionDate == null
@@ -151,7 +169,7 @@ export class TaskService {
       && (task.recurrenceInterval == null
         || task.recurrenceInterval === RecurrenceInterval.UNSPECIFIED
         || task.recurrenceInterval === RecurrenceInterval.NONE)
-      && DateService.isAfter(task.dueDate, DateService.getDayEnd(new Date()));
+      && DateService.isAfter(task.dueDate, DateService.getDayEnd(tomorrow));
   }
 
   /**

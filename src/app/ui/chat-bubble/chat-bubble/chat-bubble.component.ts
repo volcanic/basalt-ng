@@ -49,8 +49,7 @@ export class ChatBubbleComponent {
    * @param event event
    */
   onKeyDown(event: any) {
-    const KEY_CODE_ENTER = 13;
-    if (!this.isMultiLine() && event.keyCode === KEY_CODE_ENTER) {
+    if (!this.isMultiLine() && event.key === 'Enter') {
       this.text += '\n';
     }
   }

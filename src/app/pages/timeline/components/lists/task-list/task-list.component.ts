@@ -32,6 +32,8 @@ export class TaskListComponent implements OnChanges {
   tasksOverdue = [];
   /** Tasks having a due date today */
   tasksToday = [];
+  /** Tasks having a due date tomorrow */
+  tasksTomorrow = [];
   /** Tasks having a due date after today */
   tasksLater = [];
   /** Tasks not having a due date */
@@ -47,6 +49,8 @@ export class TaskListComponent implements OnChanges {
   tasksOverdueBadgeColor = 'transparent';
   /** Background personColor for today badge */
   tasksTodayBadgeColor = 'transparent';
+  /** Background personColor for today badge */
+  tasksTomorrowBadgeColor = 'transparent';
   /** Background personColor for later badge */
   tasksLaterBadgeColor = 'transparent';
   /** Background personColor for inbox badge */
@@ -91,6 +95,7 @@ export class TaskListComponent implements OnChanges {
       if (tasks != null) {
         this.tasksOverdue = tasks.filter(TaskService.isTaskOverdue);
         this.tasksToday = tasks.filter(TaskService.isTaskToday);
+        this.tasksTomorrow = tasks.filter(TaskService.isTaskTomorrow);
         this.tasksLater = tasks.filter(TaskService.isTaskLater);
         this.tasksInbox = tasks.filter(TaskService.isTaskInInbox).sort((t1, t2) => {
           return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
@@ -105,6 +110,7 @@ export class TaskListComponent implements OnChanges {
 
         this.tasksOverdueBadgeColor = (this.tasksOverdue.length > 0) ? 'warn' : 'primary';
         this.tasksTodayBadgeColor = (this.tasksToday.length > 0) ? 'accent' : 'primary';
+        this.tasksTomorrowBadgeColor = (this.tasksTomorrow.length > 0) ? 'accent' : 'primary';
         this.tasksLaterBadgeColor = (this.tasksLater.length > 0) ? 'accent' : 'primary';
         this.tasksRecurringBadgeColor = (this.tasksRecurring.length > 0) ? 'accent' : 'primary';
         this.tasksInboxBadgeColor = (this.tasksInbox.length > 0) ? 'accent' : 'primary';

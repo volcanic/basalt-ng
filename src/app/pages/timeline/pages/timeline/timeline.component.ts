@@ -179,6 +179,8 @@ export class TimelineComponent
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this.initializeTaskletsSubscription().subscribe((value) => {
       this.initializeTasklets(value as Map<string, Tasklet>);
       this.initializeTaskletsFiltered(value as Map<string, Tasklet>);
@@ -600,13 +602,13 @@ export class TimelineComponent
           disableClose: false,
           data: {
             dialogTitle: 'Tasks',
-            tasksMap: this.tasksMap.values()
+            tasksMap: this.tasksMap
           }
         });
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
-            const action = result.Action as Action;
-            const task = result.value as Task;
+            const action = result.action as Action;
+            const task = result.task as Task;
             const project = result.project as Project;
             const tags = result.tags as Tag[];
 
@@ -629,7 +631,7 @@ export class TimelineComponent
           disableClose: false,
           data: {
             dialogTitle: 'Projects',
-            projectsMap: this.projectsMap.values()
+            projectsMap: this.projectsMap
           }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -741,6 +743,22 @@ export class TimelineComponent
   //
   // Button actions
   //
+
+  /**
+   * Handles key down events
+   */
+  onKeyDown(keyboardEvent: KeyboardEvent) {
+    if (keyboardEvent.ctrlKey && keyboardEvent.altKey) {
+      switch (keyboardEvent.key) {
+        case 'n':
+          this.onAddTaskClicked();
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
 
   // <editor-fold defaultstate="collapsed" desc="Button action">
 

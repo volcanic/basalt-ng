@@ -17,6 +17,7 @@ import {TaskDigest} from 'app/core/digest/model/task-digest.model';
 import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 import {Project} from '../../../../../core/entity/model/project.model';
+import {DateService} from '../../../../../core/entity/services/date.service';
 
 /**
  * Displays task list item
@@ -157,6 +158,29 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    */
   onContinueClicked() {
     this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: this.task});
+  }
+
+  onPostponeClicked(option: string) {
+    switch (option) {
+      case 'later':
+        this.task.dueDate = DateService.getEndOfBusiness(new Date());
+        break;
+      case 'tomorrow':
+        this.task.dueDate = DateService.getNextDayStart(new Date());
+        break;
+      case 'this_weekend':
+        this.task.dueDate = DateService.getBeginningOfNextWeekend(new Date());
+        break;
+      case 'next_week':
+        this.task.dueDate = DateService.getBeginningNextWeek(new Date());
+        break;
+    }
+
+    this.taskEventEmitter.emit({
+      action: Action.UPDATE,
+      task: this.task
+    });
+    // Finish
   }
 
   /**

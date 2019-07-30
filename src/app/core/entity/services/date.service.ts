@@ -80,6 +80,23 @@ export class DateService {
   }
 
   /**
+   * Determines if a given date is tomorrow
+   * @param date date to check
+   * @returns true if given date is tomorrow
+   */
+  static isTomorrow(date: Date): boolean {
+    if (date != null) {
+      const tomorrow = new Date();
+      tomorrow.setDate(new Date().getDate() + 1);
+
+      return DateService.isAfter(date, DateService.getDayStart(tomorrow)) &&
+        DateService.isBefore(date, DateService.getDayEnd(tomorrow));
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Determines whether a given date is before another date
    * @param d1 first date
    * @param d2 second date
@@ -205,6 +222,15 @@ export class DateService {
     return beginningOfTheWeek;
   }
 
+  static getBeginningNextWeek(date: Date): Date {
+    const beginningOfNextWeek = new Date();
+
+    beginningOfNextWeek.setHours(8, 0, 0, 0);
+    beginningOfNextWeek.setDate(this.getBeginningOfTheWeek(date).getDate() + 7);
+
+    return beginningOfNextWeek;
+  }
+
   /**
    * Returns the end of the week that contains the given date
    * @param date date to get end of the week for
@@ -291,6 +317,25 @@ export class DateService {
     date.setHours(23, 59, 59, 999);
 
     return new Date(date);
+  }
+
+  static getNextDayStart(date: Date): Date {
+    const nextDayStart = new Date(date);
+    nextDayStart.setDate(nextDayStart.getDate() + 1);
+    nextDayStart.setHours(8, 0, 0, 0);
+    return nextDayStart;
+  }
+
+  static getBeginningOfNextWeekend(date: Date) {
+    const endOfTheWeek = new Date(date);
+
+    const currentWeekDay = new Date(date).getDay();
+    const daysTillSaturday = currentWeekDay === 6 ? 0 : 6 - currentWeekDay;
+
+    endOfTheWeek.setHours(8, 0, 0, 0);
+    endOfTheWeek.setDate(new Date(date).getDate() + daysTillSaturday);
+
+    return endOfTheWeek;
   }
 
   /**

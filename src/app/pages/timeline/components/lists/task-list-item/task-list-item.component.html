@@ -17,6 +17,7 @@
       </button>
     </mat-menu>
     <div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
+
     <button mat-button class="entity flexbox" [disabled]="!active" (click)="onTaskClicked()">
       <mat-icon *ngIf="projectColor == null" class="list-icon" [svgIcon]="icon"></mat-icon>
       <mat-icon *ngIf="projectColor != null" class="list-icon" [svgIcon]="icon"
@@ -27,7 +28,9 @@
       ( <span *ngIf="taskDigest != null && taskDigest.effort > 0">{{ taskDigest.effort }} / </span>{{ task.effort * 60 }} min)
     </span>
     </button>
+    <!-- HOVER BUTTONS -->
     <div *ngIf="task != null && task.completionDate == null && media > mediaType.MEDIUM" class="flexcontainer">
+      <!-- COMPLETE TASK -->
       <button [@actionAnimation]="state"
               mat-icon-button
               class="action"
@@ -38,6 +41,7 @@
               (click)="onCompleteClicked()">
         <mat-icon svgIcon='check'></mat-icon>
       </button>
+      <!-- CONTINUE TASK -->
       <button [@actionAnimation]="state"
               mat-icon-button
               class="action"
@@ -48,7 +52,24 @@
               (click)="onContinueClicked()">
         <mat-icon svgIcon='reply'></mat-icon>
       </button>
+      <button [@actionAnimation]="state"
+              mat-icon-button
+              class="action"
+              matTooltip="Postpone"
+              [matTooltipPosition]="'above'"
+              [matTooltipShowDelay]="'250'"
+              [disableRipple]="true"
+              (click)="select.open()">
+        <mat-icon svgIcon='watch_later'></mat-icon>
+      </button>
+      <mat-select #select class="typeSelect">
+        <mat-option (click)="onPostponeClicked('later')">Later (8:00pm)</mat-option>
+        <mat-option (click)="onPostponeClicked('tomorrow')">Tomorrow (8:00am)</mat-option>
+        <mat-option (click)="onPostponeClicked('this_weekend')">This weekend (8:00am Sat)</mat-option>
+        <mat-option (click)="onPostponeClicked('next_week')">Next week (8:00 Mon)</mat-option>
+      </mat-select>
     </div>
+    <!-- IF TASK COMPLETED -->
     <div *ngIf="task != null && task.completionDate != null && media > mediaType.MEDIUM" class="flexcontainer">
       <button [@actionAnimation]="state"
               mat-icon-button
@@ -61,6 +82,8 @@
         <mat-icon svgIcon='replay'></mat-icon>
       </button>
     </div>
+
+    <!-- FILTER BUTTON -->
     <div *ngIf="media > mediaType.MEDIUM" class="flexcontainer">
       <button [@actionAnimation]="state"
               mat-icon-button

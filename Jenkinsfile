@@ -11,6 +11,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
     }
     parameters {
+        string(name: 'REPO_URL', defaultValue: 'git@github.com:volcanic/basalt-ng.git', description: 'URL of the repository')
         string(name: 'BASE_REF', defaultValue: 'https://basalt.intero.berlin', description: 'URL the app shall be accessible from')
         string(name: 'WEB_ROOT', defaultValue: '/var/www/basalt', description: 'Web root directory for this app')
     }
@@ -25,7 +26,7 @@ pipeline {
         }
         stage('Checkout') {
             steps {
-                git url: 'git@github.com:florianschwanz/basalt-ng.git', branch: 'master'
+                git url: "${params.REPO_URL}", branch: 'master'
             }
         }
         stage('Init submodules') {

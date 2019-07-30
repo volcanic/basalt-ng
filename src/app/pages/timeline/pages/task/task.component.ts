@@ -226,6 +226,8 @@ export class TaskComponent
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this.initializeTaskletsSubscription().subscribe((value) => {
       this.initializeTasklets(value as Map<string, Tasklet>);
     });
@@ -487,8 +489,7 @@ export class TaskComponent
    * @param event event
    */
   onKeyDown(event: any) {
-    const KEY_CODE_ENTER = 13;
-    if (event.key === KEY_CODE_ENTER && event.ctrlKey) {
+    if (event.key === 'Enter' && event.ctrlKey) {
       switch (this.mode) {
         case DialogMode.ADD: {
           this.addTask();

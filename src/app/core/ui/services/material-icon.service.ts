@@ -59,7 +59,6 @@ export class MaterialIconService {
   /** Icon variant */
   private VARIANT = 'production';
 
-
   /**
    * Initializes icons
    *
@@ -77,6 +76,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.ACTION, 'help_outline', 'ic_help_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'history', 'ic_history_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'info', 'ic_info_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'delete', 'ic_delete_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'label_outline', 'ic_label_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'lightbulb_outline', 'ic_lightbulb_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'receipt', 'ic_receipt_24px.svg'));
@@ -86,6 +86,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.ACTION, 'turned_in', 'ic_turned_in_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'turned_in_not', 'ic_turned_in_not_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'work', 'ic_work_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'watch_later', 'ic_watch_later_24px.svg'));
     icons.push(new Icon(IconTopic.ALERT, 'warning', 'ic_warning_24px.svg'));
     icons.push(new Icon(IconTopic.AV, 'loop', 'ic_loop_24px.svg'));
     icons.push(new Icon(IconTopic.AV, 'play_circle_filled', 'ic_play_circle_filled_24px.svg'));
@@ -106,7 +107,6 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.CONTENT, 'people_18', 'ic_people_18px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'reply', 'ic_reply_24px.svg'));
     icons.push(new Icon(IconTopic.DEVICE, 'brightness_low', 'ic_brightness_low_24px.svg'));
-    icons.push(new Icon(IconTopic.EDITOR, 'delete', 'ic_delete_24px.svg'));
     icons.push(new Icon(IconTopic.EDITOR, 'mode_edit', 'ic_mode_edit_24px.svg'));
     icons.push(new Icon(IconTopic.EDITOR, 'mode_edit_18', 'ic_mode_edit_18px.svg'));
     icons.push(new Icon(IconTopic.EDITOR, 'short_text', 'ic_short_text_24px.svg'));
@@ -133,6 +133,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.NAVIGATION, 'more_horiz_36', 'ic_more_horiz_36px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'more_vert', 'ic_more_vert_24px.svg'));
     icons.push(new Icon(IconTopic.NAVIGATION, 'refresh', 'ic_refresh_24px.svg'));
+    icons.push(new Icon(IconTopic.NAVIGATION, 'fullscreen', 'ic_fullscreen_24px.svg'));
     icons.push(new Icon(IconTopic.SOCIAL, 'person', 'ic_person_24px.svg'));
     icons.push(new Icon(IconTopic.SOCIAL, 'people', 'ic_people_24px.svg'));
     icons.push(new Icon(IconTopic.TOGGLE, 'check_box', 'ic_check_box_24px.svg'));
@@ -165,5 +166,7 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('text', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_text_24px.svg'));
     iconRegistry.addSvgIcon('markdown', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_markdown_24px.svg'));
     iconRegistry.addSvgIcon('hexagon_multiple', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_hexagon_multiple_24px.svg'));
+    iconRegistry.addSvgIcon('basalt', sanitizer.bypassSecurityTrustResourceUrl('assets/logos/basalt_logo.svg'));
+    iconRegistry.addSvgIcon('bullhorn', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_bullhorn_24px.svg'));
   }
 }

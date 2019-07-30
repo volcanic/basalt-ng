@@ -90,6 +90,7 @@ export class TaskPropertiesFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.initializeColors();
     this.initializePriority();
+    this.initializeRecurring();
     this.initializeRecurringState();
     this.initializeAcceptanceCriteria();
   }
@@ -161,6 +162,15 @@ export class TaskPropertiesFormComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Initializes recurring
+   */
+  private initializeRecurring() {
+    if (this.task != null) {
+      this.recurring = this.task.recurrenceInterval !== RecurrenceInterval.NONE;
+    }
+  }
+
+  /**
    * Initializes recurring state
    */
   private initializeRecurringState() {
@@ -190,8 +200,8 @@ export class TaskPropertiesFormComponent implements OnInit, OnChanges {
    * Handles changes in recurring flag
    * @param event event
    */
-  onRecurringChanged(event: MatSlideToggleChange) {
-    this.recurring = event.checked;
+  onRecurringChanged() {
+    this.recurring = !this.recurring;
     if (!this.recurring) {
       this.task.recurrenceInterval = RecurrenceInterval.NONE;
     }
@@ -216,6 +226,28 @@ export class TaskPropertiesFormComponent implements OnInit, OnChanges {
    */
   onDueDateChanged(value: Date) {
     this.task.dueDate = value;
+  }
+
+  /**
+   * Handles clicks on the 'postpone' selector buttons
+   * @param option to postpone to
+   */
+  onPostponeClicked(option: string) {
+    switch (option) {
+      case 'later':
+        this.task.dueDate = DateService.getEndOfBusiness(new Date());
+        break;
+      case 'tomorrow':
+        this.task.dueDate = DateService.getNextDayStart(new Date());
+        break;
+      case 'this_weekend':
+        this.task.dueDate = DateService.getBeginningOfNextWeekend(new Date());
+        break;
+      case 'next_week':
+        this.task.dueDate = DateService.getBeginningNextWeek(new Date());
+        break;
+    }
+    this.notify();
   }
 
   /**
