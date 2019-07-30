@@ -4,6 +4,17 @@
       <mat-icon svgIcon="menu"></mat-icon>
     </button>
     <span *ngIf="media != mediaType.SMALL" class="toolbar-title">{{ title }}</span>
+    <button
+      mat-button class="toolbar-menu-item"
+      [matTooltip]="'Send feedback or bug reports'"
+      [matTooltipPosition]="'right'"
+      (click)="sendFeedbackMail()">
+      <mat-icon
+        id="feedbackLink"
+        svgIcon="bullhorn"
+      >
+      </mat-icon>
+    </button>
   </div>
   <div class="flexbox"></div>
   <div class="searchbox">
