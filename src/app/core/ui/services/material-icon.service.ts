@@ -166,6 +166,7 @@ export class MaterialIconService {
     iconRegistry.addSvgIcon('text', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_text_24px.svg'));
     iconRegistry.addSvgIcon('markdown', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_markdown_24px.svg'));
     iconRegistry.addSvgIcon('hexagon_multiple', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_hexagon_multiple_24px.svg'));
+    iconRegistry.addSvgIcon('basalt', sanitizer.bypassSecurityTrustResourceUrl('assets/logos/basalt_logo.svg'));
     iconRegistry.addSvgIcon('bullhorn', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_bullhorn_24px.svg'));
   }
 }
