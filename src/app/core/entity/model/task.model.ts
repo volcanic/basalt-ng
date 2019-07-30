@@ -32,6 +32,9 @@ export class Task extends Entity {
   /** Reference to person */
   delegatedToId: string;
 
+  /** Whether this task is a proxy for the project it is associated to */
+  proxy: boolean;
+
   /**
    * Constructor
    * @param name name of the task
@@ -50,5 +53,7 @@ export class Task extends Entity {
     this.tagIds = [];
     this.recurrenceInterval = RecurrenceInterval.NONE;
     this.delegatedToId = null;
+
+    this.proxy = false;
   }
 }

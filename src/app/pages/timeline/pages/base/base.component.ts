@@ -375,9 +375,9 @@ export class BaseComponent implements OnDestroy {
     switch (event.action) {
       case Action.ADD: {
         // Create new entities if necessary
-        this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, task, tags);
+        this.evaluateTaskletTask(tasklet, task, project);
         this.evaluateTaskletPersons(tasklet, persons);
+        this.evaluateTaskletTags(tasklet, task, tags);
 
         // Create tasklet itself
         this.taskletService.createTasklet(tasklet, this.taskletsMap, this.tasksMap, this.projectsMap, this.personsMap, this.tagsMap).then(() => {
@@ -387,9 +387,9 @@ export class BaseComponent implements OnDestroy {
       }
       case Action.UPDATE: {
         // Create new entities if necessary
-        this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, task, tags);
+        this.evaluateTaskletTask(tasklet, task, project);
         this.evaluateTaskletPersons(tasklet, persons);
+        this.evaluateTaskletTags(tasklet, task, tags);
 
         // Update tasklet itself
         this.taskletService.updateTasklet(tasklet, this.taskletsMap, this.tasksMap, this.projectsMap, this.personsMap, this.tagsMap).then(() => {
@@ -1362,94 +1362,50 @@ export class BaseComponent implements OnDestroy {
   // <editor-fold defaultstate="collapsed" desc="Evaluation">
 
   /**
-   * Determines whether the task assigned to a given tasklet already exists, otherwise creates a new one
+   * Checks whether tasklet references a task or a project and does one of the following
+   * <li> Determines whether the task assigned to a given tasklet already exists, otherwise creates a new one
+   * <li> Checks whether this is already a proxy task, otherwise creates a new one
    * @param tasklet tasklet to assign task to
    * @param task task to be checked
+   * @param project project to be checked
    */
-  private evaluateTaskletTask(tasklet: Tasklet, task: Task) {
+  private evaluateTaskletTask(tasklet: Tasklet, task: Task, project: Project) {
     if (task != null && task.name != null && task.name !== '') {
-      // Assign task
+      // Find task
       let t = this.taskService.getTaskByName(task.name, this.tasksMap);
 
-      // New task
+      // Create new task
       if (t == null && task.name != null && task.name !== '') {
         t = new Task(task.name);
         this.taskService.createTask(t, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
         });
       }
 
+      // Assign tasklet to task
       this.filterService.updateTasksListIfNotEmpty([t]);
       tasklet.taskId = t.id;
+    } else if (project != null && project.name != null && project.name !== '') {
+      // Find project and its proxy task
+      const p = this.projectService.getProjectByName(project.name, this.projectsMap);
+      let proxyTask = this.taskService.getProxyTaskByProject(project, this.tasksMap);
+
+      // Create new proxy task
+      if (proxyTask == null && p != null && p.id != null) {
+        proxyTask = new Task(`proxy for project ${p.id}`);
+        proxyTask.proxy = true;
+        proxyTask.projectId = p.id;
+
+        this.taskService.createTask(proxyTask, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
+        });
+      }
+
+      // Assign tasklet to proxy task
+      this.filterService.updateTasksListIfNotEmpty([proxyTask]);
+      tasklet.taskId = proxyTask.id;
     } else {
       // Unassign task
       tasklet.taskId = null;
     }
-  }
-
-  /**
-   * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
-   * @param tasklet tasklet to assign tags to
-   * @param task task the tasklet is associated to
-   * @param tags array of tags to be checked
-   */
-  private evaluateTaskletTags(tasklet: Tasklet, task: Task, tags: Tag[]) {
-    const aggregatedTags = new Map<string, Tag>();
-
-    // New tag
-    if (tags != null) {
-      tags.filter(t => {
-        return t != null;
-      }).forEach(t => {
-        const tag = this.lookupTag(t.name);
-
-        // Exclude tags that are inherited from task
-        if (task.tagIds.some(id => id === tag.id)) {
-          return;
-        }
-
-        aggregatedTags.set(tag.id, tag);
-      });
-    }
-
-    // Infer tags from meeting minutes
-    if (tasklet.meetingMinuteItems != null) {
-      tasklet.meetingMinuteItems.filter(m => {
-        return m.topic != null;
-      }).map(m => {
-        return m.topic;
-      }).forEach(t => {
-        const tag = this.lookupTag(t);
-
-        // Exclude tags that are inherited from task
-        if (task.tagIds.some(id => id === tag.id)) {
-          return;
-        }
-
-        aggregatedTags.set(tag.id, tag);
-      });
-    }
-
-    const values = Array.from(aggregatedTags.values());
-    const keys = Array.from(aggregatedTags.keys());
-
-    this.filterService.updateTagsListIfNotEmpty(values);
-    tasklet.tagIds = Array.from(keys);
-  }
-
-  /**
-   * Returns existing tag if exists or creates a new one if not
-   * @param t tag name
-   */
-  private lookupTag(t: string): Tag {
-    let tag = this.tagService.getTagByName(t, this.tagsMap);
-
-    if (tag == null) {
-      tag = new Tag(t);
-      this.tagService.createTag(tag, this.tagsMap).then(() => {
-      });
-    }
-
-    return tag;
   }
 
   /**
@@ -1519,6 +1475,72 @@ export class BaseComponent implements OnDestroy {
     }
 
     return person;
+  }
+
+  /**
+   * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
+   * @param tasklet tasklet to assign tags to
+   * @param task task the tasklet is associated to
+   * @param tags array of tags to be checked
+   */
+  private evaluateTaskletTags(tasklet: Tasklet, task: Task, tags: Tag[]) {
+    const aggregatedTags = new Map<string, Tag>();
+
+    // New tag
+    if (tags != null) {
+      tags.filter(t => {
+        return t != null;
+      }).forEach(t => {
+        const tag = this.lookupTag(t.name);
+
+        // Exclude tags that are inherited from task
+        if (task.tagIds.some(id => id === tag.id)) {
+          return;
+        }
+
+        aggregatedTags.set(tag.id, tag);
+      });
+    }
+
+    // Infer tags from meeting minutes
+    if (tasklet.meetingMinuteItems != null) {
+      tasklet.meetingMinuteItems.filter(m => {
+        return m.topic != null;
+      }).map(m => {
+        return m.topic;
+      }).forEach(t => {
+        const tag = this.lookupTag(t);
+
+        // Exclude tags that are inherited from task
+        if (task.tagIds.some(id => id === tag.id)) {
+          return;
+        }
+
+        aggregatedTags.set(tag.id, tag);
+      });
+    }
+
+    const values = Array.from(aggregatedTags.values());
+    const keys = Array.from(aggregatedTags.keys());
+
+    this.filterService.updateTagsListIfNotEmpty(values);
+    tasklet.tagIds = Array.from(keys);
+  }
+
+  /**
+   * Returns existing tag if exists or creates a new one if not
+   * @param t tag name
+   */
+  private lookupTag(t: string): Tag {
+    let tag = this.tagService.getTagByName(t, this.tagsMap);
+
+    if (tag == null) {
+      tag = new Tag(t);
+      this.tagService.createTag(tag, this.tagsMap).then(() => {
+      });
+    }
+
+    return tag;
   }
 
   /**

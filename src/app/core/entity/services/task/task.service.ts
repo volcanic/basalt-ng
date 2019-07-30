@@ -601,15 +601,27 @@ export class TaskService {
    * @returns task identified by given name, null if no such task exists
    */
   public getTaskByName(name: string, tasksMap: Map<string, Task>): Task {
-    let task: Task = null;
-
-    Array.from(tasksMap.values()).forEach(t => {
-      if (t.name === name) {
-        task = t;
-      }
+    return Array.from(tasksMap.values()).filter(t => {
+      return t.name === name;
+    }).find(() => {
+      return true;
     });
+  }
 
-    return task;
+  /**
+   * Retrieves the proxy task associated with a given project
+   * @param project project to find proxy task for
+   * @param tasksMap tasks map
+   */
+  public getProxyTaskByProject(project: Project, tasksMap: Map<string, Task>): Task {
+    return Array.from(tasksMap.values()).filter(t => {
+      return t.proxy;
+    }).filter(t => {
+      return t.projectId != null
+        && t.projectId.toString() === project.id.toString();
+    }).find(() => {
+      return true;
+    });
   }
 
   //
