@@ -98,7 +98,7 @@ export class SuggestionService {
     }).forEach(t => {
       if (t != null && t.description != null) {
         // Add description lines to search items
-        if (t.description.value != null && t.creationDate) {
+        if (t.description.value != null && t.creationDate && !t.proxy) {
           t.description.value.split('\n').forEach(v => {
             if (v.trim() !== '') {
               const value = v.trim().replace(/(^-)/g, '');
@@ -108,7 +108,7 @@ export class SuggestionService {
         }
 
         // Add task name to search options
-        if (t.name && t.creationDate) {
+        if (t.name && t.creationDate && !t.proxy) {
           const value = t.name.trim();
           this.searchOptions.set(t.creationDate.toString() + this.searchOptionsCounter++, value);
           this.taskOptions.set(value, t);
