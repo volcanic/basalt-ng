@@ -222,6 +222,10 @@ export class DateService {
     return beginningOfTheWeek;
   }
 
+  /**
+   * Returns the beginning of the week following the one that contains the given date
+   * @param date date to get the beginning of the following week for
+   */
   static getBeginningNextWeek(date: Date): Date {
     const beginningOfNextWeek = new Date();
 

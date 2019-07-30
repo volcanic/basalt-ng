@@ -1,14 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {Task} from 'app/core/entity/model/task.model';
 import {MatMenuTrigger} from '@angular/material';
 import {Animations, AnimationState} from './task-list-item.animation';
@@ -160,6 +150,10 @@ export class TaskListItemComponent implements OnInit, OnChanges {
     this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: this.task});
   }
 
+  /**
+   * Handles click on postpone
+   * @param option option
+   */
   onPostponeClicked(option: string) {
     switch (option) {
       case 'later':
