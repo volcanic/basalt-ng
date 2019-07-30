@@ -111,6 +111,7 @@ export class TaskService {
    */
   static isTaskOverdue(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && task.dueDate != null
       && (task.delegatedToId == null || task.delegatedToId === '')
@@ -126,6 +127,7 @@ export class TaskService {
    */
   static isTaskToday(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && task.dueDate != null
       && (task.delegatedToId == null || task.delegatedToId === '')
@@ -142,6 +144,7 @@ export class TaskService {
    */
   static isTaskLater(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && task.dueDate != null
       && (task.delegatedToId == null || task.delegatedToId === '')
@@ -157,6 +160,7 @@ export class TaskService {
    */
   static isTaskInInbox(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && task.dueDate == null
       && (task.delegatedToId == null || task.delegatedToId === '')
@@ -171,6 +175,7 @@ export class TaskService {
    */
   static isTaskDelegated(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && (task.delegatedToId != null && task.delegatedToId !== '');
   }
@@ -181,6 +186,7 @@ export class TaskService {
    */
   static isTaskRecurring(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && (task.delegatedToId == null || task.delegatedToId === '')
       && task.recurrenceInterval != null
@@ -230,7 +236,9 @@ export class TaskService {
    * @param task task
    */
   static isTaskCompleted(task: Task) {
-    return task != null && task.completionDate != null;
+    return task != null
+      && !task.proxy
+      && task.completionDate != null;
   }
 
   //
