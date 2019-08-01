@@ -1,4 +1,4 @@
-<mat-accordion class="headers-align">
+<mat-accordion *ngIf="personsMap.size > 0" class="headers-align">
   <mat-expansion-panel [expanded]="true" (opened)="false" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -21,3 +21,9 @@
     <button mat-button *ngIf="personsMap.size > recentCount" (click)="onMoreLessToggled()">{{ showMoreLabel }}</button>
   </mat-expansion-panel>
 </mat-accordion>
+
+<div *ngIf="personsMap.size == 0" class="placeholder-container">
+  <button mat-flat-button class="placeholder" (click)="onPlaceholderClicked()">
+    There are no persons yet
+  </button>
+</div>
