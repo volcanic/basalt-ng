@@ -175,13 +175,12 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
       default: {
         if (this.task != null) {
           if (this.task.proxy) {
-            this.title = this.project != null ? this.project.name : '';
-            this.subtitle = '';
+            this.title = `Generic ${this.project != null ? this.project.name : ''} task`;
+            this.subtitle = this.project != null ? this.project.name : ' ';
           } else {
             this.title = this.task.name;
-            this.subtitle = this.project != null ? this.project.name : '';
+            this.subtitle = this.project != null ? this.project.name : ' ';
           }
-          this.title = this.task.proxy && this.project != null ? this.project.name : this.task.name;
         } else {
           this.title = this.tasklet.type;
         }
