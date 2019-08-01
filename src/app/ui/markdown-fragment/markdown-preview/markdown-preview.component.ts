@@ -37,7 +37,7 @@ const defaultRender = md.renderer.rules.link_open || function(tokens, idx, optio
  * @param self self
  */
 // tslint:disable-next-line:only-arrow-functions
-md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
+md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
   // If you are sure other plugins can't add `target` - drop check below
   const aIndex = tokens[idx].attrIndex('target');
 
@@ -91,7 +91,9 @@ export class MarkdownPreviewComponent implements OnChanges {
    */
   updateMarkdown() {
     if (this.markdownText != null) {
-      this.htmlText = md.render(this.markdownText.replace(new RegExp('\n', 'g'), '<br/>'));
+      this.htmlText = md.render(this.markdownText
+      // Replace new lines if they are not lead or followed by an asterisk
+        .replace(new RegExp('(?!(.*\\*))\n(?!(.*\\*))', 'g'), '<br/>'));
     }
   }
 }
