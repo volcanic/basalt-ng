@@ -16,8 +16,8 @@ export class TaskletPreviewFragmentComponent {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
-  /** Topic (typically derived from task name */
-  @Input() topic = '';
+  /** Title (typically derived from task name */
+  @Input() title = '';
   /** Icon name */
   @Input() icon = '';
   /** Current media */

@@ -169,17 +169,21 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   private initializeTopic() {
     switch (this.tasklet.type) {
-      case TaskletType.DAILY_SCRUM:
       case TaskletType.LUNCH_BREAK:
-      case TaskletType.FINISHING_TIME:
+      case TaskletType.FINISHING_TIME: {
+        this.title = this.tasklet.type;
+        break;
+      }
       default: {
         if (this.task != null) {
           if (this.task.proxy) {
             this.title = `Generic ${this.project != null ? this.project.name : ''} task`;
             this.subtitle = this.project != null ? this.project.name : ' ';
-          } else {
+          } else if (this.task.name != null && this.task.name.length > 0) {
             this.title = this.task.name;
             this.subtitle = this.project != null ? this.project.name : ' ';
+          } else {
+            this.title = this.tasklet.type;
           }
         } else {
           this.title = this.tasklet.type;
