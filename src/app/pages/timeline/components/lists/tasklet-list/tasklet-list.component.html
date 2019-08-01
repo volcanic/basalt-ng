@@ -7,7 +7,8 @@
                        (taskletEventEmitter)="onTaskletEvent($event)"
                        (inViewportAction)="onIntersection(t)">
 </app-tasklet-list-item>
-<div *ngIf="tasklets.length == 0" class="placeholder-container">
+
+<div *ngIf="tasklets != null && tasklets.length == 0" class="placeholder-container">
   <button mat-flat-button class="placeholder" (click)="onPlaceholderClicked()">
     <div class="placeholder-title">Wanna get started?</div>
     There are no tasklets in your timeline yet. Click here to begin with your first tasklet
