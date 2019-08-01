@@ -1,4 +1,4 @@
-<mat-accordion class="headers-align">
+<mat-accordion *ngIf="tagsMap.size > 0" class="headers-align">
   <mat-expansion-panel [expanded]="true" (opened)="true" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -27,3 +27,9 @@
     </div>
   </mat-expansion-panel>
 </mat-accordion>
+
+<div *ngIf="tagsMap.size == 0" class="placeholder-container">
+  <button mat-flat-button class="placeholder" (click)="onPlaceholderClicked()">
+    There are no tags yet
+  </button>
+</div>
