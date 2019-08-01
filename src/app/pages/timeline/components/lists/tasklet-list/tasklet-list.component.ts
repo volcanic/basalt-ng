@@ -77,6 +77,13 @@ export class TaskletListComponent implements OnChanges {
   }
 
   /**
+   * Handles click on placeholder
+   */
+  onPlaceholderClicked() {
+    this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_ADD, tasklet: null});
+  }
+
+  /**
    * Handles new elements in the viewport
    * @param tasklet tasklet being in the viewport
    */
