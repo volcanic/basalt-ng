@@ -37,7 +37,7 @@ const defaultRender = md.renderer.rules.link_open || function(tokens, idx, optio
  * @param self self
  */
 // tslint:disable-next-line:only-arrow-functions
-md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
   // If you are sure other plugins can't add `target` - drop check below
   const aIndex = tokens[idx].attrIndex('target');
 
