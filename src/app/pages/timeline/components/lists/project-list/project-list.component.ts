@@ -90,6 +90,13 @@ export class ProjectListComponent implements OnChanges {
     this.showMoreLabel = this.showMoreStatus ? 'Less' : 'More';
   }
 
+  /**
+   * Handles click on placeholder
+   */
+  onPlaceholderClicked() {
+    // this.projectEventEmitter.emit({action: Action.OPEN_DIALOG_ADD, project: null});
+  }
+
   //
   // Helpers
   //
