@@ -1,4 +1,25 @@
+@import '../../../../../../sizes';
 @import '../../../../../../theme';
+@import '../../../../../../flex';
+
+//
+// Custom
+//
+
+.placeholder-container {
+}
+
+.placeholder-title {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 1.8em;
+}
+
+.placeholder {
+  color: mat-color($mat-grey, 400);
+  background: transparent;
+  white-space: normal;
+}
 
 //
 // Custom
@@ -34,16 +55,15 @@
 // Material
 //
 
-
 .mat-expansion-panel {
   background: transparent;
 }
 
 
 .mat-expansion-panel:not([class*=mat-elevation-z]) {
-  box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0),
-  0 0px 0px 0 rgba(0, 0, 0, .14),
-  0 0px 0px 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0),
+  0 0 0 0 rgba(0, 0, 0, .14),
+  0 0 0 0 rgba(0, 0, 0, 0);
 }
 
 /*

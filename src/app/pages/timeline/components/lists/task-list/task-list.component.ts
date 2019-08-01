@@ -130,6 +130,13 @@ export class TaskListComponent implements OnChanges {
     this.taskEventEmitter.emit(event);
   }
 
+  /**
+   * Handles click on placeholder
+   */
+  onPlaceholderClicked() {
+    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_ADD, task: null});
+  }
+
   //
   // Helpers
   //
