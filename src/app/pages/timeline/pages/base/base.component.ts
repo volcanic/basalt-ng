@@ -379,8 +379,8 @@ export class BaseComponent implements OnInit, OnDestroy {
     const tasklet = CloneService.cloneTasklet(event.tasklet as Tasklet);
     const task = CloneService.cloneTask(event.task as Task);
     const project = CloneService.cloneProject(event.project as Project);
-    const tags = CloneService.cloneTags(event.tags as Tag[]);
     const persons = CloneService.clonePersons(event.persons as Person[]);
+    const tags = CloneService.cloneTags(event.tags as Tag[]);
 
     switch (event.action) {
       case Action.ADD: {

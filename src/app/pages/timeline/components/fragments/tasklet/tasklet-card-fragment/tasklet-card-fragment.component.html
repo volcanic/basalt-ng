@@ -6,6 +6,8 @@
       <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
     </mat-card-header>
 
+    <div *ngIf="debugMode" class="debug">task {{ tasklet.taskId }}</div>
+
     <mat-card-content class="content">
       <mat-accordion class="headers-align"
                      (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">

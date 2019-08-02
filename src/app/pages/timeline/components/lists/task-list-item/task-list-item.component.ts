@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {Task} from 'app/core/entity/model/task.model';
 import {MatMenuTrigger} from '@angular/material';
 import {Animations, AnimationState} from './task-list-item.animation';
@@ -8,6 +18,7 @@ import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 import {Project} from '../../../../../core/entity/model/project.model';
 import {DateService} from '../../../../../core/entity/services/date.service';
+import {environment} from '../../../../../../environments/environment';
 
 /**
  * Displays task list item
@@ -47,6 +58,9 @@ export class TaskListItemComponent implements OnInit, OnChanges {
   icon = '';
   /** Animation state */
   state = AnimationState.INACTIVE;
+
+  /** Debug mode */
+  debugMode = environment.DEBUG_MODE;
 
   //
   // Helpers

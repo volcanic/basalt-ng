@@ -22,6 +22,9 @@
           (projectNameChangedEmitter)="onProjectNameChanged($event)">
         </app-project-picker-fragment>
       </div>
+
+      <div *ngIf="debugMode" class="debug">task {{ tasklet.taskId }}</div>
+
       <!-- Previous description and daily scrum items-->
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescriptionText]="previousDescription.value"></app-previous-description-fragment>
@@ -63,8 +66,7 @@
       <!-- Checklist -->
       <app-completable-list *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)"
                             [items]="tasklet.acceptanceCriteria"
-                            [readonly]="readonly"
-                            [focusNewElement]="'true'"
+                            focusNewElement=true
                             (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
       </app-completable-list>
 
@@ -89,8 +91,6 @@
                      [background]="materialColorService.color(paletteType.GREY, hueType._400)"
                      [color]="materialColorService.contrast(paletteType.GREY, hueType._400)"
                      [readonly]=false
-                     [background]="materialColorService.color(paletteType.GREY, hueType._400)"
-                     [color]="materialColorService.contrast(paletteType.GREY, hueType._400)"
                      placeholder="New person"
                      (tagsChangedEmitter)="onPersonsChanged($event)">
       </app-tag-chips>
@@ -116,7 +116,7 @@
       Send Meeting Minutes
     </button>
     <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
-            (click)="onButtonClicked(actionType.DAIL)">
+            (click)="onButtonClicked(actionType.SEND_MAIL_DAILY_SCRUM_SUMMARY)">
       Send Daily Scrum Summary
     </button>
     <button mat-button *ngIf="mode == modeType.ADD"

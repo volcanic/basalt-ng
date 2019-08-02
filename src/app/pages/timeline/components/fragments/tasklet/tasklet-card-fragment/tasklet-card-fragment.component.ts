@@ -10,6 +10,7 @@ import {Action} from '../../../../../../core/entity/model/action.enum';
 import {Tag} from '../../../../../../core/entity/model/tag.model';
 import {Person} from '../../../../../../core/entity/model/person.model';
 import {DomSanitizer} from '@angular/platform-browser';
+import {environment} from '../../../../../../../environments/environment';
 
 /**
  * Displays tasklet as card
@@ -78,6 +79,9 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   isWithinNextDays = DateService.isWithinNextDays;
   /** Reference to static service methods */
   isInCurrentWeek = DateService.isInCurrentWeek;
+
+  /** Debug mode */
+  debugMode = environment.DEBUG_MODE;
 
   /**
    * Constructor

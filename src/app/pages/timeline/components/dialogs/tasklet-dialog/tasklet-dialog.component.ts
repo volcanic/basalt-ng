@@ -24,6 +24,7 @@ import {SelectableItem} from '../../../../../ui/checkable-list/selectable-item';
 import {AcceptanceCriterium} from '../../../../../core/entity/model/acceptance-criterium.model';
 import {Project} from '../../../../../core/entity/model/project.model';
 import {ProjectService} from '../../../../../core/entity/services/project/project.service';
+import {environment} from '../../../../../../environments/environment';
 
 /**
  * Displays tasklet dialog
@@ -94,6 +95,9 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
 
   /** Project picker readonly */
   projectPickerReadonly = true;
+
+  /** Debug mode */
+  debugMode = environment.DEBUG_MODE;
 
   /**
    * Constructor
