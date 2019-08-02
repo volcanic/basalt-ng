@@ -560,6 +560,53 @@ export class TaskService {
   }
 
   /**
+   * Creates a task
+   * @param task task
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @param tagsMap tags map
+   */
+  public createTaskIfNecessary(task: Task, tasksMap: Map<string, Task>,
+                               projectsMap: Map<string, Project>, tagsMap: Map<string, Tag>): Promise<Task> {
+    return new Promise((resolve) => {
+      if (task == null || task.name == null || task.name === '') {
+        const newTask = new Task(task.name);
+        this.createTask(newTask, tasksMap, projectsMap, tagsMap).then(() => {
+          resolve(newTask);
+        });
+      } else {
+        resolve(task);
+      }
+    });
+  }
+
+  /**
+   * Creates a proxy task
+   * @param proxyTask proxy task
+   * @param existingProject existing project
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @param tagsMap tags map
+   */
+  public createProxyTaskIfNecessary(proxyTask: Task, existingProject: Project, tasksMap: Map<string, Task>,
+                                    projectsMap: Map<string, Project>, tagsMap: Map<string, Tag>): Promise<Task> {
+    return new Promise((resolve) => {
+      if (proxyTask == null && existingProject != null && existingProject.id != null) {
+        const newProxyTask = new Task(`Proxy`);
+
+        newProxyTask.proxy = true;
+        newProxyTask.projectId = existingProject.id;
+
+        this.createTask(newProxyTask, tasksMap, projectsMap, tagsMap).then(() => {
+          resolve(newProxyTask);
+        });
+      } else {
+        resolve(proxyTask);
+      }
+    });
+  }
+
+  /**
    * Updates existing task
    * @param task task to be updated
    * @param tasksMap tasks map
@@ -644,7 +691,7 @@ export class TaskService {
       return t.proxy;
     }).filter(t => {
       return t.projectId != null
-        && t.projectId.toString() === project.id.toString();
+        && t.projectId === project.id;
     }).find(() => {
       return true;
     });

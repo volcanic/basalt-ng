@@ -1380,41 +1380,35 @@ export class BaseComponent implements OnInit, OnDestroy {
    * @param project project to be checked
    */
   private evaluateTaskletTask(tasklet: Tasklet, task: Task, project: Project) {
-    if (task != null && task.name != null && task.name !== '') {
+    if (TaskletService.isTaskletDefinedByTask(task)) {
       // Find task
-      let t = this.taskService.getTaskByName(task.name, this.tasksMap);
+      const existingTask = this.taskService.getTaskByName(task.name, this.tasksMap);
 
       // Create new task
-      if (t == null && task.name != null && task.name !== '') {
-        t = new Task(task.name);
-        this.taskService.createTask(t, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-        });
-      }
+      this.taskService.createTaskIfNecessary(existingTask, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
+        // Assign task to project
+        existingTask.projectId = project != null ? project.id : null;
 
-      // Assign task to project
-      t.projectId = project != null ? project.id : null;
+        // Assign tasklet to task
+        tasklet.taskId = existingTask.id;
 
-      // Assign tasklet to task
-      this.filterService.updateTasksListIfNotEmpty([t]);
-      tasklet.taskId = t.id;
-    } else if (project != null && project.name != null && project.name !== '') {
+        // Add task to filters
+        this.filterService.updateTasksListIfNotEmpty([existingTask]);
+      });
+    } else if (TaskletService.isTaskletDefinedByProject(project)) {
       // Find project and its proxy task
-      const p = this.projectService.getProjectByName(project.name, this.projectsMap);
-      let proxyTask = this.taskService.getProxyTaskByProject(project, this.tasksMap);
+      const existingProject = this.projectService.getProjectByName(project.name, this.projectsMap);
+      const proxyTask = this.taskService.getProxyTaskByProject(project, this.tasksMap);
 
       // Create new proxy task
-      if (proxyTask == null && p != null && p.id != null) {
-        proxyTask = new Task(`Proxy`);
-        proxyTask.proxy = true;
-        proxyTask.projectId = p.id;
+      this.taskService.createProxyTaskIfNecessary(proxyTask, existingProject,
+        this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
+        // Assign tasklet to proxy task
+        tasklet.taskId = proxyTask.id;
 
-        this.taskService.createTask(proxyTask, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-        });
-      }
-
-      // Assign tasklet to proxy task
-      this.filterService.updateTasksListIfNotEmpty([proxyTask]);
-      tasklet.taskId = proxyTask.id;
+        // Add task to filters
+        this.filterService.updateTasksListIfNotEmpty([proxyTask]);
+      });
     } else {
       // Unassign task
       tasklet.taskId = null;

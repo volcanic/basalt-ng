@@ -88,6 +88,22 @@ export class TaskletService {
   }
 
   /**
+   * Determines if a tasklet is defined by a task
+   * @param task task
+   */
+  static isTaskletDefinedByTask(task: Task): boolean {
+    return task != null && task.name != null && task.name !== '' && !task.proxy;
+  }
+
+  /**
+   * Determines if a tasklet is defined by a project
+   * @param project project
+   */
+  static isTaskletDefinedByProject(project: Project): boolean {
+    return project != null && project.name != null && project.name !== '';
+  }
+
+  /**
    * Retrieves an icon by tasklet type
    * @param group tasklet type group
    */
