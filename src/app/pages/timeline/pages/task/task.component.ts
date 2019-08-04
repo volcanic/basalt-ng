@@ -227,42 +227,10 @@ export class TaskComponent
    */
   ngOnInit() {
     super.ngOnInit();
+    this.initializeSubscriptions();
 
-    this.initializeTaskletsSubscription().subscribe((value) => {
-      console.log(`onTaskletsFound ${value.size}`);
-      this.initializeTasklets(value as Map<string, Tasklet>);
-    });
-    this.initializeTaskSubscription().subscribe((value) => {
-      console.log(`onTaskFound ${value != null}`);
-      this.initializeTask(value as Task);
-      this.initializeTaskletTypeAction();
-    });
-    this.initializeTasksSubscription().subscribe((value) => {
-      console.log(`onTasksFound ${value.size}`);
-      this.initializeTasks(value as Map<string, Task>);
-      this.initializeOptions();
-    });
-    this.initializeProjectsSubscription().subscribe((value) => {
-      console.log(`onProjectsFound ${value.size}`);
-      this.initializeProjects(value as Map<string, Project>);
-      this.initializeOptions();
-    });
-    this.initializePersonsSubscription().subscribe((value) => {
-      console.log(`onPersonsFound ${value.size}`);
-      this.initializePersons(value as Map<string, Person>);
-      this.initializeOptions();
-    });
-    this.initializeTagsSubscription().subscribe((value) => {
-      console.log(`onTagsFound ${value.size}`);
-      this.initializeTags(value as Map<string, Tag>);
-      this.initializeOptions();
-    });
-    this.initializeMediaSubscription().subscribe((value) => {
-      this.media = value as Media;
-    });
 
     this.initializeMaterial();
-    this.initializeSettings();
 
     this.route.params.subscribe(() => {
       if (this.route.snapshot != null) {
@@ -272,6 +240,7 @@ export class TaskComponent
 
       this.taskService.fetchTaskByID(this.id);
       this.findEntities();
+      this.findSettings();
     });
   }
 
@@ -292,10 +261,117 @@ export class TaskComponent
   // </editor-fold>
 
   //
+  // Events
+  //
+
+  // <editor-fold defaultstate="collapsed" desc="Events">
+
+  /**
+   * Handles task updates
+   * @param task tasklet
+   */
+  onTaskUpdated(task: Task) {
+    this.initializeTask(task);
+    this.initializeTaskletTypeAction();
+  }
+
+  /**
+   * Handles tasklet updates
+   * @param tasklets tasklets
+   */
+  onTaskletsUpdated(tasklets: Map<string, Tasklet>) {
+    this.initializeTasklets(tasklets);
+  }
+
+  /**
+   * Handles task updates
+   * @param tasks tasks
+   */
+  onTasksUpdated(tasks: Map<string, Task>) {
+    this.initializeTasks(tasks);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles project updates
+   * @param projects projects
+   */
+  onProjectsUpdated(projects: Map<string, Project>) {
+    this.initializeProjects(projects);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles person updates
+   * @param persons persons
+   */
+  onPersonsUpdated(persons: Map<string, Person>) {
+    this.initializePersons(persons);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles tag updates
+   * @param tags tags
+   */
+  onTagsUpdated(tags: Map<string, Tag>) {
+    this.initializeTags(tags);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles setting updates
+   * @param settings settings
+   */
+  onSettingsUpdated(settings: Map<string, Setting>) {
+    this.initializeSettings(settings);
+  }
+
+  /**
+   * Handles media updates
+   * @param media media
+   */
+  onMediaUpdated(media: Media) {
+    this.media = media as Media;
+  }
+
+  // </editor-fold>
+
+  //
   // Initialization
   //
 
   // <editor-fold defaultstate="collapsed" desc="Initialization">
+
+  /**
+   * Initialize subscriptions
+   */
+  private initializeSubscriptions() {
+    this.initializeTaskSubscription().subscribe(value => {
+      this.onTaskUpdated(value as Task);
+    });
+    this.initializeTaskletsSubscription().subscribe(value => {
+      this.onTaskletsUpdated(value as Map<string, Tasklet>);
+    });
+    this.initializeTasksSubscription().subscribe(value => {
+      this.onTasksUpdated(value as Map<string, Task>);
+    });
+    this.initializeProjectsSubscription().subscribe(value => {
+      this.onProjectsUpdated(value as Map<string, Project>);
+    });
+    this.initializePersonsSubscription().subscribe(value => {
+      this.onPersonsUpdated(value as Map<string, Person>);
+    });
+    this.initializeTagsSubscription().subscribe(value => {
+      this.onTagsUpdated(value as Map<string, Tag>);
+    });
+    this.initializeSettingsSubscription().subscribe(value => {
+      this.onSettingsUpdated(value as Map<string, Setting>);
+    });
+    this.initializeMediaSubscription().subscribe(value => {
+      this.onMediaUpdated(value as Media);
+    });
+  }
 
   /**
    * Initializes task
@@ -368,6 +444,14 @@ export class TaskComponent
   }
 
   /**
+   * Initialize settings
+   * @param settings settings
+   */
+  private initializeSettings(settings: Map<string, Setting>) {
+    this.settingsMap = settings;
+  }
+
+  /**
    * Initializes options
    */
   private initializeOptions() {
@@ -384,18 +468,6 @@ export class TaskComponent
     this.action.backgroundColor = this.colorService.getProjectColor(this.project);
     this.action.iconColor = this.colorService.getProjectContrast(this.project);
     this.action.icon = 'alias_project';
-  }
-
-  /**
-   * Initializes settings
-   */
-  private initializeSettings() {
-    this.settingsService.fetch();
-    this.settingsService.settingsSubject.subscribe(value => {
-      if (value != null) {
-        this.sidenavOpened = this.settingsService.isSettingActive(SettingType.TASK_SIDENAV_OPENED);
-      }
-    });
   }
 
   /**

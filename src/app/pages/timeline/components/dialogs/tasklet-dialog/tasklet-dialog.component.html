@@ -2,7 +2,9 @@
   <h2 mat-dialog-title>{{ dialogTitle }}</h2>
   <mat-dialog-content>
     <form #formCtrl="ngForm">
-      <app-tasklet-type-fragment [tasklet]="tasklet" (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
+      <app-tasklet-type-fragment [tasklet]="tasklet"
+                                 [settingsMap]="settingsMap"
+                                 (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
       </app-tasklet-type-fragment>
       <!-- Task -->
       <app-task-autocomplete-fragment

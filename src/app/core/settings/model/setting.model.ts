@@ -10,11 +10,11 @@ export class Setting {
 
   /**
    * Constructor
-   * @param id key of the setting
-   * @param value value of the setting
+   * @param name setting name
+   * @param value value
    */
-  constructor(id: string, value: any) {
-    this.id = id;
+  constructor(name: string, value: any) {
+    this.id = name;
     this.value = value;
   }
 }

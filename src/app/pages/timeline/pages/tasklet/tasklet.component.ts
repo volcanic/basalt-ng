@@ -39,6 +39,7 @@ import {Setting} from '../../../../core/settings/model/setting.model';
 // tslint:disable-next-line:max-line-length
 import {PomodoroFinishedDialogComponent} from '../../../../ui/pomodoro-finished-dialog/pomodoro-finished-dialog/pomodoro-finished-dialog.component';
 import {BaseComponent} from '../base/base.component';
+import {Scope} from '../../../../core/entity/model/scope.enum';
 
 /**
  * Represents a tasklet type action button
@@ -228,44 +229,10 @@ export class TaskletComponent
    */
   ngOnInit() {
     super.ngOnInit();
+    this.initializeSubscriptions();
 
-    this.initializeTaskletSubscription().subscribe((value) => {
-      console.log(`onTaskletFound ${value != null}`);
-      this.initializeTasklet(value as Tasklet);
-      this.initializeTaskletTypeAction();
-    });
-    this.initializeTaskletsSubscription().subscribe((value) => {
-      console.log(`onTaskletsFound ${value.size}`);
-      this.initializeTasklets(value as Map<string, Tasklet>);
-      this.initializeOptions();
-    });
-    this.initializeTasksSubscription().subscribe((value) => {
-      console.log(`onTasksFound ${value.size}`);
-      this.initializeTasks(value as Map<string, Task>);
-      this.initializeTasklet(this.tasklet);
-      this.initializeOptions();
-    });
-    this.initializeProjectsSubscription().subscribe((value) => {
-      console.log(`onProjectsFound ${value.size}`);
-      this.initializeProjects(value as Map<string, Project>);
-      this.initializeOptions();
-    });
-    this.initializePersonsSubscription().subscribe((value) => {
-      console.log(`onPersonsFound ${value.size}`);
-      this.initializePersons(value as Map<string, Person>);
-      this.initializeOptions();
-    });
-    this.initializeTagsSubscription().subscribe((value) => {
-      console.log(`onTagsFound ${value.size}`);
-      this.initializeTags(value as Map<string, Tag>);
-      this.initializeOptions();
-    });
-    this.initializeMediaSubscription().subscribe((value) => {
-      this.media = value as Media;
-    });
 
     this.initializeMaterial();
-    this.initializeSettings();
 
     this.route.params.subscribe(() => {
       if (this.route.snapshot != null) {
@@ -275,6 +242,7 @@ export class TaskletComponent
 
       this.taskletService.fetchTaskletByID(this.id);
       this.findEntities();
+      this.findSettings();
     });
   }
 
@@ -295,10 +263,119 @@ export class TaskletComponent
   // </editor-fold>
 
   //
+  // Events
+  //
+
+  // <editor-fold defaultstate="collapsed" desc="Events">
+
+  /**
+   * Handles tasklet updates
+   * @param tasklet tasklet
+   */
+  onTaskletUpdated(tasklet: Tasklet) {
+    this.initializeTasklet(tasklet);
+    this.initializeTaskletTypeAction();
+  }
+
+  /**
+   * Handles tasklet updates
+   * @param tasklets tasklets
+   */
+  onTaskletsUpdated(tasklets: Map<string, Tasklet>) {
+    this.initializeTasklets(tasklets);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles task updates
+   * @param tasks tasks
+   */
+  onTasksUpdated(tasks: Map<string, Task>) {
+    this.initializeTasks(tasks);
+    this.initializeTasklet(this.tasklet);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles project updates
+   * @param projects projects
+   */
+  onProjectsUpdated(projects: Map<string, Project>) {
+    this.initializeProjects(projects);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles person updates
+   * @param persons persons
+   */
+  onPersonsUpdated(persons: Map<string, Person>) {
+    this.initializePersons(persons);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles tag updates
+   * @param tags tags
+   */
+  onTagsUpdated(tags: Map<string, Tag>) {
+    this.initializeTags(tags);
+    this.initializeOptions();
+  }
+
+  /**
+   * Handles setting updates
+   * @param settings settings
+   */
+  onSettingsUpdated(settings: Map<string, Setting>) {
+    this.initializeSettings(settings);
+  }
+
+  /**
+   * Handles media updates
+   * @param media media
+   */
+  onMediaUpdated(media: Media) {
+    this.media = media as Media;
+  }
+
+  // </editor-fold>
+
+  //
   // Initialization
   //
 
   // <editor-fold defaultstate="collapsed" desc="Initialization">
+
+  /**
+   * Initialize subscriptions
+   */
+  private initializeSubscriptions() {
+    this.initializeTaskletSubscription().subscribe(value => {
+      this.onTaskletUpdated(value as Tasklet);
+    });
+    this.initializeTaskletsSubscription().subscribe(value => {
+      this.onTaskletsUpdated(value as Map<string, Tasklet>);
+    });
+    this.initializeTasksSubscription().subscribe(value => {
+      this.onTasksUpdated(value as Map<string, Task>);
+    });
+    this.initializeProjectsSubscription().subscribe(value => {
+      this.onProjectsUpdated(value as Map<string, Project>);
+    });
+    this.initializePersonsSubscription().subscribe(value => {
+      this.onPersonsUpdated(value as Map<string, Person>);
+    });
+    this.initializeTagsSubscription().subscribe(value => {
+      this.onTagsUpdated(value as Map<string, Tag>);
+    });
+    this.initializeSettingsSubscription().subscribe(value => {
+      this.onSettingsUpdated(value as Map<string, Setting>);
+    });
+    this.initializeMediaSubscription().subscribe(value => {
+      this.onMediaUpdated(value as Media);
+    });
+  }
 
   /**
    * Initializes tasklet
@@ -386,6 +463,14 @@ export class TaskletComponent
   }
 
   /**
+   * Initialize settings
+   * @param settings settings
+   */
+  private initializeSettings(settings: Map<string, Setting>) {
+    this.settingsMap = settings;
+  }
+
+  /**
    * Initializes options
    */
   private initializeOptions() {
@@ -420,9 +505,9 @@ export class TaskletComponent
     this.action.icon = TaskletService.getIconByTaskletType(this.tasklet.type);
     this.action.label = this.tasklet.type.toString();
     this.action.taskletTypes = Object.keys(TaskletType).map(key => TaskletType[key]).filter(type => {
-      const settingDevelopmemt = this.settingsService.settings.get(SettingType.DEVELOPMENT);
-      const settingPomodoro = this.settingsService.settings.get(SettingType.POMODORO);
-      const settingScrum = this.settingsService.settings.get(SettingType.SCRUM);
+      const settingDevelopmemt = this.settingsMap.get(SettingType.DEVELOPMENT);
+      const settingPomodoro = this.settingsMap.get(SettingType.POMODORO);
+      const settingScrum = this.settingsMap.get(SettingType.SCRUM);
 
       return type !== TaskletType.DEVELOPMENT
         && !(this.taskletService.groupContainsType(TaskletTypeGroup.DEVELOPMENT, type)
@@ -430,18 +515,6 @@ export class TaskletComponent
         && !(type === TaskletType.POMODORO && !(settingPomodoro != null && settingPomodoro.value))
         && !(type === TaskletType.DAILY_SCRUM && !(settingScrum != null && settingScrum.value))
         && type !== TaskletType.POMODORO_BREAK;
-    });
-  }
-
-  /**
-   * Initializes settings
-   */
-  private initializeSettings() {
-    this.settingsService.fetch();
-    this.settingsService.settingsSubject.subscribe(value => {
-      if (value != null) {
-        this.sidenavOpened = this.settingsService.isSettingActive(SettingType.TASKLET_SIDENAV_OPENED);
-      }
     });
   }
 
@@ -604,7 +677,7 @@ export class TaskletComponent
   onPomodoroTimerOver() {
     const taskletPomodoroBreak = new Tasklet();
     taskletPomodoroBreak.type = TaskletType.POMODORO_BREAK;
-    taskletPomodoroBreak.pomodoroBreak = +this.settingsService.settings.get(SettingType.POMODORO_BREAK).value;
+    taskletPomodoroBreak.pomodoroBreak = +this.settingsMap.get(SettingType.POMODORO_BREAK).value;
 
     // Save finished pomodoro tasklet
     this.updateTasklet();
