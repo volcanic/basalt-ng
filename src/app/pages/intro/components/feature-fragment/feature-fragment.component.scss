@@ -1,7 +1,26 @@
+@import '../../../../../sizes';
 @import '../../../../../flex';
 
 .centered {
   text-align: center;
+}
+
+.header {
+  @media #{$breakpoint-small} {
+    margin-bottom: 10px;
+  }
+  @media #{$breakpoint-medium} {
+    margin-bottom: 20px;
+  }
+  @media #{$breakpoint-large} {
+    margin-bottom: 65px;
+  }
+}
+
+.title {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 1.8em;
 }
 
 ::ng-deep .typeSelect div.mat-select-arrow-wrapper {

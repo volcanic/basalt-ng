@@ -91,7 +91,7 @@ export class MarkdownPreviewComponent implements OnChanges {
    */
   updateMarkdown() {
     if (this.markdownText != null) {
-      this.htmlText = md.render(this.markdownText.replace(new RegExp('\n', 'g'), '<br/>'));
+      this.htmlText = md.render(this.markdownText);
     }
   }
 }

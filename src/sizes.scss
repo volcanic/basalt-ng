@@ -1,3 +1,6 @@
-$breakpoint-small: 'screen and (max-width: 960px)';
-$breakpoint-medium: 'screen and (min-width: 960px) and (max-width: 1280px)';
-$breakpoint-large: 'screen and (min-width: 1280px)';
+$break-medium: 960px;
+$break-large: 1280px;
+
+$breakpoint-small: screen and (max-width: $break-medium);
+$breakpoint-medium: screen and (min-width: $break-medium) and (max-width: $break-large);
+$breakpoint-large: screen and (min-width: $break-large);
