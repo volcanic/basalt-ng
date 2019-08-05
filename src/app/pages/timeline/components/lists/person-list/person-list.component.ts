@@ -88,6 +88,13 @@ export class PersonListComponent implements OnChanges {
     this.showMoreLabel = this.showMoreStatus ? 'Less' : 'More';
   }
 
+  /**
+   * Handles click on placeholder
+   */
+  onPlaceholderClicked() {
+    // this.personEventEmitter.emit({action: Action.OPEN_DIALOG_ADD, person: null});
+  }
+
   //
   // Helpers
   //

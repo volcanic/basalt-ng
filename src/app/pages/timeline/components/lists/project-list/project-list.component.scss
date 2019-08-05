@@ -1,4 +1,26 @@
+@import '../../../../../../sizes';
 @import '../../../../../../theme';
+@import '../../../../../../flex';
+
+//
+// Custom
+//
+
+.placeholder-container {
+}
+
+.placeholder-title {
+  font-family: 'Roboto Slab', serif;
+  font-weight: 700;
+  font-size: 1.8em;
+}
+
+.placeholder {
+  color: mat-color($mat-grey, 400);
+  background: transparent;
+  white-space: normal;
+  width: 100%;
+}
 
 //
 // Custom

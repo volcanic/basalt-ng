@@ -95,6 +95,13 @@ export class TagListComponent implements OnChanges {
   }
 
   /**
+   * Handles click on placeholder
+   */
+  onPlaceholderClicked() {
+    // this.tagEventEmitter.emit({action: Action.OPEN_DIALOG_ADD, tag: null});
+  }
+
+  /**
    * Handles click on remove-unused-tags button
    */
   onRemoveUnusedTagsClicked() {
