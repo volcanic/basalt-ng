@@ -1,4 +1,15 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {Task} from '../../../../../core/entity/model/task.model';
 import {TaskService} from '../../../../../core/entity/services/task/task.service';
 import {Project} from '../../../../../core/entity/model/project.model';
@@ -14,7 +25,7 @@ import {Action} from '../../../../../core/entity/model/action.enum';
   styleUrls: ['./task-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskListComponent implements OnChanges {
+export class TaskListComponent implements OnInit, OnChanges, OnDestroy {
 
   /** Map of tasks */
   @Input() tasksMap = new Map<string, Task>();
@@ -60,16 +71,28 @@ export class TaskListComponent implements OnChanges {
   /** Background personColor for recurring badge */
   tasksRecurringBadgeColor = 'transparent';
 
+  /** Holds the set interval in order to destroy it in onDestroy */
+  intervalHolder: any;
+
   /**
    * Constructor
    * @param taskService task service
    */
-  constructor(private taskService: TaskService) {
+  constructor(private taskService: TaskService,
+              private changeDetectorRef: ChangeDetectorRef) {
   }
 
   //
   // Lifecycle hooks
   //
+
+  ngOnInit() {
+    const changeDetectionInterval = 1000 * 10; // 10 seconds
+    this.intervalHolder = setInterval(() => {
+      // this.changeDetectorRef.detectChanges(); // Does not seem to trigger ngOnChanges (neither does .markForCheck()). There might be a better way to update regularly.
+      this.initializeTasks();
+    }, changeDetectionInterval);
+  }
 
   /**
    * Handles on-changes lifecycle phase
@@ -77,6 +100,10 @@ export class TaskListComponent implements OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     this.initializeTasks();
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalHolder);
   }
 
   //
