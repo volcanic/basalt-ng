@@ -70,7 +70,8 @@ export class FeatureService {
       return feature.type === featureType;
     }).some(feature => {
       const settingType = feature.settingType;
-      return settings.get(settingType) != null
+      return settings != null
+        && settings.get(settingType) != null
         && settings.get(settingType).value === true;
     });
   }
