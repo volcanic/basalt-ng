@@ -1443,7 +1443,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Determines whether the persons assigned to a given tasklet already exixst, otherwise creates new ones
+   * Determines whether the persons assigned to a given tasklet already exist, otherwise creates new ones
    * @param tasklet tasklet assign persons to
    * @param persons array of persons to be checked
    */
