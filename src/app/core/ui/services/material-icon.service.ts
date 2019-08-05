@@ -69,9 +69,11 @@ export class MaterialIconService {
     const icons: Icon[] = [];
     icons.push(new Icon(IconTopic.ACTION, 'agenda', 'ic_view_agenda_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'android', 'ic_android_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'bookmark_border', 'ic_bookmark_border_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'bug_report', 'ic_bug_report_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'check_circle', 'ic_check_circle_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'code', 'ic_code_24px.svg'));
+    icons.push(new Icon(IconTopic.ACTION, 'done', 'ic_done_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'gavel', 'ic_gavel_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'help_outline', 'ic_help_outline_24px.svg'));
     icons.push(new Icon(IconTopic.ACTION, 'history', 'ic_history_24px.svg'));
@@ -101,6 +103,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.COMMUNICATION, 'phone', 'ic_phone_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'add', 'ic_add_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'clear', 'ic_clear_24px.svg'));
+    icons.push(new Icon(IconTopic.CONTENT, 'create', 'ic_create_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'filter_list', 'ic_filter_list_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'flag', 'ic_flag_24px.svg'));
     icons.push(new Icon(IconTopic.CONTENT, 'mail', 'ic_mail_24px.svg'));
@@ -113,6 +116,7 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.FILE, 'file_download', 'ic_file_download_24px.svg'));
     icons.push(new Icon(IconTopic.FILE, 'file_upload', 'ic_file_upload_24px.svg'));
     icons.push(new Icon(IconTopic.HARDWARE, 'keyboard_arrow_up', 'ic_keyboard_arrow_up_24px.svg'));
+    icons.push(new Icon(IconTopic.IMAGE, 'edit', 'ic_edit_24px.svg'));
     icons.push(new Icon(IconTopic.IMAGE, 'timer', 'ic_timer_24px.svg'));
     icons.push(new Icon(IconTopic.IMAGE, 'brightness_3', 'ic_brightness_3_24px.svg'));
     icons.push(new Icon(IconTopic.IMAGE, 'nature', 'ic_nature_24px.svg'));

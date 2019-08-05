@@ -6,15 +6,16 @@ import {environment} from '../../../../../environments/environment';
 import {NewFeaturesDialogComponent} from '../../../../ui/new-features-dialog/new-features-dialog/new-features-dialog.component';
 import {GitTag} from '../../../../core/settings/model/git-tag.model';
 import {MatDialog, MatIconRegistry} from '@angular/material';
-import {takeUntil} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 import {Media} from '../../../../core/ui/model/media.enum';
 import {MediaService} from '../../../../core/ui/services/media.service';
 import {MaterialColorService} from '../../../../core/ui/services/material-color.service';
 import {MaterialIconService} from '../../../../core/ui/services/material-icon.service';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Router} from '@angular/router';
 import {FeatureService} from '../../../../core/settings/services/feature.service';
+import {Settings} from 'http2';
 
 /**
  * Displays an intro page
@@ -26,11 +27,6 @@ import {FeatureService} from '../../../../core/settings/services/feature.service
 })
 export class IntroComponent implements OnInit, OnDestroy {
 
-  /** Title to be displayed */
-  title = 'How do you work?';
-  /** Description to be displayed */
-  description = 'Select the aspects you want to use (you can change this later)';
-
   /** Helper subject used to finish other subscriptions */
   private unsubscribeSubject = new Subject();
 
@@ -40,7 +36,10 @@ export class IntroComponent implements OnInit, OnDestroy {
   public media: Media = Media.UNDEFINED;
 
   /** Map of current settings */
-  settings = new Map<string, Setting>();
+  settingsMap = new Map<string, Setting>();
+
+  /** Whether to display feature selection step or not */
+  private displayFeatureSelection = false;
 
   /**
    * Constructor
@@ -73,10 +72,13 @@ export class IntroComponent implements OnInit, OnDestroy {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
-    this.initializeSettings();
-    this.initializeSemaphore();
+    this.initializeSubscriptions();
+    this.initializeFeatures();
+
+    this.initializeOptionalSteps();
     this.initializeMaterial();
-    this.initializeMediaSubscription();
+
+    this.findSettings();
   }
 
   /**
@@ -88,45 +90,147 @@ export class IntroComponent implements OnInit, OnDestroy {
   }
 
   //
+  // Events
+  //
+
+  /**
+   * Handles setting updates
+   * @param settings settings
+   */
+  onSettingsUpdated(settings: Map<string, Setting>) {
+    this.initializeSettings(settings);
+  }
+
+  /**
+   * Handles media updates
+   * @param media media
+   */
+  onMediaUpdated(media: Media) {
+    this.media = media as Media;
+  }
+
+  //
   // Initialization
   //
 
   /**
+   * Initialize subscriptions
+   */
+  private initializeSubscriptions() {
+    this.initializeSettingsSubscription().subscribe(value => {
+      this.onSettingsUpdated(value as Map<string, Setting>);
+    });
+    this.initializeMediaSubscription().subscribe(value => {
+      this.onMediaUpdated(value as Media);
+    });
+  }
+
+  /**
+   * Initializes features
+   */
+  private initializeFeatures() {
+    this.settingsService.updateSetting(new Setting(SettingType.ONBOARDING_DONE, false));
+    this.settingsService.updateSetting(new Setting(SettingType.DEVELOPMENT, false));
+    this.settingsService.updateSetting(new Setting(SettingType.SCRUM, false));
+    this.settingsService.updateSetting(new Setting(SettingType.POMODORO, false));
+    this.settingsService.updateSetting(new Setting(SettingType.POMODORO_DURATION, 25));
+    this.settingsService.updateSetting(new Setting(SettingType.POMODORO_BREAK, 5));
+  }
+
+  /**
+   * Initializes settings subscription
+   */
+  protected initializeSettingsSubscription(): Observable<Map<string, Setting>> {
+    return this.settingsService.settingsSubject.pipe(
+      takeUntil(this.unsubscribeSubject),
+      filter(value => value != null)
+    );
+  }
+
+  /**
+   * Initializes media subscription
+   */
+  protected initializeMediaSubscription(): Observable<Media> {
+    return this.mediaService.mediaSubject.pipe(
+      takeUntil(this.unsubscribeSubject),
+      filter(value => value != null)
+    );
+  }
+
+  /**
+   * Initialize settings
+   * @param settings settings
+   */
+  private initializeSettings(settings: Map<string, Setting>) {
+    this.settingsMap = new Map(settings);
+  }
+
+  /**
+   * Initializes material colors and icons
+   */
+  private initializeMaterial() {
+    this.materialColorService.initializeColors();
+    this.materialIconService.initializeIcons(this.iconRegistry, this.sanitizer);
+  }
+
+  /**
    * Initializes an unset settingType
-   * @param settings settingType
+   * @param settingType setting type
    * @param value value
    */
-  private initializeSetting(settings: SettingType, value: any) {
-    if (this.settingsService.settings.get(settings) == null) {
-      const setting = new Setting(settings, value);
+  private initializeSetting(settingType: SettingType, value: any) {
+    if (this.settingsMap.get(settingType) == null) {
+      const setting = new Setting(settingType, value);
       this.settingsService.updateSetting(setting);
     }
   }
 
   /**
-   * Initializes semaphore
+   * Initializes optional steps
    */
-  private initializeSemaphore() {
-    // Activate semaphore
-    this.settingsService.updateSetting(new Setting(SettingType.SEMAPHORE_FEATURE, true));
+  private initializeOptionalSteps() {
+    this.displayFeatureSelection = this.featureService.features.some(feature => {
+      return (this.settingsMap.get(feature.settingType) == null);
+    });
+  }
+
+  //
+  // Actions
+  //
+
+  /**
+   * Handles feature toggle
+   * @param event event
+   */
+  onFeatureToggled(event: { type: SettingType, value: any }) {
+    const setting = new Setting(event.type, event.value);
+    this.settingsService.updateSetting(setting);
   }
 
   /**
-   * Initializes settings
+   * Handles click on continue button
    */
-  private initializeSettings() {
-    this.settingsService.fetch();
-    this.settingsService.settingsSubject.subscribe(value => {
-      if (value != null) {
-        this.settings = new Map(value);
-
-        // Initialize version setting
-        if (this.settings.get(SettingType.VERSION) != null) {
-          this.showNewFeatures(this.settings.get(SettingType.VERSION).value);
-        }
-      }
+  onContinue() {
+    const setting = new Setting(SettingType.ONBOARDING_DONE, true);
+    this.settingsService.updateSetting(new Setting(SettingType.ONBOARDING_DONE, true));
+    this.router.navigate([`/timeline`]).then(() => {
     });
   }
+
+  //
+  //
+  //
+
+  /**
+   * Triggers settings retrieval from database
+   */
+  protected findSettings() {
+    this.settingsService.fetch();
+  }
+
+  //
+  // Helpers
+  //
 
   /**
    * Handles display of new features dialog
@@ -183,47 +287,5 @@ export class IntroComponent implements OnInit, OnDestroy {
         this.settingsService.updateSetting(new Setting(SettingType.VERSION, environment.VERSION));
       });
     }
-  }
-
-  /**
-   * Initializes material colors and icons
-   */
-  private initializeMaterial() {
-    this.materialColorService.initializeColors();
-    this.materialIconService.initializeIcons(this.iconRegistry, this.sanitizer);
-  }
-
-  /**
-   * Initializes media subscription
-   */
-  private initializeMediaSubscription() {
-    this.media = this.mediaService.media;
-    this.mediaService.mediaSubject.pipe(
-      takeUntil(this.unsubscribeSubject)
-    ).subscribe((value) => {
-      this.media = value as Media;
-    });
-  }
-
-  //
-  // Actions
-  //
-
-  /**
-   * Handles click on continue button
-   */
-  onContinue() {
-    // Set default values
-    this.initializeSetting(SettingType.DEVELOPMENT, false);
-    this.initializeSetting(SettingType.SCRUM, false);
-    this.initializeSetting(SettingType.POMODORO, false);
-    this.initializeSetting(SettingType.POMODORO_DURATION, 5);
-    this.initializeSetting(SettingType.POMODORO_BREAK, 5);
-
-    // Deactivate semaphore
-    this.settingsService.updateSetting(new Setting(SettingType.SEMAPHORE_FEATURE, false));
-
-    this.router.navigate([`/timeline`]).then(() => {
-    });
   }
 }

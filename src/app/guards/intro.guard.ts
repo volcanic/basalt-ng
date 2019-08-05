@@ -5,6 +5,7 @@ import {FeatureService} from '../core/settings/services/feature.service';
 import {SettingType} from '../core/settings/model/setting-type.enum';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {Setting} from '../core/settings/model/setting.model';
 
 /**
  * Checks if it is necessary to show intro page
@@ -38,35 +39,23 @@ export class IntroGuard implements CanActivate {
       this.settingsService.fetch();
       this.settingsService.settingsSubject.pipe(
         takeUntil(this.unsubscribeSubject
-        )).subscribe(() => {
+        )).subscribe((value) => {
+        if (value != null) {
+          const settingsMap = value as Map<string, Setting>;
+          console.table(Array.from(settingsMap.values()));
+          console.table(SettingsService.isSettingActive(SettingType.ONBOARDING_DONE, settingsMap));
 
-        this.unsubscribeSubject.next();
-        this.unsubscribeSubject.complete();
+          this.unsubscribeSubject.next();
+          this.unsubscribeSubject.complete();
 
-        if (this.isFeatureMissing() || this.isSemaphoreSet()) {
-          resolve(true);
-        } else {
-          this.router.navigate([`/timeline`]);
-          resolve(false);
+          if (SettingsService.isSettingActive(SettingType.ONBOARDING_DONE, settingsMap)) {
+            this.router.navigate([`/timeline`]);
+            resolve(false);
+          }
         }
+
+        resolve(true);
       });
-    });
-  }
-
-  /**
-   * Determines if semaphore is set
-   */
-  private isSemaphoreSet(): boolean {
-    const sempahore = this.settingsService.settings.get(SettingType.SEMAPHORE_FEATURE);
-    return sempahore != null && sempahore.value != null && sempahore.value;
-  }
-
-  /**
-   * Determines if a feature is missing
-   */
-  private isFeatureMissing(): boolean {
-    return this.featureService.features.some(feature => {
-      return (this.settingsService.settings.get(feature.settingType) == null);
     });
   }
 }

@@ -16,6 +16,7 @@ import {FeatureService} from '../../../../../../core/settings/services/feature.s
 import {TaskletService} from '../../../../../../core/entity/services/tasklet/tasklet.service';
 import {FeatureType} from '../../../../../../core/settings/model/feature-type.enum';
 import {environment} from '../../../../../../../environments/environment';
+import {Setting} from '../../../../../../core/settings/model/setting.model';
 
 /**
  * Represents a tasklet type group action button
@@ -49,6 +50,8 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
+  /** Map of settings */
+  @Input() settingsMap = new Map<string, Setting>();
   /** Event emitter indicating tasklet type selection */
   @Output() taskletTypeEventEmitter = new EventEmitter<TaskletType>();
 
@@ -211,14 +214,14 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
    * Determines whether tasklet type scrum is enabled
    */
   private isTaskletTypeScrumEnabled(): boolean {
-    return !(this.featureService.isFeatureActive(FeatureType.SCRUM) || !environment.FEATURE_TOGGLE_SCRUM);
+    return !(this.featureService.isFeatureActive(FeatureType.SCRUM, this.settingsMap) || !environment.FEATURE_TOGGLE_SCRUM);
   }
 
   /**
    * Determines whether tasklet type development is enabled
    */
   private isTaskletTypeDevelopmentEnabled(): boolean {
-    return !(this.featureService.isFeatureActive(FeatureType.DEVELOPMENT) || !environment.FEATURE_TOGGLE_DEVELOPMENT);
+    return !(this.featureService.isFeatureActive(FeatureType.DEVELOPMENT, this.settingsMap) || !environment.FEATURE_TOGGLE_DEVELOPMENT);
   }
 
   /**
@@ -234,9 +237,9 @@ export class TaskletTypeFragmentComponent implements OnInit, OnChanges {
     action.label = group.toString();
     action.taskletTypes = this.taskletService.getTaskletTypesByGroup(group).filter(type => {
       return type !== TaskletType.DEVELOPMENT
-        && !(group === TaskletTypeGroup.DEVELOPMENT && !this.featureService.isFeatureActive(FeatureType.DEVELOPMENT))
-        && !(type === TaskletType.DAILY_SCRUM && !this.featureService.isFeatureActive(FeatureType.SCRUM))
-        && !(type === TaskletType.POMODORO && !this.featureService.isFeatureActive(FeatureType.POMODORO));
+        && !(group === TaskletTypeGroup.DEVELOPMENT && !this.featureService.isFeatureActive(FeatureType.DEVELOPMENT, this.settingsMap))
+        && !(type === TaskletType.DAILY_SCRUM && !this.featureService.isFeatureActive(FeatureType.SCRUM, this.settingsMap))
+        && !(type === TaskletType.POMODORO && !this.featureService.isFeatureActive(FeatureType.POMODORO, this.settingsMap));
     });
     this.taskletTypeActions.push(action);
   }

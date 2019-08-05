@@ -13,9 +13,24 @@ import {SettingType} from '../model/setting-type.enum';
 export class SettingsService {
 
   /** Map of current settings */
-  settings = new Map<string, Setting>();
+  settingsMap = new Map<string, Setting>();
   /** Subject that publishes changes in settings */
   settingsSubject = new Subject<Map<string, Setting>>();
+
+  //
+  // Static methods
+  //
+
+  /**
+   * Determines if a setting is active
+   * @param settingType setting type
+   * @param settingsMap setting map
+   */
+  static isSettingActive(settingType: SettingType, settingsMap: Map<string, Setting>): boolean {
+    const setting = settingsMap.get(settingType);
+
+    return setting != null && setting.value != null && JSON.parse(setting.value) === true;
+  }
 
   /**
    * Constructor
@@ -26,7 +41,7 @@ export class SettingsService {
       item => {
         (item['change']['docs']).forEach(d => {
           const setting = d as Setting;
-          this.settings.set(setting.id, setting);
+          this.settingsMap.set(setting.id, setting);
         });
         this.notify();
       });
@@ -37,7 +52,7 @@ export class SettingsService {
    * @param setting setting to be updated
    */
   public updateSetting(setting: Setting) {
-    this.settings.set(setting.id, setting);
+    this.settingsMap.set(setting.id, setting);
     this.pouchDBSettingsService.put(setting.id, setting);
     this.notify();
   }
@@ -46,12 +61,12 @@ export class SettingsService {
    * Retrieves data from PouchDB
    */
   public fetch() {
-    this.settings.clear();
+    this.settingsMap.clear();
     this.pouchDBSettingsService.fetch().then(result => {
         if (result != null) {
           result.rows.forEach(r => {
             const setting = r.doc as Setting;
-            this.settings.set(setting.id, setting);
+            this.settingsMap.set(setting.id, setting);
           });
 
           this.notify();
@@ -64,16 +79,6 @@ export class SettingsService {
     );
   }
 
-  /**
-   * Determines if a setting is active
-   * @param settingType setting type
-   */
-  public isSettingActive(settingType: SettingType): boolean {
-    const setting = this.settings.get(settingType);
-
-    return setting != null && setting.value != null && JSON.parse(setting.value) === true;
-  }
-
   //
   // Notification
   //
@@ -82,6 +87,6 @@ export class SettingsService {
    * Notifies subscribers that something has changed
    */
   private notify() {
-    this.settingsSubject.next(this.settings);
+    this.settingsSubject.next(this.settingsMap);
   }
 }

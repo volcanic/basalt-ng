@@ -46,6 +46,7 @@ import {EmailService} from '../../../../core/mail/services/mail/email.service';
 import {SettingsService} from '../../../../core/settings/services/settings.service';
 import {TaskletDisplayAspect} from '../../../../core/entity/services/tasklet/tasklet-display.service';
 import {TaskDisplayAspect} from '../../../../core/entity/services/task/task-display.service';
+import {Setting} from '../../../../core/settings/model/setting.model';
 
 /**
  * Base component for timeline pages
@@ -97,6 +98,9 @@ export class BaseComponent implements OnInit, OnDestroy {
   public tagsMapFilter = new Map<string, Tag>();
   /** Map of filtered tags */
   public tagsMapFiltered = new Map<string, Tag>();
+
+  /** Map of settings */
+  public settingsMap = new Map<string, Setting>();
 
   /** Enum of tasklet types */
   public taskletType = TaskletType;
@@ -181,14 +185,11 @@ export class BaseComponent implements OnInit, OnDestroy {
     this.unsubscribeSubject.complete();
   }
 
-  // </editor-fold>
-
   //
   // Initialization
   //
 
   // <editor-fold defaultstate="collapsed" desc="Initialization">
-
   /**
    * Initializes tasklet subscription
    */
@@ -289,6 +290,19 @@ export class BaseComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Initializes settings subscription
+   */
+  protected initializeSettingsSubscription(): Observable<Map<string, Setting>> {
+    return this.settingsService.settingsSubject.pipe(
+      takeUntil(this.unsubscribeSubject),
+      filter(value => value != null)
+    );
+  }
+
+  /**
+   * Initializes media subscription
+   */
   protected initializeMediaSubscription(): Observable<Media> {
     return this.mediaService.mediaSubject.pipe(
       takeUntil(this.unsubscribeSubject),
@@ -360,6 +374,13 @@ export class BaseComponent implements OnInit, OnDestroy {
     this.projectService.fetchProjects(forceReload);
     this.personService.fetchPersons(forceReload);
     this.tagService.fetchTags(forceReload);
+  }
+
+  /**
+   * Triggers settings retrieval from database
+   */
+  protected findSettings() {
+    this.settingsService.fetch();
   }
 
   //
@@ -501,6 +522,7 @@ export class BaseComponent implements OnInit, OnDestroy {
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
           tagMap: this.tagsMap,
+          settingsMap: this.settingsMap
         };
 
         // Open dialog
@@ -550,6 +572,7 @@ export class BaseComponent implements OnInit, OnDestroy {
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
           tagMap: this.tagsMap,
+          settingsMap: this.settingsMap
         };
 
         // Open dialog
@@ -611,6 +634,7 @@ export class BaseComponent implements OnInit, OnDestroy {
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
           tagMap: this.tagsMap,
+          settingsMap: this.settingsMap
         };
 
         // Open dialog
@@ -684,7 +708,7 @@ export class BaseComponent implements OnInit, OnDestroy {
       }
       case Action.POMODORO_START: {
         // Set pomodoro duration and start time
-        tasklet.pomodoroDuration = +this.settingsService.settings.get(SettingType.POMODORO_DURATION).value;
+        tasklet.pomodoroDuration = +this.settingsMap.get(SettingType.POMODORO_DURATION).value;
         tasklet.pomodoroStartTime = new Date();
 
         // Update tasklet
