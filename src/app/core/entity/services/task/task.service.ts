@@ -561,19 +561,20 @@ export class TaskService {
 
   /**
    * Creates a task
+   * @param name name
    * @param task task
    * @param tasksMap tasks map
    * @param projectsMap projects map
    * @param tagsMap tags map
    */
-  public createTaskIfNecessary(task: Task, tasksMap: Map<string, Task>,
+  public createTaskIfNecessary(name: string, task: Task, tasksMap: Map<string, Task>,
                                projectsMap: Map<string, Project>, tagsMap: Map<string, Tag>): Promise<Task> {
     return new Promise((resolve) => {
       if (task == null || task.name == null || task.name === '') {
-        const newTask = new Task(task.name);
+        const newTask = new Task(name);
         this.createTask(newTask, tasksMap, projectsMap, tagsMap).then(() => {
-          resolve(newTask);
         });
+        resolve(newTask);
       } else {
         resolve(task);
       }
@@ -598,8 +599,8 @@ export class TaskService {
         newProxyTask.projectId = existingProject.id;
 
         this.createTask(newProxyTask, tasksMap, projectsMap, tagsMap).then(() => {
-          resolve(newProxyTask);
         });
+        resolve(newProxyTask);
       } else {
         resolve(proxyTask);
       }

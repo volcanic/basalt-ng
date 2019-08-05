@@ -1392,30 +1392,34 @@ export class BaseComponent implements OnInit, OnDestroy {
       const existingTask = this.taskService.getTaskByName(task.name, this.tasksMap);
 
       // Create new task
-      this.taskService.createTaskIfNecessary(existingTask, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-        // Assign task to project
-        existingTask.projectId = project != null ? project.id : null;
+      this.taskService
+        .createTaskIfNecessary(task.name, existingTask, this.tasksMap, this.projectsMap, this.tagsMap)
+        .then((t) => {
+          // Assign task to project
+          t.projectId = project != null ? project.id : null;
+          this.taskService.updateTask(t, this.tasksMap, this.projectsMap, this.tagsMap);
 
-        // Assign tasklet to task
-        tasklet.taskId = existingTask.id;
+          // Assign tasklet to task
+          tasklet.taskId = t.id;
 
-        // Add task to filters
-        this.filterService.updateTasksListIfNotEmpty([existingTask]);
-      });
+          // Add task to filters
+          this.filterService.updateTasksListIfNotEmpty([t]);
+        });
     } else if (TaskletService.isTaskletDefinedByProject(project)) {
       // Find project and its proxy task
       const existingProject = this.projectService.getProjectByName(project.name, this.projectsMap);
       const proxyTask = this.taskService.getProxyTaskByProject(project, this.tasksMap);
 
       // Create new proxy task
-      this.taskService.createProxyTaskIfNecessary(proxyTask, existingProject,
-        this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
-        // Assign tasklet to proxy task
-        tasklet.taskId = proxyTask.id;
+      this.taskService
+        .createProxyTaskIfNecessary(proxyTask, existingProject, this.tasksMap, this.projectsMap, this.tagsMap)
+        .then((t) => {
+          // Assign tasklet to proxy task
+          tasklet.taskId = t.id;
 
-        // Add task to filters
-        this.filterService.updateTasksListIfNotEmpty([proxyTask]);
-      });
+          // Add task to filters
+          this.filterService.updateTasksListIfNotEmpty([t]);
+        });
     } else {
       // Unassign task
       tasklet.taskId = null;
