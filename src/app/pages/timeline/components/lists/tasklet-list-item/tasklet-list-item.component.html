@@ -36,6 +36,8 @@
   <div *ngIf="containsDisplayAspect(displayAspectType.IS_DISPLAYED_AS_PREVIEW, tasklet)">
     <div class="tasklet-preview">
       <app-tasklet-preview-fragment [tasklet]="tasklet"
+                                    [task]="task"
+                                    [project]="project"
                                     [title]="title"
                                     [icon]="icon"
                                     [media]="media"

@@ -45,7 +45,7 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   @Input() themeClass = 'light-theme';
 
   /** Event emitter indicating click on tasklet */
-  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet, task: Task, project: Project }>();
 
   /** References to tags inherited from task */
   inheritedTagIds = [];
@@ -144,6 +144,54 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   //
   // Actions
   //
+
+  /**
+   * Handles click on card header
+   */
+  onCardHeaderClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.NONE,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
+
+  /**
+   * Handles click on creation time
+   */
+  onCreationTimeClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.OPEN_DIALOG_CREATION_TIME,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
+
+  /**
+   * Handles click on tags holder
+   */
+  onTagsHolderClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.NONE,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
+
+  /**
+   * Handles click on continue button
+   */
+  onContinueButtonClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.OPEN_DIALOG_CONTINUE,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
 
   /**
    * Handles expansion panel toggle

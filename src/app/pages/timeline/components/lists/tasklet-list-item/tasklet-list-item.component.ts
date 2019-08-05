@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {MatMenuTrigger} from '@angular/material';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {DateService} from 'app/core/entity/services/date.service';
@@ -40,7 +50,12 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   @Input() media: Media;
 
   /** Event emitter indicating tasklet action */
-  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+  @Output() taskletEventEmitter = new EventEmitter<{
+    action: Action,
+    tasklet: Tasklet,
+    task: Task,
+    project: Project
+  }>();
 
   /** Trigger for context menu */
   @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
@@ -104,6 +119,8 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.initializeIcon();
+    this.initializeTask();
+    this.initializeProject();
   }
 
   /**
@@ -200,18 +217,28 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Handles click on tasklet
    * @param event event
    */
-  onTaskletClicked(event: { action: Action, tasklet: Tasklet }) {
+  onTaskletClicked(event: { action: Action, tasklet: Tasklet, task: Task, project: Project }) {
     switch (event.action) {
       case Action.NONE: {
         if (this.media > this.mediaType.MEDIUM) {
-          this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, tasklet: this.tasklet});
+          this.taskletEventEmitter.emit({
+            action: Action.OPEN_DIALOG_UPDATE,
+            tasklet: event.tasklet,
+            task: event.task,
+            project: event.project
+          });
         } else {
           this.contextMenuTrigger.openMenu();
         }
         break;
       }
       default: {
-        this.taskletEventEmitter.emit({action: event.action, tasklet: event.tasklet});
+        this.taskletEventEmitter.emit({
+          action: event.action,
+          tasklet: event.tasklet,
+          task: event.task,
+          project: event.project,
+        });
       }
     }
   }

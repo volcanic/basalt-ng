@@ -1,6 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {Action} from '../../../core/entity/model/action.enum';
+import {Task} from '../../../core/entity/model/task.model';
+import {Project} from '../../../core/entity/model/project.model';
+import {Tasklet} from '../../../core/entity/model/tasklet.model';
 
 /**
  * Displays time picker
@@ -17,6 +20,13 @@ export class DateTimePickerDialogComponent implements OnInit {
 
   /** Date that shall be displayed */
   date: Date;
+
+  /** Temporarily displayed tasklet */
+  tasklet: Tasklet;
+  /** Temporarily displayed task */
+  task: Task;
+  /** Temporarily displayed project */
+  project: Project;
 
   /**
    * Constructor
@@ -48,6 +58,9 @@ export class DateTimePickerDialogComponent implements OnInit {
   private initializeData() {
     this.dialogTitle = this.data.dialogTitle;
     this.date = this.data.date;
+    this.tasklet = this.data.tasklet;
+    this.task = this.data.task;
+    this.project = this.data.project;
   }
 
   //
@@ -70,6 +83,12 @@ export class DateTimePickerDialogComponent implements OnInit {
    * Handles click on update button
    */
   updateCreationTime() {
-    this.dialogRef.close({action: Action.UPDATE, date: this.date});
+    this.dialogRef.close({
+      action: Action.UPDATE,
+      date: this.date,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
   }
 }

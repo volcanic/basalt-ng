@@ -669,19 +669,26 @@ export class BaseComponent implements OnInit, OnDestroy {
           disableClose: false,
           data: {
             dialogTitle: 'Set creation time',
-            date: tasklet.creationDate
+            date: tasklet.creationDate,
+            tasklet,
+            task,
+            project,
           }
         });
 
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             const resultingAction = result.action as Action;
-            tasklet.creationDate = result.date as Date;
+            const resultingTasklet = result.tasklet as Tasklet;
+            const resultingTask = result.task as Task;
+            const resultingProject = result.project as Project;
+            resultingTasklet.creationDate = result.date as Date;
 
             this.onTaskletEvent({
               action: resultingAction,
-              tasklet,
-              task: this.tasksMap.get(tasklet.taskId),
+              tasklet: resultingTasklet,
+              task: resultingTask,
+              project: resultingProject,
               tags: tasklet.tagIds.map(id => {
                 return this.tagsMap.get(id);
               }).filter(tag => {

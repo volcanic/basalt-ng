@@ -3,6 +3,8 @@ import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
 import {Media} from '../../../../../../core/ui/model/media.enum';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 import {Action} from '../../../../../../core/entity/model/action.enum';
+import {Task} from '../../../../../../core/entity/model/task.model';
+import {Project} from '../../../../../../core/entity/model/project.model';
 
 /**
  * Displays tasklet as preview
@@ -16,6 +18,10 @@ export class TaskletPreviewFragmentComponent {
 
   /** Tasklet to be displayed */
   @Input() tasklet: Tasklet;
+  /** Task to be displayed */
+  @Input() task: Task;
+  /** Project */
+  @Input() project: Project;
   /** Title (typically derived from task name */
   @Input() title = '';
   /** Icon name */

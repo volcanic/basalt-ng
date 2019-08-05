@@ -9,8 +9,7 @@
     <div *ngIf="debugMode" class="debug">task {{ tasklet.taskId }}</div>
 
     <mat-card-content class="content">
-      <mat-accordion class="headers-align"
-                     (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
+      <mat-accordion class="headers-align" (click)="onCardHeaderClicked()">
         <mat-expansion-panel [expanded]="expansionPanelOpened" hideToggle>
           <ng-template matExpansionPanelContent>
             <app-tasklet-content-fragment [tasklet]="tasklet"
@@ -27,14 +26,14 @@
       <div class="flexcontainer">
         <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
           <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached"
-               (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">
+               (click)="onCreationTimeClicked()">
             <span class="left-attached-content">
               <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
             </span>
           </div>
         </div>
         <div *ngIf="tasklet != null" class="tags-holder"
-             (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
+             (click)="onTagsHolderClicked()">
           <span>
             <span class="time" *ngIf="media <= mediaType.MEDIUM">
               <label>
@@ -64,9 +63,9 @@
         <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
           <div *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet)"
                class="side-attached right-attached hidden"
-               (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CONTINUE, tasklet: tasklet})"
                matTooltip="Continue with tasklet"
-               matTooltipPosition="above">
+               matTooltipPosition="above"
+               (click)="onContinueButtonClicked()">
             <div class="right-attached-content">
               <mat-icon class="continue-icon" svgIcon="play_circle_filled"></mat-icon>
             </div>
