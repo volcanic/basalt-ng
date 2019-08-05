@@ -599,6 +599,7 @@ export class BaseComponent implements OnInit, OnDestroy {
           return dailyScrumItem.type === DailyScrumItemType.WILL_DO;
         });
 
+        // Reset parts of the previous tasklet
         tasklet['_rev'] = null;
         tasklet.id = new UUID().toString();
         tasklet.description = new Description();
@@ -644,11 +645,14 @@ export class BaseComponent implements OnInit, OnDestroy {
           if (result != null) {
             const resultingAction = result.action as Action;
             const resultingTasklet = result.tasklet as Tasklet;
+            const resultingTask = result.task as Task;
+            const resultingProject = result.project as Project;
 
             this.onTaskletEvent({
               action: resultingAction,
               tasklet: resultingTasklet,
-              task: this.tasksMap.get(resultingTasklet.taskId),
+              task: resultingTask,
+              project: resultingProject,
               tags: resultingTasklet.tagIds.map(id => {
                 return this.tagsMap.get(id);
               }).filter(tag => {
@@ -922,8 +926,9 @@ export class BaseComponent implements OnInit, OnDestroy {
         this.onTaskletEvent({
           action: Action.OPEN_DIALOG_CONTINUE,
           tasklet,
-          tags: [],
           task: this.tasksMap.get(tasklet.taskId),
+          project,
+          tags: [],
           persons: []
         });
         break;
@@ -1397,7 +1402,8 @@ export class BaseComponent implements OnInit, OnDestroy {
         .then((t) => {
           // Assign task to project
           t.projectId = project != null ? project.id : null;
-          this.taskService.updateTask(t, this.tasksMap, this.projectsMap, this.tagsMap);
+          this.taskService.updateTask(t, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
+          });
 
           // Assign tasklet to task
           tasklet.taskId = t.id;

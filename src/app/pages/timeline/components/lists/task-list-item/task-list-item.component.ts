@@ -45,10 +45,12 @@ export class TaskListItemComponent implements OnInit, OnChanges {
   /** Indicates if item is active */
   @Input() active = true;
   /** Event emitter indicating task action */
-  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
+  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, project: Project, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
+  /** Project associated with this task */
+  project: Project;
   /** Project color */
   projectColor: string;
 
@@ -90,12 +92,14 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.initializeIcon();
+    this.initializeProject();
   }
 
   /**
    * Handles on-changes lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
+    this.initializeProject();
     this.initializeIconColor();
   }
 
@@ -118,6 +122,15 @@ export class TaskListItemComponent implements OnInit, OnChanges {
       this.icon = 'alias_task';
     } else {
       this.icon = 'alias_task_unassigned';
+    }
+  }
+
+  /**
+   * Initializes project
+   */
+  private initializeProject() {
+    if (this.task != null && this.task.projectId != null) {
+      this.project = this.projectsMap.get(this.task.projectId);
     }
   }
 
@@ -146,7 +159,7 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    */
   onTaskClicked() {
     this.taskEventEmitter.emit({
-      action: Action.OPEN_DIALOG_UPDATE, task: this.task
+      action: Action.OPEN_DIALOG_UPDATE, task: this.task, project: this.project
     });
   }
 
@@ -154,14 +167,19 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    * Handles clicks on complete button
    */
   onCompleteClicked() {
-    this.taskEventEmitter.emit({action: Action.COMPLETE, task: this.task, omitReferenceEvaluation: true});
+    this.taskEventEmitter.emit({
+      action: Action.COMPLETE,
+      task: this.task,
+      project: this.project,
+      omitReferenceEvaluation: true
+    });
   }
 
   /**
    * Handles clicks on continue button
    */
   onContinueClicked() {
-    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: this.task});
+    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: this.task, project: this.project});
   }
 
   /**
@@ -186,7 +204,8 @@ export class TaskListItemComponent implements OnInit, OnChanges {
 
     this.taskEventEmitter.emit({
       action: Action.UPDATE,
-      task: this.task
+      task: this.task,
+      project: this.project
     });
     // Finish
   }
@@ -195,13 +214,13 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    * Handles clicks on re-open button
    */
   onReopenClicked() {
-    this.taskEventEmitter.emit({action: Action.REOPEN, task: this.task});
+    this.taskEventEmitter.emit({action: Action.REOPEN, task: this.task, project: this.project});
   }
 
   /**
    * Handles clicks on filter button
    */
   onFilterClicked() {
-    this.taskEventEmitter.emit({action: Action.FILTER_SINGLE, task: null, tasks: [this.task]});
+    this.taskEventEmitter.emit({action: Action.FILTER_SINGLE, task: null, project: null, tasks: [this.task]});
   }
 }

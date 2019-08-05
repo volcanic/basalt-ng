@@ -121,6 +121,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     this.initializeIcon();
     this.initializeTask();
     this.initializeProject();
+    this.initializeIconColor();
   }
 
   /**
@@ -130,6 +131,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     this.initializeDate();
     this.initializeTask();
     this.initializeProject();
+    this.initializeIconColor();
     this.initializeTopic();
   }
 
@@ -177,8 +179,14 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     if (this.tasklet != null && this.task != null && this.task.projectId != null) {
       this.project = this.projectsMap.get(this.task.projectId);
     }
+  }
 
-    this.projectColor = this.colorService.getProjectColor(this.project);
+  /**
+   * Initializes icon color
+   */
+  private initializeIconColor() {
+    const project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
+    this.projectColor = (project != null && project.color != null) ? project.color : '';
   }
 
   /**
