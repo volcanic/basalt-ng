@@ -18,6 +18,8 @@ import {Action} from 'app/core/entity/model/action.enum';
 import {RecurrenceInterval} from '../../../../../core/entity/model/recurrence-interval.enum';
 import {Project} from '../../../../../core/entity/model/project.model';
 import {DateService} from '../../../../../core/entity/services/date.service';
+import {Person} from '../../../../../core/entity/model/person.model';
+import {Tag} from '../../../../../core/entity/model/tag.model';
 
 /**
  * Displays task list item
@@ -44,10 +46,20 @@ export class TaskListItemComponent implements OnInit, OnChanges {
   /** Indicates if item is active */
   @Input() active = true;
   /** Event emitter indicating task action */
-  @Output() taskEventEmitter = new EventEmitter<{ action: Action, task: Task, tasks?: Task[], omitReferenceEvaluation?: boolean }>();
+  @Output() taskEventEmitter = new EventEmitter<{
+    action: Action,
+    task: Task,
+    tasks?: Task[],
+    project?: Project,
+    delegatedTo?: Person,
+    tags?: Tag[],
+    omitReferenceEvaluation?: boolean
+  }>();
   /** View child for context menu */
   @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
+  /** Project of task to be displayed */
+  project: Project;
   /** Project color */
   projectColor: string;
 
@@ -92,6 +104,7 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    * Handles on-changes lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
+    this.initializeProject();
     this.initializeIconColor();
   }
 
@@ -118,11 +131,17 @@ export class TaskListItemComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Initializes project
+   */
+  private initializeProject() {
+    this.project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
+  }
+
+  /**
    * Initializes icon color
    */
   private initializeIconColor() {
-    const project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
-    this.projectColor = (project != null && project.color != null) ? project.color : '';
+    this.projectColor = (this.project != null && this.project.color != null) ? this.project.color : '';
   }
 
   //
@@ -178,7 +197,8 @@ export class TaskListItemComponent implements OnInit, OnChanges {
 
     this.taskEventEmitter.emit({
       action: Action.UPDATE,
-      task: this.task
+      task: this.task,
+      project: this.project
     });
     // Finish
   }
