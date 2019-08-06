@@ -23,6 +23,9 @@ import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 import {SelectableItem} from '../../../../../ui/checkable-list/selectable-item';
 import {AcceptanceCriterium} from '../../../../../core/entity/model/acceptance-criterium.model';
 import {Setting} from '../../../../../core/settings/model/setting.model';
+import {Project} from '../../../../../core/entity/model/project.model';
+import {ProjectService} from '../../../../../core/entity/services/project/project.service';
+import {environment} from '../../../../../../environments/environment';
 
 /**
  * Displays tasklet dialog
