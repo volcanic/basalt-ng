@@ -7,6 +7,8 @@ export const environment = {
   DATABASE_ENTITIES: 'basalt',
   DATABASE_SETTINGS: 'basalt_settings',
 
+  DEBUG_MODE: false,
+
   LIMIT_TASKLETS_COUNT: 500,
   LIMIT_TASKS_COUNT: 500,
   LIMIT_PROJECTS_COUNT: 50,

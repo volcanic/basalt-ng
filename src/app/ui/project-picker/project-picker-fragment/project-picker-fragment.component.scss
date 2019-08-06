@@ -1,0 +1,28 @@
+@import '../../../../theme';
+
+//
+// Custom
+//
+
+.placeholder {
+  color: mat-color($mat-grey, 500) !important;
+}
+
+.icon {
+  vertical-align: middle;
+}
+
+//
+// Material
+//
+
+.mat-standard-chip {
+  // transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+  // display: inline-flex;
+  // padding: 7px 12px;
+  border-radius: 2px !important;
+  // align-items: center;
+  // cursor: default;
+  // min-height: 32px;
+  // height: 1px;
+}

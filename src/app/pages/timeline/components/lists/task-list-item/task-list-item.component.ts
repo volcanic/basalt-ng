@@ -20,6 +20,7 @@ import {Project} from '../../../../../core/entity/model/project.model';
 import {DateService} from '../../../../../core/entity/services/date.service';
 import {Person} from '../../../../../core/entity/model/person.model';
 import {Tag} from '../../../../../core/entity/model/tag.model';
+import {environment} from '../../../../../../environments/environment';
 
 /**
  * Displays task list item
@@ -58,7 +59,7 @@ export class TaskListItemComponent implements OnInit, OnChanges {
   /** View child for context menu */
   @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
 
-  /** Project of task to be displayed */
+  /** Project associated with this task */
   project: Project;
   /** Project color */
   projectColor: string;
@@ -69,6 +70,9 @@ export class TaskListItemComponent implements OnInit, OnChanges {
   icon = '';
   /** Animation state */
   state = AnimationState.INACTIVE;
+
+  /** Debug mode */
+  debugMode = environment.DEBUG_MODE;
 
   //
   // Helpers
@@ -98,6 +102,7 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.initializeIcon();
+    this.initializeProject();
   }
 
   /**
@@ -161,7 +166,7 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    */
   onTaskClicked() {
     this.taskEventEmitter.emit({
-      action: Action.OPEN_DIALOG_UPDATE, task: this.task
+      action: Action.OPEN_DIALOG_UPDATE, task: this.task, project: this.project
     });
   }
 
@@ -169,16 +174,25 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    * Handles clicks on complete button
    */
   onCompleteClicked() {
-    this.taskEventEmitter.emit({action: Action.COMPLETE, task: this.task, omitReferenceEvaluation: true});
+    this.taskEventEmitter.emit({
+      action: Action.COMPLETE,
+      task: this.task,
+      project: this.project,
+      omitReferenceEvaluation: true
+    });
   }
 
   /**
    * Handles clicks on continue button
    */
   onContinueClicked() {
-    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: this.task});
+    this.taskEventEmitter.emit({action: Action.OPEN_DIALOG_CONTINUE, task: this.task, project: this.project});
   }
 
+  /**
+   * Handles click on postpone
+   * @param option option
+   */
   onPostponeClicked(option: string) {
     switch (option) {
       case 'later':
@@ -207,13 +221,13 @@ export class TaskListItemComponent implements OnInit, OnChanges {
    * Handles clicks on re-open button
    */
   onReopenClicked() {
-    this.taskEventEmitter.emit({action: Action.REOPEN, task: this.task});
+    this.taskEventEmitter.emit({action: Action.REOPEN, task: this.task, project: this.project});
   }
 
   /**
    * Handles clicks on filter button
    */
   onFilterClicked() {
-    this.taskEventEmitter.emit({action: Action.FILTER_SINGLE, task: null, tasks: [this.task]});
+    this.taskEventEmitter.emit({action: Action.FILTER_SINGLE, task: null, project: null, tasks: [this.task]});
   }
 }

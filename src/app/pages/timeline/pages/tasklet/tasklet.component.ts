@@ -230,8 +230,6 @@ export class TaskletComponent
   ngOnInit() {
     super.ngOnInit();
     this.initializeSubscriptions();
-
-
     this.initializeMaterial();
 
     this.route.params.subscribe(() => {

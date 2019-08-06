@@ -103,6 +103,7 @@ export class TaskService {
    */
   static isTaskOverdue(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && task.dueDate != null
       && (task.delegatedToId == null || task.delegatedToId === '')
@@ -118,6 +119,7 @@ export class TaskService {
    */
   static isTaskToday(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && task.dueDate != null
       && (task.delegatedToId == null || task.delegatedToId === '')
@@ -152,6 +154,7 @@ export class TaskService {
     tomorrow.setDate(new Date().getDate() + 1);
 
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && task.dueDate != null
       && (task.delegatedToId == null || task.delegatedToId === '')
@@ -167,6 +170,7 @@ export class TaskService {
    */
   static isTaskInInbox(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && task.dueDate == null
       && (task.delegatedToId == null || task.delegatedToId === '')
@@ -181,6 +185,7 @@ export class TaskService {
    */
   static isTaskDelegated(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && (task.delegatedToId != null && task.delegatedToId !== '');
   }
@@ -191,6 +196,7 @@ export class TaskService {
    */
   static isTaskRecurring(task: Task) {
     return task != null
+      && !task.proxy
       && task.completionDate == null
       && (task.delegatedToId == null || task.delegatedToId === '')
       && task.recurrenceInterval != null
@@ -240,7 +246,9 @@ export class TaskService {
    * @param task task
    */
   static isTaskCompleted(task: Task) {
-    return task != null && task.completionDate != null;
+    return task != null
+      && !task.proxy
+      && task.completionDate != null;
   }
 
   //
@@ -544,6 +552,54 @@ export class TaskService {
   }
 
   /**
+   * Creates a task
+   * @param name name
+   * @param task task
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @param tagsMap tags map
+   */
+  public createTaskIfNecessary(name: string, task: Task, tasksMap: Map<string, Task>,
+                               projectsMap: Map<string, Project>, tagsMap: Map<string, Tag>): Promise<Task> {
+    return new Promise((resolve) => {
+      if (task == null || task.name == null || task.name === '') {
+        const newTask = new Task(name);
+        this.createTask(newTask, tasksMap, projectsMap, tagsMap).then(() => {
+        });
+        resolve(newTask);
+      } else {
+        resolve(task);
+      }
+    });
+  }
+
+  /**
+   * Creates a proxy task
+   * @param proxyTask proxy task
+   * @param existingProject existing project
+   * @param tasksMap tasks map
+   * @param projectsMap projects map
+   * @param tagsMap tags map
+   */
+  public createProxyTaskIfNecessary(proxyTask: Task, existingProject: Project, tasksMap: Map<string, Task>,
+                                    projectsMap: Map<string, Project>, tagsMap: Map<string, Tag>): Promise<Task> {
+    return new Promise((resolve) => {
+      if (proxyTask == null && existingProject != null && existingProject.id != null) {
+        const newProxyTask = new Task(`Proxy`);
+
+        newProxyTask.proxy = true;
+        newProxyTask.projectId = existingProject.id;
+
+        this.createTask(newProxyTask, tasksMap, projectsMap, tagsMap).then(() => {
+        });
+        resolve(newProxyTask);
+      } else {
+        resolve(proxyTask);
+      }
+    });
+  }
+
+  /**
    * Updates existing task
    * @param task task to be updated
    * @param tasksMap tasks map
@@ -611,15 +667,27 @@ export class TaskService {
    * @returns task identified by given name, null if no such task exists
    */
   public getTaskByName(name: string, tasksMap: Map<string, Task>): Task {
-    let task: Task = null;
+    return (tasksMap != null) ? Array.from(tasksMap.values()).filter(t => {
+      return t.name === name;
+    }).find(() => {
+      return true;
+    }) : null;
+  }
 
-    Array.from(tasksMap.values()).forEach(t => {
-      if (t.name === name) {
-        task = t;
-      }
+  /**
+   * Retrieves the proxy task associated with a given project
+   * @param project project to find proxy task for
+   * @param tasksMap tasks map
+   */
+  public getProxyTaskByProject(project: Project, tasksMap: Map<string, Task>): Task {
+    return Array.from(tasksMap.values()).filter(t => {
+      return t.proxy;
+    }).filter(t => {
+      return t.projectId != null
+        && t.projectId === project.id;
+    }).find(() => {
+      return true;
     });
-
-    return task;
   }
 
   //

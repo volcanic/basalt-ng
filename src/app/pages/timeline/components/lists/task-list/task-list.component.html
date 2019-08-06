@@ -2,7 +2,7 @@
 
   <!-- INBOX -->
   <mat-accordion class="headers-align">
-    <mat-expansion-panel [expanded]="tasksInbox.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel [expanded]="tasksInbox.length > 0" hideToggle>
       <mat-expansion-panel-header>
         <div class="label">
         <span matBadge="{{ tasksInbox.length }}"
@@ -18,7 +18,7 @@
   </mat-accordion>
 
   <!-- OVERDUE -->
-  <mat-expansion-panel [expanded]="tasksOverdue.length > 0" (opened)="false" hideToggle>
+  <mat-expansion-panel [expanded]="tasksOverdue.length > 0" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <div class="label">
@@ -36,7 +36,7 @@
 
   <!-- TODAY -->
   <mat-accordion class="headers-align">
-    <mat-expansion-panel [expanded]="tasksToday.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel [expanded]="tasksToday.length > 0" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
           <div class="label">
@@ -55,7 +55,7 @@
 
   <!-- TOMORROW -->
   <mat-accordion class="headers-align">
-    <mat-expansion-panel [expanded]="tasksTomorrow.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel [expanded]="tasksTomorrow.length > 0"hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
           <div class="label">
@@ -74,7 +74,7 @@
 
   <!-- LATER -->
   <mat-accordion class="headers-align">
-    <mat-expansion-panel [expanded]="false" (opened)="false" hideToggle>
+    <mat-expansion-panel [expanded]="false" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
           <div class="label">
@@ -93,7 +93,7 @@
 
   <!-- DELEGATED -->
   <mat-accordion class="headers-align">
-    <mat-expansion-panel [expanded]="tasksDelegated.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel [expanded]="tasksDelegated.length > 0" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
           <div class="label">
@@ -112,7 +112,7 @@
 
   <!-- RECURRING -->
   <mat-accordion class="headers-align">
-    <mat-expansion-panel [expanded]="tasksRecurring.length > 0" (opened)="false" hideToggle>
+    <mat-expansion-panel [expanded]="tasksRecurring.length > 0" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
           <div class="label">
@@ -131,13 +131,28 @@
 
   <!-- COMPLETED -->
   <mat-accordion class="headers-align">
-    <mat-expansion-panel [expanded]="false" (opened)="false" hideToggle>
+    <mat-expansion-panel [expanded]="false" hideToggle>
       <mat-expansion-panel-header>
         <div class="label">
           <span>Completed</span>
         </div>
       </mat-expansion-panel-header>
       <app-task-list-item *ngFor="let t of tasksCompleted"
+                          [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
+                          (taskEventEmitter)="onTaskEvent($event)">
+      </app-task-list-item>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <!-- PROXY -->
+  <mat-accordion *ngIf="debugMode" class="headers-align">
+    <mat-expansion-panel [expanded]="true" hideToggle>
+      <mat-expansion-panel-header>
+        <div class="label">
+          <span>Proxy</span>
+        </div>
+      </mat-expansion-panel-header>
+      <app-task-list-item *ngFor="let t of tasksProxy"
                           [task]="t" [projectsMap]=projectsMap [media]="media" [active]="isInFocus(t)"
                           (taskEventEmitter)="onTaskEvent($event)">
       </app-task-list-item>

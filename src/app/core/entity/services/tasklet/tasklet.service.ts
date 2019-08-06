@@ -88,6 +88,22 @@ export class TaskletService {
   }
 
   /**
+   * Determines if a tasklet is defined by a task
+   * @param task task
+   */
+  static isTaskletDefinedByTask(task: Task): boolean {
+    return task != null && task.name != null && task.name !== '' && !task.proxy;
+  }
+
+  /**
+   * Determines if a tasklet is defined by a project
+   * @param project project
+   */
+  static isTaskletDefinedByProject(project: Project): boolean {
+    return project != null && project.name != null && project.name !== '';
+  }
+
+  /**
    * Retrieves an icon by tasklet type
    * @param group tasklet type group
    */
@@ -633,9 +649,10 @@ export class TaskletService {
    * @param displayAspect display aspect
    * @param tasklet tasklet
    * @param task tasks
+   * @param project project
    * @param previousDescription previous description
    */
-  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task, previousDescription?: Description): boolean {
+  public containsDisplayAspect(displayAspect: TaskletDisplayAspect, tasklet: Tasklet, task?: Task, project?: Project, previousDescription?: Description): boolean {
     switch (displayAspect) {
       case TaskletDisplayAspect.CAN_BE_ASSIGNED_TO_TASK: {
         return this.taskletDisplayService.canBeAssignedToTask(tasklet);
@@ -665,16 +682,16 @@ export class TaskletService {
         return TaskletDisplayService.containsPersons(tasklet);
       }
       case TaskletDisplayAspect.CAN_BE_CREATED: {
-        return this.taskletDisplayService.canBeCreated(tasklet, task);
+        return this.taskletDisplayService.canBeCreated(tasklet, task, project);
       }
       case TaskletDisplayAspect.CAN_BE_UPDATED: {
-        return this.taskletDisplayService.canBeUpdated(tasklet, task);
+        return this.taskletDisplayService.canBeUpdated(tasklet, task, project);
       }
       case TaskletDisplayAspect.CAN_BE_CONTINUED: {
-        return this.taskletDisplayService.canBeContinued(tasklet, task);
+        return this.taskletDisplayService.canBeContinued(tasklet, task, project);
       }
       case TaskletDisplayAspect.CAN_BE_TEMPLATED: {
-        return this.taskletDisplayService.canBeContinued(tasklet, task);
+        return this.taskletDisplayService.canBeContinued(tasklet, task, project);
       }
       case TaskletDisplayAspect.IS_POMODORO_STARTED: {
         return TaskletDisplayService.isPomodoroStarted(tasklet);

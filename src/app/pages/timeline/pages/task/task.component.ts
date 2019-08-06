@@ -228,8 +228,6 @@ export class TaskComponent
   ngOnInit() {
     super.ngOnInit();
     this.initializeSubscriptions();
-
-
     this.initializeMaterial();
 
     this.route.params.subscribe(() => {

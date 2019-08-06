@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {MatMenuTrigger} from '@angular/material';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {DateService} from 'app/core/entity/services/date.service';
@@ -40,7 +50,12 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   @Input() media: Media;
 
   /** Event emitter indicating tasklet action */
-  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+  @Output() taskletEventEmitter = new EventEmitter<{
+    action: Action,
+    tasklet: Tasklet,
+    task: Task,
+    project: Project
+  }>();
 
   /** Trigger for context menu */
   @ViewChild(MatMenuTrigger, {static: false}) contextMenuTrigger: MatMenuTrigger;
@@ -62,8 +77,10 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
 
   /** Icon name */
   icon = '';
-  /** Topic (typically derived from task name */
-  topic = '';
+  /** Title (typically derived from task name */
+  title = '';
+  /** Subtitle (typically derived from project name */
+  subtitle = '';
   /** Project */
   project: Project;
   /** Project personColor */
@@ -102,6 +119,9 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    */
   ngOnInit() {
     this.initializeIcon();
+    this.initializeTask();
+    this.initializeProject();
+    this.initializeIconColor();
   }
 
   /**
@@ -110,8 +130,9 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.initializeDate();
     this.initializeTask();
-    this.initializeTopic();
     this.initializeProject();
+    this.initializeIconColor();
+    this.initializeTopic();
   }
 
   //
@@ -150,23 +171,6 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     this.task = this.tasksMap.get(this.tasklet.taskId);
   }
 
-  /**
-   * Initializes topic
-   */
-  private initializeTopic() {
-    switch (this.tasklet.type) {
-      case TaskletType.DAILY_SCRUM:
-      case TaskletType.LUNCH_BREAK:
-      case TaskletType.FINISHING_TIME:
-      default: {
-        if (this.task != null) {
-          this.topic = this.task.name;
-        } else {
-          this.topic = this.tasklet.type;
-        }
-      }
-    }
-  }
 
   /**
    * Initializes project
@@ -175,8 +179,42 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
     if (this.tasklet != null && this.task != null && this.task.projectId != null) {
       this.project = this.projectsMap.get(this.task.projectId);
     }
+  }
 
-    this.projectColor = this.colorService.getProjectColor(this.project);
+  /**
+   * Initializes icon color
+   */
+  private initializeIconColor() {
+    const project = (this.task != null) ? this.projectsMap.get(this.task.projectId) : null;
+    this.projectColor = (project != null && project.color != null) ? project.color : '';
+  }
+
+  /**
+   * Initializes topic
+   */
+  private initializeTopic() {
+    switch (this.tasklet.type) {
+      case TaskletType.LUNCH_BREAK:
+      case TaskletType.FINISHING_TIME: {
+        this.title = this.tasklet.type;
+        break;
+      }
+      default: {
+        if (this.task != null) {
+          if (this.task.proxy) {
+            this.title = `Generic ${this.project != null ? this.project.name : ''} task`;
+            this.subtitle = this.project != null ? this.project.name : ' ';
+          } else if (this.task.name != null && this.task.name.length > 0) {
+            this.title = this.task.name;
+            this.subtitle = this.project != null ? this.project.name : ' ';
+          } else {
+            this.title = this.tasklet.type;
+          }
+        } else {
+          this.title = this.tasklet.type;
+        }
+      }
+    }
   }
 
   //
@@ -187,18 +225,28 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Handles click on tasklet
    * @param event event
    */
-  onTaskletClicked(event: { action: Action, tasklet: Tasklet }) {
+  onTaskletClicked(event: { action: Action, tasklet: Tasklet, task: Task, project: Project }) {
     switch (event.action) {
       case Action.NONE: {
         if (this.media > this.mediaType.MEDIUM) {
-          this.taskletEventEmitter.emit({action: Action.OPEN_DIALOG_UPDATE, tasklet: this.tasklet});
+          this.taskletEventEmitter.emit({
+            action: Action.OPEN_DIALOG_UPDATE,
+            tasklet: event.tasklet,
+            task: event.task,
+            project: event.project
+          });
         } else {
           this.contextMenuTrigger.openMenu();
         }
         break;
       }
       default: {
-        this.taskletEventEmitter.emit({action: event.action, tasklet: event.tasklet});
+        this.taskletEventEmitter.emit({
+          action: event.action,
+          tasklet: event.tasklet,
+          task: event.task,
+          project: event.project,
+        });
       }
     }
   }

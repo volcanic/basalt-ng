@@ -261,15 +261,11 @@ export class TagService {
    * @returns tag identified by given name, null if no such tag exists
    */
   public getTagByName(name: string, tagsMap: Map<string, Tag>): Tag {
-    let tag: Tag = null;
-
-    Array.from(tagsMap.values()).forEach(t => {
-      if (t.name === name) {
-        tag = t;
-      }
-    });
-
-    return tag;
+    return tagsMap != null ? Array.from(tagsMap.values()).filter(t => {
+      return t.name === name;
+    }).find(() => {
+      return true;
+    }) : null;
   }
 
   /**

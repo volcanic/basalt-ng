@@ -10,6 +10,7 @@ import {Action} from '../../../../../../core/entity/model/action.enum';
 import {Tag} from '../../../../../../core/entity/model/tag.model';
 import {Person} from '../../../../../../core/entity/model/person.model';
 import {DomSanitizer} from '@angular/platform-browser';
+import {environment} from '../../../../../../../environments/environment';
 
 /**
  * Displays tasklet as card
@@ -27,8 +28,10 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   @Input() task: Task;
   /** Project */
   @Input() project: Project;
-  /** Topic (typically derived from task name */
-  @Input() topic = '';
+  /** Topic (typically derived from task name) */
+  @Input() title = '';
+  /** Subtitle (typically derived from project name) */
+  @Input() subtitle = '';
   /** Icon name */
   @Input() icon = '';
 
@@ -42,7 +45,7 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   @Input() themeClass = 'light-theme';
 
   /** Event emitter indicating click on tasklet */
-  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet, task: Task, project: Project }>();
 
   /** References to tags inherited from task */
   inheritedTagIds = [];
@@ -77,8 +80,12 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   /** Reference to static service methods */
   isInCurrentWeek = DateService.isInCurrentWeek;
 
+  /** Debug mode */
+  debugMode = environment.DEBUG_MODE;
+
   /**
    * Constructor
+   * @param sanitizer sanitizer
    * @param taskletService tasklet service
    */
   constructor(private sanitizer: DomSanitizer,
@@ -137,6 +144,54 @@ export class TaskletCardFragmentComponent implements OnInit, OnChanges {
   //
   // Actions
   //
+
+  /**
+   * Handles click on card header
+   */
+  onCardHeaderClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.NONE,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
+
+  /**
+   * Handles click on creation time
+   */
+  onCreationTimeClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.OPEN_DIALOG_CREATION_TIME,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
+
+  /**
+   * Handles click on tags holder
+   */
+  onTagsHolderClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.NONE,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
+
+  /**
+   * Handles click on continue button
+   */
+  onContinueButtonClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.OPEN_DIALOG_CONTINUE,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
 
   /**
    * Handles expansion panel toggle

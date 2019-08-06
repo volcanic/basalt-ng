@@ -1,0 +1,19 @@
+<mat-menu #contextMenu="matMenu">
+  <button mat-menu-item *ngFor="let p of projectOptionNames" (click)="onProjectSelected(p)">{{ p }}</button>
+</mat-menu>
+<div [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></div>
+<button *ngIf="projectName != null"
+        mat-button
+        [style.color]="projectColor"
+        (click)="onProjectClicked()">
+  <mat-icon *ngIf="projectColor != null" class="icon" svgIcon="alias_project"
+            [style.fill]="projectColor"></mat-icon>
+  {{ projectName }}
+</button>
+<button *ngIf="projectName == null"
+        mat-button
+        class="placeholder"
+        [style.color]="projectColor"
+        (click)="onProjectClicked()">
+  Select a project
+</button>

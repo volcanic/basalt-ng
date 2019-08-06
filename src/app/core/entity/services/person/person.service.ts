@@ -274,15 +274,11 @@ export class PersonService {
    * @returns person identified by given name, null if no such person exists
    */
   public getPersonByName(name: string, personsMap: Map<string, Person>): Person {
-    let person: Person = null;
-
-    Array.from(personsMap.values()).forEach(p => {
-      if (p.name === name) {
-        person = p;
-      }
-    });
-
-    return person;
+    return personsMap != null ? Array.from(personsMap.values()).filter(p => {
+      return p.name === name;
+    }).find(() => {
+      return true;
+    }) : null;
   }
 
   //

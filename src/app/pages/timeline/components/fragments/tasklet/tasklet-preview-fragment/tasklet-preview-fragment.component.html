@@ -2,18 +2,18 @@
   <div class="attachments">
     <div class="attachment-holder" *ngIf="media > mediaType.MEDIUM">
       <div *ngIf="tasklet.creationDate != null" class="side-attached left-attached-without-connector"
-           (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">
+           (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet, task: task, project: project})">
         <span class="left-attached-content">
           <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
         </span>
       </div>
     </div>
   </div>
-  <div class="container" (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet})">
+  <div class="container" (click)="taskletEventEmitter.emit({action: actionType.NONE, tasklet: tasklet, task: task, project: project})">
     <mat-icon mat-card-avatar [svgIcon]=icon class="tasklet-type"></mat-icon>
     <div class="date" *ngIf="media < mediaType.LARGE">
       <app-relative-time-fragment [date]="tasklet.creationDate"></app-relative-time-fragment>
     </div>
-    <div class="topic">{{ topic }}</div>
+    <div class="title">{{ title }}</div>
   </div>
 </div>

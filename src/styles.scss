@@ -40,6 +40,10 @@ body {
   flex-direction: column;
 }
 
+.debug {
+  color: mat-color($mat-grey, 400);
+}
+
 .white-icon svg {
   fill: white;
 }

@@ -393,18 +393,19 @@ export class BaseComponent implements OnInit, OnDestroy {
    * Handles events targeting a tasklet
    * @param event event parameters
    */
-  onTaskletEvent(event: { action: Action, tasklet: Tasklet, task?: Task, tags?: Tag[], persons?: Person[] }) {
+  onTaskletEvent(event: { action: Action, tasklet: Tasklet, task?: Task, project?: Project, tags?: Tag[], persons?: Person[] }) {
     const tasklet = CloneService.cloneTasklet(event.tasklet as Tasklet);
     const task = CloneService.cloneTask(event.task as Task);
-    const tags = CloneService.cloneTags(event.tags as Tag[]);
+    const project = CloneService.cloneProject(event.project as Project);
     const persons = CloneService.clonePersons(event.persons as Person[]);
+    const tags = CloneService.cloneTags(event.tags as Tag[]);
 
     switch (event.action) {
       case Action.ADD: {
         // Create new entities if necessary
-        this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, task, tags);
+        this.evaluateTaskletTask(tasklet, task, project);
         this.evaluateTaskletPersons(tasklet, persons);
+        this.evaluateTaskletTags(tasklet, task, tags);
 
         // Create tasklet itself
         this.taskletService.createTasklet(tasklet, this.taskletsMap, this.tasksMap, this.projectsMap, this.personsMap, this.tagsMap).then(() => {
@@ -414,9 +415,9 @@ export class BaseComponent implements OnInit, OnDestroy {
       }
       case Action.UPDATE: {
         // Create new entities if necessary
-        this.evaluateTaskletTask(tasklet, task);
-        this.evaluateTaskletTags(tasklet, task, tags);
+        this.evaluateTaskletTask(tasklet, task, project);
         this.evaluateTaskletPersons(tasklet, persons);
+        this.evaluateTaskletTags(tasklet, task, tags);
 
         // Update tasklet itself
         this.taskletService.updateTasklet(tasklet, this.taskletsMap, this.tasksMap, this.projectsMap, this.personsMap, this.tagsMap).then(() => {
@@ -516,11 +517,13 @@ export class BaseComponent implements OnInit, OnDestroy {
           dialogTitle: 'Add tasklet',
           tasklet: t,
           task: new Task(),
+          project: null,
           tags: [],
           persons: [],
           previousDescription: null,
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
+          projectsMap: this.projectsMap,
           tagMap: this.tagsMap,
           settingsMap: this.settingsMap
         };
@@ -537,6 +540,7 @@ export class BaseComponent implements OnInit, OnDestroy {
             const resultingAction = result.action as Action;
             const resultingTasklet = result.tasklet as Tasklet;
             const resultingTask = result.task as Task;
+            const resultingProject = result.project as Project;
             const resultingTags = result.tags as Tag[];
             const resultingPersons = result.persons as Person[];
 
@@ -544,6 +548,7 @@ export class BaseComponent implements OnInit, OnDestroy {
               action: resultingAction,
               tasklet: resultingTasklet,
               task: resultingTask,
+              project: resultingProject,
               tags: resultingTags,
               persons: resultingPersons
             });
@@ -552,12 +557,16 @@ export class BaseComponent implements OnInit, OnDestroy {
         break;
       }
       case Action.OPEN_DIALOG_UPDATE: {
+        const t = this.tasksMap.get(tasklet.taskId);
+        const p = (t != null) ? this.projectsMap.get(t.projectId) : null;
+
         // Assemble data to be passed
         const data = {
           mode: DialogMode.UPDATE,
           dialogTitle: 'Update tasklet',
           tasklet,
-          task: this.tasksMap.get(tasklet.taskId),
+          task: t,
+          project: p,
           tags: tasklet.tagIds != null ? tasklet.tagIds.map(id => {
             return this.tagsMap.get(id);
           }).filter(tag => {
@@ -571,6 +580,7 @@ export class BaseComponent implements OnInit, OnDestroy {
           previousDescription: null,
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
+          projectsMap: this.projectsMap,
           tagMap: this.tagsMap,
           settingsMap: this.settingsMap
         };
@@ -587,6 +597,7 @@ export class BaseComponent implements OnInit, OnDestroy {
             const resultingAction = result.action as Action;
             const resultingTasklet = result.tasklet as Tasklet;
             const resultingTask = result.task as Task;
+            const resultingProject = result.project as Project;
             const resultingTags = result.tags as Tag[];
             const resultingPersons = result.persons as Person[];
 
@@ -594,6 +605,7 @@ export class BaseComponent implements OnInit, OnDestroy {
               action: resultingAction,
               tasklet: resultingTasklet,
               task: resultingTask,
+              project: resultingProject,
               tags: resultingTags,
               persons: resultingPersons
             });
@@ -607,18 +619,23 @@ export class BaseComponent implements OnInit, OnDestroy {
           return dailyScrumItem.type === DailyScrumItemType.WILL_DO;
         });
 
+        // Reset parts of the previous tasklet
         tasklet['_rev'] = null;
         tasklet.id = new UUID().toString();
         tasklet.description = new Description();
         tasklet.dailyScrumItems = [];
         tasklet.creationDate = new Date();
 
+        const t = this.tasksMap.get(tasklet.taskId);
+        const p = (t != null) ? this.projectsMap.get(t.projectId) : null;
+
         // Assemble data to be passed
         const data = {
           mode: DialogMode.CONTINUE,
           dialogTitle: 'Continue tasklet',
           tasklet,
-          task: this.tasksMap.get(tasklet.taskId),
+          task: t,
+          project: p,
           tags: tasklet.tagIds.map(id => {
             return this.tagsMap.get(id);
           }).filter(tag => {
@@ -633,6 +650,7 @@ export class BaseComponent implements OnInit, OnDestroy {
           previousDailyScrumItems,
           taskletsMap: this.taskletsMap,
           tasksMap: this.tasksMap,
+          projectsMap: this.projectsMap,
           tagMap: this.tagsMap,
           settingsMap: this.settingsMap
         };
@@ -648,11 +666,14 @@ export class BaseComponent implements OnInit, OnDestroy {
           if (result != null) {
             const resultingAction = result.action as Action;
             const resultingTasklet = result.tasklet as Tasklet;
+            const resultingTask = result.task as Task;
+            const resultingProject = result.project as Project;
 
             this.onTaskletEvent({
               action: resultingAction,
               tasklet: resultingTasklet,
-              task: this.tasksMap.get(resultingTasklet.taskId),
+              task: resultingTask,
+              project: resultingProject,
               tags: resultingTasklet.tagIds.map(id => {
                 return this.tagsMap.get(id);
               }).filter(tag => {
@@ -673,19 +694,26 @@ export class BaseComponent implements OnInit, OnDestroy {
           disableClose: false,
           data: {
             dialogTitle: 'Set creation time',
-            date: tasklet.creationDate
+            date: tasklet.creationDate,
+            tasklet,
+            task,
+            project,
           }
         });
 
         dialogRef.afterClosed().subscribe(result => {
           if (result != null) {
             const resultingAction = result.action as Action;
-            tasklet.creationDate = result.date as Date;
+            const resultingTasklet = result.tasklet as Tasklet;
+            const resultingTask = result.task as Task;
+            const resultingProject = result.project as Project;
+            resultingTasklet.creationDate = result.date as Date;
 
             this.onTaskletEvent({
               action: resultingAction,
-              tasklet,
-              task: this.tasksMap.get(tasklet.taskId),
+              tasklet: resultingTasklet,
+              task: resultingTask,
+              project: resultingProject,
               tags: tasklet.tagIds.map(id => {
                 return this.tagsMap.get(id);
               }).filter(tag => {
@@ -919,8 +947,9 @@ export class BaseComponent implements OnInit, OnDestroy {
         this.onTaskletEvent({
           action: Action.OPEN_DIALOG_CONTINUE,
           tasklet,
-          tags: [],
           task: this.tasksMap.get(tasklet.taskId),
+          project,
+          tags: [],
           persons: []
         });
         break;
@@ -1376,94 +1405,52 @@ export class BaseComponent implements OnInit, OnDestroy {
   // <editor-fold defaultstate="collapsed" desc="Evaluation">
 
   /**
-   * Determines whether the task assigned to a given tasklet already exists, otherwise creates a new one
+   * Checks whether tasklet references a task or a project and does one of the following
+   * <li> Determines whether the task assigned to a given tasklet already exists, otherwise creates a new one
+   * <li> Checks whether this is already a proxy task, otherwise creates a new one
    * @param tasklet tasklet to assign task to
    * @param task task to be checked
+   * @param project project to be checked
    */
-  private evaluateTaskletTask(tasklet: Tasklet, task: Task) {
-    if (task != null && task.name != null && task.name !== '') {
-      // Assign task
-      let t = this.taskService.getTaskByName(task.name, this.tasksMap);
+  private evaluateTaskletTask(tasklet: Tasklet, task: Task, project: Project) {
+    if (TaskletService.isTaskletDefinedByTask(task)) {
+      // Find task
+      const existingTask = this.taskService.getTaskByName(task.name, this.tasksMap);
 
-      // New task
-      if (t == null && task.name != null && task.name !== '') {
-        t = new Task(task.name);
-        this.taskService.createTask(t, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
+      // Create new task
+      this.taskService
+        .createTaskIfNecessary(task.name, existingTask, this.tasksMap, this.projectsMap, this.tagsMap)
+        .then((t) => {
+          // Assign task to project
+          t.projectId = project != null ? project.id : null;
+          this.taskService.updateTask(t, this.tasksMap, this.projectsMap, this.tagsMap).then(() => {
+          });
+
+          // Assign tasklet to task
+          tasklet.taskId = t.id;
+
+          // Add task to filters
+          this.filterService.updateTasksListIfNotEmpty([t]);
         });
-      }
+    } else if (TaskletService.isTaskletDefinedByProject(project)) {
+      // Find project and its proxy task
+      const existingProject = this.projectService.getProjectByName(project.name, this.projectsMap);
+      const proxyTask = this.taskService.getProxyTaskByProject(project, this.tasksMap);
 
-      this.filterService.updateTasksListIfNotEmpty([t]);
-      tasklet.taskId = t.id;
+      // Create new proxy task
+      this.taskService
+        .createProxyTaskIfNecessary(proxyTask, existingProject, this.tasksMap, this.projectsMap, this.tagsMap)
+        .then((t) => {
+          // Assign tasklet to proxy task
+          tasklet.taskId = t.id;
+
+          // Add task to filters
+          this.filterService.updateTasksListIfNotEmpty([t]);
+        });
     } else {
       // Unassign task
       tasklet.taskId = null;
     }
-  }
-
-  /**
-   * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
-   * @param tasklet tasklet to assign tags to
-   * @param task task the tasklet is associated to
-   * @param tags array of tags to be checked
-   */
-  private evaluateTaskletTags(tasklet: Tasklet, task: Task, tags: Tag[]) {
-    const aggregatedTags = new Map<string, Tag>();
-
-    // New tag
-    if (tags != null) {
-      tags.filter(t => {
-        return t != null;
-      }).forEach(t => {
-        const tag = this.lookupTag(t.name);
-
-        // Exclude tags that are inherited from task
-        if (task.tagIds.some(id => id === tag.id)) {
-          return;
-        }
-
-        aggregatedTags.set(tag.id, tag);
-      });
-    }
-
-    // Infer tags from meeting minutes
-    if (tasklet.meetingMinuteItems != null) {
-      tasklet.meetingMinuteItems.filter(m => {
-        return m.topic != null;
-      }).map(m => {
-        return m.topic;
-      }).forEach(t => {
-        const tag = this.lookupTag(t);
-
-        // Exclude tags that are inherited from task
-        if (task.tagIds.some(id => id === tag.id)) {
-          return;
-        }
-
-        aggregatedTags.set(tag.id, tag);
-      });
-    }
-
-    const values = Array.from(aggregatedTags.values());
-    const keys = Array.from(aggregatedTags.keys());
-
-    this.filterService.updateTagsListIfNotEmpty(values);
-    tasklet.tagIds = Array.from(keys);
-  }
-
-  /**
-   * Returns existing tag if exists or creates a new one if not
-   * @param t tag name
-   */
-  private lookupTag(t: string): Tag {
-    let tag = this.tagService.getTagByName(t, this.tagsMap);
-
-    if (tag == null) {
-      tag = new Tag(t);
-      this.tagService.createTag(tag, this.tagsMap).then(() => {
-      });
-    }
-
-    return tag;
   }
 
   /**
@@ -1533,6 +1520,72 @@ export class BaseComponent implements OnInit, OnDestroy {
     }
 
     return person;
+  }
+
+  /**
+   * Determines whether the tags assigned to a given tasklet already exixst, otherwise creates new ones
+   * @param tasklet tasklet to assign tags to
+   * @param task task the tasklet is associated to
+   * @param tags array of tags to be checked
+   */
+  private evaluateTaskletTags(tasklet: Tasklet, task: Task, tags: Tag[]) {
+    const aggregatedTags = new Map<string, Tag>();
+
+    // New tag
+    if (tags != null) {
+      tags.filter(t => {
+        return t != null;
+      }).forEach(t => {
+        const tag = this.lookupTag(t.name);
+
+        // Exclude tags that are inherited from task
+        if (task.tagIds.some(id => id === tag.id)) {
+          return;
+        }
+
+        aggregatedTags.set(tag.id, tag);
+      });
+    }
+
+    // Infer tags from meeting minutes
+    if (tasklet.meetingMinuteItems != null) {
+      tasklet.meetingMinuteItems.filter(m => {
+        return m.topic != null;
+      }).map(m => {
+        return m.topic;
+      }).forEach(t => {
+        const tag = this.lookupTag(t);
+
+        // Exclude tags that are inherited from task
+        if (task.tagIds.some(id => id === tag.id)) {
+          return;
+        }
+
+        aggregatedTags.set(tag.id, tag);
+      });
+    }
+
+    const values = Array.from(aggregatedTags.values());
+    const keys = Array.from(aggregatedTags.keys());
+
+    this.filterService.updateTagsListIfNotEmpty(values);
+    tasklet.tagIds = Array.from(keys);
+  }
+
+  /**
+   * Returns existing tag if exists or creates a new one if not
+   * @param t tag name
+   */
+  private lookupTag(t: string): Tag {
+    let tag = this.tagService.getTagByName(t, this.tagsMap);
+
+    if (tag == null) {
+      tag = new Tag(t);
+      this.tagService.createTag(tag, this.tagsMap).then(() => {
+      });
+    }
+
+    return tag;
   }
 
   /**

@@ -15,6 +15,7 @@ import {TaskService} from '../../../../../core/entity/services/task/task.service
 import {Project} from '../../../../../core/entity/model/project.model';
 import {Media} from '../../../../../core/ui/model/media.enum';
 import {Action} from '../../../../../core/entity/model/action.enum';
+import {environment} from '../../../../../../environments/environment';
 
 /**
  * Displays task list
@@ -55,6 +56,8 @@ export class TaskListComponent implements OnInit, OnChanges, OnDestroy {
   tasksRecurring = [];
   /** Tasks with a completion date */
   tasksCompleted = [];
+  /** Proxy tasks */
+  tasksProxy = [];
 
   /** Background personColor for overdue badge */
   tasksOverdueBadgeColor = 'transparent';
@@ -70,6 +73,9 @@ export class TaskListComponent implements OnInit, OnChanges, OnDestroy {
   tasksDelegatedBadgeColor = 'transparent';
   /** Background personColor for recurring badge */
   tasksRecurringBadgeColor = 'transparent';
+
+  /** Debug mode */
+  debugMode = environment.DEBUG_MODE;
 
   /** Holds the set interval in order to destroy it in onDestroy */
   intervalHolder: any;
@@ -132,6 +138,11 @@ export class TaskListComponent implements OnInit, OnChanges, OnDestroy {
           return new Date(t2.modificationDate).getTime() > new Date(t1.modificationDate).getTime() ? 1 : -1;
         });
         this.tasksCompleted = tasks.filter(TaskService.isTaskCompleted).sort((t1, t2) => {
+          return new Date(t2.completionDate).getTime() > new Date(t1.completionDate).getTime() ? 1 : -1;
+        });
+        this.tasksProxy = tasks.filter(t => {
+          return t.proxy;
+        }).sort((t1, t2) => {
           return new Date(t2.completionDate).getTime() > new Date(t1.completionDate).getTime() ? 1 : -1;
         });
 

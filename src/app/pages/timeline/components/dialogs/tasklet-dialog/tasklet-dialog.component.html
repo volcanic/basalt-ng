@@ -6,11 +6,27 @@
                                  [settingsMap]="settingsMap"
                                  (taskletTypeEventEmitter)="onTaskletTypeChanged($event)">
       </app-tasklet-type-fragment>
-      <!-- Task -->
-      <app-task-autocomplete-fragment
-        *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
-        [taskName]="task.name" [taskOptions]="taskOptionNames" (taskNameChangedEmitter)="onTaskNameChanged($event)">
-      </app-task-autocomplete-fragment>
+      <div class="flexcontainer">
+        <!-- Task -->
+        <app-task-autocomplete-fragment
+          *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_ASSIGNED_TO_TASK, tasklet)"
+          class="flexbox"
+          [taskName]="task != null && !task.proxy ? task.name : null"
+          [taskOptions]="taskOptionNames"
+          (taskNameChangedEmitter)="onTaskNameChanged($event)">
+        </app-task-autocomplete-fragment>
+        <!-- Project -->
+        <app-project-picker-fragment
+          [projectName]="project != null ? project.name : null"
+          [projectColor]="project != null ? project.color : null"
+          [projectOptionNames]="projectOptionNames"
+          [readonly]="projectPickerReadonly"
+          (projectNameChangedEmitter)="onProjectNameChanged($event)">
+        </app-project-picker-fragment>
+      </div>
+
+      <div *ngIf="debugMode" class="debug">task {{ tasklet.taskId }}</div>
+
       <!-- Previous description and daily scrum items-->
       <app-previous-description-fragment *ngIf="containsPreviousDescription(tasklet)"
                                          [previousDescriptionText]="previousDescription.value"></app-previous-description-fragment>
@@ -52,8 +68,7 @@
       <!-- Checklist -->
       <app-completable-list *ngIf="containsDisplayAspect(displayAspectType.CONTAINS_CHECKLIST, tasklet)"
                             [items]="tasklet.acceptanceCriteria"
-                            [readonly]="readonly"
-                            [focusNewElement]="'true'"
+                            focusNewElement=true
                             (itemsChangedEmitter)="onAcceptanceCriteriaChanged($event)">
       </app-completable-list>
 
@@ -78,8 +93,6 @@
                      [background]="materialColorService.color(paletteType.GREY, hueType._400)"
                      [color]="materialColorService.contrast(paletteType.GREY, hueType._400)"
                      [readonly]=false
-                     [background]="materialColorService.color(paletteType.GREY, hueType._400)"
-                     [color]="materialColorService.contrast(paletteType.GREY, hueType._400)"
                      placeholder="New person"
                      (tagsChangedEmitter)="onPersonsChanged($event)">
       </app-tag-chips>
@@ -105,21 +118,21 @@
       Send Meeting Minutes
     </button>
     <button mat-button *ngIf="tasklet.type == taskletType.DAILY_SCRUM"
-            (click)="onButtonClicked(actionType.DAIL)">
+            (click)="onButtonClicked(actionType.SEND_MAIL_DAILY_SCRUM_SUMMARY)">
       Send Daily Scrum Summary
     </button>
     <button mat-button *ngIf="mode == modeType.ADD"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet, task)"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CREATED, tasklet, task, project)"
             (click)="onButtonClicked(actionType.ADD)">
       Add tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.UPDATE"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet, task)"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet, task, project)"
             (click)="onButtonClicked(actionType.UPDATE)">
       Update tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.CONTINUE"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet, task)"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet, task, project)"
             (click)="onButtonClicked(actionType.CONTINUE)">
       Continue tasklet
     </button>
