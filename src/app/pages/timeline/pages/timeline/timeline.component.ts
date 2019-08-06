@@ -180,86 +180,16 @@ export class TimelineComponent
    */
   ngOnInit() {
     super.ngOnInit();
-
-    this.initializeTaskletsSubscription().subscribe((value) => {
-      this.initializeTasklets(value as Map<string, Tasklet>);
-      this.initializeTaskletsFiltered(value as Map<string, Tasklet>);
-      this.generateWeeklyDigest(this.indicatedDate);
-      this.generateDailyDigests(this.indicatedDate);
-    });
-    this.initializeTasksSubscription().subscribe((value) => {
-      this.initializeTasks(value as Map<string, Task>);
-      this.initializeTasksFiltered(value as Map<string, Task>);
-      this.generateWeeklyDigest(this.indicatedDate);
-      this.generateDailyDigests(this.indicatedDate);
-    });
-    this.initializeProjectsSubscription().subscribe((value) => {
-      this.initializeProjects(value as Map<string, Project>);
-      this.initializeProjectsFiltered(value as Map<string, Project>);
-      this.generateWeeklyDigest(this.indicatedDate);
-      this.generateDailyDigests(this.indicatedDate);
-    });
-    this.initializePersonsSubscription().subscribe((value) => {
-      this.initializePersons(value as Map<string, Person>);
-      this.initializePersonsFiltered(value as Map<string, Person>);
-    });
-    this.initializeTagsSubscription().subscribe((value) => {
-      this.initializeTags(value as Map<string, Tag>);
-      this.initializeTagsFiltered(value as Map<string, Tag>);
-      this.initializeTagsUnused(this.taskletsMap, this.tasksMap);
-    });
-    this.initializeMediaSubscription().subscribe((value) => {
-      this.media = value as Media;
-    });
-    this.initializeScopeSubscription().subscribe(value => {
-      this.scope = value as Scope;
-
-      this.clearFilters();
-      this.findEntities();
-    });
-    this.initializeFilterSubscription().subscribe(() => {
-      // Update filter lists and filter state
-      this.tasksMapFilter = this.filterService.tasks;
-      this.projectsMapFilter = this.filterService.projects;
-      this.personsMapFilter = this.filterService.persons;
-      this.tagsMapFilter = this.filterService.tags;
-      this.filterActive = this.filterService.searchItem.length > 0
-        || this.tasksMapFilter.size > 0
-        || this.projectsMapFilter.size > 0
-        || this.personsMapFilter.size > 0
-        || this.tagsMapFilter.size > 0;
-
-      this.initializeTaskletsFiltered(this.taskletsMap);
-      this.initializeTasksFiltered(this.tasksMap);
-      this.initializeProjectsFiltered(this.projectsMap);
-      this.initializePersonsFiltered(this.personsMap);
-      this.initializeTagsFiltered(this.tagsMap);
-    });
-    this.initializeSuggestionSubscription().subscribe((value) => {
-      if (value != null) {
-        this.searchOptions = (value as string[]).reverse();
-      }
-    });
+    this.initializeSubscriptions();
 
     this.initializeWeeklyDigest();
     this.initializeDailyDigests();
 
     this.initializeMaterial();
-    this.initializeSettings();
 
     this.clearFilters();
     this.findEntities();
-
-    this.initializeDateSubscription().subscribe(date => {
-      // Date indicator
-      this.indicatedDate = date;
-      this.indicatedDay = DateService.getDayOfMonthString(date);
-      this.indicatedMonth = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
-
-      // Digests
-      this.generateWeeklyDigest(this.indicatedDate);
-      this.generateDailyDigests(this.indicatedDate);
-    });
+    this.findSettings();
   }
 
   /**
@@ -276,6 +206,139 @@ export class TimelineComponent
     super.ngOnDestroy();
   }
 
+  //
+  // Events
+  //
+
+  // <editor-fold defaultstate="collapsed" desc="Events">
+
+  /**
+   * Handles tasklet updates
+   * @param tasklets tasklets
+   */
+  onTaskletsUpdated(tasklets: Map<string, Tasklet>) {
+    this.initializeTasklets(tasklets);
+    this.initializeTaskletsFiltered(tasklets);
+    this.generateWeeklyDigest(this.indicatedDate);
+    this.generateDailyDigests(this.indicatedDate);
+  }
+
+  /**
+   * Handles task updates
+   * @param tasks tasks
+   */
+  onTasksUpdated(tasks: Map<string, Task>) {
+    this.initializeTasks(tasks);
+    this.initializeTasksFiltered(tasks);
+    this.generateWeeklyDigest(this.indicatedDate);
+    this.generateDailyDigests(this.indicatedDate);
+  }
+
+  /**
+   * Handles project updates
+   * @param projects projects
+   */
+  onProjectsUpdated(projects: Map<string, Project>) {
+    this.initializeProjects(projects);
+    this.initializeProjectsFiltered(projects);
+    this.generateWeeklyDigest(this.indicatedDate);
+    this.generateDailyDigests(this.indicatedDate);
+  }
+
+  /**
+   * Handles person updates
+   * @param persons persons
+   */
+  onPersonsUpdated(persons: Map<string, Person>) {
+    this.initializePersons(persons);
+    this.initializePersonsFiltered(persons);
+  }
+
+  /**
+   * Handles tag updates
+   * @param tags tags
+   */
+  onTagsUpdated(tags: Map<string, Tag>) {
+    this.initializeTags(tags);
+    this.initializeTagsFiltered(tags);
+    this.initializeTagsUnused(this.taskletsMap, this.tasksMap);
+  }
+
+  /**
+   * Handles setting updates
+   * @param settings settings
+   */
+  onSettingsUpdated(settings: Map<string, Setting>) {
+    this.initializeSettings(settings);
+  }
+
+  /**
+   * Handles media updates
+   * @param media media
+   */
+  onMediaUpdated(media: Media) {
+    this.media = media as Media;
+  }
+
+  /**
+   * Handles scope updates
+   * @param scope scope
+   */
+  onScopeUpdated(scope: Scope) {
+    this.scope = scope;
+
+    this.clearFilters();
+    this.findEntities();
+    this.findSettings();
+  }
+
+  /**
+   * Handles filter updates
+   */
+  onFilterUpdated() {
+    // Update filter lists and filter state
+    this.tasksMapFilter = this.filterService.tasks;
+    this.projectsMapFilter = this.filterService.projects;
+    this.personsMapFilter = this.filterService.persons;
+    this.tagsMapFilter = this.filterService.tags;
+    this.filterActive = this.filterService.searchItem.length > 0
+      || this.tasksMapFilter.size > 0
+      || this.projectsMapFilter.size > 0
+      || this.personsMapFilter.size > 0
+      || this.tagsMapFilter.size > 0;
+
+    this.initializeTaskletsFiltered(this.taskletsMap);
+    this.initializeTasksFiltered(this.tasksMap);
+    this.initializeProjectsFiltered(this.projectsMap);
+    this.initializePersonsFiltered(this.personsMap);
+    this.initializeTagsFiltered(this.tagsMap);
+  }
+
+  /**
+   * Handles suggestions updates
+   * @param suggestions suggestions
+   */
+  private onSuggestionUpdated(suggestions: string[]) {
+    if (suggestions != null) {
+      this.searchOptions = (suggestions as string[]).reverse();
+    }
+  }
+
+  /**
+   * Handles date updates
+   * @param date date
+   */
+  private onDateUpdated(date: Date) {
+    // Date indicator
+    this.indicatedDate = date;
+    this.indicatedDay = DateService.getDayOfMonthString(date);
+    this.indicatedMonth = DateService.getMonthString(new Date(date).getMonth()).slice(0, 3);
+
+    // Digests
+    this.generateWeeklyDigest(this.indicatedDate);
+    this.generateDailyDigests(this.indicatedDate);
+  }
+
   // </editor-fold>
 
   //
@@ -283,6 +346,46 @@ export class TimelineComponent
   //
 
   // <editor-fold defaultstate="collapsed" desc="Initialization">
+
+  /**
+   * Initialize subscriptions
+   */
+  private initializeSubscriptions() {
+    this.initializeTaskletsSubscription().subscribe(value => {
+      this.onTaskletsUpdated(value as Map<string, Tasklet>);
+    });
+    this.initializeTasksSubscription().subscribe(value => {
+      this.onTasksUpdated(value as Map<string, Task>);
+    });
+    this.initializeProjectsSubscription().subscribe(value => {
+      this.onProjectsUpdated(value as Map<string, Project>);
+    });
+    this.initializePersonsSubscription().subscribe(value => {
+      this.onPersonsUpdated(value as Map<string, Person>);
+    });
+    this.initializeTagsSubscription().subscribe(value => {
+      this.onTagsUpdated(value as Map<string, Tag>);
+    });
+    this.initializeSettingsSubscription().subscribe(value => {
+      this.onSettingsUpdated(value as Map<string, Setting>);
+    });
+    this.initializeMediaSubscription().subscribe(value => {
+      this.onMediaUpdated(value as Media);
+    });
+    this.initializeScopeSubscription().subscribe(value => {
+      this.onScopeUpdated(value as Scope);
+    });
+
+    this.initializeFilterSubscription().subscribe(() => {
+      this.onFilterUpdated();
+    });
+    this.initializeSuggestionSubscription().subscribe(value => {
+      this.onSuggestionUpdated(value as string[]);
+    });
+    this.initializeDateSubscription().subscribe(value => {
+      this.onDateUpdated(value as Date);
+    });
+  }
 
   // Tasklets
 
@@ -503,6 +606,16 @@ export class TimelineComponent
     this.tagsMapUnused = this.tagService.getUnusedTags(usedTagIds, this.tagsMap);
   }
 
+  // Settings
+
+  /**
+   * Initializes settings
+   * @param settingsMap settings map
+   */
+  private initializeSettings(settingsMap: Map<string, Setting>) {
+    this.settingsMap = new Map(settingsMap);
+  }
+
   // Other
 
   /**
@@ -551,18 +664,6 @@ export class TimelineComponent
         // Save current scroll position
         this.scrollPosLast = scrollPos;
       })).subscribe();
-  }
-
-  /**
-   * Initializes settings
-   */
-  private initializeSettings() {
-    this.settingsService.fetch();
-    this.settingsService.settingsSubject.subscribe(value => {
-      if (value != null) {
-        this.sidenavOpened = this.settingsService.isSettingActive(SettingType.TIMELINE_SIDENAV_OPENED);
-      }
-    });
   }
 
   /**
@@ -750,11 +851,13 @@ export class TimelineComponent
   onKeyDown(keyboardEvent: KeyboardEvent) {
     if (keyboardEvent.ctrlKey && keyboardEvent.altKey) {
       switch (keyboardEvent.key) {
-        case 'n':
+        case 'n': {
           this.onAddTaskClicked();
           break;
-        default:
+        }
+        default: {
           break;
+        }
       }
     }
   }

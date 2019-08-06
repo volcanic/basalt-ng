@@ -50,33 +50,25 @@ export class TaskService {
    * Sorts tasks based on their due date & due time, effort estimation and priority
    * @param taskA first task
    * @param taskB seconds task
-   * @return Returns -1 if taskA is of a higher order (i.e. before taskB),
-   * 0 if taskA and taskB are equal and 1 if task B is of a higher order
+   * @return Returns
+   * -1 if taskA is of a higher order (i.e. before taskB),
+   * 0 if taskA and taskB are equal and
+   * 1 if task B is of a higher order
    */
   static sortTasks(taskA: Task, taskB: Task) {
     let returnValue = 0; // 0 does not sort, < 0 places taskA first, > 0 places taskB first
 
-    const dueTimeA = new Date(taskA.dueDate).getTime() / 1000 / 60; // Get due time in milliseconds and convert to minutes
+    const dueTimeA = new Date(taskA.dueDate).getTime() / 1000 / 60; // Get due time in minutes
     const effortA = taskA.effort; // Get effort in minutes
     const calculatedStartA = dueTimeA - effortA; // Calculate start time for comparison with taskB
     const priorityA = taskA.priority; // get priority
 
-    const dueTimeB = new Date(taskB.dueDate).getTime() / 1000 / 60; // Get due time in milliseconds and convert to minutes
+    const dueTimeB = new Date(taskB.dueDate).getTime() / 1000 / 60; // Get due time in minutes
     const effortB = taskB.effort; // Get effort in minutes
     const calculatedStartB = dueTimeB - effortB; // Calculate start time for comparison with taskB
     const priorityB = taskB.priority; // get priority
 
-    if (dueTimeA < dueTimeB) {  // A comes first
-      if (calculatedStartB < dueTimeA) { // B comes first
-        if (priorityA < priorityB) { // A comes first
-          returnValue = -1;
-        } else { // B stays first
-          returnValue = 1;
-        }
-      } else { // A stays first
-        returnValue = -1;
-      }
-    } else if (dueTimeA === dueTimeB) {
+    if ((dueTimeA < dueTimeB) || (dueTimeA === dueTimeB)) { // A comes first
       if (calculatedStartB < dueTimeA) { // B comes first
         if (priorityA < priorityB) { // A comes first
           returnValue = -1;

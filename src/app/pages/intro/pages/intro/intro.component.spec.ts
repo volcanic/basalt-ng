@@ -12,6 +12,7 @@ import {Router} from '@angular/router';
 import {MatDialog, MatIconRegistry} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('IntroComponent', () => {
   let component: IntroComponent;
@@ -19,7 +20,7 @@ describe('IntroComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [IntroImports, HttpClientModule],
+      imports: [IntroImports, BrowserAnimationsModule, HttpClientModule],
       declarations: [IntroDeclarations],
       providers: [
         FeatureService,

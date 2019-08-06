@@ -22,9 +22,7 @@ import {PaletteType} from '../../../../../core/ui/model/palette-type.enum';
 import {HueType} from '../../../../../core/ui/model/hue-type.enum';
 import {SelectableItem} from '../../../../../ui/checkable-list/selectable-item';
 import {AcceptanceCriterium} from '../../../../../core/entity/model/acceptance-criterium.model';
-import {Project} from '../../../../../core/entity/model/project.model';
-import {ProjectService} from '../../../../../core/entity/services/project/project.service';
-import {environment} from '../../../../../../environments/environment';
+import {Setting} from '../../../../../core/settings/model/setting.model';
 
 /**
  * Displays tasklet dialog
@@ -70,6 +68,9 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
   projectsMap = new Map<string, Project>();
   /** Map of tag */
   tagsMap = new Map<string, Tag>();
+
+  /** Map of settings */
+  settingsMap = new Map<string, Setting>();
 
   /** Task options */
   taskOptionNames: string[];
@@ -165,6 +166,8 @@ export class TaskletDialogComponent implements OnInit, OnDestroy {
     this.tasksMap = this.data.tasksMap;
     this.projectsMap = this.data.projectsMap;
     this.tagsMap = this.data.tagMap;
+
+    this.settingsMap = this.data.settingsMap;
   }
 
   /**

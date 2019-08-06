@@ -1,15 +1,158 @@
-<div class="main">
+<div class="wrapper">
+  <mat-horizontal-stepper class="stepper" [linear]="true" labelPosition="bottom" #stepper>
+    <!-- -->
+    <mat-step label="Welcome">
+      <img id="logo" src="../../../../../assets/logos/basalt_logo.svg"/>
+      <div class="content">
+        <div class="header">
+          <div class="title">This is Basalt</div>
+          <div class="description">Basalt is a tool that helps you
+            <ul>
+              <li>keep track of and manage the work you have done</li>
+              <li>plan ahead and manage your To Dos</li>
+              <li>manage contacts</li>
+            </ul>
+            making it not only a <span class="highlighted">to-do-</span> but also a <span class="highlighted">have-done-list</span>
+          </div>
+        </div>
+        <div class="footer flexcontainer">
+          <div class="flexbox"></div>
+          <button mat-button matStepperNext class="button-next">Next</button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step label="Plan your schedule" state="task">
+      <div class="content">
+        <div class="header">
+          <div class="title">Define tasks</div>
+          <div class="description">
+            <span class="highlighted">Tasks</span> are the things you want to accomplish and allow you to define
+            <ul>
+              <li>a description</li>
+              <li>a priority</li>
+              <li>a due date</li>
+              <li>an associated project</li>
+              <li>a definition of done</li>
+              <li>etc.</li>
+            </ul>
+            <span>Tasks are <span class="highlighted">automatically sorted</span> based on their
+              <ul>
+                <li>due date & due time</li>
+                <li>the estimated effort</li>
+                <li>and their priority</li>
+              </ul>
+              Therefore, if you maintain the necessary information, Basalt automatically tells you what's up next!</span>
+          </div>
+          <img src="assets/onboarding/task.png" class="full-width"/>
+        </div>
+        <div class="footer flexcontainer">
+          <button mat-button matStepperPrevious>Back</button>
+          <div class="flexbox"></div>
+          <button mat-button matStepperNext class="highlighted">Next</button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step label="Track your work" state="task">
+      <div class="content">
+        <div class="header">
+          <div class="title">Make use of tasklets</div>
+          <div class="description">
+            A <span class="highlighted">tasklet</span> is a piece of work which can be associated with a task.
+            Tasklets can be of different types such as
+            <ul>
+              <li>Simple Actions</li>
+              <li>Calls</li>
+              <li>Meetings</li>
+              <li>Checklists</li>
+            </ul>
+            All your tasklets will be displayed in the timeline.
+            The work you've done will be <span class="highlighted">automatically time-tracked</span>.
+          </div>
+          <img src="assets/onboarding/tasklet.png" class="full-width"/>
+        </div>
+        <div class="footer flexcontainer">
+          <button mat-button matStepperPrevious>Back</button>
+          <div class="flexbox"></div>
+          <button mat-button matStepperNext class="highlighted">Next</button>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step label="Offline first" state="task">
+      <div class="content">
+        <div class="header">
+          <div class="title">Store your data securely</div>
+          <div class="description">
+            Basalt makes use of <a href="https://en.wikipedia.org/wiki/Indexed_Database_API" target="_blank"
+                                   class="link highlighted">IndexedDB</a>
+            - a database
+            which is part of your browser.
+            No data is transferred to the cloud. Everything stays securely on your device.
+            <br>
+            <br>
+            We will be adding multi-device synchronization in a later release. If you wish to synchronize your data
+            across multiple devices, there's an export and import feature you can use for now.
+          </div>
+        </div>
+        <div class="footer flexcontainer">
+          <button mat-button matStepperPrevious>Back</button>
+          <div class="flexbox"></div>
+          <button mat-button matStepperNext class="highlighted">Next</button>
+        </div>
+      </div>
+    </mat-step>
+
+<mat-step label="One last question" state="task">
   <div class="content">
     <div class="header">
-      <div class="title">{{ title }}</div>
-      <div class="description">{{ description }}</div>
+      <div class="title">How do you work?</div>
+      <div class="description">Select the aspects you want to use (you can change this later)</div>
     </div>
-    <app-feature-fragment [settings]="settings"></app-feature-fragment>
+    <app-feature-fragment
+      [settings]="settingsMap"
+      (featureToggledEmitter)="onFeatureToggled($event)"></app-feature-fragment>
+    <div class="footer flexcontainer">
+      <button mat-button matStepperPrevious>Back</button>
+      <div class="flexbox"></div>
+      <button mat-button matStepperNext class="highlighted">Next</button>
+    </div>
+  </div>
+</mat-step>
+
+<mat-step label="Let's go!" state="task">
+  <div class="content">
+    <div class="description">
+      Start the app and create your first tasklet.
+      Please click the bullhorn icon if you want to provide any feedback regarding the app.
+    </div>
+    <div class="flexcontainer">
+      <div class="flexbox"></div>
+      <mat-icon svgIcon="bullhorn" class="feedback-icon"></mat-icon>
+      <div class="flexbox"></div>
+    </div>
     <div class="footer flexcontainer">
       <div class="flexbox"></div>
-      <button mat-button (click)="onContinue()">
+      <button mat-button class="button-next" (click)="onContinue()">
         Continue
       </button>
     </div>
   </div>
+</mat-step>
+
+<!-- Icon overrides -->
+<ng-template matStepperIcon="task">
+  <mat-icon svgIcon="alias_task"></mat-icon>
+</ng-template>
+<ng-template matStepperIcon="number" let-index="index">
+  {{index + 1}}
+</ng-template>
+<ng-template matStepperIcon="edit">
+  <mat-icon svgIcon="bookmark_border"></mat-icon>
+</ng-template>
+<ng-template matStepperIcon="done">
+  <mat-icon svgIcon="done"></mat-icon>
+</ng-template>
+</mat-horizontal-stepper>
 </div>

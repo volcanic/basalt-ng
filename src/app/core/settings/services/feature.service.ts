@@ -4,6 +4,7 @@ import {FeatureType} from '../model/feature-type.enum';
 import {ColorService} from '../../ui/services/color.service';
 import {SettingType} from '../model/setting-type.enum';
 import {SettingsService} from './settings.service';
+import {Setting} from '../model/setting.model';
 
 /**
  * Handles features
@@ -62,14 +63,16 @@ export class FeatureService {
   /**
    * Determines if a feature is active
    * @param featureType feature type
+   * @param settings map of settings
    */
-  public isFeatureActive(featureType: FeatureType): boolean {
+  public isFeatureActive(featureType: FeatureType, settings: Map<string, Setting>): boolean {
     return this.features.filter(feature => {
       return feature.type === featureType;
     }).some(feature => {
       const settingType = feature.settingType;
-      return this.settingsService.settings.get(settingType) != null
-        && this.settingsService.settings.get(settingType).value === true;
+      return settings != null
+        && settings.get(settingType) != null
+        && settings.get(settingType).value === true;
     });
   }
 }

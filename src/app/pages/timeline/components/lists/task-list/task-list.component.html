@@ -1,4 +1,4 @@
-<mat-accordion class="headers-align">
+<mat-accordion *ngIf="tasksMap != null && tasksMap.size > 0" class="headers-align">
 
   <!-- INBOX -->
   <mat-accordion class="headers-align">
@@ -159,3 +159,9 @@
     </mat-expansion-panel>
   </mat-accordion>
 </mat-accordion>
+
+<div *ngIf="tasksMap != null && tasksMap.size == 0" class="placeholder-container">
+  <button mat-flat-button class="placeholder" (click)="onPlaceholderClicked()">
+    There are no tasks yet. Click here to add one
+  </button>
+</div>

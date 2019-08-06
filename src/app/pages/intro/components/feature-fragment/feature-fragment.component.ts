@@ -49,10 +49,10 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
   /** Map of current settings */
   @Input() settings = new Map<string, Setting>();
   /** Event emitter indicating tasklet type selection */
-  @Output() featureToggledEmitter = new EventEmitter<{ setting: SettingType, value: any }>();
+  @Output() featureToggledEmitter = new EventEmitter<{ type: SettingType, value: any }>();
 
   /** List of tasklet type actions */
-  featureActions = [];
+  featureActions: FeatureAction[] = [];
   /** Currently hovered feature */
   hoveredFeature: FeatureType;
 
@@ -82,6 +82,7 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
    * Handles on-changes lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
+    this.initializeFeatures();
     this.updateActionActive();
     this.updateActionColor();
   }
@@ -100,8 +101,8 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
         const action = new FeatureAction();
         action.featureType = feature.type;
         action.settingType = feature.settingType;
-        action.backgroundColor = this.getFeatureColor(action.featureType, action.active);
-        action.iconColor = this.getFeatureContrast(action.featureType, action.active);
+        action.backgroundColor = this.getFeatureColor(action.featureType, this.featureService.isFeatureActive(feature.type, this.settings));
+        action.iconColor = this.getFeatureContrast(action.featureType, this.featureService.isFeatureActive(feature.type, this.settings));
         action.icon = feature.icon;
         action.label = feature.type.toString();
         this.featureActions.push(action);
@@ -118,7 +119,7 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
    * @param action feature action
    */
   onFeatureToggled(action: FeatureAction) {
-    this.settingsService.updateSetting(new Setting(action.settingType, !action.active));
+    this.featureToggledEmitter.emit({type: action.settingType, value: !action.active});
   }
 
   /**
@@ -140,7 +141,7 @@ export class FeatureFragmentComponent implements OnInit, OnChanges {
    */
   private updateActionActive() {
     this.featureActions.forEach((action: FeatureAction) => {
-      const setting = this.settingsService.settings.get(action.settingType);
+      const setting = this.settings.get(action.settingType);
       action.active = setting != null && JSON.parse(setting.value) === true;
     });
   }
