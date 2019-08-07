@@ -168,7 +168,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Initializes task
    */
   private initializeTask() {
-    this.task = this.tasksMap.get(this.tasklet.taskId);
+    this.task = this.tasklet ? this.tasksMap.get(this.tasklet.taskId) : null;
   }
 
 
