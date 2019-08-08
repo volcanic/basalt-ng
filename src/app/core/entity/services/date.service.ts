@@ -323,6 +323,10 @@ export class DateService {
     return new Date(date);
   }
 
+  /**
+   * Returns start of next day
+   * @param date reference date
+   */
   static getNextDayStart(date: Date): Date {
     const nextDayStart = new Date(date);
     nextDayStart.setDate(nextDayStart.getDate() + 1);
@@ -330,6 +334,10 @@ export class DateService {
     return nextDayStart;
   }
 
+  /**
+   * Returns start of next weekend
+   * @param date reference date
+   */
   static getBeginningOfNextWeekend(date: Date) {
     const endOfTheWeek = new Date(date);
 

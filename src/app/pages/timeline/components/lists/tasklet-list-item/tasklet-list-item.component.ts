@@ -168,7 +168,7 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
    * Initializes task
    */
   private initializeTask() {
-    this.task = this.tasksMap.get(this.tasklet.taskId);
+    this.task = this.tasklet ? this.tasksMap.get(this.tasklet.taskId) : null;
   }
 
 
@@ -249,6 +249,42 @@ export class TaskletListItemComponent implements OnInit, OnChanges {
         });
       }
     }
+  }
+
+  /**
+   * Handles click on update tasklet button
+   */
+  onUpdateTaskletClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.OPEN_DIALOG_UPDATE,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
+
+  /**
+   * Handles click on update creation time button
+   */
+  onUpdateCreationTimeClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.OPEN_DIALOG_CREATION_TIME,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
+  }
+
+  /**
+   * Handles click on continue tasklet button
+   */
+  onContinueTaskletClicked() {
+    this.taskletEventEmitter.emit({
+      action: Action.OPEN_DIALOG_CONTINUE,
+      tasklet: this.tasklet,
+      task: this.task,
+      project: this.project
+    });
   }
 
   //

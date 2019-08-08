@@ -132,7 +132,7 @@
       Update tasklet
     </button>
     <button mat-button *ngIf="mode == modeType.CONTINUE"
-            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_CONTINUED, tasklet, task, project)"
+            [disabled]="!containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet, task, project)"
             (click)="onButtonClicked(actionType.CONTINUE)">
       Continue tasklet
     </button>

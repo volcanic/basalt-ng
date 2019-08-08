@@ -16,16 +16,13 @@
     <div class="flexbox"></div>
     <span [matMenuTriggerFor]="contextMenu" #contextMenuTrigger></span>
     <mat-menu #contextMenu="matMenu">
-      <button mat-menu-item
-              (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_UPDATE, tasklet: tasklet})">
+      <button mat-menu-item (click)="onUpdateTaskletClicked()">
         Update tasklet
       </button>
-      <button mat-menu-item
-              (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CREATION_TIME, tasklet: tasklet})">
+      <button mat-menu-item (click)="onUpdateCreationTimeClicked">
         Update creation time
       </button>
-      <button mat-menu-item *ngIf="containsDisplayAspect(displayAspectType.CAN_BE_UPDATED, tasklet)"
-              (click)="taskletEventEmitter.emit({action: actionType.OPEN_DIALOG_CONTINUE, tasklet: tasklet})">
+      <button mat-menu-item *ngIf="onContinueTaskletClicked">
         Continue tasklet
       </button>
     </mat-menu>

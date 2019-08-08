@@ -47,29 +47,6 @@ export class TimelineToolbarComponent implements OnInit {
   env = environment;
 
   //
-  // Static methods
-  //
-
-  /**
-   * Sends feedback mail
-   */
-  static sendFeedbackMail() {
-    const emailTo = 'basalt.interoberlin@gmail.com';
-    const emailSub = 'Basalt App Feedback';
-    const emailBody = encodeURIComponent('Hi Basalt-Team,\n' +
-      '\n' +
-      '\n' +
-      '\n' +
-      '(Bitte beschreibe möglichst genau, was du dir anders wünschen würdest oder an welcher Stelle ein Fehler auftritt. Vielen Dank!)' +
-      '\n');
-
-    window.open(
-      'mailto:' + emailTo + '?' + '&subject=' + emailSub + '&body=' + emailBody,
-      '_blank'
-    );
-  }
-
-  //
   // Lifecycle hooks
   //
 
@@ -106,7 +83,6 @@ export class TimelineToolbarComponent implements OnInit {
   //
   // Actions
   //
-
 
   /** Handles click on menu item
    * @param menuItem menu item
@@ -160,6 +136,29 @@ export class TimelineToolbarComponent implements OnInit {
   onClearFiltersButtonClicked() {
     this.menuItemEventEmitter.emit('clear-filter');
     this.searchItem = '';
+  }
+
+  //
+  // Helpers
+  //
+
+  /**
+   * Sends feedback mail
+   */
+  sendFeedbackMail() {
+    const emailTo = 'basalt.interoberlin@gmail.com';
+    const emailSub = 'Basalt App Feedback';
+    const emailBody = encodeURIComponent('Hi Basalt-Team,\n' +
+      '\n' +
+      '\n' +
+      '\n' +
+      '(Bitte beschreibe möglichst genau, was du dir anders wünschen würdest oder an welcher Stelle ein Fehler auftritt. Vielen Dank!)' +
+      '\n');
+
+    window.open(
+      'mailto:' + emailTo + '?' + '&subject=' + emailSub + '&body=' + emailBody,
+      '_blank'
+    );
   }
 
   //
