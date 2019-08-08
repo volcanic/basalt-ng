@@ -346,7 +346,7 @@ export class BaseComponent implements OnInit, OnDestroy {
     return this.taskletService.dateQueueSubject.pipe(
       takeUntil(this.unsubscribeSubject),
       filter(value => value != null),
-      delay(5000)
+      delay(500)
     );
   }
 
