@@ -30,7 +30,7 @@ export class TaskletPreviewFragmentComponent {
   @Input() media: Media;
 
   /** Event emitter indicating click on tasklet */
-  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
+  @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet, task: Task, project: Project }>();
 
   /** Enum for media types */
   mediaType = Media;
