@@ -614,6 +614,7 @@ export class TimelineComponent
    */
   private initializeSettings(settingsMap: Map<string, Setting>) {
     this.settingsMap = new Map(settingsMap);
+    this.sidenavOpened = SettingsService.isSettingActive(SettingType.TIMELINE_SIDENAV_OPENED, this.settingsMap);
   }
 
   // Other

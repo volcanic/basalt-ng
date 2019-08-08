@@ -447,6 +447,7 @@ export class TaskComponent
    */
   private initializeSettings(settings: Map<string, Setting>) {
     this.settingsMap = settings;
+    this.sidenavOpened = SettingsService.isSettingActive(SettingType.TASK_SIDENAV_OPENED, this.settingsMap);
   }
 
   /**
