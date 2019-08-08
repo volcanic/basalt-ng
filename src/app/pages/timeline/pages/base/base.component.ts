@@ -993,16 +993,24 @@ export class BaseComponent implements OnInit, OnDestroy {
         break;
       }
       case Action.DELETE: {
-        const references = Array.from(this.tasksMap.values()).some((task: Task) => {
-          return task.projectId === project.id;
+        // Non-proxy tasks referencing this project
+        const referencesTasks = Array.from(this.tasksMap.values()).some((task: Task) => {
+          return task.projectId === project.id && !task.proxy;
         });
 
-        if (references) {
+        // Tasklets referencing this project indirectly via a proxy task
+        const referencesTasklets = Array.from(this.tasksMap.values()).some((task: Task) => {
+          return task.projectId === project.id && task.proxy && (Array.from(this.taskletsMap.values())).some((tasklet: Tasklet) => {
+            return tasklet.taskId === task.id;
+          });
+        });
+
+        if (referencesTasks || referencesTasklets) {
           this.dialog.open(InformationDialogComponent, {
             disableClose: false,
             data: {
               title: 'Cannot delete project',
-              text: `There are still tasks associated with this project.`,
+              text: `There are still tasks or tasklets associated with this project.`,
               action: 'Okay',
               value: project
             }
