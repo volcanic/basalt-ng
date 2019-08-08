@@ -466,6 +466,7 @@ export class TaskletComponent
    */
   private initializeSettings(settings: Map<string, Setting>) {
     this.settingsMap = settings;
+    this.sidenavOpened = SettingsService.isSettingActive(SettingType.TASKLET_SIDENAV_OPENED, this.settingsMap);
   }
 
   /**
