@@ -64,7 +64,8 @@
         <app-tasklet-list [taskletsMap]="taskletsMapFiltered" [tasksMap]="tasksMap" [projectsMap]="projectsMap"
                           [tagsMap]="tagsMap" [personsMap]="personsMap" [media]="media"
                           (taskletEventEmitter)="onTaskletEvent($event)"
-                          (taskletCreationDateEventEmitter)="onTaskletCreationDateEvent($event)"></app-tasklet-list>
+                          (taskletCreationDateEventEmitter)="onTaskletCreationDateEvent($event)"
+                          (renderedListEmitter)="onTaskletsRendered()"></app-tasklet-list>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>

@@ -15,7 +15,7 @@ import {FilterService} from 'app/core/entity/services/filter.service';
 import {Tag} from 'app/core/entity/model/tag.model';
 import {MediaService} from 'app/core/ui/services/media.service';
 import {Media} from 'app/core/ui/model/media.enum';
-import {map} from 'rxjs/internal/operators';
+import {delay, map} from 'rxjs/internal/operators';
 import {ProjectListDialogComponent} from '../../components/dialogs/project-list-dialog/project-list-dialog.component';
 import {CdkScrollable, ScrollDispatcher} from '@angular/cdk/scrolling';
 import {Animations, ScrollDirection, ScrollState} from './timeline.animation';
@@ -224,6 +224,16 @@ export class TimelineComponent
   }
 
   /**
+   * Handles tasklets rendering
+   */
+  onTaskletsRendered() {
+    console.log(`onTaskletsRendered`);
+    setTimeout(() => {
+      this.initializeDate();
+    }, 2500);
+  }
+
+  /**
    * Handles task updates
    * @param tasks tasks
    */
@@ -329,6 +339,8 @@ export class TimelineComponent
    * @param date date
    */
   private onDateUpdated(date: Date) {
+    console.log(`onDateUpdated ${JSON.stringify(date)}`);
+
     // Date indicator
     this.indicatedDate = date;
     this.indicatedDay = DateService.getDayOfMonthString(date);
@@ -382,9 +394,17 @@ export class TimelineComponent
     this.initializeSuggestionSubscription().subscribe(value => {
       this.onSuggestionUpdated(value as string[]);
     });
+    this.initializeDate();
     this.initializeDateSubscription().subscribe(value => {
       this.onDateUpdated(value as Date);
     });
+  }
+
+  /**
+   * Initializes date which is used for report
+   */
+  protected initializeDate() {
+    this.onDateUpdated(new Date());
   }
 
   // Tasklets
@@ -394,6 +414,15 @@ export class TimelineComponent
    * @param taskletsMap tasklets map
    */
   private initializeTasklets(taskletsMap: Map<string, Tasklet>) {
+    const numberOfTasklets = 100;
+    const earliestDate = 60;
+
+    for (let i = 0; i < numberOfTasklets; i++) {
+      const t = new Tasklet();
+      t.creationDate = DateService.getRandomDate(new Date(), DateService.addDays(new Date(), -earliestDate));
+      taskletsMap.set(t.id, t);
+    }
+
     this.taskletsMap = new Map(taskletsMap);
   }
 

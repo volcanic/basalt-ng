@@ -663,4 +663,15 @@ export class DateService {
   static getRoundedMinutes(minutes: number): number {
     return Math.ceil(minutes / DateService.MINUTES_INTERVAL) * DateService.MINUTES_INTERVAL;
   }
+
+  /**
+   * Returns a random date which is between two given dates
+   * @param start start date
+   * @param end end date
+   */
+  static getRandomDate(start, end) {
+    const startTime = start.getTime();
+    const endTime = end.getTime();
+    return new Date(startTime + Math.random() * (endTime - startTime));
+  }
 }

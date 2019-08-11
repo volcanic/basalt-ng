@@ -1,4 +1,14 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 import {Tasklet} from 'app/core/entity/model/tasklet.model';
 import {Media} from 'app/core/ui/model/media.enum';
 import {Task} from 'app/core/entity/model/task.model';
@@ -17,7 +27,7 @@ import {TaskletService} from '../../../../../core/entity/services/tasklet/taskle
   styleUrls: ['./tasklet-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TaskletListComponent implements OnChanges {
+export class TaskletListComponent implements AfterViewInit, OnChanges {
 
   /** Map of tasklets */
   @Input() taskletsMap = new Map<string, Tasklet>();
@@ -36,9 +46,16 @@ export class TaskletListComponent implements OnChanges {
   @Output() taskletEventEmitter = new EventEmitter<{ action: Action, tasklet: Tasklet }>();
   /** Event emitter indicating new creation date to queue */
   @Output() taskletCreationDateEventEmitter = new EventEmitter<Date>();
+  /** Event emitter indicating finished renderung of list */
+  @Output() renderedListEmitter = new EventEmitter<any>();
+
+  /** List view child */
+  @ViewChildren('taskletsList') taskletsList: QueryList<any>;
 
   /** Tasklets to be displayed */
   tasklets = [];
+  /** List rendering completed */
+  ready = false;
 
   //
   // Lifecycle hooks
@@ -49,6 +66,16 @@ export class TaskletListComponent implements OnChanges {
    */
   ngOnChanges() {
     this.initializeTasklets();
+  }
+
+  /**
+   * Handles after-view-init lifecycle phase
+   */
+  ngAfterViewInit() {
+    console.log(`ngAfterViewInit`);
+    this.taskletsList.changes.subscribe(() => {
+      this.renderedListEmitter.emit();
+    });
   }
 
   //

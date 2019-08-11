@@ -537,24 +537,27 @@ export class TaskletService {
    * Adds a creation date of a tasklet to the queue and publishes the latest entry.
    * This is used for the date indicator component
    * @param date element to be added
+   * @param delay delay
    */
-  addElementToDateQueue(date: Date) {
-    const BUFFER = 7;
+  addElementToDateQueue(date: Date, delay: number) {
+    setTimeout(() => {
+      const BUFFER = 7;
 
-    let dateQueue = [];
-    dateQueue.push(date);
+      let dateQueue = [];
+      dateQueue.push(date);
 
-    // Evict queue
-    if (dateQueue.length > BUFFER) {
-      dateQueue = dateQueue.slice(dateQueue.length - BUFFER);
-    }
+      // Evict queue
+      if (dateQueue.length > BUFFER) {
+        dateQueue = dateQueue.slice(dateQueue.length - BUFFER);
+      }
 
-    // Sort queue values
-    const sortedDateQueue = dateQueue.slice().sort((d1: Date, d2: Date) => {
-      return new Date(d2).getTime() - new Date(d1).getTime();
-    });
+      // Sort queue values
+      const sortedDateQueue = dateQueue.slice().sort((d1: Date, d2: Date) => {
+        return new Date(d2).getTime() - new Date(d1).getTime();
+      });
 
-    this.dateQueueSubject.next(sortedDateQueue[0]);
+      this.dateQueueSubject.next(sortedDateQueue[0]);
+    }, delay);
   }
 
   /**

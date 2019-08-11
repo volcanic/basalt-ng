@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../../../../../environments/environment';
 import {Tasklet} from '../../../../core/entity/model/tasklet.model';
 import {Task} from '../../../../core/entity/model/task.model';
@@ -6,7 +6,7 @@ import {Project} from '../../../../core/entity/model/project.model';
 import {Person} from '../../../../core/entity/model/person.model';
 import {Tag} from '../../../../core/entity/model/tag.model';
 import {Observable, Subject} from 'rxjs';
-import {delay, filter, takeUntil} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 import {TaskletService} from '../../../../core/entity/services/tasklet/tasklet.service';
 import {Scope} from '../../../../core/entity/model/scope.enum';
 import {TaskletType} from '../../../../core/entity/model/tasklet-type.enum';
@@ -345,8 +345,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   protected initializeDateSubscription() {
     return this.taskletService.dateQueueSubject.pipe(
       takeUntil(this.unsubscribeSubject),
-      filter(value => value != null),
-      delay(500)
+      filter(value => value != null)
     );
   }
 
@@ -760,7 +759,7 @@ export class BaseComponent implements OnInit, OnDestroy {
    * @param creationDate creation date
    */
   onTaskletCreationDateEvent(creationDate: Date) {
-    this.taskletService.addElementToDateQueue(creationDate);
+    this.taskletService.addElementToDateQueue(creationDate, 0);
   }
 
   /**
