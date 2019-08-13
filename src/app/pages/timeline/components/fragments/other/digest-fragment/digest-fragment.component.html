@@ -1,17 +1,30 @@
-<app-project-effort-tree [projectDigest]="weeklyDigest"
-                         opened=true></app-project-effort-tree>
-<div *ngFor="let dailyDigest of dailyDigests">
-  <app-project-effort-tree [projectDigest]="dailyDigest"
-                           opened=false></app-project-effort-tree>
-</div>
-<div class="flexcontainer">
-  <button mat-button
-          [disabled]="(weeklyDigest === null && dailyDigests === null) || isInWeek(indicatedDate, earliestDate)"
-          (click)="onPreviousWeekClicked()">Previous week
-  </button>
-  <div class="flexbox"></div>
-  <button mat-button
-          [disabled]="(weeklyDigest === null && dailyDigests === null) || isInWeek(indicatedDate, latestDate)"
-          (click)="onNextWeekClicked()">Next week
-  </button>
-</div>
+<mat-accordion class="headers-align">
+  <mat-expansion-panel [expanded]="true" (opened)="true" hideToggle>
+    <mat-expansion-panel-header>
+      Weekly effort report
+    </mat-expansion-panel-header>
+    <div id="digest-content">
+
+      <app-project-effort-tree [projectDigest]="weeklyDigest"
+                               opened=true></app-project-effort-tree>
+      <mat-divider></mat-divider>
+      <div *ngFor="let dailyDigest of dailyDigests">
+        <app-project-effort-tree [projectDigest]="dailyDigest"
+                                 opened=false></app-project-effort-tree>
+      </div>
+      <div class="flexcontainer">
+        <button mat-button
+                [disabled]="(weeklyDigest === null && dailyDigests === null) || isInWeek(indicatedDate, earliestDate)"
+                (click)="onPreviousWeekClicked()">
+          <mat-icon svgIcon='keyboard_arrow_left'></mat-icon> Previous
+        </button>
+        <div class="flexbox"></div>
+        <button mat-button
+                [disabled]="(weeklyDigest === null && dailyDigests === null) || isInWeek(indicatedDate, latestDate)"
+                (click)="onNextWeekClicked()">
+          Next <mat-icon svgIcon='keyboard_arrow_right'></mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

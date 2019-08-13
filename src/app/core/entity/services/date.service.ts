@@ -466,7 +466,7 @@ export class DateService {
     const sameYear = start.getFullYear() === end.getFullYear();
 
     let dateStringStart = DateService.getSimpleDateString(start);
-    const dateStringEnd = DateService.getSimpleDateString(end);
+    const dateStringEnd = DateService.getSimpleDateWithoutYearString(end);
 
     if (sameMonth) {
       const month = DateService.getMonthString(new Date(start).getMonth()).slice(0, 3);
@@ -477,6 +477,8 @@ export class DateService {
       const year = new Date(start).getFullYear().toString();
       dateStringStart = dateStringStart.replace(year, '').trim();
     }
+
+
 
     return dateStringStart + ' - ' + dateStringEnd;
   }
