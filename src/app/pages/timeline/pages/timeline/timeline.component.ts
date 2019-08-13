@@ -372,6 +372,11 @@ export class TimelineComponent
    * @param taskletsMap tasklets map
    */
   private initializeTasklets(taskletsMap: Map<string, Tasklet>) {
+    // this.generateRandomTasklets(taskletsMap);
+    this.taskletsMap = new Map(taskletsMap);
+  }
+
+  private generateRandomTasklets(taskletsMap: Map<string, Tasklet>) {
     const numberOfTasklets = 20;
     const earliestDate = 60;
 
@@ -380,8 +385,6 @@ export class TimelineComponent
       t.creationDate = DateService.getRandomDate(new Date(), DateService.addDays(new Date(), -earliestDate));
       taskletsMap.set(t.id, t);
     }
-
-    this.taskletsMap = new Map(taskletsMap);
   }
 
   /**
