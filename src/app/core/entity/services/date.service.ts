@@ -167,7 +167,8 @@ export class DateService {
     const beginningOfTheWeek = DateService.getBeginningOfTheWeek(new Date(referenceDate));
     const endOfTheWeek = DateService.getEndOfTheWeek(new Date(referenceDate));
 
-    return new Date(date) >= beginningOfTheWeek && new Date(date) <= endOfTheWeek;
+    return DateService.isAfter(new Date(date), beginningOfTheWeek)
+      && DateService.isBefore(new Date(date), endOfTheWeek);
   }
 
   /**
@@ -211,7 +212,7 @@ export class DateService {
    * @returns week start of the week containing the given date
    */
   static getBeginningOfTheWeek(date: Date): Date {
-    const beginningOfTheWeek = new Date();
+    const beginningOfTheWeek = new Date(date);
 
     const currentWeekDay = new Date(date).getDay();
     const daysFromMonday = currentWeekDay === 0 ? 6 : currentWeekDay - 1;
