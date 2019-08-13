@@ -61,6 +61,7 @@ import {TagNamesPipe} from './pipes/tag-names.pipe';
 import {PersonNamesPipe} from './pipes/person-names.pipe';
 import {ColorPopoverComponent} from './components/popovers/color-popover/color-popover.component';
 import {BaseComponent} from './pages/base/base.component';
+import {DigestFragmentComponent} from './components/fragments/other/digest-fragment/digest-fragment.component';
 
 /** Declarations for timeline module */
 export const TimelineDeclarations = [
@@ -116,6 +117,7 @@ export const TimelineDeclarations = [
   // Fragments
   DailyScrumFragmentComponent,
   DailyScrumItemFragmentComponent,
+  DigestFragmentComponent,
   FileDropFragmentComponent,
   TaskletPreviewFragmentComponent,
   MeetingMinutesFragmentComponent,
