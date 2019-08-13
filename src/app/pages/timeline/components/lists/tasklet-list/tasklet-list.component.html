@@ -1,5 +1,4 @@
-<app-tasklet-list-item *ngFor="let t of tasklets; let last = last"
-                       #taskletsList
+<app-tasklet-list-item *ngFor="let t of tasklets"
                        inViewport
                        [tasklet]="t" [media]="media"
                        [taskletsMap]="taskletsMap" [tasksMap]="tasksMap" [projectsMap]="projectsMap"

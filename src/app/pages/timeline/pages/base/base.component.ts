@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {environment} from '../../../../../environments/environment';
 import {Tasklet} from '../../../../core/entity/model/tasklet.model';
 import {Task} from '../../../../core/entity/model/task.model';
