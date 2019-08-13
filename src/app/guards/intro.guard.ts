@@ -42,8 +42,6 @@ export class IntroGuard implements CanActivate {
         )).subscribe((value) => {
         if (value != null) {
           const settingsMap = value as Map<string, Setting>;
-          console.table(Array.from(settingsMap.values()));
-          console.table(SettingsService.isSettingActive(SettingType.ONBOARDING_DONE, settingsMap));
 
           this.unsubscribeSubject.next();
           this.unsubscribeSubject.complete();

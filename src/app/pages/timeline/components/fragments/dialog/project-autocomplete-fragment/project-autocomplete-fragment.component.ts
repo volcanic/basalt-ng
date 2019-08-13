@@ -36,6 +36,7 @@ export class ProjectAutocompleteFragmentComponent implements OnInit, OnChanges {
    * Handles on-init lifecycle phase
    */
   ngOnInit() {
+    this.initializeOptions();
     this.initializeDebouncer();
   }
 
@@ -44,7 +45,6 @@ export class ProjectAutocompleteFragmentComponent implements OnInit, OnChanges {
    */
   ngOnChanges() {
     this.initializeProject();
-    this.initializeOptions();
   }
 
   //
