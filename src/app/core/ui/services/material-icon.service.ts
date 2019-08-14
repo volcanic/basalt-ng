@@ -116,6 +116,8 @@ export class MaterialIconService {
     icons.push(new Icon(IconTopic.FILE, 'file_download', 'ic_file_download_24px.svg'));
     icons.push(new Icon(IconTopic.FILE, 'file_upload', 'ic_file_upload_24px.svg'));
     icons.push(new Icon(IconTopic.HARDWARE, 'keyboard_arrow_up', 'ic_keyboard_arrow_up_24px.svg'));
+    icons.push(new Icon(IconTopic.HARDWARE, 'keyboard_arrow_right', 'ic_keyboard_arrow_right_24px.svg'));
+    icons.push(new Icon(IconTopic.HARDWARE, 'keyboard_arrow_left', 'ic_keyboard_arrow_left_24px.svg'));
     icons.push(new Icon(IconTopic.IMAGE, 'edit', 'ic_edit_24px.svg'));
     icons.push(new Icon(IconTopic.IMAGE, 'timer', 'ic_timer_24px.svg'));
     icons.push(new Icon(IconTopic.IMAGE, 'brightness_3', 'ic_brightness_3_24px.svg'));

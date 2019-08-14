@@ -1,116 +1,116 @@
-  <app-timeline-toolbar
-    [@toolbarAnimation]="scrollDirection"
-    class="fixed"
-    [title]="title"
-    [media]="media"
-    [scope]="scope"
-    [filterActive]="filterActive"
-    [searchOptions]="searchOptions"
-    (searchItemEventEmitter)="onSearchItemChanged($event)"
-    (menuItemEventEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
+<app-timeline-toolbar
+  [@toolbarAnimation]="scrollDirection"
+  class="fixed"
+  [title]="title"
+  [media]="media"
+  [scope]="scope"
+  [filterActive]="filterActive"
+  [searchOptions]="searchOptions"
+  (searchItemEventEmitter)="onSearchItemChanged($event)"
+  (menuItemEventEmitter)="onMenuItemClicked($event)"></app-timeline-toolbar>
 
-  <mat-sidenav-container class="sidenav-container" (keydown)="onKeyDown($event)" tabindex="0">
-    <div class="sidenav-inner-container"></div>
+<mat-sidenav-container class="sidenav-container" (keydown)="onKeyDown($event)" tabindex="0">
+  <div class="sidenav-inner-container"></div>
 
-    <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
-                 position="start" [opened]="sidenavOpened"
-                 class="sidenav sidenav-start">
-      <div [@toolbarAnimation]="scrollDirection">
-        <div class="sidenav-inner-container">
-          <app-project-effort-tree *ngIf="taskletsMap.size > 0"
-                                   [projectDigest]="weeklyDigest"
-                                   opened=true></app-project-effort-tree>
-          <div *ngFor="let dailyDigest of dailyDigests">
-            <app-project-effort-tree *ngIf="taskletsMap.size > 0"
-                                     [projectDigest]="dailyDigest"
-                                     opened=false></app-project-effort-tree>
-          </div>
-          <mat-divider></mat-divider>
-          <app-project-list [projectsMap]="projectsMapFiltered" [projectsMapFilter]="projectsMapFilter"
-                            [recentCount]="'3'" [media]="media"
-                            (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
-          <mat-divider></mat-divider>
-          <app-tag-list [tagsMap]="tagsMapFiltered" [tagsMapFilter]="tagsMapFilter" [tagsMapUnused]="tagsMapUnused"
-                        [recentCount]="'10'" [media]="media"
-                        (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
-          <mat-divider></mat-divider>
-          <app-person-list [personsMap]="personsMapFiltered" [personsMapFilter]="personsMapFilter"
-                           [recentCount]="'10'" [media]="media"
-                           (personEventEmitter)="onPersonEvent($event)"></app-person-list>
-        </div>
+  <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavStart mode="side"
+               position="start" [opened]="sidenavOpened"
+               class="sidenav sidenav-start">
+    <div [@toolbarAnimation]="scrollDirection">
+      <div class="sidenav-inner-container">
+        <app-digest-fragment *ngIf="taskletsMap.size > 0"
+                             [taskletsMap]="taskletsMap"
+                             [tasksMap]="tasksMap"
+                             [projectsMap]="projectsMap"></app-digest-fragment>
+        <mat-divider></mat-divider>
+        <app-project-list [projectsMap]="projectsMapFiltered" [projectsMapFilter]="projectsMapFilter"
+                          [recentCount]="'3'" [media]="media"
+                          (projectEventEmitter)="onProjectEvent($event)"></app-project-list>
+        <mat-divider></mat-divider>
+        <app-tag-list [tagsMap]="tagsMapFiltered" [tagsMapFilter]="tagsMapFilter" [tagsMapUnused]="tagsMapUnused"
+                      [recentCount]="'10'" [media]="media"
+                      (tagEventEmitter)="onTagEvent($event)"></app-tag-list>
+        <mat-divider></mat-divider>
+        <app-person-list [personsMap]="personsMapFiltered" [personsMapFilter]="personsMapFilter"
+                         [recentCount]="'10'" [media]="media"
+                         (personEventEmitter)="onPersonEvent($event)"></app-person-list>
       </div>
-    </mat-sidenav>
+    </div>
+  </mat-sidenav>
 
-    <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavEnd mode="side"
-                 position="end" [opened]="sidenavOpened"
-                 class="sidenav sidenav-end">
-      <div [@toolbarAnimation]="scrollDirection">
-        <div class="sidenav-inner-container">
-          <app-task-list [tasksMap]="tasksMapFiltered" [tasksMapFiltered]="tasksMapFilter" [projectsMap]="projectsMap"
-                         [media]="media"
-                         (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
-        </div>
+  <mat-sidenav *ngIf="media > mediaType.MEDIUM" #sidenavEnd mode="side"
+               position="end" [opened]="sidenavOpened"
+               class="sidenav sidenav-end">
+    <div [@toolbarAnimation]="scrollDirection">
+      <div class="sidenav-inner-container">
+        <app-task-list [tasksMap]="tasksMapFiltered" [tasksMapFiltered]="tasksMapFilter" [projectsMap]="projectsMap"
+                       [media]="media"
+                       (taskEventEmitter)="onTaskEvent($event)"></app-task-list>
       </div>
-    </mat-sidenav>
+    </div>
+  </mat-sidenav>
 
-    <mat-sidenav-content cdkScrollable>
-      <div class="content">
-        <app-suggested-actions *ngIf="env.FEATURE_TOGGLE_SUGGESTED_ACTIONS && taskletsMap.size > 0"
-                               [suggestedTasks]="tasksMap"
-                               [taskletsMap]="taskletsMap"
-                               (taskletEventEmitter)="onTaskletEvent($event)"
-                               (taskEventEmitter)="onTaskEvent($event)"></app-suggested-actions>
+  <mat-sidenav-content cdkScrollable>
+    <div class="content">
+      <app-suggested-actions *ngIf="env.FEATURE_TOGGLE_SUGGESTED_ACTIONS && taskletsMap.size > 0"
+                             [suggestedTasks]="tasksMap"
+                             [taskletsMap]="taskletsMap"
+                             (taskletEventEmitter)="onTaskletEvent($event)"
+                             (taskEventEmitter)="onTaskEvent($event)"></app-suggested-actions>
 
-        <app-tasklet-list [taskletsMap]="taskletsMapFiltered" [tasksMap]="tasksMap" [projectsMap]="projectsMap"
-                          [tagsMap]="tagsMap" [personsMap]="personsMap" [media]="media"
-                          (taskletEventEmitter)="onTaskletEvent($event)"
-                          (taskletCreationDateEventEmitter)="onTaskletCreationDateEvent($event)"></app-tasklet-list>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+      <app-tasklet-list [taskletsMap]="taskletsMapFiltered"
+                        [tasksMap]="tasksMap"
+                        [projectsMap]="projectsMap"
+                        [tagsMap]="tagsMap"
+                        [personsMap]="personsMap"
+                        [media]="media"
+                        (taskletEventEmitter)="onTaskletEvent($event)"
+                        (taskletCreationDateEventEmitter)="onTaskletCreationDateEvent($event)"></app-tasklet-list>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
-  <div class="date-indicator-wrapper flexcontainer" *ngIf="indicatedDate != null">
-    <div class="flexbox"></div>
-    <button mat-fab class="date-indicator" [@dateIndicatorAnimation]="scrollState" (click)="onDateIndicatorClicked()">
-      <div class="day">{{ indicatedDay }}</div>
-      <div class="month">{{ indicatedMonth }}</div>
+<div class="date-indicator-wrapper flexcontainer" *ngIf="indicatedDate != null">
+  <div class="flexbox"></div>
+  <button mat-fab class="date-indicator" [@dateIndicatorAnimation]="scrollState" (click)="onDateIndicatorClicked()">
+    <div class="day">{{ indicatedDay }}</div>
+    <div class="month">{{ indicatedMonth }}</div>
+  </button>
+  <div class="flexbox"></div>
+</div>
+
+<eco-fab-speed-dial #myFab class="fab" [open]=false direction="up" (mouseenter)="myFab.open = true"
+                    (mouseleave)="myFab.open = false">
+  <eco-fab-speed-dial-trigger [spin]="true">
+    <button mat-fab class="spin180" matTooltip="Start working on..." matTooltipPosition="left"
+            matTooltipShowDelay="250"
+            (click)="onAddTaskletClicked()">
+      <mat-icon svgIcon="add" class="icon-accent-contrast"></mat-icon>
     </button>
-    <div class="flexbox"></div>
-  </div>
+  </eco-fab-speed-dial-trigger>
 
-  <eco-fab-speed-dial #myFab class="fab" [open]=false direction="up" (mouseenter)="myFab.open = true"
-                      (mouseleave)="myFab.open = false">
-    <eco-fab-speed-dial-trigger [spin]="true">
-      <button mat-fab class="spin180" matTooltip="Start working on..." matTooltipPosition="left"
-              matTooltipShowDelay="250"
-              (click)="onAddTaskletClicked()">
-        <mat-icon svgIcon="add" class="icon-accent-contrast"></mat-icon>
-      </button>
-    </eco-fab-speed-dial-trigger>
+  <eco-fab-speed-dial-actions>
+    <button mat-mini-fab class="fab-speed-dial-third" matTooltip="Create new task"
+            matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddTaskClicked()">
+      <mat-icon svgIcon="turned_in_not" class="icon-accent-contrast"></mat-icon>
+    </button>
 
-    <eco-fab-speed-dial-actions>
-      <button mat-mini-fab class="fab-speed-dial-third" matTooltip="Create new task"
-              matTooltipPosition="left" matTooltipShowDelay="250"
-              (click)="onAddTaskClicked()">
-        <mat-icon svgIcon="turned_in_not" class="icon-accent-contrast"></mat-icon>
-      </button>
+    <button mat-mini-fab class="fab-speed-dial-fourth" matTooltip="Create new project"
+            matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddProjectClicked()">
+      <mat-icon svgIcon="agenda" class="icon-accent-contrast"></mat-icon>
+    </button>
 
-      <button mat-mini-fab class="fab-speed-dial-fourth" matTooltip="Create new project"
-              matTooltipPosition="left" matTooltipShowDelay="250"
-              (click)="onAddProjectClicked()">
-        <mat-icon svgIcon="agenda" class="icon-accent-contrast"></mat-icon>
-      </button>
+    <button mat-mini-fab class="fab-speed-dial-fifth" matTooltip="Create new tag"
+            matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddTagClicked()">
+      <mat-icon svgIcon="label_outline" class="icon-accent-contrast"></mat-icon>
+    </button>
 
-      <button mat-mini-fab class="fab-speed-dial-fifth" matTooltip="Create new tag"
-              matTooltipPosition="left" matTooltipShowDelay="250"
-              (click)="onAddTagClicked()">
-        <mat-icon svgIcon="label_outline" class="icon-accent-contrast"></mat-icon>
-      </button>
-
-      <button mat-mini-fab class="fab-speed-dial-sixth" matTooltip="Create new person"
-              matTooltipPosition="left" matTooltipShowDelay="250"
-              (click)="onAddPersonClicked()">
-        <mat-icon svgIcon="person" class="icon-accent-contrast"></mat-icon>
-      </button>
-    </eco-fab-speed-dial-actions>
-  </eco-fab-speed-dial>
+    <button mat-mini-fab class="fab-speed-dial-sixth" matTooltip="Create new person"
+            matTooltipPosition="left" matTooltipShowDelay="250"
+            (click)="onAddPersonClicked()">
+      <mat-icon svgIcon="person" class="icon-accent-contrast"></mat-icon>
+    </button>
+  </eco-fab-speed-dial-actions>
+</eco-fab-speed-dial>

@@ -1,0 +1,24 @@
+@import '../../../../../../../theme';
+@import '../../../../../../../flex';
+
+//
+// Material
+//
+
+.mat-expansion-panel {
+  background: transparent;
+}
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: 0 0px 0px 0px rgba(0, 0, 0, 0),
+  0 0px 0px 0 rgba(0, 0, 0, .14),
+  0 0px 0px 0 rgba(0, 0, 0, 0);
+}
+
+.flexcontainer {
+  margin-top: 5px;
+}
+
+.mat-button {
+  padding: 0 4px;
+}
