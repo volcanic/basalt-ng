@@ -167,7 +167,8 @@ export class DateService {
     const beginningOfTheWeek = DateService.getBeginningOfTheWeek(new Date(referenceDate));
     const endOfTheWeek = DateService.getEndOfTheWeek(new Date(referenceDate));
 
-    return new Date(date) >= beginningOfTheWeek && new Date(date) <= endOfTheWeek;
+    return DateService.isAfter(new Date(date), beginningOfTheWeek)
+      && DateService.isBefore(new Date(date), endOfTheWeek);
   }
 
   /**
@@ -211,7 +212,7 @@ export class DateService {
    * @returns week start of the week containing the given date
    */
   static getBeginningOfTheWeek(date: Date): Date {
-    const beginningOfTheWeek = new Date();
+    const beginningOfTheWeek = new Date(date);
 
     const currentWeekDay = new Date(date).getDay();
     const daysFromMonday = currentWeekDay === 0 ? 6 : currentWeekDay - 1;
@@ -662,5 +663,16 @@ export class DateService {
    */
   static getRoundedMinutes(minutes: number): number {
     return Math.ceil(minutes / DateService.MINUTES_INTERVAL) * DateService.MINUTES_INTERVAL;
+  }
+
+  /**
+   * Returns a random date which is between two given dates
+   * @param start start date
+   * @param end end date
+   */
+  static getRandomDate(start, end) {
+    const startTime = start.getTime();
+    const endTime = end.getTime();
+    return new Date(startTime + Math.random() * (endTime - startTime));
   }
 }

@@ -1,0 +1,17 @@
+<app-project-effort-tree [projectDigest]="weeklyDigest"
+                         opened=true></app-project-effort-tree>
+<div *ngFor="let dailyDigest of dailyDigests">
+  <app-project-effort-tree [projectDigest]="dailyDigest"
+                           opened=false></app-project-effort-tree>
+</div>
+<div class="flexcontainer">
+  <button mat-button
+          [disabled]="(weeklyDigest === null && dailyDigests === null) || isInWeek(indicatedDate, earliestDate)"
+          (click)="onPreviousWeekClicked()">Previous week
+  </button>
+  <div class="flexbox"></div>
+  <button mat-button
+          [disabled]="(weeklyDigest === null && dailyDigests === null) || isInWeek(indicatedDate, latestDate)"
+          (click)="onNextWeekClicked()">Next week
+  </button>
+</div>
