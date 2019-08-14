@@ -108,8 +108,11 @@ export class DigestFragmentComponent implements OnChanges {
    * Determines date boundaries
    */
   private determineBoundaries() {
-    this.earliestDate = new Date(Array.from(this.taskletsMap.values()).sort(TaskletService.sortTaskletsByCreationDate).reverse()[0].creationDate);
-    this.latestDate = new Date(Array.from(this.taskletsMap.values()).sort(TaskletService.sortTaskletsByCreationDate)[0].creationDate);
+    if (this.taskletsMap != null && this.taskletsMap.size > 0) {
+      const tasklets = Array.from(this.taskletsMap.values()).sort(TaskletService.sortTaskletsByCreationDate);
+      this.earliestDate = new Date(tasklets.reverse()[0].creationDate);
+      this.latestDate = new Date(Array.from(this.taskletsMap.values()).sort(TaskletService.sortTaskletsByCreationDate)[0].creationDate);
+    }
   }
 
   /**
