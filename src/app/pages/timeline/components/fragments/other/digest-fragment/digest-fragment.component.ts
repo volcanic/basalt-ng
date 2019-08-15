@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ProjectDigest} from '../../../../../../core/digest/model/project-digest.model';
 import {DateService} from '../../../../../../core/entity/services/date.service';
 import {Tasklet} from '../../../../../../core/entity/model/tasklet.model';
@@ -17,7 +17,7 @@ import {TaskletService} from '../../../../../../core/entity/services/tasklet/tas
   styleUrls: ['./digest-fragment.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DigestFragmentComponent implements OnChanges {
+export class DigestFragmentComponent implements OnInit, OnChanges {
 
   /** Map of tasklets */
   @Input() taskletsMap = new Map<string, Tasklet>();
@@ -60,10 +60,18 @@ export class DigestFragmentComponent implements OnChanges {
   // Lifecycle hooks
   //
 
+  ngOnInit() {
+    this.setHashesAndGeneratreReport();
+  }
+
   /**
    * Handles on-init lifecycle phase
    */
   ngOnChanges(changes: SimpleChanges) {
+    this.setHashesAndGeneratreReport();
+  }
+
+  private setHashesAndGeneratreReport() {
     const newTaskletsHash = Hash.hash(JSON.stringify(Array.from(this.taskletsMap.values())));
     const newTasksHash = Hash.hash(JSON.stringify(Array.from(this.tasksMap.values())));
     const newProjectsHash = Hash.hash(JSON.stringify(Array.from(this.projectsMap.values())));
@@ -80,7 +88,7 @@ export class DigestFragmentComponent implements OnChanges {
     this.projectsHash = newProjectsHash;
   }
 
-  //
+//
   // Actions
   //
 
