@@ -56,56 +56,50 @@ export class TaskService {
    * 1 if task B is of a higher order
    */
   static sortTasks(inputTaskA: Task, inputTaskB: Task) {
-    let sortingResult = 0; // 0 does not sort, < 0 places inputTaskA first, > 0 places inputTaskB first
-
     const taskA = TaskService.getSortableTaskObject(inputTaskA);
     const taskB = TaskService.getSortableTaskObject(inputTaskB);
 
-    function aWins() {
-      sortingResult = -1;
-    }
+    const sortingVariables = TaskService.calculateSortingVariables(taskA, taskB);
 
-    function bWins() {
-      sortingResult = 1;
-    }
-
-    const aIsDueBeforeB = taskA.dueTime < taskB.dueTime;
-    const aIsDueAfterB = taskA.dueTime > taskB.dueTime;
-
-    const aStartsBeforeB = taskA.calculatedStart < taskB.calculatedStart;
-    const aStartsAfterB = taskA.calculatedStart > taskB.calculatedStart;
-
-    const aIsDueAfterBStarts = taskA.dueTime > taskB.calculatedStart;
-    const bIsDueAfterAStarts = taskA.calculatedStart < taskB.dueTime;
-
-    function sortByPriority(inFavorOfA: boolean) {
-      if (inFavorOfA) {
-        if (taskA.priority >= taskB.priority) {
-          aWins();
-        } else {
-          bWins();
-        }
+    if (sortingVariables.aIsDueAfterB) {
+      if (sortingVariables.aStartsAfterB && !sortingVariables.bIsDueAfterAStarts) {
+        return 1; // B wins
       } else {
-        if (taskA.priority <= taskB.priority) {
-          bWins();
-        } else {
-          aWins();
-        }
+        return TaskService.sortByPriority(false, taskA, taskB);
       }
-    }
-
-    if (aIsDueAfterB) {
-      if (aStartsAfterB && !bIsDueAfterAStarts) {
-        bWins();
-      } else {
-        sortByPriority(false);
-      }
-    } else if (aIsDueBeforeB && aStartsBeforeB && !aIsDueAfterBStarts) {
-        aWins();
+    } else if (sortingVariables.aIsDueBeforeB && sortingVariables.aStartsBeforeB && !sortingVariables.aIsDueAfterBStarts) {
+      return -1; // A wins
     } else { // equal due time
-      sortByPriority(true);
+      return TaskService.sortByPriority(true, taskA, taskB);
     }
+  }
 
+  private static calculateSortingVariables(taskA, taskB) {
+    return {
+      aIsDueBeforeB: taskA.dueTime < taskB.dueTime,
+      aIsDueAfterB: taskA.dueTime > taskB.dueTime,
+      aStartsBeforeB: taskA.calculatedStart < taskB.calculatedStart,
+      aStartsAfterB: taskA.calculatedStart > taskB.calculatedStart,
+      aIsDueAfterBStarts: taskA.dueTime > taskB.calculatedStart,
+      bIsDueAfterAStarts: taskA.calculatedStart < taskB.dueTime
+    };
+  }
+
+  private static sortByPriority(inFavorOfA: boolean, taskA, taskB) {
+    let sortingResult = 0;
+    if (inFavorOfA) {
+      if (taskA.priority >= taskB.priority) {
+        sortingResult = -1;
+      } else {
+        sortingResult = 1;
+      }
+    } else {
+      if (taskA.priority <= taskB.priority) {
+        sortingResult = 1;
+      } else {
+        sortingResult = -1;
+      }
+    }
     return sortingResult;
   }
 
