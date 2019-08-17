@@ -259,7 +259,7 @@ export class DateService {
    */
   static getStartOfDay(date: Date): Date {
     const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0);
+    startOfDay.setHours(0, 0, 0, 0);
 
     return startOfDay;
   }
@@ -270,7 +270,7 @@ export class DateService {
    */
   static getEndOfDay(date: Date): Date {
     const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59);
+    endOfDay.setHours(23, 59, 0, 0);
 
     return endOfDay;
   }
@@ -281,7 +281,7 @@ export class DateService {
    */
   static getEndOfBusiness(date: Date): Date {
     const endOfBusiness = new Date(date);
-    endOfBusiness.setHours(17, 30);
+    endOfBusiness.setHours(17, 30, 0, 0);
 
     return endOfBusiness;
   }
@@ -296,7 +296,7 @@ export class DateService {
     const currentWeekDay = new Date(date).getDay();
     const daysTillFriday = currentWeekDay === 5 ? 0 : (12 - currentWeekDay) % 7;
 
-    endOfWorkWeek.setHours(17, 30);
+    endOfWorkWeek.setHours(17, 30, 0, 0);
     endOfWorkWeek.setDate(new Date(date).getDate() + daysTillFriday);
 
     return endOfWorkWeek;
