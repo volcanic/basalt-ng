@@ -69,7 +69,6 @@ export class TaskService {
       sortingResult = 1;
     }
 
-
     const aIsDueBeforeB = taskA.dueTime < taskB.dueTime;
     const aIsDueAfterB = taskA.dueTime > taskB.dueTime;
 
@@ -95,37 +94,18 @@ export class TaskService {
       }
     }
 
-    if (aIsDueBeforeB) {
-      if (aStartsBeforeB) {
-        if (aIsDueAfterBStarts) {
-          sortByPriority(true);
-        } else {
-          aWins();
-        }
+    if (aIsDueAfterB) {
+      if (aStartsAfterB && !bIsDueAfterAStarts) {
+        bWins();
       } else {
-        sortByPriority(true);
+        sortByPriority(false);
       }
-    } else {
-      if (aIsDueAfterB) {
-        if (aStartsBeforeB) {
-          sortByPriority(false);
-        } else if (aStartsAfterB) {
-          if (bIsDueAfterAStarts) {
-            sortByPriority(false);
-          } else {
-            bWins();
-          }
-        } else {
-          sortByPriority(false);
-        }
-      } else { // equal due time
-        if (aStartsBeforeB) {
-          sortByPriority(true);
-        } else {
-          sortByPriority(true);
-        }
-      }
+    } else if (aIsDueBeforeB && aStartsBeforeB && !aIsDueAfterBStarts) {
+        aWins();
+    } else { // equal due time
+      sortByPriority(true);
     }
+
     return sortingResult;
   }
 
