@@ -58,8 +58,8 @@ export class TaskService {
   static sortTasks(inputTaskA: Task, inputTaskB: Task) {
     let sortingResult = 0; // 0 does not sort, < 0 places inputTaskA first, > 0 places inputTaskB first
 
-    const taskA = TaskService.getSortableTask(inputTaskA);
-    const taskB = TaskService.getSortableTask(inputTaskB);
+    const taskA = TaskService.getSortableTaskObject(inputTaskA);
+    const taskB = TaskService.getSortableTaskObject(inputTaskB);
 
     function aWins() {
       sortingResult = -1;
@@ -70,79 +70,70 @@ export class TaskService {
     }
 
 
-    if (taskA.dueTime < taskB.dueTime) {
-      if (taskA.calculatedStart < taskB.calculatedStart) {
-        if (taskB.calculatedStart < taskA.dueTime) {
-          if (taskB.priority > taskA.priority) {
-            bWins();
-          } else {
-            aWins();
-          }
-        } else {
-          aWins();
-        }
-      } else if (taskA.calculatedStart > taskB.calculatedStart) {
-        if (taskA.priority < taskB.priority) {
-          bWins();
-        } else {
-          aWins();
-        }
-      } else {
-        if (taskA.priority < taskB.priority) {
-          bWins();
-        } else {
-          aWins();
-        }
-      }
-    } else if (taskA.dueTime > taskB.dueTime) {
-      if (taskA.calculatedStart < taskB.calculatedStart) {
-        if (taskA.priority > taskB.priority) {
-          aWins();
-        } else {
-          bWins();
-        }
-      } else if (taskA.calculatedStart > taskB.calculatedStart) {
-        if (taskA.calculatedStart < taskB.dueTime) {
-          if (taskA.priority > taskB.priority) {
-            aWins();
-          } else {
-            bWins();
-          }
-        } else {
-          bWins();
-        }
-      } else {
-        if (taskA.priority > taskB.priority) {
-          aWins();
-        } else {
-          bWins();
-        }
-      }
-    } else { // equal due time
-      if (taskA.calculatedStart < taskB.calculatedStart) {
-        if (taskA.priority < taskB.priority) {
-          bWins();
-        } else {
-          aWins();
-        }
-      } else if (taskA.calculatedStart > taskB.calculatedStart) {
-        if (taskA.priority > taskB.priority) {
+    const aIsDueBeforeB = taskA.dueTime < taskB.dueTime;
+    const aIsDueAfterB = taskA.dueTime > taskB.dueTime;
+
+    const aStartsBeforeB = taskA.calculatedStart < taskB.calculatedStart;
+    const aStartsAfterB = taskA.calculatedStart > taskB.calculatedStart;
+
+    const aIsDueAfterBStarts = taskA.dueTime > taskB.calculatedStart;
+    const bIsDueAfterAStarts = taskA.calculatedStart < taskB.dueTime;
+
+    function sortByPriority(inFavorOfA: boolean) {
+      if (inFavorOfA) {
+        if (taskA.priority >= taskB.priority) {
           aWins();
         } else {
           bWins();
         }
       } else {
-        if (taskA.priority < taskB.priority) {
+        if (taskA.priority <= taskB.priority) {
           bWins();
         } else {
           aWins();
         }
       }
     }
+
+    if (aIsDueBeforeB) {
+      if (aStartsBeforeB) {
+        if (aIsDueAfterBStarts) {
+          sortByPriority(true);
+        } else {
+          aWins();
+        }
+      } else if (aStartsAfterB) {
+        sortByPriority(true);
+      } else {
+        sortByPriority(true);
+      }
+    } else {
+      if (aIsDueAfterB) {
+        if (aStartsBeforeB) {
+          sortByPriority(false);
+        } else if (aStartsAfterB) {
+          if (bIsDueAfterAStarts) {
+            sortByPriority(false);
+          } else {
+            bWins();
+          }
+        } else {
+          sortByPriority(false);
+        }
+      } else { // equal due time
+        if (aStartsBeforeB) {
+          sortByPriority(true);
+        } else if (aStartsAfterB) {
+          sortByPriority(true);
+        } else {
+          sortByPriority(true);
+        }
+      }
+    }
     return sortingResult;
   }
 
-  private static getSortableTask(inputTask: Task) {
+  private static getSortableTaskObject(inputTask: Task) {
     const dueTime = TaskService.getDueTimeInMinutesFromTask(inputTask);
     const effort = inputTask.effort;
     return {
