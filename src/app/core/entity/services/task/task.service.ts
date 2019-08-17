@@ -102,8 +102,6 @@ export class TaskService {
         } else {
           aWins();
         }
-      } else if (aStartsAfterB) {
-        sortByPriority(true);
       } else {
         sortByPriority(true);
       }
@@ -122,8 +120,6 @@ export class TaskService {
         }
       } else { // equal due time
         if (aStartsBeforeB) {
-          sortByPriority(true);
-        } else if (aStartsAfterB) {
           sortByPriority(true);
         } else {
           sortByPriority(true);
