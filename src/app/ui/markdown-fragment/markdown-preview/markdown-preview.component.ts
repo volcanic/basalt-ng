@@ -8,6 +8,7 @@ const md = require('markdown-it')({
   html: true,
   linkify: true,
   typographer: true,
+  breaks: true,
   highlight(str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -91,9 +92,7 @@ export class MarkdownPreviewComponent implements OnChanges {
    */
   updateMarkdown() {
     if (this.markdownText != null) {
-      this.htmlText = md.render(this.markdownText
-      // Replace new lines if they are not lead or followed by an asterisk
-        .replace(new RegExp('(?!(.*\\*))\n(?!(.*\\*))', 'g'), '<br/>'));
+      this.htmlText = md.render(this.markdownText);
     }
   }
 }
