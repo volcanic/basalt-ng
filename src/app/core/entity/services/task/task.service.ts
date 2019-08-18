@@ -48,52 +48,77 @@ export class TaskService {
 
   /**
    * Sorts tasks based on their due date & due time, effort estimation and priority
-   * @param taskA first task
-   * @param taskB seconds task
+   * @param inputTaskA first task
+   * @param inputTaskB seconds task
    * @return Returns
-   * -1 if taskA is of a higher order (i.e. before taskB),
-   * 0 if taskA and taskB are equal and
+   * -1 if inputTaskA is of a higher order (i.e. before inputTaskB),
+   * 0 if inputTaskA and inputTaskB are equal and
    * 1 if task B is of a higher order
    */
-  static sortTasks(taskA: Task, taskB: Task) {
-    let returnValue = 0; // 0 does not sort, < 0 places taskA first, > 0 places taskB first
+  static sortTasks(inputTaskA: Task, inputTaskB: Task) {
+    const taskA = TaskService.getSortableTaskObject(inputTaskA);
+    const taskB = TaskService.getSortableTaskObject(inputTaskB);
 
-    const dueTimeA = new Date(taskA.dueDate).getTime() / 1000 / 60; // Get due time in minutes
-    const effortA = taskA.effort; // Get effort in minutes
-    const calculatedStartA = dueTimeA - effortA; // Calculate start time for comparison with taskB
-    const priorityA = taskA.priority; // get priority
+    const sortingVariables = TaskService.calculateSortingVariables(taskA, taskB);
 
-    const dueTimeB = new Date(taskB.dueDate).getTime() / 1000 / 60; // Get due time in minutes
-    const effortB = taskB.effort; // Get effort in minutes
-    const calculatedStartB = dueTimeB - effortB; // Calculate start time for comparison with taskB
-    const priorityB = taskB.priority; // get priority
-
-    if ((dueTimeA < dueTimeB) || (dueTimeA === dueTimeB)) { // A comes first
-      if (calculatedStartB < dueTimeA) { // B comes first
-        if (priorityA < priorityB) { // A comes first
-          returnValue = -1;
-        } else { // B stays first
-          returnValue = 1;
-        }
-      } else { // A stays first
-        returnValue = -1;
+    if (sortingVariables.aIsDueAfterB) {
+      if (sortingVariables.aStartsAfterB && !sortingVariables.bIsDueAfterAStarts) {
+        return 1; // B wins
+      } else {
+        return TaskService.sortByPriority(false, taskA, taskB);
       }
-    } else { // B comes first
-      if (calculatedStartA < dueTimeB) { // A comes first
-        if (priorityB < priorityA) { // B comes first
-          returnValue = 1;
-        } else { // A stays first
-          returnValue = -1;
-        }
-      } else { // B stays first
-        returnValue = 1;
-      }
+    } else if (sortingVariables.aIsDueBeforeB && sortingVariables.aStartsBeforeB && !sortingVariables.aIsDueAfterBStarts) {
+      return -1; // A wins
+    } else { // equal due time
+      return TaskService.sortByPriority(true, taskA, taskB);
     }
-
-    return returnValue;
   }
 
-  //
+  private static calculateSortingVariables(taskA, taskB) {
+    return {
+      aIsDueBeforeB: taskA.dueTime < taskB.dueTime,
+      aIsDueAfterB: taskA.dueTime > taskB.dueTime,
+      aStartsBeforeB: taskA.calculatedStart < taskB.calculatedStart,
+      aStartsAfterB: taskA.calculatedStart > taskB.calculatedStart,
+      aIsDueAfterBStarts: taskA.dueTime > taskB.calculatedStart,
+      bIsDueAfterAStarts: taskA.calculatedStart < taskB.dueTime
+    };
+  }
+
+  private static sortByPriority(inFavorOfA: boolean, taskA, taskB) {
+    let sortingResult = 0;
+    if (inFavorOfA) {
+      if (taskA.priority >= taskB.priority) {
+        sortingResult = -1;
+      } else {
+        sortingResult = 1;
+      }
+    } else {
+      if (taskA.priority <= taskB.priority) {
+        sortingResult = 1;
+      } else {
+        sortingResult = -1;
+      }
+    }
+    return sortingResult;
+  }
+
+  private static getSortableTaskObject(inputTask: Task) {
+    const dueTime = TaskService.getDueTimeInMinutesFromTask(inputTask);
+    const effort = inputTask.effort;
+    return {
+      dueTime,
+      effort,
+      calculatedStart: dueTime - effort,
+      priority: 3 - inputTask.priority // Inverse priority to make calculations more intuitive
+    };
+  }
+
+  private static getDueTimeInMinutesFromTask(task: Task) {
+    return new Date(task.dueDate).getTime() / 1000 / 60;
+  }
+
+//
   // Filter
   //
 
