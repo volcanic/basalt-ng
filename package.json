@@ -94,7 +94,7 @@
     "live-server": "^1.2.1",
     "markdown-to-html": "0.0.13",
     "mkdirp": "^0.5.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "protractor": "~5.4.0",
     "replace": "^1.1.0",
     "ts-node": "~7.0.0",
